@@ -32,6 +32,7 @@ $ paster make-config debexpo config.ini
 $ vim config.ini
 # fix at least the path "debexpo.repository = /tmp/debexpo_cache/"
 $ paster setup-app config.ini
+$ python setup.py compile_catalog
 $ paster serve config.ini
 
 And go to http://127.0.0.1:5000 with your browser.
