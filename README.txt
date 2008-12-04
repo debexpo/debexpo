@@ -1,5 +1,13 @@
-This file is for you to describe the debexpo application. Typically
-you would include information such as the information below:
+Documentation
+=============
+
+The documentation is in the docs/ directory. Build it:
+
+$ cd docs
+$ make html
+$ iceweasel .build/html/index.html
+
+Below you can find a quick way how to install debexpo.
 
 Installation and Setup
 ======================
