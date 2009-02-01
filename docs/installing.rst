@@ -43,6 +43,14 @@ on the :ref:`config-file` page.
 If you just want to get it running somehow, edit at least the path
 ``debexpo.repository = /tmp/debexpo_cache/``.
 
+Setting up the application
+--------------------------
+
+Execute the following commands to setup the application::
+
+    paster setup-app debexpo.ini
+    python setup.py compile_catalog
+
 Running debexpo
 ---------------
 
