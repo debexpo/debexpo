@@ -31,10 +31,17 @@ Or you can clone the repository contents by executing::
 Editing your configuration
 ---------------------------
 
-Next you should edit the default configuration file. This file will be called
-``debexpo.ini``. You should only have to look at options with the ``DEBEXPO``
+Create a configuration file::
+
+    paster make-config debexpo debexpo.ini
+
+Next you should edit the default configuration file ``debexpo.ini``.
+You should only have to look at options with the ``DEBEXPO``
 comment preceeding them. You can find explanations of the `debexpo.*` options
 on the :ref:`config-file` page.
+
+If you just want to get it running somehow, edit at least the path
+``debexpo.repository = /tmp/debexpo_cache/``.
 
 Running debexpo
 ---------------
