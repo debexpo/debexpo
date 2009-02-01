@@ -106,14 +106,17 @@
 
     % if package_version.closes is not None:
 
-        % for bug in package_version.closes.split(','):
-
     <tr>
       <th>${ _('Closes bugs') }:</th>
-      <td><a href="http://bugs.debian.org/${ bug }">${ bug }</a></td>
-    </tr>
+      <td>
+
+        % for bug in package_version.closes.split():
+
+      <a href="http://bugs.debian.org/${ bug }">${ bug }</a>
 
         % endfor
+      </td>
+    </tr>
 
     % endif
 
