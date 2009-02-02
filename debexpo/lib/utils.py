@@ -36,8 +36,13 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
 import commands
-import os
+import logging
 import md5
+import os
+
+from pylons import config
+
+log = logging.getLogger(__name__)
 
 def allowed_upload(filename):
     """
@@ -114,7 +119,11 @@ def parse_key_id(key):
     ``key``
         ASCII armored GPG public key.
     """
-    cmd = 'echo "%s" | gpg2' % key
+    gpg_path = config['debexpo.gpg_path']
+    if not gpg_path:
+        log.error('debexpo.gpg_path is not set in configuration file.')
+        return None
+    cmd = 'echo "%s" | %s' % (key, gpg_path)
     status, output = commands.getstatusoutput(cmd)
     if status != 0:
         return None
