@@ -41,6 +41,7 @@ import md5
 from debexpo.lib.base import *
 from debexpo.lib import constants, form
 from debexpo.lib.schemas import DetailsForm, GpgForm, PasswordForm, OtherDetailsForm
+from debexpo.lib.utils import parse_key_id
 
 from debexpo.model import meta
 from debexpo.model.users import User
@@ -92,11 +93,13 @@ class MyController(BaseController):
         if self.form_result['delete_gpg'] and self.user.gpg is not None:
             log.debug('Deleting current GPG key')
             self.user.gpg = None
+            self.user.gpg_id = None
 
         # Should the key be updated.
         if 'gpg' in self.form_result and self.form_result['gpg'] is not None:
             log.debug('Setting a new GPG key')
             self.user.gpg = self.form_result['gpg'].value
+            self.user.gpg_id = parse_key_id(self.user.gpg)
 
         meta.session.commit()
 
@@ -207,8 +210,7 @@ class MyController(BaseController):
 
         # Enable the form to show information on the user's GPG key.
         if self.user.gpg is not None:
-            # TODO: Make this display the right key ID.
-            c.currentgpg = '0xXXXXXX'
+            c.currentgpg = c.user.gpg_id
 
         log.debug('Rendering page')
         return render('/my/index.mako')
