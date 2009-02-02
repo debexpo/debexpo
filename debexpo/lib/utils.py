@@ -35,6 +35,7 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
+import commands
 import os
 import md5
 
@@ -105,3 +106,19 @@ def md5sum(filename):
     f.close()
 
     return sum.hexdigest()
+
+def parse_key_id(key):
+    """
+    Returns the key id of the given GPG public key.
+
+    ``key``
+        ASCII armored GPG public key.
+    """
+    cmd = 'echo "%s" | gpg2' % key
+    status, output = commands.getstatusoutput(cmd)
+    if status != 0:
+        return None
+    try:
+        return output.split()[1]
+    except KeyError:
+        return None
