@@ -37,6 +37,8 @@ __license__ = 'MIT'
 
 import formencode
 
+from pylons import config
+
 from debexpo.lib.validators import NewEmailToSystem, NewDebianEmailToSystem, GpgKey, \
     CurrentPassword, CheckBox
 
@@ -118,4 +120,7 @@ class SponsorForm(RegisterForm):
     """
     Schema for the sponsor registration form in the register controller.
     """
-    email = NewDebianEmailToSystem(not_empty=True)
+    if config['debug']: # allow non-DD emails for debugging
+        email = NewEmailToSystem(not_empty=True)
+    else:
+        email = NewDebianEmailToSystem(not_empty=True)
