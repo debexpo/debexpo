@@ -98,3 +98,8 @@ Server root URL debexpo is running on, including protocol and excluding trailing
 =====================
 
 Path to file to include which contains HTML for the front page. This defaults to ``%(here)s/debexpo/public/frontpage.html``.
+
+``debexpo.gpg_path``
+====================
+
+Path to the GnuPG binary. This defaults to ``/usr/bin/gpg``.
