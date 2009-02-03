@@ -3,10 +3,10 @@
 
 <h1>${ _('Subscribe to package %s') % c.package.name }</h1>
 
-${ h.rails.form(h.url_for()) }
-<p>${ h.rails.select('level', h.rails.options_for_select(c.subscriptions, c.current_subscription)) }
+${ h.html.tags.form(h.url_for()) }
+<p>${ h.html.tags.select('level', c.current_subscription, c.subscriptions) }
 <br/>
-${ h.rails.submit(_('Submit')) }</p>
-${ h.rails.end_form() }
+${ h.html.tags.submit('commit', _('Submit')) }</p>
+${ h.html.tags.end_form() }
 
 <p><a href="${ h.url_for('package', packagename=c.package.name) }">${ _('Back to package details') }</a>

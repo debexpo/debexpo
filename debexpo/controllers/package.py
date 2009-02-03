@@ -188,7 +188,7 @@ class PackageController(BaseController):
             meta.session.delete(package)
             meta.session.commit()
 
-        return h.rails.redirect_to(controller='packages', filter='my')
+        return h.redirect_to(controller='packages', filter='my')
 
     def comment(self, packagename):
         """
@@ -225,4 +225,4 @@ class PackageController(BaseController):
             email.send([s.user.email for s in subscribers], package=packagename,
                 comment=request.POST['text'], user=user)
 
-        return h.rails.redirect_to('package', packagename=packagename)
+        return h.redirect_to('package', packagename=packagename)

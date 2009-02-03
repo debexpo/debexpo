@@ -54,10 +54,8 @@ from webhelpers import commands, \
                        htmlgen, \
                        mimehelper, \
                        number, \
-                       pagination, \
-                       rails, \
                        text, \
                        util
 from webhelpers.html import tags,converters
-from routes import url_for
+from routes import url_for, redirect_to
 from debexpo.lib import constants
