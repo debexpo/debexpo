@@ -41,7 +41,7 @@ import md5
 from debexpo.lib.base import *
 from debexpo.lib import constants, form
 from debexpo.lib.schemas import DetailsForm, GpgForm, PasswordForm, OtherDetailsForm
-from debexpo.lib.utils import parse_key_id
+from debexpo.lib.gnupg import GnuPG
 
 from debexpo.model import meta
 from debexpo.model.users import User
@@ -61,6 +61,7 @@ class MyController(BaseController):
         """
         c.config = config
         self.user = None
+        self.gnupg = GnuPG()
 
     def _details(self):
         """
@@ -99,7 +100,7 @@ class MyController(BaseController):
         if 'gpg' in self.form_result and self.form_result['gpg'] is not None:
             log.debug('Setting a new GPG key')
             self.user.gpg = self.form_result['gpg'].value
-            self.user.gpg_id = parse_key_id(self.user.gpg)
+            self.user.gpg_id = self.gnupg.parse_key_id(self.user.gpg)
 
         meta.session.commit()
 

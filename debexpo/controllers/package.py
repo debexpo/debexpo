@@ -118,7 +118,7 @@ class PackageController(BaseController):
 
     def subscribe(self, packagename):
         """
-        Package subscripton.
+        Package subscription.
 
         ``packagename``
             Package name to look at.

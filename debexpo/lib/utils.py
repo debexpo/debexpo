@@ -35,7 +35,6 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-import commands
 import logging
 import md5
 import os
@@ -111,23 +110,3 @@ def md5sum(filename):
     f.close()
 
     return sum.hexdigest()
-
-def parse_key_id(key):
-    """
-    Returns the key id of the given GPG public key.
-
-    ``key``
-        ASCII armored GPG public key.
-    """
-    gpg_path = config['debexpo.gpg_path']
-    if not gpg_path:
-        log.error('debexpo.gpg_path is not set in configuration file.')
-        return None
-    cmd = 'echo "%s" | %s' % (key, gpg_path)
-    status, output = commands.getstatusoutput(cmd)
-    if status != 0:
-        return None
-    try:
-        return output.split()[1]
-    except KeyError:
-        return None

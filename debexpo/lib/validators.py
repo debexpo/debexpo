@@ -40,7 +40,7 @@ import logging
 import md5
 
 from debexpo.lib.base import *
-from debexpo.lib.utils import parse_key_id
+from debexpo.lib.gnupg import GnuPG
 
 from debexpo.model import meta
 from debexpo.model.users import User
@@ -55,6 +55,7 @@ class GpgKey(formencode.validators.FieldStorageUploadConverter):
 
     def __init__(self):
         self.gpg_id = None
+        self.gnupg  = GnuPG()
 
     def _to_python(self, value, c):
         """
@@ -69,7 +70,13 @@ class GpgKey(formencode.validators.FieldStorageUploadConverter):
             log.error('GPG key does not start with BEGIN PGP PUBLIC KEY BLOCK')
             raise formencode.Invalid(_('Invalid GPG key'), value, c)
 
-        self.gpg_id = parse_key_id(value.value)
+        if self.gnupg.is_unusable():
+            log.error('Unable to validate GPG key because gpg is unusable.')
+            raise formencode.Invalid(_('Internal error: debexpo is not ' +
+                                       'properly configured to handle' +
+                                       'GPG keys'), value, c)
+
+        self.gpg_id = self.gnupg.parse_key_id(value.value)
         if self.gpg_id is None:
             log.error("Failed to parse GPG key")
             raise formencode.Invalid(_('Invalid GPG key'), value, c)
