@@ -78,9 +78,5 @@ def load_environment(global_conf, app_conf):
     # CONFIGURATION OPTIONS HERE (note: all config options will override
     # any Pylons config options)
 
-    # Insert soaplib contrib into the path. This is a bit of a hack and I'd
-    # prefer this was gone ASAP.
-    sys.path.insert(0, os.path.join(global_conf['here'], 'debexpo', 'contrib', 'soaplib'))
-
     engine = engine_from_config(config, 'sqlalchemy.')
     init_model(engine)
