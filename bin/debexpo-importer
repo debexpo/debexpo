@@ -150,7 +150,15 @@ class Importer(object):
 
         self._remove_files()
 
-        # TODO email maintainer
+        if not self.user is None:
+            from debexpo.lib.email import Email
+            email = Email('importer_reject_maintainer')
+            if 'Source' in self.changes:
+                package = self.changes['Source']
+            else:
+                package = ''
+
+            email.send([self.user.email], package=package)
         sys.exit(1)
 
     def _setup_logging(self):
