@@ -92,7 +92,8 @@ class Importer(object):
         """
         if hasattr(self, 'files'):
             for file in self.files:
-                os.remove(file)
+                if os.path.exists(file):
+                    os.remove(file)
 
         self._remove_changes()
 
