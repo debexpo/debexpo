@@ -150,7 +150,7 @@ class Importer(object):
 
         self._remove_files()
 
-        if not self.user is None:
+        if self.user is not None:
             from debexpo.lib.email import Email
             email = Email('importer_reject_maintainer')
             if 'Source' in self.changes:
