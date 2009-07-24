@@ -40,6 +40,7 @@ from paste.registry import RegistryManager
 from paste.urlparser import StaticURLParser
 from paste.deploy.converters import asbool
 
+import pylons
 from pylons import config
 from pylons.error import error_template
 from pylons.middleware import error_mapper, ErrorDocuments, ErrorHandler, \
@@ -73,6 +74,14 @@ def make_app(global_conf, full_stack=True, **app_conf):
     app = PylonsApp()
 
     # CUSTOM MIDDLEWARE HERE (filtered by error handling middlewares)
+
+    if pylons.__version__ >= "0.9.7":
+        # Routing/Session/Cache Middleware
+        from beaker.middleware import CacheMiddleware, SessionMiddleware
+        from routes.middleware import RoutesMiddleware
+        app = RoutesMiddleware(app, config['routes.map'])
+        app = SessionMiddleware(app, config)
+        app = CacheMiddleware(app, config)
 
     if asbool(full_stack):
         # Handle Python exceptions
