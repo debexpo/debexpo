@@ -49,7 +49,7 @@ def init_model(engine):
         SQLAlchemy engine to bind to.
     """
 
-    sm = orm.sessionmaker(autoflush=True, transactional=True, bind=engine)
+    sm = orm.sessionmaker(autoflush=True, autocommit=True, bind=engine)
 
     meta.engine = engine
     meta.session = orm.scoped_session(sm)
