@@ -50,7 +50,6 @@ from webhelpers import commands, \
                        textile, \
                        constants, \
                        date, \
-                       hinclude, \
                        htmlgen, \
                        mimehelper, \
                        number, \
