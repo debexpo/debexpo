@@ -97,15 +97,9 @@ class UploadController(BaseController):
 
         f = open(os.path.join(config['debexpo.upload.incoming'], filename), 'wb')
 
-        while True:
-            # Write to file in chunks of 10 KiB
-            chunk = request.body.read(10240)
-            if not chunk:
-                # The upload is complete
-                f.close()
-                break
-            else:
-                f.write(chunk)
+        # The body attribute now contains the entire contents of the uploaded file.
+        f.write(request.body)
+        f.close()
 
         # The .changes file is always sent last, so after it is sent,
         # call the importer process.
