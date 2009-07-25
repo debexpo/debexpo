@@ -158,7 +158,7 @@ class Importer(object):
             else:
                 package = ''
 
-            email.send([self.user.email], package=package)
+            email.send([self.user.email], package=package, message=reason)
         sys.exit(1)
 
     def _setup_logging(self):
