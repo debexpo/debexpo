@@ -243,11 +243,6 @@ class Importer(object):
         # Parse component and section from field in changes
         component, section = parse_section(self.changes['files'][0]['section'])
 
-        # Get uploader's User object
-        self.user = meta.session.query(User).filter_by(id=self.user_id).filter_by(verification=None).first()
-        if self.user is None:
-            self._fail('Couldn\'t find user with id %s. Exiting.' % self.user_id)
-
         # Check whether package is already in the database
         package_query = meta.session.query(Package).filter_by(name=self.changes['Source'])
         if package_query.count() is 1:
@@ -393,6 +388,13 @@ class Importer(object):
             log.critical('post-upload plugins failed')
             self._remove_changes()
             sys.exit(1)
+
+        # Get uploader's User object
+        from debexpo.model import meta
+        from debexpo.model.users import User
+        self.user = meta.session.query(User).filter_by(id=self.user_id).filter_by(verification=None).first()
+        if self.user is None:
+            self._fail('Couldn\'t find user with id %s. Exiting.' % self.user_id)
 
         # Check whether a post-upload plugin has got the orig tarball from somewhere.
         if orig is None:
