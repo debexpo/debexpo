@@ -88,6 +88,19 @@ class Changes(object):
         """
         return self._data[key]
 
+    def get(self, key, default=None):
+        """
+        Returns the value of the rfc822 key specified, but defaults
+        to a specific value if not found in the rfc822 file.
+
+        ``key``
+            Key of data to request.
+
+        ``default``
+            Default return value if ``key`` does not exist.
+        """
+        return self._data.get(key, default)
+
     def get_component(self):
         """
         Returns the component of the package.
