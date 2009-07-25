@@ -172,8 +172,8 @@ class RegisterController(BaseController):
         log.debug('Activation request with key = %s' % id)
 
         if id is None:
-            log.error('Key is None; redirecting to main page')
-            h.redirect_to(h.url_for(action=None))
+            log.error('Key is None')
+            abort(404, 'Key is None')
 
         user = meta.session.query(User).filter_by(verification=id).first()
 
@@ -183,7 +183,7 @@ class RegisterController(BaseController):
             meta.session.commit()
         else:
             log.error('Could not find user; redirecting to main page')
-            h.redirect_to(h.url_for(action=None, id=None))
+            abort(404, 'Could not find user; redirecting to main page')
 
         c.user = user
         return render('/register/activated.mako')
