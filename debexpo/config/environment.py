@@ -71,6 +71,8 @@ def load_environment(global_conf, app_conf):
     config['routes.map'] = make_map()
     config['pylons.g'] = app_globals.Globals()
     config['pylons.h'] = debexpo.lib.helpers
+    config['pylons.strict_c'] = False
+    config['pylons.c_attach_args'] = True
 
     # Customize templating options via this variable
     tmpl_options = config['buffet.template_options']
