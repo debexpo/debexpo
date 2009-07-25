@@ -49,7 +49,7 @@ def init_model(engine):
         SQLAlchemy engine to bind to.
     """
 
-    sm = orm.sessionmaker(autoflush=True, autocommit=True, bind=engine)
+    sm = orm.sessionmaker(autoflush=True, autocommit=False, bind=engine)
 
     meta.engine = engine
     meta.session = orm.scoped_session(sm)
@@ -75,20 +75,23 @@ class OrmObject(object):
     def __init__(self, **kw):
         if not hasattr(self, 'foreign'):
             self.foreign = []
+
+        self.__items__ = []
+        for item in dir(self):
+            if not item.startswith('_') and item is not "foreign":
+                self.__items__.append(item)
+
         for key in kw:
-            if key in self.c or key in self.foreign:
+            if key in self.__items__ or key in self.foreign:
                 setattr(self, key, kw[key])
             else:
-                raise AttributeError('Cannot set attribute which is' +
+                raise AttributeError('Cannot set attribute which is ' +
                                      'not column in mapped table: %s' % (key,))
 
     def __repr__(self):
         atts = []
-        for key in self.c.keys():
-            if key in self.__dict__:
-                if not (hasattr(self.c.get(key).default, 'arg') and
-                        getattr(self.c.get(key).default, 'arg') == getattr(self, key)):
-                    atts.append( (key, getattr(self, key)) )
+        for key in self.__items__:
+            atts.append((key, getattr(self, key)))
 
         return self.__class__.__name__ + '(' + ', '.join(x[0] + '=' + repr(x[1]) for x in atts) + ')'
 
