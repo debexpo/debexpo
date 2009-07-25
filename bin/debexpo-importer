@@ -124,10 +124,7 @@ class Importer(object):
 
         if self.user is not None:
             email = Email('importer_fail_maintainer')
-            if 'Source' in self.changes:
-                package = self.changes['Source']
-            else:
-                package = ''
+            package = self.changes.get('Source', '')
 
             email.send([self.user.email], package=package)
 
@@ -153,10 +150,7 @@ class Importer(object):
         if self.user is not None:
             from debexpo.lib.email import Email
             email = Email('importer_reject_maintainer')
-            if 'Source' in self.changes:
-                package = self.changes['Source']
-            else:
-                package = ''
+            package = self.changes.get('Source', '')
 
             email.send([self.user.email], package=package, message=reason)
         sys.exit(1)
