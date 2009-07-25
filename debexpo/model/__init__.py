@@ -76,13 +76,9 @@ class OrmObject(object):
         if not hasattr(self, 'foreign'):
             self.foreign = []
 
-        self.__items__ = []
-        for item in dir(self):
-            if not item.startswith('_') and item is not "foreign":
-                self.__items__.append(item)
-
+        items = dir(self)
         for key in kw:
-            if key in self.__items__ or key in self.foreign:
+            if key in items or key in self.foreign:
                 setattr(self, key, kw[key])
             else:
                 raise AttributeError('Cannot set attribute which is ' +
@@ -90,8 +86,8 @@ class OrmObject(object):
 
     def __repr__(self):
         atts = []
-        for key in self.__items__:
-            atts.append((key, getattr(self, key)))
+        for key in dir(self):
+            if not key.startswith('_') and key is not "foreign" and key not in self.foreign:
+                atts.append((key, getattr(self, key)))
 
         return self.__class__.__name__ + '(' + ', '.join(x[0] + '=' + repr(x[1]) for x in atts) + ')'
-
