@@ -376,12 +376,7 @@ class Importer(object):
                 oldorig = orig
                 orig = None
 
-        post_upload = Plugins('post-upload', self.changes, self.changes_file,
-            user_id=self.user_id)
-        if post_upload.stop():
-            log.critical('post-upload plugins failed')
-            self._remove_changes()
-            sys.exit(1)
+        destdir = self.config['debexpo.repository']
 
         # Get uploader's User object
         from debexpo.model import meta
@@ -389,6 +384,27 @@ class Importer(object):
         self.user = meta.session.query(User).filter_by(id=self.user_id).filter_by(verification=None).first()
         if self.user is None:
             self._fail('Couldn\'t find user with id %s. Exiting.' % self.user_id)
+
+        # Check whether the files are already present
+        toinstall = []
+        pool_dir = os.path.join(destdir, self.changes.get_pool_path())
+        for file in self.files:
+            if os.path.isfile(os.path.join(pool_dir, file)):
+                if not file.endswith('orig.tar.gz'):
+                    self._reject('File "%s" already exists' % file)
+                else:
+                    log.warning('%s is not being installed as it already exists' % file)
+            else:
+                log.debug('File %s is safe to install' % os.path.join(pool_dir, file))
+                toinstall.append(file)
+
+        # Run post-upload plugins.
+        post_upload = Plugins('post-upload', self.changes, self.changes_file,
+            user_id=self.user_id)
+        if post_upload.stop():
+            log.critical('post-upload plugins failed')
+            self._remove_changes()
+            sys.exit(1)
 
         # Check whether a post-upload plugin has got the orig tarball from somewhere.
         if orig is None:
@@ -411,8 +427,6 @@ class Importer(object):
         if qa.stop():
             self._reject('QA plugins failed the package')
 
-        destdir = self.config['debexpo.repository']
-
         # Loop through parent directories in the target installation directory to make sure they
         # all exist. If not, create them.
         for dir in self.changes.get_pool_path().split('/'):
@@ -421,17 +435,6 @@ class Importer(object):
             if not os.path.isdir(destdir):
                 log.debug('Creating directory: %s' % destdir)
                 os.mkdir(destdir)
-
-        # Check whether the files are already present
-        toinstall = []
-        for file in self.files:
-            if os.path.isfile(os.path.join(destdir, file)):
-                if not file.endswith('orig.tar.gz'):
-                    self._reject('File "%s" already exists' % file)
-                else:
-                    log.warning('%s is not being installed as it already exists' % file)
-            else:
-                toinstall.append(file)
 
         # Install files in repository
         for file in toinstall:
