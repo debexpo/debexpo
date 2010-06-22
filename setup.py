@@ -14,8 +14,8 @@ setup(
     #url='',
     scripts=['bin/debexpo-importer'],
     install_requires=[
-        "Pylons>=0.9.6.1",
-        "SQLAlchemy>=0.4.6",
+        "Pylons>=0.10",
+        "SQLAlchemy>=0.6",
         "Webhelpers>=0.6.1",
         "Babel"],
     packages=find_packages(exclude=['ez_setup']),

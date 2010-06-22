@@ -1,5 +1,5 @@
 MANIFEST.in
-README.txt
+README
 setup.cfg
 setup.py
 bin/debexpo-importer
@@ -17,7 +17,6 @@ debexpo/config/__init__.py
 debexpo/config/environment.py
 debexpo/config/middleware.py
 debexpo/config/routing.py
-debexpo/contrib/__init__.py
 debexpo/controllers/__init__.py
 debexpo/controllers/debian.py
 debexpo/controllers/error.py
@@ -34,8 +33,11 @@ debexpo/controllers/upload.py
 debexpo/i18n/debexpo.pot
 debexpo/i18n/de/LC_MESSAGES/debexpo.mo
 debexpo/i18n/de/LC_MESSAGES/debexpo.po
+debexpo/i18n/el/LC_MESSAGES/debexpo.po
 debexpo/i18n/en/LC_MESSAGES/debexpo.mo
 debexpo/i18n/en/LC_MESSAGES/debexpo.po
+debexpo/i18n/it/LC_MESSAGES/debexpo.mo
+debexpo/i18n/it/LC_MESSAGES/debexpo.po
 debexpo/lib/__init__.py
 debexpo/lib/app_globals.py
 debexpo/lib/base.py
@@ -43,6 +45,7 @@ debexpo/lib/changes.py
 debexpo/lib/constants.py
 debexpo/lib/email.py
 debexpo/lib/form.py
+debexpo/lib/gnupg.py
 debexpo/lib/helpers.py
 debexpo/lib/plugins.py
 debexpo/lib/repository.py
@@ -77,6 +80,7 @@ debexpo/plugins/maintaineremail.py
 debexpo/plugins/native.py
 debexpo/plugins/notuploader.py
 debexpo/plugins/removepackage.py
+debexpo/plugins/ubuntuversion.py
 debexpo/plugins/watchfile.py
 debexpo/public/debexpo-logo.gif
 debexpo/public/frontpage.html
@@ -89,6 +93,7 @@ debexpo/templates/email/changes_list.mako
 debexpo/templates/email/comment_posted.mako
 debexpo/templates/email/importer_fail_admin.mako
 debexpo/templates/email/importer_fail_maintainer.mako
+debexpo/templates/email/importer_reject_maintainer.mako
 debexpo/templates/email/package_uploaded.mako
 debexpo/templates/email/register_activate.mako
 debexpo/templates/email/successful_upload.mako
@@ -114,6 +119,7 @@ debexpo/templates/register/maintainer.mako
 debexpo/templates/register/sponsor.mako
 debexpo/tests/__init__.py
 debexpo/tests/test_changes.py
+debexpo/tests/test_gnupg.py
 debexpo/tests/test_models.py
 debexpo/tests/test_utils.py
 debexpo/tests/functional/__init__.py
