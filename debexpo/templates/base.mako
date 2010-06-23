@@ -36,11 +36,11 @@
             <ul>
                 <li>${ h.tags.link_to(
                         _('Start page'),
-                        h.url_for('index')) }
+                        h.url('index')) }
                 </li>
                 <li>${ h.tags.link_to(
                         _('Package list'),
-                        h.url_for('packages')) }
+                        h.url('packages')) }
                 </li>
             </ul>
         </div>
@@ -50,26 +50,26 @@
             <ul>
                 <li>${ h.tags.link_to(
                         _('Introduction'),
-                        h.url_for('intro-maintainers')) }
+                        h.url('intro-maintainers')) }
                 </li>
                 % if 'user_id' not in session:
                 <li>${ h.tags.link_to(
                         _('Sign me up'),
-                        h.url_for(controller='register', action='maintainer')) }
+                        h.url(controller='register', action='maintainer')) }
                 </li>
                 <li>${ h.tags.link_to(
                         _('Login'),
-                        h.url_for('/login')) }
+                        h.url('/login')) }
                 </li>
                 % endif
                 % if session.get('user_type') in (h.constants.USER_STATUS_MAINTAINER, h.constants.USER_STATUS_NORMAL):
                 <li>${ h.tags.link_to(
                         _('My account'),
-                        h.url_for('my')) }
+                        h.url('my')) }
                 </li>
                 <li>${ h.tags.link_to(
                         _('My packages'),
-                        h.url_for(controller='packages', action='my')) }
+                        h.url(controller='packages', action='my')) }
                 </li>
                 % endif
             </ul>
@@ -80,22 +80,22 @@
             <ul>
                 <li>${ h.tags.link_to(
                         _('Introduction'),
-                        h.url_for('intro-sponsors')) }
+                        h.url('intro-sponsors')) }
                 </li>
                 % if 'user_id' not in session:
                 <li>${ h.tags.link_to(
                         _('Sign me up'),
-                        h.url_for(controller='register', action='sponsor')) }
+                        h.url(controller='register', action='sponsor')) }
                 </li>
                 <li>${ h.tags.link_to(
                         _('Login'),
-                        h.url_for('/login')) }
+                        h.url('/login')) }
                 </li>
                 % endif
                 % if session.get('user_type') == h.constants.USER_STATUS_DEVELOPER:
                 <li>${ h.tags.link_to(
                         _('My account'),
-                        h.url_for('my')) }
+                        h.url('my')) }
                 </li>
                 % endif
             </ul>
@@ -106,11 +106,11 @@
             <ul>
 <!--                <li>${ h.tags.link_to(
                         _('Q & A'),
-                        h.url_for('qa')) }
+                        h.url('qa')) }
                 </li>-->
                 <li>${ h.tags.link_to(
                         _('Contact'),
-                        h.url_for('contact')) }
+                        h.url('contact')) }
                 </li>
             </ul>
         </div>
@@ -129,7 +129,7 @@
     <div id="footer">
         debexpo
         -
-        Copyright © 2008 Jonny Lamb
+        Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner
         -
         <a href="mailto:${ c.config['debexpo.email'] }">Support contact</a>
         % if 'user_id' in session:

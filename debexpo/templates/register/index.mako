@@ -8,7 +8,7 @@
     ${ _('What type of account would you like to apply for?') }
   </p>
 
-  <h2><a href="${ h.url_for(action='maintainer') }">${ _('Package Maintainer') }</a></h2>
+  <h2><a href="${ h.url.current(action='maintainer') }">${ _('Package Maintainer') }</a></h2>
 
   <p>
     ${ _('''A package maintainer is a person who takes care of Debian packages.
@@ -17,7 +17,7 @@
     an official Debian Developer (DD) or Debian Maintainer (DM).''') }
   </p>
 
-  <h2><a href="${ h.url_for(action='sponsor') }">${ _('Sponsor') }</a></h2>
+  <h2><a href="${ h.url.current(action='sponsor') }">${ _('Sponsor') }</a></h2>
 
   <p>
     ${ _('''Uploading new packages into Debian is only possible if you

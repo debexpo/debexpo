@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,7 +33,7 @@ UploadController test cases.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import os
@@ -44,6 +45,7 @@ from debexpo.lib.base import config
 from debexpo.tests import *
 from debexpo.model import meta, import_all_models
 from debexpo.model.users import User
+import pylons.test
 
 class TestUploadController(TestController):
 
@@ -53,6 +55,10 @@ class TestUploadController(TestController):
         """
         TestController.__init__(self, *args, **kwargs)
 
+        # Keep this so tests don't have to constantly create it.
+        self.emailpassword = base64.encodestring('email@email.com:password')[:-1]
+
+    def setUp(self):
         # Since we are using a sqlite database in memory (at least that's what the default in
         # test.ini is), we need to create all the tables necessary. So let's import all the models
         # and create all the tables.
@@ -60,21 +66,23 @@ class TestUploadController(TestController):
         meta.metadata.create_all(bind=meta.engine)
 
         # Create a test user and save it.
-        user = User(name='Test user', email='email@email.com', password=md5.new('password').hexdigest(), lastlogin=datetime.now())
+        user = User(name='Test user', email='email@email.com',
+                    password=md5.new('password').hexdigest(), lastlogin=datetime.now())
 
-        meta.session.save(user)
+        meta.session.add(user)
         meta.session.commit()
 
-        # Keep this so tests don't have to constantly create it.
-        self.emailpassword = base64.encodestring('email@email.com:password')[:-1]
+    def tearDown(self):
+        meta.session.query(User).delete()
 
     def testGetRequest(self):
         """
         Tests whether requests where method != PUT are rejected with error code 405.
         """
-        response = self.app.get(url_for(controller='upload', filename='testname.dsc'), expect_errors=True)
+        response = self.app.get(url(controller='upload', action='index',
+                                    filename='testname.dsc'), expect_errors=True)
 
-        self.assertEqual(response.status, 405)
+        self.assertEqual(response.status_int, 405)
 
     def testNoAuthorization(self):
         """
@@ -82,15 +90,17 @@ class TestUploadController(TestController):
         error code 401 and whether the "WWW-Authenticate" header is sent in the response with
         the correct "realm" syntax.
         """
-        response = self.app.put(url_for(controller='upload', filename='testname.dsc'), expect_errors=True)
+        response = self.app.put(url(controller='upload', action='index',
+                                    filename='testname.dsc'), expect_errors=True)
 
-        self.assertEqual(response.status, 401)
+        self.assertEqual(response.status_int, 401)
 
-        authenticate = response.header('WWW-Authenticate', default=False)
+        authenticate = response.www_authenticate
 
-        self.assertNotEqual(authenticate, False)
+        self.assertNotEqual(authenticate, None)
 
-        self.assertTrue(authenticate.startswith('Basic realm'))
+        self.assertEquals(authenticate[0], 'Basic')
+        self.assertTrue('realm' in authenticate[1])
 
     def testFalseAuthentication(self):
         """
@@ -98,19 +108,22 @@ class TestUploadController(TestController):
         """
         wrongemailpassword = base64.encodestring('email@email.com:wrongpassword')[:-1]
 
-        response = self.app.put(url_for(controller='upload', filename='testname.dsc'),
+        response = self.app.put(url(controller='upload', action='index',
+                                    filename='testname.dsc'),
             headers={'Authorization' : 'Basic %s' % wrongemailpassword}, expect_errors=True)
 
-        self.assertEqual(response.status, 401)
+        self.assertEqual(response.status_int, 401)
 
     def testTrueAuthentication(self):
         """
         Tests whether true authentication details returns a nicer error code.
         """
-        response = self.app.put(url_for(controller='upload', filename='testfile1.dsc'),
+        response = self.app.put(url(controller='upload', action='index',
+                                    filename='testfile1.dsc'),
             headers={'Authorization' : 'Basic %s' % self.emailpassword}, expect_errors=True)
 
-        self.assertNotEqual(response.status, 401)
+        self.assertNotEqual(response.status_int, 401)
+        config = pylons.test.pylonsapp.config
 
         if os.path.isfile(os.path.join(config['debexpo.upload.incoming'], 'testfile1.dsc')):
             os.remove(os.path.join(config['debexpo.upload.incoming'], 'testfile1.dsc'))
@@ -119,24 +132,29 @@ class TestUploadController(TestController):
         """
         Tests whether uploads of an unknown file extensions are rejected with error code 403.
         """
-        response = self.app.put(url_for(controller='upload', filename='testname.unknown'),
+        response = self.app.put(url(controller='upload', action='index',
+                                    filename='testname.unknown'),
             headers={'Authorization' : 'Basic %s' % self.emailpassword}, expect_errors=True)
 
-        self.assertEqual(response.status, 403)
+        self.assertEqual(response.status_int, 403)
 
     def testSuccessfulUpload(self):
         """
         Tests whether uploads with sane file extensions and authorization are successful.
         """
-        response = self.app.put(url_for(controller='upload', filename='testfile2.dsc'),
+        response = self.app.put(url(controller='upload', action='index',
+                                    filename='testfile2.dsc'),
             headers={'Authorization' : 'Basic %s' % self.emailpassword},
             params='contents', expect_errors=True)
 
-        self.assertEqual(response.status, 200)
+        self.assertEqual(response.status_int, 200)
 
-        self.assertTrue(os.path.isfile(os.path.join(config['debexpo.upload.incoming'], 'testfile2.dsc')))
+        config = pylons.test.pylonsapp.config
+        self.assertTrue(os.path.isfile(os.path.join(config['debexpo.upload.incoming'],
+                                                    'testfile2.dsc')))
 
-        self.assertEqual(file(os.path.join(config['debexpo.upload.incoming'], 'testfile2.dsc')).read(), 'contents')
+        self.assertEqual(file(os.path.join(config['debexpo.upload.incoming'],
+                                           'testfile2.dsc')).read(), 'contents')
 
         if os.path.isfile(os.path.join(config['debexpo.upload.incoming'], 'testfile2.dsc')):
             os.remove(os.path.join(config['debexpo.upload.incoming'], 'testfile2.dsc'))

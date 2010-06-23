@@ -12,7 +12,7 @@
   <p><span class="error-message">${ c.message }</span></p>
 % endif
 
-  ${ h.html.tags.form(h.url_for(), method='post') }
+  ${ h.html.tags.form(h.url.current(), method='post') }
 
   <table>
     <tr>

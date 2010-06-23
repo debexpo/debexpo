@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,14 +33,14 @@ Setup the debexpo application.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import logging
 import os
 
 from paste.deploy import appconfig
-from pylons import config
+import pylons.test
 
 from debexpo.config.environment import load_environment
 from debexpo.model import import_all_models
@@ -66,7 +67,11 @@ def setup_config(command, filename, section, vars):
     """
 
     conf = appconfig('config:' + filename)
-    load_environment(conf.global_conf, conf.local_conf)
+
+    if not pylons.test.pylonsapp:
+        config = load_environment(conf.global_conf, conf.local_conf)
+    else:
+        config = pylons.test.pylonsapp.config
 
     log.info('Creating database tables')
     import_all_models()

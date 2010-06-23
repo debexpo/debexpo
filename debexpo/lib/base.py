@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -35,17 +36,17 @@ utilized by Controllers.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
-from pylons import c, cache, config, g, request, response, session
+from pylons import tmpl_context as c, cache, config, app_globals, request, \
+    response, session, url
 from pylons.controllers import WSGIController
-from pylons.controllers.util import abort, etag_cache, redirect_to
+from pylons.controllers.util import abort, etag_cache, redirect
 from pylons.decorators import jsonify, validate
 from pylons.i18n import _, ungettext, N_, get_lang, set_lang
-from pylons.templating import render
+from pylons.templating import render_mako as render
 
-import debexpo.lib.helpers as h
 import debexpo.model as model
 from debexpo.model import meta
 
@@ -59,17 +60,17 @@ class BaseController(WSGIController):
     def __before__(self):
         # Set language according to what the browser requested
         user_agent_language = request.languages[0][0:2]
-        if user_agent_language in g.supported_languages:
+        if user_agent_language in app_globals.supported_languages:
             set_lang(user_agent_language)
         else:
-            set_lang(g.default_language)
+            set_lang(app_globals.default_language)
 
         if self.requires_auth and 'user_id' not in session:
             # Remember where we came from so that the user can be sent there
             # after a successful login
             session['path_before_login'] = request.path_info
             session.save()
-            return redirect_to(h.url_for(controller='login'))
+            return redirect(url(controller='login', action='index'))
 
         c.config = config
 
@@ -81,9 +82,9 @@ class BaseController(WSGIController):
         # the request is routed to. This routing information is
         # available in environ['pylons.routes_dict']
         try:
-                return WSGIController.__call__(self, environ, start_response)
+            return WSGIController.__call__(self, environ, start_response)
         finally:
-                meta.session.remove()
+            meta.session.remove()
 
 # Include the '_' function in the public names
 __all__ = [__name for __name in locals().keys() if not __name.startswith('_') \

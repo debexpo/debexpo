@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,7 +33,7 @@ Holds the MyController.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import logging
@@ -81,7 +82,7 @@ class MyController(BaseController):
         meta.session.commit()
 
         log.debug('Saved name and email and redirecting')
-        return redirect_to(h.url_for('my', action=None))
+        return redirect(url('my', action=None))
 
     @validate(schema=GpgForm(), form='index')
     def _gpg(self):
@@ -105,7 +106,7 @@ class MyController(BaseController):
         meta.session.commit()
 
         log.debug('Saved key changes and redirecting')
-        return redirect_to(h.url_for('my', action=None))
+        return redirect(url('my', action=None))
 
     @validate(schema=PasswordForm(), form='index')
     def _password(self):
@@ -119,7 +120,7 @@ class MyController(BaseController):
         meta.session.commit()
         log.debug('Saved new password and redirecting')
 
-        return redirect_to(h.url_for('my', action=None))
+        return redirect(url('my', action=None))
 
     @validate(schema=OtherDetailsForm(), form='index')
     def _other_details(self):
@@ -148,7 +149,7 @@ class MyController(BaseController):
         meta.session.commit()
         log.debug('Saved other details and redirecting')
 
-        return redirect_to(h.url_for('my', action=None))
+        return redirect(url('my', action=None))
 
     def index(self, get=False):
         """
@@ -165,7 +166,7 @@ class MyController(BaseController):
         if self.user is None:
             # Cannot find user from user_id.
             log.debug('Cannot find user from user_id')
-            return redirect_to(h.url_for(controller='login'))
+            return redirect(url(controller='login', action='index'))
 
         log.debug('User object successfully selected')
 

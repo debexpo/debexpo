@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,13 +33,14 @@ DebianController test cases.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import os
 
-from debexpo.lib.base import config
 from debexpo.tests import *
+import pylons.test
+
 
 class TestDebianController(TestController):
 
@@ -46,23 +48,24 @@ class TestDebianController(TestController):
         """
         Tests whether the response to a GET request on a non-existent file is 404.
         """
-        response = self.app.get(url_for(controller='debian', filename='file_does_not_exist'), expect_errors=True)
+        response = self.app.get(url(controller='debian', action='index',
+                                    filename='file_does_not_exist'), expect_errors=True)
 
-        self.assertEqual(response.status, 404)
+        self.assertEqual(response.status_int, 404)
 
     def testFileFound(self):
         """
         Tests whether files that do exist in the repository are correctly returned.
         """
-        file = os.path.join(config['debexpo.repository'], 'test_file')
+        file = os.path.join(pylons.test.pylonsapp.config['debexpo.repository'], 'test_file')
 
         f = open(file, 'w')
         f.write('test content')
         f.close()
 
-        response = self.app.get(url_for(controller='debian', filename='test_file'))
+        response = self.app.get(url(controller='debian', action='index', filename='test_file'))
 
-        self.assertEqual(response.status, 200)
+        self.assertEqual(response.status_int, 200)
 
         self.assertEqual(response.normal_body, 'test content')
 

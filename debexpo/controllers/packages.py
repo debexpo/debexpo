@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,7 +33,7 @@ Holds the PackagesController class.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import logging
@@ -94,13 +95,13 @@ class PackagesController(BaseController):
         # Render the page.
         c.config = config
         c.packages = packages
-        c.feed_url = h.url_for('packages_feed')
+        c.feed_url = url('packages_feed')
         return render('/packages/index.mako')
 
     def feed(self, filter=None, id=None):
         feed = h.feedgenerator.Rss201rev2Feed(
             title=_('%s packages' % config['debexpo.sitename']),
-            link=config['debexpo.server'] + h.url_for('packages'),
+            link=config['debexpo.server'] + url('packages'),
             description=_('A feed of packages on %s' % config['debexpo.sitename']),
             language=get_lang()[0])
 
@@ -133,7 +134,7 @@ class PackagesController(BaseController):
             desc += '<br/><br/>' + item.description.replace('\n', '<br/>')
 
             feed.add_item(title='%s %s' % (item.name, item.package_versions[-1].version),
-                link=config['debexpo.server'] + h.url_for('package', packagename=item.name),
+                link=config['debexpo.server'] + url('package', packagename=item.name),
                 description=desc, unique_id=str(item.package_versions[-1].id))
 
         return feed.writeString('utf-8')
@@ -149,7 +150,7 @@ class PackagesController(BaseController):
         c.config = config
         c.packages = packages
         c.section = id
-        c.feed_url = h.url_for('packages_filter_feed', filter='section', id=id)
+        c.feed_url = url('packages_filter_feed', filter='section', id=id)
         return render('/packages/section.mako')
 
     def uploader(self, id):
@@ -174,7 +175,7 @@ class PackagesController(BaseController):
         c.email = email
         c.packages = packages
         c.username = username
-        c.feed_url = h.url_for('packages_filter_feed', filter='uploader', id=id)
+        c.feed_url = url('packages_filter_feed', filter='uploader', id=id)
         return render('/packages/uploader.mako')
 
     def my(self):
@@ -187,11 +188,11 @@ class PackagesController(BaseController):
             log.debug('Requires authentication')
             session['path_before_login'] = request.path_info
             session.save()
-            redirect_to(h.url_for(controller='login'))
+            redirect(url(controller='login'))
 
         details = meta.session.query(User).filter_by(id=session['user_id']).first()
         if not details:
-            redirect_to(h.url_for(controller='logout'))
+            redirect(url(controller='logout'))
 
         return self.uploader(details.email)
 
@@ -206,5 +207,5 @@ class PackagesController(BaseController):
         c.config = config
         c.packages = packages
         c.maintainer = id
-        c.feed_url = h.url_for('packages_filter_feed', filter='maintainer', id=id)
+        c.feed_url = url('packages_filter_feed', filter='maintainer', id=id)
         return render('/packages/maintainer.mako')

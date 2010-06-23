@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyrithg © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,24 +33,24 @@ Pylons middleware initialization.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 from paste.cascade import Cascade
 from paste.registry import RegistryManager
 from paste.urlparser import StaticURLParser
 from paste.deploy.converters import asbool
+from beaker.middleware import SessionMiddleware
+from routes.middleware import RoutesMiddleware
 
 import pylons
-from pylons import config
 from pylons.error import error_template
-from pylons.middleware import error_mapper, ErrorDocuments, ErrorHandler, \
-    StaticJavascripts
+from pylons.middleware import ErrorHandler, StatusCodeRedirect
 from pylons.wsgiapp import PylonsApp
 
 from debexpo.config.environment import load_environment
 
-def make_app(global_conf, full_stack=True, **app_conf):
+def make_app(global_conf, full_stack=True, static_files=True, **app_conf):
     """Creates a Pylons WSGI application and returns it.
 
     ``global_conf``
@@ -62,41 +63,46 @@ def make_app(global_conf, full_stack=True, **app_conf):
         Disable full_stack when this application is "managed" by
         another WSGI middleware.
 
+    ``static_files``
+        Whether this application serves its own static files; disable
+        when another web server is responsible for serving them.
+
     ``app_conf``
         The application's local configuration. Normally specified in the
         [app:<name>] section of the Paste ini file (where <name>
         defaults to main).
     """
     # Configure the Pylons environment
-    load_environment(global_conf, app_conf)
+    config = load_environment(global_conf, app_conf)
 
     # The Pylons WSGI app
-    app = PylonsApp()
+    app = PylonsApp(config=config)
 
     # CUSTOM MIDDLEWARE HERE (filtered by error handling middlewares)
 
-    if pylons.__version__ >= "0.9.7":
-        # Routing/Session/Cache Middleware
-        from beaker.middleware import CacheMiddleware, SessionMiddleware
-        from routes.middleware import RoutesMiddleware
-        app = RoutesMiddleware(app, config['routes.map'])
-        app = SessionMiddleware(app, config)
-        app = CacheMiddleware(app, config)
+    # Routing/Session/Cache Middleware
+    app = RoutesMiddleware(app, config['routes.map'])
+    app = SessionMiddleware(app, config)
 
     if asbool(full_stack):
         # Handle Python exceptions
-        app = ErrorHandler(app, global_conf, error_template=error_template,
+        app = ErrorHandler(app, global_conf,
                            **config['pylons.errorware'])
 
         # Display error documents for 401, 403, 404 status codes (and
         # 500 when debug is disabled)
-        app = ErrorDocuments(app, global_conf, mapper=error_mapper, **app_conf)
+        if asbool(config['debug']):
+            app = StatusCodeRedirect(app)
+        else:
+            app = StatusCodeRedirect(app, [400, 401, 403, 404, 500])
 
     # Establish the Registry for this application
     app = RegistryManager(app)
 
     # Static files
-    javascripts_app = StaticJavascripts()
-    static_app = StaticURLParser(config['pylons.paths']['static_files'])
-    app = Cascade([static_app, javascripts_app, app])
+    if asbool(static_files):
+        static_app = StaticURLParser(config['pylons.paths']['static_files'])
+        app = Cascade([static_app, app])
+
+    app.config = config
     return app

@@ -6,7 +6,7 @@
 <fieldset>
   <legend>${ _('Account details') }</legend>
 
-  ${ h.html.tags.form(h.url_for(), method='post') }
+  ${ h.html.tags.form(h.url.current(), method='post') }
 
   <table>
     <tr>

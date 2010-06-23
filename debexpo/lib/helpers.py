@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -35,26 +36,23 @@ available to Controllers. This module is available to both as 'h'.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
-from webhelpers import commands, \
-                       containers, \
+from webhelpers import containers, \
                        feedgenerator, \
                        html, \
                        markdown, \
                        misc, \
                        paginate, \
                        pylonslib, \
-                       string24, \
                        textile, \
                        constants, \
                        date, \
-                       htmlgen, \
                        mimehelper, \
                        number, \
                        text, \
                        util
 from webhelpers.html import tags,converters
-from routes import url_for, redirect_to
+from pylons import url
 from debexpo.lib import constants

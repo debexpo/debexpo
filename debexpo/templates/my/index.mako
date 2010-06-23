@@ -6,7 +6,7 @@
 <fieldset>
   <legend>${ _('Change details') }</legend>
 
-  ${ h.html.tags.form(h.url_for()) }
+  ${ h.html.tags.form(h.url.current()) }
   ${ h.html.tags.hidden('form', 'details') }
 
   <table>
@@ -32,7 +32,7 @@
 <fieldset>
   <legend>${ _('Change GPG key') }</legend>
 
-  ${ h.html.tags.form(h.url_for(), multipart=True) }
+  ${ h.html.tags.form(h.url.current(), multipart=True) }
   ${ h.html.tags.hidden('form', 'gpg') }
 
   <table>
@@ -73,7 +73,7 @@
 <fieldset>
   <legend>${ _('Change password') }</legend>
 
-  ${ h.html.tags.form(h.url_for()) }
+  ${ h.html.tags.form(h.url.current()) }
   ${ h.html.tags.hidden('form', 'password') }
 
   <table>
@@ -104,7 +104,7 @@
 <fieldset>
   <legend>${ _('Change other details') }</legend>
 
-  ${ h.html.tags.form(h.url_for()) }
+  ${ h.html.tags.form(h.url.current()) }
   ${ h.html.tags.hidden('form', 'other_details') }
 
   <table>
