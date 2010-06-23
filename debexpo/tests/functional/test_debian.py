@@ -72,3 +72,21 @@ class TestDebianController(TestController):
         # Remove temporary file.
         if os.path.isfile(file):
             os.remove(file)
+
+    def testDscFileFound(self):
+        """
+        Tests whether the correct content-type for dsc files is returned.
+        """
+        file = os.path.join(pylons.test.pylonsapp.config['debexpo.repository'], 'test.dsc')
+
+        f = open(file, 'w')
+        f.write('test')
+        f.close()
+
+        response = self.app.get(url(controller='debian', action='index', filename='test.dsc'))
+        self.assertEqual(response.status_int, 200)
+        self.assertEqual(response.content_type, 'text/plain')
+
+        # remove temporary file
+        if os.path.isfile(file):
+            os.remove(file)
