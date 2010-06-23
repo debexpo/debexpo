@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,13 +33,14 @@ Holds the IndexController.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import logging
 
-from debexpo.lib.base import *
+from debexpo.lib.base import BaseController, c, config, render
 from debexpo.controllers.packages import PackagesController
+from webhelpers.html import literal
 
 log = logging.getLogger(__name__)
 
@@ -49,7 +51,7 @@ class IndexController(BaseController):
 
         if 'debexpo.html.frontpage' in config:
             f = open(config['debexpo.html.frontpage'])
-            c.custom_html = f.read()
+            c.custom_html = literal(f.read())
             f.close()
         else:
             c.custom_html = ''
@@ -66,7 +68,7 @@ class IndexController(BaseController):
         """Return an introduction page for package maintainers"""
         if 'debexpo.html.maintainer_intro' in config:
             f = open(config['debexpo.html.maintainer_intro'])
-            c.custom_html = f.read()
+            c.custom_html = literal(f.read())
             f.close()
         else:
             c.custom_html = ''
@@ -78,10 +80,9 @@ class IndexController(BaseController):
         """Return an introduction page for sponsors"""
         if 'debexpo.html.sponsors_intro' in config:
             f = open(config['debexpo.html.sponsors_intro'])
-            c.custom_html = f.read()
+            c.custom_html = literal(f.read())
             f.close()
         else:
             c.custom_html = ''
 
         return render('/index/intro-sponsors.mako')
-
