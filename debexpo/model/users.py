@@ -4,7 +4,7 @@
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
-#   Copyright © 2008 Jonny Lamb <jonnylamb@jonnylamb.com
+#   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -47,6 +47,7 @@ t_users = sa.Table('users', meta.metadata,
     sa.Column('name', sa.types.String(200), nullable=False),
     sa.Column('email', sa.types.String(200), nullable=False),
     sa.Column('gpg', sa.types.Text, nullable=True),
+    sa.Column('gpg_id', sa.types.String(30), nullable=True),
     sa.Column('password', sa.types.String(200), nullable=False),
     sa.Column('lastlogin', sa.types.DateTime, nullable=False),
     sa.Column('type', sa.types.Integer, nullable=False, default=USER_TYPE_NORMAL),

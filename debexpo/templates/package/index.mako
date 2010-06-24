@@ -40,7 +40,7 @@
 
   <tr>
     <th>${ _('Delete package') }:</th>
-    <td>${ h.rails.link_to(_('Delete this package'), h.url_for(action="delete", packagename=c.package.name), confirm=_('Are you sure?')) }</td>
+    <td>${ h.html.tags.link_to(_('Delete this package'), h.url_for(action="delete", packagename=c.package.name), confirm=_('Are you sure?')) }</td>
   </tr>
 
 % endif
@@ -106,14 +106,17 @@
 
     % if package_version.closes is not None:
 
-        % for bug in package_version.closes.split(','):
-
     <tr>
       <th>${ _('Closes bugs') }:</th>
-      <td><a href="http://bugs.debian.org/${ bug }">${ bug }</a></td>
-    </tr>
+      <td>
+
+        % for bug in package_version.closes.split():
+
+      <a href="http://bugs.debian.org/${ bug }">${ bug }</a>
 
         % endfor
+      </td>
+    </tr>
 
     % endif
 
@@ -184,21 +187,21 @@
 
 % if 'user_id' in c.session:
 
-${ h.rails.form(h.url_for('comment', packagename=c.package.name)) }
-${ h.rails.hidden_field('package_version', package_version.id) }
-${ h.rails.text_area('text', size='82x10') }
+${ h.html.tags.form(h.url_for('comment', packagename=c.package.name)) }
+${ h.html.tags.hidden('package_version', package_version.id) }
+${ h.html.tags.textarea('text', size='82x10') }
 <br/>
 
-${ h.rails.select('outcome', h.rails.options_for_select(c.outcomes, c.constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED)) }
+${ h.html.tags.select('outcome', c.constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED, c.outcomes) }
 
 % if config['debexpo.debian_specific'] == 'true' and c.user.status == c.constants.USER_STATUS_DEVELOPER:
 
-${ h.rails.check_box('status') } ${ _('Uploaded to Debian') }
+${ h.html.tags.checkbox('status') } ${ _('Uploaded to Debian') }
 
 % endif
 
-${ h.rails.submit() }
-${ h.rails.end_form() }
+${ h.html.tags.submit('commit', _('Submit')) }
+${ h.html.tags.end_form() }
 
 % endif
 

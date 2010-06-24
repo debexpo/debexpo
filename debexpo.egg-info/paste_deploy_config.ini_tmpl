@@ -115,6 +115,10 @@ debexpo.changes_list =
 debexpo.server = http://localhost:5000
 
 # DEBEXPO
+# Path to the gpg binary
+debexpo.gpg_path = /usr/bin/gpg
+
+# DEBEXPO
 # The folling configuration settings allow you to customize the looks
 # of your web site. You can either comment it out or specify a path
 # to a file contaning HTML for the respective page. The path is supposed

@@ -1,0 +1,11 @@
+debexpo documentation
+=====================
+
+The debexpo documentation is being stored in restructured text inside the
+docs/ directory. You can find the current installation guide at
+docs/installing.rst. You should build and view the html docs by executing:
+
+  % sudo apt-get install python-sphinx # needed to build the docs
+  % cd docs/
+  % make html
+  % sensible-browser .build/html/index.html

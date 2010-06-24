@@ -48,4 +48,4 @@ Using SOAPpy::
 
 And the output::
 
-    <SOAPpy.Types.structType retval at 141282572>: {'stringArray': <SOAPpy.Types.structType stringArray at 141279660>: {'string': ['odccm', '0.11.1-17', 'jonny <jonny@jonnylamb.com>', 'odccm - Daemon to keep a connection to Windows Mobile device', 'http://localhost:5000/package/odccm']}}
+    <SOAPpy.Types.structType retval at 141282572>: {'stringArray': <SOAPpy.Types.structType stringArray at 141279660>: {'string': ['odccm', '0.11.1-17', 'Jonny Lamb <jonny@debian.org>', 'odccm - Daemon to keep a connection to Windows Mobile device', 'http://localhost:5000/package/odccm']}}

@@ -4,7 +4,7 @@
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
-#   Copyright © 2008 Jonny Lamb <jonnylamb@jonnylamb.com
+#   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -335,7 +335,7 @@ class Repository(object):
         log.debug('Creating dists -> components -> archs dictionary')
 
         # Get distinct distributions from package_versions.
-        dists = meta.engine.execute(select([PackageVersion.c.distribution]).distinct())
+        dists = meta.engine.execute(select([PackageVersion.distribution]).distinct())
 
         distributions = {}
 
@@ -343,7 +343,7 @@ class Repository(object):
         for dist in dists.fetchall():
             distributions[dist[0]] = {}
 
-            components = meta.engine.execute(select([PackageVersion.c.component], PackageVersion.c.distribution == dist[0]).distinct())
+            components = meta.engine.execute(select([PackageVersion.component], PackageVersion.distribution == dist[0]).distinct())
 
             comps = {}
 

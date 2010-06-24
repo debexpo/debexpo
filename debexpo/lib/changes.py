@@ -4,7 +4,7 @@
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
-#   Copyright © 2008 Jonny Lamb <jonnylamb@jonnylamb.com
+#   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -87,6 +87,19 @@ class Changes(object):
             Key of data to request.
         """
         return self._data[key]
+
+    def get(self, key, default=None):
+        """
+        Returns the value of the rfc822 key specified, but defaults
+        to a specific value if not found in the rfc822 file.
+
+        ``key``
+            Key of data to request.
+
+        ``default``
+            Default return value if ``key`` does not exist.
+        """
+        return self._data.get(key, default)
 
     def get_component(self):
         """

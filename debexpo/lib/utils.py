@@ -4,7 +4,7 @@
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
-#   Copyright © 2008 Jonny Lamb <jonnylamb@jonnylamb.com
+#   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -35,8 +35,13 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-import os
+import logging
 import md5
+import os
+
+from pylons import config
+
+log = logging.getLogger(__name__)
 
 def allowed_upload(filename):
     """

@@ -4,7 +4,7 @@
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
-#   Copyright © 2008 Jonny Lamb <jonnylamb@jonnylamb.com
+#   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -71,16 +71,14 @@ def load_environment(global_conf, app_conf):
     config['routes.map'] = make_map()
     config['pylons.g'] = app_globals.Globals()
     config['pylons.h'] = debexpo.lib.helpers
+    config['pylons.strict_c'] = False
+    config['pylons.c_attach_args'] = True
 
     # Customize templating options via this variable
     tmpl_options = config['buffet.template_options']
 
     # CONFIGURATION OPTIONS HERE (note: all config options will override
     # any Pylons config options)
-
-    # Insert soaplib contrib into the path. This is a bit of a hack and I'd
-    # prefer this was gone ASAP.
-    sys.path.insert(0, os.path.join(global_conf['here'], 'debexpo', 'contrib', 'soaplib'))
 
     engine = engine_from_config(config, 'sqlalchemy.')
     init_model(engine)

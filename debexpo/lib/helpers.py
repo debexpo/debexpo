@@ -4,7 +4,7 @@
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
-#   Copyright © 2008 Jonny Lamb <jonnylamb@jonnylamb.com
+#   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -50,14 +50,11 @@ from webhelpers import commands, \
                        textile, \
                        constants, \
                        date, \
-                       hinclude, \
                        htmlgen, \
                        mimehelper, \
                        number, \
-                       pagination, \
-                       rails, \
                        text, \
                        util
 from webhelpers.html import tags,converters
-from routes import url_for
+from routes import url_for, redirect_to
 from debexpo.lib import constants

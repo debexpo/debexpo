@@ -4,7 +4,7 @@
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
-#   Copyright © 2008 Jonny Lamb <jonnylamb@jonnylamb.com
+#   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -97,7 +97,7 @@ class WatchFilePlugin(BasePlugin):
 
         if self.status == 256:
             log.debug('Package is the latest upstream version')
-            self.passed('no-new-upstream-version', None, constants.PLUGIN_SEVERITY_INFO)
+            self.passed('no-new-upstream-available', None, constants.PLUGIN_SEVERITY_INFO)
         else:
             log.warning('Package is not the latest upstream version')
             self.failed('new-upstream-available', self.output, constants.PLUGIN_SEVERITY_WARNING)

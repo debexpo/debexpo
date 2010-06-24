@@ -6,34 +6,34 @@
 <fieldset>
   <legend>${ _('Account details') }</legend>
 
-  ${ h.rails.form(h.url_for(), method='post') }
+  ${ h.html.tags.form(h.url_for(), method='post') }
 
   <table>
     <tr>
       <td>${ _('Full name') }:</td>
-      <td>${ h.rails.text_field('name') }</td>
+      <td>${ h.html.tags.text('name') }</td>
     </tr>
 
     <tr>
       <td>${ _('E-mail') }:</td>
-      <td>${ h.rails.text_field('email') }</td>
+      <td>${ h.html.tags.text('email') }</td>
     </tr>
 
     <tr>
       <td>${ _('Password') }:</td>
-      <td>${ h.rails.password_field('password') }</td>
+      <td>${ h.html.tags.password('password') }</td>
     </tr>
 
     <tr>
       <td>${ _('Confirm password') }:</td>
-      <td>${ h.rails.password_field('password_confirm') }</td>
+      <td>${ h.html.tags.password('password_confirm') }</td>
     </tr>
 
     <tr>
-      <td>${ h.rails.submit(_('Submit')) }</td>
+      <td>${ h.html.tags.submit('commit', _('Submit')) }</td>
     </tr>
   </table>
 
-  ${ h.rails.end_form() }
+  ${ h.html.tags.end_form() }
 
 </fieldset>

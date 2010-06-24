@@ -4,7 +4,7 @@
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
-#   Copyright © 2008 Jonny Lamb <jonnylamb@jonnylamb.com
+#   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -66,7 +66,7 @@ class RegisterController(BaseController):
 
         if config['debexpo.debian_specific'] != 'true':
             log.error('debexpo.debian_specific is !true; redirecting to maintainer form')
-            h.rails.redirect_to(h.url_for(action='maintainer'))
+            h.redirect_to(h.url_for(action='maintainer'))
 
         return render('/register/index.mako')
 
@@ -152,7 +152,7 @@ class RegisterController(BaseController):
         """
         if config['debexpo.debian_specific'] != 'true':
             log.error('Sponsor form requested when debexpo.debian_specific option set to !true; redirecting to maintainer form')
-            h.rails.redirect_to(h.url_for(action='maintainer'))
+            h.redirect_to(h.url_for(action='maintainer'))
 
         # Has the form been submitted?
         if request.method == 'POST':
@@ -172,8 +172,8 @@ class RegisterController(BaseController):
         log.debug('Activation request with key = %s' % id)
 
         if id is None:
-            log.error('Key is None; redirecting to main page')
-            h.rails.redirect_to(h.url_for(action=None))
+            log.error('Key is None')
+            abort(404, 'Key is None')
 
         user = meta.session.query(User).filter_by(verification=id).first()
 
@@ -183,7 +183,7 @@ class RegisterController(BaseController):
             meta.session.commit()
         else:
             log.error('Could not find user; redirecting to main page')
-            h.rails.redirect_to(h.url_for(action=None, id=None))
+            abort(404, 'Could not find user; redirecting to main page')
 
         c.user = user
         return render('/register/activated.mako')
