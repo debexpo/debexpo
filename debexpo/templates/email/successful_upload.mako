@@ -7,7 +7,7 @@ ${ _('Hi.') }
 ${ _('''Your upload of the package '%s' to %s was
 successful. Others can now see it. The URL of your package is:''' %
 (c.package, c.config['debexpo.sitename'])) }
-${ c.config['debexpo.server'] }${ h.url_for('package', packagename=c.package) }
+${ c.config['debexpo.server'] }${ h.url('package', packagename=c.package) }
 
 ${ _('''The respective dsc file can be found at:''') }
 ${ c.dsc_url }

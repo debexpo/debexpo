@@ -31,7 +31,7 @@ I am looking for a sponsor for my package "${ c.package.name }".
 
 To access further information about this package, please visit the following URL:
 
-  ${ c.config['debexpo.server'] }${ h.url_for('package', packagename=c.package.name) }
+  ${ c.config['debexpo.server'] }${ h.url('package', packagename=c.package.name) }
 
 Alternatively, one can download the package with dget using this command:
 

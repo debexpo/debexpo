@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,7 +33,7 @@ Holds the RegisterController.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import logging
@@ -66,7 +67,7 @@ class RegisterController(BaseController):
 
         if config['debexpo.debian_specific'] != 'true':
             log.error('debexpo.debian_specific is !true; redirecting to maintainer form')
-            h.redirect_to(h.url_for(action='maintainer'))
+            redirect(url(action='maintainer'))
 
         return render('/register/index.mako')
 
@@ -82,8 +83,8 @@ class RegisterController(BaseController):
         """
         log.debug('Sending activation email')
         email = Email('register_activate')
-        url = 'http://' + request.host + h.url_for(action='activate', id=key)
-        email.send([recipient], activate_url=url)
+        activate_url = 'http://' + request.host + url.current(action='activate', id=key)
+        email.send([recipient], activate_url=activate_url)
 
     @validate(schema=MaintainerForm(), form='maintainer')
     def _maintainer_submit(self):
@@ -101,7 +102,7 @@ class RegisterController(BaseController):
             lastlogin=datetime.now(),
             verification=key)
 
-        meta.session.save(u)
+        meta.session.add(u)
         meta.session.commit()
 
         self._send_activate_email(key, self.form_result['email'])
@@ -152,7 +153,7 @@ class RegisterController(BaseController):
         """
         if config['debexpo.debian_specific'] != 'true':
             log.error('Sponsor form requested when debexpo.debian_specific option set to !true; redirecting to maintainer form')
-            h.redirect_to(h.url_for(action='maintainer'))
+            redirect(url(action='maintainer'))
 
         # Has the form been submitted?
         if request.method == 'POST':

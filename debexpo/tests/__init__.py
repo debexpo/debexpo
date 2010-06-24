@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -40,32 +41,26 @@ setup-app) with the project's test.ini configuration file.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import os
 import sys
 from unittest import TestCase
 
-import pkg_resources
-import paste.fixture
-import paste.script.appinstall
 from paste.deploy import loadapp
-from routes import url_for
+from paste.script.appinstall import SetupCommand
+from pylons import url
+from routes.util import URLGenerator
+from webtest import TestApp
 
-__all__ = ['url_for', 'TestController']
+import pylons.test
 
-here_dir = os.path.dirname(os.path.abspath(__file__))
-conf_dir = os.path.dirname(os.path.dirname(here_dir))
+__all__ = ['environ', 'url', 'TestController']
 
-sys.path.insert(0, conf_dir)
-pkg_resources.working_set.add_entry(conf_dir)
-pkg_resources.require('Paste')
-pkg_resources.require('PasteScript')
+SetupCommand('setup-app').run([pylons.test.pylonsapp.config['__file__']])
 
-test_file = os.path.join(conf_dir, 'test.ini')
-cmd = paste.script.appinstall.SetupCommand('setup-app')
-cmd.run([test_file])
+environ = {}
 
 class TestController(TestCase):
     """
@@ -73,6 +68,8 @@ class TestController(TestCase):
     """
 
     def __init__(self, *args, **kwargs):
-        wsgiapp = loadapp('config:test.ini', relative_to=conf_dir)
-        self.app = paste.fixture.TestApp(wsgiapp)
+        wsgiapp = pylons.test.pylonsapp
+        config = wsgiapp.config
+        self.app = TestApp(wsgiapp)
+        url._push_object(URLGenerator(config['routes.map'], environ))
         TestCase.__init__(self, *args, **kwargs)

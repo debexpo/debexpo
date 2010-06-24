@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -35,52 +36,57 @@ may take precedent over the more generic routes. For more information
 refer to the routes manual at http://routes.groovie.org/docs/
 """
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
-from pylons import config
 from routes import Mapper
 
-def make_map():
+def make_map(config):
     """
     Creates, configures and returns the routes Mapper.
     """
     map = Mapper(directory=config['pylons.paths']['controllers'],
                  always_scan=config['debug'])
+    map.minimization = False
 
     # The ErrorController route (handles 404/500 error pages); it should
     # likely stay at the top, ensuring it can always be resolved
-    map.connect('error/:action/:id', controller='error')
+    map.connect('error/{action}', controller='error')
+    map.connect('error/{action}/{id}', controller='error')
 
     # CUSTOM ROUTES HERE
 
     if config['debexpo.handle_debian'].lower() == 'true':
-        map.connect('debian/*filename', controller='debian', action='index')
+        map.connect('/debian/*filename', controller='debian', action='index')
 
-    map.connect('contact', 'contact', controller='index', action='contact')
-    map.connect('index', '', controller='index', action='index')
-    map.connect('intro-maintainers', 'intro-maintainers', controller='index', action='intro_maintainers')
-    map.connect('intro-sponsors', 'intro-sponsors', controller='index', action='intro_sponsors')
-    map.connect('my', 'my/:action', controller='my', action='index')
-    map.connect('login', controller='login', action='index')
-    map.connect('logout', controller='login', action='logout')
-    map.connect('news', 'news', controller='index', action='news')
-    map.connect('package', 'package/:packagename', controller='package', action='index')
-    map.connect('comment', 'package/:packagename/comment', controller='package', action='comment')
-    map.connect('subscribe', 'package/:packagename/subscribe', controller='package', action='subscribe')
-    map.connect('delete', 'package/:packagename/delete', controller='package', action='delete')
-    map.connect('rfs', 'package/rfs/:packagename', controller='package', action='rfs')
-    map.connect('packages', 'packages/:action/:id', controller='packages', action='index', id=None)
-    map.connect('packages_filter_feed', 'packages/:filter/:id/feed', controller='packages', action='feed')
-    map.connect('packages_feed', 'packages/feed', controller='packages', action='feed')
-    map.connect('qa', 'qa', controller='index', action='qa')
-    map.connect('register', 'register/:action/:id', controller='register', action='index', id=None)
-    map.connect('upload/:filename', controller='upload', action='index')
-    map.connect('ppa', 'ppa/:email', controller='ppa', action='index')
-    map.connect('ppa/:email/*filename', controller='ppa', action='file')
-    map.connect(':soap.wdsl', controller='soap')
+    map.connect('index', '/', controller='index', action='index')
+    map.connect('contact', '/contact', controller='index', action='contact')
+    map.connect('intro-maintainers', '/intro-maintainers',
+                controller='index', action='intro_maintainers')
+    map.connect('intro-sponsors', '/intro-sponsors', controller='index', action='intro_sponsors')
+    map.connect('my', '/my/{action}', controller='my', action='index')
+    map.connect('login', '/login', controller='login', action='index')
+    map.connect('logout', '/logout', controller='login', action='logout')
+    map.connect('news', '/news', controller='index', action='news')
+    map.connect('/package', controller='package', action='index')
+    map.connect('package', '/package/{packagename}', controller='package', action='index')
+    map.connect('comment', '/package/{packagename}/comment', controller='package', action='comment')
+    map.connect('subscribe', '/package/{packagename}/subscribe', controller='package', action='subscribe')
+    map.connect('delete', '/package/{packagename}/delete', controller='package', action='delete')
+    map.connect('rfs', '/package/rfs/{packagename}', controller='package', action='rfs')
+    map.connect('packages', '/packages/{action}', controller='packages', action='index', id=None)
+    #map.connect('/packages/{action}/{id}', controller='packages', action='index', id=None)
+    #map.connect('packages_filter_feed', '/packages/{filter}/{id}/feed', controller='packages', action='feed')
+    #map.connect('packages_feed', '/packages/feed', controller='packages', action='feed')
+    #map.connect('qa', '/qa', controller='index', action='qa')
+    #map.connect('register', '/register/{action}/{id}', controller='register', action='index', id=None)
+    map.connect('/upload/{filename}', controller='upload', action='index')
+    map.connect('ppa', '/ppa/{email}', controller='ppa', action='index')
+    #map.connect('/ppa/{email}/*filename', controller='ppa', action='file')
+    map.connect('/soap.wsdl', controller='soap')
 
-    map.connect(':controller/:action/:id')
-    map.connect('*url', controller='template', action='view')
+    map.connect('/{controller}/{action}')
+    map.connect('/{controller}/{action}/{id}')
+    #map.connect('/*url', controller='template', action='view')
 
     return map

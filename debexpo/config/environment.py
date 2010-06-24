@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,13 +33,15 @@ Pylons environment configuration.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import os
 import sys
 
-from pylons import config
+from mako.lookup import TemplateLookup
+from pylons.configuration import PylonsConfig
+from pylons.error import handle_mako_error
 
 import debexpo.lib.app_globals as app_globals
 import debexpo.lib.helpers
@@ -57,6 +60,8 @@ def load_environment(global_conf, app_conf):
     ``app_conf``
         Application configuration.
     """
+    config = PylonsConfig()
+
     # Pylons paths
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     paths = dict(root=root,
@@ -68,17 +73,28 @@ def load_environment(global_conf, app_conf):
     config.init_app(global_conf, app_conf, package='debexpo',
                     template_engine='mako', paths=paths)
 
-    config['routes.map'] = make_map()
-    config['pylons.g'] = app_globals.Globals()
+    config['routes.map'] = make_map(config)
+    config['pylons.app_globals'] = app_globals.Globals(config)
     config['pylons.h'] = debexpo.lib.helpers
-    config['pylons.strict_c'] = False
-    config['pylons.c_attach_args'] = True
+
+    import pylons
+    pylons.cache._push_object(config['pylons.app_globals'].cache)
+
+    #config['pylons.strict_c'] = False
+    #config['pylons.tmpl_context_attach_args'] = True
 
     # Customize templating options via this variable
-    tmpl_options = config['buffet.template_options']
+    config['pylons.app_globals'].mako_lookup = TemplateLookup(
+        directories=paths['templates'],
+        error_handler=handle_mako_error,
+        module_directory=os.path.join(app_conf['cache_dir'], 'templates'),
+        input_encoding='utf-8', default_filters=['escape'],
+        imports=['from webhelpers.html import escape'])
 
     # CONFIGURATION OPTIONS HERE (note: all config options will override
     # any Pylons config options)
 
     engine = engine_from_config(config, 'sqlalchemy.')
     init_model(engine)
+
+    return config

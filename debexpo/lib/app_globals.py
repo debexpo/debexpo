@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,17 +33,19 @@ Holds the Globals class.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
-from pylons import config
+from beaker.cache import CacheManager
+from beaker.util import parse_cache_config_options
+
 
 class Globals(object):
     """
     Acts as a container for objects available throughout the life of a request.
     """
 
-    def __init__(self):
+    def __init__(self, config):
         """
         Object constructor; does nothing.
 
@@ -57,3 +60,4 @@ class Globals(object):
             }
         self.default_language = 'en'
 
+        self.cache = CacheManager(**parse_cache_config_options(config))

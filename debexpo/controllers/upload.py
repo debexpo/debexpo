@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,7 +33,7 @@ Holds the UploadController class.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import os
@@ -115,8 +116,8 @@ class UploadController(BaseController):
         """
         log.error('Authorization not found in request headers')
 
-        response.headers['WWW-Authenticate'] = 'Basic realm="debexpo"'
-        abort(401, 'Please use your email and password when uploading')
+        abort(401, 'Please use your email and password when uploading',
+              headers = {'WWW-Authenticate': 'Basic realm="debexpo"'})
 
 
     def _check_credentials(self):
@@ -147,6 +148,6 @@ class UploadController(BaseController):
 
             return user.id
 
-        except InvalidRequestError:
+        except InvalidRequestError, e:
             # Couldn't get one() row, therefore unsuccessful authentication
             abort(401, 'Authentication failed')

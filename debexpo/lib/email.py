@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,7 +33,7 @@ Holds helper class for sending email.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import logging
@@ -41,7 +42,8 @@ import smtplib
 from mako.template import Template
 from mako.lookup import TemplateLookup
 
-from debexpo.lib.base import config, h
+from debexpo.lib.base import config
+import debexpo.lib.helpers as h
 from gettext import gettext
 
 log = logging.getLogger(__name__)

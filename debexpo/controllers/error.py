@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,13 +33,15 @@ Holds the ErrorController class.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
+import cgi
 import os.path
 
 import paste.fileapp
 from pylons.middleware import error_document_template, media_path
+from webhelpers.html.builder import literal
 
 from debexpo.lib.base import *
 
@@ -57,14 +60,11 @@ class ErrorController(BaseController):
         """
         Renders the error document.
         """
-        c.message = request.params.get('message', '-')
-        c.code = int(request.params.get('code', '-'))
+        resp = request.environ.get('pylons.original_response')
+        c.message = literal(resp.body) or cgi.escape(request.GET.get('message', ''))
+        c.code = cgi.escape(request.GET.get('code', str(resp.status_int)))
+        response.headers = resp.headers
         return render('/error.mako')
-        #page = error_document_template % \
-        #    dict(prefix=request.environ.get('SCRIPT_NAME', ''),
-        #         code=request.params.get('code', ''),
-        #         message=request.params.get('message', ''))
-        #return page
 
     def img(self, id):
         """

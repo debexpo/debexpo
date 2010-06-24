@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,7 +33,7 @@ Holds the PackageController.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 from datetime import datetime
@@ -68,14 +69,14 @@ class PackageController(BaseController):
 
         if package is None:
             log.error('Could not get package information')
-            return redirect_to(h.url_for(controller='packages', packagename=None))
+            return redirect(url(controller='packages', action='index', packagename=None))
 
         c.package = package
         c.config = config
         c.package_dir = get_package_dir(package.name)
         return package
 
-    def index(self, packagename):
+    def index(self, packagename = None):
         """
         Entry point into the controller. Displays information about the package.
 
@@ -127,7 +128,7 @@ class PackageController(BaseController):
             log.debug('Requires authentication')
             session['path_before_login'] = request.path_info
             session.save()
-            return redirect_to(h.url_for(controller='login'))
+            return redirect(url(controller='login'))
 
         package = self._get_package(packagename)
         if not isinstance(package, Package):
@@ -156,7 +157,7 @@ class PackageController(BaseController):
                     meta.session.delete(subscription)
 
             meta.session.commit()
-            return redirect_to(h.url_for('package', packagename=packagename))
+            return redirect(url('package', packagename=packagename))
 
         c.subscriptions = {
             _('No subscription') : -1,
@@ -188,7 +189,7 @@ class PackageController(BaseController):
             meta.session.delete(package)
             meta.session.commit()
 
-        return h.redirect_to(controller='packages', filter='my')
+        return redirect(controller='packages', filter='my')
 
     def comment(self, packagename):
         """
@@ -225,4 +226,4 @@ class PackageController(BaseController):
             email.send([s.user.email for s in subscribers], package=packagename,
                 comment=request.POST['text'], user=user)
 
-        return h.redirect_to('package', packagename=packagename)
+        return redirect('package', packagename=packagename)
