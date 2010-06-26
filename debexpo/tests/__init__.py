@@ -59,6 +59,7 @@ from webtest import TestApp
 import pylons.test
 from debexpo.model import meta, import_all_models
 from debexpo.model.users import User
+from debexpo.model.user_countries import UserCountry
 
 __all__ = ['environ', 'url', 'TestController']
 
@@ -86,6 +87,20 @@ class TestController(TestCase):
         import_all_models()
         meta.metadata.create_all(bind=meta.engine)
 
+    def _setup_example_countries(self):
+        """Add a few example countries.
+
+        Adds ``United States``, ``Germany``, ``Russia`` and ``United Kingdom``.
+        """
+        for name in ('United States', 'Germany', 'Russia', 'United Kingdom'):
+            meta.session.add(UserCountry(name=name))
+        meta.session.commit()
+
+    def _remove_example_countries(self):
+        """Remove the example countries."""
+        meta.session.query(UserCountry).delete()
+        meta.session.commit()
+
     def _setup_example_user(self):
         """Add an example user.
 
@@ -112,5 +127,5 @@ class TestController(TestCase):
         This method must be used in the tearDown method of derived
         test classes that use _setup_example_user.
         """
-        meta.session.query(User).delete()
+        meta.session.query(User).filter(User.email=='email@example.com').delete()
         meta.session.commit()

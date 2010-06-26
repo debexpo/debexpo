@@ -82,7 +82,7 @@ class MyController(BaseController):
         meta.session.commit()
 
         log.debug('Saved name and email and redirecting')
-        return redirect(url('my', action=None))
+        return redirect(url('my'))
 
     @validate(schema=GpgForm(), form='index')
     def _gpg(self):
@@ -106,7 +106,7 @@ class MyController(BaseController):
         meta.session.commit()
 
         log.debug('Saved key changes and redirecting')
-        return redirect(url('my', action=None))
+        return redirect(url('my'))
 
     @validate(schema=PasswordForm(), form='index')
     def _password(self):
@@ -120,7 +120,7 @@ class MyController(BaseController):
         meta.session.commit()
         log.debug('Saved new password and redirecting')
 
-        return redirect(url('my', action=None))
+        return redirect(url('my'))
 
     @validate(schema=OtherDetailsForm(), form='index')
     def _other_details(self):
@@ -149,7 +149,7 @@ class MyController(BaseController):
         meta.session.commit()
         log.debug('Saved other details and redirecting')
 
-        return redirect(url('my', action=None))
+        return redirect(url('my'))
 
     def index(self, get=False):
         """
@@ -166,7 +166,7 @@ class MyController(BaseController):
         if self.user is None:
             # Cannot find user from user_id.
             log.debug('Cannot find user from user_id')
-            return redirect(url(controller='login', action='index'))
+            return redirect(url('login'))
 
         log.debug('User object successfully selected')
 
