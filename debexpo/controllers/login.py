@@ -86,7 +86,7 @@ class LoginController(BaseController):
         if 'path_before_login' in session:
             return redirect(session['path_before_login'])
         else:
-            return redirect(url('/my'))
+            return redirect(url('my'))
 
     def index(self, get=False):
         """
@@ -110,4 +110,4 @@ class LoginController(BaseController):
         if 'user_type' in session:
             del session['user_type']
         session.save()
-        redirect('index')
+        return redirect(url('index'))

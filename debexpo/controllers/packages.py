@@ -188,7 +188,7 @@ class PackagesController(BaseController):
             log.debug('Requires authentication')
             session['path_before_login'] = request.path_info
             session.save()
-            redirect(url(controller='login'))
+            redirect(url('login'))
 
         details = meta.session.query(User).filter_by(id=session['user_id']).first()
         if not details:

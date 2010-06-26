@@ -38,13 +38,10 @@ __license__ = 'MIT'
 
 import os
 import base64
-import md5
-from datetime import datetime
 
 from debexpo.lib.base import config
-from debexpo.tests import *
-from debexpo.model import meta, import_all_models
-from debexpo.model.users import User
+from debexpo.tests import TestController, url
+from debexpo.model import meta
 import pylons.test
 
 class TestUploadController(TestController):
@@ -56,24 +53,14 @@ class TestUploadController(TestController):
         TestController.__init__(self, *args, **kwargs)
 
         # Keep this so tests don't have to constantly create it.
-        self.emailpassword = base64.encodestring('email@email.com:password')[:-1]
+        self.emailpassword = base64.encodestring('email@example.com:password')[:-1]
 
     def setUp(self):
-        # Since we are using a sqlite database in memory (at least that's what the default in
-        # test.ini is), we need to create all the tables necessary. So let's import all the models
-        # and create all the tables.
-        import_all_models()
-        meta.metadata.create_all(bind=meta.engine)
-
-        # Create a test user and save it.
-        user = User(name='Test user', email='email@email.com',
-                    password=md5.new('password').hexdigest(), lastlogin=datetime.now())
-
-        meta.session.add(user)
-        meta.session.commit()
+        self._setup_models()
+        self._setup_example_user()
 
     def tearDown(self):
-        meta.session.query(User).delete()
+        self._remove_example_user()
 
     def testGetRequest(self):
         """
@@ -106,7 +93,7 @@ class TestUploadController(TestController):
         """
         Tests whether false authentication details returns a 401 error code.
         """
-        wrongemailpassword = base64.encodestring('email@email.com:wrongpassword')[:-1]
+        wrongemailpassword = base64.encodestring('email@example.com:wrongpassword')[:-1]
 
         response = self.app.put(url(controller='upload', action='index',
                                     filename='testname.dsc'),
