@@ -69,7 +69,7 @@ class PackageController(BaseController):
 
         if package is None:
             log.error('Could not get package information')
-            return redirect(url(controller='packages', action='index', packagename=None))
+            redirect(url(controller='packages', action='index', packagename=None))
 
         c.package = package
         c.config = config
@@ -84,8 +84,6 @@ class PackageController(BaseController):
             Package name to look at.
         """
         package = self._get_package(packagename)
-        if not isinstance(package, Package):
-            return package
 
         c.session = session
         c.constants = constants
@@ -128,7 +126,7 @@ class PackageController(BaseController):
             log.debug('Requires authentication')
             session['path_before_login'] = request.path_info
             session.save()
-            return redirect(url(controller='login'))
+            redirect(url(controller='login'))
 
         package = self._get_package(packagename)
         if not isinstance(package, Package):
@@ -157,7 +155,7 @@ class PackageController(BaseController):
                     meta.session.delete(subscription)
 
             meta.session.commit()
-            return redirect(url('package', packagename=packagename))
+            redirect(url('package', packagename=packagename))
 
         c.subscriptions = {
             _('No subscription') : -1,
@@ -189,7 +187,7 @@ class PackageController(BaseController):
             meta.session.delete(package)
             meta.session.commit()
 
-        return redirect(controller='packages', filter='my')
+        redirect(controller='packages', filter='my')
 
     def comment(self, packagename):
         """
@@ -226,4 +224,4 @@ class PackageController(BaseController):
             email.send([s.user.email for s in subscribers], package=packagename,
                 comment=request.POST['text'], user=user)
 
-        return redirect('package', packagename=packagename)
+        redirect('package', packagename=packagename)

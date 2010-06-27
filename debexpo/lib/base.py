@@ -70,7 +70,7 @@ class BaseController(WSGIController):
             # after a successful login
             session['path_before_login'] = request.path_info
             session.save()
-            return redirect(url(controller='login', action='index'))
+            redirect(url(controller='login', action='index'))
 
         c.config = config
 

@@ -85,9 +85,9 @@ class LoginController(BaseController):
         meta.session.commit()
 
         if 'path_before_login' in session:
-            return redirect(session['path_before_login'])
+            redirect(session['path_before_login'])
         else:
-            return redirect(url('my'))
+            redirect(url('my'))
 
     def index(self, get=False):
         """
@@ -111,4 +111,4 @@ class LoginController(BaseController):
         if 'user_type' in session:
             del session['user_type']
         session.save()
-        return redirect(url('index'))
+        redirect(url('index'))
