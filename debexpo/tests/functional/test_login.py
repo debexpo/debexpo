@@ -4,7 +4,7 @@ from pylons import session
 class TestLoginController(TestController):
     _AUTHDATA = {'email': 'email@example.com',
                  'password': 'password',
-                 'commit':'Commit'}
+                 'commit': 'submit'}
 
     def setUp(self):
         self._setup_models()
@@ -15,9 +15,20 @@ class TestLoginController(TestController):
 
     def test_index(self):
         response = self.app.get(url(controller='login', action='index'))
-        # Test response...
+        self.assertEquals(response.status_int, 200)
+        self.assertEquals(len(response.lxml.xpath(
+                    '//input[@type="text" and @name="email"]')), 1)
+        self.assertEquals(len(response.lxml.xpath(
+                    '//input[@type="password" and @name="password"]')), 1)
 
     def test__login(self):
+        response = self.app.post(url(controller='login', action='index'),
+                                 {'email': 'email@example.com',
+                                  'password': 'wrongpassword',
+                                  'commit': 'submit'})
+        self.assertTrue(response.status_int, 200)
+        self.assertEquals(len(response.lxml.xpath(
+                    '//span[@class="error-message"]')), 1)
         response = self.app.post(url(controller='login', action='index'),
                                  self._AUTHDATA)
         self.assertEquals(response.status_int, 302)
