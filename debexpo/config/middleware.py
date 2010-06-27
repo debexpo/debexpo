@@ -44,7 +44,6 @@ from beaker.middleware import SessionMiddleware
 from routes.middleware import RoutesMiddleware
 
 import pylons
-from pylons.error import error_template
 from pylons.middleware import ErrorHandler, StatusCodeRedirect
 from pylons.wsgiapp import PylonsApp
 

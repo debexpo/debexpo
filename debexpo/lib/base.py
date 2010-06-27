@@ -81,6 +81,7 @@ class BaseController(WSGIController):
         # WSGIController.__call__ dispatches to the Controller method
         # the request is routed to. This routing information is
         # available in environ['pylons.routes_dict']
+        c.feed_url = None
         try:
             return WSGIController.__call__(self, environ, start_response)
         finally:

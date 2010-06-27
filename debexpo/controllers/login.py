@@ -57,6 +57,7 @@ class LoginController(BaseController):
         Class constructor. Sets common template variables.
         """
         c.config = config
+        c.message = None
 
     @validate(schema=LoginForm(), form='index')
     def _login(self):

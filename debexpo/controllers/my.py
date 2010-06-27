@@ -204,7 +204,9 @@ class MyController(BaseController):
         # Toggle whether Debian developer/maintainer forms should be shown.
         if self.user.status == constants.USER_STATUS_DEVELOPER:
             c.debian_developer = True
+            c.debian_maintainer = False
         else:
+            c.debian_developer = False
             if self.user.status == constants.USER_STATUS_MAINTAINER:
                 c.debian_maintainer = True
             else:
@@ -213,6 +215,8 @@ class MyController(BaseController):
         # Enable the form to show information on the user's GPG key.
         if self.user.gpg is not None:
             c.currentgpg = c.user.gpg_id
+	else:
+            c.currentgpg = None
 
         log.debug('Rendering page')
         return render('/my/index.mako')

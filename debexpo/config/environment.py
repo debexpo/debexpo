@@ -71,7 +71,7 @@ def load_environment(global_conf, app_conf):
 
     # Initialize config with the basic options
     config.init_app(global_conf, app_conf, package='debexpo',
-                    template_engine='mako', paths=paths)
+                    paths=paths)
 
     config['routes.map'] = make_map(config)
     config['pylons.app_globals'] = app_globals.Globals(config)
