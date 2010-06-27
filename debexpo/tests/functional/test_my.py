@@ -6,9 +6,6 @@ from debexpo.model.user_countries import UserCountry
 import md5
 
 class TestMyController(TestController):
-    _AUTHDATA = {'email': 'email@example.com',
-                 'password': 'password',
-                 'commit':'Commit'}
     _GPGKEY = """-----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v1.4.10 (GNU/Linux)
 

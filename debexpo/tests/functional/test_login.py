@@ -2,10 +2,6 @@ from debexpo.tests import *
 from pylons import session
 
 class TestLoginController(TestController):
-    _AUTHDATA = {'email': 'email@example.com',
-                 'password': 'password',
-                 'commit': 'submit'}
-
     def setUp(self):
         self._setup_models()
         self._setup_example_user()

@@ -72,6 +72,10 @@ class TestController(TestCase):
     Base class for testing controllers.
     """
 
+    _AUTHDATA = {'email': 'email@example.com',
+                 'password': 'password',
+                 'commit': 'submit'}
+
     def __init__(self, *args, **kwargs):
         wsgiapp = pylons.test.pylonsapp
         config = wsgiapp.config
