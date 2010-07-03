@@ -11,11 +11,11 @@
 
   <tr>
     <th>${ _('Uploader') }:</th>
-    <td><a href="${ h.url('packages', action='uploader', id=c.package.user.email) }">${ c.package.user.name }</a> &lt;<a href="mailto: ${ c.package.user.email }">${ c.package.user.email }</a>&gt;
+    <td><a href="${h.url(controller='packages', action='uploader', id=c.package.user.email) }">${ c.package.user.name }</a> &lt;<a href="mailto:${c.package.user.email }">${ c.package.user.email }</a>&gt;
 
 % if c.config['debexpo.debian_specific'] == 'true':
 
-    (<a href="http://qa.debian.org/developer.php?login=${ c.package.user.email }">Debian QA page</a>)
+    (<a href="http://qa.debian.org/developer.php?login=${c.package.user.email }">Debian QA page</a>)
 
 % endif
 
@@ -31,7 +31,7 @@
 
   <tr>
     <th>${ _('Subscribe') }:</th>
-    <td><a href="${ h.url('subscribe', packagename=c.package.name) }">${ _('Edit your subscription') }</a></td>
+    <td><a href="${h.url('subscribe', packagename=c.package.name)}">${ _('Edit your subscription') }</a></td>
   </tr>
 
 % endif
@@ -40,7 +40,7 @@
 
   <tr>
     <th>${ _('Delete package') }:</th>
-    <td>${ h.html.tags.link_to(_('Delete this package'), h.url(action="delete", packagename=c.package.name), confirm=_('Are you sure?')) }</td>
+    <td>${ h.html.tags.link_to(_('Delete this package'), h.url.current(action="delete", packagename=c.package.name), confirm=_('Are you sure?')) }</td>
   </tr>
 
 % endif
