@@ -42,6 +42,7 @@ from sqlalchemy import exceptions
 from pylons.i18n import get_lang
 
 from debexpo.lib.base import *
+from webhelpers import feedgenerator
 
 from debexpo.model import meta
 from debexpo.model.package_versions import PackageVersion
@@ -99,7 +100,7 @@ class PackagesController(BaseController):
         return render('/packages/index.mako')
 
     def feed(self, filter=None, id=None):
-        feed = h.feedgenerator.Rss201rev2Feed(
+        feed = feedgenerator.Rss201rev2Feed(
             title=_('%s packages' % config['debexpo.sitename']),
             link=config['debexpo.server'] + url('packages'),
             description=_('A feed of packages on %s' % config['debexpo.sitename']),
@@ -137,6 +138,8 @@ class PackagesController(BaseController):
                 link=config['debexpo.server'] + url('package', packagename=item.name),
                 description=desc, unique_id=str(item.package_versions[-1].id))
 
+        response.content_type = 'application/rss+xml'
+        response.content_type_params = {'charset': 'utf8'}
         return feed.writeString('utf-8')
 
     def section(self, id):
