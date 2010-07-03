@@ -147,11 +147,11 @@ class PackageController(BaseController):
                     # There is no previous subscription.
                     if fields['level'] != -1:
                         log.debug('Creating new subscription on %s' % packagename)
-                        subscribe = PackageSubscription(
+                        subscription = PackageSubscription(
                             package=packagename,
                             user_id=session['user_id'],
                             level=fields['level'])
-                        meta.session.add(subscribe)
+                        meta.session.add(subscription)
                 else:
                     # There is a previous subscription.
                     if fields['level'] != -1:
