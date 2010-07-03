@@ -75,6 +75,7 @@ def make_map(config):
     map.connect('delete', '/package/{packagename}/delete', controller='package', action='delete')
     map.connect('rfs', '/package/rfs/{packagename}', controller='package', action='rfs')
     map.connect('packages', '/packages/{action}', controller='packages', action='index', id=None)
+    map.connect('/packages', controller='packages', action='index')
     #map.connect('/packages/{action}/{id}', controller='packages', action='index', id=None)
     #map.connect('packages_filter_feed', '/packages/{filter}/{id}/feed', controller='packages', action='feed')
     #map.connect('packages_feed', '/packages/feed', controller='packages', action='feed')
