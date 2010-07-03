@@ -37,6 +37,7 @@ ABRL0EeYuGCJYJRQsw8e8JuRSaVGwfotqkIHtQ==
 =PXiv
 -----END PGP PUBLIC KEY BLOCK-----
 """
+    _GPG_ID = '2048R/6758261E'
 
     def setUp(self):
         self._setup_models()
@@ -109,6 +110,12 @@ ABRL0EeYuGCJYJRQsw8e8JuRSaVGwfotqkIHtQ==
         self.assertTrue(response.location.endswith(url('my')))
         user = meta.session.query(User).filter(User.email=='email@example.com').one()
         self.assertEquals(user.gpg, self._GPGKEY)
+
+        # test whether index page contains GPG delete link
+        response = self.app.get(url(controller='my', action='index'))
+        self.assertEquals(response.status_int, 200)
+        self.assertTrue('<a href="%s">' % (url('logout')) in response)
+        self.assertTrue(self._GPG_ID in response)
 
         # delete GPG key
         response = self.app.post(url('my'), {'form': 'gpg',
