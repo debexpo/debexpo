@@ -200,10 +200,13 @@ class TestPackageController(TestController):
                           constants.PACKAGE_COMMENT_STATUS_NOT_UPLOADED)
         meta.session.delete(comment)
         # test with a subscriber
-        self.app.post(url(controller='package', action='subscribe',
-                          packagename='testpackage'),
-                      {'level': constants.SUBSCRIPTION_LEVEL_COMMENTS,
-                       'commit': 'submit'})
+        user = meta.session.query(User).filter(User.email=='email@example.com').one()
+        packsub = PackageSubscription(
+            package='testpackage',
+            level=constants.SUBSCRIPTION_LEVEL_COMMENTS)
+        packsub.user = user
+        meta.session.add(packsub)
+        meta.session.commit()
         response = self.app.post(
             url(controller='package', action='comment',
                 packagename='testpackage'),
@@ -221,3 +224,5 @@ class TestPackageController(TestController):
         self.assertEquals(comment.text, 'This is a test comment')
         self.assertEquals(comment.status,
                           constants.PACKAGE_COMMENT_STATUS_UPLOADED)
+        meta.session.delete(packsub)
+        meta.session.commit()
