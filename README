@@ -27,8 +27,23 @@ http://en.wikipedia.org/wiki/Test_suite .)
 If all is well, all the tests should pass. Then you know you're ready to
 develop.
 
+(Nosetests is a "test runner" package that provides some useful add-ons. It
+has its own idiosyncracies, though.)
+
 Note that as of this writing (2010-10-04) they do not all pass. That means
 there is work to do!
+
+debugging a debexpo test that fails
+===================================
+
+So you've found a test that fails (F) or exits with an unhandled exception (E)?
+Time to use the Python debugger.
+
+Add this to the test code that is failing:
+
+  import nose; nose.tools.set_trace()
+
+(If you've used pdb.set_trace(), this is a Nose-compatible version of that.)
 
 debexpo documentation
 =====================
