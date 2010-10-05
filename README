@@ -1,3 +1,35 @@
+running debexpo
+===============
+
+First, create a virtualenv.
+
+  % sudo apt-get install python-virtualenv
+  % virtualenv .
+
+This creates a virtual Python environment in which you can install the
+dependencies for debexpo without altering your system (i.e., without
+requiring root). Once you have the virtualenv set up, run this command to
+download the dependencies and set up the debexpo code so it can be run:
+
+  % ./bin/python setup.py develop
+
+You might think you are done, but wait! You have to compile the
+translations from "PO" format into "MO" format. To do that:
+
+  % ./bin/python setup.py build_i18n
+
+Hooray! Now you're ready to run the automated tests. (The code for the
+tests lives in debexpo/tests/*. This is a test suite; you can read more at
+http://en.wikipedia.org/wiki/Test_suite .)
+
+  % ./bin/nosetests --with-pylons=test.ini
+
+If all is well, all the tests should pass. Then you know you're ready to
+develop.
+
+Note that as of this writing (2010-10-04) they do not all pass. That means
+there is work to do!
+
 debexpo documentation
 =====================
 
