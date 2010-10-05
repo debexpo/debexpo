@@ -18,7 +18,7 @@ setup(
         "SQLAlchemy>=0.6",
         "Webhelpers>=0.6.1",
         "Babel",
-        "soaplib"],
+        "soaplib==0.8.1"],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
     test_suite='nose.collector',
