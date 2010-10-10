@@ -84,7 +84,11 @@ class GnuPG(object):
         """
         try:
             (output, _) = self._run(stdin_cmd="echo '%s'" % key)
-            return output.split()[1] # get only the 2nd column of the 1st line
+            lines = output.split('\n')
+            for line in lines:
+                if line.startswith('pub'):
+                    # get only the 2nd column of the 1st matching line
+                    return line.split()[1]
         except (AttributeError, IndexError):
             log.error("Failed to extract key id from gpg output: '%s'"
                        % output)

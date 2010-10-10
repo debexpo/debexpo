@@ -36,7 +36,7 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
 import logging
-import SOAPpy
+import ZSI
 
 from debexpo.lib import constants
 from debexpo.lib.base import *
@@ -55,8 +55,9 @@ class ClosedBugsPlugin(BasePlugin):
         try:
             closes = self.changes['Closes']
             log.debug('Creating SOAP proxy to bugs.debian.org')
+            from ZSI.client import Binding
             try:
-                server = SOAPpy.SOAPProxy('http://bugs.debian.org/cgi-bin/soap.cgi', 'Debbugs/SOAP')
+                server = Binding(url='http://bugs.debian.org/cgi-bin/soap.cgi', ns='Debbugs/SOAP')
             except:
                 log.critical('An error occurred when creating the SOAP proxy')
 

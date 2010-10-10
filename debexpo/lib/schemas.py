@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -31,14 +32,15 @@
 Holds form schemas for debexpo forms.
 """
 
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__author__ = 'Jonny Lamb, Jan Dittberner'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import formencode
 
 from pylons import config
 
+from debexpo.lib import constants
 from debexpo.lib.validators import NewEmailToSystem, NewDebianEmailToSystem, GpgKey, \
     CurrentPassword, CheckBox
 
@@ -124,3 +126,29 @@ class SponsorForm(RegisterForm):
         email = NewEmailToSystem(not_empty=True)
     else:
         email = NewDebianEmailToSystem(not_empty=True)
+
+class PackageSubscribeForm(formencode.Schema):
+    """
+    Schema for the package email subscription form.
+    """
+    level = formencode.compound.All(
+        formencode.validators.OneOf([
+                -1, constants.SUBSCRIPTION_LEVEL_UPLOADS,
+                 constants.SUBSCRIPTION_LEVEL_COMMENTS]),
+        formencode.validators.Int(not_empty=True))
+    commit = formencode.validators.String()
+
+class PackageCommentForm(formencode.Schema):
+    """
+    Schema for the package comment form.
+    """
+    package_version = formencode.validators.Int(not_empty=True)
+    text = formencode.validators.String(not_empty=True)
+    outcome = formencode.compound.All(
+        formencode.validators.OneOf([
+                constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED,
+                constants.PACKAGE_COMMENT_OUTCOME_NEEDS_WORK,
+                constants.PACKAGE_COMMENT_OUTCOME_PERFECT]),
+        formencode.validators.Int(not_empty=True))
+    status = formencode.validators.Bool(if_missing=False)
+    commit = formencode.validators.String()

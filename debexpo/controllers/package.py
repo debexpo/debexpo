@@ -41,9 +41,10 @@ import logging
 import os
 
 from debexpo.lib.base import *
-from debexpo.lib import constants
+from debexpo.lib import constants, form
 from debexpo.lib.utils import get_package_dir
 from debexpo.lib.email import Email
+from debexpo.lib.schemas import PackageSubscribeForm, PackageCommentForm
 
 from debexpo.model import meta
 from debexpo.model.packages import Package
@@ -109,8 +110,6 @@ class PackageController(BaseController):
             Package name to look at.
         """
         package = self._get_package(packagename)
-        if not isinstance(package, Package):
-            return package
 
         log.debug('Rendering page')
         return render('/package/rfs.mako')
@@ -126,50 +125,59 @@ class PackageController(BaseController):
             log.debug('Requires authentication')
             session['path_before_login'] = request.path_info
             session.save()
-            redirect(url(controller='login'))
+            redirect(url('login'))
 
         package = self._get_package(packagename)
-        if not isinstance(package, Package):
-            return package
 
-        query = meta.session.query(PackageSubscription).filter_by(package=packagename).filter_by(user_id=session['user_id'])
+        query = meta.session.query(PackageSubscription).filter_by(
+            package=packagename).filter_by(user_id=session['user_id'])
         subscription = query.first()
 
+        validation = False
         if request.method == 'POST':
             # The form has been submitted.
-            if subscription is None:
-                # There is no previous subscription.
-                if request.POST['level'] != -1:
-                    log.debug('Creating new subscription on %s' % packagename)
-                    subscribe = PackageSubscription(package=packagename, user_id=session['user_id'],
-                        level=request.POST['level'])
-                    meta.session.save(subscribe)
-
-            else:
-                # There is a previous subscription.
-                if request.POST['level'] != -1:
-                    log.debug('Changing previous subscription on %s' % packagename)
-                    subscription.level = request.POST['level']
+            try:
+                fields = form.validate(PackageSubscribeForm,
+                                       user_id=session['user_id'])
+            except Exception, e:
+                log.error('Failed validation')
+                validation = e
+            if not validation:
+                if subscription is None:
+                    # There is no previous subscription.
+                    if fields['level'] != -1:
+                        log.debug('Creating new subscription on %s' % packagename)
+                        subscription = PackageSubscription(
+                            package=packagename,
+                            user_id=session['user_id'],
+                            level=fields['level'])
+                        meta.session.add(subscription)
                 else:
-                    log.debug('Deleting previous subscription on %s' % packagename)
-                    meta.session.delete(subscription)
+                    # There is a previous subscription.
+                    if fields['level'] != -1:
+                        log.debug('Changing previous subscription on %s' % packagename)
+                        subscription.level = fields['level']
+                    else:
+                        log.debug('Deleting previous subscription on %s' % packagename)
+                        meta.session.delete(subscription)
+                meta.session.commit()
+                redirect(url('package', packagename=packagename))
 
-            meta.session.commit()
-            redirect(url('package', packagename=packagename))
-
-        c.subscriptions = {
-            _('No subscription') : -1,
-            _('Package upload notifications only') : constants.SUBSCRIPTION_LEVEL_UPLOADS,
-            _('Package upload and comment notifications') : constants.SUBSCRIPTION_LEVEL_COMMENTS
-        }
+        c.subscriptions = [
+            (-1, _('No subscription')),
+            (constants.SUBSCRIPTION_LEVEL_UPLOADS,
+             _('Package upload notifications only')),
+            (constants.SUBSCRIPTION_LEVEL_COMMENTS,
+             _('Package upload and comment notifications'))]
 
         if subscription is None:
             c.current_subscription = -1
         else:
             c.current_subscription = subscription.level
 
-
         log.debug('Rendering page')
+        if validation:
+            return form.htmlfill(render('/package/subscribe.mako'), validation)
         return render('/package/subscribe.mako')
 
     def delete(self, packagename):
@@ -179,15 +187,18 @@ class PackageController(BaseController):
         ``packagename``
             Package name to delete.
         """
+        if 'user_id' not in session:
+            log.debug('Requires authentication')
+            session['path_before_login'] = request.path_info
+            session.save()
+            redirect(url('login'))
+
         # The user should have already been prompted with a nice dialog box
         # confirming their choice, so no mercy here.
+        meta.session.delete(self._get_package(packagename))
+        meta.session.commit()
 
-        package = self._get_package(packagename)
-        if isinstance(package, Package):
-            meta.session.delete(package)
-            meta.session.commit()
-
-        redirect(controller='packages', filter='my')
+        redirect(url(controller='packages', action='index', filter='my'))
 
     def comment(self, packagename):
         """
@@ -196,25 +207,36 @@ class PackageController(BaseController):
         ``packagename``
             Package name to look at.
         """
+        if 'user_id' not in session:
+            log.debug('Requires authentication')
+            session['path_before_login'] = request.path_info
+            session.save()
+            redirect(url('login'))
+
         package = self._get_package(packagename)
-        if not isinstance(package, Package):
-            return package
 
         status = constants.PACKAGE_COMMENT_STATUS_NOT_UPLOADED
-        if 'status' in request.POST and request.POST['status']:
+        try:
+            fields = form.validate(PackageCommentForm)
+        except Exception, e:
+            log.error("failed validation")
+            return form.htmlfill(self.index(packagename), e)
+
+        if fields['status']:
             status = constants.PACKAGE_COMMENT_STATUS_UPLOADED
 
         comment = PackageComment(user_id=session['user_id'],
-            package_version_id=request.POST['package_version'],
-            text=request.POST['text'],
+            package_version_id=fields['package_version'],
+            text=fields['text'],
             time=datetime.now(),
-            outcome=request.POST['outcome'],
+            outcome=fields['outcome'],
             status=status)
 
-        meta.session.save(comment)
+        meta.session.add(comment)
         meta.session.commit()
 
-        subscribers = meta.session.query(PackageSubscription).filter_by(package=packagename).filter(\
+        subscribers = meta.session.query(PackageSubscription).filter_by(
+            package=packagename).filter(
             PackageSubscription.level <= constants.SUBSCRIPTION_LEVEL_COMMENTS).all()
 
         if len(subscribers) > 0:
@@ -222,6 +244,6 @@ class PackageController(BaseController):
 
             email = Email('comment_posted')
             email.send([s.user.email for s in subscribers], package=packagename,
-                comment=request.POST['text'], user=user)
+                comment=fields['text'], user=user)
 
-        redirect('package', packagename=packagename)
+        redirect(url('package', packagename=packagename))

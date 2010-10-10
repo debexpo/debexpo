@@ -49,7 +49,7 @@ class State(object):
 
     For example::
 
-      >>> c = Class(one='foo', two='bar')
+      >>> c = State(one='foo', two='bar')
       >>> c.one
       'foo'
       >>> c.two
