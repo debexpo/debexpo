@@ -8,7 +8,7 @@
 
     <p>
       ${ _('Your account has been activated.') }
-      ${ _('You can now %sproceed to login%s.') % ('<a href="' + h.url('my') + '">', '</a>') }
+      ${ h.literal(_('You can now %sproceed to login%s.') % ('<a href="' + h.url('my') + '">', '</a>')) }
     </p>
 
 % else:
