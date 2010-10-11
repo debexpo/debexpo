@@ -53,6 +53,6 @@ from webhelpers import containers, \
                        number, \
                        text, \
                        util
-from webhelpers.html import tags,converters
+from webhelpers.html import tags,converters,literal
 from pylons import url
 from debexpo.lib import constants
