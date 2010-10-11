@@ -14,7 +14,7 @@ setup(
     #url='',
     scripts=['bin/debexpo-importer'],
     install_requires=[
-        "Pylons>=0.10",
+        "Pylons>=1.0",
         "SQLAlchemy>=0.6",
         "Webhelpers>=0.6.1",
         "Babel",

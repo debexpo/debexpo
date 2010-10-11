@@ -39,7 +39,7 @@ __license__ = 'MIT'
 from optparse import OptionParser
 import ConfigParser
 from datetime import datetime
-from debian_bundle import deb822
+from debian import deb822
 import logging
 import logging.config
 import os
@@ -47,6 +47,7 @@ import re
 import sys
 import shutil
 from stat import *
+import pylons
 
 from sqlalchemy import exceptions
 
@@ -72,7 +73,6 @@ class Importer(object):
 
         ``user_id``
             ID of the user doing the upload. This is given from the upload controller.
-
         """
         self.changes_file = changes
         self.ini_file = ini
@@ -192,18 +192,14 @@ class Importer(object):
 
         # Import debexpo modules
         from paste.deploy import appconfig
-        from pylons import config
         from debexpo.config.environment import load_environment
-
-        # Save app config for later
-        self.config = config
 
         # Initialize Pylons app
         conf = appconfig('config:' + options.ini)
-        load_environment(conf.global_conf, conf.local_conf)
+        pylons.config = load_environment(conf.global_conf, conf.local_conf)
 
         # Change into the incoming directory
-        os.chdir(self.config['debexpo.upload.incoming'])
+        os.chdir(pylons.config['debexpo.upload.incoming'])
 
         # Look for the changes file
         if not os.path.isfile(self.changes_file):
@@ -217,7 +213,8 @@ class Importer(object):
 
         # Horrible imports
         from debexpo.model import meta
-        from debexpo.lib.base import h
+        #from debexpo.lib.base import h
+        import webhelpers as h
         from debexpo.lib.utils import parse_section, md5sum
         from debexpo.lib.email import Email
         from debexpo.lib.plugins import Plugins
@@ -281,8 +278,8 @@ class Importer(object):
         # Add PackageFile objects to the database for each uploaded file
         for file in self.files:
             filename = os.path.join(self.changes.get_pool_path(), file)
-            sum = md5sum(os.path.join(self.config['debexpo.repository'], filename))
-            size = os.stat(os.path.join(self.config['debexpo.repository'], filename))[ST_SIZE]
+            sum = md5sum(os.path.join(pylons.config['debexpo.repository'], filename))
+            size = os.stat(os.path.join(pylons.config['debexpo.repository'], filename))[ST_SIZE]
 
             # Check for binary or source package file
             if file.endswith('.deb'):
@@ -316,8 +313,8 @@ class Importer(object):
 
         # Send success email to uploader
         email = Email('successful_upload')
-        dsc_url = self.config['debexpo.server'] + '/debian/' + self.changes.get_pool_path() + '/' + self.changes.get_dsc()
-        rfs_url = self.config['debexpo.server'] + h.url_for('rfs', packagename=self.changes['Source'])
+        dsc_url = pylons.config['debexpo.server'] + '/debian/' + self.changes.get_pool_path() + '/' + self.changes.get_dsc()
+        rfs_url = pylons.config['debexpo.server'] + h.url_for('rfs', packagename=self.changes['Source'])
         email.send([self.user.email], package=self.changes['Source'],
             dsc_url=dsc_url, rfs_url=rfs_url)
 
@@ -367,16 +364,16 @@ class Importer(object):
         # the repository.
         orig = self._orig()
         if orig is not True:
-            filename = os.path.join(self.config['debexpo.repository'],
+            filename = os.path.join(pylons.config['debexpo.repository'],
                 self.changes.get_pool_path(), orig)
             if os.path.isfile(filename):
-                shutil.copy(filename, self.config['debexpo.upload.incoming'])
+                shutil.copy(filename, pylons.config['debexpo.upload.incoming'])
                 self.files.append(orig)
             else:
                 oldorig = orig
                 orig = None
 
-        destdir = self.config['debexpo.repository']
+        destdir = pylons.config['debexpo.repository']
 
         # Get uploader's User object
         from debexpo.model import meta
@@ -412,15 +409,15 @@ class Importer(object):
                 self.files.append(oldorig)
 
         # Check whether the debexpo.repository variable is set
-        if 'debexpo.repository' not in self.config:
+        if 'debexpo.repository' not in pylons.config:
             self._fail('debexpo.repository not set')
 
         # Check whether debexpo.repository is a directory
-        if not os.path.isdir(self.config['debexpo.repository']):
+        if not os.path.isdir(pylons.config['debexpo.repository']):
             self._fail('debexpo.repository is not a directory')
 
         # Check whether debexpo.repository is writeable
-        if not os.access(self.config['debexpo.repository'], os.W_OK):
+        if not os.access(pylons.config['debexpo.repository'], os.W_OK):
             self._fail('debexpo.repository is not writeable')
 
         qa = Plugins('qa', self.changes, self.changes_file, user_id=self.user_id)
@@ -455,7 +452,7 @@ class Importer(object):
 
         # Refresh the Sources/Packages files.
         log.debug('Updating Sources and Packages files')
-        r = Repository(self.config['debexpo.repository'])
+        r = Repository(pylons.config['debexpo.repository'])
         r.update()
 
         log.debug('Done')
