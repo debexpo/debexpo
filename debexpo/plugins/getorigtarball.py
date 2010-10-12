@@ -55,6 +55,7 @@ class GetOrigTarballPlugin(BasePlugin):
         Check whether there is an original tarball referenced by the dsc file, but not
         actually in the package upload.
         """
+        log.debug('Checking whether an orig tarball mentioned in the dsc is missing')
         dsc = deb822.Dsc(file(self.changes.get_dsc()))
 
         orig = None

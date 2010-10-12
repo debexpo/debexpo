@@ -91,7 +91,7 @@ class Plugins(object):
         # Run the plugins.
         if type in plugin_stages:
             self.conf = plugin_stages[type]
-            log.debug('Running %s plugins' % type)
+            log.debug('Running plugins of type: %s' % type)
             self.result = self._run_plugins()
 
     def _import_plugin(self, name):
@@ -105,12 +105,16 @@ class Plugins(object):
             Module to import.
         """
         try:
+            log.debug('Trying to import plugin: %s', name)
             mod = __import__(name)
             components = name.split('.')
             for comp in components[1:]:
                 mod = getattr(mod, comp)
+            log.debug('Import succeeded.')
             return mod
-        except ImportError:
+        except ImportError, e:
+            log.error(sys.path)
+            log.debug('Import failed: %s', e)
             return None
 
     def _extract(self):
@@ -118,8 +122,11 @@ class Plugins(object):
         Copy the files to a temporary directory and run dpkg-source -x on the dsc file
         to extract them.
         """
+        log.debug('Copying files to a temp directory to run dpkg-source -x on the dsc file')
         self.tempdir = tempfile.mkdtemp()
+        log.debug('Temp dir is: %s', self.tempdir)
         for filename in self.changes.get_files():
+            log.debug('Copying: %s', filename)
             shutil.copy(os.path.join(config['debexpo.upload.incoming'], filename), self.tempdir)
 
         # If the original tarball was pulled from Debian or from the repository, that
@@ -164,7 +171,7 @@ class Plugins(object):
         for plugin in plugins.split(' '):
             log.debug('Running %s plugin' % plugin)
             module = None
-            if 'debexpo.plugin_dir' in config and config['debexpo.plugindir'] != '':
+            if config.get('debexpo.plugindir') != '':
                 # First try in the user-defined plugindir
                 sys.path.append(config['debexpo.plugindir'])
                 module = self._import_plugin(plugin)
@@ -176,6 +183,7 @@ class Plugins(object):
                 name = 'debexpo.plugins.%s' % plugin
                 module = self._import_plugin(name)
 
+            # The 'plugin' object points to the class containing the actual plugin/test
             if hasattr(module, 'plugin'):
                 p = getattr(module, 'plugin')(name=plugin, changes=self.changes, \
                     changes_file=self.changes_file, tempdir=self.tempdir, \
