@@ -51,6 +51,39 @@ import pylons
 
 from sqlalchemy import exceptions
 
+# Horrible imports
+from debexpo.model import meta
+import debexpo.lib.helpers as h
+from debexpo.lib.utils import parse_section, md5sum
+from debexpo.lib.email import Email
+from debexpo.lib.plugins import Plugins
+from debexpo.lib import constants
+from pylons import tmpl_context as c
+#from pylons import url
+from routes.util import url_for as url
+
+# Import model objects
+from debexpo.model import meta
+from debexpo.model.users import User
+from debexpo.model.packages import Package
+from debexpo.model.package_versions import PackageVersion
+from debexpo.model.source_packages import SourcePackage
+from debexpo.model.binary_packages import BinaryPackage
+from debexpo.model.package_files import PackageFile
+from debexpo.model.package_info import PackageInfo
+from debexpo.model.package_subscriptions import PackageSubscription
+
+# Import debexpo modules
+from paste.deploy import appconfig
+from debexpo.config.environment import load_environment
+from debexpo.lib.base import config
+from debexpo.lib.email import Email
+from debexpo.lib.changes import Changes
+from debexpo.lib.repository import Repository
+from debexpo.lib.plugins import Plugins
+
+
+
 log = None
 
 class Importer(object):
@@ -119,9 +152,6 @@ class Importer(object):
 
         self._remove_files()
 
-        from debexpo.lib.base import config
-        from debexpo.lib.email import Email
-
         if self.user is not None:
             email = Email('importer_fail_maintainer')
             package = self.changes.get('Source', '')
@@ -148,7 +178,6 @@ class Importer(object):
         self._remove_files()
 
         if self.user is not None:
-            from debexpo.lib.email import Email
             email = Email('importer_reject_maintainer')
             package = self.changes.get('Source', '')
 
@@ -190,10 +219,6 @@ class Importer(object):
         # Import debexpo root directory
         sys.path.append(os.path.dirname(self.ini_file))
 
-        # Import debexpo modules
-        from paste.deploy import appconfig
-        from debexpo.config.environment import load_environment
-
         # Initialize Pylons app
         conf = appconfig('config:' + options.ini)
         pylons.config = load_environment(conf.global_conf, conf.local_conf)
@@ -211,26 +236,6 @@ class Importer(object):
         """
         log.debug('Creating database entries')
 
-        # Horrible imports
-        from debexpo.model import meta
-        #from debexpo.lib.base import h
-        import webhelpers as h
-        from debexpo.lib.utils import parse_section, md5sum
-        from debexpo.lib.email import Email
-        from debexpo.lib.plugins import Plugins
-        from debexpo.lib import constants
-        from pylons import c
-
-        # Import model objects
-        from debexpo.model.users import User
-        from debexpo.model.packages import Package
-        from debexpo.model.package_versions import PackageVersion
-        from debexpo.model.source_packages import SourcePackage
-        from debexpo.model.binary_packages import BinaryPackage
-        from debexpo.model.package_files import PackageFile
-        from debexpo.model.package_info import PackageInfo
-        from debexpo.model.package_subscriptions import PackageSubscription
-
         # Parse component and section from field in changes
         component, section = parse_section(self.changes['files'][0]['section'])
 
@@ -243,7 +248,7 @@ class Importer(object):
             log.debug('Package %s is new to the system' % self.changes['Source'])
             package = Package(name=self.changes['Source'], user=self.user)
             package.description = self.changes['Description'][2:].replace('      - ', ' - ')
-            meta.session.save(package)
+            meta.session.add(package)
 
         # No need to check whether there is the same source name and same version as an existing
         # entry in the database as the upload controller tested whether similar filenames existed
@@ -268,10 +273,10 @@ class Importer(object):
             section=section, distribution=self.changes['Distribution'], qa_status=qa_status,
             component=component, priority=self.changes.get_priority(), closes=closes,
             uploaded=datetime.now(), maintainer=maintainer)
-        meta.session.save(package_version)
+        meta.session.add(package_version)
 
         source_package = SourcePackage(package_version=package_version)
-        meta.session.save(source_package)
+        meta.session.add(source_package)
 
         binary_package = None
 
@@ -286,15 +291,15 @@ class Importer(object):
                 # Only create a BinaryPackage if there actually binary package files
                 if binary_package is None:
                     binary_package = BinaryPackage(package_version=package_version, arch=file[:-4].split('_')[-1])
-                    meta.session.save(binary_package)
+                    meta.session.add(binary_package)
 
-                meta.session.save(PackageFile(filename=filename, binary_package=binary_package, size=size, md5sum=sum))
+                meta.session.add(PackageFile(filename=filename, binary_package=binary_package, size=size, md5sum=sum))
             else:
-                meta.session.save(PackageFile(filename=filename, source_package=source_package, size=size, md5sum=sum))
+                meta.session.add(PackageFile(filename=filename, source_package=source_package, size=size, md5sum=sum))
 
         # Add PackageInfo objects to the database for the package_version
         for result in qa.result:
-            meta.session.save(PackageInfo(package_version=package_version, from_plugin=result.from_plugin,
+            meta.session.add(PackageInfo(package_version=package_version, from_plugin=result.from_plugin,
                 outcome=result.outcome, data=result.data, severity=result.severity))
 
         # Commit all changes to the database
@@ -314,7 +319,7 @@ class Importer(object):
         # Send success email to uploader
         email = Email('successful_upload')
         dsc_url = pylons.config['debexpo.server'] + '/debian/' + self.changes.get_pool_path() + '/' + self.changes.get_dsc()
-        rfs_url = pylons.config['debexpo.server'] + h.url_for('rfs', packagename=self.changes['Source'])
+        rfs_url = pylons.config['debexpo.server'] + url('rfs', packagename=self.changes['Source'])
         email.send([self.user.email], package=self.changes['Source'],
             dsc_url=dsc_url, rfs_url=rfs_url)
 
@@ -346,10 +351,6 @@ class Importer(object):
 
         log.debug('Importer started with arguments: %s' % sys.argv[1:])
 
-        from debexpo.lib.changes import Changes
-        from debexpo.lib.repository import Repository
-        from debexpo.lib.plugins import Plugins
-
         # Try parsing the changes file, but fail if there's an error.
         try:
             self.changes = Changes(filename=self.changes_file)
@@ -376,13 +377,12 @@ class Importer(object):
         destdir = pylons.config['debexpo.repository']
 
         # Get uploader's User object
-        from debexpo.model import meta
-        from debexpo.model.users import User
         self.user = meta.session.query(User).filter_by(id=self.user_id).filter_by(verification=None).first()
         if self.user is None:
             self._fail('Couldn\'t find user with id %s. Exiting.' % self.user_id)
 
         # Check whether the files are already present
+        log.debug("Checking whether files are already in the repository")
         toinstall = []
         pool_dir = os.path.join(destdir, self.changes.get_pool_path())
         for file in self.files:
