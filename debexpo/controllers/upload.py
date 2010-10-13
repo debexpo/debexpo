@@ -56,7 +56,7 @@ class UploadController(BaseController):
     Controller to handle uploading packages via HTTP PUT.
     """
 
-    def index(self, filename, email=None, password=None):
+    def index(self, filename, email, password):
         """
         Controller entry point. When dput uploads a package via `PUT`, the connection below is made::
 
@@ -82,12 +82,6 @@ class UploadController(BaseController):
 
         log.debug('File upload: %s' % filename)
 
-        # Is the email+password supplied within the URL?
-        if email is None:
-            # No -> try to get the uploader's username and password from the HTTP request
-            log.debug('Trying to get auth credentials from the HTTP request')
-            username, password = self._get_credentials()
-
         # Check the uploader's username and password
         try:
             # Get user from database
@@ -95,7 +89,7 @@ class UploadController(BaseController):
             log.debug('Authenticated as %s <%s>' % (user.name, user.email))
         except InvalidRequestError, e:
             # Couldn't get one() row, therefore unsuccessful authentication
-            abort(401, 'Authentication failed')
+            abort(403, 'Authentication failed.')
 
 
         # Check whether the file extension is supported by debexpo
@@ -131,33 +125,3 @@ class UploadController(BaseController):
                 config['global_conf']['__file__'], filename, user.id)
 
             subprocess.Popen(command, shell=True, close_fds=True)
-
-    def _please_authenticate(self):
-        """
-        Responds to a request with a HTTP response code 401 requesting authentication.
-        """
-        log.error('Authorization not found in request headers')
-
-        abort(401, 'Please use your email and password when uploading',
-              headers = {'WWW-Authenticate': 'Basic realm="debexpo"'})
-
-
-    def _get_credentials(self):
-        """
-        Deals with authentication and checks the HTTP headers to ensure the email/password are correct
-        and returns the integer of the user's ID, assuming the authentication was successful. Reject
-        the upload if authentication is unsuccessful
-        """
-        if 'Authorization' not in request.headers:
-            self._please_authenticate()
-
-        # Get Authorization header
-        auth = request.headers['Authorization']
-
-        # We only support basic HTTP authentication
-        if not auth.startswith('Basic '):
-            self._please_authenticate()
-
-        # Email and password are in a base64 encoded string like: email:password
-        # Decode this string
-        email, password = base64.b64decode(auth.split()[1]).split(':')
