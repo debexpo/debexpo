@@ -88,7 +88,7 @@ debexpo.debian_specific = true
 debexpo.plugins.post_upload = getorigtarball checkfiles notuploader
 
 # What qa plugins to run, in this order
-debexpo.plugins.qa = gpgsigned lintian native maintaineremail watchfile closedbugs controlfields diffclean buildsystem debian
+debexpo.plugins.qa = gpgsigned lintian native maintaineremail watchfile closedbugs controlfields diffclean buildsystem debianqa
 
 # DEBEXPO
 # What plugins to run when the package is uploaded to Debian, in this order

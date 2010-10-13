@@ -67,8 +67,8 @@ and `Homepage`.
 This is an information QA plugin and should only be run in that stage, between
 upload and successful importing.
 
-debian
-======
+debianqa
+========
 
 This plugin tests a number of things with the uploaded package against information
 in Debian:
