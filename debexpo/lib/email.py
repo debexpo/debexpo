@@ -42,9 +42,10 @@ import smtplib
 from mako.template import Template
 from mako.lookup import TemplateLookup
 
-from debexpo.lib.base import config
+import pylons
 import debexpo.lib.helpers as h
 from gettext import gettext
+import routes.util
 
 log = logging.getLogger(__name__)
 
@@ -62,15 +63,15 @@ class Email(object):
             Name of the template to use for the email.
         """
         self.template = template
-        self.server = config['global_conf']['smtp_server']
+        self.server = pylons.config['global_conf']['smtp_server']
         self.auth = None
 
         # Look whether auth is required.
-        if 'smtp_username' in config['global_conf'] and 'smtp_password' in config['global_conf']:
-            if config['global_conf']['smtp_username'] != '' and config['global_conf']['smtp_password'] != '':
+        if 'smtp_username' in pylons.config['global_conf'] and 'smtp_password' in pylons.config['global_conf']:
+            if pylons.config['global_conf']['smtp_username'] != '' and pylons.config['global_conf']['smtp_password'] != '':
                 self.auth = {
-                    'username' : config['global_conf']['smtp_username'],
-                    'password' : config['global_conf']['smtp_password']
+                    'username' : pylons.config['global_conf']['smtp_username'],
+                    'password' : pylons.config['global_conf']['smtp_password']
                 }
 
     def send(self, recipients=None, **kwargs):
@@ -86,14 +87,17 @@ class Email(object):
         log.debug('Getting mail template: %s' % self.template)
 
         to = ', '.join(recipients)
-        sender = '%s <%s>' % (config['debexpo.sitename'], config['debexpo.email'])
+        sender = '%s <%s>' % (pylons.config['debexpo.sitename'], pylons.config['debexpo.email'])
 
-        c = FakeC(to=to, sender=sender, config=config, **kwargs)
+        c = FakeC(to=to, sender=sender, config=pylons.config, **kwargs)
 
         template_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'templates/email/%s.mako' % self.template)
         lookup = TemplateLookup(directories=[os.path.dirname(template_file)])
-        template = Template(filename=template_file, lookup=lookup, module_directory=config['app_conf']['cache_dir'])
+        template = Template(filename=template_file, lookup=lookup, module_directory=pylons.config['app_conf']['cache_dir'])
+        # Temporarily set up routes.util.url_for as the URL renderer used for h.url() in templates
+        pylons.url._push_object(routes.util.url_for)
         message = template.render(_=gettext, h=h, c=c)
+        pylons.url._pop_object()
 
         log.debug('Starting SMTP session to %s' % self.server)
         session = smtplib.SMTP(self.server)
@@ -103,7 +107,7 @@ class Email(object):
             session.login(self.auth['user'], self.auth['password'])
 
         log.debug('Sending email to %s' % ', '.join(recipients))
-        result = session.sendmail(config['debexpo.email'], recipients, message)
+        result = session.sendmail(pylons.config['debexpo.email'], recipients, message)
 
         if result:
             # Something went wrong.
