@@ -113,8 +113,14 @@ class Plugins(object):
             log.debug('Import succeeded.')
             return mod
         except ImportError, e:
-            log.error(sys.path)
-            log.debug('Import failed: %s', e)
+            if e.message.startswith('No module named'):
+                # Not fatal: the plugin module was not found at this location
+                # (might be okay because plugins are looked for in several locations)
+                log.debug('Import failed - module not found: %s', e)
+            else:
+                # The module was found but failed to import for other reasons.
+                # It's worth looking into why importing failed.
+                log.warn('Import of module "%s" failed with error: %s', name, e)
             return None
 
     def _extract(self):
