@@ -39,11 +39,12 @@ debugging a debexpo test that fails
 So you've found a test that fails (F) or exits with an unhandled exception (E)?
 Time to use the Python debugger.
 
-Add this to the test code that is failing:
+Run the test suite with these parameters:
 
-  import nose; nose.tools.set_trace()
+  % ./bin/nosetests --with-pylons=test.ini --pdb-failures --pdb-errors
 
-(If you've used pdb.set_trace(), this is a Nose-compatible version of that.)
+(If you've used pdb.set_trace(), this is an automatic way that Nose gives
+you that functionality.)
 
 debexpo documentation
 =====================
