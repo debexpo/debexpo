@@ -139,7 +139,7 @@ class RegisterController(BaseController):
             verification=key,
             status=constants.USER_STATUS_DEVELOPER)
 
-        meta.session.save(u)
+        meta.session.add(u)
         meta.session.commit()
 
         self._send_activate_email(key, self.form_result['email'])
