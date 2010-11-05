@@ -129,7 +129,7 @@ debexpo.gpg_path = /usr/bin/gpg
 #debexpo.html.frontpage = html/frontpage.html
 #
 # Additional HTML on the maintainer's introduction page
-#debexpo.html.maintainer_intro = html/maintainer-intro.html
+debexpo.html.maintainer_intro = html/maintainer-intro.html
 #
 # Additional HTML on the sponsor's introduction page
 #debexpo.html.sponsors_intro = html/sponsor-intro.html
