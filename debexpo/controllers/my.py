@@ -189,10 +189,10 @@ class MyController(BaseController):
         c.user = self.user
 
         # Create the countries values.
-        countries = { '' : -1 }
+        countries = { -1: '' }
 
         for country in meta.session.query(UserCountry).all():
-            countries[country.name] = country.id
+            countries[country.id] = country.name
 
         c.countries = countries
 

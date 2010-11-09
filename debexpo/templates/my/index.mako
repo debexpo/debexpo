@@ -110,7 +110,7 @@
   <table>
     <tr>
       <td>${ _('Country') }:</td>
-      <td>${ h.html.tags.select('country', c.current_country, c.countries) }</td>
+      <td>${ h.html.tags.select('country', c.current_country, sorted(c.countries.iteritems(), key=lambda x: x[1])) }</td>
     </tr>
 
     <tr>
