@@ -61,7 +61,7 @@ class TestPackageController(TestController):
         self.assertEquals(response.status_int, 200)
         self.assertEquals(len(response.lxml.xpath(
                     '//a[@href="%s"]' % url(
-                        controller='packages', action='uploader',
+                        'packages-uploader',
                         id='email@example.com'))), 1)
         response = self.app.post(url('login'), self._AUTHDATA)
         response = self.app.get(url(controller='package', action='index',

@@ -18,8 +18,7 @@ class TestPackagesController(TestController):
         self.assertEquals('text/html', response.content_type)
 
     def test_uploader(self):
-        response = self.app.get(url(controller='packages',
-                                    action='uploader', id='email@example.com'))
+        response = self.app.get(url('packages-uploader', id='email@example.com'))
         self.assertEquals(200, response.status_int)
         self.assertEquals('text/html', response.content_type)
 

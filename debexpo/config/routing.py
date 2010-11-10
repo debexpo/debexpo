@@ -76,6 +76,7 @@ def make_map(config):
     map.connect('rfs', '/package/rfs/{packagename}', controller='package', action='rfs')
     map.connect('packages', '/packages/{action}', controller='packages', action='index')
     map.connect('all-packages', '/packages', controller='packages', action='index')
+    map.connect('packages-uploader', '/packages/uploader/{id}', controller='packages', action='uploader')
     #map.connect('/packages/{action}/{id}', controller='packages', action='index', id=None)
     #map.connect('packages_filter_feed', '/packages/{filter}/{id}/feed', controller='packages', action='feed')
     #map.connect('packages_feed', '/packages/feed', controller='packages', action='feed')
