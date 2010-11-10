@@ -15,7 +15,7 @@
 
 % if c.config['debexpo.debian_specific'] == 'true':
 
-    (<a href="http://qa.debian.org/developer.php?login=${c.package.user.email }">Debian QA page</a>)
+    (<a href="http://qa.debian.org/developer.php?login=${c.package.user.email | u }">Debian QA page</a>)
 
 % endif
 
