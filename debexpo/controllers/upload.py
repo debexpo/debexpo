@@ -56,7 +56,7 @@ class UploadController(BaseController):
     Controller to handle uploading packages via HTTP PUT.
     """
 
-    def index(self, filename, email, password):
+    def index(self, filename):
         """
         Controller entry point. When dput uploads a package via `PUT`, the connection below is made::
 
@@ -69,12 +69,6 @@ class UploadController(BaseController):
 
         ``filename``
             Name of file being uploaded.
-
-        ``email`` (optional)
-            Used when requesting the URL /upload/email/password/filename scheme.
-
-        ``password`` (optional)
-            Used when requesting the URL /upload/email/password/filename scheme.
         """
         if request.method != 'PUT':
             log.error('Request with method %s attempted on Upload controller.' % request.method)
@@ -83,14 +77,7 @@ class UploadController(BaseController):
         log.debug('File upload: %s' % filename)
 
         # Check the uploader's username and password
-        try:
-            # Get user from database
-            user = meta.session.query(User).filter_by(email=email).filter_by(password=md5.new(password).hexdigest()).one()
-            log.debug('Authenticated as %s <%s>' % (user.name, user.email))
-        except InvalidRequestError, e:
-            # Couldn't get one() row, therefore unsuccessful authentication
-            abort(403, 'Authentication failed.')
-
+        user_id = self._check_credentials()
 
         # Check whether the file extension is supported by debexpo
         if not allowed_upload(filename):
@@ -109,12 +96,9 @@ class UploadController(BaseController):
             log.critical('debexpo.upload.incoming is not writable')
             abort(500, 'The incoming directory has not been set up')
 
-        save_path = os.path.join(config['debexpo.upload.incoming'], filename)
-        log.debug('Saving uploaded file to: %s', save_path)
-        f = open(save_path, 'wb')
+        f = open(os.path.join(config['debexpo.upload.incoming'], filename), 'wb')
 
         # The body attribute now contains the entire contents of the uploaded file.
-        # TODO: This looks dangerous if huge files are loaded into memory.
         f.write(request.body)
         f.close()
 
@@ -122,6 +106,48 @@ class UploadController(BaseController):
         # call the importer process.
         if filename.endswith('.changes'):
             command = '%s -i %s -c %s -u %s' % (config['debexpo.importer'],
-                config['global_conf']['__file__'], filename, user.id)
+                config['global_conf']['__file__'], filename, user_id)
 
             subprocess.Popen(command, shell=True, close_fds=True)
+
+    def _please_authenticate(self):
+        """
+        Responds to a request with a HTTP response code 401 requesting authentication.
+        """
+        log.error('Authorization not found in request headers')
+
+        abort(401, 'Please use your email and password when uploading',
+              headers = {'WWW-Authenticate': 'Basic realm="debexpo"'})
+
+
+    def _check_credentials(self):
+        """
+        Deals with authentication and checks the HTTP headers to ensure the email/password are correct
+        and returns the integer of the user's ID, assuming the authentication was successful. Reject
+        the upload if authentication is unsuccessful
+        """
+        if 'Authorization' not in request.headers:
+            self._please_authenticate()
+
+        # Get Authorization header
+        auth = request.headers['Authorization']
+
+        # We only support basic HTTP authentication
+        if not auth.startswith('Basic '):
+            self._please_authenticate()
+
+        # Email and password are in a base64 encoded string like: email:password
+        # Decode this string
+        email, password = base64.b64decode(auth.split()[1]).split(':')
+
+        try:
+            # Get user from database
+            user = meta.session.query(User).filter_by(email=email).filter_by(password=md5.new(password).hexdigest()).one()
+
+            log.debug('Authenticated as %s <%s>' % (user.name, user.email))
+
+            return user.id
+
+        except InvalidRequestError, e:
+            # Couldn't get one() row, therefore unsuccessful authentication
+            abort(401, 'Authentication failed')
