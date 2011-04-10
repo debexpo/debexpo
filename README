@@ -3,35 +3,36 @@ running debexpo
 
 First, create a virtualenv.
 
-  % sudo apt-get install python-virtualenv
-  % virtualenv .
+  % sudo apt-get install virtualenvwrapper
+  % mkdir ~/.virtualenvs
+  % mkvirtualenv expo
+  % workon expo
 
 This creates a virtual Python environment in which you can install the
 dependencies for debexpo without altering your system (i.e., without
 requiring root). Once you have the virtualenv set up, run this command to
 download the dependencies and set up the debexpo code so it can be run:
 
-  % ./bin/python setup.py develop
+  % python setup.py develop
 
 You might think you are done, but wait! You have to compile the
 translations from "PO" format into "MO" format. To do that:
 
-  % ./bin/python setup.py build_i18n
+  % python setup.py compile_catalog
 
 Hooray! Now you're ready to run the automated tests. (The code for the
 tests lives in debexpo/tests/*. This is a test suite; you can read more at
 http://en.wikipedia.org/wiki/Test_suite .)
 
-  % ./bin/nosetests --with-pylons=test.ini
+  % nosetests --with-pylons=test.ini
 
-If all is well, all the tests should pass. Then you know you're ready to
-develop.
+As of the time of writing, all the tests do not pass. That means there is
+work to do on the test suite.
+
+They should at least run, though.
 
 (Nosetests is a "test runner" package that provides some useful add-ons. It
 has its own idiosyncracies, though.)
-
-Note that as of this writing (2010-10-04) they do not all pass. That means
-there is work to do!
 
 debugging a debexpo test that fails
 ===================================
@@ -41,7 +42,7 @@ Time to use the Python debugger.
 
 Run the test suite with these parameters:
 
-  % ./bin/nosetests --with-pylons=test.ini --pdb-failures --pdb-errors
+  % nosetests --with-pylons=test.ini --pdb-failures --pdb-errors
 
 (If you've used pdb.set_trace(), this is an automatic way that Nose gives
 you that functionality.)
