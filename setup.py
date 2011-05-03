@@ -17,7 +17,7 @@ setup(
         "Pylons>=1.0",
         "SQLAlchemy>=0.6",
         "Webhelpers>=0.6.1",
-        "Babel",
+        "Babel>=0.9.6",
         "ZSI",
         "python-debian==0.1.16",
         "soaplib==0.8.1"],
