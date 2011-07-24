@@ -5,6 +5,7 @@ First, create a virtualenv.
 
   % sudo apt-get install virtualenvwrapper
   % mkdir ~/.virtualenvs
+  % source /etc/bash_completion
   % mkvirtualenv expo
   % workon expo
 
