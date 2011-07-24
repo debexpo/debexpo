@@ -59,6 +59,7 @@ from webtest import TestApp
 import pylons.test
 from debexpo.model import meta, import_all_models
 from debexpo.model.users import User
+from debexpo.model.user_upload_key import UserUploadKey
 from debexpo.model.user_countries import UserCountry
 
 __all__ = ['environ', 'url', 'TestController']
@@ -121,6 +122,15 @@ class TestController(TestCase):
 
         meta.session.add(user)
         meta.session.commit()
+
+        if meta.session.query(UserUploadKey).filter_by(
+                upload_key='upload_key').count() == 0:
+            user_upload_key = UserUploadKey(
+                user_id=user.id,
+                upload_key='upload_key')
+            meta.session.add(user_upload_key)
+            meta.session.commit()
+
 
     def _remove_example_user(self):
         """Remove the example user.

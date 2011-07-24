@@ -51,7 +51,8 @@ class TestUploadController(TestController):
         TestController.__init__(self, *args, **kwargs)
 
         # Keep this so tests don't have to constantly create it.
-        self.emailpassword = base64.encodestring('email@example.com:password')[:-1]
+        self.user_upload_key = 'upload_key'
+        self.email = 'email@example.com'
 
     def setUp(self):
         self._setup_models()
@@ -65,6 +66,7 @@ class TestUploadController(TestController):
         Tests whether requests where method != PUT are rejected with error code 405.
         """
         response = self.app.get(url(controller='upload', action='index',
+                                    email=self.email, password=self.user_upload_key,
                                     filename='testname.dsc'), expect_errors=True)
 
         self.assertEqual(response.status_int, 405)
@@ -75,39 +77,33 @@ class TestUploadController(TestController):
         error code 401 and whether the "WWW-Authenticate" header is sent in the response with
         the correct "realm" syntax.
         """
-        response = self.app.put(url(controller='upload', action='index',
-                                    filename='testname.dsc'), expect_errors=True)
+        response = self.app.put(
+            url(controller='upload', action='index',
+                filename='testname.dsc', email='email', password='pass'), expect_errors=True)
 
-        self.assertEqual(response.status_int, 401)
-
-        authenticate = response.www_authenticate
-
-        self.assertNotEqual(authenticate, None)
-
-        self.assertEquals(authenticate[0], 'Basic')
-        self.assertTrue('realm' in authenticate[1])
+        self.assertEqual(response.status_int, 403)
 
     def testFalseAuthentication(self):
         """
-        Tests whether false authentication details returns a 401 error code.
+        Tests whether false authentication details returns a 403 error code.
         """
-        wrongemailpassword = base64.encodestring('email@example.com:wrongpassword')[:-1]
-
         response = self.app.put(url(controller='upload', action='index',
-                                    filename='testname.dsc'),
-            headers={'Authorization' : 'Basic %s' % wrongemailpassword}, expect_errors=True)
+                                    filename='testname.dsc', email=self.email,
+                                    password='wrong'),
+                                expect_errors=True)
 
-        self.assertEqual(response.status_int, 401)
+        self.assertEqual(response.status_int, 403)
 
     def testTrueAuthentication(self):
         """
         Tests whether true authentication details returns a nicer error code.
         """
         response = self.app.put(url(controller='upload', action='index',
-                                    filename='testfile1.dsc'),
-            headers={'Authorization' : 'Basic %s' % self.emailpassword}, expect_errors=True)
+                                    filename='testname.dsc', email=self.email,
+                                    password=self.user_upload_key),
+                                expect_errors=False)
 
-        self.assertNotEqual(response.status_int, 401)
+        self.assertNotEqual(response.status_int, 403)
         app_config = pylons.test.pylonsapp.config
 
         if os.path.isfile(os.path.join(app_config['debexpo.upload.incoming'], 'testfile1.dsc')):
@@ -118,8 +114,9 @@ class TestUploadController(TestController):
         Tests whether uploads of an unknown file extensions are rejected with error code 403.
         """
         response = self.app.put(url(controller='upload', action='index',
-                                    filename='testname.unknown'),
-            headers={'Authorization' : 'Basic %s' % self.emailpassword}, expect_errors=True)
+                                    filename='testname.unknown', email=self.email,
+                                    password=self.user_upload_key),
+                                expect_errors=True)
 
         self.assertEqual(response.status_int, 403)
 
@@ -127,9 +124,11 @@ class TestUploadController(TestController):
         """
         Tests whether uploads with sane file extensions and authorization are successful.
         """
-        response = self.app.put(url(controller='upload', action='index',
-                                    filename='testfile2.dsc'),
-            headers={'Authorization' : 'Basic %s' % self.emailpassword},
+        response = self.app.put(url(
+                controller='upload', action='index',
+                filename='testfile2.dsc',
+                email=self.email,
+                password=self.user_upload_key),
             params='contents', expect_errors=False)
 
         self.assertEqual(response.status_int, 200)
