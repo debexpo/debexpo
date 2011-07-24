@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/home/expo/.virtualenvs/live/bin/python
 # -*- coding: utf-8 -*-
 #
 #   debexpo-importer — executable script to import new packages
