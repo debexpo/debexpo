@@ -8,11 +8,9 @@
 <pre>
 [debexpo]
 fqdn = ${ config['debexpo.sitename'] }
-incoming = /upload
+incoming = /upload/${ c.user.email }/${ c.user.get_upload_key() }
 method = http
 allow_unsigned_uploads = 0
-login = ${ c.user.email }
-password = ${ c.user.get_upload_key() }
 </pre>
 
 <fieldset>

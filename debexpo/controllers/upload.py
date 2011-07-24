@@ -50,7 +50,7 @@ except ImportError: # for sqlalchemy 0.7.1 and above
 from debexpo.lib.base import *
 from debexpo.lib.utils import allowed_upload
 from debexpo.model import meta
-from debexpo.model.users import User
+from debexpo.model.user_upload_key import UserUploadKey
 
 log = logging.getLogger(__name__)
 
@@ -78,6 +78,8 @@ class UploadController(BaseController):
 
         ``password`` (optional)
             Used when requesting the URL /upload/email/password/filename scheme.
+
+        The password here is actually a user_upload_key, not the user password.
         """
         if request.method != 'PUT':
             log.error('Request with method %s attempted on Upload controller.' % request.method)
@@ -88,7 +90,13 @@ class UploadController(BaseController):
         # Check the uploader's username and password
         try:
             # Get user from database
-            user = meta.session.query(User).filter_by(email=email).filter_by(password=md5.new(password).hexdigest()).one()
+            import logging
+            logging.error(email)
+            logging.error(password)
+            user_upload_key = meta.session.query(UserUploadKey).filter_by(
+                upload_key=password).one()
+            if user_upload_key.user.email == email:
+                user = user_upload_key.user
             log.debug('Authenticated as %s <%s>' % (user.name, user.email))
         except InvalidRequestError, e:
             # Couldn't get one() row, therefore unsuccessful authentication
