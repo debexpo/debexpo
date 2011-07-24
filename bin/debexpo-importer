@@ -331,7 +331,8 @@ class Importer(object):
         """
         dsc = deb822.Dsc(open(self.changes.get_dsc()))
         for file in dsc['Files']:
-            if file['name'].endswith('orig.tar.gz'):
+            if (file['name'].endswith('orig.tar.gz') or
+                file['name'].endswith('orig.tar.bz2'))::
                 if os.path.isfile(file['name']):
                     return True
                 else:
@@ -387,7 +388,8 @@ class Importer(object):
         pool_dir = os.path.join(destdir, self.changes.get_pool_path())
         for file in self.files:
             if os.path.isfile(os.path.join(pool_dir, file)):
-                if not file.endswith('orig.tar.gz'):
+                if not (file.endswith('orig.tar.gz') or
+                        file.endswith('orig.tar.bz2')):
                     self._reject('File "%s" already exists' % file)
                 else:
                     log.warning('%s is not being installed as it already exists' % file)
