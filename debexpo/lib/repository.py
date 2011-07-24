@@ -81,6 +81,10 @@ class Repository(object):
             log.critical('Cannot find file %s' % filename)
             return ''
 
+        if not package:
+            log.critical('For some reason package is None... %s' % package_version)
+            return ''
+
         # Read the dsc file.
         dsc = deb822.Dsc(file(filename))
 
