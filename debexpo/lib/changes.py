@@ -127,7 +127,7 @@ class Changes(object):
         Returns the name of the .diff.gz file if there is one, otherwise None.
         """
         for item in self.get_files():
-            if item.endswith('.diff.gz'):
+            if item.endswith('.diff.gz') or item.endswith('.debian.tar.gz'):
                 return item
 
         return None
