@@ -42,7 +42,10 @@ import subprocess
 import md5
 import base64
 
-from sqlalchemy.exceptions import InvalidRequestError
+try:
+    from sqlalchemy.exceptions import InvalidRequestError
+except ImportError: # for sqlalchemy 0.7.1 and above
+    from sqlalchemy.exc import InvalidRequestError
 
 from debexpo.lib.base import *
 from debexpo.lib.utils import allowed_upload
