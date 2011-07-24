@@ -130,7 +130,7 @@ class TestUploadController(TestController):
         response = self.app.put(url(controller='upload', action='index',
                                     filename='testfile2.dsc'),
             headers={'Authorization' : 'Basic %s' % self.emailpassword},
-            params='contents', expect_errors=True)
+            params='contents', expect_errors=False)
 
         self.assertEqual(response.status_int, 200)
 
