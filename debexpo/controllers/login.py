@@ -40,7 +40,7 @@ import logging
 import md5
 from datetime import datetime
 
-from debexpo.lib.base import *
+from debexpo.lib.base import BaseController, validate, config, c, session, _, redirect, request, render, url
 from debexpo.lib.schemas import LoginForm
 from debexpo.model import meta
 from debexpo.model.users import User
