@@ -90,9 +90,6 @@ class UploadController(BaseController):
         # Check the uploader's username and password
         try:
             # Get user from database
-            import logging
-            logging.error(email)
-            logging.error(password)
             user_upload_key = meta.session.query(UserUploadKey).filter_by(
                 upload_key=password).one()
             if user_upload_key.user.email == email:
