@@ -94,6 +94,9 @@ class UploadController(BaseController):
                 upload_key=password).one()
             if user_upload_key.user.email == email:
                 user = user_upload_key.user
+            else:
+                abort(403, 'Authentication failed.')
+
             log.debug('Authenticated as %s <%s>' % (user.name, user.email))
         except InvalidRequestError, e:
             # Couldn't get one() row, therefore unsuccessful authentication
