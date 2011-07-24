@@ -38,6 +38,9 @@ __license__ = 'MIT'
 import sqlalchemy as sa
 from sqlalchemy import orm
 
+import hashlib
+import os
+
 from debexpo.model import meta, OrmObject
 from debexpo.model.user_countries import UserCountry
 from debexpo.lib.constants import USER_TYPE_NORMAL, USER_STATUS_NORMAL
@@ -60,6 +63,22 @@ t_users = sa.Table('users', meta.metadata,
 
 class User(OrmObject):
     foreign = ['country']
+
+    def get_upload_key(self):
+        import debexpo.model.user_upload_key
+        keys = meta.session.query(debexpo.model.user_upload_key.UserUploadKey
+            ).filter_by(user=self)
+        if keys.count() > 0:
+            return keys[0].upload_key
+        else:
+            # create one
+            instance = debexpo.model.user_upload_key.UserUploadKey()
+            instance.user_id = self.id
+            instance.upload_key = (
+                hashlib.md5(os.urandom(20)).hexdigest())
+            meta.session.add(instance)
+            meta.session.commit()
+            return self.get_upload_key()
 
 orm.mapper(User, t_users, properties={
     'country' : orm.relation(UserCountry, backref='users')

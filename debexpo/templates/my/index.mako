@@ -3,6 +3,18 @@
 
 <h1>${ _('My account') }</h1>
 
+<p>Put this in ~/.dput.cf</p>
+
+<pre>
+[debexpo]
+fqdn = ${ config['debexpo.sitename'] }
+incoming = /upload
+method = http
+allow_unsigned_uploads = 0
+login = ${ c.user.email }
+password = ${ c.user.get_upload_key() }
+</pre>
+
 <fieldset>
   <legend>${ _('Change details') }</legend>
 
