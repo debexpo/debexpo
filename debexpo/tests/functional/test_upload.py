@@ -110,10 +110,10 @@ class TestUploadController(TestController):
             headers={'Authorization' : 'Basic %s' % self.emailpassword}, expect_errors=True)
 
         self.assertNotEqual(response.status_int, 401)
-        config = pylons.test.pylonsapp.config
+        app_config = pylons.test.pylonsapp.config
 
-        if os.path.isfile(os.path.join(config['debexpo.upload.incoming'], 'testfile1.dsc')):
-            os.remove(os.path.join(config['debexpo.upload.incoming'], 'testfile1.dsc'))
+        if os.path.isfile(os.path.join(app_config['debexpo.upload.incoming'], 'testfile1.dsc')):
+            os.remove(os.path.join(app_config['debexpo.upload.incoming'], 'testfile1.dsc'))
 
     def testExtensionNotAllowed(self):
         """
@@ -136,12 +136,12 @@ class TestUploadController(TestController):
 
         self.assertEqual(response.status_int, 200)
 
-        config = pylons.test.pylonsapp.config
-        self.assertTrue(os.path.isfile(os.path.join(config['debexpo.upload.incoming'],
+        app_config = pylons.test.pylonsapp.config
+        self.assertTrue(os.path.isfile(os.path.join(app_config['debexpo.upload.incoming'],
                                                     'testfile2.dsc')))
 
-        self.assertEqual(file(os.path.join(config['debexpo.upload.incoming'],
+        self.assertEqual(file(os.path.join(app_config['debexpo.upload.incoming'],
                                            'testfile2.dsc')).read(), 'contents')
 
-        if os.path.isfile(os.path.join(config['debexpo.upload.incoming'], 'testfile2.dsc')):
-            os.remove(os.path.join(config['debexpo.upload.incoming'], 'testfile2.dsc'))
+        if os.path.isfile(os.path.join(app_config['debexpo.upload.incoming'], 'testfile2.dsc')):
+            os.remove(os.path.join(app_config['debexpo.upload.incoming'], 'testfile2.dsc'))
