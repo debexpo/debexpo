@@ -39,9 +39,7 @@ __license__ = 'MIT'
 import os
 import base64
 
-from debexpo.lib.base import config
 from debexpo.tests import TestController, url
-from debexpo.model import meta
 import pylons.test
 
 class TestUploadController(TestController):
