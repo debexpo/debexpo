@@ -438,6 +438,8 @@ class Repository(object):
                         # Create the Sources files.
                         log.debug('Creating Sources file: %s' % filename)
                         f = format('%s.%s' % (filename, extension), 'w')
+                        if type(sources) != str:
+                            sources = sources.encode('utf-8')
                         f.write(sources)
                         f.close()
 
