@@ -297,6 +297,9 @@ class Importer(object):
             else:
                 meta.session.add(PackageFile(filename=filename, source_package=source_package, size=size, md5sum=sum))
 
+        meta.session.commit()
+        log.warning("Finished adding PackageFile objects.")
+
         # Add PackageInfo objects to the database for the package_version
         for result in qa.result:
             meta.session.add(PackageInfo(package_version=package_version, from_plugin=result.from_plugin,
