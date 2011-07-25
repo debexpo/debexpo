@@ -162,10 +162,14 @@ class Plugins(object):
         """
         Look in the config file and run the plugins.
         """
-        plugins = config.get('debexpo.plugins.' + self.type)
+        key = 'debexpo.plugins.' + self.type
+        log.debug("Getting plugins with key (repr): %s", repr(key))
+        plugins = config.get(key)
+        log.debug("Using these plugins: %s", plugins)
         result = []
 
         if not plugins:
+            log.debug("Returning result: %s", result)
             return result
 
         # Look at whether the plugins need extracting.
