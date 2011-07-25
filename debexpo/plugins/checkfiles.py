@@ -58,7 +58,7 @@ class CheckFilesPlugin(BasePlugin):
                 self.passed('file-is-present', filename, constants.PLUGIN_SEVERITY_INFO)
             else:
                 log.critical('%s is not present; importing cannot continue' % filename)
-                self.failed('file-is-not-present', filename, constnats.PLUGIN_SEVERITY_CRITICAL)
+                self.failed('file-is-not-present', filename, constants.PLUGIN_SEVERITY_CRITICAL)
 
     def test_md5sum(self):
         """
