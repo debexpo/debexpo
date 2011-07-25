@@ -1,15 +1,6 @@
 <p>You need to use <a href="http://packages.debian.org/dput">dput</a> to upload packages.
-Add an entry like the following to your <tt>~/.dput.cf</tt>:</p>
-<pre>
-[debexpo]
-fqdn = expo.debian.net
-incoming = /upload
-method = http
-allow_unsigned_uploads = 0
-</pre>
-<p>You should change the <cite>email&#64;address</cite> and <cite>yourpassword</cite> entries with the email address and
-password you use to login.</p>
-<p>Now you should execute:</p>
+See your <a href="/my">account page</a> to see how to configure it.</p>
+<p>Once you have it set up, you can execute:</p>
 <pre>
 dput debexpo package_version_source.changes
 </pre>
