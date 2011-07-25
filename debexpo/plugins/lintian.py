@@ -68,6 +68,7 @@ class LintianPlugin(BasePlugin):
 
             logmessage('Package is not Lintian clean')
             self.failed(outcome, output, severity)
+            self.info(outcome, None)
         else:
             log.debug('Package is Lintian clean')
             self.passed('lintian-clean', None, constants.PLUGIN_SEVERITY_INFO)
