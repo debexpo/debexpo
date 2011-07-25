@@ -139,6 +139,35 @@ class NewEmailToSystem(formencode.validators.Email):
 
         return formencode.validators.Email._to_python(self, value, c)
 
+class NewNameToSystem(formencode.FancyValidator):
+    """
+    Name validation class to make sure there is not another user with
+    the same name already registered.
+    """
+    def _to_python(self, value, c=None):
+        """
+        Validate the name address.
+
+        ``value``
+            Name to validate.
+
+        ``c``
+        """
+        u = meta.session.query(User).filter_by(name=value)
+
+        # c.user_id can contain a user_id that should be ignored (i.e. when the user
+        # wants to keep the same email).
+        if hasattr(c, 'user_id'):
+            u = u.filter(User.id != c.user_id)
+
+        u = u.first()
+
+        if u is not None:
+            log.error('Name %s already found on system' % value)
+            raise formencode.Invalid(_('A user with this name is already registered on the system. If it is you, use that account! Otherwise use a different name to register.'), value, c)
+
+        return value
+
 class NewDebianEmailToSystem(NewEmailToSystem):
     """
     NewEmailToSystem validator class to make sure the user uses a @debian.org

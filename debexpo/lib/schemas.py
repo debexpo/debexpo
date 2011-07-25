@@ -42,7 +42,7 @@ from pylons import config
 
 from debexpo.lib import constants
 from debexpo.lib.validators import NewEmailToSystem, NewDebianEmailToSystem, GpgKey, \
-    CurrentPassword, CheckBox
+    CurrentPassword, CheckBox, NewNameToSystem
 
 class LoginForm(formencode.Schema):
     """
@@ -102,7 +102,7 @@ class RegisterForm(formencode.Schema):
     Schema for the general fields in the register controller. The maintainer
     and sponsor forms should extend this.
     """
-    name = formencode.validators.String(not_empty=True)
+    name = NewNameToSystem(not_empty=True)
     password = formencode.validators.String(min=6)
     password_confirm = formencode.validators.String(min=6)
     commit = formencode.validators.String()
