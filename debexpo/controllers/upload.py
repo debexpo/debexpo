@@ -92,7 +92,8 @@ class UploadController(BaseController):
             # Get user from database
             user_upload_key = meta.session.query(UserUploadKey).filter_by(
                 upload_key=password).one()
-            if user_upload_key.user.email == email:
+            if (user_upload_key.user and
+                user_upload_key.user.email == email):
                 user = user_upload_key.user
             else:
                 abort(403, 'Authentication failed.')
