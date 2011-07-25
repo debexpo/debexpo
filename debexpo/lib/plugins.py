@@ -42,8 +42,7 @@ import os
 import tempfile
 import shutil
 import sys
-
-from debexpo.lib.base import *
+import pylons
 
 log = logging.getLogger(__name__)
 
@@ -81,6 +80,7 @@ class Plugins(object):
         ``kw``
             Extra information for plugins to have.
         """
+        self.config = pylons.config
         self.type = type.replace('-', '_')
         self.changes = changes
         self.changes_file = changes_file
@@ -133,16 +133,16 @@ class Plugins(object):
         log.debug('Temp dir is: %s', self.tempdir)
         for filename in self.changes.get_files():
             log.debug('Copying: %s', filename)
-            shutil.copy(os.path.join(config['debexpo.upload.incoming'], filename), self.tempdir)
+            shutil.copy(os.path.join(self.config['debexpo.upload.incoming'], filename), self.tempdir)
 
         # If the original tarball was pulled from Debian or from the repository, that
         # also needs to be copied into this directory.
         dsc = deb822.Dsc(file(self.changes.get_dsc()))
         for item in dsc['Files']:
             if item['name'] not in self.changes.get_files():
-                shutil.copy(os.path.join(config['debexpo.upload.incoming'], item['name']), self.tempdir)
+                shutil.copy(os.path.join(self.config['debexpo.upload.incoming'], item['name']), self.tempdir)
 
-        shutil.copy(os.path.join(config['debexpo.upload.incoming'], self.changes_file), self.tempdir)
+        shutil.copy(os.path.join(self.config['debexpo.upload.incoming'], self.changes_file), self.tempdir)
 
         self.oldcurdir = os.path.abspath(os.path.curdir)
         os.chdir(self.tempdir)
@@ -164,7 +164,7 @@ class Plugins(object):
         """
         key = 'debexpo.plugins.' + self.type
         log.debug("Getting plugins with key (repr): %s", repr(key))
-        plugins = config.get(key)
+        plugins = self.config.get(key)
         log.debug("Using these plugins: %s", plugins)
         result = []
 
@@ -181,9 +181,9 @@ class Plugins(object):
         for plugin in plugins.split(' '):
             log.debug('Running %s plugin' % plugin)
             module = None
-            if config.get('debexpo.plugindir') != '':
+            if self.config.get('debexpo.plugindir') != '':
                 # First try in the user-defined plugindir
-                sys.path.append(config['debexpo.plugindir'])
+                sys.path.append(self.config['debexpo.plugindir'])
                 module = self._import_plugin(plugin)
                 if module is not None:
                     log.debug('Found plugin in debexpo.plugin_dir')
