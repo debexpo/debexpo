@@ -36,11 +36,9 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
 import logging
-import os
 import re
 
 from debexpo.lib import constants
-from debexpo.lib.base import *
 from debexpo.plugins import BasePlugin
 
 from debexpo.model import meta

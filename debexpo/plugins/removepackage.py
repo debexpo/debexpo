@@ -37,19 +37,11 @@ __license__ = 'MIT'
 
 import apt_pkg
 import logging
-import os
 
-from debexpo.lib import constants
-from debexpo.lib.base import *
 from debexpo.plugins import BasePlugin
 
 from debexpo.model import meta
 from debexpo.model.packages import Package
-from debexpo.model.package_versions import PackageVersion
-from debexpo.model.source_packages import SourcePackage
-from debexpo.model.binary_packages import BinaryPackage
-from debexpo.model.package_files import PackageFile
-from debexpo.model.package_info import PackageInfo
 
 log = logging.getLogger(__name__)
 

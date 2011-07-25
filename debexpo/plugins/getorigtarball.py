@@ -41,10 +41,10 @@ import logging
 import os
 import urllib
 
-from debexpo.lib import constants
-from debexpo.lib.base import *
 from debexpo.lib.utils import md5sum
 from debexpo.plugins import BasePlugin
+
+import pylons
 
 log = logging.getLogger(__name__)
 
@@ -77,7 +77,7 @@ class GetOrigTarballPlugin(BasePlugin):
 
         log.debug('Could not find %s; looking in Debian for it', orig['name'])
 
-        url = os.path.join(config['debexpo.debian_mirror'], self.changes.get_pool_path(), orig['name'])
+        url = os.path.join(pylons.config['debexpo.debian_mirror'], self.changes.get_pool_path(), orig['name'])
         log.debug('Trying to fetch %s' % url)
         out = urllib.urlopen(url)
         contents = out.read()

@@ -38,7 +38,6 @@ __license__ = 'MIT'
 import logging
 
 from debexpo.lib import constants
-from debexpo.lib.base import *
 from debexpo.plugins import BasePlugin
 
 log = logging.getLogger(__name__)

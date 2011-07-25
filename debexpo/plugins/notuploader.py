@@ -37,7 +37,6 @@ __license__ = 'MIT'
 
 import logging
 
-from debexpo.lib.base import *
 from debexpo.plugins import BasePlugin
 from debexpo.lib import constants
 

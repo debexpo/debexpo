@@ -40,7 +40,6 @@ import logging
 from debian import deb822
 
 from debexpo.lib import constants
-from debexpo.lib.base import *
 from debexpo.plugins import BasePlugin
 
 log = logging.getLogger(__name__)

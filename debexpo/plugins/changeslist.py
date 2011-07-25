@@ -36,12 +36,11 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
 import logging
-import os
 
-from debexpo.lib import constants
 from debexpo.lib.email import Email
-from debexpo.lib.base import *
 from debexpo.plugins import BasePlugin
+
+import pylons
 
 log = logging.getLogger(__name__)
 
@@ -53,14 +52,14 @@ class ChangesListPlugin(BasePlugin):
         """
         log.debug('Sending mail to changes list')
 
-        if not config.get('debexpo.changes_list', None):
+        if not pylons.config.get('debexpo.changes_list', None):
             return
 
-        if config['debexpo.changes_list'] == '':
+        if pylons.config['debexpo.changes_list'] == '':
             return
 
         email = Email('changes_list')
-        to = config['debexpo.changes_list']
+        to = pylons.config['debexpo.changes_list']
         email.send([to], changes=self.changes,
                 changes_contents=self.changes_contents.decode('ascii', 'ignore'),
                 dest=self.changes.get_pool_path())
