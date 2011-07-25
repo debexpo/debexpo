@@ -39,9 +39,9 @@ import logging
 import os
 
 from debexpo.lib import constants
-from debexpo.lib.base import *
 from debexpo.lib.utils import md5sum
 from debexpo.plugins import BasePlugin
+import pylons
 
 log = logging.getLogger(__name__)
 
@@ -53,7 +53,7 @@ class CheckFilesPlugin(BasePlugin):
         """
         for filename in self.changes.get_files():
             log.debug('Looking whether %s was actually uploaded' % filename)
-            if os.path.isfile(os.path.join(config['debexpo.upload.incoming'], filename)):
+            if os.path.isfile(os.path.join(pylons.config['debexpo.upload.incoming'], filename)):
                 log.debug('%s is present' % filename)
                 self.passed('file-is-present', filename, constants.PLUGIN_SEVERITY_INFO)
             else:
@@ -67,7 +67,7 @@ class CheckFilesPlugin(BasePlugin):
         """
         for file in self.changes['Files']:
             log.debug('Checking md5sum of %s' % file['name'])
-            filename = os.path.join(config['debexpo.upload.incoming'], file['name'])
+            filename = os.path.join(pylons.config['debexpo.upload.incoming'], file['name'])
             if os.path.isfile(filename):
                 sum = md5sum(filename)
 
