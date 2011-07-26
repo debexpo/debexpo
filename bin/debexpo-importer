@@ -392,11 +392,7 @@ class Importer(object):
         pool_dir = os.path.join(destdir, self.changes.get_pool_path())
         for file in self.files:
             if os.path.isfile(os.path.join(pool_dir, file)):
-                if not (file.endswith('orig.tar.gz') or
-                        file.endswith('orig.tar.bz2')):
-                    self._reject('File "%s" already exists' % file)
-                else:
-                    log.warning('%s is not being installed as it already exists' % file)
+                log.warning('%s is being installed even though it already exists' % file)
             else:
                 log.debug('File %s is safe to install' % os.path.join(pool_dir, file))
                 toinstall.append(file)
