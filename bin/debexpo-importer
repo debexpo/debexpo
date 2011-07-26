@@ -241,7 +241,7 @@ class Importer(object):
 
         # Check whether package is already in the database
         package_query = meta.session.query(Package).filter_by(name=self.changes['Source'])
-        if package_query.count() is 1:
+        if package_query.count() == 1:
             log.debug('Package %s already exists in the database' % self.changes['Source'])
             package = package_query.one()
         else:
