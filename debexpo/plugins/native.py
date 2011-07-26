@@ -54,6 +54,8 @@ class NativePlugin(BasePlugin):
         for file in self.changes['Files']:
             if file['name'].endswith('.diff.gz'):
                 native = False
+            if file['name'].endswith('.debian.tar.gz'):
+                native = False
 
         if native:
             # Most uploads will not be native, and especially on mentors, a native
