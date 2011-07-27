@@ -32,4 +32,10 @@
 
   ${ h.html.tags.end_form() }
 
+  <p>${ _('Did you lose your password?')}
+
+  <a href="${ h.url("password_recover/index") }">${ _('Try resetting your password.')}</a></p>
+
+ </p>
+
 </fieldset>
