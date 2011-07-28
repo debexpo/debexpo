@@ -152,3 +152,12 @@ class PackageCommentForm(formencode.Schema):
         formencode.validators.Int(not_empty=True))
     status = formencode.validators.Bool(if_missing=False)
     commit = formencode.validators.String()
+
+class PasswordResetForm(formencode.Schema):
+    """
+    Schema for the password reset form in the password reset controller.
+    """
+    email = formencode.validators.Email(not_empty=True)
+    commit = formencode.validators.String()
+
+
