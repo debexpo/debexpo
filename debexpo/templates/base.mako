@@ -104,10 +104,10 @@
         <div class="support">
             <h2>Support</h2>
             <ul>
-<!--                <li>${ h.tags.link_to(
+                <li>${ h.tags.link_to(
                         _('Q & A'),
                         h.url('qa')) }
-                </li>-->
+                </li>
                 <li>${ h.tags.link_to(
                         _('Contact'),
                         h.url('contact')) }

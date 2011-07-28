@@ -80,7 +80,7 @@ def make_map(config):
     #map.connect('/packages/{action}/{id}', controller='packages', action='index', id=None)
     #map.connect('packages_filter_feed', '/packages/{filter}/{id}/feed', controller='packages', action='feed')
     #map.connect('packages_feed', '/packages/feed', controller='packages', action='feed')
-    #map.connect('qa', '/qa', controller='index', action='qa')
+    map.connect('qa', '/qa', controller='index', action='qa')
     #map.connect('register', '/register/{action}/{id}', controller='register', action='index', id=None)
     map.connect('/upload/{email}/{password}/{filename}', controller='upload',
                 action='index')
