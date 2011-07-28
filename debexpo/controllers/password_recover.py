@@ -113,8 +113,8 @@ class PasswordRecoverController(BaseController):
         meta.session.commit()
 
         log.debug('Password reset successful; saving user object')
-        return render('/password_recover/new_password.mako',
-                      {'new_password': raw_password})
+        c.new_password = raw_password
+        return render('/password_recover/actually_reset_password.mako')
 
     def index(self, get=False):
         """
