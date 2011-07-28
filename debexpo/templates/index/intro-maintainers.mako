@@ -3,29 +3,46 @@
 
 ${ c.custom_html }
 
-Introduction for maintainers
-Welcome to mentors.debian.net
+<h1>Introduction for maintainers</h1>
 
-We are glad that you found your way to our web site. Honestly the whole web site is just there to get your work into Debian. Your contribution is appreciated and it would be a pity if you didn't find a sponsor to upload your packages. Read on to see in what ways we will be helping you find a sponsor.
-How will my package get into Debian?
+<h2>Welcome to ${ c.config['debexpo.sitename'] }</h2>
 
-This web site is a public package repository of source packages. You can upload your package to this server (through special tools like 'dupload' or 'dput') and after a few checks it will be stored in our repository. Interested sponsors can then download the package and upload it to Debian. So the basic procedure is:
+<p>We are glad that you found your way to our web site. Honestly the whole web site is just there to get your work into Debian. Your contribution is appreciated and it would be a pity if you didn't find a sponsor to upload your packages. Read on to see in what ways we will be helping you find a sponsor.</p>
 
-    * Sign up for an account. Getting an account on this server is an automatic process and will just take a moment. We require registration so we have a valid email address where sponsors can reach you.
-    * Upload your package to mentors.debian.net. You don't need to put your packages into any other web space on the internet. Everybody will be able to download your package using either the web browser, the 'dget' tools or even through a simple run of apt-get source ....
-    * Your package is on display on the main page of mentors.debian.net so interested sponsors will see it and hopefully check it out.
-    * You will be shown an RFS (request-for-sponsorship) template that you can send to the debian-mentors mailing list to draw attention to your package.
-    * Finally a sponsor will hopefully pick up your package and upload it on your behalf. Bingo - your package is publicly available in Debian. And this server will automatically send you an email in case you did not notice the upload.
 
-Is my package technically okay?
+<h3>How will my package get into Debian?</h3>
 
-When you upload your package to mentors.debian.net it will automatically be checked for common mistakes. You will get an information email after the upload. Either your package contains bugs and will be rejected. Or the package is clean but we perhaps find minor technical issues. You will get hints about how to fix the package. If the email tells you that your package is fine then a sponsor will still do further checks. Don't worry too much. If your package is accepted by mentors.debian.net then let the sponsor help you with the rest.
-The software I packaged is not yet available in Debian.
+<p>This web site is a public package repository of source packages. You can upload your package to this server (through special tools like 'dupload' or 'dput') and after a few checks it will be stored in our repository. Interested sponsors can then download the package and upload it to Debian. So the basic procedure is:</p>
 
-Please read this section of the Debian policy if the software you packaged is not yet in Debian. You need to follow a certain procedure to show other people you are working on the package.
-How long will it take until my upload is available to sponsors?
+	<ul>
+		<li>${ h.tags.link_to("Sign up for an account", h.url(controller='register', action='maintainer')) }. Getting an account on this server is an automatic process and will just take a moment. We require registration so we have a valid email address where sponsors can reach you.</li>
+		<li>Upload your package to mentors.debian.net. You don't need to put your packages into any other web space on the Internet. Everybody will be able to download your package using either the web browser, the 'dget' tools or even through a simple run of apt-get source ....</li>
+		<li>Your package is on display on the main page of ${ c.config['debexpo.sitename'] } so interested sponsors will see it and hopefully check it out.</li>
+		<li>You will be shown an RFS (request-for-sponsorship) template that you can send to the debian-mentors mailing list to draw attention to your package.</li>
+		<li>Finally a sponsor will hopefully pick up your package and upload it on your behalf. Bingo - your package is publicly available in Debian. And this server will automatically send you an email in case you did not notice the upload.</li>
+	</ul>
 
-Our automatic processes will check for newly incoming packages every 30 seconds. You will usually get a reply by email within a minute.
-Will my name stay visible on the package?
+<h3>Is my package technically okay?</h3>
 
-Yes. The Debian project appreciates the work you do. So you will be named as the official maintainer of the package in Debian. You will even get the bug reports if people discover problems in your package. Besides from not being able to upload the package directly into Debian you are treated as a full member of the community. 
+<p>When you upload your package to ${ c.config['debexpo.sitename'] } it will automatically be checked for common mistakes. You will get an information email after the upload. Either your package contains bugs and will be rejected. Or the package is clean but we perhaps find minor technical issues. You will get hints about how to fix the package. If the email tells you that your package is fine then a sponsor will still do further checks. Don't worry too much. If your package is accepted by mentors.debian.net then let the sponsor help you with the rest.
+The software I packaged is not yet available in Debian.</p>
+
+<p>Please read this section of the Debian policy if the software you packaged is not yet in Debian. You need to follow a certain procedure to show other people you are working on the package.</p>
+
+<h3>How to upload packages?</h3>
+
+<p>You need to use <a href="http://packages.debian.org/dput">dput</a> to upload packages.
+See your ${ h.tags.link_to("account page", h.url('my')) } to see how to configure it.</p>
+<p>Once you have it set up, you can run it from your shell like this:</p>
+<pre>
+dput debexpo youpackage_yourversion_arch.changes
+</pre>
+
+
+<h3>How long will it take until my upload is available to sponsors?</h3>
+
+<p>Our automatic processes will check for newly incoming packages every 30 seconds. We will process your package and check some things statically. You will usually get a reply by email within a few minutes.</p>
+
+<h3>Will my name stay visible on the package?</h3>
+
+<p>Yes. The Debian project appreciates the work you do. So you will be named as the official maintainer of the package in Debian. You will even get the bug reports if people discover problems in your package. Besides from not being able to upload the package directly into Debian you are treated as a full member of the community.</p>

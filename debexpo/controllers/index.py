@@ -68,6 +68,10 @@ class IndexController(BaseController):
         c.config = config
         return render('/index/qa.mako')
 
+    def intro_reviewers(self):
+        c.config = config
+        return render('/index/reviewers.mako')
+
     def intro_maintainers(self):
         """Return an introduction page for package maintainers"""
         if 'debexpo.html.maintainer_intro' in config:

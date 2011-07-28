@@ -82,6 +82,10 @@
                         _('Introduction'),
                         h.url('intro-sponsors')) }
                 </li>
+                <li>${ h.tags.link_to(
+                        _('Reviews'),
+                        h.url('intro-reviewers')) }
+                </li>
                 % if 'user_id' not in session:
                 <li>${ h.tags.link_to(
                         _('Sign me up'),
