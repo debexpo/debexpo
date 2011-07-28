@@ -74,7 +74,8 @@ class ControlFieldsPlugin(BasePlugin):
                 self.info('%s-is-present' % item.lower(), '%s: %s' % (item, dsc[item]))
                 log.debug('%s: %s' % (item, dsc[item]))
             else:
-                self.info('%s-is-not-present' % item.lower(), None)
+                # don't display missing VCS fields 
+                #self.info('%s-is-not-present' % item.lower(), None)
                 log.debug('%s field is not present' % item)
 
 plugin = ControlFieldsPlugin
