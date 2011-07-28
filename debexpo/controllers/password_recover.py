@@ -124,6 +124,9 @@ class PasswordRecoverController(BaseController):
             If True, display the form even if request.method is POST.
         """
 
+        if not hasattr(c, 'message'):
+            c.message = None
+
         if request.method == 'POST' and get is False:
             log.debug(
                 'Password recovery form submitted with email = "%s"' %
