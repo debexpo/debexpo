@@ -75,6 +75,8 @@ class PasswordRecoverController(BaseController):
 
         email = Email('password_reset')
         password_reset_data = PasswordReset.create_for_user(u)
+        meta.session.add(password_reset_data)
+        meta.session.commit()
 
         recipient = u.email
         activate_url = 'http://' + request.host + url.current(

@@ -35,11 +35,17 @@ __author__ = 'Asheesh Laroia'
 __copyright__ = 'Copyright © 2011 Asheesh Laroia'
 __license__ = 'MIT'
 
+import hashlib
+import os
+import datetime
+
 import sqlalchemy as sa
 from sqlalchemy import orm
 
 from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
+
+PASSWORD_RESET_VALID_DAYS=7
 
 t_password_reset = sa.Table(
     'password_reset', meta.metadata,
@@ -51,6 +57,15 @@ t_password_reset = sa.Table(
 
 class PasswordReset(OrmObject):
     foreign = ['user']
+
+    @staticmethod
+    def create_for_user(u):
+        obj = PasswordReset()
+        obj.user = u
+        obj.temporary_auth_key = hashlib.md5(os.urandom(20)).hexdigest()[:10]
+        obj.valid_until = datetime.datetime.utcnow() + datetime.timedelta(
+            days=PASSWORD_RESET_VALID_DAYS)
+        return obj
 
 orm.mapper(PasswordReset, t_password_reset, properties={
     'user' : orm.relation(User)
