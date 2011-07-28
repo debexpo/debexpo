@@ -66,8 +66,8 @@ class PasswordRecoverController(BaseController):
             u = meta.session.query(User).filter_by(email=self.form_result['email']).one()
         except:
             log.debug('Invalid email address somehow')
-            c.message = _('Invalid email or password')
-            return self.index(True)
+            c.message = _('We do not have an account with that email address')
+            return self.index(get=True)
 
         # If that worked, then we send the user an email with a temporary URL
         # they can use to have our system generate a new password for them.
@@ -122,8 +122,8 @@ class PasswordRecoverController(BaseController):
 
         if request.method == 'POST' and get is False:
             log.debug(
-                'Password recovery form submitted with temporary_auth_key = "%s"' %
-                request.POST.get('temporary_auth_key'))
+                'Password recovery form submitted with email = "%s"' %
+                request.POST.get('email'))
             return self._reset()
         else:
             return render('/password_recover/index.mako')

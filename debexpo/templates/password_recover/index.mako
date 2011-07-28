@@ -15,6 +15,10 @@
 
   <p>Not super hard. If you're ready, I'm ready.</p>
 
+% if c.message:
+  <p><span class="error-message">${ c.message }</span></p>
+% endif
+
   <table>
     <tr>
       <td>${ _('Your email address') }:</td>
