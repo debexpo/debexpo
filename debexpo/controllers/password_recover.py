@@ -45,12 +45,13 @@ from debexpo.lib.base import BaseController, validate, c,  _, request, render, u
 from debexpo.lib.schemas import PasswordResetForm
 from debexpo.lib.email import Email
 from debexpo.model import meta
-from debexpo.model.users import User, PasswordReset
+from debexpo.model.users import User
+from debexpo.model.password_reset import PasswordReset
 #from pylons import config
 
 log = logging.getLogger(__name__)
 
-class PasswordResetController(BaseController):
+class PasswordRecoverController(BaseController):
     """
     Helps people reset their passwords on the web.
     """
