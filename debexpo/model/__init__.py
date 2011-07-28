@@ -61,7 +61,7 @@ def import_all_models():
 
     from debexpo.model import binary_packages, package_files, packages, source_packages, \
         user_metrics, package_comments, package_info, package_versions, user_countries, \
-        users, package_subscriptions, user_upload_key
+        users, package_subscriptions, user_upload_key, password_reset
 
 class OrmObject(object):
     """
