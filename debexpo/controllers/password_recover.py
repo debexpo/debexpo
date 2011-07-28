@@ -79,12 +79,14 @@ class PasswordRecoverController(BaseController):
         meta.session.commit()
 
         recipient = u.email
-        activate_url = 'http://' + request.host + url.current(
-            action='actually_reset_password',
-            temporary_auth_key=password_reset_data.temporary_auth_key)
-        email.send([recipient], activate_url=activate_url)
+        password_reset_url = 'http://' + request.host + url.current(
+            action='actually_reset_password', id=password_reset_data.temporary_auth_key)
+        email.send([recipient], password_reset_url=password_reset_url)
 
-    def actually_reset_password(self, temporary_auth_key):
+        # FIXME: This should be a HTTP redirect
+        return render('/password_recover/_reset.mako')
+
+    def actually_reset_password(self, id):
         '''The point of this controller is to take a temporary auth key as input.
 
         If it is a valid one, change the password for that user to a randomly-
@@ -93,7 +95,7 @@ class PasswordRecoverController(BaseController):
         If it is not a valid one, generate a 404.'''
         try:
             pr = meta.session.query(PasswordReset).filter_by(
-                temporary_auth_key=temporary_auth_key).one()
+                temporary_auth_key=id).one()
         except:
             log.debug('Invalid temporary auth key')
             abort(404,
