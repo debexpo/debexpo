@@ -108,7 +108,7 @@ class Importer(object):
             ID of the user doing the upload. This is given from the upload controller.
         """
         self.changes_file = changes
-        self.ini_file = ini
+        self.ini_file = os.path.abspath(ini)
         self.user_id = user_id
         self.changes = None
         self.user = None
@@ -220,7 +220,7 @@ class Importer(object):
         sys.path.append(os.path.dirname(self.ini_file))
 
         # Initialize Pylons app
-        conf = appconfig('config:' + options.ini)
+        conf = appconfig('config:' + self.ini_file)
         pylons.config = load_environment(conf.global_conf, conf.local_conf)
 
         # Change into the incoming directory
