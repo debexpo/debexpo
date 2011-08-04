@@ -37,7 +37,6 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import logging
-import md5
 
 from debexpo.lib.base import *
 from debexpo.lib import constants, form
@@ -47,6 +46,8 @@ from debexpo.lib.gnupg import GnuPG
 from debexpo.model import meta
 from debexpo.model.users import User
 from debexpo.model.user_countries import UserCountry
+
+import debexpo.lib.utils
 
 log = logging.getLogger(__name__)
 
@@ -116,7 +117,7 @@ class MyController(BaseController):
         log.debug('Password form validated successfully')
 
         # Simply set password.
-        self.user.password = md5.new(self.form_result['password_new']).hexdigest()
+        self.user.password = debexpo.lib.utils.hash_it(self.form_result['password_new'])
         meta.session.commit()
         log.debug('Saved new password and redirecting')
 
