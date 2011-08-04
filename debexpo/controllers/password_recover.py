@@ -47,6 +47,7 @@ from debexpo.lib.email import Email
 from debexpo.model import meta
 from debexpo.model.users import User
 from debexpo.model.password_reset import PasswordReset
+import debexpo.lib.utils
 #from pylons import config
 
 log = logging.getLogger(__name__)
@@ -109,7 +110,7 @@ class PasswordRecoverController(BaseController):
 
         # FIXME: We should not set u.password directly. Instead, we should
         # use a helper from the User model or something.
-        u.password = hashlib.md5(raw_password).hexdigest()
+        u.password = debexpo.lib.utils.hash_it(raw_password)
         meta.session.commit()
 
         log.debug('Password reset successful; saving user object')
