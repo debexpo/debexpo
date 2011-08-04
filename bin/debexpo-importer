@@ -7,30 +7,25 @@
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
-#   Permission is hereby granted, free of charge, to any person
-#   obtaining a copy of this software and associated documentation
-#   files (the "Software"), to deal in the Software without
-#   restriction, including without limitation the rights to use,
-#   copy, modify, merge, publish, distribute, sublicense, and/or sell
-#   copies of the Software, and to permit persons to whom the
-#   Software is furnished to do so, subject to the following
-#   conditions:
+#   Permission is hereby granted, free of charge, to any person obtaining a
+#   copy of this software and associated documentation files (the "Software"),
+#   to deal in the Software without restriction, including without limitation
+#   the rights to use, copy, modify, merge, publish, distribute, sublicense,
+#   and/or sell copies of the Software, and to permit persons to whom the
+#   Software is furnished to do so, subject to the following conditions:
 #
-#   The above copyright notice and this permission notice shall be
-#   included in all copies or substantial portions of the Software.
+#   The above copyright notice and this permission notice shall be included in
+#   all copies or substantial portions of the Software.
 #
-#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-#   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-#   OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-#   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-#   HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-#   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-#   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-#   OTHER DEALINGS IN THE SOFTWARE.
+#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+#   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+#   DEALINGS IN THE SOFTWARE.
 
-"""
-Executable script to import new packages.
-"""
+""" Executable script to import new packages. """
 
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
@@ -48,6 +43,7 @@ import sys
 import shutil
 from stat import *
 import pylons
+import email.utils
 
 from sqlalchemy import exceptions
 
@@ -107,7 +103,7 @@ class Importer(object):
         ``user_id``
             ID of the user doing the upload. This is given from the upload controller.
         """
-        self.changes_file = changes
+        self.changes_file = os.path.abspath(changes)
         self.ini_file = os.path.abspath(ini)
         self.user_id = user_id
         self.changes = None
@@ -381,15 +377,31 @@ class Importer(object):
 
         destdir = pylons.config['debexpo.repository']
 
-        # Get uploader's User object
-        self.user = meta.session.query(User).filter_by(id=self.user_id).filter_by(verification=None).first()
-        if self.user is None:
-            self._fail('Couldn\'t find user with id %s. Exiting.' % self.user_id)
+        # If the user ID wasn't specified using the "-u" option then try
+        # to determine it from the "Maintainer:" mentioned in the changes
+        # file.
+        if self.user_id is None:
+            log.debug("Option '-u' was not given. Determining user from 'Maintainer:' field.")
+            maintainer_string = self.changes.get('Maintainer')
+            log.debug("Maintainer is: %s", maintainer_string)
+            maintainer_realname, maintainer_email_address = email.utils.parseaddr(maintainer_string)
+            log.debug("Maintainer's email address is: %s", maintainer_email_address)
+            self.user = meta.session.query(User).filter_by(
+                    email=maintainer_email_address).filter_by(verification=None).first()
+            if self.user is None:
+                self._fail('Couldn\'t find user with email address %s. Exiting.' % self.maintainer_email_address)
+            log.debug("User found in database. Has id: %s", self.user.id)
+        else:
+            # Get uploader's User object
+            self.user = meta.session.query(User).filter_by(id=self.user_id).filter_by(verification=None).first()
+            if self.user is None:
+                self._fail('Couldn\'t find user with id %s. Exiting.' % self.user_id)
 
         # Check whether the files are already present
         log.debug("Checking whether files are already in the repository")
         toinstall = []
         pool_dir = os.path.join(destdir, self.changes.get_pool_path())
+        log.debug("Pool directory: %s", pool_dir)
         for file in self.files:
             if os.path.isfile(os.path.join(pool_dir, file)):
                 log.warning('%s is being installed even though it already exists' % file)
@@ -461,20 +473,22 @@ class Importer(object):
 
 if __name__ == '__main__':
 
-    parser = OptionParser(usage="%prog -c FILE -i FILE -u ID")
+    parser = OptionParser(usage="%prog [-u ID] -c FILE -i FILE")
     parser.add_option('-c', '--changes', dest='changes',
                       help='Path to changes file to import',
                       metavar='FILE', default=None)
     parser.add_option('-i', '--ini', dest='ini',
                       help='Path to application ini file',
                       metavar='FILE', default=None)
+    # If the 'userid' option is not given then the user will be derived
+    # from the email address mentioned in the changes file as Maintainer.
     parser.add_option('-u', '--userid', dest='user_id',
                       help='''Uploader's user_id''',
-                      metavar='ID')
+                      metavar='ID', default=None)
 
     (options, args) = parser.parse_args()
 
-    if not options.changes or not options.ini or not options.user_id:
+    if not options.changes or not options.ini:
         parser.print_help()
         sys.exit(0)
 
