@@ -37,13 +37,14 @@ __license__ = 'MIT'
 
 import formencode
 import logging
-import md5
 
 from debexpo.lib.base import *
 from debexpo.lib.gnupg import GnuPG
 
 from debexpo.model import meta
 from debexpo.model.users import User
+
+import debexpo.lib.utils
 
 log = logging.getLogger(__name__)
 
@@ -97,7 +98,7 @@ class CurrentPassword(formencode.validators.String):
         """
         user = meta.session.query(User).get(session['user_id'])
 
-        if user.password != md5.new(value).hexdigest():
+        if user.password != debexpo.lib.utils.hash_it(value):
             log.error('Incorrect current password')
             raise formencode.Invalid(_('Incorrect password'), value, c)
 
