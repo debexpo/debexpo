@@ -38,7 +38,6 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner,
 __license__ = 'MIT'
 
 import logging
-import hashlib
 import os
 
 from debexpo.lib.base import BaseController, validate, c,  _, request, render, url, abort
