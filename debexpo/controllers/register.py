@@ -37,7 +37,6 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import logging
-import md5
 import random
 from datetime import datetime
 
@@ -48,6 +47,8 @@ from debexpo.lib.schemas import MaintainerForm, SponsorForm
 
 from debexpo.model import meta
 from debexpo.model.users import User
+
+import debexpo.lib.utils
 
 log = logging.getLogger(__name__)
 
@@ -94,11 +95,11 @@ class RegisterController(BaseController):
         log.debug('Maintainer form validated successfully')
 
         # Activation key.
-        key = md5.new(str(random.random())).hexdigest()
+        key = debexpo.lib.utils.random_hash()
 
         u = User(name=self.form_result['name'],
             email=self.form_result['email'],
-            password=md5.new(self.form_result['password']).hexdigest(),
+            password=debexpo.lib.utils.hash_it(self.form_result['password']),
             lastlogin=datetime.now(),
             verification=key)
 
@@ -130,11 +131,11 @@ class RegisterController(BaseController):
         log.debug('Sponsor form validated successfully')
 
         # Activation key.
-        key = md5.new(str(random.random())).hexdigest()
+        key = debexpo.lib.utils.random_hash()
 
         u = User(name=self.form_result['name'],
             email=self.form_result['email'],
-            password=md5.new(self.form_result['password']).hexdigest(),
+            password=debexpo.lib.utils.hash_it(self.form_result['password']),
             lastlogin=datetime.now(),
             verification=key,
             status=constants.USER_STATUS_DEVELOPER)
