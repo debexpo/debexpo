@@ -37,13 +37,14 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import logging
-import md5
 from datetime import datetime
 
 from debexpo.lib.base import BaseController, validate, config, c, session, _, redirect, request, render, url
 from debexpo.lib.schemas import LoginForm
 from debexpo.model import meta
 from debexpo.model.users import User
+
+import debexpo.lib.utils
 
 log = logging.getLogger(__name__)
 
@@ -65,7 +66,7 @@ class LoginController(BaseController):
         Manages submissions to the login form.
         """
         log.debug('Form validated successfully')
-        password = md5.new(self.form_result['password']).hexdigest()
+        password = debexpo.lib.utils.hash_it(self.form_result['password'])
 
         u = None
         try:
