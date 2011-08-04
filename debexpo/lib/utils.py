@@ -36,6 +36,7 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
 import logging
+import hashlib
 import md5
 import os
 
@@ -110,3 +111,8 @@ def md5sum(filename):
     f.close()
 
     return sum.hexdigest()
+
+def hash_it(s):
+    if type(s) == unicode:
+        s = s.encode('utf-8')
+    return hashlib.md5(s).hexdigest()
