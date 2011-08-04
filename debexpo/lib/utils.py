@@ -112,6 +112,10 @@ def md5sum(filename):
 
     return sum.hexdigest()
 
+def random_hash():
+    s = os.urandom(20)
+    return hash_it(s)
+
 def hash_it(s):
     if type(s) == unicode:
         s = s.encode('utf-8')

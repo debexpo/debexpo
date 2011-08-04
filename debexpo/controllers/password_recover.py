@@ -106,7 +106,7 @@ class PasswordRecoverController(BaseController):
         u = pr.user
 
         # Give the user a random password
-        raw_password = hashlib.md5(os.urandom(20)).hexdigest()[:10]
+        raw_password = debexpo.lib.utils.random_hash()[:10]
 
         # FIXME: We should not set u.password directly. Instead, we should
         # use a helper from the User model or something.
