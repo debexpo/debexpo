@@ -46,7 +46,6 @@ from debexpo.model import meta
 from debexpo.model.users import User
 from debexpo.model.password_reset import PasswordReset
 import debexpo.lib.utils
-#from pylons import config
 
 log = logging.getLogger(__name__)
 
