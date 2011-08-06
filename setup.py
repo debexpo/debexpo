@@ -12,7 +12,7 @@ setup(
     #author='',
     #author_email='',
     #url='',
-    scripts=['bin/debexpo-importer'],
+    scripts=['scripts/debexpo-importer'],
     install_requires=[
         "Pylons>=1.0",
         "SQLAlchemy>=0.6",
