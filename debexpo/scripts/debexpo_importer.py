@@ -493,3 +493,4 @@ def main():
     i = Importer(options.changes, options.ini, options.user_id)
 
     i.main()
+    return 0
