@@ -67,7 +67,7 @@ class BuildSystemPlugin(BasePlugin):
             self.info('uses-debhelper', None)
         else:
             log.warning('Build system cannot be determined')
-            self.fail('unknown-build-system', None, constants.PLUGIN_SEVERITY_WARNING)
+            self.failed('unknown-build-system', None, constants.PLUGIN_SEVERITY_WARNING)
 
 plugin = BuildSystemPlugin
 
