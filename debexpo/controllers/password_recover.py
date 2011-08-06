@@ -38,7 +38,6 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner,
 __license__ = 'MIT'
 
 import logging
-import os
 
 from debexpo.lib.base import BaseController, validate, c,  _, request, render, url, abort
 from debexpo.lib.schemas import PasswordResetForm
@@ -47,7 +46,6 @@ from debexpo.model import meta
 from debexpo.model.users import User
 from debexpo.model.password_reset import PasswordReset
 import debexpo.lib.utils
-#from pylons import config
 
 log = logging.getLogger(__name__)
 

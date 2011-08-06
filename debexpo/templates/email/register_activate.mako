@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 <%inherit file="/base.mako"/>To: ${ c.to }
-Subject: ${ _('Please activate your account') }
+Subject: ${ _('Next step: Confirm your email address') }
 
 ${ _('''Hello,
 

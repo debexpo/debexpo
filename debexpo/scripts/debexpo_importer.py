@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 #   debexpo-importer — executable script to import new packages
@@ -103,11 +102,17 @@ class Importer(object):
         ``user_id``
             ID of the user doing the upload. This is given from the upload controller.
         """
-        self.changes_file = os.path.abspath(changes)
+        self.changes_file_unqualified = changes
         self.ini_file = os.path.abspath(ini)
+
         self.user_id = user_id
         self.changes = None
         self.user = None
+
+    @property
+    def changes_file(self):
+        incoming_dir = pylons.config['debexpo.upload.incoming']
+        return os.path.join(incoming_dir, self.changes_file_unqualified)
 
     def _remove_changes(self):
         """
@@ -220,7 +225,9 @@ class Importer(object):
         pylons.config = load_environment(conf.global_conf, conf.local_conf)
 
         # Change into the incoming directory
-        os.chdir(pylons.config['debexpo.upload.incoming'])
+        incoming_dir = pylons.config['debexpo.upload.incoming']
+        logging.info("Changing dir to %s", incoming_dir)
+        os.chdir(incoming_dir)
 
         # Look for the changes file
         if not os.path.isfile(self.changes_file):
@@ -471,8 +478,7 @@ class Importer(object):
 
         log.debug('Done')
 
-if __name__ == '__main__':
-
+def main():
     parser = OptionParser(usage="%prog [-u ID] -c FILE -i FILE")
     parser.add_option('-c', '--changes', dest='changes',
                       help='Path to changes file to import',
@@ -495,3 +501,4 @@ if __name__ == '__main__':
     i = Importer(options.changes, options.ini, options.user_id)
 
     i.main()
+    return 0

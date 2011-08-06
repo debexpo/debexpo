@@ -54,18 +54,20 @@ class BuildSystemPlugin(BasePlugin):
 
         dsc = deb822.Dsc(file(self.changes.get_dsc()))
 
-        if 'cdbs' in dsc['Build-Depends']:
+        build_depends = dsc.get('Build-Depends', '')
+
+        if 'cdbs' in build_depends:
             log.debug('Package uses CDBS')
             self.info('uses-cdbs', None)
-        elif 'debhelper (7' in dsc['Build-Depends']:
+        elif 'debhelper (7' in build_depends:
             log.debug('Package uses debhelper 7')
             self.info('uses-dh', None)
-        elif 'debhelper' in dsc['Build-Depends']:
+        elif 'debhelper' in build_depends:
             log.debug('Package uses straight debhelper')
             self.info('uses-debhelper', None)
         else:
             log.warning('Build system cannot be determined')
-            self.fail('unknown-build-system', None, constants.PLUGIN_SEVERITY_WARNING)
+            self.failed('unknown-build-system', None, constants.PLUGIN_SEVERITY_WARNING)
 
 plugin = BuildSystemPlugin
 

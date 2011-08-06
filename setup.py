@@ -12,7 +12,6 @@ setup(
     #author='',
     #author_email='',
     #url='',
-    scripts=['bin/debexpo-importer'],
     install_requires=[
         "Pylons>=1.0",
         "SQLAlchemy>=0.6",
@@ -35,5 +34,8 @@ setup(
 
     [paste.app_install]
     main = pylons.util:PylonsInstaller
+
+    [console_scripts]
+    debexpo-importer = debexpo.scripts.debexpo_importer:main
     """,
 )
