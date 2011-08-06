@@ -59,7 +59,7 @@ class BuildSystemPlugin(BasePlugin):
         if 'cdbs' in build_depends:
             log.debug('Package uses CDBS')
             self.info('uses-cdbs', None)
-        elif 'debhelper (7' in builds_depends:
+        elif 'debhelper (7' in build_depends:
             log.debug('Package uses debhelper 7')
             self.info('uses-dh', None)
         elif 'debhelper' in build_depends:
