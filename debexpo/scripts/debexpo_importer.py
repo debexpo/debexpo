@@ -470,8 +470,7 @@ class Importer(object):
 
         log.debug('Done')
 
-if __name__ == '__main__':
-
+def main():
     parser = OptionParser(usage="%prog [-u ID] -c FILE -i FILE")
     parser.add_option('-c', '--changes', dest='changes',
                       help='Path to changes file to import',
