@@ -41,8 +41,8 @@ import formencode
 from pylons import config
 
 from debexpo.lib import constants
-from debexpo.lib.validators import NewEmailToSystem, NewDebianEmailToSystem, GpgKey, \
-    CurrentPassword, CheckBox, NewNameToSystem
+from debexpo.lib.validators import NewEmailToSystem, GpgKey, \
+    CurrentPassword, CheckBox, NewNameToSystem, ValidateSponsorEmail
 
 class LoginForm(formencode.Schema):
     """
@@ -106,26 +106,15 @@ class RegisterForm(formencode.Schema):
     password = formencode.validators.String(min=6)
     password_confirm = formencode.validators.String(min=6)
     commit = formencode.validators.String()
+    sponsor = formencode.validators.String(min=1, max=1)
+    email = NewEmailToSystem(not_empty=True)
 
     # Make sure password and password_confirm are the same.
     chained_validators = [
-        formencode.validators.FieldsMatch('password', 'password_confirm')
+        formencode.validators.FieldsMatch('password', 'password_confirm'),
+        formencode.schema.SimpleFormValidator(ValidateSponsorEmail),
     ]
 
-class MaintainerForm(RegisterForm):
-    """
-    Schema for the maintainer registration form in the register controller.
-    """
-    email = NewEmailToSystem(not_empty=True)
-
-class SponsorForm(RegisterForm):
-    """
-    Schema for the sponsor registration form in the register controller.
-    """
-    if config['debug']: # allow non-DD emails for debugging
-        email = NewEmailToSystem(not_empty=True)
-    else:
-        email = NewDebianEmailToSystem(not_empty=True)
 
 class PackageSubscribeForm(formencode.Schema):
     """

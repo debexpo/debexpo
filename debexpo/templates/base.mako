@@ -72,7 +72,7 @@
                 % if 'user_id' not in session:
                 ${ h.tags.link_to(
                         _('Sign me up'),
-                        h.url(controller='register', action='maintainer')) }
+                        h.url(controller='register', action='register')) }
                 
                 ${ h.tags.link_to(
                         _('Login'),

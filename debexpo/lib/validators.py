@@ -169,23 +169,7 @@ class NewNameToSystem(formencode.FancyValidator):
 
         return value
 
-class NewDebianEmailToSystem(NewEmailToSystem):
-    """
-    NewEmailToSystem validator class to make sure the user uses a @debian.org
-    email address.
-    """
+def ValidateSponsorEmail(values, state, validator):
+    if values['sponsor'] == '1' and not values['email'].endswith('@debian.org'):
+          return {'sponsor': 'A sponsor account must be registered with your @debian.org address' }
 
-    def _to_python(self, value, c):
-        """
-        Validate the email address.
-
-        ``value``
-            Address to validate.
-
-        ``c``
-        """
-        if not value.endswith('@debian.org'):
-            log.error('%s does not end with @debian.org' % value)
-            raise formencode.Invalid(_('You must use your debian.org email address to register'), value, c)
-
-        return NewEmailToSystem._to_python(self, value, c)

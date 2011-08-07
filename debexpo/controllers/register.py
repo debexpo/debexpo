@@ -43,7 +43,7 @@ from datetime import datetime
 from debexpo.lib.base import *
 from debexpo.lib import constants
 from debexpo.lib.email import Email
-from debexpo.lib.schemas import MaintainerForm, SponsorForm
+from debexpo.lib.schemas import RegisterForm
 
 from debexpo.model import meta
 from debexpo.model.users import User
@@ -87,12 +87,12 @@ class RegisterController(BaseController):
         activate_url = 'http://' + request.host + url.current(action='activate', id=key)
         email.send([recipient], activate_url=activate_url)
 
-    @validate(schema=MaintainerForm(), form='maintainer')
-    def _maintainer_submit(self):
+    @validate(schema=RegisterForm(), form='register')
+    def _register_submit(self):
         """
         Handles the form submission for a maintainer account registration.
         """
-        log.debug('Maintainer form validated successfully')
+        log.debug('Register form validated successfully')
 
         # Activation key.
         key = debexpo.lib.utils.random_hash()
@@ -103,6 +103,9 @@ class RegisterController(BaseController):
             lastlogin=datetime.now(),
             verification=key)
 
+	if not self.form_result['sponsor'] == '1':
+            u.status=constants.USER_STATUS_DEVELOPER
+
         meta.session.add(u)
         meta.session.commit()
 
@@ -111,58 +114,17 @@ class RegisterController(BaseController):
         log.debug('New user saved')
         return render('/register/activate.mako')
 
-    def maintainer(self):
+    def register(self):
         """
         Provides the form for a maintainer account registration.
         """
         # Has the form been submitted?
         if request.method == 'POST':
             log.debug('Maintainer form submitted')
-            return self._maintainer_submit()
+            return self._register_submit()
         else:
             log.debug('Maintainer form requested')
-            return render('/register/maintainer.mako')
-
-    @validate(schema=SponsorForm(), form='sponsor')
-    def _sponsor_submit(self):
-        """
-        Handles the form submission for a sponsor account registration.
-        """
-        log.debug('Sponsor form validated successfully')
-
-        # Activation key.
-        key = debexpo.lib.utils.random_hash()
-
-        u = User(name=self.form_result['name'],
-            email=self.form_result['email'],
-            password=debexpo.lib.utils.hash_it(self.form_result['password']),
-            lastlogin=datetime.now(),
-            verification=key,
-            status=constants.USER_STATUS_DEVELOPER)
-
-        meta.session.add(u)
-        meta.session.commit()
-
-        self._send_activate_email(key, self.form_result['email'])
-
-        log.debug('New user saved')
-        return render('/register/activate.mako')
-
-    def sponsor(self):
-        """
-        Provides the form for a sponsor account registration.
-        """
-        if config['debexpo.debian_specific'] != 'true':
-            log.error('Sponsor form requested when debexpo.debian_specific option set to !true; redirecting to maintainer form')
-            redirect(url(action='maintainer'))
-
-        # Has the form been submitted?
-        if request.method == 'POST':
-            log.debug('Sponsor form submitted')
-            return self._sponsor_submit()
-        else:
-            log.debug('Sponsor form requested')
-            return render('/register/sponsor.mako')
+            return render('/register/register.mako')
 
     def activate(self, id):
         """
