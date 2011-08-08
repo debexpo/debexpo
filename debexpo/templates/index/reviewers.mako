@@ -7,12 +7,12 @@
 
 <h3>Why should I review packages? I can not upload them!</h3>
 
-<p>Glad you ask! There are many reasons why you should review packages even if you can't actually upload them</p>
+<p>Glad you ask! There are many reasons why you should review packages even if you can't actually upload them.</p>
 
 <ul>
 	<li>The person you are reviewing will appreciate it. Chances are, you know about a problem in a package the person was not aware yet. So he can learn from you.</li>
-	<li>Eventually the package you are reviewing is in very good shape and you happen to learn something yourself. Moreover you will also learn best practices and workflows other people are using. Even if the package doe not meet Debian's package quality you can learn how <i>not to do</i> things.</li>
-  	<li>People whom <i>can</i> upload may decide based on your review whether the package in question is a candidate or not.</li>
+	<li>Eventually the package you are reviewing is in very good shape and you happen to learn something yourself. Moreover, you will also learn best practices and workflows other people are using. Even if the package does not meet Debian's package quality you can learn how <i>not to do</i> things.</li>
+  	<li>People who <i>can</i> upload may decide based on your review whether the package in question is a suitable candidate or not.</li>
 </ul>
 
 <h3>How can I review packages?</h3>
@@ -20,7 +20,7 @@
 <p>Pick a source package and start. There is no one and only correct way to review packages, but chances are you may want to have a look on these things:</p>
 
 <ul>
-	<li>Verify Lintian outputs: Did Lintian miss something, are semantical fixes correct?</li>
+	<li>Verify Lintian outputs: Did Lintian miss something, are fixes semantically correct?</li>
 	<li>Does the package satisfy <a href="http://www.debian.org/doc/manuals/developers-reference/best-pkging-practices.html">Debian's best practices</a> for packages?</li>
 	<li>Does the package correctly declare dependency relationships as defined in the policy?</li>
 	<li>Does the package meet the <a href="http://www.debian.org/social_contract">DFSG</a>? If yes, is the copyright file up to date and correct?</li>

@@ -25,7 +25,7 @@ ${ c.config['debexpo.sitename'] } is a rather complex service. Things can go wro
 
 <p>Lintian is a Debian package checker (and available as <a href="http://packages.debian.org/lintian">Debian package</a> - you can run it yourself). It can be used to check binary and source packages for compliance with the Debian policy and for other common packaging errors.</p>
 
-<p>Packaging for Debian is rather complex because one has to consider hundreds of guidelines to make the package `policy compliant'. Lintian tries to address this issue by providing an automated static analysis framework. You can learn more about Lintian in the <a href="http://lintian.debian.org/manual/index.html">Lintian User's Manual</a>. </p>
+<p>Packaging for Debian is rather complex because one has to consider hundreds of guidelines to make the package "policy compliant". Lintian tries to address this issue by providing an automated static analysis framework. You can learn more about Lintian in the <a href="http://lintian.debian.org/manual/index.html">Lintian User's Manual</a>. </p>
 
 <h2>Your Account</h2>
 
@@ -35,4 +35,4 @@ ${ c.config['debexpo.sitename'] } is a rather complex service. Things can go wro
 
 <h3>My binary packages do not show up</h3>
 
-<p>The current policy on ${ c.config['debexpo.sitename'] } is to deliberately throw away the binary packages. This is done for two main reasons. First it saves a lot of disk space. And second in the past Debian users downloaded the packages and used them carelessly to get brand-new versions. This lead to a lot of support questions. So we decided to just keep the source packages.</p>
+<p>The current policy on ${ c.config['debexpo.sitename'] } is to deliberately throw away the binary packages. This is done for two main reasons. First it saves a lot of disk space. And second in the past Debian users downloaded the packages and used them carelessly to get brand-new versions. This led to a lot of support questions. So we decided to just keep the source packages.</p>

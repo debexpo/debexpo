@@ -15,11 +15,11 @@
         <div id="header">
         <div id="upperheader">
             <div id="logo">
-		${ h.tags.image( c.config['debexpo.logo'], c.config['debexpo.sitename'])}	
+		${ h.tags.link_to(  h.tags.image( c.config['debexpo.logo'], c.config['debexpo.sitename']) ,  h.url('index')) }
             </div><!-- end logo -->
 	    <p class="section">${ c.config['debexpo.sitename'] }</p>
             <div id="searchbox">
-	        <h2>${ c.config['debexpo.tagline'] }</h2>
+	        ${ c.config['debexpo.tagline'] }
             </div><!-- end searchbox -->
         </div><!-- end upperheader -->
         <div id="navbar">
@@ -61,9 +61,11 @@
             </ul>
         </div><!-- end navbar -->
         <p id="breadcrumbs"> 
+        <!-- 
 	% for cur_part in h.url.current().split("/"):
 	${ cur_part  } /
 	% endfor
+	-->
 	</p>
         </div><!-- end header -->
         <div id="content">
