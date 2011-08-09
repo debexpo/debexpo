@@ -5,7 +5,9 @@ ${ c.custom_html }
 <h1>Welcome to ${ c.config['debexpo.sitename'] }</h1>
 
 <div class="warning">
-This page is currently on a public beta test! All uploads and account data will be wiped upon migration to this new service. Use the old <a href="http://mentors.debian.net">mentor service</a> for your data.
+	<p>
+	This page is currently on a public beta test! All uploads and account data will be wiped upon migration to this new service. Use the old <a href="http://mentors.debian.net">mentor service</a> for your data.
+	</p>
 </div>
 
 

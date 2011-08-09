@@ -98,7 +98,7 @@
         <div id="footer">
 	<p>debexpo
 	-
-	<a href="mailto:${ c.config['debexpo.email'] }">Support contact</a>
+	${ h.tags.link_to( _('Contact'), h.url('contact')) }
 	% if 'user_id' in session:
         -
         <a href="/logout">Logout</a>
