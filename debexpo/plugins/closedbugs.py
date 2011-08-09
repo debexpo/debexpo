@@ -63,15 +63,15 @@ class ClosedBugsPlugin(BasePlugin):
         if (len(bugs)):
             log.debug('Creating SOAP proxy to bugs.debian.org')
             try:
-                server = SOAPpy.SOAPProxy( ClosedBugsPlugin.URL, ClosedBugsPlugin.NS, simplify_objects = 1 ) 
+                server = SOAPpy.SOAPProxy( ClosedBugsPlugin.URL, ClosedBugsPlugin.NS, simplify_objects = 1 )
                 bugs_retrieved = server.get_status( *bugs )
                 bugs_retrieved = bugs_retrieved['item']
                 # Force argument to be a list, SOAPpy returns a dictionary instead of a dictionary list
                 # if only one bug was found
                 if ( not isinstance( bugs_retrieved, list ) ):
-                    bugs_retrieved = ( bugs_retrieved, ) 
+                    bugs_retrieved = ( bugs_retrieved, )
             except Exception as e:
-                log.critical('An error occurred when creating the SOAP proxy at "%s" (ns: "%s"): %s' 
+                log.critical('An error occurred when creating the SOAP proxy at "%s" (ns: "%s"): %s'
                     % (ClosedBugsPlugin.URL, ClosedBugsPlugin.NS, e))
 
             # Index bugs retrieved

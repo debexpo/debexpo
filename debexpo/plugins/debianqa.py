@@ -37,6 +37,7 @@ __license__ = 'MIT'
 
 import logging
 import urllib
+import re
 
 from debexpo.plugins import BasePlugin
 
@@ -76,8 +77,12 @@ class DebianPlugin(BasePlugin):
 
         for item in self.qa_page:
             if 'Accepted' in item:
-                log.debug('Last upload on %s' % item[5:14])
-                self.info('last-debian-upload', item[5:14])
+                last_change = re.search("\[(\d{4}-\d{2}-\d{2})\]", item)
+                if not last_change:
+                    continue
+                last_change = last_change.group(1)
+                log.debug('Last upload on %s' % last_change)
+                self.info('last-debian-upload', 'Last upload on %s' % last_change )
                 return
 
         log.warning('Couldn\'t find last upload date')
