@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#               2011 Arno Töll <debian@toell.net>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -31,56 +32,76 @@
 Holds the closedbugs plugin.
 """
 
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__author__ = 'Arno Töll'
+__copyright__ = 'Copyright © 2011 Arno Töll'
 __license__ = 'MIT'
 
 import logging
 
 from debexpo.lib import constants
 from debexpo.plugins import BasePlugin
+import SOAPpy
 
 log = logging.getLogger(__name__)
 
 class ClosedBugsPlugin(BasePlugin):
+    URL = "http://bugs.debian.org/cgi-bin/soap.cgi"
+    NS = "Debbugs/SOAP"
 
     def test_closed_bugs(self):
         """
         Check to make sure the bugs closed belong to the package.
         """
+
         log.debug('Checking whether the bugs closed in the package belong to the package')
 
-        try:
-            closes = self.changes['Closes']
+        bugs = [int(x) for x in self.changes['Closes'].split(' ')]
+
+        binary_packages = self.changes['Description'].split('\n')
+        binary_packages = [t.strip() for t in binary_packages]
+
+        if (len(bugs)):
             log.debug('Creating SOAP proxy to bugs.debian.org')
-            from ZSI.client import Binding
             try:
-                server = Binding(url='http://bugs.debian.org/cgi-bin/soap.cgi', ns='Debbugs/SOAP')
-            except:
-                log.critical('An error occurred when creating the SOAP proxy')
+                server = SOAPpy.SOAPProxy( ClosedBugsPlugin.URL, ClosedBugsPlugin.NS, simplify_objects = 1 ) 
+                bugs_retrieved = server.get_status( *bugs )
+                bugs_retrieved = bugs_retrieved['item']
+                # Force argument to be a list, SOAPpy returns a dictionary instead of a dictionary list
+                # if only one bug was found
+                if ( not isinstance( bugs_retrieved, list ) ):
+                    bugs_retrieved = ( bugs_retrieved, ) 
+            except Exception as e:
+                log.critical('An error occurred when creating the SOAP proxy at "%s" (ns: "%s"): %s' 
+                    % (ClosedBugsPlugin.URL, ClosedBugsPlugin.NS, e))
 
-            binary_packages = self.changes['Description'].split('\n')
-            binary_packages = [t.strip() for t in binary_packages]
-
-            for bug in self.changes['Closes'].split(' '):
-
-                try:
-                    debbug = server.get_status(int(bug.strip()))
-                except:
-                    log.critical('An error occured when getting the bug details; skipping')
+            # Index bugs retrieved
+            bugs_bts = {}
+            for bug in bugs_retrieved:
+                if 'key' in bug and  'value' in bug:
+                    bugs_bts[int(bug['key'])] = bug['value']
+                else:
                     continue
 
-                name = debbug.item.value['package']
+            for bug in bugs:
+                if not bug in bugs_bts:
+                    log.error('Bug #%s does not exist' % bug)
+                    self.failed('bug-does-not-exist', bug, constants.PLUGIN_SEVERITY_ERROR)
+
+                name = bugs_bts[bug]['package']
 
                 if self._package_in_descriptions(name, binary_packages):
-                    log.debug('Bug #%s belongs to this package' % bug)
-                    self.passed('bug-in-package', None, constants.PLUGIN_SEVERITY_INFO)
+                    message = ('Closes bug #%d: "%s" in package %s' %
+                        (bugs_bts[bug]['bug_num'], bugs_bts[bug]['subject'], bugs_bts[bug]['package']))
+                    log.debug(message)
+                    self.passed('bug-in-package', message, constants.PLUGIN_SEVERITY_INFO)
                 else:
                     log.error('Bug #%s does not belong to this package' % bug)
                     self.failed('bug-not-in-package', bug, constants.PLUGIN_SEVERITY_ERROR)
 
-        except KeyError:
+
+        else:
             log.debug('Package does not close any bugs')
+
 
     def _package_in_descriptions(self, name, list):
         """
