@@ -86,7 +86,7 @@ class Importer(object):
     Class to handle the package that is uploaded and wants to be imported into the database.
     """
 
-    def __init__(self, changes, ini, user_id):
+    def __init__(self, changes, ini, user_id, skip_email):
         """
         Object constructor. Sets class fields to sane values.
 
@@ -101,13 +101,23 @@ class Importer(object):
 
         ``user_id``
             ID of the user doing the upload. This is given from the upload controller.
+
+        ``skip_email``
+            If this is set to true, send no email.
         """
         self.changes_file_unqualified = changes
         self.ini_file = os.path.abspath(ini)
+        self.actually_send_email = not bool(skip_email)
 
         self.user_id = user_id
         self.changes = None
         self.user = None
+
+    def send_email(self, email, *args, **kwargs):
+        if self.actually_send_email:
+            email.send(*args, **kwargs)
+        else:
+            logging.info("Skipping email send: %s %s", args, kwargs)
 
     @property
     def changes_file(self):
@@ -157,10 +167,11 @@ class Importer(object):
             email = Email('importer_fail_maintainer')
             package = self.changes.get('Source', '')
 
-            email.send([self.user.email], package=package)
+
+            self.send_email(email, [self.user.email], package=package)
 
         email = Email('importer_fail_admin')
-        email.send([config['debexpo.email']], message=reason)
+        self.send_email(email, [config['debexpo.email']], message=reason)
 
         sys.exit(1)
 
@@ -182,7 +193,7 @@ class Importer(object):
             email = Email('importer_reject_maintainer')
             package = self.changes.get('Source', '')
 
-            email.send([self.user.email], package=package, message=reason)
+            self.send_email(email, [self.user.email], package=package, message=reason)
         sys.exit(1)
 
     def _setup_logging(self):
@@ -318,7 +329,7 @@ class Importer(object):
 
         if len(subscribers) > 0:
             email = Email('package_uploaded')
-            email.send([s.user.email for s in subscribers], package=self.changes['Source'],
+            self.send_email(email, ,[s.user.email for s in subscribers], package=self.changes['Source'],
                 version=self.changes['Version'], user=self.user)
 
             log.debug('Sent out package subscription emails')
@@ -327,7 +338,7 @@ class Importer(object):
         email = Email('successful_upload')
         dsc_url = pylons.config['debexpo.server'] + '/debian/' + self.changes.get_pool_path() + '/' + self.changes.get_dsc()
         rfs_url = pylons.config['debexpo.server'] + url('rfs', packagename=self.changes['Source'])
-        email.send([self.user.email], package=self.changes['Source'],
+        self.send_email(email, [self.user.email], package=self.changes['Source'],
             dsc_url=dsc_url, rfs_url=rfs_url)
 
     def _orig(self):
@@ -479,7 +490,7 @@ class Importer(object):
         log.debug('Done')
 
 def main():
-    parser = OptionParser(usage="%prog [-u ID] -c FILE -i FILE")
+    parser = OptionParser(usage="%prog [-u ID] -c FILE -i FILE [--skip-email]")
     parser.add_option('-c', '--changes', dest='changes',
                       help='Path to changes file to import',
                       metavar='FILE', default=None)
@@ -491,6 +502,8 @@ def main():
     parser.add_option('-u', '--userid', dest='user_id',
                       help='''Uploader's user_id''',
                       metavar='ID', default=None)
+    parser.add_option('--userid', dest='skip_email',
+                      action="store_true", help="Skip sending emails")
 
     (options, args) = parser.parse_args()
 
@@ -498,7 +511,7 @@ def main():
         parser.print_help()
         sys.exit(0)
 
-    i = Importer(options.changes, options.ini, options.user_id)
+    i = Importer(options.changes, options.ini, options.user_id, options.skip_email)
 
     i.main()
     return 0
