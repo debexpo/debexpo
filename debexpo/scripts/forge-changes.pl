@@ -102,6 +102,13 @@ sub wanted
 		print CH checksum($tuple->[0], $File::Find::name, ($tuple->[1] eq "Files") ? 1 : 0);
 		foreach $key (keys %tarballs)
 		{
+            if (! -e $File::Find::dir . "/" . $key )
+            {
+                print("Incomplete upload " . $File::Find::dir . "/" . $key  . "\n");
+                close(CH);
+                unlink($changes);
+                return;
+            }
 			print CH checksum($tuple->[0], $File::Find::dir . "/" . $key, ($tuple->[1] eq "Files") ? 1 : 0);
 		}
 	}
