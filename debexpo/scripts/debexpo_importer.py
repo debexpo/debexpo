@@ -407,7 +407,7 @@ class Importer(object):
             self.user = meta.session.query(User).filter_by(
                     email=maintainer_email_address).filter_by(verification=None).first()
             if self.user is None:
-                self._fail('Couldn\'t find user with email address %s. Exiting.' % self.maintainer_email_address)
+                self._fail('Couldn\'t find user with email address %s. Exiting.' % maintainer_email_address)
             log.debug("User found in database. Has id: %s", self.user.id)
         else:
             # Get uploader's User object
