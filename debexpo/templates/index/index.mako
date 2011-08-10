@@ -12,7 +12,7 @@ ${ c.custom_html }
 </div>
 -->
 
-<p>Only approved members of the Debian project - so-called <i>Debian developers</i> - are granted the permission to upload software packages into the Debian distribution. Still a large number of packages is maintained by non-official developers. How do they get their work into Debian when they are not allowed to upload their own packages directly? By means of a process called <i>sponsorship</i>. Don't worry - it does not deal with money. Sponsorship means that a Debian developer uploads the package on behalf of the actual maintainer. The Debian developer will also check the package for technical correctness and help the maintainer to improve the package if necessary. Therefore the sponsor is sometimes also called a mentor.</p>
+<p>Only approved members of the Debian project - so-called <i>Debian developers</i> - are granted the permission to upload software packages into the Debian distribution. Still a large number of packages is maintained by non-official developers. How do they get their work into Debian when they are not allowed to upload their own packages directly? By means of a process called <i>sponsorship</i>. Sponsorship means that a Debian developer uploads the package on behalf of the actual maintainer. The Debian developer will also check the package for technical correctness and help the maintainer to improve the package if necessary. Therefore the sponsor is sometimes also called a mentor.</p>
 
 <p>You can even help us to review packages if you are not a developer. We appreciate your efforts as well.</p>
 
