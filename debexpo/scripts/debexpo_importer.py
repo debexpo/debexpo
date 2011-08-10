@@ -329,7 +329,7 @@ class Importer(object):
 
         if len(subscribers) > 0:
             email = Email('package_uploaded')
-            self.send_email(email, ,[s.user.email for s in subscribers], package=self.changes['Source'],
+            self.send_email(email, [s.user.email for s in subscribers], package=self.changes['Source'],
                 version=self.changes['Version'], user=self.user)
 
             log.debug('Sent out package subscription emails')
