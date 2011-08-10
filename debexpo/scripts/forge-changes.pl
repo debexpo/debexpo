@@ -90,7 +90,7 @@ sub wanted
 	print CH "Maintainer: $maintainer\n";
 	print CH "Changed-By: $changed_by\n";
 	print CH "Description:\n";
-	print CH " $package - The we don't care package\n";
+	print CH " $package - Automatically imported during mentors.debian.net migration -- re-upload to get fresh data here\n";
 	print CH "Changes:\n";
 	print CH " $package ($version) unstable; urgency=low\n";
 	print CH " .\n";
