@@ -502,7 +502,7 @@ def main():
     parser.add_option('-u', '--userid', dest='user_id',
                       help='''Uploader's user_id''',
                       metavar='ID', default=None)
-    parser.add_option('--userid', dest='skip_email',
+    parser.add_option('--skip-email', dest='skip_email',
                       action="store_true", help="Skip sending emails")
 
     (options, args) = parser.parse_args()
