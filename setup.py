@@ -37,5 +37,6 @@ setup(
 
     [console_scripts]
     debexpo-importer = debexpo.scripts.debexpo_importer:main
+    debexpo-user-importer = debexpo.scripts.user_importer:main
     """,
 )
