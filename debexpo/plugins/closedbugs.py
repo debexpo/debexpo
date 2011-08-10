@@ -53,6 +53,12 @@ class ClosedBugsPlugin(BasePlugin):
         Check to make sure the bugs closed belong to the package.
         """
 
+        try:
+            self.changes['Closes']
+        except KeyError:
+            log.debug('Package does not close any bugs')
+            return
+
         log.debug('Checking whether the bugs closed in the package belong to the package')
 
         bugs = [int(x) for x in self.changes['Closes'].split(' ')]
