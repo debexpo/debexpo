@@ -25,9 +25,6 @@ ${ c.custom_html }
 <h3>Is my package technically okay?</h3>
 
 <p>When you upload your package to ${ c.config['debexpo.sitename'] } it will automatically be checked for common mistakes. You will get an information email after the upload. Either your package contains bugs and will be rejected, or the package is clean except for some minor technical issues. You will get hints about how to fix the package. If the email tells you that your package is fine then a sponsor will still do further checks. Don't worry too much. If your package is accepted by mentors.debian.net then let the sponsor help you with the rest.
-The software I packaged is not yet available in Debian.</p>
-
-<p>Please read this section of the Debian policy if the software you packaged is not yet in Debian. You need to follow a certain procedure to show other people you are working on the package.</p>
 
 <h3>How to upload packages?</h3>
 
