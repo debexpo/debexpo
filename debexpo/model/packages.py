@@ -57,7 +57,7 @@ class Package(OrmObject):
 
     def get_description_nl2br(self):
         s = self.description
-        s = s.replace('<', '&lt;'
+        s = s.replace('<', '&lt;')
         s = s.replace('\n', '<br />')
         return s
 
