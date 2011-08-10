@@ -55,6 +55,12 @@ t_packages = sa.Table('packages', meta.metadata,
 class Package(OrmObject):
     foreign = ['user']
 
+    def get_description_nl2br(self):
+        s = self.description
+        s = s.replace('<', '&lt;'
+        s = s.replace('\n', '<br />')
+        return s
+
 orm.mapper(Package, t_packages, properties={
     'user' : orm.relation(User, backref='packages')
 })
