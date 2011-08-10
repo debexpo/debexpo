@@ -17,7 +17,7 @@
             <div id="logo">
 		${ h.tags.link_to(  h.tags.image( c.config['debexpo.logo'], c.config['debexpo.sitename']) ,  h.url('index')) }
             </div><!-- end logo -->
-	    <p class="section">${ c.config['debexpo.sitename'] }</p>
+	    <p class="section">${ c.config['debexpo.sitetitle'] }</p>
             <div id="searchbox">
 	        ${ c.config['debexpo.tagline'] }
             </div><!-- end searchbox -->
@@ -96,7 +96,7 @@
 		${next.body()}
 	</div><!-- end content -->
         <div id="footer">
-	<p>debexpo
+	<p>© 2008-2011 ${c.config['debexpo.sitename']}
 	-
 	${ h.tags.link_to( _('Contact'), h.url('contact')) }
 	% if 'user_id' in session:

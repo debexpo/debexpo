@@ -5,7 +5,7 @@ ${ c.custom_html }
 
 <h1>Introduction for maintainers</h1>
 
-<h2>Welcome to ${ c.config['debexpo.sitename'] }</h2>
+<h2>Welcome to ${ c.config['debexpo.sitetitle'] }</h2>
 
 <p>We are glad that you found your way to our web site. Honestly the whole web site is just there to get your work into Debian. Your contribution is appreciated and it would be a pity if you didn't find a sponsor to upload your packages. Read on to see in what ways we will be helping you find a sponsor.</p>
 
@@ -17,7 +17,7 @@ ${ c.custom_html }
 	<ul>
 		<li>${ h.tags.link_to("Sign up for an account", h.url(controller='register', action='maintainer')) }. Getting an account on this server is an automatic process and will just take a moment. We require registration so we have a valid email address where sponsors can reach you.</li>
 		<li>Upload your package to mentors.debian.net. You don't need to put your packages into any other web space on the Internet. Everybody will be able to download your package using either the web browser, the 'dget' tools or even through a simple run of apt-get source ....</li>
-		<li>Your package is on display on the main page of ${ c.config['debexpo.sitename'] } so interested sponsors will see it and hopefully check it out.</li>
+		<li>Your package is on display on the main page of ${ c.config['debexpo.sitetitle'] } so interested sponsors will see it and hopefully check it out.</li>
 		<li>You will be shown an RFS (request-for-sponsorship) template that you can send to the debian-mentors mailing list to draw attention to your package.</li>
 		<li>Finally a sponsor will hopefully pick up your package and upload it on your behalf. Bingo - your package is publicly available in Debian. And this server will automatically send you an email in case you did not notice the upload.</li>
 	</ul>
