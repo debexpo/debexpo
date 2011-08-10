@@ -72,6 +72,7 @@ def make_map(config):
     map.connect('/package', controller='package', action='index')
     map.connect('package', '/package/{packagename}', controller='package', action='index')
     map.connect('comment', '/package/{packagename}/comment', controller='package', action='comment')
+    map.connect('sponsor', '/package/{packagename}/needs_sponsor/{key}', controller='package', action='sponsor')
     map.connect('subscribe', '/package/{packagename}/subscribe', controller='package', action='subscribe')
     map.connect('delete', '/package/{packagename}/delete', controller='package', action='delete')
     map.connect('rfs', '/package/rfs/{packagename}', controller='package', action='rfs')

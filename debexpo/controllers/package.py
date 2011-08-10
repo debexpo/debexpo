@@ -247,3 +247,23 @@ class PackageController(BaseController):
                 comment=fields['text'], user=user)
 
         redirect(url('package', packagename=packagename))
+
+    def sponsor(self, packagename, key):
+        if 'user_id' not in session:
+            log.debug('Requires authentication')
+            session['path_before_login'] = request.path_info
+            session.save()
+            redirect(url('login'))
+        else:
+            user = meta.session.query(User).filter_by(id=session['user_id']).one()
+
+        if user.get_upload_key() != key:
+            log.error("Possible CSRF attack, upload key does not match user's session key")
+            abort(402)
+
+        package = meta.session.query(Package).filter_by(name=packagename).one()
+        package.needs_sponsor = not package.needs_sponsor
+        log.debug("Toggle 'needs sponsor' flag = %d" % package.needs_sponsor)
+        meta.session.commit()
+
+        redirect(url('package', packagename=packagename))
