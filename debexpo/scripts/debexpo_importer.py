@@ -171,7 +171,7 @@ class Importer(object):
             self.send_email(email, [self.user.email], package=package)
 
         email = Email('importer_fail_admin')
-        self.send_email(email, [config['debexpo.email']], message=reason)
+        self.send_email(email, [pylons.config['debexpo.email']], message=reason)
 
         sys.exit(1)
 
