@@ -32,7 +32,7 @@ ${ c.custom_html }
 See your ${ h.tags.link_to("account page", h.url('my')) } to see how to configure it.</p>
 <p>Once you have it set up, you can run it from your shell like this:</p>
 <pre>
-dput debexpo youpackage_yourversion_arch.changes
+dput debexpo yourpackage_yourversion_arch.changes
 </pre>
 
 
