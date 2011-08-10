@@ -59,9 +59,6 @@ def import_one_user(data_dict):
     It checks if that email address already exists; if so, it logs
     a warning indicating that are skipping the user.
 
-    It checks if that full name already exists; if so, it logs a warning
-    and skips the user.
-
     If the user ought to be imported, then we do it! If we succeed, we print
     nothing. If we fail, we abort.'''
     transformation = {
@@ -83,15 +80,6 @@ def import_one_user(data_dict):
     if matches.count():
         logging.warn("A user with email address %s already exists" % (
                 user_email,))
-        return
-
-    # Then, see if the user's full name matches a current user
-    user_realname = data_dict['realname']
-    matches = meta.session.query(debexpo.model.users.User
-            ).filter_by(name=user_realname)
-    if matches.count():
-        logging.warn("A user with name %s already exists" % (
-                user_realname,))
         return
 
     # Okay! Let's convert the data format...
