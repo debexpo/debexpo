@@ -14,13 +14,13 @@ ${ c.custom_html }
 
 <p>This web site is a public package repository of source packages. You can upload your package to this server (through special tools like 'dupload' or 'dput') and after a few checks it will be stored in our repository. Interested sponsors can then download the package and upload it to Debian. So the basic procedure is:</p>
 
-	<ul>
-		<li>${ h.tags.link_to("Sign up for an account", h.url(controller='register', action='maintainer')) }. Getting an account on this server is an automatic process and will just take a moment. We require registration so we have a valid email address where sponsors can reach you.</li>
-		<li>Upload your package to mentors.debian.net. You don not need to put your packages into any other web space on the Internet. Everybody will be able to download your package using either the web browser, the 'dget' tools or even through a simple run of apt-get source ....</li>
-		<li>Your package is on display on the main page of ${ c.config['debexpo.sitetitle'] } so interested sponsors will see it and hopefully check it out.</li>
-		<li>You will be shown a RFS (request-for-sponsorship) template that you can send to the debian-mentors mailing list to draw attention to your package.</li>
-		<li>Finally a sponsor will hopefully pick up your package and upload it on your behalf. Bingo - your package is publicly available in Debian. And this server will automatically send you an email in case you did not notice the upload.</li>
-	</ul>
+<ul>
+    <li>${ h.tags.link_to("Sign up for an account", h.url(controller='register', action='maintainer')) }. Getting an account on this server is an automatic process and will just take a moment. We require registration so we have a valid email address where sponsors can reach you.</li>
+    <li>Upload your package to mentors.debian.net. You don not need to put your packages into any other web space on the Internet. Everybody will be able to download your package using either the web browser, the 'dget' tools or even through a simple run of apt-get source ....</li>
+    <li>Your package is on display on the main page of ${ c.config['debexpo.sitetitle'] } so interested sponsors will see it and hopefully check it out.</li>
+    <li>You will be shown a RFS (request-for-sponsorship) template that you can send to the debian-mentors mailing list to draw attention to your package.</li>
+    <li>Finally a sponsor will hopefully pick up your package and upload it on your behalf. Bingo - your package is publicly available in Debian. And this server will automatically send you an email in case you did not notice the upload.</li>
+</ul>
 
 <h3>Is my package technically okay?</h3>
 

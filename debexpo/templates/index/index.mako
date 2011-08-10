@@ -6,9 +6,9 @@ ${ c.custom_html }
 
 <!--
 <div class="warning">
-	<p>
-	This page is currently on a public beta test! All uploads and account data will be wiped upon migration to this new service. Use the old <a href="http://mentors.debian.net">mentor service</a> for your data.
-	</p>
+    <p>
+    This page is currently on a public beta test! All uploads and account data will be wiped upon migration to this new service. Use the old <a href="http://mentors.debian.net">mentor service</a> for your data.
+    </p>
 </div>
 -->
 
@@ -17,14 +17,13 @@ ${ c.custom_html }
 <p>You can even help us to review packages if you are not a developer. We appreciate your efforts as well.</p>
 
 <ul>
-	<li>I want to have my package uploaded to Debian: Please go to ${ h.tags.link_to("our introductory page", h.url('intro-maintainers')) } for maintainers and learn how to use ${ c.config['debexpo.sitename'] }.</li>
-	<li>I am a Debian Developer and want to offer sponsorship: Please go to ${ h.tags.link_to("our introductory page for sponsors", h.url('intro-sponsors')) } to learn how you can help best.</li>
-	<li>I am a Debian Maintainer or a skilled sponsored maintainer and want to help: Please go to ${ h.tags.link_to("our page dedicated to reviewers", h.url('intro-reviewers')) }.</li>
+    <li>I want to have my package uploaded to Debian: Please go to ${ h.tags.link_to("our introductory page", h.url('intro-maintainers')) } for maintainers and learn how to use ${ c.config['debexpo.sitename'] }.</li>
+    <li>I am a Debian Developer and want to offer sponsorship: Please go to ${ h.tags.link_to("our introductory page for sponsors", h.url('intro-sponsors')) } to learn how you can help best.</li>
+    <li>I am a Debian Maintainer or a skilled sponsored maintainer and want to help: Please go to ${ h.tags.link_to("our page dedicated to reviewers", h.url('intro-reviewers')) }.</li>
 </ul>
 
 <p>You can <a href="http://wiki.debian.org/Debexpo">read more about debexpo on the Debian Wiki</a>.</p>
 
-   
 <h1>Recently uploaded packages</h1>
 
 <%include file="../packages/list.mako" />

@@ -8,13 +8,13 @@ ${ c.config['debexpo.sitename'] } is a rather complex service. Things can go wro
 <h2>Getting started</h2>
 <h3>How do I build a package?</h3>
 
-	<p>If you want to learn how to create a proper Debian package you can find some interesting documentation to start with at:</p>
+    <p>If you want to learn how to create a proper Debian package you can find some interesting documentation to start with at:</p>
 
-	<ul>
-		<li><a href="http://www.debian.org/doc/manuals/maint-guide/">New Maintainer's Guide</a></li>
-		<li><a href="http://wiki.debian.org/HowToPackageForDebian">HowToPackageForDebian</a> (Debian Wiki)</li>
-		<li><a href="http://www.debian.org/doc/manuals/developers-reference/index.html">Developer's Reference</a></li>
-	</ul>
+    <ul>
+        <li><a href="http://www.debian.org/doc/manuals/maint-guide/">New Maintainer's Guide</a></li>
+        <li><a href="http://wiki.debian.org/HowToPackageForDebian">HowToPackageForDebian</a> (Debian Wiki)</li>
+        <li><a href="http://www.debian.org/doc/manuals/developers-reference/index.html">Developer's Reference</a></li>
+    </ul>
 
 <h3>What is the Debian policy?</h3>
 
