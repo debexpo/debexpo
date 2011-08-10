@@ -47,7 +47,7 @@ import debexpo.lib.utils
 
 t_users = sa.Table('users', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
-    sa.Column('name', sa.types.String(200), nullable=False, unique=True),
+    sa.Column('name', sa.types.String(200), nullable=False),
     sa.Column('email', sa.types.String(200), nullable=False),
     sa.Column('gpg', sa.types.Text, nullable=True),
     sa.Column('gpg_id', sa.types.String(30), nullable=True),
