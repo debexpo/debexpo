@@ -279,7 +279,7 @@ class Importer(object):
         else:
             qa_status = 0
 
-        maintainer_matches = re.compile(r'(.*) <(.*)>').match(self.changes['Maintainer'])
+        maintainer_matches = re.compile(r'(.*) <(.*)>').match(self.changes['Changed-By'])
         maintainer = maintainer_matches.group(2)
 
         package_version = PackageVersion(package=package, version=self.changes['Version'],
