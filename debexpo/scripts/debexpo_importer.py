@@ -71,7 +71,6 @@ from debexpo.model.package_subscriptions import PackageSubscription
 # Import debexpo modules
 from paste.deploy import appconfig
 from debexpo.config.environment import load_environment
-from debexpo.lib.base import config
 from debexpo.lib.email import Email
 from debexpo.lib.changes import Changes
 from debexpo.lib.repository import Repository
