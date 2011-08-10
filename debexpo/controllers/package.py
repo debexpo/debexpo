@@ -262,7 +262,10 @@ class PackageController(BaseController):
             abort(402)
 
         package = meta.session.query(Package).filter_by(name=packagename).one()
-        package.needs_sponsor = not package.needs_sponsor
+        if package.needs_sponsor:
+                package.needs_sponsor = 0
+        else:
+                package.needs_sponsor = 1
         log.debug("Toggle 'needs sponsor' flag = %d" % package.needs_sponsor)
         meta.session.commit()
 
