@@ -15,7 +15,7 @@
 use File::Find;
 use File::Basename;
 
-our @directories_to_search = ("/CHANGE/ME");
+our @directories_to_search = ("/tmp/pkg/");
 if ($directories_to_search[0] eq '/CHANGE/ME')
 {
 	die();
