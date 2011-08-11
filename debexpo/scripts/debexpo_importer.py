@@ -249,6 +249,7 @@ class Importer(object):
         """
         log.debug('Creating database entries')
 
+
         # Parse component and section from field in changes
         component, section = parse_section(self.changes['files'][0]['section'])
 
@@ -297,7 +298,13 @@ class Importer(object):
         # Add PackageFile objects to the database for each uploaded file
         for file in self.files:
             filename = os.path.join(self.changes.get_pool_path(), file)
-            sum = md5sum(os.path.join(pylons.config['debexpo.repository'], filename))
+            # This exception should be never caught.
+            # It implies something went wrong before, as we expect a file which does not exist
+            try:
+                sum = md5sum(os.path.join(pylons.config['debexpo.repository'], filename))
+            except AttributeError as e:
+                self._fail("Could not calculate MD5 sum: %s" % (e))
+
             size = os.stat(os.path.join(pylons.config['debexpo.repository'], filename))[ST_SIZE]
 
             # Check for binary or source package file
@@ -376,7 +383,7 @@ class Importer(object):
         except Exception, e:
             log.error(e.message)
             self._remove_changes()
-            sys.exit(1)
+            self._reject("Your changes file appears invalid - refusing upload")
 
         self.files = self.changes.get_files()
 
@@ -439,6 +446,7 @@ class Importer(object):
         if orig is None:
             if self._orig():
                 self.files.append(oldorig)
+                toinstall.append(oldorig)
 
         # Check whether the debexpo.repository variable is set
         if 'debexpo.repository' not in pylons.config:
@@ -467,6 +475,7 @@ class Importer(object):
 
         # Install files in repository
         for file in toinstall:
+            log.debug("Installing new file %s" % (file))
             shutil.move(file, os.path.join(destdir, file))
 
         # Create the database rows
