@@ -180,7 +180,7 @@ class PackageController(BaseController):
             return form.htmlfill(render('/package/subscribe.mako'), validation)
         return render('/package/subscribe.mako')
 
-    def delete(self, packagename):
+    def delete(self, packagename, key):
         """
         Delete package.
 
@@ -192,6 +192,13 @@ class PackageController(BaseController):
             session['path_before_login'] = request.path_info
             session.save()
             redirect(url('login'))
+        else:
+            user = meta.session.query(User).filter_by(id=session['user_id']).one()
+
+
+        if user.get_upload_key() != key:
+            log.error("Possible CSRF attack, upload key does not match user's session key")
+            abort(402)
 
         # The user should have already been prompted with a nice dialog box
         # confirming their choice, so no mercy here.

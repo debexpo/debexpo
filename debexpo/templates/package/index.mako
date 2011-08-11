@@ -53,7 +53,7 @@
 
   <tr>
     <th>${ _('Delete package') }:</th>
-    <td>${ h.html.tags.link_to(_('Delete this package'), h.url.current(action="delete", packagename=c.package.name), confirm=_('Are you sure?')) }</td>
+    <td>${ h.html.tags.link_to(_('Delete this package'), h.url.current(action="delete", packagename=c.package.name, key=c.user.get_upload_key()), confirm=_('Are you sure?')) }</td>
   </tr>
 
 % endif
