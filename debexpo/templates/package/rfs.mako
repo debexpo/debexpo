@@ -3,15 +3,15 @@
 
 <h1>${ _('Template for an RFS for "%s"') % c.package.name }</h1>
 
-<p>${ _('''An RFS is a <i>request for sponsorship</i>. If you want to show other people
+<p>An RFS is a <i>request for sponsorship</i>. If you want to show other people
 that you are looking for a sponsor for your package you can post an email to
-the debian-mentors mailing list containing information about your package.''') }</p>
+the debian-mentors mailing list containing information about your package.</p>
 
-<p>${ _('''<strong>Note</strong>: You might not get a reply to your request if you do not
+<p><strong>Note</strong>: You might not get a reply to your request if you do not
 subscribe to the debian-mentors mailing list. You can <a href="http://lists.debian.org/debian-mentors">
 subscribe to the mailing list by clicking here</a> and following the simple steps to confirm
 your subscription request. It can also take time for sponsors to look over the requests, so
-please do not give up quickly and keep a watch over the mailing list.''') }</p>
+please do not give up quickly and keep a watch over the mailing list.</p>
 
 <pre>
 From: ${ c.package.user.name } &lt;${ c.package.user.email }&gt
