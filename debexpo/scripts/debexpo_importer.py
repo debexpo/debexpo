@@ -396,14 +396,14 @@ class Importer(object):
         destdir = pylons.config['debexpo.repository']
 
         # If the user ID wasn't specified using the "-u" option then try
-        # to determine it from the "Maintainer:" mentioned in the changes
+        # to determine it from the "Changed-By:" mentioned in the changes
         # file.
         if self.user_id is None:
-            log.debug("Option '-u' was not given. Determining user from 'Maintainer:' field.")
-            maintainer_string = self.changes.get('Maintainer')
-            log.debug("Maintainer is: %s", maintainer_string)
+            log.debug("Option '-u' was not given. Determining user from 'Changed-By:' field.")
+            maintainer_string = self.changes.get('Changed-By')
+            log.debug("Changed-By is: %s", maintainer_string)
             maintainer_realname, maintainer_email_address = email.utils.parseaddr(maintainer_string)
-            log.debug("Maintainer's email address is: %s", maintainer_email_address)
+            log.debug("Changed-By's email address is: %s", maintainer_email_address)
             self.user = meta.session.query(User).filter_by(
                     email=maintainer_email_address).filter_by(verification=None).first()
             if self.user is None:
@@ -498,7 +498,7 @@ def main():
                       help='Path to application ini file',
                       metavar='FILE', default=None)
     # If the 'userid' option is not given then the user will be derived
-    # from the email address mentioned in the changes file as Maintainer.
+    # from the email address mentioned in the changes file as Changed-By.
     parser.add_option('-u', '--userid', dest='user_id',
                       help='''Uploader's user_id''',
                       metavar='ID', default=None)
