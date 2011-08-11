@@ -15,9 +15,9 @@
         <div id="header">
         <div id="upperheader">
             <div id="logo">
-		${ h.tags.link_to(  h.tags.image( c.config['debexpo.logo'], c.config['debexpo.sitename']) ,  h.url('index')) }
+		${ h.tags.link_to(  h.tags.image( c.config['debexpo.logo'], c.config['debexpo.sitename']) , 'http://www.debian.org') }
             </div><!-- end logo -->
-	    <p class="section">${ c.config['debexpo.sitetitle'] }</p>
+	    <p class="section">${ h.tags.link_to( c.config['debexpo.sitetitle'], h.url('index')) }</p>
             <div id="searchbox">
 	        ${ c.config['debexpo.tagline'] }
             </div><!-- end searchbox -->
