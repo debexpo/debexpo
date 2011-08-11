@@ -6,6 +6,7 @@
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
+#               2011 Arno Töll <debian@toell.net>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -37,6 +38,8 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import logging
+import datetime
+
 import apt_pkg
 from sqlalchemy import exceptions
 from pylons.i18n import get_lang
@@ -52,8 +55,28 @@ from debexpo.lib import constants
 
 log = logging.getLogger(__name__)
 
-class PackagesController(BaseController):
 
+class PackageGroups(object):
+    """
+    A helper class to hold packages matching a certain time criteria
+    """
+    def __init__(self, label, deltamin, deltamax, packages):
+        self.label = label
+        #log.debug("label: %s min: %s, max: %s", label, deltamin, deltamax)
+        if (not deltamin == None and not deltamax == None):
+                self.packages = [x for x in packages if
+                    x.package_versions[-1].uploaded <= deltamin and
+                    x.package_versions[-1].uploaded > deltamax]
+        elif (deltamin == None and not deltamax == None):
+                self.packages = [x for x in packages if
+                    x.package_versions[-1].uploaded > deltamax]
+        elif (not deltamin == None and deltamax == None):
+                self.packages = [x for x in packages if
+                    x.package_versions[-1].uploaded <= deltamin]
+        else:
+                raise("deltaamin == None and deltamax == None")
+
+class PackagesController(BaseController):
     def _get_packages(self, package_filter=None, package_version_filter=None):
         """
         Returns a list of packages that fit the filters.
@@ -84,6 +107,16 @@ class PackagesController(BaseController):
     def _get_user(self, email):
         return meta.session.query(User).filter_by(email=email).first()
 
+    def _get_timedeltas(self, packages):
+        deltas = []
+        now = datetime.datetime.now()
+        deltas.append(PackageGroups(_("Today"), None, now - datetime.timedelta(days=1), packages))
+        deltas.append(PackageGroups(_("Yesterday"), now - datetime.timedelta(days=1), now - datetime.timedelta(days=2), packages))
+        deltas.append(PackageGroups(_("Some days ago"), now - datetime.timedelta(days=2), now - datetime.timedelta(days=7), packages))
+        deltas.append(PackageGroups(_("Older packages"), now - datetime.timedelta(days=7), now - datetime.timedelta(days=30), packages))
+        deltas.append(PackageGroups(_("Uploaded long ago"), now - datetime.timedelta(days=30), None, packages))
+        return deltas;
+
     def index(self):
         """
         Entry point into the PackagesController.
@@ -97,6 +130,7 @@ class PackagesController(BaseController):
         c.config = config
         c.packages = packages
         c.feed_url = url('packages_feed')
+        c.deltas = self._get_timedeltas(packages)
         return render('/packages/index.mako')
 
     def feed(self, filter=None, id=None):
@@ -154,6 +188,7 @@ class PackagesController(BaseController):
         c.packages = packages
         c.section = id
         c.feed_url = url('packages_filter_feed', filter='section', id=id)
+        c.deltas = self._get_timedeltas(packages)
         return render('/packages/section.mako')
 
     def uploader(self, id):
@@ -179,6 +214,7 @@ class PackagesController(BaseController):
         c.packages = packages
         c.username = username
         c.feed_url = url('packages_filter_feed', filter='uploader', id=id)
+        c.deltas = self._get_timedeltas(packages)
         return render('/packages/uploader.mako')
 
     def my(self):
@@ -211,4 +247,5 @@ class PackagesController(BaseController):
         c.packages = packages
         c.maintainer = id
         c.feed_url = url('packages_filter_feed', filter='maintainer', id=id)
+        c.deltas = self._get_timedeltas(packages)
         return render('/packages/maintainer.mako')
