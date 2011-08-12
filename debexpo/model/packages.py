@@ -44,9 +44,9 @@ from debexpo.lib.constants import PACKAGE_NEEDS_SPONSOR_UNKNOWN
 
 t_packages = sa.Table('packages', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
-    sa.Column('name', sa.types.String(200), nullable=False),
+    sa.Column('name', sa.types.Text(), nullable=False),
     sa.Column('user_id', sa.types.Integer, sa.ForeignKey('users.id')),
-    sa.Column('description', sa.types.String(8192), nullable=True),
+    sa.Column('description', sa.types.Text(), nullable=True),
     sa.Column('watch_counter', sa.types.Integer, default=0),
     sa.Column('download_counter', sa.types.Integer, default=0),
     sa.Column('needs_sponsor', sa.types.Integer, nullable=False, default=PACKAGE_NEEDS_SPONSOR_UNKNOWN),
