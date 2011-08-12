@@ -1,6 +1,6 @@
-
 /*
-	opyright 2011 Kalle Söderman
+	Copyright 2011 Kalle Söderman
+    Copyright 2011 Christoph Haas (tiny additions)
 
 	This stylesheet is free software; you can redistribute it and/or modify it
 	under the terms of the GNU General Public License, version 2, as published by
@@ -1654,6 +1654,7 @@ div.note
 , .lastcol ul {
 	margin-right:0;
 }
+
 .cardleft h2 {
 	margin-right: 1em;
 }
@@ -1766,4 +1767,9 @@ span.relatedpages a {
 span.relatedpages a:hover {
 	text-decoration: underline;
 }
+
+span.error-message {
+    color: red;
+	font-weight: bold;
+};
 
