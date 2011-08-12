@@ -65,7 +65,7 @@ def add_country(name, commit=True):
     if query.filter_by(name=name).count():
         return
 
-    logging.info(u"Adding country: %s", value)
+    logging.info(u"Adding country: %s", name)
     c = UserCountry(name=name)
     meta.session.add(c)
     if commit:
