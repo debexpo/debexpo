@@ -478,6 +478,8 @@ class Repository(object):
                         for format, extension in self.compression:
                             # Create the Packages files.
                             log.debug('Creating Packages file: %s' % filename)
+                            if type(packages) == unicode:
+                                packages = packages.encode('utf-8')
                             f = format('%s.%s' % (filename, extension), 'w')
                             f.write(packages)
                             f.close()
