@@ -103,7 +103,7 @@ class RegisterController(BaseController):
             lastlogin=datetime.now(),
             verification=key)
 
-	if self.form_result['sponsor'] == '1':
+        if self.form_result['sponsor'] == '1':
             u.status=constants.USER_STATUS_DEVELOPER
 
         meta.session.add(u)
