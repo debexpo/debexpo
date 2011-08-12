@@ -61,7 +61,8 @@ class GetOrigTarballPlugin(BasePlugin):
         orig = None
         for dscfile in dsc['Files']:
             if (dscfile['name'].endswith('orig.tar.gz') or
-                dscfile['name'].endswith('orig.tar.bz2')):
+                dscfile['name'].endswith('orig.tar.bz2') or
+                dscfile['name'].endswith('orig.tar.xz')):
                 orig = dscfile
                 break
 
