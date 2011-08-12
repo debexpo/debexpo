@@ -1,18 +1,21 @@
 # -*- coding: utf-8 -*-
 
+<% packages_shown = False %>
 % for packagegroup in c.deltas:
-        <h2>${ packagegroup.label }</h2>
-
-        <table width="100%">
-          <tr>
-            <th width="15%">${ _('Package') }</th>
-            <th width="50%">${ _('Description') }</th>
-            <th width="10%">${ _('Version') }</th>
-            <th width="15%">${ _('Uploader') }</th>
-            <th width="10%">${ _('Needs a sponsor') }?</th>
-          </tr>
-
         % if len(packagegroup.packages) > 0:
+                <% packages_shown = True %>
+
+                <h2>${ packagegroup.label }</h2>
+
+                <table width="100%">
+                <tr>
+                    <th width="15%">${ _('Package') }</th>
+                    <th width="50%">${ _('Description') }</th>
+                    <th width="10%">${ _('Version') }</th>
+                    <th width="15%">${ _('Uploader') }</th>
+                    <th width="10%">${ _('Needs a sponsor') }?</th>
+                </tr>
+
                 % for package in packagegroup.packages:
                       <tr>
                         <td class="lines"><a href="${ h.url('package', packagename=package.name) }">${ package.name }</a></td>
@@ -28,11 +31,10 @@
                         </td>
                       </tr>
                 % endfor
-        % else:
-            <tr>
-              <td class="lines" colspan="5" align="center">${ _('No packages') }</td>
-            </tr>
+                </table>
         % endif
-
-        </table>
 % endfor
+
+% if packages_shown == False:
+              <strong>${ _('No packages') }</strong>
+% endif
