@@ -60,8 +60,8 @@
                 </li>
             </ul>
         </div><!-- end navbar -->
-        <p id="breadcrumbs"> 
-        <!-- 
+        <p id="breadcrumbs">
+        <!--
 	% for cur_part in h.url.current().split("/"):
 	${ cur_part  } /
 	% endfor
@@ -75,17 +75,14 @@
                 ${ h.tags.link_to(
                         _('Sign me up'),
                         h.url(controller='register', action='register')) }
-                
                 ${ h.tags.link_to(
                         _('Login'),
                         h.url('/login')) }
-                
                 % endif
                 % if session.get('user_type') in (h.constants.USER_STATUS_MAINTAINER, h.constants.USER_STATUS_NORMAL):
                 ${ h.tags.link_to(
                         _('My account'),
                         h.url('my')) }
-                
                 ${ h.tags.link_to(
                         _('My packages'),
                         h.url(controller='packages', action='my')) }
@@ -103,6 +100,9 @@
         -
         <a href="/logout">Logout</a>
         % endif
+    % if c.feed_url:
+    <a class="rss_logo" href="${ c.feed_url }">RSS</a>
+    % endif
 	</p>
         </div><!-- end footer -->
     </body>
