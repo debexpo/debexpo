@@ -45,6 +45,7 @@ import pylons.test
 from debexpo.config.environment import load_environment
 from debexpo.model import import_all_models
 from debexpo.model import meta
+import debexpo.model.user_countries
 
 log = logging.getLogger(__name__)
 
@@ -89,3 +90,6 @@ def setup_config(command, filename, section, vars):
         os.mkdir(config['debexpo.repository'])
     else:
         log.info('Repository directory already exists')
+
+    log.info('Making sure all ISO countries are in the database')
+    debexpo.model.user_countries.create_iso_countries()

@@ -38,6 +38,10 @@ __license__ = 'MIT'
 import sqlalchemy as sa
 from sqlalchemy import orm
 
+import xml.dom.minidom
+
+import logging
+
 from debexpo.model import meta, OrmObject
 
 t_user_countries = sa.Table('user_countries', meta.metadata,
@@ -47,5 +51,24 @@ t_user_countries = sa.Table('user_countries', meta.metadata,
 
 class UserCountry(OrmObject):
     pass
+
+def create_iso_countries():
+    parsed = xml.dom.minidom.parse(open('/usr/share/xml/iso-codes/iso_3166.xml'))
+    entries = parsed.getElementsByTagName('iso_3166_entry')
+    for entry in entries:
+        value = entry.attributes['name'].value
+        add_country(value, commit=False)
+    meta.session.commit()
+
+def add_country(name, commit=True):
+    query = meta.session.query(UserCountry)
+    if query.filter_by(name=name).count():
+        return
+
+    logging.info(u"Adding country: %s", value)
+    c = UserCountry(name=name)
+    meta.session.add(c)
+    if commit:
+        meta.session.commit()
 
 orm.mapper(UserCountry, t_user_countries)
