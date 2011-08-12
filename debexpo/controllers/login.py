@@ -83,12 +83,24 @@ class LoginController(BaseController):
         log.debug('Authentication successful; saving session')
 
         u.lastlogin = datetime.now()
-        meta.session.commit()
 
+        # Clear the 'path_before_login' once it was used once. This is necessary to make sure users won't be redirected
+        # to pages which don't exist anymore, as the path may have been stored in the session for a long time. Consider
+        # following use case:
+        # a) User is not logged in
+        # b) User opens the URL /package/sunflow/delete/... in the browser
+        # c) User is being redirected to /login, he logs in and is being redirected
+        #    to the URL in b). This deletes the package, but leaves the URL in the session.
+        # d) Once the user is trying to log in again - possibly after several weeks, the URL from
+        #    b) is still in the session - but it may not exist anymore.
         if 'path_before_login' in session:
-            redirect(session['path_before_login'])
+                path = session['path_before_login']
+                del(session['path_before_login'])
         else:
-            redirect(url('my'))
+                path = url('my')
+
+        meta.session.commit()
+        redirect(path)
 
     def index(self, get=False):
         """
