@@ -199,25 +199,35 @@
 <h3>New comment</h3>
 
 % if 'user_id' in c.session:
-
-${ h.html.tags.form(h.url('comment', packagename=c.package.name)) }
+${ h.html.tags.form(h.url('comment', packagename=c.package.name), method='post') }
 ${ h.html.tags.hidden('package_version', package_version.id) }
-${ h.html.tags.textarea('text', size='82x10') }
-<br/>
 
-${ h.html.tags.select('outcome', c.constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED, c.outcomes) }
-
-% if config['debexpo.debian_specific'] == 'true' and c.user.status == c.constants.USER_STATUS_DEVELOPER:
-
-${ h.html.tags.checkbox('status') } ${ _('Uploaded to Debian') }
-
+% if hasattr(c, 'form_errors'):
+    <% c.form_errors %>
 % endif
 
-${ h.html.tags.submit('commit', _('Submit')) }
+<table>
+    <tr>
+        <td>Comment</td>
+        <td>${ h.html.tags.textarea('text', cols=82, rows=10) }</td>
+    </tr>
+    <tr>
+        <td>Outcome</td>
+        <td>${ h.html.tags.select('outcome', c.constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED, c.outcomes) }</td>
+    </tr>
+% if config['debexpo.debian_specific'] == 'true' and c.user.status == c.constants.USER_STATUS_DEVELOPER:
+    <tr>
+        <td>${ _('Uploaded to Debian') }</td>
+        <td>${ h.html.tags.checkbox('status') }</td>
+    </tr>
+% endif
+    <tr>
+        <td>${ h.html.tags.submit('commit', _('Submit')) }</td>
+    </tr>
+</table>
 ${ h.html.tags.end_form() }
 
 % endif
 
-</fieldset>
 
 % endfor

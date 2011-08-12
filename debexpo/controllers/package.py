@@ -6,6 +6,7 @@
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
+#               2011 Arno Töll <debian@toell.net>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -88,11 +89,11 @@ class PackageController(BaseController):
 
         c.session = session
         c.constants = constants
-        c.outcomes = {
-            _('Unreviewed') : constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED,
-            _('Needs work') : constants.PACKAGE_COMMENT_OUTCOME_NEEDS_WORK,
-            _('Perfect') : constants.PACKAGE_COMMENT_OUTCOME_PERFECT,
-        }
+        c.outcomes = [
+            (constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED, _('Unreviewed')),
+            (constants.PACKAGE_COMMENT_OUTCOME_NEEDS_WORK, _('Needs work')),
+            (constants.PACKAGE_COMMENT_OUTCOME_PERFECT, _('Perfect'))
+        ]
 
         if 'user_id' in session:
             c.user = meta.session.query(User).filter_by(id=session['user_id']).one()
@@ -207,13 +208,16 @@ class PackageController(BaseController):
 
         redirect(url(controller='packages', action='index', filter='my'))
 
-    def comment(self, packagename):
+    @validate(schema=PackageCommentForm(), form='comment')
+    def _comment_submit(self, packagename):
         """
         Comment submission.
 
         ``packagename``
             Package name to look at.
         """
+        log.debug("Comment form validation successful")
+
         if 'user_id' not in session:
             log.debug('Requires authentication')
             session['path_before_login'] = request.path_info
@@ -223,20 +227,15 @@ class PackageController(BaseController):
         package = self._get_package(packagename)
 
         status = constants.PACKAGE_COMMENT_STATUS_NOT_UPLOADED
-        try:
-            fields = form.validate(PackageCommentForm)
-        except Exception, e:
-            log.error("failed validation")
-            return form.htmlfill(self.index(packagename), e)
 
-        if fields['status']:
+        if self.form_result['status']:
             status = constants.PACKAGE_COMMENT_STATUS_UPLOADED
 
         comment = PackageComment(user_id=session['user_id'],
-            package_version_id=fields['package_version'],
-            text=fields['text'],
+            package_version_id=self.form_result['package_version'],
+            text=self.form_result['text'],
             time=datetime.now(),
-            outcome=fields['outcome'],
+            outcome=self.form_result['outcome'],
             status=status)
 
         meta.session.add(comment)
@@ -251,9 +250,17 @@ class PackageController(BaseController):
 
             email = Email('comment_posted')
             email.send([s.user.email for s in subscribers], package=packagename,
-                comment=fields['text'], user=user)
+                comment=self.form_result['text'], user=user)
 
         redirect(url('package', packagename=packagename))
+
+    def comment(self, packagename):
+        if request.method == 'POST':
+            log.debug("Comment form submitted")
+            return self._comment_submit(packagename)
+        else:
+            #abort(405)
+            redirect(url('package', packagename=packagename))
 
     def sponsor(self, packagename, key):
         if 'user_id' not in session:
