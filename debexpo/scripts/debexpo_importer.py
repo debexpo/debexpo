@@ -357,7 +357,8 @@ class Importer(object):
         dsc = deb822.Dsc(open(self.changes.get_dsc()))
         for file in dsc['Files']:
             if (file['name'].endswith('orig.tar.gz') or
-                file['name'].endswith('orig.tar.bz2')):
+                file['name'].endswith('orig.tar.bz2') or
+                file['name'].endswith('orig.tar.xz')):
                 if os.path.isfile(file['name']):
                     return True
                 else:

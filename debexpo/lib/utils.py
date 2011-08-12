@@ -53,7 +53,7 @@ def allowed_upload(filename):
     ``filename``
         File to test.
     """
-    for suffix in ['.changes', '.dsc', '.tar.gz', '.diff.gz', '.deb', '.tar.bz2']:
+    for suffix in ['.changes', '.dsc', '.tar.gz', '.diff.gz', '.deb', '.tar.bz2', ".tar.xz"]:
         if filename.endswith(suffix):
             return True
 

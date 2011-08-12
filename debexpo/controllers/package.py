@@ -208,7 +208,7 @@ class PackageController(BaseController):
 
         redirect(url(controller='packages', action='index', filter='my'))
 
-    @validate(schema=PackageCommentForm(), form='comment')
+    @validate(schema=PackageCommentForm(), form='inde')
     def _comment_submit(self, packagename):
         """
         Comment submission.
