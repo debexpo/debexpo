@@ -40,6 +40,7 @@ from debian import deb822
 import logging
 import os
 import urllib
+import re
 
 from debexpo.lib.utils import md5sum
 from debexpo.plugins import BasePlugin
@@ -54,16 +55,27 @@ class GetOrigTarballPlugin(BasePlugin):
         """
         Check whether there is an original tarball referenced by the dsc file, but not
         actually in the package upload.
+
+        This procedure is skipped to avoid denial of service attacks when a package is
+        larger than the configured size
         """
+
+        # Set download of files, when the expected file size of the orig.tar.gz is larger
+        # than the configured threshold.
+        # XXX TODO: This size should be the 75% quartile, that is the value where 75% of all
+        #           packages are smaller than that. For now, blindly assume this as 15M
+        size = 15728640
         log.debug('Checking whether an orig tarball mentioned in the dsc is missing')
         dsc = deb822.Dsc(file(self.changes.get_dsc()))
 
         orig = None
         for dscfile in dsc['Files']:
-            if (dscfile['name'].endswith('orig.tar.gz') or
-                dscfile['name'].endswith('orig.tar.bz2') or
-                dscfile['name'].endswith('orig.tar.xz')):
+            dscfile['size'] = int(dscfile['size'])
+            if re.search('(orig\.tar\.(gz|bz2|xz))$', dscfile['name']):
                 orig = dscfile
+                if dscfile['size'] > size:
+                        log.warning("Skipping eventual download of orig.tar.gz %s: size %d > %d" % (dscfile['name'], dscfile['size'], size))
+                        return
                 break
 
         # There is no orig.tar.gz file in the dsc file. This is probably a native package.
