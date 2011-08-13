@@ -89,7 +89,7 @@
     </tr>
 
     <tr>
-      <th>${ _('Debian Source Control file URL') }:</th>
+      <th>${ _('Source package') }:</th>
       <td>
 
     % for pkgfile in package_version.source_packages[0].package_files:
