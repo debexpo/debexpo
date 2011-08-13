@@ -824,6 +824,12 @@ div.tabular table td, table.tabular td, table.vendors td {
 div.tabular table > td:first-child, table.tabular  > td:first-child, table.vendors  > td:first-child {
 	background-image: none;
 }
+tr:nth-child(even) {
+	background-color: #F2F1F0
+}
+tr:nth-child(odd) {
+	background-color: #FFF
+}
 #pageLang p, #pageLang form {
 	display: inline;
 }
