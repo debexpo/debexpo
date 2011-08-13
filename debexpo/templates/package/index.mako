@@ -196,9 +196,9 @@
 
 % endif
 
+% if 'user_id' in c.session:
 <h3>New comment</h3>
 
-% if 'user_id' in c.session:
 ${ h.html.tags.form(h.url('comment', packagename=c.package.name), method='post') }
 ${ h.html.tags.hidden('package_version', package_version.id) }
 
