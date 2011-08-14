@@ -830,6 +830,9 @@ tr:nth-child(even) {
 tr:nth-child(odd) {
 	background-color: #FFF
 }
+tr.pkg-list:hover {
+	background-color: #CCC
+}
 #pageLang p, #pageLang form {
 	display: inline;
 }
