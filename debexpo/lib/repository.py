@@ -183,7 +183,11 @@ class Repository(object):
 
         # Loop through dsc files.
         for file in dscfiles:
-            entries.append(self._dsc_to_sources(file))
+            packages_entry = self._dsc_to(file)
+            if not packages_entry.strip():
+                log.warn('Eek, broken packages entry: %s', file)
+                continue
+            entries.append(packages_entry)
 
         # Each entry is simply joined by a blank newline, so do just that to create
         # the finished Sources file.
