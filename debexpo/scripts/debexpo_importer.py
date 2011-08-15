@@ -247,6 +247,10 @@ class Importer(object):
         """
         Create entries in the Database for the package upload.
         """
+
+        def _package_description(raw):
+            return raw[2:].replace('      - ', ' - ')
+
         log.debug('Creating database entries')
 
 
@@ -258,10 +262,12 @@ class Importer(object):
         if package_query.count() == 1:
             log.debug('Package %s already exists in the database' % self.changes['Source'])
             package = package_query.one()
+            # Update description to make sure it reflects the latest upload
+            package.description = _package_description(self.changes['Description'])
         else:
             log.debug('Package %s is new to the system' % self.changes['Source'])
             package = Package(name=self.changes['Source'], user=self.user)
-            package.description = self.changes['Description'][2:].replace('      - ', ' - ')
+            package.description = _package_description(self.changes['Description'])
 	    package.needs_sponsor = 0
             meta.session.add(package)
 
