@@ -15,4 +15,4 @@ ${ c.custom_html }
 
 <h3>What to do for sponsoring</h3>
 
-<p>Look for packages that you would like to ponsor on this website. Once you have found some you should download, build and test them. Please notify your sponsoree of every problem that you find in order to give him a chance to fix them. We believe that it is of uttermost importance to stay in contact with your sponsorees to keep them interested in working on Debian. Moreover, they will also learn how to maintain packages within a team and will learn skills that are crucial for Debian Developers more easily. </p>
+<p>Look for packages that you would like to sponsor on this website. Once you have found some you should download, build and test them. Please notify your sponsoree of every problem that you find in order to give him a chance to fix them. We believe that it is of uttermost importance to stay in contact with your sponsorees to keep them interested in working on Debian. Moreover, they will also learn how to maintain packages within a team and will learn skills that are crucial for Debian Developers more easily. </p>
