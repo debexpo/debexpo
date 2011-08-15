@@ -183,7 +183,7 @@ class Repository(object):
 
         # Loop through dsc files.
         for file in dscfiles:
-            packages_entry = self._dsc_to(file)
+            packages_entry = self._dsc_to_sources(file)
             if not packages_entry.strip():
                 log.warn('Eek, broken packages entry: %s', file)
                 continue
