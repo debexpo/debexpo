@@ -437,6 +437,7 @@ class Importer(object):
         for file in self.files:
             if os.path.isfile(os.path.join(pool_dir, file)):
                 log.warning('%s is being installed even though it already exists' % file)
+                toinstall.append(file)
             else:
                 log.debug('File %s is safe to install' % os.path.join(pool_dir, file))
                 toinstall.append(file)

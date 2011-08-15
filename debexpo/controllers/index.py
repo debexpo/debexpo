@@ -43,6 +43,7 @@ from debexpo.controllers.packages import PackagesController, PackageGroups
 from webhelpers.html import literal
 from datetime import datetime, timedelta
 from debexpo.model.package_versions import PackageVersion
+from debexpo.model.packages import Package
 
 log = logging.getLogger(__name__)
 
@@ -60,9 +61,10 @@ class IndexController(BaseController):
 
         c.config = config
         c.packages = pkg_controller._get_packages(
-		package_version_filter=(PackageVersion.uploaded >= (datetime.today() - timedelta(days=30)))
-		)
-	c.deltas = pkg_controller._get_timedeltas(c.packages)
+		        package_version_filter=(PackageVersion.uploaded >= (datetime.today() - timedelta(days=30))),
+		        package_filter=(Package.needs_sponsor == 1)
+            )
+        c.deltas = pkg_controller._get_timedeltas(c.packages)
         c.deltas.pop()
 	return render('/index/index.mako')
 
