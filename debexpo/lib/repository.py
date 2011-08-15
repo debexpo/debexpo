@@ -244,7 +244,11 @@ class Repository(object):
 
         # Loop through deb files.
         for file in debfiles:
-            entries.append(self._deb_to_packages(file))
+            packages_entry = self._deb_to_packages(file)
+            if not packages_entry:
+                log.warn('Eek, broken packages entry: %s', file)
+                continue
+            entries.append(packages_entry)
 
         # Each entry is simply joined by a blank newline, so do just that to create
         # the finished Packages file.
