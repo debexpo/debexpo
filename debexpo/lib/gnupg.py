@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Serafeim Zanikolas <serzan@hellug.gr>
+#               2011 Arno Töll <debian@toell.net>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -31,13 +32,13 @@
 Wrapper for a subset of GnuPG functionality.
 """
 
-__author__ = 'Serafeim Zanikolas'
-__copyright__ = 'Copyright © 2008 Serafeim Zanikolas'
+__author__ = 'Serafeim Zanikolas, Arno Töll'
+__copyright__ = 'Copyright © 2008 Serafeim Zanikolas, 2011 Arno Töll'
 __license__ = 'MIT'
 
-import commands
 import logging
 import os
+import subprocess
 
 from pylons import config
 
@@ -83,7 +84,7 @@ class GnuPG(object):
 
         """
         try:
-            (output, _) = self._run(stdin_cmd="echo '%s'" % key)
+            (output, _) = self._run(stdin=key)
             lines = output.split('\n')
             for line in lines:
                 if line.startswith('pub'):
@@ -104,35 +105,34 @@ class GnuPG(object):
              setting will be used (~/.gnupg/pubring.gpg))
         """
         if pubring is None:
-            args = '--verify'
+            args = ('--verify', )
         else:
-            args = '--verify --keyring %s --no-default-keyring' % pubring
-        (_, status) = self._run(stdin_cmd='cat %s' % signed_file, args=args)
+            args = ('--verify', '--keyring', pubring, '--no-default-keyring', signed_file)
+        (_, status) = self._run(args=args)
         return status == 0
 
-    def _run(self, stdin_cmd=None, args=None):
+    def _run(self, stdin=None, args=None):
         """
         Run gpg with the given stdin and arguments and return the output and
         exit status.
 
-        ``stdin_cmd``
-            run this command and pipe its output to gpg
+        ``stdin``
+            Feed gpg with this input to stdin
         ``args``
-            a string to be passed as argument(s) to gpg
+            a list of strings to be passed as argument(s) to gpg
 
         """
         if self.gpg_path is None:
             return (None, GnuPG.GPG_PATH_NOT_INITIALISED)
-        if stdin_cmd and args:
-            cmd = '%s | %s %s' % (stdin_cmd, self.gpg_path, args)
-        elif stdin_cmd:
-            cmd = '%s | %s' % (stdin_cmd, self.gpg_path)
-        elif args:
-            cmd = '%s %s' % (self.gpg_path, args)
-        else:
-            log.error('GnuPG._run() invoked without any arguments.')
-            return (None, GnuPG.INVALID_GNUPG_RUN_INVOCATION)
-        status, output = commands.getstatusoutput(cmd)
+
+        cmd = [ self.gpg_path, ]
+        if not args is None:
+                cmd.extend(args)
+
+        process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        (output, _) = process.communicate(input=stdin)
+        status = process.returncode
+
         if status != 0:
             return (None, status)
         return (output, 0)
