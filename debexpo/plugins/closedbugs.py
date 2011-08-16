@@ -100,6 +100,10 @@ class ClosedBugsPlugin(BasePlugin):
                         (bugs_bts[bug]['bug_num'], bugs_bts[bug]['subject'], bugs_bts[bug]['package']))
                     log.debug(message)
                     self.passed('bug-in-package', message, constants.PLUGIN_SEVERITY_INFO)
+                elif name == 'wnpp':
+                    message = ('Closes WNPP bug #%d: "%s"' % (bugs_bts[bug]['bug_num'], bugs_bts[bug]['subject']))
+                    log.debug(message)
+                    self.passed('bug-in-package', message, constants.PLUGIN_SEVERITY_INFO)
                 else:
                     log.error('Bug #%s does not belong to this package' % bug)
                     self.failed('bug-not-in-package', bug, constants.PLUGIN_SEVERITY_ERROR)
