@@ -38,7 +38,11 @@ dput debexpo yourpackage_yourversion_arch.changes
 
 <h3>How long will it take until my upload is available to sponsors?</h3>
 
-<p>Our automatic processes will check for newly incoming packages every 30 seconds. We will process your package and check some things statically. You will usually get a reply by email within a few minutes.</p>
+<p>If you upload via HTTP, which is what we recommend, then it will take between 0 and 2 minutes.</p>
+
+<p>If you upload via FTP, which you must do if a package is too large for the HTTP uploader, then there can be up to a 30 minute delay before your package gets processed.</p>
+
+<p>During those 0-2 minutes, the server does quality assurance and other checks on your package. You will receive an email when it is ready.</p>
 
 <h3>Will my name stay visible on the package?</h3>
 
