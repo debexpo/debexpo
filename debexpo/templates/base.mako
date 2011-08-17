@@ -95,7 +95,9 @@
         <div id="footer">
 	<p>© 2008-2011 ${c.config['debexpo.sitename']}
 	-
-	${ h.tags.link_to( _('Contact'), h.url('contact')) }
+    <a href="https://alioth.debian.org/projects/debexpo/">${ _('Source code and bugs')}</a>
+	-
+    ${ h.tags.link_to( _('Contact'), h.url('contact')) }
 	% if 'user_id' in session:
         -
         <a href="/logout">Logout</a>
