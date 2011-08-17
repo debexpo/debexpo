@@ -47,11 +47,15 @@ class DebianPlugin(BasePlugin):
 
     def _get_qa_page(self):
         if not hasattr(self, 'qa_page'):
-            self.qa_page = urllib.urlopen('http://packages.qa.debian.org/%s' % self.changes['Source']).readlines()
+            self.qa_page = urllib.urlopen('http://packages.qa.debian.org/%s' % self.changes['Source'])
 
     def _in_debian(self):
         self._get_qa_page()
-        return '404' not in self.qa_page
+        qa_page_code = self.qa_page.getcode()
+        if qa_page_code == 404:
+            self.in_debian = False
+        else:
+            self.in_debian = True
 
     def test_package_in_debian(self):
         """
@@ -59,7 +63,10 @@ class DebianPlugin(BasePlugin):
         """
         log.debug('Testing whether the package is in Debian already')
 
-        if self._in_debian():
+        if not hasattr(self, 'in_debian'):
+            self._in_debian()
+
+        if self.in_debian == True:
             log.debug('Package is in Debian')
             self.info('package-is-in-debian', None)
         else:
@@ -70,12 +77,15 @@ class DebianPlugin(BasePlugin):
         """
         Finds the date of the last upload of the package.
         """
-        if not self._in_debian():
+        if not hasattr(self, 'in_debian'):
+            self._in_debian()
+        if self.in_debian == False:
             return
 
         log.debug('Finding when the last upload of the package was')
 
-        for item in self.qa_page:
+        qa_page_lines = self.qa_page.readlines()
+        for item in qa_page_lines:
             if 'Accepted' in item:
                 last_change = re.search("\[(\d{4}-\d{2}-\d{2})\]", item)
                 if not last_change:
