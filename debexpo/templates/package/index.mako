@@ -6,7 +6,17 @@
 <table>
   <tr>
     <th>${ _('Name') }:</th>
-    <td>${ c.package.name }</td>
+    <td>${ c.package.name }
+
+% for pkginfo in c.package.package_versions[0].package_info:
+    % if pkginfo.data == 'Package is in Debian':
+
+        (<a href="http://packages.qa.debian.org/?src=${ c.package.name | u }">PTS</a>)
+
+    % endif
+% endfor
+
+    </td>
   </tr>
 
   <tr>
