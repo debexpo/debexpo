@@ -53,8 +53,8 @@ class DiffCleanPlugin(BasePlugin):
 
         difffile = self.changes.get_diff()
 
-        if difffile is None:
-            log.warning('Package has no diff.gz file; native package?')
+        if difffile is None or not difffile.endswith('.diff.gz'):
+            log.warning('Package has no diff.gz file; native or format 3.0 package?')
             return
 
         diffstat = commands.getoutput('diffstat -p1 %s' % difffile)
