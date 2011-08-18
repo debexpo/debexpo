@@ -133,8 +133,9 @@ class UploadController(BaseController):
         # The .changes file is always sent last, so after it is sent,
         # call the importer process.
         if filename.endswith('.changes'):
-            command = '%s -i %s -c %s -u %s' % (config['debexpo.importer'],
-                config['global_conf']['__file__'], filename, user.id)
+            command = [ config['debexpo.importer'], '-i',
+                config['global_conf']['__file__'], '-c', filename, '-u',
+                str(user.id) ]
 
-            subprocess.Popen(command, shell=True, close_fds=True)
+            subprocess.Popen(command, close_fds=True)
 
