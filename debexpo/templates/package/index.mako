@@ -87,7 +87,7 @@
 
     <tr>
       <th>${ _('Uploaded') }:</th>
-      <td>${ package_version.uploaded }</td>
+      <td>${ package_version.uploaded.strftime("%Y-%M-%d %H:%M %Z")}</td>
     </tr>
 
     <tr>
