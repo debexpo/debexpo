@@ -196,6 +196,11 @@ class PackageController(BaseController):
         else:
             user = meta.session.query(User).filter_by(id=session['user_id']).one()
 
+        package = self._get_package(packagename)
+
+        if session['user_id'] != package.user_id:
+            log.error("User %d is not allowed to change properties of foreign package %s" %(session['user_id'], packagename))
+            abort(403)
 
         if user.get_upload_key() != key:
             log.error("Possible CSRF attack, upload key does not match user's session key")
@@ -203,7 +208,7 @@ class PackageController(BaseController):
 
         # The user should have already been prompted with a nice dialog box
         # confirming their choice, so no mercy here.
-        meta.session.delete(self._get_package(packagename))
+        meta.session.delete(package)
         meta.session.commit()
 
         redirect(url(controller='packages', action='index', filter='my'))
@@ -276,6 +281,11 @@ class PackageController(BaseController):
             abort(402)
 
         package = meta.session.query(Package).filter_by(name=packagename).one()
+
+        if session['user_id'] != package.user_id:
+            log.error("User %d is not allowed to change properties of foreign package %s" %(session['user_id'], packagename))
+            abort(403)
+
         if package.needs_sponsor:
                 package.needs_sponsor = 0
         else:

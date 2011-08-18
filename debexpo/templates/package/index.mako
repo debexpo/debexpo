@@ -43,7 +43,9 @@
     % else:
                 ${ _('No')  }
   % endif
-  (${ h.tags.link_to(  _('Change'), h.url('sponsor', packagename=c.package.name, key=c.user.get_upload_key()))  })
+  % if 'user_id' in c.session and c.session['user_id'] == c.package.user_id:
+    (${ h.tags.link_to(  _('Change'), h.url('sponsor', packagename=c.package.name, key=c.user.get_upload_key()))  })
+  % endif
   </td>
   </tr>
 
