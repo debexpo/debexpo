@@ -96,7 +96,7 @@ class WatchFilePlugin(BasePlugin):
         if not self._watch_file_works(): return []
         log.debug('Looking whether there is a new upstream version')
 
-        if self.status == 256:
+        if self.status == 1:
             log.debug('Package is the latest upstream version')
             self.passed('no-new-upstream-available', None, constants.PLUGIN_SEVERITY_INFO)
         else:
