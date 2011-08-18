@@ -35,7 +35,7 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-import commands
+import subprocess
 import logging
 
 from debexpo.lib import constants
@@ -51,7 +51,7 @@ class LintianPlugin(BasePlugin):
         """
         log.debug('Running lintian on the package')
 
-        output = commands.getoutput('lintian %s' % self.changes_file)
+        output = subprocess.Popen(["lintian", self.changes_file], stdout=subprocess.PIPE).communicate()[0]
 
         items = output.split('\n')
 

@@ -35,7 +35,7 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-import commands
+import subprocess
 import logging
 
 from debexpo.lib import constants
@@ -57,7 +57,7 @@ class DiffCleanPlugin(BasePlugin):
             log.warning('Package has no diff.gz file; native or format 3.0 package?')
             return
 
-        diffstat = commands.getoutput('diffstat -p1 %s' % difffile)
+        diffstat = subprocess.Popen(["diffstat", "-p1", difffile], stdout=subprocess.PIPE).communicate()[0]
 
         dirty = False
         for item in diffstat.split('\n')[:-1]:

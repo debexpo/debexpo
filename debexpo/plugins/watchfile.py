@@ -35,7 +35,7 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-import commands
+import subprocess
 import logging
 import os
 
@@ -52,7 +52,9 @@ class WatchFilePlugin(BasePlugin):
     def _run_uscan(self):
         if not hasattr(self, 'status') and not hasattr(self, 'output'):
             os.chdir('extracted')
-            self.status, self.output = commands.getstatusoutput('uscan --verbose --report')
+            call = subprocess.Popen(["uscan", "--verbose", '--report'], stdout=subprocess.PIPE)
+            (self.output, _) = call.communicate()
+            self.status = call.returncode
             os.chdir('..')
 
     def _watch_file_works(self):
