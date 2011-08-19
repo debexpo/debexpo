@@ -38,6 +38,8 @@ __license__ = 'MIT'
 import logging
 import re
 
+from debian import deb822
+
 from debexpo.lib import constants
 from debexpo.plugins import BasePlugin
 
@@ -58,11 +60,24 @@ class MaintainerEmailPlugin(BasePlugin):
             user = meta.session.query(User).get(self.user_id)
 
             if user is not None:
-                email = re.compile(r'^(.*) ?(<.+@.+>)$').match(self.changes['Maintainer']).group(2)
+                regex = re.compile(r'^(.*) ?(<.+@.+>)$')
+                maintainer_email = regex.match(self.changes['Maintainer']).group(2)[1:-1]
+                uploader_emails = []
 
-                if user.email == email[1:-1]:
+                dsc = deb822.Dsc(file(self.changes.get_dsc()))
+
+                if 'Uploaders' in dsc:
+                    for uploader in dsc['Uploaders'].split(','):
+                        match = regex.match(uploader)
+                        if match:
+                            uploader_emails.append(match.group(2)[1:-1])
+
+                if user.email == maintainer_email:
                     log.debug('Maintainer email is the same as the uploader')
                     self.passed('maintainer-is-uploader', None, constants.PLUGIN_SEVERITY_INFO)
+                elif user.email in uploader_emails:
+                    log.debug('The uploader is in the package\'s "Uploaders" field')
+                    self.passed('uploader-in-uploaders', None, constants.PLUGIN_SEVERITY_INFO)
                 else:
                     log.warning('%s != %s' % (user.email, email[1:-1]))
                     self.failed('maintainer-is-not-uploader', '%s != %s' % (user.email, email[1:-1]),
@@ -75,5 +90,6 @@ plugin = MaintainerEmailPlugin
 
 outcomes = {
     'maintainer-is-uploader' : { 'name' : 'The maintainer and uploader emails are the same' },
+    'uploader-in-uploaders' : { 'name' : 'The uploader is in the package\'s "Uploaders" field' },
     'maintainer-is-not-uploader' : { 'name' : 'The maintainer and uploader emails are not the same' },
 }
