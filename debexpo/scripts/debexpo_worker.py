@@ -125,9 +125,10 @@ class Worker(object):
 					continue
 
 			if hasattr(module, 'cronjob') and hasattr(module, 'schedule'):
-					self.jobs[module] = {
-							'module': getattr(module, 'cronjob')(parent=self, config=pylons.config),
-							'schedule': getattr(module, 'schedule')
+					self.jobs[plugin] = {
+							'module': getattr(module, 'cronjob')(parent=self, config=pylons.config, log=log),
+							'schedule': getattr(module, 'schedule'),
+							'last_run': 0
 					}
 			else:
 					log.debug("Cronjob %s seems invalid" % (plugin))
@@ -159,7 +160,11 @@ class Worker(object):
 
 		while(True):
 			for job in self.jobs:
-				log.debug("Run job %s" % (job))
+				self.jobs[job]['last_run'] += 1
+				if self.jobs[job]['last_run'] % self.jobs[job]['schedule'] == 0:
+					log.debug("Run job %s" % (job))
+					self.jobs[job]['module'].deploy()
+					self.jobs[job]['last_run'] = 0
 			time.sleep(5)
 
 if __name__ == '__main__':
