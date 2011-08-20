@@ -29,6 +29,10 @@ I am looking for a sponsor for my package "${ c.package.name }".
  * License         : [fill in]
    Section         : ${ c.package.package_versions[-1].section }
 
+It builds those binary packages:
+
+${ c.package.description }
+
 To access further information about this package, please visit the following URL:
 
   ${ c.config['debexpo.server'] }${ h.url('package', packagename=c.package.name) }
