@@ -37,8 +37,14 @@ __license__ = 'MIT'
 from debexpo.cronjobs import BaseCronjob
 
 class ImportUpload(BaseCronjob):
+        def setup(self):
+                print("setup")
+
+        def teardown(self):
+                print("teardown")
+
 	def deploy():
 		print("Running ImportUpload")
 
 cronjob = ImportUpload
-schedule = 1
+schedule = 5
