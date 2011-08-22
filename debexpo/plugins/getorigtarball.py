@@ -104,7 +104,7 @@ class GetOrigTarballPlugin(BasePlugin):
             self.info('tarball-taken-from-debian', None)
         else:
             log.error('Tarball %s not found in Debian' % orig['name'])
-	    os.unlink(orig['name'])
+            os.unlink(orig['name'])
 
 plugin = GetOrigTarballPlugin
 
