@@ -82,7 +82,7 @@ class Repository(object):
             return ''
 
         if not package:
-            log.critical('For some reason package is None... %s' % package_version)
+            log.critical('For some reason package is None...' )
             return ''
 
         # Read the dsc file.
