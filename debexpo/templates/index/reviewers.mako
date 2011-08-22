@@ -37,7 +37,7 @@
 <ul>
     <li><a href="http://wiki.debian.org/PaulWise/Standards">Paul Wise</a></li>
     <li><a href="http://people.debian.org/~codehelp/#sponsor">Neil Williams</a></li>
-    <li><a href="http://wiki.debian.org/KilianKrause">Kilian Kraue</a></li>
+    <li><a href="http://wiki.debian.org/KilianKrause">Kilian Krause</a></li>
     <li><a href="http://people.debian.org/~neilm/sponsorship.html">Neil McGovern</a></li>
     <li><a href="http://wiki.debian.org/Games/Checklist">Debian games team</a></li>
     <li>More guidelines in the wiki: <a href="http://wiki.debian.org/SponsorChecklist">SponsorChecklist</a></li>
