@@ -35,21 +35,21 @@ __copyright__ = 'Copyright © 2011 Arno Töll'
 __license__ = 'MIT'
 
 class BaseCronjob(object):
-	def __init__(self, parent, config, log):
-		self.parent = parent
-		self.config = config
-		self.log = log
+    def __init__(self, parent, config, log):
+        self.parent = parent
+        self.config = config
+        self.log = log
 
-		self.setup()
+        self.setup()
 
-	def __del__(self):
-		self.teardown()
+    def __del__(self):
+        self.teardown()
 
-	def setup(self):
-		raise AssertionError("A cronjob must implement this class")
+    def setup(self):
+        raise AssertionError("A cronjob must implement this class")
 
-	def teardown(self):
-		raise AssertionError("A cronjob must implement this class")
+    def teardown(self):
+        raise AssertionError("A cronjob must implement this class")
 
-	def deploy(self):
-		raise AssertionError("A cronjob must implement this class")
+    def deploy(self):
+        raise AssertionError("A cronjob must implement this class")

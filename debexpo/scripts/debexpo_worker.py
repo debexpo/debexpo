@@ -45,6 +45,7 @@ import sys
 import time
 import ConfigParser
 import pylons
+import optparse
 
 from paste.deploy import appconfig
 from debexpo.config.environment import load_environment
@@ -52,121 +53,159 @@ from debexpo.config.environment import load_environment
 log = None
 
 class Worker(object):
-	def __init__(self, pidfile, inifile):
-		"""
-		Class constructor. Sets class attributes and then runs the service
-		"""
+    def __init__(self, pidfile, inifile):
+        """
+        Class constructor. Sets class attributes and then runs the service
 
-		self.pidfile = pidfile
-		self.inifile = os.path.abspath(inifile)
-		self.jobs = {}
+        ``pidfile``
+            The file name where the worker thread stores its PID file
+        ``inifile``
+            The configuration file used to setup the worker thread
+        """
 
-
-	def _daemonize(self):
-		try:
-			pid = os.fork()
-			if pid > 0:
-				sys.exit(0)
-		except OSError as e:
-			log.error( "%s failed to fork: %s (err %d)" % (__name__, e.strerror, e.errno))
-			sys.exit(1)
-
-		os.chdir("/")
-		os.setsid()
-		os.umask(0)
-
-		atexit.register(self._remove_pid)
-		file(self.pidfile, "w+").write( "%d\n" % os.getpid())
-
-	def _remove_pid(self):
-		os.remove(self.pidfile)
+        self.pidfile = pidfile
+        self.inifile = os.path.abspath(inifile)
+        self.jobs = {}
 
 
-	def _import_plugin(self, name):
-		"""
-		Imports a module and returns it.
-		This is vastly the same piece of code as lib.plugins._import_plugin
-		"""
+    def _daemonize(self):
+        """
+        Daemonize method. Runs the actual worker thread in the background
+        """
+        try:
+            pid = os.fork()
+            if pid > 0:
+                sys.exit(0)
+        except OSError as e:
+            log.error( "%s failed to fork: %s (err %d)" % (__name__, e.strerror, e.errno))
+            sys.exit(1)
 
-		try:
-			log.debug('Trying to import cronjob: %s', name)
-			mod = __import__(name)
-			components = name.split('.')
-			for comp in components[1:]:
-					mod = getattr(mod, comp)
-			log.debug('Import succeeded.')
-			return mod
-		except ImportError as e:
-			if e.message.startswith('No module named'):
-					log.debug('Import failed - module not found: %s', e)
-			else:
-					log.warn('Import of module "%s" failed with error: %s', name, e)
-		return None
+        os.chdir("/")
+        os.setsid()
+        os.umask(0)
 
-	def _load_jobs(self):
-		if not 'debexpo.cronjobs' in pylons.config:
-			log.error("debexpo.cronjobs it not set - doing nothing?")
-			sys.exit(1)
+        atexit.register(self._remove_pid)
+        file(self.pidfile, "w+").write( "%d\n" % os.getpid())
 
-		for plugin in pylons.config['debexpo.cronjobs'].split(" "):
-			module = None
-			if 'debexpo.cronjobdir' in pylons.config:
-				sys.path.append(pylons.config['debexpo.cronjobdir'])
-				module = self._import_plugin(plugin)
-				if module is not None:
-						log.debug('Found cronjob in debexpo.cronjobdir')
-
-			if module is None:
-					name = 'debexpo.cronjobs.%s' % plugin
-					module = self._import_plugin(name)
-
-			if not module:
-					log.warning("Cronjob %s was configured, but not found" % (plugin))
-					continue
-
-			if hasattr(module, 'cronjob') and hasattr(module, 'schedule'):
-					self.jobs[plugin] = {
-							'module': getattr(module, 'cronjob')(parent=self, config=pylons.config, log=log),
-							'schedule': getattr(module, 'schedule'),
-							'last_run': 0
-					}
-			else:
-					log.debug("Cronjob %s seems invalid" % (plugin))
-
-	def _setup(self):
-		global log
-		config = ConfigParser.ConfigParser()
-		config.read(self.inifile)
-
-		if not config.has_section('loggers'):
-			# Sorry, the logger has not been set up yet
-			print('Config file does not have [loggers] section')
-			sys.exit(1)
+    def _remove_pid(self):
+        """
+        Remove the process PID file
+        """
+        os.remove(self.pidfile)
 
 
-		logging.config.fileConfig(self.inifile)
-		logger_name = 'debexpo.worker'
-		log = logging.getLogger(logger_name)
+    def _import_plugin(self, name):
+        """
+        Imports a module and returns it.
+        This is vastly the same piece of code as lib.plugins._import_plugin
 
-		sys.path.append(os.path.dirname(self.inifile))
-		conf = appconfig('config:' + self.inifile)
-		pylons.config = load_environment(conf.global_conf, conf.local_conf)
+        ``name``
+            The plugin name to be looked up and imported to the worker task list
+        """
+
+        try:
+            log.debug('Trying to import cronjob: %s', name)
+            mod = __import__(name)
+            components = name.split('.')
+            for comp in components[1:]:
+                    mod = getattr(mod, comp)
+            log.debug('Import succeeded.')
+            return mod
+        except ImportError as e:
+            if e.message.startswith('No module named'):
+                    log.debug('Import failed - module not found: %s', e)
+            else:
+                    log.warn('Import of module "%s" failed with error: %s', name, e)
+        return None
+
+    def _load_jobs(self):
+        """
+        Tries to load configured cronjobs. This method roughly works the same way,
+        as does the equivalent method in the plugins code.
+        """
+
+        if not 'debexpo.cronjobs' in pylons.config:
+            log.error("debexpo.cronjobs it not set - doing nothing?")
+            sys.exit(1)
+
+        for plugin in pylons.config['debexpo.cronjobs'].split(" "):
+            module = None
+            if 'debexpo.cronjobdir' in pylons.config:
+                sys.path.append(pylons.config['debexpo.cronjobdir'])
+                module = self._import_plugin(plugin)
+                if module is not None:
+                        log.debug('Found cronjob in debexpo.cronjobdir')
+
+            if module is None:
+                    name = 'debexpo.cronjobs.%s' % plugin
+                    module = self._import_plugin(name)
+
+            if not module:
+                    log.warning("Cronjob %s was configured, but not found" % (plugin))
+                    continue
+
+            if hasattr(module, 'cronjob') and hasattr(module, 'schedule'):
+                    self.jobs[plugin] = {
+                            'module': getattr(module, 'cronjob')(parent=self, config=pylons.config, log=log),
+                            'schedule': getattr(module, 'schedule'),
+                            'last_run': 0
+                    }
+            else:
+                    log.debug("Cronjob %s seems invalid" % (plugin))
+
+    def _setup(self):
+        """
+        Sets up the worker task. Setup logging, Pylons globals and so on
+        """
+
+        global log
+        config = ConfigParser.ConfigParser()
+        config.read(self.inifile)
+
+        if not config.has_section('loggers'):
+            # Sorry, the logger has not been set up yet
+            print('Config file does not have [loggers] section')
+            sys.exit(1)
 
 
-	def run(self):
-		self._setup()
-		#self._daemonize()
-		self._load_jobs()
+        logging.config.fileConfig(self.inifile)
+        logger_name = 'debexpo.worker'
+        log = logging.getLogger(logger_name)
 
-		while(True):
-			for job in self.jobs:
-				self.jobs[job]['last_run'] += 1
-				if self.jobs[job]['last_run'] % self.jobs[job]['schedule'] == 0:
-					log.debug("Run job %s" % (job))
-					self.jobs[job]['module'].deploy()
-					self.jobs[job]['last_run'] = 0
-			time.sleep(5)
+        sys.path.append(os.path.dirname(self.inifile))
+        conf = appconfig('config:' + self.inifile)
+        pylons.config = load_environment(conf.global_conf, conf.local_conf)
+
+
+    def run(self):
+        """
+        Run the event loop.
+        This method never returns
+        """
+
+        self._setup()
+        #self._daemonize()
+        self._load_jobs()
+        delay = int(pylons.config['debexpo.cronjob_delay'])
+
+        while(True):
+            for job in self.jobs:
+                self.jobs[job]['last_run'] += 1
+                if self.jobs[job]['last_run'] % self.jobs[job]['schedule'] == 0:
+                    log.debug("Run job %s" % (job))
+                    self.jobs[job]['module'].deploy()
+                    self.jobs[job]['last_run'] = 0
+            time.sleep(delay)
 
 if __name__ == '__main__':
-	worker = Worker('/tmp/pid.file', '/home/at/debexpo/development-arno.ini')
-	worker.run()
+    parser = optparse.OptionParser()
+    parser.add_option("-i", "--ini", dest="ini", help="path to application ini file", metavar="FILE")
+    parser.add_option("-p", "--pid-file", dest="pid", help="path where the PID file is stored", metavar="FILE")
+
+    (options, args) = parser.parse_args()
+    if not options.pid or not options.ini:
+        parser.print_help()
+        sys.exit(0)
+
+    worker = Worker(options.pid, options.ini)
+    worker.run()
