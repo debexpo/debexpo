@@ -67,12 +67,12 @@
 % for package_version in sorted(c.package.package_versions, key=lambda pv: pv.uploaded, reverse=True):
 
 <fieldset>
-  <h2>${ package_version.version }</h2>
+  <h2>Version ${ package_version.version }</h2>
 
   <h3>${ _('Information')}</h3>
 
   <table>
-    <tr>
+    <tr class="pkg-list">
       <th>${ _('Version') }:</th>
       <td>${ package_version.version }
 
@@ -85,7 +85,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class="pkg-list">
       <th>${ _('Uploaded') }:</th>
       <td>${ package_version.uploaded.strftime("%Y-%m-%d %H:%M %Z")}</td>
     </tr>
@@ -107,12 +107,12 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class="pkg-list">
       <th>${ _('Section') }:</th>
       <td>${ package_version.section }</td>
     </tr>
 
-    <tr>
+    <tr class="pkg-list">
       <th>${ _('Priority') }:</th>
       <td>${ package_version.priority }</td>
     </tr>
@@ -121,7 +121,7 @@
 
     % if package_version.closes is not None:
 
-    <tr>
+    <tr class="pkg-list">
       <th>${ _('Closes bugs') }:</th>
       <td>
 
@@ -146,7 +146,7 @@
     ## Print result from plugins
     % for pkginfo in package_version.package_info:
         % if pkginfo.data:
-            <tr>
+            <tr class="pkg-list">
                 <th>${ h.constants.PLUGIN_SEVERITY[pkginfo.severity] }:</th>
                 <td>${ h.converters.nl2br(pkginfo.data) }</td>
             </tr>
