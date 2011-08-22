@@ -36,15 +36,37 @@ __license__ = 'MIT'
 
 from debexpo.cronjobs import BaseCronjob
 
+import glob
+import os
+import subprocess
+
 class ImportUpload(BaseCronjob):
-        def setup(self):
-                print("setup")
+    def setup(self):
+        """
+        This method does nothing in this cronjob
+        """
+        pass
 
-        def teardown(self):
-                print("teardown")
+    def teardown(self):
+        """
+        This method does nothing in this cronjob
+        """
+        pass
 
-	def deploy():
-		print("Running ImportUpload")
+    def deploy(self):
+        """
+        Loops through the debexpo.upload.incoming directory and runs the debexpo.importer for each file
+        """
+        if 'debexpo.upload.incoming' not in self.config or not os.path.isdir(self.config['debexpo.upload.incoming']):
+            self.log.critical("debexpo.upload.incoming was not configured")
+            return
+
+        for file in glob.glob( os.path.join(self.config['debexpo.upload.incoming'], '*.changes') ):
+            self.log.debug("Import upload: %s\n" % (file))
+            command = [ self.config['debexpo.importer'], '-i', self.config['global_conf']['__file__'], '-c', file ]
+            subprocess.Popen(command, close_fds=True)
+        else:
+            self.log.debug("No files in the queue")
 
 cronjob = ImportUpload
 schedule = 5
