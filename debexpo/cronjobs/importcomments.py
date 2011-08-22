@@ -42,8 +42,24 @@ from debian import deb822
 
 import imaplib
 import email.parser
+import re
 
 class ImportComments(BaseCronjob):
+	def _belongs_to_package(self, mail):
+		# Policy 5.6.1 defines source package names as collection of
+		# lower case letters (a-z), digits (0-9), plus (+) and minus (-)
+		# signs, and periods (.)
+		match = re.search('(Re: |)RFS: ([a-z0-9\+\-\.]+)', mail['subject'], re.IGNORECASE)
+		if (match):
+			packagename = match.group(2)
+			package = meta.session.query(Package).filter_by(name=packagename).first()
+			#self.log.debug("'%s' => %s" % (packagename, package))
+			if not package:
+				return None
+			return package
+
+		return None
+
 	def _check(self, msg, err, data = None):
 		if err != 'OK':
 			if (data):
@@ -52,6 +68,7 @@ class ImportComments(BaseCronjob):
 				self.log.error("%s failed: %s" % (msg))
 
 	def _process_changes(self, mail):
+		return
 		if mail.is_multipart():
 			self.log.debug("Changes message is multipart?!")
 			return
@@ -68,18 +85,26 @@ class ImportComments(BaseCronjob):
 		package = meta.session.query(Package).filter_by(name=changes['Source']).first()
 		if package != None:
 			#XXX: Finish me
-			pass
+			print("HELLO WORLD %s" % (changes['Source']))
 		else:
 			self.log.debug("Package %s was not uploaded to Expo before - ignoring it" % (changes['Source']))
 
 	def _process_mentors(self, mail):
-		pass
+		if mail.is_multipart():
+			self.log.debug("Changes message is multipart?!")
+			return
+		package = self._belongs_to_package(mail)
+		if not package:
+			self.log.debug("Post '%s' on debian-mentors seems not to be related to a package I know" % (mail['subject']))
+			return
+		#XXX: Finish me
+
 
 	def setup(self):
 		self.established = False
 		self.server = 'mx.freenet.de'
 		self.user = 'debexpo-importer'
-		self.passwod = 'ZHz66Sh0Ow9sU'
+		self.passwod = 'yTXieRMllyF6o'
 
 		self.imap = imaplib.IMAP4(self.server)
 		(err, data) = self.imap.login(self.user, self.passwod)
@@ -96,6 +121,10 @@ class ImportComments(BaseCronjob):
 
 
 	def deploy(self):
+		if not self.established:
+			self.log.warning("Unable to establish IMAP connection")
+			return
+
 		print("Running ImportUpload")
 		(err, messages) = self.imap.search(None, '(UNSEEN)')
 		self._check("IMAP search messages", err)
