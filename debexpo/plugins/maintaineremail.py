@@ -79,8 +79,8 @@ class MaintainerEmailPlugin(BasePlugin):
                     log.debug('The uploader is in the package\'s "Uploaders" field')
                     self.passed('uploader-in-uploaders', None, constants.PLUGIN_SEVERITY_INFO)
                 else:
-                    log.warning('%s != %s' % (user.email, email[1:-1]))
-                    self.failed('maintainer-is-not-uploader', '%s != %s' % (user.email, email[1:-1]),
+                    log.warning('%s != %s' % (user.email, maintainer_email))
+                    self.failed('maintainer-is-not-uploader', '%s != %s' % (user.email, maintainer_email),
                         constants.PLUGIN_SEVERITY_WARNING)
 
         else:
