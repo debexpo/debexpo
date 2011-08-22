@@ -140,7 +140,11 @@ class Plugins(object):
         dsc = deb822.Dsc(file(self.changes.get_dsc()))
         for item in dsc['Files']:
             if item['name'] not in self.changes.get_files():
-                shutil.copy(os.path.join(self.config['debexpo.upload.incoming'], item['name']), self.tempdir)
+                src_file = os.path.join(self.config['debexpo.upload.incoming'], item['name'])
+                if os.path.exists(src_file):
+                    shutil.copy(src_file, self.tempdir)
+                else:
+                    log.critical("Trying to copy non-existing file %s" % (src_file))
 
         shutil.copy(os.path.join(self.config['debexpo.upload.incoming'], self.changes_file), self.tempdir)
 
