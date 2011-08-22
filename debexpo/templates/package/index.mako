@@ -64,12 +64,12 @@
 
 <h1>${ _('Package versions') }</h1>
 
-% for package_version in c.package.package_versions:
+% for package_version in sorted(c.package.package_versions, key=lambda pv: pv.uploaded, reverse=True):
 
 <fieldset>
-  <legend>${ package_version.version }</legend>
+  <h2>${ package_version.version }</h2>
 
-  <h2>${ _('Information')}</h2>
+  <h3>${ _('Information')}</h3>
 
   <table>
     <tr>
@@ -87,7 +87,7 @@
 
     <tr>
       <th>${ _('Uploaded') }:</th>
-      <td>${ package_version.uploaded.strftime("%Y-%M-%d %H:%M %Z")}</td>
+      <td>${ package_version.uploaded.strftime("%Y-%m-%d %H:%M %Z")}</td>
     </tr>
 
     <tr>
@@ -139,7 +139,7 @@
 </table>
 
 % if package_version.package_info:
-<h2>${ _('QA information')}</h2>
+<h3>${ _('QA information')}</h3>
 
 <table>
 
@@ -199,7 +199,7 @@
 % endif
 
 % if 'user_id' in c.session:
-<h3>New comment</h3>
+<h4>New comment</h4>
 
 ${ h.html.tags.form(h.url('comment', packagename=c.package.name), method='post') }
 ${ h.html.tags.hidden('package_version', package_version.id) }
