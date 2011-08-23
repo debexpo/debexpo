@@ -330,7 +330,6 @@ class Importer(object):
 
         # Add PackageInfo objects to the database for the package_version
         for result in qa.result:
-            log.debug("Adding result: %s", result)
             meta.session.add(PackageInfo(package_version=package_version, from_plugin=result.from_plugin,
                 outcome=result.outcome, data=result.data, severity=result.severity))
 
@@ -424,10 +423,9 @@ class Importer(object):
         for file in self.files:
             if os.path.isfile(os.path.join(pool_dir, file)):
                 log.warning('%s is being installed even though it already exists' % file)
-                toinstall.append(file)
             else:
                 log.debug('File %s is safe to install' % os.path.join(pool_dir, file))
-                toinstall.append(file)
+            toinstall.append(file)
 
         # Run post-upload plugins.
         post_upload = Plugins('post-upload', self.changes, self.changes_file,
