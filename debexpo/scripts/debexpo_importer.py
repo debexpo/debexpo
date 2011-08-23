@@ -75,7 +75,7 @@ from debexpo.lib.email import Email
 from debexpo.lib.changes import Changes
 from debexpo.lib.repository import Repository
 from debexpo.lib.plugins import Plugins
-
+from debexpo.lib.filesystem import CheckFiles
 
 
 log = None
@@ -127,7 +127,8 @@ class Importer(object):
         """
         Removes the `changes` file.
         """
-        os.remove(self.changes_file)
+        if os.path.exists(self.changes_file):
+                os.remove(self.changes_file)
 
     def _remove_files(self):
         """
@@ -354,24 +355,6 @@ class Importer(object):
         self.send_email(email, [self.user.email], package=self.changes['Source'],
             dsc_url=dsc_url, rfs_url=rfs_url)
 
-    def _orig(self):
-        """
-        Look to see whether there is an orig tarball present, if the dsc refers to one.
-        If it is present or not necessary, this returns True. Otherwise, it returns the
-        name of the file required.
-        """
-        dsc = deb822.Dsc(open(self.changes.get_dsc()))
-        for file in dsc['Files']:
-            if (file['name'].endswith('orig.tar.gz') or
-                file['name'].endswith('orig.tar.bz2') or
-                file['name'].endswith('orig.tar.xz')):
-                if os.path.isfile(file['name']):
-                    return True
-                else:
-                    return file['name']
-
-        return True
-
     def main(self):
         """
         Actually start the import of the package.
@@ -383,29 +366,33 @@ class Importer(object):
         self._setup()
 
         log.debug('Importer started with arguments: %s' % sys.argv[1:])
+        filecheck = CheckFiles()
+
+        if self.user_id:
+            self.user = meta.session.query(User).filter_by(id=self.user_id).one()
 
         # Try parsing the changes file, but fail if there's an error.
         try:
             self.changes = Changes(filename=self.changes_file)
-        except Exception, e:
+            filecheck.test_files_present(self.changes)
+            filecheck.test_md5sum(self.changes)
+        except Exception as e:
             log.error(e.message)
             self._remove_changes()
-            self._reject("Your changes file appears invalid - refusing upload")
+            self._reject("Your changes file appears invalid. Refusing your upload\n%s" % (e.message))
 
         self.files = self.changes.get_files()
 
         # Look whether the orig tarball is present, and if not, try and get it from
         # the repository.
-        orig = self._orig()
-        if orig is not True:
+        (orig, orig_file_found) = filecheck.find_orig_tarball(self.changes)
+        if orig and not orig_file_found:
+            log.debug("Upload does not contain orig.tar.gz - trying to find it elsewhere")
             filename = os.path.join(pylons.config['debexpo.repository'],
                 self.changes.get_pool_path(), orig)
             if os.path.isfile(filename):
                 shutil.copy(filename, pylons.config['debexpo.upload.incoming'])
                 self.files.append(orig)
-            else:
-                oldorig = orig
-                orig = None
 
         destdir = pylons.config['debexpo.repository']
 
@@ -451,10 +438,17 @@ class Importer(object):
             sys.exit(1)
 
         # Check whether a post-upload plugin has got the orig tarball from somewhere.
-        if orig is None:
-            if self._orig():
-                self.files.append(oldorig)
-                toinstall.append(oldorig)
+        if not orig_file_found:
+            (orig, orig_file_found) = filecheck.find_orig_tarball(self.changes)
+            if not orig_file_found:
+                # When coming here it means:
+                # a) The uploaded did not include a orig.tar.gz in his upload
+                # b) We couldn't find a orig.tar.gz in our repository
+                # c) No plugin could get the orig.tar.gz
+                # ... time to give up
+                self._reject("Rejecting incomplate upload. "
+                    "You did not upload %s and we didn't find it on either one of our backup resources" %
+                    ( orig ))
 
         # Check whether the debexpo.repository variable is set
         if 'debexpo.repository' not in pylons.config:
