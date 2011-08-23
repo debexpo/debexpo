@@ -79,6 +79,8 @@ class ClosedBugsPlugin(BasePlugin):
             except Exception as e:
                 log.critical('An error occurred when creating the SOAP proxy at "%s" (ns: "%s"): %s'
                     % (ClosedBugsPlugin.URL, ClosedBugsPlugin.NS, e))
+                self.failed('invalid-bug-specified', "%s: One or more bugs closed in this package do not exist" % (self.changes['Closes']), constants.PLUGIN_SEVERITY_ERROR)
+                return
 
             # Index bugs retrieved
             bugs_bts = {}
@@ -133,6 +135,7 @@ class ClosedBugsPlugin(BasePlugin):
 plugin = ClosedBugsPlugin
 
 outcomes = {
+    'invalid-bug-specified': {'name': 'One or more bugs closed in this package do not exist'},
     'bug-not-in-package' : { 'name' : 'A bug closed in this package doesn\'t belong to this package' },
     'bug-in-package' : { 'name' : 'A bug closed in this package belongs to this package' },
 }
