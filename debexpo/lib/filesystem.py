@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#             © 2011 Arno Töll <debian@toell.net>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -28,64 +29,78 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 """
-Holds the checkfiles plugin.
+Holds various filesystem checks and interaction methods to store source package on the disk.
 """
 
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__author__ = 'Jonny Lamb and Arno Töll'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, © 2011 Arno Töll'
 __license__ = 'MIT'
 
 import logging
 import os
+import pylons
 
 from debexpo.lib import constants
 from debexpo.lib.utils import md5sum
-from debexpo.plugins import BasePlugin
-import pylons
+
+from debian import deb822
 
 log = logging.getLogger(__name__)
 
-class CheckFilesPlugin(BasePlugin):
+class CheckFiles(object):
 
-    def test_files_present(self):
+    def test_files_present(self, changes_file):
         """
         Check whether each file listed in the changes file is present.
         """
-        for filename in self.changes.get_files():
+        for filename in changes_file.get_files():
             log.debug('Looking whether %s was actually uploaded' % filename)
             if os.path.isfile(os.path.join(pylons.config['debexpo.upload.incoming'], filename)):
                 log.debug('%s is present' % filename)
-                self.passed('file-is-present', filename, constants.PLUGIN_SEVERITY_INFO)
             else:
                 log.critical('%s is not present; importing cannot continue' % filename)
-                self.failed('file-is-not-present', filename, constants.PLUGIN_SEVERITY_CRITICAL)
+                raise OSError("Missing file %s in incoming" % (filename))
 
-    def test_md5sum(self):
+        return True
+
+    def test_md5sum(self, changes_file):
         """
         Check each file's md5sum and make sure the md5sum in the changes file is the same
         as the actual file's md5sum.
         """
-        for file in self.changes['Files']:
+        for file in changes_file['Files']:
             log.debug('Checking md5sum of %s' % file['name'])
             filename = os.path.join(pylons.config['debexpo.upload.incoming'], file['name'])
-            if os.path.isfile(filename):
-                sum = md5sum(filename)
+            if not os.path.isfile(filename):
+                raise OSError("Missing file %s in incoming" % (file['name']))
+            sum = md5sum(filename)
 
-                data = 'Changes file says md5sum of %s is: %s\n' % (file['name'], file['md5sum'])
-                data += 'Actual md5sum of %s is: %s' % (file['name'], sum)
+            if sum != file['md5sum']:
+                log.critical('%s != %s' % (sum, file['md5sum']))
+                raise OSError("MD5 sum mismatch in file %s: %s != %s" % (file['name'], sum, file['md5sum']))
 
-                if sum != file['md5sum']:
-                    log.error('%s != %s' % (sum, file['md5sum']))
-                    self.failed('md5sum-not-match', data, constants.PLUGIN_SEVERITY_ERROR)
+        return True
+
+    def find_orig_tarball(self, changes_file):
+        """
+        Look to see whether there is an orig tarball present, if the dsc refers to one.
+        If it is present or not necessary, this returns True. Otherwise, it returns the
+        name of the file required.
+
+        ```changes_file```
+            The changes file to parse for the orig.tar (note the dsc file referenced must exist)
+
+        Returns a tuple (orig_filename, orig_filename_was_found)
+        """
+        dsc = deb822.Dsc(open(changes_file.get_dsc()))
+        for file in dsc['Files']:
+            if (file['name'].endswith('orig.tar.gz') or
+                file['name'].endswith('orig.tar.bz2') or
+                file['name'].endswith('orig.tar.xz')):
+                if os.path.isfile(file['name']):
+                    return (file['name'], True)
                 else:
-                    log.debug('Test passed')
-                    self.passed('md5sum-match', None, constants.PLUGIN_SEVERITY_INFO)
+                    return (file['name'], False)
 
-plugin = CheckFilesPlugin
+        return (None, False)
 
-outcomes = {
-    'file-is-present' : { 'name' : 'A file listed in the changes file is present' },
-    'file-is-not-present' : { 'name' : 'A file listed in the changes file is not present' },
-    'md5sum-not-match' : { 'name' : 'A package source file\'s md5sum does match its changes value' },
-    'md5sum-match' : { 'name' : 'A package source file\'s md5sum matches its changes value' },
-}
