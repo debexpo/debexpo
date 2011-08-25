@@ -18,7 +18,7 @@ setup(
         "Webhelpers>=0.6.1",
         "Babel>=0.9.6",
         "ZSI",
-        "python-debian==0.1.16",
+        "python-debian>=0.1.16",
         "soaplib==0.8.1"],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
