@@ -40,12 +40,12 @@ __license__ = 'MIT'
 import logging
 import logging.config
 import os
-import atexit
 import sys
 import time
 import ConfigParser
 import pylons
 import optparse
+import signal
 
 from paste.deploy import appconfig
 from debexpo.config.environment import load_environment
@@ -53,7 +53,7 @@ from debexpo.config.environment import load_environment
 log = None
 
 class Worker(object):
-    def __init__(self, pidfile, inifile):
+    def __init__(self, pidfile, inifile, daemonize):
         """
         Class constructor. Sets class attributes and then runs the service
 
@@ -61,10 +61,13 @@ class Worker(object):
             The file name where the worker thread stores its PID file
         ``inifile``
             The configuration file used to setup the worker thread
+        ``inifile``
+            Whether to go into background
         """
 
         self.pidfile = pidfile
         self.inifile = os.path.abspath(inifile)
+        self.daemonize = daemonize
         self.jobs = {}
 
 
@@ -84,10 +87,10 @@ class Worker(object):
         os.setsid()
         os.umask(0)
 
-        atexit.register(self._remove_pid)
+        signal.signal(signal.SIGTERM, self._remove_pid)
         file(self.pidfile, "w+").write( "%d\n" % os.getpid())
 
-    def _remove_pid(self):
+    def _remove_pid(self, _a, _b):
         """
         Remove the process PID file
         """
@@ -184,8 +187,24 @@ class Worker(object):
         """
 
         self._setup()
-        #self._daemonize()
-        self._load_jobs()
+        if os.path.exists(self.pidfile):
+            try:
+                read_pid = file(self.pidfile,'r')
+                pid = read_pid.readline().strip()
+                read_pid.close()
+            except:
+                pid = None
+        else:
+            pid = None
+
+        if pid:
+                log.error("Refusing to start - is another instance with PID %s running?" % (pid))
+                sys.exit(1)
+
+        if self.daemonize:
+            log.debug("Go into background now")
+            self._daemonize()
+        #self._load_jobs()
         delay = int(pylons.config['debexpo.cronjob_delay'])
 
         while(True):
@@ -201,11 +220,12 @@ if __name__ == '__main__':
     parser = optparse.OptionParser()
     parser.add_option("-i", "--ini", dest="ini", help="path to application ini file", metavar="FILE")
     parser.add_option("-p", "--pid-file", dest="pid", help="path where the PID file is stored", metavar="FILE")
+    parser.add_option("-d", "--daemonize", dest="daemonize", action='store_true', help="go into background")
 
     (options, args) = parser.parse_args()
     if not options.pid or not options.ini:
         parser.print_help()
         sys.exit(0)
 
-    worker = Worker(options.pid, options.ini)
+    worker = Worker(options.pid, options.ini, options.daemonize)
     worker.run()
