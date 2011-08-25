@@ -34,7 +34,6 @@ from optparse import OptionParser
 import ConfigParser
 from datetime import datetime
 from debian import deb822
-from debian.changelog import Changelog, ChangelogParseError
 import logging
 import logging.config
 import os
