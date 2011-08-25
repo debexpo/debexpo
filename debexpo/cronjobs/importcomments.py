@@ -45,105 +45,101 @@ import email.parser
 import re
 
 class ImportComments(BaseCronjob):
-	def _belongs_to_package(self, mail):
-		# Policy 5.6.1 defines source package names as collection of
-		# lower case letters (a-z), digits (0-9), plus (+) and minus (-)
-		# signs, and periods (.)
-		match = re.search('(Re: |)RFS: ([a-z0-9\+\-\.]+)', mail['subject'], re.IGNORECASE)
-		if (match):
-			packagename = match.group(2)
-			package = meta.session.query(Package).filter_by(name=packagename).first()
-			#self.log.debug("'%s' => %s" % (packagename, package))
-			if not package:
-				return None
-			return package
+    def _belongs_to_package(self, mail):
+        # Policy 5.6.1 defines source package names as collection of
+        # lower case letters (a-z), digits (0-9), plus (+) and minus (-)
+        # signs, and periods (.)
+        match = re.search('(Re: |)RFS: ([a-z0-9\+\-\.]+)', mail['subject'], re.IGNORECASE)
+        if (match):
+            packagename = match.group(2)
+            package = meta.session.query(Package).filter_by(name=packagename).first()
+            #self.log.debug("'%s' => %s" % (packagename, package))
+            if not package:
+                return None
+            return package
 
-		return None
+        return None
 
-	def _check(self, msg, err, data = None):
-		if err != 'OK':
-			if (data):
-				self.log.error("%s failed: %s" % (msg, data))
-			else:
-				self.log.error("%s failed: %s" % (msg))
+    def _check(self, msg, err, data = None):
+        if err != 'OK':
+            if (data):
+                self.log.error("%s failed: %s" % (msg, data))
+            else:
+                self.log.error("%s failed: %s" % (msg))
 
-	def _process_changes(self, mail):
-		return
-		if mail.is_multipart():
-			self.log.debug("Changes message is multipart?!")
-			return
-		changes = mail.get_payload(decode=True)
-		try:
-			changes = deb822.Changes(changes)
-		except:
-			self.log.error('Could not open changes file; skipping mail "%s"' % (mail['subject']))
-			return
+    def _process_changes(self, mail):
+        return
+        if mail.is_multipart():
+            self.log.debug("Changes message is multipart?!")
+            return
+        changes = mail.get_payload(decode=True)
+        try:
+            changes = deb822.Changes(changes)
+        except:
+            self.log.error('Could not open changes file; skipping mail "%s"' % (mail['subject']))
+            return
 
-		if not 'Source' in changes:
-			self.log.debug('Changes file "%s" seems incomplete' % (mail['subject']))
-			return
-		package = meta.session.query(Package).filter_by(name=changes['Source']).first()
-		if package != None:
-			#XXX: Finish me
-			print("HELLO WORLD %s" % (changes['Source']))
-		else:
-			self.log.debug("Package %s was not uploaded to Expo before - ignoring it" % (changes['Source']))
+        if not 'Source' in changes:
+            self.log.debug('Changes file "%s" seems incomplete' % (mail['subject']))
+            return
+        package = meta.session.query(Package).filter_by(name=changes['Source']).first()
+        if package != None:
+            #XXX: Finish me
+            pass
+        else:
+            self.log.debug("Package %s was not uploaded to Expo before - ignoring it" % (changes['Source']))
 
-	def _process_mentors(self, mail):
-		if mail.is_multipart():
-			self.log.debug("Changes message is multipart?!")
-			return
-		package = self._belongs_to_package(mail)
-		if not package:
-			self.log.debug("Post '%s' on debian-mentors seems not to be related to a package I know" % (mail['subject']))
-			return
-		#XXX: Finish me
-
-
-	def setup(self):
-		self.established = False
-		self.server = 'mx.freenet.de'
-		self.user = 'debexpo-importer'
-		self.passwod = 'yTXieRMllyF6o'
-
-		self.imap = imaplib.IMAP4(self.server)
-		(err, data) = self.imap.login(self.user, self.passwod)
-		self._check("IMAP login", err, data)
-		if err == 'OK':
-			self.established = True
-
-		(err, data) = self.imap.select("INBOX", readonly=True)
-		self._check("IMAP select", err, data)
-
-	def teardown(self):
-		self.imap.close()
-		self.imap.logout()
+    def _process_mentors(self, mail):
+        if mail.is_multipart():
+            self.log.debug("Changes message is multipart?!")
+            return
+        package = self._belongs_to_package(mail)
+        if not package:
+            self.log.debug("Post '%s' on debian-mentors seems not to be related to a package I know" % (mail['subject']))
+            return
+        #XXX: Finish me
 
 
-	def deploy(self):
-		if not self.established:
-			self.log.warning("Unable to establish IMAP connection")
-			return
+    def setup(self):
+        self.established = False
+        self.imap = imaplib.IMAP4(self.config['debexpo.imap_server'])
+        (err, data) = self.imap.login(self.config['debexpo.imap_user'], self.config['debexpo.imap_password'])
+        self._check("IMAP login", err, data)
+        if err == 'OK':
+            self.established = True
 
-		print("Running ImportUpload")
-		(err, messages) = self.imap.search(None, '(UNSEEN)')
-		self._check("IMAP search messages", err)
+        (err, data) = self.imap.select("INBOX", readonly=True)
+        self._check("IMAP select", err, data)
 
-		for msg_id in messages[0].split(" "):
-			#(err, msginfo) = self.imap.fetch(msg_id, '(BODY[HEADER.FIELDS (SUBJECT FROM LIST-ID)])')
-			(err, msginfo) = self.imap.fetch(msg_id, 'RFC822')
-			self._check("IMAP fetch message", err)
-			if (err != 'OK'):
-				continue
-			ep = email.parser.Parser().parsestr(msginfo[0][1])
-			if ep["list-id"] in ('<debian-devel-changes.lists.debian.org>',
-					'<debian-changes.lists.debian.org>',
-					'<debian-backports-changes.lists.debian.org>'):
-				self._process_changes(ep)
-			elif ep["list-id"] == '<debian-mentors.lists.debian.org>':
-				self._process_mentors(ep)
-			else:
-				self.log.debug("Unrecognized message in mailbox: '%s'" % ep["subject"])
+    def teardown(self):
+        self.imap.close()
+        self.imap.logout()
+
+
+    def deploy(self):
+        if not self.established:
+            self.log.warning("Unable to establish IMAP connection")
+            return
+
+        print("Running ImportUpload")
+        (err, messages) = self.imap.search(None, '(UNSEEN)')
+        self._check("IMAP search messages", err)
+
+        for msg_id in messages[0].split(" "):
+            #(err, msginfo) = self.imap.fetch(msg_id, '(BODY[HEADER.FIELDS (SUBJECT FROM LIST-ID)])')
+            (err, msginfo) = self.imap.fetch(msg_id, 'RFC822')
+            self._check("IMAP fetch message", err)
+            if (err != 'OK'):
+                continue
+            ep = email.parser.Parser().parsestr(msginfo[0][1])
+            if ep["list-id"] in ('<debian-devel-changes.lists.debian.org>',
+                    '<debian-changes.lists.debian.org>',
+                    '<debian-backports-changes.lists.debian.org>'):
+                self._process_changes(ep)
+            elif ep["list-id"] == '<debian-mentors.lists.debian.org>':
+                self._process_mentors(ep)
+            else:
+                self.log.debug("Unrecognized message in mailbox: '%s'" % ep["subject"])
 
 cronjob = ImportComments
 schedule = 1

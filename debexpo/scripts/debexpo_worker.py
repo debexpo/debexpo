@@ -204,7 +204,8 @@ class Worker(object):
         if self.daemonize:
             log.debug("Go into background now")
             self._daemonize()
-        #self._load_jobs()
+        log.debug("Loading jobs")
+        self._load_jobs()
         delay = int(pylons.config['debexpo.cronjob_delay'])
 
         while(True):
