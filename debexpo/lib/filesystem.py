@@ -52,6 +52,9 @@ class CheckFiles(object):
     def test_files_present(self, changes_file):
         """
         Check whether each file listed in the changes file is present.
+
+        ```changes_file```
+            The changes file to parse for the orig.tar (note the dsc file referenced must exist)
         """
         for filename in changes_file.get_files():
             log.debug('Looking whether %s was actually uploaded' % filename)
@@ -67,6 +70,9 @@ class CheckFiles(object):
         """
         Check each file's md5sum and make sure the md5sum in the changes file is the same
         as the actual file's md5sum.
+
+        ```changes_file```
+            The changes file to parse for the orig.tar (note the dsc file referenced must exist)
         """
         for file in changes_file['Files']:
             log.debug('Checking md5sum of %s' % file['name'])
@@ -104,3 +110,41 @@ class CheckFiles(object):
 
         return (None, False)
 
+
+    def find_files_for_package(self, package, absolute_path=False):
+        """
+        Returns all unique paths for files associated with the supplied
+        packages
+
+        ```package``` The package to be scanned
+
+        ```absolute_path``` if set to True, returns the absolute path
+            instead of a path relative to the repository root
+        """
+        package_files = []
+        for p in package.package_versions:
+                for attr in ('binary_packages', 'source_packages'):
+                    if hasattr(p, attr):
+                        for bp in getattr(p, attr):
+                            for files in bp.package_files:
+                                if not files.filename in package_files:
+                                    package_files.append(files.filename if not absolute_path
+                                        else pylons.config['debexpo.repository'] + files.filename)
+        return package_files
+
+
+    def delete_files_for_package(self, package):
+        """
+        Removes all files associated with the package supplied
+
+        ```package``` package object whose files are supposed to be removed
+        """
+        files = self.find_files_for_package(package, absolute_path=True)
+        path = os.path.dirname(files[0])
+        for file in files:
+            if os.path.exists(file):
+                    log.debug("Removing file '%s'" % (file))
+                    os.unlink(file)
+        if os.path.isdir(path):
+            log.debug("Remove empty package repository '%s'" % (path))
+            os.rmdir(path)

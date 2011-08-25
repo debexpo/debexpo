@@ -45,6 +45,7 @@ from debexpo.lib.base import *
 from debexpo.lib import constants, form
 from debexpo.lib.utils import get_package_dir
 from debexpo.lib.email import Email
+from debexpo.lib.filesystem import CheckFiles
 from debexpo.lib.schemas import PackageSubscribeForm, PackageCommentForm
 
 from debexpo.model import meta
@@ -208,6 +209,7 @@ class PackageController(BaseController):
 
         # The user should have already been prompted with a nice dialog box
         # confirming their choice, so no mercy here.
+        CheckFiles().delete_files_for_package(package)
         meta.session.delete(package)
         meta.session.commit()
 
