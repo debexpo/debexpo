@@ -111,6 +111,20 @@ class SponsorMetrics(OrmObject):
         else:
             return "None"
 
+
+    def get_types(self):
+        """
+        Return a formatted and sanitized string of the packages the sponsor
+        is interested in
+        """
+
+        if self.types:
+            s = self.types
+            s = s.replace('<', '&lt;')
+            s = s.replace('>', '&gt;')
+            s = s.replace('\n', '<br />')
+            return s
+
     def get_social_requirements(self):
         """
         Return a formatted and sanitized string of the social requirements the sponsor
