@@ -39,11 +39,16 @@ __license__ = 'MIT'
 import logging
 
 from debexpo.lib.base import BaseController, c, config, render
+from debexpo.lib import constants
 from debexpo.controllers.packages import PackagesController, PackageGroups
 from webhelpers.html import literal
 from datetime import datetime, timedelta
 from debexpo.model.package_versions import PackageVersion
 from debexpo.model.packages import Package
+from debexpo.model.sponsor_metrics import SponsorMetrics
+from debexpo.model.users import User
+
+from debexpo.model import meta
 
 log = logging.getLogger(__name__)
 
@@ -101,4 +106,6 @@ class IndexController(BaseController):
         else:
             c.custom_html = ''
 
+        c.constants = constants
+        c.sponsors = meta.session.query(SponsorMetrics).filter(SponsorMetrics.availability >= constants.SPONSOR_METRICS_RESTRICTED).join(User).all()
         return render('/index/intro-sponsors.mako')

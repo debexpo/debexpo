@@ -35,6 +35,7 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
+
 # User constants
 USER_TYPE_NORMAL = 1
 USER_TYPE_ADMIN = 2
@@ -76,3 +77,31 @@ PACKAGE_COMMENT_STATUS_UPLOADED = 2
 # Package subscriptions
 SUBSCRIPTION_LEVEL_UPLOADS = 1
 SUBSCRIPTION_LEVEL_COMMENTS = 2
+
+#Sponsor metrics
+SPONSOR_METRICS_PRIVATE = 0
+SPONSOR_METRICS_RESTRICTED = 1
+SPONSOR_METRICS_PUBLIC = 2
+
+
+SPONSOR_CONTACT_METHOD_NONE = 0
+SPONSOR_CONTACT_METHOD_EMAIL = 1
+SPONSOR_CONTACT_METHOD_IRC = 2
+SPONSOR_CONTACT_METHOD_JABBER = 3
+
+SPONSOR_GUIDELINES_TYPE_NONE = 0
+SPONSOR_GUIDELINES_TYPE_URL = 1
+SPONSOR_GUIDELINES_TYPE_TEXT = 2
+
+SPONSOR_TECHNICAL_REQUIREMENTS = [
+    ('CDBS','cdbs'),
+    ('debhelper','debhelper'),
+    ('custom debian/rules','debhelper'),
+    ('NMUs','nmu'),
+    ('QA uploads','qa'),
+    ('Backports','backports'),
+    ('Modified Tarballs','tarballs'),
+    ('VCS snapshot tarballs','vcs_tarballs'),
+    ('contrib/non-free packages', 'non_free'),
+    ]
+

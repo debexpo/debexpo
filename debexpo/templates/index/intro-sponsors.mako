@@ -16,3 +16,50 @@ ${ c.custom_html }
 <h3>What to do for sponsoring</h3>
 
 <p>Look for packages that you would like to sponsor on this website. Once you have found some you should download, build and test them. Please notify your sponsoree of every problem that you find in order to give him a chance to fix them. We believe that it is of uttermost importance to stay in contact with your sponsorees to keep them interested in working on Debian. Moreover, they will also learn how to maintain packages within a team and will learn skills that are crucial for Debian Developers more easily. </p>
+
+<table width="100%">
+    <tr>
+        <th width="20%">Sponsor name</th>
+        <th width="20%">Contact data</th>
+        <th width="20%">Sponsor Guidelines</th>
+        <th width="20%">Technical Requirements</th>
+        <th width="20%">Social Requirements</th>
+    </tr>
+<%
+    def preferred(flag):
+        if flag:
+            return "(preferred)"
+        else:
+            return ""
+%>
+% for sponsor in c.sponsors:
+    <tr>
+        <td>${ sponsor.user.name }</td>
+        <td>
+            <ul>
+            % if sponsor.user.email and sponsor.allowed(c.constants.SPONSOR_CONTACT_METHOD_EMAIL):
+                <li>Email: ${ sponsor.user.email } ${ preferred(sponsor.contact == c.constants.SPONSOR_CONTACT_METHOD_EMAIL) }</li>
+            % endif
+            % if sponsor.user.ircnick and sponsor.allowed(c.constants.SPONSOR_CONTACT_METHOD_IRC):
+                <li>IRC: ${ sponsor.user.ircnick } ${ preferred(sponsor.contact == c.constants.SPONSOR_CONTACT_METHOD_IRC) }</li>
+            % endif
+            % if sponsor.user.jabber and sponsor.allowed(c.constants.SPONSOR_CONTACT_METHOD_JABBER):
+                <li>Jabber: ${ sponsor.user.jabber } ${ preferred(sponsor.contact == c.constants.SPONSOR_CONTACT_METHOD_JABBER) }</li>
+            % endif
+            </ul>
+        </td>
+        <td>${ sponsor.get_guidelines() | n}</td>
+        <td>
+            <ul>
+            <% requirements = sponsor.database_to_technical_requirements() %>
+            % for requirement in c.constants.SPONSOR_TECHNICAL_REQUIREMENTS:
+                % if requirement[1] in requirements:
+                    <li>${ requirement[0] }</li>
+                % endif
+            % endfor
+            </ul>
+        </td>
+        <td>${ sponsor.get_social_requirements() | n}</td>
+    </tr>
+% endfor
+</table>
