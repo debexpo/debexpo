@@ -43,6 +43,7 @@ from debexpo.lib.gnupg import GnuPG
 
 from debexpo.model import meta
 from debexpo.model.users import User
+from debexpo.lib import constants
 
 import debexpo.lib.utils
 
@@ -173,3 +174,17 @@ def ValidateSponsorEmail(values, state, validator):
     if values['sponsor'] == '1' and not values['email'].endswith('@debian.org'):
           return {'sponsor': 'A sponsor account must be registered with your @debian.org address' }
 
+class DummyValidator(formencode.FancyValidator):
+    pass
+
+def ValidatePackagingGuidelines(values, state, validator):
+    try:
+        if values['packaging_guidelines'] == constants.SPONSOR_GUIDELINES_TYPE_TEXT:
+            formencode.validators.String(min=1).to_python(values['packaging_guideline_text'])
+        elif values['packaging_guidelines'] == constants.SPONSOR_GUIDELINES_TYPE_URL:
+            formencode.validators.URL(add_http=True).to_python(values['packaging_guideline_text'])
+        else:
+            formencode.validators.Empty().to_python(values['packaging_guideline_text'])
+    except Exception as e:
+        return {'packaging_guideline_text': e}
+    return None

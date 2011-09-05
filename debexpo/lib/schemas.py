@@ -42,7 +42,8 @@ from pylons import config
 
 from debexpo.lib import constants
 from debexpo.lib.validators import NewEmailToSystem, GpgKey, \
-    CurrentPassword, CheckBox, NewNameToSystem, ValidateSponsorEmail
+    CurrentPassword, CheckBox, NewNameToSystem, ValidateSponsorEmail, \
+    ValidatePackagingGuidelines, DummyValidator
 
 class LoginForm(formencode.Schema):
     """
@@ -96,6 +97,39 @@ class OtherDetailsForm(MyForm):
     ircnick = formencode.validators.String()
     jabber = formencode.validators.String()
     status = CheckBox()
+
+class MetricsForm(MyForm):
+    """
+    Schema for updating the metrics in the controller
+    """
+    preferred_contact_method = formencode.compound.All(
+        formencode.validators.OneOf([
+            constants.SPONSOR_CONTACT_METHOD_NONE,
+            constants.SPONSOR_CONTACT_METHOD_EMAIL,
+            constants.SPONSOR_CONTACT_METHOD_IRC,
+            constants.SPONSOR_CONTACT_METHOD_JABBER
+        ]), formencode.validators.Int(not_empty=True))
+    package_types = formencode.validators.String()
+    packaging_guidelines = formencode.compound.All(
+        formencode.validators.OneOf([
+            constants.SPONSOR_GUIDELINES_TYPE_NONE,
+            constants.SPONSOR_GUIDELINES_TYPE_URL,
+            constants.SPONSOR_GUIDELINES_TYPE_TEXT]), formencode.validators.Int(not_empty=True))
+
+    availability = formencode.compound.All(
+        formencode.validators.OneOf([
+            constants.SPONSOR_METRICS_PRIVATE,
+            constants.SPONSOR_METRICS_RESTRICTED,
+            constants.SPONSOR_METRICS_PUBLIC]), formencode.validators.Int(not_empty=True))
+    package_technical_requirements = formencode.validators.Set
+    social_requirements = formencode.validators.String()
+
+    # Postpone validation of packaging_guideline_text, as its validation
+    # depends on the value of packaging_guidelines
+    packaging_guideline_text = DummyValidator
+    chained_validators = [
+        formencode.schema.SimpleFormValidator(ValidatePackagingGuidelines)
+    ]
 
 class RegisterForm(formencode.Schema):
     """

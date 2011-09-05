@@ -19,10 +19,10 @@ allow_unsigned_uploads = 0
   ${ h.html.tags.form(h.url.current()) }
   ${ h.html.tags.hidden('form', 'details') }
 
-  <table>
+  <table width="100%">
     <tr>
-      <td>${ _('Name') }:</td>
-      <td>${ h.html.tags.text('name', value=c.user.name) }</td>
+      <td width="20%">${ _('Name') }:</td>
+      <td width="80%">${ h.html.tags.text('name', value=c.user.name) }</td>
     </tr>
 
     <tr>
@@ -38,20 +38,20 @@ allow_unsigned_uploads = 0
   ${ h.html.tags.end_form() }
 
 </fieldset>
-
+<hr />
 <fieldset>
   <legend>${ _('Change GPG key') }</legend>
 
   ${ h.html.tags.form(h.url.current(), multipart=True) }
   ${ h.html.tags.hidden('form', 'gpg') }
 
-  <table>
+  <table width="100%">
 
 % if c.currentgpg:
 
     <tr>
-      <td>${ _('Current GPG key') }:</td>
-      <td>${ c.currentgpg }</td>
+      <td width="20%">${ _('Current GPG key') }:</td>
+      <td width="80%">${ c.currentgpg }</td>
     </tr>
 
     <tr>
@@ -79,17 +79,17 @@ allow_unsigned_uploads = 0
   ${ h.html.tags.end_form() }
 
 </fieldset>
-
+<hr />
 <fieldset>
   <legend>${ _('Change password') }</legend>
 
   ${ h.html.tags.form(h.url.current()) }
   ${ h.html.tags.hidden('form', 'password') }
 
-  <table>
+  <table width="100%">
     <tr>
-      <td>${ _('Current password') }:</td>
-      <td>${ h.html.tags.password('password_current') }</td>
+      <td width="20%">${ _('Current password') }:</td>
+      <td width="80%">${ h.html.tags.password('password_current') }</td>
     </tr>
 
     <tr>
@@ -110,17 +110,17 @@ allow_unsigned_uploads = 0
   ${ h.html.tags.end_form() }
 
 </fieldset>
-
+<hr />
 <fieldset>
   <legend>${ _('Change other details') }</legend>
 
   ${ h.html.tags.form(h.url.current()) }
   ${ h.html.tags.hidden('form', 'other_details') }
 
-  <table>
+  <table width="100%">
     <tr>
-      <td>${ _('Country') }:</td>
-      <td>${ h.html.tags.select('country', c.current_country, sorted(c.countries.iteritems(), key=lambda x: x[1])) }</td>
+      <td width="20%">${ _('Country') }:</td>
+      <td width="80%">${ h.html.tags.select('country', c.current_country, sorted(c.countries.iteritems(), key=lambda x: x[1])) }</td>
     </tr>
 
     <tr>
@@ -162,7 +162,79 @@ allow_unsigned_uploads = 0
       <td>${ h.html.tags.submit('commit', _('Submit')) }</td>
     </tr>
   </table>
+  ${ h.html.tags.end_form() }
+  </fieldset>
+% if c.debian_developer:
+  <hr />
+  <fieldset>
+  <legend>${ _('Sponsor metrics') }</legend>
+
+  ${ h.html.tags.form(h.url.current()) }
+  ${ h.html.tags.hidden('form', 'metrics') }
+
+  <table width="100%">
+    <tr>
+      <td>${ _('Visibility of your profile to sponsored maintainer') }:</td>
+      <td>
+        % for availability,label in [(c.constants.SPONSOR_METRICS_PRIVATE, _("None")), \
+            (c.constants.SPONSOR_METRICS_RESTRICTED, _("Restricted")), \
+            (c.constants.SPONSOR_METRICS_PUBLIC, _("Full")) ]:
+            ${ h.html.tags.radio('availability', value=availability, label=label, checked=(c.metrics.availability == availability)) }
+        % endfor
+       </td>
+
+    <tr>
+      <td width="20%">${ _('Preferred contact method') }:</td>
+      <td width="80%">${ h.html.tags.select('preferred_contact_method', c.metrics.contact, c.contact_methods)}</td>
+    </tr>
+
+    <tr>
+      <td>
+            ${ _('Type of packages you are interested in') }:
+      </td>
+      <td>${ h.html.tags.textarea('package_types', c.metrics.types, cols=82, rows=10) }</td>
+    </tr>
+
+    <tr>
+      <td>${ _('You personal package guidelines') }:</td>
+      <td>
+        % for guideline,label in [(c.constants.SPONSOR_GUIDELINES_TYPE_NONE, _("None")), \
+            (c.constants.SPONSOR_GUIDELINES_TYPE_TEXT, _("Free text")), \
+            (c.constants.SPONSOR_GUIDELINES_TYPE_URL, _("URL reference")) ]:
+            ${ h.html.tags.radio('packaging_guidelines', value=guideline, label=label, checked=(c.metrics.guidelines == guideline)) }
+        % endfor
+       </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>${ h.html.tags.textarea('packaging_guideline_text', c.metrics.guidelines_text, cols=82, rows=10) }</td>
+    </tr>
+
+    <tr>
+      <td>${ _('Packaging types you accept') }:</td>
+      <td>
+        <% requirements = c.metrics.database_to_technical_requirements() %>
+        % for requirement in c.constants.SPONSOR_TECHNICAL_REQUIREMENTS:
+            ${ h.html.tags.checkbox('package_technical_requirements', value=requirement[1], label=requirement[0], checked=(requirement[1] in requirements)) }
+            <br/>
+        % endfor
+      </td>
+    </tr>
+
+
+    <tr>
+      <td>${ _('Social requirements for maintainers') }:</td>
+      <td>${ h.html.tags.textarea('social_requirements', c.metrics.social_requirements, cols=82, rows=10) }</td>
+    </tr>
+
+    <tr>
+      <td>${ h.html.tags.submit('commit', _('Submit')) }</td>
+    </tr>
+
+  </table>
+  </fieldset>
 
   ${ h.html.tags.end_form() }
+% endif
 
 </fieldset>
