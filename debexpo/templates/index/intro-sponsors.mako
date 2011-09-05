@@ -19,11 +19,12 @@ ${ c.custom_html }
 
 <table width="100%">
     <tr>
-        <th width="20%">Sponsor name</th>
-        <th width="20%">Contact data</th>
-        <th width="20%">Sponsor Guidelines</th>
-        <th width="20%">Technical Requirements</th>
-        <th width="20%">Social Requirements</th>
+        <th width="10%">Sponsor name</th>
+        <th width="14%">Contact data</th>
+        <th width="19">Packages interested in</th>
+        <th width="19%">Sponsor Guidelines</th>
+        <th width="19%">Technical Requirements</th>
+        <th width="19%">Social Requirements</th>
     </tr>
 <%
     def preferred(flag):
@@ -47,6 +48,9 @@ ${ c.custom_html }
                 <li>Jabber: ${ sponsor.user.jabber } ${ preferred(sponsor.contact == c.constants.SPONSOR_CONTACT_METHOD_JABBER) }</li>
             % endif
             </ul>
+        </td>
+        <td>
+            ${ sponsor.get_types() | n}
         </td>
         <td>${ sponsor.get_guidelines() | n}</td>
         <td>
