@@ -12,37 +12,42 @@ ${ c.custom_html }
 
 <h3>How will my package get into Debian?</h3>
 
-<p>This web site is a public package repository of source packages. You can upload your package to this server (through special tools like 'dupload' or 'dput') and after a few checks it will be stored in our repository. Interested sponsors can then download the package and upload it to Debian. So the basic procedure is:</p>
+<p>This web site is a public package repository of source packages. You can upload your package to this server (through special tools like 'dupload' or 'dput') and after a few checks it will be stored in our repository. ${ h.tags.link_to("Interested sponsors", h.url(controller='index', action='intro-sponsors')) } can then download the package and upload it to Debian. So the basic procedure is:</p>
 
-<ul>
-    <li>${ h.tags.link_to("Sign up for an account", h.url(controller='register', action='register')) }. Getting an account on this server is an automatic process and will just take a moment. We require registration so we have a valid email address where sponsors can reach you.</li>
-    <li>Upload your package to mentors.debian.net. You don not need to put your packages into any other web space on the Internet. Everybody will be able to download your package using either the web browser, the 'dget' tools or even through a simple run of apt-get source ....</li>
-    <li>Your package is on display on the main page of ${ c.config['debexpo.sitetitle'] } so interested sponsors will see it and hopefully check it out.</li>
-    <li>You will be shown a RFS (request-for-sponsorship) template that you can send to the debian-mentors mailing list to draw attention to your package.</li>
+<ol>
+    <li><strong>${ h.tags.link_to("Sign up for an account", h.url(controller='register', action='register')) }</strong>. Getting an account on this server is an automatic process and will just take a moment. We require registration so we have a valid email address where sponsors can reach you.</li>
+    <li><strong>Upload your package</strong> to <tt>mentors.debian.net</tt>. You do not need to put your packages into any other web space on the Internet. Everybody will be able to download your package using either the web browser, the '<tt>dget</tt>' tools or even through a simple run of <tt>apt-get source ....</tt></li>
+    <li>Have a look to your ${ h.tags.link_to("personal package page", h.url(controller='package', action='my')) }. Your uploaded package should <strong>show up there</strong>. From there you can toggle several settings and retrieve the RFS (request-for-sponsorship) template</li>
+    <li>Your package is on display on the main page of ${ c.config['debexpo.sitetitle'] }, if you enable the "<i>Needs a Sponsor</i>" button, so interested sponsors will see it and hopefully check it out.</li>
+    <li>You will be shown a <strong>RFS (request-for-sponsorship) template</strong> that you should send to the debian-mentors mailing list to draw attention to your package.</li>
     <li>Finally a sponsor will hopefully pick up your package and upload it on your behalf. Bingo - your package is publicly available in Debian. And this server will automatically send you an email in case you did not notice the upload.</li>
-</ul>
-
-<h3>Is my package technically okay?</h3>
-
-<p>When you upload your package to ${ c.config['debexpo.sitename'] } it will automatically be checked for common mistakes. You will get an information email after the upload. Either your package contains bugs and will be rejected, or the package is clean except for some minor technical issues. You will get hints about how to fix the package. If the email tells you that your package is fine then a sponsor will still do further checks. Don't worry too much. If your package is accepted by mentors.debian.net then let the sponsor help you with the rest.
+</ol>
 
 <h3>How to upload packages?</h3>
 
-<p>You need to use <a href="http://packages.debian.org/dput">dput</a> to upload packages.
-See your ${ h.tags.link_to("account page", h.url('my')) } to see how to configure it.</p>
-<p>Once you have it set up, you can run it from your shell like this:</p>
+<p>You need to use <a href="http://packages.debian.org/dput"><tt>dput</tt></a> to upload packages.
+% if c.logged_in:
+
+See your ${ h.tags.link_to("account page", h.url('my')) } to see how to configure it, or put the following content to your <tt>~/.dput.cf</tt> file:</p>
+
 <pre>
-dput debexpo yourpackage_yourversion_arch.changes
+[debexpo]
+fqdn = ${ config['debexpo.sitename'] }
+incoming = /upload/${ c.user.email }/${ c.user.get_upload_key() }
+method = http
+allow_unsigned_uploads = 0
 </pre>
+% else:
 
+You need to configure <tt>dput</tt>. Please ${ h.tags.link_to("login", h.url(controller='login', action='index')) } to see your personal <tt>~/.dput.cf</tt> here.
 
-<h3>How long will it take until my upload is available to sponsors?</h3>
+% endif
 
-<p>If you upload via HTTP, which is what we recommend, then it will take between 0 and 2 minutes.</p>
+<p>Once you have it set up, you can run it from your shell like this:</p>
 
-<p>If you upload via FTP, which you must do if a package is too large for the HTTP uploader, then there can be up to a 30 minute delay before your package gets processed.</p>
-
-<p>During those 0-2 minutes, the server does quality assurance and other checks on your package. You will receive an email when it is ready.</p>
+<pre>
+$ dput debexpo your_sourcepackage_1.0.changes
+</pre>
 
 <h3>Will my name stay visible on the package?</h3>
 
