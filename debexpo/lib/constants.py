@@ -105,18 +105,19 @@ SPONSOR_TECHNICAL_REQUIREMENTS = [
     ('contrib/non-free packages', 'non_free'),
     ('1.0 format packages', '10_format'),
     ('3.0 format packages', '30_format'),
-    ('Embedded code copies', 'code_copies'),
+    ('No embedded code copies', 'code_copies'),
     ('DEP-5 copyright', 'dep5'),
-    ('non-DEP5 copyright', 'nodep5'),
+    ('Non-DEP5 copyright', 'nodep5'),
+    ('Lintian cleanness', 'lintian')
     ]
 
 SPONSOR_SOCIAL_REQUIREMENTS = [
-    ('prospective DM/DD', 'dmdd'),
-    ('(willing to be) DM', 'dm'),
-    ('(willing to enter) NM', 'nm'),
-    ('signed GPG key', 'gpg'),
-    ('no one time uploads', '1time'),
-    ('sharing a time zone', 'tz'),
-    ('possibility to meet-up', 'meetup'),
-    ('having already packages in Debian', 'maintainer')
+    ('Prospective DM/DD', 'dmdd'),
+    ('(Willing to be) DM', 'dm'),
+    ('(Willing to enter) NM', 'nm'),
+    ('Signed GPG key', 'gpg'),
+    ('No one time uploads', '1time'),
+    ('Sharing a time zone', 'tz'),
+    ('Possibility to meet-up', 'meetup'),
+    ('Having already packages in Debian', 'maintainer')
     ]
