@@ -72,7 +72,7 @@ class SponsorMetrics(OrmObject):
         ```requirements``` A list of SPONSOR_SOCIAL_REQUIREMENTS which shall
             be stored in this object
         """
-        indexed_requirements = [y for x,y in constants.SPONSOR_SOCIAL_REQUIREMENTS]
+        indexed_requirements = [y for _,y,_ in constants.SPONSOR_SOCIAL_REQUIREMENTS]
         for i in indexed_requirements:
             if i in requirements:
                 indexed_requirements[indexed_requirements.index(i)] = '1'
@@ -89,7 +89,7 @@ class SponsorMetrics(OrmObject):
             return (None, )
         requirements = []
         i = 0
-        indexed_requirements = [y for x,y in constants.SPONSOR_SOCIAL_REQUIREMENTS]
+        indexed_requirements = [y for _,y,_ in constants.SPONSOR_SOCIAL_REQUIREMENTS]
         for numreq in self.social_requirements_tags:
             if numreq == '1':
                  requirements.append(indexed_requirements[i])
@@ -107,7 +107,7 @@ class SponsorMetrics(OrmObject):
         ```requirements``` A list of SPONSOR_TECHNICAL_REQUIREMENTS which shall
             be stored in this object
         """
-        indexed_requirements = [y for x,y in constants.SPONSOR_TECHNICAL_REQUIREMENTS]
+        indexed_requirements = [y for _,y,_ in constants.SPONSOR_TECHNICAL_REQUIREMENTS]
         for i in indexed_requirements:
             if i in requirements:
                 indexed_requirements[indexed_requirements.index(i)] = '1'
@@ -124,7 +124,7 @@ class SponsorMetrics(OrmObject):
             return (None, )
         requirements = []
         i = 0
-        indexed_requirements = [y for x,y in constants.SPONSOR_TECHNICAL_REQUIREMENTS]
+        indexed_requirements = [y for _,y,_ in constants.SPONSOR_TECHNICAL_REQUIREMENTS]
         for numreq in self.technical_requirements:
             if numreq == '1':
                  requirements.append(indexed_requirements[i])
