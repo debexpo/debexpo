@@ -173,6 +173,7 @@ class MyController(BaseController):
         sm.guidelines_text = self.form_result['packaging_guideline_text']
         sm.social_requirements = self.form_result['social_requirements']
         sm.technical_requirements_to_database(self.form_result['package_technical_requirements'])
+        sm.social_requirements_to_database(self.form_result['social_requirements_tags'])
         sm.availability = self.form_result['availability']
 
         if self.form_result['packaging_guidelines'] == constants.SPONSOR_GUIDELINES_TYPE_URL:

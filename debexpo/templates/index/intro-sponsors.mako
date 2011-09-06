@@ -48,12 +48,9 @@ ${ c.custom_html }
 </ul>
 <table width="100%">
     <tr>
-        <th width="10%">Sponsor name</th>
-        <th width="14%">Contact data</th>
-        <th width="19">Packages interested in</th>
-        <th width="19%">Sponsor Guidelines</th>
-        <th width="19%">Acceptable packaging styles and types</th>
-        <th width="19%">Social Requirements</th>
+        <th width="30%">Sponsor name and contact data</th>
+        <th width="35%">Sponsor guidelines</th>
+        <th width="35%">Social Requirements</th>
     </tr>
 <%
     def preferred(flag):
@@ -64,8 +61,9 @@ ${ c.custom_html }
 %>
 % for sponsor in c.sponsors:
     <tr>
-        <td>${ sponsor.user.name }</td>
         <td>
+            <span style="font-size:120%"><strong>${ sponsor.user.name }</strong></span>
+            <br />
             <ul>
             % if sponsor.user.email and sponsor.allowed(c.constants.SPONSOR_CONTACT_METHOD_EMAIL):
                 <li>Email: ${ sponsor.user.email } ${ preferred(sponsor.contact == c.constants.SPONSOR_CONTACT_METHOD_EMAIL) }</li>
@@ -77,11 +75,9 @@ ${ c.custom_html }
                 <li>Jabber: ${ sponsor.user.jabber } ${ preferred(sponsor.contact == c.constants.SPONSOR_CONTACT_METHOD_JABBER) }</li>
             % endif
             </ul>
+            <strong>Packages interested in</strong>
+            <p>${ sponsor.get_types() | n}</p>
         </td>
-        <td>
-            ${ sponsor.get_types() | n}
-        </td>
-        <td>${ sponsor.get_guidelines() | n}</td>
         <td>
             <ul>
             <% requirements = sponsor.database_to_technical_requirements() %>
@@ -91,8 +87,19 @@ ${ c.custom_html }
                 % endif
             % endfor
             </ul>
+            <p>${ sponsor.get_guidelines() | n}</p>
         </td>
-        <td>${ sponsor.get_social_requirements() | n}</td>
+        <td>
+            <ul>
+            <% social_requirements = sponsor.database_to_social_requirements() %>
+            % for requirement in c.constants.SPONSOR_SOCIAL_REQUIREMENTS:
+                % if requirement[1] in social_requirements:
+                    <li>${ requirement[0] }</li>
+                % endif
+            % endfor
+            </ul>
+            ${ sponsor.get_social_requirements() | n}
+        </td>
     </tr>
 % endfor
 </table>
