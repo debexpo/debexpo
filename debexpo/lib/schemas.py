@@ -122,6 +122,7 @@ class MetricsForm(MyForm):
             constants.SPONSOR_METRICS_RESTRICTED,
             constants.SPONSOR_METRICS_PUBLIC]), formencode.validators.Int(not_empty=True))
     package_technical_requirements = formencode.validators.Set
+    social_requirements_tags = formencode.validators.Set
     social_requirements = formencode.validators.String()
 
     # Postpone validation of packaging_guideline_text, as its validation

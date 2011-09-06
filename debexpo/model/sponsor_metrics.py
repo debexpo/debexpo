@@ -55,11 +55,48 @@ t_sponsor_metrics = sa.Table(
     sa.Column('guidelines', sa.types.Integer, nullable=True),
     sa.Column('guidelines_text', sa.types.Text, nullable=True),
     sa.Column('technical_requirements', sa.types.Text, nullable=True),
-    sa.Column('social_requirements', sa.types.Text, nullable=True)
+    sa.Column('social_requirements', sa.types.Text, nullable=True),
+    sa.Column('social_requirements_tags', sa.types.Text, nullable=True)
     )
 
 class SponsorMetrics(OrmObject):
     foreign = ['user']
+
+
+    def social_requirements_to_database(self, requirements):
+        """
+        Takes a list of technical requirements and converts them in
+        the internal database representation which is a bit map.
+        The internal structure is considered an implementation detail
+
+        ```requirements``` A list of SPONSOR_SOCIAL_REQUIREMENTS which shall
+            be stored in this object
+        """
+        indexed_requirements = [y for x,y in constants.SPONSOR_SOCIAL_REQUIREMENTS]
+        for i in indexed_requirements:
+            if i in requirements:
+                indexed_requirements[indexed_requirements.index(i)] = '1'
+            else:
+                indexed_requirements[indexed_requirements.index(i)] = '0'
+        self.social_requirements_tags = ''.join(indexed_requirements)
+
+    def database_to_social_requirements(self):
+        """
+        Returns a list of SPONSOR_SOCIAL_REQUIREMENTS] which have been stored
+        in the database object
+        """
+        if not self.social_requirements_tags:
+            return (None, )
+        requirements = []
+        i = 0
+        indexed_requirements = [y for x,y in constants.SPONSOR_SOCIAL_REQUIREMENTS]
+        for numreq in self.social_requirements_tags:
+            if numreq == '1':
+                 requirements.append(indexed_requirements[i])
+            i += 1
+        return requirements
+
+
 
     def technical_requirements_to_database(self, requirements):
         """
@@ -109,7 +146,7 @@ class SponsorMetrics(OrmObject):
         elif self.guidelines == constants.SPONSOR_GUIDELINES_TYPE_URL:
             return "<a href=\"%s\">%s</a>" % (self.guidelines_text, self.guidelines_text)
         else:
-            return "None"
+            return ""
 
 
     def get_types(self):
@@ -124,6 +161,7 @@ class SponsorMetrics(OrmObject):
             s = s.replace('>', '&gt;')
             s = s.replace('\n', '<br />')
             return s
+        return ""
 
     def get_social_requirements(self):
         """
@@ -138,7 +176,7 @@ class SponsorMetrics(OrmObject):
             s = s.replace('\n', '<br />')
             return s
         else:
-            return "None"
+            return ""
 
     def allowed(self, flag):
         """

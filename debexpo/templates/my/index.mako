@@ -14,7 +14,7 @@ allow_unsigned_uploads = 0
 </pre>
 
 <fieldset>
-  <legend>${ _('Change details') }</legend>
+  <strong><legend>${ _('Change details') }</legend></strong>
 
   ${ h.html.tags.form(h.url.current()) }
   ${ h.html.tags.hidden('form', 'details') }
@@ -40,7 +40,7 @@ allow_unsigned_uploads = 0
 </fieldset>
 <hr />
 <fieldset>
-  <legend>${ _('Change GPG key') }</legend>
+  <strong><legend>${ _('Change GPG key') }</legend></strong>
 
   ${ h.html.tags.form(h.url.current(), multipart=True) }
   ${ h.html.tags.hidden('form', 'gpg') }
@@ -81,7 +81,7 @@ allow_unsigned_uploads = 0
 </fieldset>
 <hr />
 <fieldset>
-  <legend>${ _('Change password') }</legend>
+  <strong><legend>${ _('Change password') }</legend></strong>
 
   ${ h.html.tags.form(h.url.current()) }
   ${ h.html.tags.hidden('form', 'password') }
@@ -112,7 +112,7 @@ allow_unsigned_uploads = 0
 </fieldset>
 <hr />
 <fieldset>
-  <legend>${ _('Change other details') }</legend>
+  <strong><legend>${ _('Change other details') }</legend></strong>
 
   ${ h.html.tags.form(h.url.current()) }
   ${ h.html.tags.hidden('form', 'other_details') }
@@ -167,64 +167,80 @@ allow_unsigned_uploads = 0
 % if c.debian_developer:
   <hr />
   <fieldset>
-  <legend>${ _('Sponsor metrics') }</legend>
+  <strong><legend>${ _('Sponsor metrics') }</legend></strong>
 
   ${ h.html.tags.form(h.url.current()) }
   ${ h.html.tags.hidden('form', 'metrics') }
 
+  <p>If you are unsure about the implications and meanings of fields, have a look to ${ h.tags.link_to("the sponsoring page", h.url('intro-sponsors')) }</p>
   <table width="100%">
     <tr>
-      <td>${ _('Visibility of your profile to sponsored maintainer') }:</td>
-      <td>
+      <td width="20%">${ _('Public visibility of your profile') }:</td>
+      <td width="80%">
         % for availability,label in [(c.constants.SPONSOR_METRICS_PRIVATE, _("None")), \
             (c.constants.SPONSOR_METRICS_RESTRICTED, _("Restricted")), \
             (c.constants.SPONSOR_METRICS_PUBLIC, _("Full")) ]:
             ${ h.html.tags.radio('availability', value=availability, label=label, checked=(c.metrics.availability == availability)) }
         % endfor
+        <ul>
+            <li><strong>None</strong> - Do not show up in the list of willing sponsors.</li>
+            <li><strong>Restricted</strong> - Show only your preferred contact method publicly.</li>
+            <li><strong>Full</strong> - Show full contact details publicly.</li>
+        </ul>
        </td>
 
     <tr>
-      <td width="20%">${ _('Preferred contact method') }:</td>
-      <td width="80%">${ h.html.tags.select('preferred_contact_method', c.metrics.contact, c.contact_methods)}</td>
+      <td>${ _('Preferred contact method for sponsored maintainer') }:</td>
+      <td>${ h.html.tags.select('preferred_contact_method', c.metrics.contact, c.contact_methods)}</td>
     </tr>
 
     <tr>
       <td>
-            ${ _('Type of packages you are interested in') }:
+        <br />
+        ${ _('Type of packages you are interested in') }:
       </td>
-      <td>${ h.html.tags.textarea('package_types', c.metrics.types, cols=82, rows=10) }</td>
-    </tr>
-
-    <tr>
-      <td>${ _('You personal package guidelines') }:</td>
       <td>
-        % for guideline,label in [(c.constants.SPONSOR_GUIDELINES_TYPE_NONE, _("None")), \
-            (c.constants.SPONSOR_GUIDELINES_TYPE_TEXT, _("Free text")), \
-            (c.constants.SPONSOR_GUIDELINES_TYPE_URL, _("URL reference")) ]:
-            ${ h.html.tags.radio('packaging_guidelines', value=guideline, label=label, checked=(c.metrics.guidelines == guideline)) }
-        % endfor
-       </td>
-    </tr>
-    <tr>
-        <td>&nbsp;</td>
-        <td>${ h.html.tags.textarea('packaging_guideline_text', c.metrics.guidelines_text, cols=82, rows=10) }</td>
+        <br />
+        ${ h.html.tags.textarea('package_types', c.metrics.types, cols=82, rows=10) }
+      </td>
     </tr>
 
     <tr>
-      <td>${ _('Packaging types you accept') }:</td>
+      <td>${ _('Packaging types and workflows you are accepting') }:</td>
       <td>
         <% requirements = c.metrics.database_to_technical_requirements() %>
         % for requirement in c.constants.SPONSOR_TECHNICAL_REQUIREMENTS:
             ${ h.html.tags.checkbox('package_technical_requirements', value=requirement[1], label=requirement[0], checked=(requirement[1] in requirements)) }
             <br/>
         % endfor
+        <br />
+        % for guideline,label in [(c.constants.SPONSOR_GUIDELINES_TYPE_NONE, _("None")), \
+            (c.constants.SPONSOR_GUIDELINES_TYPE_TEXT, _("Free text")), \
+            (c.constants.SPONSOR_GUIDELINES_TYPE_URL, _("URL reference")) ]:
+            ${ h.html.tags.radio('packaging_guidelines', value=guideline, label=label, checked=(c.metrics.guidelines == guideline)) }
+        % endfor
+        <ul>
+            <li><strong>${_("None")}</strong> - You don't have any additional notes.</li>
+            <li><strong>${_("Free text")}</strong> - You have additional notes you can enter below as free text.</li>
+            <li><strong>${_("URL reference")}</strong> - You have your own website for sponsoring guidelines. Enter the address below.</li>
+        </ul>
+        <br />
+        ${ h.html.tags.textarea('packaging_guideline_text', c.metrics.guidelines_text, cols=82, rows=10) }
       </td>
     </tr>
 
 
     <tr>
-      <td>${ _('Social requirements for maintainers') }:</td>
-      <td>${ h.html.tags.textarea('social_requirements', c.metrics.social_requirements, cols=82, rows=10) }</td>
+    <td>${ _('Social requirements for sponsored maintainers') }:</td>
+        <td>
+        <% social_requirements = c.metrics.database_to_social_requirements() %>
+        % for requirement in c.constants.SPONSOR_SOCIAL_REQUIREMENTS:
+            ${ h.html.tags.checkbox('social_requirements_tags', value=requirement[1], label=requirement[0], checked=(requirement[1] in social_requirements)) }
+            <br/>
+        % endfor
+        <br />
+        ${ h.html.tags.textarea('social_requirements', c.metrics.social_requirements, cols=82, rows=10) }
+        </td>
     </tr>
 
     <tr>
