@@ -131,9 +131,7 @@ To help you finding a sponsor interested in your package, they can formulate spo
     </tr>
 </table>
 
-
-
-<h3>Social requirements</h3>
+<hr />
 
 <table width="100%">
     <tr>
