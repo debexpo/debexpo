@@ -382,7 +382,10 @@ class Importer(object):
         self.files = self.changes.get_files()
 
         distribution = self.changes['Distribution'].lower()
-        allowed_distributions = ('unstable', 'stable-backports', 'oldstable-backports', 'stable-backports-sloppy', 'oldstable-backports')
+        allowed_distributions = ('oldstable', 'stable', 'unstable', 'experimental', 'stable-backports', 'oldstable-backports',
+            'oldstable-backports-sloppy', 'stable-security', 'testing-security', 'stable-proposed-updates',
+            'testing-proposed-updates', 'sid', 'wheezy', 'squeeze', 'lenny', 'squeeze-backports', 'lenny-backports',
+            'lenny-security', 'lenny-backports-sloppy', 'lenny-volatile', 'squeeze-security', 'squeeze-updates', 'wheezy-security')
         if distribution not in allowed_distributions:
             self._remove_changes()
             self._reject("You are not uploading to one of those Debian distributions: %s" %
