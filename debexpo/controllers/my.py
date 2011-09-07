@@ -46,7 +46,9 @@ from debexpo.lib.gnupg import GnuPG
 from debexpo.model import meta
 from debexpo.model.users import User
 from debexpo.model.user_countries import UserCountry
-from debexpo.model.sponsor_metrics import SponsorMetrics
+from debexpo.model.sponsor_metrics import SponsorMetrics, SponsorTags
+
+from sqlalchemy.orm import joinedload
 
 import debexpo.lib.utils
 
@@ -172,8 +174,6 @@ class MyController(BaseController):
         sm.types = str(self.form_result['package_types'])
         sm.guidelines_text = self.form_result['packaging_guideline_text']
         sm.social_requirements = self.form_result['social_requirements']
-        sm.technical_requirements_to_database(self.form_result['package_technical_requirements'])
-        sm.social_requirements_to_database(self.form_result['social_requirements_tags'])
         sm.availability = self.form_result['availability']
 
         if self.form_result['packaging_guidelines'] == constants.SPONSOR_GUIDELINES_TYPE_URL:
@@ -182,6 +182,17 @@ class MyController(BaseController):
             sm.guidelines = constants.SPONSOR_GUIDELINES_TYPE_TEXT
         else:
             sm.guidelines = constants.SPONSOR_GUIDELINES_TYPE_NONE
+
+
+        for tag_set in self.form_result['social_requirements_tags']:
+            metrics = SponsorTags(tag_type=constants.SPONSOR_METRICS_TYPE_SOCIAL, tag=tag_set)
+            sm.tags.append(metrics)
+            #log.debug(tag_set)
+
+        for tag_set in self.form_result['package_technical_requirements']:
+            metrics = SponsorTags(tag_type=constants.SPONSOR_METRICS_TYPE_TECHNICAL, tag=tag_set)
+            sm.tags.append(metrics)
+            #log.debug(tag_set)
 
         meta.session.merge(sm)
         meta.session.commit()
@@ -266,7 +277,9 @@ class MyController(BaseController):
                 (constants.SPONSOR_CONTACT_METHOD_JABBER, _('Jabber')),
                 ]
 
-            self.metrics = meta.session.query(SponsorMetrics).filter_by(user_id=session['user_id']).first()
+            self.metrics = meta.session.query(SponsorMetrics).options(joinedload(SponsorMetrics.tags)).filter_by(user_id=session['user_id']).first()
+            c.technical_tags = meta.session.query(SponsorTags).filter_by(tag_type=constants.SPONSOR_METRICS_TYPE_TECHNICAL).all()
+            c.social_tags = meta.session.query(SponsorTags).filter_by(tag_type=constants.SPONSOR_METRICS_TYPE_SOCIAL).all()
             if not self.metrics:
                 self.metrics = SponsorMetrics()
             c.metrics = self.metrics

@@ -54,18 +54,18 @@ To help you finding a sponsor interested in your package, they can formulate spo
     <tr>
         <td>
         <dl>
-        % for requirement in c.constants.SPONSOR_TECHNICAL_REQUIREMENTS:
-            <dt>${ requirement[0] }</dt>
-            <dd>${ requirement[2] | n}</dd>
+        % for requirement in c.technical_tags:
+            <dt>${ requirement.label }</dt>
+            <dd>${ requirement.long_description | n}</dd>
         % endfor
         </dl>
         </td>
         <td>
 
         <dl>
-        % for requirement in c.constants.SPONSOR_SOCIAL_REQUIREMENTS:
-            <dt>${ requirement[0] }</dt>
-            <dd>${ requirement[2] | n}</dd>
+        % for requirement in c.social_tags:
+            <dt>${ requirement.label }</dt>
+            <dd>${ requirement.long_description | n}</dd>
         % endfor
         </dl>
         </td>
@@ -108,22 +108,16 @@ To help you finding a sponsor interested in your package, they can formulate spo
         </td>
         <td>
             <ul>
-            <% requirements = sponsor.database_to_technical_requirements() %>
-            % for requirement in c.constants.SPONSOR_TECHNICAL_REQUIREMENTS:
-                % if requirement[1] in requirements:
-                    <li>${ requirement[0] }</li>
-                % endif
+            % for requirement in sponsor.get_technical_tags_full():
+                    <li>${ requirement.label }</li>
             % endfor
             </ul>
             <p>${ sponsor.get_guidelines() | n}</p>
         </td>
         <td>
             <ul>
-            <% social_requirements = sponsor.database_to_social_requirements() %>
-            % for requirement in c.constants.SPONSOR_SOCIAL_REQUIREMENTS:
-                % if requirement[1] in social_requirements:
-                    <li>${ requirement[0] }</li>
-                % endif
+            % for requirement in sponsor.get_social_tags_full():
+                    <li>${ requirement.label }</li>
             % endfor
             </ul>
             ${ sponsor.get_social_requirements() | n}
