@@ -41,7 +41,7 @@
 
 		<li>${ h.tags.link_to(
                         _('Sponsors'),
-                        h.url('intro-sponsors')) }
+                        h.url('sponsors')) }
                 </li>
 
 		<li>${ h.tags.link_to(

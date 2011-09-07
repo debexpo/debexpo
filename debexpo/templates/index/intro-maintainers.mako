@@ -12,7 +12,7 @@ ${ c.custom_html }
 
 <h3>How will my package get into Debian?</h3>
 
-<p>This web site is a public package repository of source packages. You can upload your package to this server (through special tools like 'dupload' or 'dput') and after a few checks it will be stored in our repository. ${ h.tags.link_to("Interested sponsors", h.url(controller='index', action='intro-sponsors')) } can then download the package and upload it to Debian. So the basic procedure is:</p>
+<p>This web site is a public package repository of source packages. You can upload your package to this server (through special tools like 'dupload' or 'dput') and after a few checks it will be stored in our repository. ${ h.tags.link_to("Interested sponsors", h.url(controller='sponsor', action='index')) } can then download the package and upload it to Debian. So the basic procedure is:</p>
 
 <ol>
     <li><strong>${ h.tags.link_to("Sign up for an account", h.url(controller='register', action='register')) }</strong>. Getting an account on this server is an automatic process and will just take a moment. We require registration so we have a valid email address where sponsors can reach you.</li>
@@ -59,5 +59,5 @@ $ dput debexpo your_sourcepackage_1.0.changes
 
 <ul>
     <li>Ask again on the debian-mentors mailing list. Its common practice to ask again after a few weeks.</li>
-    <li>Offer your package directly to developers. We made a ${ h.tags.link_to("a list of sponsors", h.url(controller='index', action='intro-sponsors')) }, eventually willing to upload packages for you. <em>Please don't contact every sponsor listed there. Instead, read their individual requirements and choose the sponsor which matches you and your package best</em>.
+    <li>Offer your package directly to developers. We made a ${ h.tags.link_to("a list of sponsors", h.url(controller='sponsor', action='index')) }, eventually willing to upload packages for you. <em>Please don't contact every sponsor listed there. Instead, read their individual requirements and choose the sponsor which matches you and your package best</em>.
 </ul>

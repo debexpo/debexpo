@@ -18,7 +18,7 @@ ${ c.custom_html }
 
 <ul>
     <li>I want to have my package uploaded to Debian: Please go to ${ h.tags.link_to("our introductory page", h.url('intro-maintainers')) } for maintainers and learn how to use ${ c.config['debexpo.sitename'] }.</li>
-    <li>I am a Debian Developer and want to offer sponsorship: Please go to ${ h.tags.link_to("our introductory page for sponsors", h.url('intro-sponsors')) } to learn how you can help best.</li>
+    <li>I am a Debian Developer and want to offer sponsorship: Please go to ${ h.tags.link_to("our introductory page for sponsors", h.url('sponsors')) } to learn how you can help best.</li>
     <li>I am a Debian Maintainer or a skilled sponsored maintainer and want to help: Please go to ${ h.tags.link_to("our page dedicated to reviewers", h.url('intro-reviewers')) }.</li>
 </ul>
 

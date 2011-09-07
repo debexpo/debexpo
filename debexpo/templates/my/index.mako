@@ -172,7 +172,7 @@ allow_unsigned_uploads = 0
   ${ h.html.tags.form(h.url.current()) }
   ${ h.html.tags.hidden('form', 'metrics') }
 
-  <p>If you are unsure about the implications and meanings of fields, have a look to ${ h.tags.link_to("the sponsoring page", h.url('intro-sponsors')) }</p>
+  <p>If you are unsure about the implications and meanings of fields, have a look to ${ h.tags.link_to("the sponsoring page", h.url('sponsors')) }</p>
   <table width="100%">
     <tr>
       <td width="20%">${ _('Public visibility of your profile') }:</td>
