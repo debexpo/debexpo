@@ -45,10 +45,7 @@ from webhelpers.html import literal
 from datetime import datetime, timedelta
 from debexpo.model.package_versions import PackageVersion
 from debexpo.model.packages import Package
-from debexpo.model.sponsor_metrics import SponsorMetrics, SponsorTags
 from debexpo.model.users import User
-
-from sqlalchemy.orm import joinedload
 
 from debexpo.model import meta
 
@@ -107,18 +104,3 @@ class IndexController(BaseController):
 
         return render('/index/intro-maintainers.mako')
 
-
-    def intro_sponsors(self):
-        """Return an introduction page for sponsors"""
-        if 'debexpo.html.sponsors_intro' in config:
-            f = open(config['debexpo.html.sponsors_intro'])
-            c.custom_html = literal(f.read())
-            f.close()
-        else:
-            c.custom_html = ''
-
-        c.constants = constants
-        c.sponsors = meta.session.query(SponsorMetrics).options(joinedload(SponsorMetrics.tags)).filter(SponsorMetrics.availability >= constants.SPONSOR_METRICS_RESTRICTED).join(User).all()
-        c.technical_tags = meta.session.query(SponsorTags).filter_by(tag_type=constants.SPONSOR_METRICS_TYPE_TECHNICAL).all()
-        c.social_tags = meta.session.query(SponsorTags).filter_by(tag_type=constants.SPONSOR_METRICS_TYPE_SOCIAL).all()
-        return render('/index/intro-sponsors.mako')
