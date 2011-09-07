@@ -208,9 +208,8 @@ allow_unsigned_uploads = 0
     <tr>
       <td>${ _('Packaging types and workflows you are accepting') }:</td>
       <td>
-        <% requirements = c.metrics.database_to_technical_requirements() %>
-        % for requirement in c.constants.SPONSOR_TECHNICAL_REQUIREMENTS:
-            ${ h.html.tags.checkbox('package_technical_requirements', value=requirement[1], label=requirement[0], checked=(requirement[1] in requirements)) }
+        % for requirement in c.technical_tags:
+            ${ h.html.tags.checkbox('package_technical_requirements', value=requirement.tag, label=requirement.label, checked=(requirement.tag in c.metrics.get_technical_tags())) }
             <br/>
         % endfor
         <br />
@@ -233,9 +232,8 @@ allow_unsigned_uploads = 0
     <tr>
     <td>${ _('Social requirements for sponsored maintainers') }:</td>
         <td>
-        <% social_requirements = c.metrics.database_to_social_requirements() %>
-        % for requirement in c.constants.SPONSOR_SOCIAL_REQUIREMENTS:
-            ${ h.html.tags.checkbox('social_requirements_tags', value=requirement[1], label=requirement[0], checked=(requirement[1] in social_requirements)) }
+        % for requirement in c.social_tags:
+            ${ h.html.tags.checkbox('social_requirements_tags', value=requirement.tag, label=requirement.label, checked=(requirement.tag in c.metrics.get_social_tags())) }
             <br/>
         % endfor
         <br />

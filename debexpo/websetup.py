@@ -93,3 +93,6 @@ def setup_config(command, filename, section, vars):
 
     log.info('Making sure all ISO countries are in the database')
     debexpo.model.user_countries.create_iso_countries()
+
+    log.info('Making sure all tags do exist')
+    debexpo.model.sponsor_metrics.create_tags()

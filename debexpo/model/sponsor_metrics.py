@@ -54,82 +54,38 @@ t_sponsor_metrics = sa.Table(
     sa.Column('types', sa.types.Text, nullable=True),
     sa.Column('guidelines', sa.types.Integer, nullable=True),
     sa.Column('guidelines_text', sa.types.Text, nullable=True),
-    sa.Column('technical_requirements', sa.types.Text, nullable=True),
     sa.Column('social_requirements', sa.types.Text, nullable=True),
-    sa.Column('social_requirements_tags', sa.types.Text, nullable=True)
     )
+
+t_sponsor_tags = sa.Table(
+    'sponsor_tags', meta.metadata,
+    sa.Column('tag_type', sa.types.Integer, nullable=False),
+    sa.Column('tag', sa.types.Text, primary_key=True),
+    sa.Column('label', sa.types.Text, nullable=False),
+    sa.Column('long_description', sa.types.Text, nullable=False),
+)
+
+t_sponsor_metrics_tags = sa.Table(
+    'sponsor_metrics_tags', meta.metadata,
+    sa.Column('tag', sa.Integer, sa.ForeignKey('sponsor_tags.tag')),
+    sa.Column('user_id', sa.Integer, sa.ForeignKey('sponsor_metrics.user_id')),
+)
 
 class SponsorMetrics(OrmObject):
     foreign = ['user']
+    #tags = orm.relationship('SponsorTags', secondary=t_sponsor_metrics_tags, backref=orm.backref('sponsors', lazy='dynamic'))
 
+    def get_technical_tags(self):
+        return [x.tag for x in self.get_technical_tags_full()]
 
-    def social_requirements_to_database(self, requirements):
-        """
-        Takes a list of technical requirements and converts them in
-        the internal database representation which is a bit map.
-        The internal structure is considered an implementation detail
+    def get_social_tags(self):
+        return [x.tag for x in self.get_social_tags_full()]
 
-        ```requirements``` A list of SPONSOR_SOCIAL_REQUIREMENTS which shall
-            be stored in this object
-        """
-        indexed_requirements = [y for _,y,_ in constants.SPONSOR_SOCIAL_REQUIREMENTS]
-        for i in indexed_requirements:
-            if i in requirements:
-                indexed_requirements[indexed_requirements.index(i)] = '1'
-            else:
-                indexed_requirements[indexed_requirements.index(i)] = '0'
-        self.social_requirements_tags = ''.join(indexed_requirements)
+    def get_technical_tags_full(self):
+        return [x for x in self.tags if x.tag_type == constants.SPONSOR_METRICS_TYPE_TECHNICAL]
 
-    def database_to_social_requirements(self):
-        """
-        Returns a list of SPONSOR_SOCIAL_REQUIREMENTS] which have been stored
-        in the database object
-        """
-        if not self.social_requirements_tags:
-            return (None, )
-        requirements = []
-        i = 0
-        indexed_requirements = [y for _,y,_ in constants.SPONSOR_SOCIAL_REQUIREMENTS]
-        for numreq in self.social_requirements_tags:
-            if numreq == '1':
-                 requirements.append(indexed_requirements[i])
-            i += 1
-        return requirements
-
-
-
-    def technical_requirements_to_database(self, requirements):
-        """
-        Takes a list of technical requirements and converts them in
-        the internal database representation which is a bit map.
-        The internal structure is considered an implementation detail
-
-        ```requirements``` A list of SPONSOR_TECHNICAL_REQUIREMENTS which shall
-            be stored in this object
-        """
-        indexed_requirements = [y for _,y,_ in constants.SPONSOR_TECHNICAL_REQUIREMENTS]
-        for i in indexed_requirements:
-            if i in requirements:
-                indexed_requirements[indexed_requirements.index(i)] = '1'
-            else:
-                indexed_requirements[indexed_requirements.index(i)] = '0'
-        self.technical_requirements = ''.join(indexed_requirements)
-
-    def database_to_technical_requirements(self):
-        """
-        Returns a list of SPONSOR_TECHNICAL_REQUIREMENTS which have been stored
-        in the database object
-        """
-        if not self.technical_requirements:
-            return (None, )
-        requirements = []
-        i = 0
-        indexed_requirements = [y for _,y,_ in constants.SPONSOR_TECHNICAL_REQUIREMENTS]
-        for numreq in self.technical_requirements:
-            if numreq == '1':
-                 requirements.append(indexed_requirements[i])
-            i += 1
-        return requirements
+    def get_social_tags_full(self):
+        return [x for x in self.tags if x.tag_type == constants.SPONSOR_METRICS_TYPE_SOCIAL]
 
     def get_guidelines(self):
         """
@@ -192,6 +148,23 @@ class SponsorMetrics(OrmObject):
         return False
 
 
+class SponsorTags(OrmObject):
+    pass
+
 orm.mapper(SponsorMetrics, t_sponsor_metrics, properties={
-    'user' : orm.relation(User, backref='sponsor_metrics')
+    'user' : orm.relation(User, backref='sponsor_metrics'),
+    'tags' : orm.relationship(SponsorTags, secondary=t_sponsor_metrics_tags, backref=orm.backref('sponsors', lazy='joined'))
 })
+
+
+orm.mapper(SponsorTags, t_sponsor_tags)
+
+def create_tags():
+    import debexpo.tags
+    import logging
+    for metrics_type in [constants.SPONSOR_METRICS_TYPE_TECHNICAL, constants.SPONSOR_METRICS_TYPE_SOCIAL]:
+        for (description, tag, long_description) in debexpo.tags.TAGS[metrics_type]:
+            st = SponsorTags(tag_type=metrics_type, tag=tag, label=description, long_description=long_description)
+            logging.info("Adding tag %s" % (tag))
+            meta.session.merge(st)
+    meta.session.commit()
