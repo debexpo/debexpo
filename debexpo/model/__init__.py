@@ -85,9 +85,8 @@ class OrmObject(object):
                                      'not column in mapped table: %s' % (key,))
 
     def __repr__(self):
-        atts = []
-        for key in dir(self):
-            if not key.startswith('_') and key is not "foreign" and key not in self.foreign:
-                atts.append((key, getattr(self, key)))
-
-        return self.__class__.__name__ + '(' + ', '.join(x[0] + '=' + repr(x[1]) for x in atts) + ')'
+        attrs = []
+        for key in self.__dict__:
+            if not key.startswith('_'):
+                attrs.append((key, getattr(self, key)))
+        return self.__class__.__name__ + '(' + ', '.join(x[0] + '=' + repr(x[1]) for x in attrs) + ')'
