@@ -37,6 +37,17 @@ To help you finding a sponsor interested in your package, they can formulate spo
 
 <p>Sponsors typically are not interested to upload any package for you. They could, however, be interested if your package matches their area of interest. Please compare those package types with your package. Such categories eventually are certain programming languages your program is written in, a field of endeavour, or software fulfilling a certain task. </p>
 
+<%def name="tag_helper(requirement)">
+    % if not c.sponsor_filter:
+        <dt>${ requirement.label } (${ h.tags.link_to(  _('Filter'), h.url.current(action='toggle', tag=requirement.tag))  })</dt>
+        <dd>${ requirement.long_description | n}</dd>
+    % elif requirement.tag not in c.sponsor_filter:
+        <dt><span style="text-decoration: line-through;">${ requirement.label }</span> (${ h.tags.link_to(  _('Add to filter'), h.url.current(action='toggle', tag=requirement.tag))  })</dt>
+    % else:
+        <dt>${ requirement.label } (${ h.tags.link_to(  _('Remove filter'), h.url.current(action='toggle', tag=requirement.tag))  })</dt>
+        <dd>${ requirement.long_description | n}</dd>
+    % endif
+</%def>
 
 <table>
     <tr>
@@ -55,8 +66,7 @@ To help you finding a sponsor interested in your package, they can formulate spo
         <td>
         <dl>
         % for requirement in c.technical_tags:
-            <dt>${ requirement.label }</dt>
-            <dd>${ requirement.long_description | n}</dd>
+            <% tag_helper(requirement) %>
         % endfor
         </dl>
         </td>
@@ -64,8 +74,7 @@ To help you finding a sponsor interested in your package, they can formulate spo
 
         <dl>
         % for requirement in c.social_tags:
-            <dt>${ requirement.label }</dt>
-            <dd>${ requirement.long_description | n}</dd>
+            <% tag_helper(requirement) %>
         % endfor
         </dl>
         </td>
@@ -73,6 +82,16 @@ To help you finding a sponsor interested in your package, they can formulate spo
 </table>
 
 <hr />
+
+<p>
+% if c.sponsor_filter:
+    Applied filters:
+    % for filter in c.sponsor_filter:
+       ${ filter }
+    % endfor
+- ${ h.tags.link_to(  _('Remove all filters'), h.url.current(action='clear'))  }
+% endif
+</p>
 
 <table width="100%">
     <tr>
@@ -86,8 +105,18 @@ To help you finding a sponsor interested in your package, they can formulate spo
             return "(preferred)"
         else:
             return ""
+
+    sponsors_found = False
 %>
 % for sponsor in c.sponsors:
+    <%
+        sponsor_tags = set(sponsor.get_all_tags())
+        filters = set(c.sponsor_filter)
+    %>
+    % if len(filters & sponsor_tags) != len(filters):
+        <% continue %>
+    % endif
+    <% sponsors_found = True %>
     <tr>
         <td>
             <span style="font-size:120%"><strong>${ sponsor.user.name }</strong></span>
@@ -124,4 +153,17 @@ To help you finding a sponsor interested in your package, they can formulate spo
         </td>
     </tr>
 % endfor
+%if not sponsors_found and c.sponsor_filter:
+    <tr>
+        <td colspan="3" style="text-align:center"><br /><strong>${ _('No sponsor matched your criteria') }</strong></td>
+    </tr>
+%elif not sponsors_found:
+    <tr>
+        <td colspan="3" style="text-align:center"><br /><strong>${ _('No sponsors found') }</strong></td>
+    </tr>
+%endif
 </table>
+
+% if c.sponsor_filter:
+    <p>${ h.tags.link_to(  _('Remove all filters'), h.url.current(action='clear'))  }</p>
+% endif

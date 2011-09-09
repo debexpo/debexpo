@@ -67,13 +67,16 @@ t_sponsor_tags = sa.Table(
 
 t_sponsor_metrics_tags = sa.Table(
     'sponsor_metrics_tags', meta.metadata,
-    sa.Column('tag', sa.Integer, sa.ForeignKey('sponsor_tags.tag')),
-    sa.Column('user_id', sa.Integer, sa.ForeignKey('sponsor_metrics.user_id')),
+    sa.Column('tag', sa.Integer, sa.ForeignKey('sponsor_tags.tag'), primary_key=True),
+    sa.Column('user_id', sa.Integer, sa.ForeignKey('sponsor_metrics.user_id'), primary_key=True),
 )
 
 class SponsorMetrics(OrmObject):
     foreign = ['user']
     #tags = orm.relationship('SponsorTags', secondary=t_sponsor_metrics_tags, backref=orm.backref('sponsors', lazy='dynamic'))
+
+    def get_all_tags(self):
+        return [x.tag for x in self.tags]
 
     def get_technical_tags(self):
         return [x.tag for x in self.get_technical_tags_full()]
@@ -151,12 +154,17 @@ class SponsorMetrics(OrmObject):
 class SponsorTags(OrmObject):
     pass
 
+class SponsorMetricsTags(OrmObject):
+    # We need to filter on that object, so we must instantiate the M2M class
+    pass
+
 orm.mapper(SponsorMetrics, t_sponsor_metrics, properties={
     'user' : orm.relation(User, backref='sponsor_metrics'),
     'tags' : orm.relationship(SponsorTags, secondary=t_sponsor_metrics_tags, backref=orm.backref('sponsors', lazy='joined'))
 })
 
 
+orm.mapper(SponsorMetricsTags, t_sponsor_metrics_tags)
 orm.mapper(SponsorTags, t_sponsor_tags)
 
 def create_tags():
