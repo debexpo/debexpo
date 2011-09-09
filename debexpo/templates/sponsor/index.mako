@@ -39,12 +39,12 @@ To help you finding a sponsor interested in your package, they can formulate spo
 
 <%def name="tag_helper(requirement)">
     % if not c.sponsor_filter:
-        <dt>${ requirement.label } (${ h.tags.link_to(  _('Filter'), h.url.current(action='toggle', tag=requirement.tag))  })</dt>
+        <dt id="${requirement.tag}">${ requirement.label } (${ h.tags.link_to(  _('Filter'), h.url.current(action='toggle', tag=requirement.tag))  })</dt>
         <dd>${ requirement.long_description | n}</dd>
     % elif requirement.tag not in c.sponsor_filter:
-        <dt><span style="text-decoration: line-through;">${ requirement.label }</span> (${ h.tags.link_to(  _('Add to filter'), h.url.current(action='toggle', tag=requirement.tag))  })</dt>
+        <dt><span id="${requirement.tag}" style="text-decoration: line-through;">${ requirement.label }</span> (${ h.tags.link_to(  _('Add to filter'), h.url.current(action='toggle', tag=requirement.tag))  })</dt>
     % else:
-        <dt>${ requirement.label } (${ h.tags.link_to(  _('Remove filter'), h.url.current(action='toggle', tag=requirement.tag))  })</dt>
+        <dt id="${requirement.tag}">${ requirement.label } (${ h.tags.link_to(  _('Remove filter'), h.url.current(action='toggle', tag=requirement.tag))  })</dt>
         <dd>${ requirement.long_description | n}</dd>
     % endif
 </%def>
@@ -138,7 +138,7 @@ To help you finding a sponsor interested in your package, they can formulate spo
         <td>
             <ul>
             % for requirement in sponsor.get_technical_tags_full():
-                    <li>${ requirement.label }</li>
+                    <li>${ h.tags.link_to( requirement.label, h.url.current(anchor=requirement.tag) )}</li>
             % endfor
             </ul>
             <p>${ sponsor.get_guidelines() | n}</p>
@@ -146,7 +146,7 @@ To help you finding a sponsor interested in your package, they can formulate spo
         <td>
             <ul>
             % for requirement in sponsor.get_social_tags_full():
-                    <li>${ requirement.label }</li>
+                    <li>${ h.tags.link_to( requirement.label, h.url.current(anchor=requirement.tag) )}</li>
             % endfor
             </ul>
             ${ sponsor.get_social_requirements() | n}
