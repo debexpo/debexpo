@@ -168,10 +168,10 @@ orm.mapper(SponsorMetricsTags, t_sponsor_metrics_tags)
 orm.mapper(SponsorTags, t_sponsor_tags)
 
 def create_tags():
-    import debexpo.tags
+    import debexpo.model.data.tags
     import logging
     for metrics_type in [constants.SPONSOR_METRICS_TYPE_TECHNICAL, constants.SPONSOR_METRICS_TYPE_SOCIAL]:
-        for (description, tag, long_description) in debexpo.tags.TAGS[metrics_type]:
+        for (description, tag, long_description) in debexpo.model.data.tags.TAGS[metrics_type]:
             st = SponsorTags(tag_type=metrics_type, tag=tag, label=description, long_description=long_description)
             logging.info("Adding tag %s" % (tag))
             meta.session.merge(st)
