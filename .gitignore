@@ -2,7 +2,7 @@
 *.mo
 docs/.build/
 debexpo.db*
-data/
+/data/
 *~
 *.kpf
 build
