@@ -32,13 +32,4 @@
 
 <h3>Established sponsor guidelines</h3>
 
-<p>Several Debian Developers published their personal sponsor guidelines. Those are rules applying for a particular person or a specific packaging team in case you want to have a package sponsored by them. Typically those rules extend the Debian policy by custom requirements, or require a particular workflow from you. You can have a look at some guidelines from different people here</p>
-
-<ul>
-    <li><a href="http://wiki.debian.org/PaulWise/Standards">Paul Wise</a></li>
-    <li><a href="http://people.debian.org/~codehelp/#sponsor">Neil Williams</a></li>
-    <li><a href="http://wiki.debian.org/KilianKrause">Kilian Krause</a></li>
-    <li><a href="http://people.debian.org/~neilm/sponsorship.html">Neil McGovern</a></li>
-    <li><a href="http://wiki.debian.org/Games/Checklist">Debian games team</a></li>
-    <li>More guidelines in the wiki: <a href="http://wiki.debian.org/SponsorChecklist">SponsorChecklist</a></li>
-</ul>
+<p>Several Debian Developers published their personal sponsor guidelines. Those are rules applying for a particular person or a specific packaging team in case you want to have a package sponsored by them. Typically those rules extend the Debian policy by custom requirements, or require a particular workflow from you. You can have a look at some guidelines from different people on our ${ h.tags.link_to( _('sponsors side'), h.url('sponsors')) }</p>
