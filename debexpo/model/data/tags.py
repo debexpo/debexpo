@@ -22,12 +22,13 @@ TAGS = {
 
   debexpo.lib.constants.SPONSOR_METRICS_TYPE_SOCIAL: [
     ('Prospective DM/DD', 'prospective-dm-dd', 'You are willing to become a <a href="http://wiki.debian.org/DebianMaintainer">Debian Maintainer</a>/<a href="http://wiki.debian.org/DebianDeveloper">Debian Developer</a> some day.'),
-    ('(Willing to be) DM', 'dm', 'You are a <a href="http://wiki.debian.org/DebianMaintainer">Debian Maintainer</a> already, or you plan to become one soon.'),
-    ('(Willing to enter) NM', 'nm', 'You are in the <a href="https://nm.debian.org/">New Maintainer</a> process to become a developer already, or you plan to apply soon.'),
+    ('(Willing to be) DM', 'applicant-is-dm', 'You are a <a href="http://wiki.debian.org/DebianMaintainer">Debian Maintainer</a> already, or you plan to become one soon.'),
+    ('(Willing to enter) NM', 'applicant-is-nm', 'You are in the <a href="https://nm.debian.org/">New Maintainer</a> process to become a developer already, or you plan to apply soon.'),
     ('Signed GPG key', 'signed-gpg-key', 'Your GPG matches the <a href="http://lists.debian.org/debian-devel-announce/2010/09/msg00003.html">guidelines of the Debian keyring maintainers</a> and/or is signed by any Debian developer.'),
     ('No one time uploads', 'no-one-time-upload', 'You want to maintain the package you want to have sponsored in the forseeable future. Your package is not a single shot.'),
     ('Sharing a time zone', 'sharing-time-zone', 'You share a time zone with your sponsors. This can be useful to get together more easily.'),
-    ('Possibility to meet-up', 'meetup', 'You are living close to your sponsor and you are willing to meet him eventually'),
-    ('Having already packages in Debian', 'maintainer-already', 'You are living close to your sponsor and you are willing to meet him eventually')
+    ('Possibility to meet-up', 'possibility-to-meetup', 'You are living close to your sponsor and you are willing to meet him eventually'),
+    ('Having already packages in Debian', 'maintainer-already', 'You are living close to your sponsor and you are willing to meet him eventually'),
+    ('Maintainer is not upstream', 'maintainer-is-not-upstream', 'You are not upstream of the package you are advertising to Debian'),
     ]
 }
