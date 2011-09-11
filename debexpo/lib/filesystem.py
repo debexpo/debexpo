@@ -87,6 +87,22 @@ class CheckFiles(object):
 
         return True
 
+    def is_native_package(self, changes_file):
+        """
+        Guess based on the changes file and files being uploaded, whether a package
+        is considered native of not
+
+        ```changes_file```
+            The changes file to parse for the orig.tar (note the dsc file referenced must exist)
+        """
+
+        for file in changes_file['Files']:
+            if file['name'].endswith('.diff.gz'):
+                return False
+            if file['name'].endswith(('.debian.tar.gz','.debian.tar.bz2','.debian.tar.xz')):
+                return False
+        return True
+
     def find_orig_tarball(self, changes_file):
         """
         Look to see whether there is an orig tarball present, if the dsc refers to one.

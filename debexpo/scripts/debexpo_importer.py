@@ -442,11 +442,11 @@ class Importer(object):
             sys.exit(1)
 
         # Check whether a post-upload plugin has got the orig tarball from somewhere.
-        if not orig_file_found:
+        if not orig_file_found and not filecheck.is_native_package(self.changes):
             (orig, orig_file_found) = filecheck.find_orig_tarball(self.changes)
             if not orig_file_found:
                 # When coming here it means:
-                # a) The uploaded did not include a orig.tar.gz in his upload
+                # a) The uploader did not include a orig.tar.gz in his upload
                 # b) We couldn't find a orig.tar.gz in our repository
                 # c) No plugin could get the orig.tar.gz
                 # ... time to give up

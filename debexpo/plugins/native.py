@@ -37,7 +37,7 @@ __license__ = 'MIT'
 
 import logging
 
-from debexpo.lib import constants
+from debexpo.lib import constants, filesystem
 from debexpo.plugins import BasePlugin
 
 log = logging.getLogger(__name__)
@@ -49,13 +49,9 @@ class NativePlugin(BasePlugin):
         Test to see whether the package is a native package.
         """
         log.debug('Checking whether the package is native or not')
+        filecheck = filesystem.CheckFiles()
 
-        native = True
-        for file in self.changes['Files']:
-            if file['name'].endswith('.diff.gz'):
-                native = False
-            if file['name'].endswith(('.debian.tar.gz','.debian.tar.bz2','.debian.tar.xz')):
-                native = False
+        native = filecheck.is_native_package(self.changes)
 
         if native:
             # Most uploads will not be native, and especially on mentors, a native
