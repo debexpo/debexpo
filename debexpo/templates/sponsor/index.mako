@@ -51,7 +51,7 @@ To help you finding a sponsor interested in your package, they can formulate spo
 
 <table>
     <tr>
-        <th width="50%">Technical requirements</th>
+        <th width="50%">Acceptable package traits</th>
         <th width="50%">Social requirements</th>
     <tr>
     <tr>
