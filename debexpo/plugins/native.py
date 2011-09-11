@@ -54,7 +54,7 @@ class NativePlugin(BasePlugin):
         for file in self.changes['Files']:
             if file['name'].endswith('.diff.gz'):
                 native = False
-            if file['name'].endswith('.debian.tar.gz'):
+            if file['name'].endswith(('.debian.tar.gz','.debian.tar.bz2','.debian.tar.xz')):
                 native = False
 
         if native:
