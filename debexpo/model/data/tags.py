@@ -17,7 +17,8 @@ TAGS = {
     ('Allow embedded code copies', 'embedded-code-copies', 'Your package can <a href="http://www.debian.org/doc/debian-policy/ch-source.html#s-embeddedfiles">makes use of embedded code copies in a reasonable way</a>.'),
     ('DEP-5 copyright', 'dep5', 'Your package does make use of <a href="http://dep.debian.net/deps/dep5/">DEP-5</a> copyright files.'),
     ('Non-DEP5 copyright', 'no-dep5', 'Your package does <em>not</em> make use of <a href="http://dep.debian.net/deps/dep5/">DEP-5</a> copyright files.'),
-    ('No Lintian cleanliness (but good reasons)', 'not-lintian-clean', 'Your package is not <a href="http://lintian.debian.org/">Lintian clean</a> down to the informational level, but you have a good reason why not.')
+    ('No Lintian cleanliness (but good reasons)', 'not-lintian-clean', 'Your package is not <a href="http://lintian.debian.org/">Lintian clean</a> down to the informational level, but you have a good reason why not.'),
+    ('Library package', 'library-package', 'You are packaging a <a href="http://www.debian.org/doc/debian-policy/ch-sharedlibs.html">policy compliant library</a>'),
     ],
 
   debexpo.lib.constants.SPONSOR_METRICS_TYPE_SOCIAL: [
@@ -29,6 +30,8 @@ TAGS = {
     ('Sharing a time zone', 'sharing-time-zone', 'You share a time zone with your sponsors. This can be useful to get together more easily.'),
     ('Possibility to meet-up', 'possibility-to-meetup', 'You are living close to your sponsor and you are willing to meet him eventually'),
     ('Having already packages in Debian', 'maintainer-already', 'You are living close to your sponsor and you are willing to meet him eventually'),
-    ('Maintainer is not upstream', 'maintainer-is-not-upstream', 'You are not upstream of the package you are advertising to Debian'),
+    ('Maintainer is not upstream', 'maintainer-is-not-upstream', 'You are not upstream of the package you are proposing to Debian'),
+    ('Notable user base', 'notable-user-base', 'You can prove people are already using your program and consider it useful'),
+
     ]
 }
