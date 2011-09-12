@@ -40,6 +40,7 @@ import datetime
 
 import sqlalchemy as sa
 from sqlalchemy import orm
+from sqlalchemy.ext.associationproxy import association_proxy
 
 from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
@@ -69,14 +70,22 @@ t_sponsor_metrics_tags = sa.Table(
     'sponsor_metrics_tags', meta.metadata,
     sa.Column('tag', sa.Integer, sa.ForeignKey('sponsor_tags.tag'), primary_key=True),
     sa.Column('user_id', sa.Integer, sa.ForeignKey('sponsor_metrics.user_id'), primary_key=True),
+    sa.Column('weight', sa.Integer),
 )
 
 class SponsorMetrics(OrmObject):
     foreign = ['user']
-    #tags = orm.relationship('SponsorTags', secondary=t_sponsor_metrics_tags, backref=orm.backref('sponsors', lazy='dynamic'))
+
+    def get_all_tags_weighted(self, weight = 0):
+        if weight > 0:
+            return [x.tag for x in self.tags if x.weight > 0]
+        elif weight < 0:
+            return [x.tag for x in self.tags if x.weight < 0]
+        else:
+            return [x.tag for x in self.tags]
 
     def get_all_tags(self):
-        return [x.tag for x in self.tags]
+        return get_all_tags_weighted(0)
 
     def get_technical_tags(self):
         return [x.tag for x in self.get_technical_tags_full()]
@@ -85,10 +94,16 @@ class SponsorMetrics(OrmObject):
         return [x.tag for x in self.get_social_tags_full()]
 
     def get_technical_tags_full(self):
-        return [x for x in self.tags if x.tag_type == constants.SPONSOR_METRICS_TYPE_TECHNICAL]
+        return [x for x in self.tags if x.full_tag.tag_type == constants.SPONSOR_METRICS_TYPE_TECHNICAL]
 
     def get_social_tags_full(self):
-        return [x for x in self.tags if x.tag_type == constants.SPONSOR_METRICS_TYPE_SOCIAL]
+        return [x for x in self.tags if x.full_tag.tag_type == constants.SPONSOR_METRICS_TYPE_SOCIAL]
+
+    def get_tag_weight(self, tag):
+        for t in self.tags:
+            if t.tag == tag:
+                return t.weight
+        return 0.0
 
     def get_guidelines(self):
         """
@@ -153,19 +168,23 @@ class SponsorMetrics(OrmObject):
 
 class SponsorTags(OrmObject):
     pass
+    #keywords = association_proxy('metrics', 'metric')
 
 class SponsorMetricsTags(OrmObject):
-    # We need to filter on that object, so we must instantiate the M2M class
-    pass
+    foreign = ['user', 'tags']
 
 orm.mapper(SponsorMetrics, t_sponsor_metrics, properties={
-    'user' : orm.relation(User, backref='sponsor_metrics'),
-    'tags' : orm.relationship(SponsorTags, secondary=t_sponsor_metrics_tags, backref=orm.backref('sponsors', lazy='joined'))
+    'tags' : orm.relationship(SponsorMetricsTags),
+    'user'  : orm.relationship(User),
 })
 
 
-orm.mapper(SponsorMetricsTags, t_sponsor_metrics_tags)
 orm.mapper(SponsorTags, t_sponsor_tags)
+
+orm.mapper(SponsorMetricsTags, t_sponsor_metrics_tags, properties={
+    'full_tag': orm.relationship(SponsorTags)
+})
+
 
 def create_tags():
     import debexpo.model.data.tags

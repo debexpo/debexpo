@@ -43,7 +43,7 @@ from debexpo.lib import constants
 from debexpo.model.sponsor_metrics import SponsorMetrics, SponsorTags, SponsorMetricsTags
 from debexpo.model.users import User
 
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, contains_eager
 
 from debexpo.model import meta
 
@@ -104,20 +104,33 @@ class SponsorController(BaseController):
             c.custom_html = ''
         c.constants = constants
 
-        query = meta.session.query(SponsorMetrics).join(SponsorMetrics.tags)
+        c.sponsors = meta.session.query(SponsorMetrics)\
+            .options(joinedload(SponsorMetrics.user))\
+            .options(joinedload(SponsorMetrics.tags))\
+            .filter(SponsorMetrics.availability >= constants.SPONSOR_METRICS_RESTRICTED)\
+            .all()
+
+        # The select above works fine, except that it sucks.
+        # It suffers from a poor performance and it could be significantly improved by querying the tag
+        # labels and descriptions (i.e. the SponsorTags table by joining them with SponsorMetricsTags.
+        # However the resulting result set does not quite look like what I imagine. Feel free to replace it
+        # by something which actually works.
+
+        #c.sponsors = meta.session.query(SponsorMetrics, SponsorMetricsTags, SponsorTags, User)\
+        #    .join(User)\
+        #    .join(SponsorMetricsTags)\
+        #    .join(SponsorTags)\
+        #    .filter(SponsorMetrics.availability >= constants.SPONSOR_METRICS_RESTRICTED)\
+
+
         if 'sponsor_filters' in session:
             log.debug("Applying tag filter")
             c.sponsor_filter = session['sponsor_filters']
-            # This does not work for 1+ tags. Hence do the filtering
-            # in the template. If you happen to know a SQL query which
-            # allpws to filter all tags fo all developers at once, go on :)
-            #for filtered_tag in session['sponsor_filters']:
-            #    query = query.filter(SponsorTags.tag == filtered_tag)
         else:
             c.sponsor_filter = []
-        c.sponsors = query.filter(SponsorMetrics.availability >= constants.SPONSOR_METRICS_RESTRICTED) \
-            .join(User)
+
         c.technical_tags = meta.session.query(SponsorTags).filter_by(tag_type=constants.SPONSOR_METRICS_TYPE_TECHNICAL).all()
         c.social_tags = meta.session.query(SponsorTags).filter_by(tag_type=constants.SPONSOR_METRICS_TYPE_SOCIAL).all()
+
 
         return render('/sponsor/index.mako')

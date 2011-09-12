@@ -195,23 +195,39 @@ allow_unsigned_uploads = 0
     </tr>
 
     <tr>
-      <td>
-        <br />
-        ${ _('Type of packages you are interested in') }:
-      </td>
-      <td>
-        <br />
-        ${ h.html.tags.textarea('package_types', c.metrics.types, cols=82, rows=10) }
-      </td>
+      <td>${ _('Type of packages you are interested in') }:</td>
+      <td><br />${ h.html.tags.textarea('package_types', c.metrics.types, cols=82, rows=10) }</td>
     </tr>
+    <% oneshot = "Sponsoring requirements" %>
+    % for requirement in c.technical_tags:
+        <tr>
+            <td>${ oneshot | n}<% oneshot = "&nbsp;" %></td>
+            <td>
+                % for weight,label in [(-1, _("-")), \
+                    (0, _("~")), \
+                    (1, _("+")) ]:
+                    ${ h.html.tags.radio(requirement.tag, value=weight, label=label, checked=(c.metrics.get_tag_weight(requirement.tag) == weight)) }
+                % endfor
+                &nbsp; ${ requirement.label }
+            </td>
+        </tr>
+    % endfor
 
     <tr>
-      <td>${ _('Packaging types and workflows you are accepting') }:</td>
-      <td>
-        % for requirement in c.technical_tags:
-            ${ h.html.tags.checkbox('package_technical_requirements', value=requirement.tag, label=requirement.label, checked=(requirement.tag in c.metrics.get_technical_tags())) }
-            <br/>
-        % endfor
+        <td>&nbsp;</td>
+        <td>
+            <ul>
+                <li><strong>First column</strong> You are not accepting packages qualifying for that tag.</li>
+                <li><strong>Middle column</strong> You have no strong opinion on that tag.</li>
+                <li><strong>Last column</strong> You endorse usage of the implied meaning of the tag.</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            ${ _("Additional technical notes") }
+        </td>
+        <td>
         <br />
         % for guideline,label in [(c.constants.SPONSOR_GUIDELINES_TYPE_NONE, _("None")), \
             (c.constants.SPONSOR_GUIDELINES_TYPE_TEXT, _("Free text")), \
@@ -228,16 +244,36 @@ allow_unsigned_uploads = 0
       </td>
     </tr>
 
-
+    <% oneshot = "Social requirements" %>
+    % for requirement in c.social_tags:
+        <tr>
+            <td>${ oneshot | n}<% oneshot = "&nbsp;" %></td>
+            <td>
+                % for weight,label in [(-1, _("-")), \
+                    (0, _("~")), \
+                    (1, _("+")) ]:
+                    ${ h.html.tags.radio(requirement.tag, value=weight, label=label, checked=(c.metrics.get_tag_weight(requirement.tag) == weight)) |n}
+                % endfor
+                &nbsp; ${ requirement.label }
+            </td>
+        </tr>
+    % endfor
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <ul>
+                    <li><strong>First column</strong> You are not accepting packages qualifying for that tag.</li>
+                    <li><strong>Middle column</strong> You have no strong opinion on that tag.</li>
+                    <li><strong>Last column</strong> You endorse usage of the implied meaning of the tag.</li>
+                </ul>
+            </td>
+        </tr>
     <tr>
-    <td>${ _('Social requirements for sponsored maintainers') }:</td>
         <td>
-        % for requirement in c.social_tags:
-            ${ h.html.tags.checkbox('social_requirements_tags', value=requirement.tag, label=requirement.label, checked=(requirement.tag in c.metrics.get_social_tags())) }
-            <br/>
-        % endfor
-        <br />
-        ${ h.html.tags.textarea('social_requirements', c.metrics.social_requirements, cols=82, rows=10) }
+            ${ _("Additional social notes") }
+        </td>
+        <td>
+        <br />${ h.html.tags.textarea('social_requirements', c.metrics.social_requirements, cols=82, rows=10) }
         </td>
     </tr>
 

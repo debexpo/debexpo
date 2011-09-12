@@ -39,11 +39,14 @@ __license__ = 'MIT'
 import formencode
 
 from pylons import config
+from debexpo.lib.base import meta
 
 from debexpo.lib import constants
 from debexpo.lib.validators import NewEmailToSystem, GpgKey, \
     CurrentPassword, CheckBox, NewNameToSystem, ValidateSponsorEmail, \
     ValidatePackagingGuidelines, DummyValidator
+from debexpo.model.sponsor_metrics import SponsorTags
+
 
 class LoginForm(formencode.Schema):
     """
@@ -102,6 +105,12 @@ class MetricsForm(MyForm):
     """
     Schema for updating the metrics in the controller
     """
+
+    def __init__(self, *args, **kwargs):
+        for tag in meta.session.query(SponsorTags).all():
+            kwargs[tag.tag] = formencode.validators.Number(min=-10, max=10, not_empty=True)
+        MyForm.__init__(self, *args, **kwargs)
+
     preferred_contact_method = formencode.compound.All(
         formencode.validators.OneOf([
             constants.SPONSOR_CONTACT_METHOD_NONE,
@@ -121,8 +130,6 @@ class MetricsForm(MyForm):
             constants.SPONSOR_METRICS_PRIVATE,
             constants.SPONSOR_METRICS_RESTRICTED,
             constants.SPONSOR_METRICS_PUBLIC]), formencode.validators.Int(not_empty=True))
-    package_technical_requirements = formencode.validators.Set
-    social_requirements_tags = formencode.validators.Set
     social_requirements = formencode.validators.String()
 
     # Postpone validation of packaging_guideline_text, as its validation
