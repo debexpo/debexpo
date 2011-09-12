@@ -110,7 +110,7 @@ To help you finding a sponsor interested in your package, they can formulate spo
 %>
 % for sponsor in c.sponsors:
     <%
-        sponsor_tags = set(sponsor.get_all_tags())
+        sponsor_tags = set(sponsor.get_all_tags_weighted(1))
         filters = set(c.sponsor_filter)
     %>
     % if len(filters & sponsor_tags) != len(filters):
@@ -124,6 +124,7 @@ To help you finding a sponsor interested in your package, they can formulate spo
             <ul>
             % if sponsor.user.email and sponsor.allowed(c.constants.SPONSOR_CONTACT_METHOD_EMAIL):
                 <li>Email: ${ sponsor.user.email } ${ preferred(sponsor.contact == c.constants.SPONSOR_CONTACT_METHOD_EMAIL) }</li>
+
             % endif
             % if sponsor.user.ircnick and sponsor.allowed(c.constants.SPONSOR_CONTACT_METHOD_IRC):
                 <li>IRC: ${ sponsor.user.ircnick } ${ preferred(sponsor.contact == c.constants.SPONSOR_CONTACT_METHOD_IRC) }</li>
@@ -137,16 +138,24 @@ To help you finding a sponsor interested in your package, they can formulate spo
         </td>
         <td>
             <ul>
-            % for requirement in sponsor.get_technical_tags_full():
-                    <li>${ h.tags.link_to( requirement.label, h.url.current(anchor=requirement.tag) )}</li>
+            % for tag in sponsor.get_technical_tags_full():
+                % if tag.weight > 0:
+                    <li> <span style="color: green;">+ ${ tag.full_tag.label }</span> (<a href="${ h.url.current(anchor=tag.tag)  }">?</a>)</li>
+                % elif tag.weight < 0:
+                    <li> <span style="color: red;">- ${ tag.full_tag.label }</span> (<a href="${ h.url.current(anchor=tag.tag)  }">?</a>)</li>
+                % endif
             % endfor
             </ul>
             <p>${ sponsor.get_guidelines() | n}</p>
         </td>
         <td>
             <ul>
-            % for requirement in sponsor.get_social_tags_full():
-                    <li>${ h.tags.link_to( requirement.label, h.url.current(anchor=requirement.tag) )}</li>
+            % for tag in sponsor.get_social_tags_full():
+                % if tag.weight > 0:
+                    <li> <span style="color: green;">+ ${ tag.full_tag.label }</span> (<a href="${ h.url.current(anchor=tag.tag)  }">?</a>)</li>
+                % elif tag.weight < 0:
+                    <li> <span style="color: red;">- ${ tag.full_tag.label }</span> (<a href="${ h.url.current(anchor=tag.tag)  }">?</a>)</li>
+                % endif
             % endfor
             </ul>
             ${ sponsor.get_social_requirements() | n}
