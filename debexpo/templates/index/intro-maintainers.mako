@@ -23,30 +23,53 @@ ${ c.custom_html }
     <li>Your package will hopefully be reviewed by a sponsor and either acknowledge your work and <strong>upload your package to Debian</strong>, or ask you to address some problems.</li>
 </ol>
 
+<h3>How to make a package?</h3>
+
+<p>Have a look to our ${ h.tags.link_to("QA section", h.url(controller='index', action='qa')) }.</p>
+
 <h3>How to upload packages?</h3>
 
-<p>You need to use <a href="http://packages.debian.org/dput"><tt>dput</tt></a> to upload packages.
+<p>You need to use <a href="http://packages.debian.org/dput"><tt>dput</tt></a> to upload packages. We accept your uploads through <em>HTTP</em> or <em>FTP</em>. If you are using <em>FTP</em> your package <strong>must</strong> be signed with the GnuPG key you configured in your control panel. </p>
+
+<h4>HTTP uploads</h4>
 % if c.logged_in:
 
-See your ${ h.tags.link_to("account page", h.url('my')) } to see how to configure it, or put the following content to your <tt>~/.dput.cf</tt> file:</p>
+<p>See your ${ h.tags.link_to("account page", h.url('my')) } to see how to configure <tt>dput</tt> to use HTTP, or put the following content to your <tt>~/.dput.cf</tt> file:</p>
 
 <pre>
-[debexpo]
+[mentors]
 fqdn = ${ config['debexpo.sitename'] }
 incoming = /upload/${ c.user.email }/${ c.user.get_upload_key() }
 method = http
 allow_unsigned_uploads = 0
+progress_indicator = 2
 </pre>
 % else:
 
-You need to configure <tt>dput</tt>. Please ${ h.tags.link_to("login", h.url(controller='login', action='index')) } to see your personal <tt>~/.dput.cf</tt> here.
+<p>You need to configure <tt>dput</tt>. Please ${ h.tags.link_to("login", h.url(controller='login', action='index')) } to see your personal <tt>~/.dput.cf</tt> here.</p>
 
 % endif
+
+<h4>FTP uploads</h4>
+
+<p>You can use <em>FTP</em> to upload packages to ${ c.config['debexpo.sitetitle'] }. If you prefer that method make sure you sign your uploads with your GPG key! This is the corresponding <tt>~/.dput.cf</tt> file:</p>
+
+<pre>
+[mentors-ftp]
+fqdn = ${ config['debexpo.sitename'] }
+login = anonymous
+progress_indicator = 2
+passive_ftp = 1
+incoming = /
+method = ftp
+allow_unsigned_uploads = 0
+
+</pre>
 
 <p>Once you have it set up, you can run it from your shell like this:</p>
 
 <pre>
-$ dput debexpo your_sourcepackage_1.0.changes
+$ dput mentors your_sourcepackage_1.0.changes
 </pre>
 
 <h3>Will my name stay visible on the package?</h3>
