@@ -39,7 +39,6 @@ __license__ = 'MIT'
 import os
 import logging
 import subprocess
-import md5
 import base64
 
 try:
@@ -48,7 +47,7 @@ except ImportError: # for sqlalchemy 0.7.1 and above
     from sqlalchemy.exc import InvalidRequestError
 
 from debexpo.lib.base import *
-from debexpo.lib.utils import allowed_upload
+from debexpo.lib.filesystem import CheckFiles
 from debexpo.model import meta
 from debexpo.model.user_upload_key import UserUploadKey
 
@@ -105,7 +104,7 @@ class UploadController(BaseController):
 
 
         # Check whether the file extension is supported by debexpo
-        if not allowed_upload(filename):
+        if not CheckFiles().allowed_upload(filename):
             log.error('File type not supported: %s' % filename)
             abort(403, 'The uploaded file type is not supported')
 
