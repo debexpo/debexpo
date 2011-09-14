@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 #   debexpo-importer — executable script to import new packages
@@ -389,7 +390,7 @@ class Importer(object):
         if distribution not in allowed_distributions:
             self._remove_changes()
             self._reject("You are not uploading to one of those Debian distributions: %s" %
-                (reduce(lambda x,xs: x + xs + " ", allowed_distributions)))
+                (reduce(lambda x,xs: x + " " + xs, allowed_distributions)))
 
         # Look whether the orig tarball is present, and if not, try and get it from
         # the repository.
