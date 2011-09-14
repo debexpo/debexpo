@@ -19,7 +19,7 @@
                 % for package in packagegroup.packages:
                       <tr class="pkg-list">
                         <td class="lines"><a href="${ h.url('package', packagename=package.name) }">${ package.name }</a></td>
-                        <td class="lines">${ package.get_description_nl2br() | n }</td>
+                        <td class="lines">${ package.get_description() | n,semitrusted }</td>
                         <td class="lines">${ package.package_versions[-1].version }</td>
                         <td class="lines"><a href="${ h.url('packages-uploader', id=package.user.email) }">${ package.user.name }</a></td>
                         <td class="lines">

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 #
-#   packages.py — packages table model
+#   filter.py — Output filters for the template engine
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
-#   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2011 Arno Töll <debian@toell.net>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -28,36 +28,21 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 """
-Holds packages table model.
+Holds various output filters which can be applied to templates
 """
 
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__author__ = 'Arno Töll'
+__copyright__ = 'Copyright © 2011 Arno Töll'
 __license__ = 'MIT'
 
-import sqlalchemy as sa
-from sqlalchemy import orm
+import cgi
 
-from debexpo.model import meta, OrmObject
-from debexpo.model.users import User
-from debexpo.lib.constants import PACKAGE_NEEDS_SPONSOR_UNKNOWN
+def semitrusted(input_filter):
+    """
+    This filter filters all input, but keeps formatting, e.g. newlines
 
-t_packages = sa.Table('packages', meta.metadata,
-    sa.Column('id', sa.types.Integer, primary_key=True),
-    sa.Column('name', sa.types.Text(), nullable=False),
-    sa.Column('user_id', sa.types.Integer, sa.ForeignKey('users.id')),
-    sa.Column('description', sa.types.Text(), nullable=True),
-    sa.Column('watch_counter', sa.types.Integer, default=0),
-    sa.Column('download_counter', sa.types.Integer, default=0),
-    sa.Column('needs_sponsor', sa.types.Integer, nullable=False, default=PACKAGE_NEEDS_SPONSOR_UNKNOWN),
-    )
-
-class Package(OrmObject):
-    foreign = ['user']
-
-    def get_description(self):
-        return self.description
-
-orm.mapper(Package, t_packages, properties={
-    'user' : orm.relation(User, backref='packages')
-})
+    ``input_filter`` The data to be filtered
+    """
+    escaped_filter = cgi.escape(input_filter, True)
+    escaped_filter = escaped_filter.replace('\n', '<br />')
+    return escaped_filter

@@ -24,7 +24,7 @@
 
   <tr>
     <th>${ _('Description') }:</th>
-    <td>${ c.package.get_description_nl2br() | n }</td>
+    <td>${ c.package.get_description() | semitrusted}</td>
   </tr>
 
 % if 'user_id' in c.session:

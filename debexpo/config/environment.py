@@ -89,7 +89,7 @@ def load_environment(global_conf, app_conf):
         error_handler=handle_mako_error,
         module_directory=os.path.join(app_conf['cache_dir'], 'templates'),
         input_encoding='utf-8', default_filters=['escape'],
-        imports=['from webhelpers.html import escape'])
+        imports=['from webhelpers.html import escape', 'from debexpo.lib.filters import semitrusted'])
 
     # CONFIGURATION OPTIONS HERE (note: all config options will override
     # any Pylons config options)

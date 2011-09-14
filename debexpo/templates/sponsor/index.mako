@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 <%inherit file="/base.mako"/>
-
 ${ c.custom_html }
 
 <h1>The sponsoring process</h1>
@@ -106,6 +105,10 @@ To help you finding a sponsor interested in your package, they can formulate spo
         else:
             return ""
 
+    def put_s(name):
+        if name[-1] != 's':
+            return 's'
+
     sponsors_found = False
 %>
 % for sponsor in c.sponsors:
@@ -134,7 +137,7 @@ To help you finding a sponsor interested in your package, they can formulate spo
             % endif
             </ul>
             <strong>Personal interests</strong>
-            <p>${ sponsor.get_types() | n}</p>
+            <p>${ sponsor.get_types() | n,semitrusted}</p>
         </td>
         <td>
             <ul>
@@ -146,7 +149,13 @@ To help you finding a sponsor interested in your package, they can formulate spo
                 % endif
             % endfor
             </ul>
-            <p>${ sponsor.get_guidelines() | n}</p>
+            <p>
+            % if sponsor.guidelines == c.constants.SPONSOR_GUIDELINES_TYPE_URL:
+                <a href="${ sponsor.get_guidelines()}">${ sponsor.user.name  }'${ put_s(sponsor.user.name) } personal guidelines</a>
+            % else:
+                ${ sponsor.get_guidelines() | semitrusted}
+            % endif
+            </p>
         </td>
         <td>
             <ul>
@@ -158,7 +167,7 @@ To help you finding a sponsor interested in your package, they can formulate spo
                 % endif
             % endfor
             </ul>
-            ${ sponsor.get_social_requirements() | n}
+            ${ sponsor.get_social_requirements() | n,semitrusted}
         </td>
     </tr>
 % endfor
