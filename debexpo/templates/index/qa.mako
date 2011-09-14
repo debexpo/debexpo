@@ -8,17 +8,26 @@ ${ c.config['debexpo.sitename'] } is a rather complex service. Things can go wro
 <h2>Getting started</h2>
 <h3>How do I build a package?</h3>
 
-    <p>If you want to learn how to create a proper Debian package you can find some interesting documentation to start with at:</p>
+    <p>If you want to learn how to create a proper Debian package you can find some interesting documentation to start with:</p>
 
-    <ul>
-        <li><a href="http://www.debian.org/doc/manuals/maint-guide/">New Maintainer's Guide</a></li>
-        <li><a href="http://wiki.debian.org/HowToPackageForDebian">HowToPackageForDebian</a> (Debian Wiki)</li>
-        <li><a href="http://www.debian.org/doc/manuals/developers-reference/index.html">Developer's Reference</a></li>
-    </ul>
+    <dl>
+        <dt><a href="http://www.debian.org/doc/debian-policy/">The Debian Policy Manual</a></dt>
+        <dd>A must read resource to learn about technical specification and technical requirements of Debian packages.</dd>
+        <dt><a href="http://www.debian.org/doc/manuals/maint-guide/">New Maintainer's Guide</a></dt>
+        <dd>A must read resource to learn basics of Debian source packages</dd>
+        <dt><a href="http://anonscm.debian.org/gitweb/?p=collab-maint/packaging-tutorial.git;a=blob_plain;f=packaging-tutorial.pdf;hb=8d4e3da6e828af7b3ccaf3bee0c25401958bd700">Lucas Nussbaum's packaging tutorial</a></dt>
+        <dd>A quick introduction to Debian packaging</dd>
+        <dt><a href="http://www.debian.org/doc/manuals/developers-reference/index.html">Developer's Reference</a></dt>
+        <dd>A comprehensive manual describing typical workflows and best practices related to Debian packages</dd>
+        <dt><a href="http://wiki.debian.org/DebianMentorsFaq">Debian Mentors FAQ</a> (Debian Wiki)</dt>
+        <dd>Another valuable resource to learn about common terms and workflows related to Debian</dd>
+    </dl>
 
 <h3>What is the Debian policy?</h3>
 
 <p>Every package must comply with the <a href="http://www.debian.org/doc/debian-policy/ch-scope.html">Debian policy</a> before it can enter the Debian distribution. This is a document which describes the structure and contents of the Debian archive and several design issues of the operating system, as well as technical requirements that each package must satisfy to be included in the distribution.</p>
+
+<p>The policy is not a tutorial. Its a technical manual which specifies normative requirements of packages. Read it to learn package specifications. If you don't know how to package something for Debian, please read additionally the <a href="http://www.debian.org/doc/manuals/maint-guide/">New Maintainer's Guide</a>.</p>
 
 <h3>Is my package technically okay?</h3>
 

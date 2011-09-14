@@ -40,13 +40,13 @@
                 </li>
 
 		<li>${ h.tags.link_to(
-                        _('Sponsors'),
-                        h.url('sponsors')) }
+                        _('Reviews'),
+                        h.url('intro-reviewers')) }
                 </li>
 
 		<li>${ h.tags.link_to(
-                        _('Reviews'),
-                        h.url('intro-reviewers')) }
+                        _('Sponsors'),
+                        h.url('sponsors')) }
                 </li>
 
 		<li>${ h.tags.link_to(
