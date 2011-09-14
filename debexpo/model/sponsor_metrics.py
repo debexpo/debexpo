@@ -110,18 +110,7 @@ class SponsorMetrics(OrmObject):
         Return a formatted and sanitized string of the guidelines the sponsor
         configured
         """
-
-        if self.guidelines == constants.SPONSOR_GUIDELINES_TYPE_TEXT:
-            s = self.guidelines_text
-            s = s.replace('<', '&lt;')
-            s = s.replace('>', '&gt;')
-            s = s.replace('\n', '<br />')
-            return s
-        elif self.guidelines == constants.SPONSOR_GUIDELINES_TYPE_URL:
-            return "<a href=\"%s\">%s</a>" % (self.guidelines_text, self.guidelines_text)
-        else:
-            return ""
-
+        return self.guidelines_text
 
     def get_types(self):
         """
@@ -130,11 +119,7 @@ class SponsorMetrics(OrmObject):
         """
 
         if self.types:
-            s = self.types
-            s = s.replace('<', '&lt;')
-            s = s.replace('>', '&gt;')
-            s = s.replace('\n', '<br />')
-            return s
+            return self.types
         return ""
 
     def get_social_requirements(self):
@@ -144,11 +129,7 @@ class SponsorMetrics(OrmObject):
         """
 
         if self.social_requirements:
-            s = self.social_requirements
-            s = s.replace('<', '&lt;')
-            s = s.replace('>', '&gt;')
-            s = s.replace('\n', '<br />')
-            return s
+            return self.social_requirements
         else:
             return ""
 
