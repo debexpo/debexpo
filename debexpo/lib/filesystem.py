@@ -164,3 +164,23 @@ class CheckFiles(object):
         if os.path.isdir(path):
             log.debug("Remove empty package repository '%s'" % (path))
             os.rmdir(path)
+
+
+
+
+
+    def allowed_upload(self, filename):
+        """
+        Looks at a filename's extension and decides whether to accept it.
+        We only want package files to be uploaded, after all.
+        It returns a boolean of whether to accept the file or not.
+
+        ``filename``
+            File to test.
+        """
+        for suffix in ['.changes', '.dsc', '.tar.gz', '.diff.gz', '.deb', '.udeb', '.tar.bz2', ".tar.xz"]:
+            if filename.endswith(suffix):
+                return True
+
+        return False
+
