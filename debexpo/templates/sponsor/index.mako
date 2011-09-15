@@ -52,7 +52,7 @@ To help you finding a sponsor interested in your package, they can formulate spo
     <tr>
         <th width="50%">Acceptable package traits</th>
         <th width="50%">Social requirements</th>
-    <tr>
+    </tr>
     <tr>
         <td>
             Debian allows several workflows and best practices to co-exist with each other. All packages <strong>must comply the <a href="http://www.debian.org/doc/debian-policy/">Debian policy</a></strong> as bare essential minimum, but some workflows and best practices beyond that are optional, but nonetheless mandatory <em>for you</em> asking that person to sponsor your upload.

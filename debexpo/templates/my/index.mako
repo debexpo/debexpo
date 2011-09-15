@@ -217,9 +217,9 @@ allow_unsigned_uploads = 0
         <td>&nbsp;</td>
         <td>
             <ul>
-                <li><strong>First column</strong> You are not accepting packages qualifying for that tag.</li>
-                <li><strong>Middle column</strong> You have no strong opinion on that tag.</li>
-                <li><strong>Last column</strong> You endorse usage of the implied meaning of the tag.</li>
+                <li><strong><tt>-</tt></strong> (first column) You are not accepting packages qualifying for that tag.</li>
+                <li><strong><tt>~</tt></strong> (middle column) You have no strong opinion on that tag.</li>
+                <li><strong><tt>+</tt></strong> (last column) You endorse usage of the implied meaning of the tag.</li>
             </ul>
         </td>
     </tr>
@@ -262,9 +262,9 @@ allow_unsigned_uploads = 0
             <td>&nbsp;</td>
             <td>
                 <ul>
-                    <li><strong>First column</strong> You are not accepting packages qualifying for that tag.</li>
-                    <li><strong>Middle column</strong> You have no strong opinion on that tag.</li>
-                    <li><strong>Last column</strong> You endorse usage of the implied meaning of the tag.</li>
+                    <li><strong><tt>-</tt></strong> (first column) You are not accepting packages qualifying for that tag.</li>
+                    <li><strong><tt>~</tt></strong> (middle column) You have no strong opinion on that tag.</li>
+                    <li><strong><tt>+</tt></strong> (last column) You endorse usage of the implied meaning of the tag.</li>
                 </ul>
             </td>
         </tr>
