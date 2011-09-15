@@ -53,7 +53,7 @@ class ImportUpload(BaseCronjob):
         """
         pass
 
-    def deploy(self):
+    def invoke(self):
         """
         Loops through the debexpo.upload.incoming directory and runs the debexpo.importer for each file
         """

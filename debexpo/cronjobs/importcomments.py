@@ -116,7 +116,7 @@ class ImportComments(BaseCronjob):
         self.imap.logout()
 
 
-    def deploy(self):
+    def invoke(self):
         if not self.established:
             self.log.warning("Unable to establish IMAP connection")
             return

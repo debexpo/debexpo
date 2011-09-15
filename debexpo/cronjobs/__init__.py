@@ -51,5 +51,5 @@ class BaseCronjob(object):
     def teardown(self):
         raise AssertionError("A cronjob must implement this class")
 
-    def deploy(self):
+    def invoke(self):
         raise AssertionError("A cronjob must implement this class")
