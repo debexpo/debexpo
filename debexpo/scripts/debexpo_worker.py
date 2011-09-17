@@ -213,7 +213,7 @@ class Worker(object):
                 self.jobs[job]['last_run'] += 1
                 if self.jobs[job]['last_run'] % self.jobs[job]['schedule'] == 0:
                     log.debug("Run job %s" % (job))
-                    self.jobs[job]['module'].deploy()
+                    self.jobs[job]['module'].invoke()
                     self.jobs[job]['last_run'] = 0
             time.sleep(delay)
 

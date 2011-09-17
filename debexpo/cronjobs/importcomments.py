@@ -36,13 +36,15 @@ __license__ = 'MIT'
 
 from debexpo.cronjobs import BaseCronjob
 
-from debexpo.model.packages import Package
+from debexpo.lib.email import Email
+from debexpo.lib.filesystem import CheckFiles
+from debexpo.controllers.package import PackageController
+from debexpo.model.users import User
 from debexpo.model import meta
 from debian import deb822
 
-import imaplib
-import email.parser
 import re
+import apt_pkg
 
 class ImportComments(BaseCronjob):
     def _belongs_to_package(self, mail):
@@ -60,15 +62,7 @@ class ImportComments(BaseCronjob):
 
         return None
 
-    def _check(self, msg, err, data = None):
-        if err != 'OK':
-            if (data):
-                self.log.error("%s failed: %s" % (msg, data))
-            else:
-                self.log.error("%s failed: %s" % (msg))
-
     def _process_changes(self, mail):
-        return
         if mail.is_multipart():
             self.log.debug("Changes message is multipart?!")
             return
@@ -80,18 +74,31 @@ class ImportComments(BaseCronjob):
             return
 
         if not 'Source' in changes:
-            self.log.debug('Changes file "%s" seems incomplete' % (mail['subject']))
+            #self.log.debug('Changes file "%s" seems incomplete' % (mail['subject']))
             return
-        package = meta.session.query(Package).filter_by(name=changes['Source']).first()
+        package = self.pkg_controller._get_package(changes['Source'], from_controller=False)
         if package != None:
-            #XXX: Finish me
-            pass
+            for pv in package.package_versions:
+                if pv.distribution == changes['Distribution'] and apt_pkg.VersionCompare(changes['Version'], pv.version) >= 0:
+                    self.log.debug("Package %s was was uploaded to Debian - removing it from Expo" % (changes['Source']))
+                    user = meta.session.query(User).filter_by(id=package.user_id).one()
+                    if user:
+                        self.mailer.send([user.email, ],
+                            package=package.name,
+                            version=pv.version,
+                            reason='Package was uploaded to official Debian repositories')
+                    CheckFiles().delete_files_for_package(package)
+                    meta.session.delete(package)
+                    meta.session.commit()
+                    break
         else:
-            self.log.debug("Package %s was not uploaded to Expo before - ignoring it" % (changes['Source']))
+            #self.log.debug("Package %s was not uploaded to Expo before - ignoring it" % (changes['Source']))
+            pass
 
     def _process_mentors(self, mail):
+        return
         if mail.is_multipart():
-            self.log.debug("Changes message is multipart?!")
+            self.log.debug("Mentors message is multipart?!")
             return
         package = self._belongs_to_package(mail)
         if not package:
@@ -101,45 +108,31 @@ class ImportComments(BaseCronjob):
 
 
     def setup(self):
-        self.established = False
-        self.imap = imaplib.IMAP4(self.config['debexpo.imap_server'])
-        (err, data) = self.imap.login(self.config['debexpo.imap_user'], self.config['debexpo.imap_password'])
-        self._check("IMAP login", err, data)
-        if err == 'OK':
-            self.established = True
-
-        (err, data) = self.imap.select("INBOX", readonly=True)
-        self._check("IMAP select", err, data)
+        self.mailer = Email('upload_removed_from_expo')
+        self.mailer.connect_to_server()
+        self.pkg_controller = PackageController()
+        apt_pkg.InitSystem()
 
     def teardown(self):
-        self.imap.close()
-        self.imap.logout()
-
+        self.mailer.disconnect_from_server()
 
     def invoke(self):
-        if not self.established:
-            self.log.warning("Unable to establish IMAP connection")
-            return
+        filter_pattern = ('list-id',
+            ['<debian-devel-changes.lists.debian.org>',
+            '<debian-mentors.lists.debian.org>',
+            '<debian-changes.lists.debian.org>',
+            '<debian-backports-changes.lists.debian.org>']
+        )
 
-        print("Running ImportUpload")
-        (err, messages) = self.imap.search(None, '(UNSEEN)')
-        self._check("IMAP search messages", err)
-
-        for msg_id in messages[0].split(" "):
-            #(err, msginfo) = self.imap.fetch(msg_id, '(BODY[HEADER.FIELDS (SUBJECT FROM LIST-ID)])')
-            (err, msginfo) = self.imap.fetch(msg_id, 'RFC822')
-            self._check("IMAP fetch message", err)
-            if (err != 'OK'):
-                continue
-            ep = email.parser.Parser().parsestr(msginfo[0][1])
-            if ep["list-id"] in ('<debian-devel-changes.lists.debian.org>',
-                    '<debian-changes.lists.debian.org>',
-                    '<debian-backports-changes.lists.debian.org>'):
-                self._process_changes(ep)
-            elif ep["list-id"] == '<debian-mentors.lists.debian.org>':
-                self._process_mentors(ep)
-            else:
-                self.log.debug("Unrecognized message in mailbox: '%s'" % ep["subject"])
+        if self.mailer.connection_established():
+            for message in self.mailer.unread_messages(filter_pattern):
+                if 'list-id' in message:
+                    if message['list-id'] in ('<debian-devel-changes.lists.debian.org>',
+                            '<debian-changes.lists.debian.org>',
+                            '<debian-backports-changes.lists.debian.org>'):
+                        self._process_changes(message)
+                    elif message['list-id'] == '<debian-mentors.lists.debian.org>':
+                        self._process_mentors(message)
 
 cronjob = ImportComments
 schedule = 1

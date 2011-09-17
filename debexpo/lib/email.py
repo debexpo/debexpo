@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 #
-#   email.py — Helper class for sending email
+#   email.py — Helper class for sending and receiving email
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
+#   Copyright © 2011 Arno Töll <debian@toell.net>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -29,11 +30,15 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 """
-Holds helper class for sending email.
+Holds helper class for sending and receiving email. The latter is achieved to fetch mails from an IMAP mailbox
 """
 
+# You don't like that line?
+# Come over it. Or, alternatively don't call your local modules like Python standard libraries
+from __future__ import absolute_import
+
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner, Copyright © 2011 Arno Töll'
 __license__ = 'MIT'
 
 import logging
@@ -46,6 +51,8 @@ import pylons
 import debexpo.lib.helpers as h
 from gettext import gettext
 import routes.util
+import imaplib
+import email.parser
 
 log = logging.getLogger(__name__)
 
@@ -116,3 +123,56 @@ class Email(object):
                     result[recipient][1]))
         else:
             log.debug('Successfully sent')
+
+
+    def _check_error(self, msg, err, data = None):
+        if err != 'OK':
+            if (data):
+                self.log.error("%s failed: %s" % (msg, data))
+            else:
+                self.log.error("%s failed: %s" % (msg))
+
+    def unread_messages(self, filter_pattern):
+        if not self.connection_established():
+            return
+
+        (err, messages) = self.imap.search(None, '(UNSEEN)')
+        self._check_error("IMAP search messages", err)
+
+        for msg_id in messages[0].split(" "):
+            #(err, msginfo) = self.imap.fetch(msg_id, '(BODY[HEADER.FIELDS (SUBJECT FROM LIST-ID)])')
+            (err, msginfo) = self.imap.fetch(msg_id, 'RFC822')
+            self._check_error("IMAP fetch message", err)
+            if (err != 'OK'):
+                continue
+            ep = email.parser.Parser().parsestr(msginfo[0][1])
+            if not filter_pattern[0] in ep:
+                log.debug("No such header in message: %s" % (filter_pattern[0]))
+                continue
+            if ep[filter_pattern[0]] in filter_pattern[1]:
+                yield ep
+            else:
+                self.log.debug("Unrecognized message in mailbox: '%s'" % ep["subject"])
+
+
+    def connect_to_server(self):
+        self.established = False
+        self.imap = imaplib.IMAP4(pylons.config['debexpo.imap_server'])
+        (err, data) = self.imap.login(pylons.config['debexpo.imap_user'], pylons.config['debexpo.imap_password'])
+        self._check_error("IMAP login", err, data)
+        if err == 'OK':
+            self.established = True
+
+        (err, data) = self.imap.select("INBOX", readonly=True)
+        self._check_error("IMAP select", err, data)
+
+    def disconnect_from_server(self):
+        self.imap.close()
+        self.imap.logout()
+
+
+    def connection_established(self):
+        if not self.established:
+            log.debug("Connection to IMAP server not established");
+            return False
+        return True
