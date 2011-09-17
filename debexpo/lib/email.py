@@ -156,7 +156,7 @@ class Email(object):
                 log.debug("Unrecognized message in mailbox: '%s'" % ep["subject"])
 
 
-    def connect_to_server(self):
+    def connect_to_server(self, readonly=False):
         self.established = False
         self.imap = imaplib.IMAP4(pylons.config['debexpo.imap_server'])
         (err, data) = self.imap.login(pylons.config['debexpo.imap_user'], pylons.config['debexpo.imap_password'])
@@ -164,8 +164,7 @@ class Email(object):
         if err == 'OK':
             self.established = True
 
-        #(err, data) = self.imap.select("INBOX", readonly=True)
-        (err, data) = self.imap.select("INBOX")
+        (err, data) = self.imap.select("INBOX", readonly=readonly)
         self._check_error("IMAP select", err, data)
 
     def disconnect_from_server(self):
@@ -181,8 +180,16 @@ class Email(object):
 
     def remove_message(self, message):
         if 'X-Debexpo-Message-ID' in message:
-            log.debug("Deleteing message ID %s: %s" % (message['X-Debexpo-Message-ID'], message['Subject']))
+            log.debug("Deleteing message ID %s: '%s'" % (message['X-Debexpo-Message-ID'], message['Subject']))
             (err, msginfo) = self.imap.store(message['X-Debexpo-Message-ID'], '+FLAGS', r'(\Deleted)')
             self._check_error("IMAP delete message", err)
             return
         log.warning("Unknown message passed to remove_message()")
+
+    def mark_as_unseen(self, message):
+        if 'X-Debexpo-Message-ID' in message:
+            log.debug("Marking message ID %s: '%s' as unseen" % (message['X-Debexpo-Message-ID'], message['Subject']))
+            (err, msginfo) = self.imap.store(message['X-Debexpo-Message-ID'], '-FLAGS', r'(\Seen)')
+            self._check_error("IMAP mark message", err)
+            return
+        log.warning("Unknown message passed to mark_as_unseen()")

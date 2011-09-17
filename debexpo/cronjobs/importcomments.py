@@ -109,7 +109,9 @@ class ImportComments(BaseCronjob):
 
     def setup(self):
         self.mailer = Email('upload_removed_from_expo')
-        self.mailer.connect_to_server()
+        # Set readonly=True to keep messages untouched on the server
+        # This is useful to debug
+        self.mailer.connect_to_server(readonly=False)
         self.pkg_controller = PackageController()
         apt_pkg.InitSystem()
 
@@ -134,8 +136,11 @@ class ImportComments(BaseCronjob):
                         # We can remove processes messages now. They either where not related to us
                         # or we didn't care.
                         self.mailer.remove_message(message)
+                        continue
                     elif message['list-id'] == '<debian-mentors.lists.debian.org>':
                         self._process_mentors(message)
+                        self.mailer.mark_as_unseen(message)
+                        continue
                 #self.mailer.remove_message(message)
 
 cronjob = ImportComments
