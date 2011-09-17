@@ -128,9 +128,9 @@ class Email(object):
     def _check_error(self, msg, err, data = None):
         if err != 'OK':
             if (data):
-                self.log.error("%s failed: %s" % (msg, data))
+                log.error("%s failed: %s" % (msg, data))
             else:
-                self.log.error("%s failed: %s" % (msg))
+                log.error("failed: %s" % (msg))
 
     def unread_messages(self, filter_pattern):
         if not self.connection_established():
@@ -146,13 +146,14 @@ class Email(object):
             if (err != 'OK'):
                 continue
             ep = email.parser.Parser().parsestr(msginfo[0][1])
+            ep['X-Debexpo-Message-ID'] = msg_id;
             if not filter_pattern[0] in ep:
                 log.debug("No such header in message: %s" % (filter_pattern[0]))
                 continue
             if ep[filter_pattern[0]] in filter_pattern[1]:
                 yield ep
             else:
-                self.log.debug("Unrecognized message in mailbox: '%s'" % ep["subject"])
+                log.debug("Unrecognized message in mailbox: '%s'" % ep["subject"])
 
 
     def connect_to_server(self):
@@ -163,7 +164,8 @@ class Email(object):
         if err == 'OK':
             self.established = True
 
-        (err, data) = self.imap.select("INBOX", readonly=True)
+        #(err, data) = self.imap.select("INBOX", readonly=True)
+        (err, data) = self.imap.select("INBOX")
         self._check_error("IMAP select", err, data)
 
     def disconnect_from_server(self):
@@ -176,3 +178,11 @@ class Email(object):
             log.debug("Connection to IMAP server not established");
             return False
         return True
+
+    def remove_message(self, message):
+        if 'X-Debexpo-Message-ID' in message:
+            log.debug("Deleteing message ID %s: %s" % (message['X-Debexpo-Message-ID'], message['Subject']))
+            (err, msginfo) = self.imap.store(message['X-Debexpo-Message-ID'], '+FLAGS', r'(\Deleted)')
+            self._check_error("IMAP delete message", err)
+            return
+        log.warning("Unknown message passed to remove_message()")

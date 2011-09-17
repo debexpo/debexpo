@@ -131,8 +131,12 @@ class ImportComments(BaseCronjob):
                             '<debian-changes.lists.debian.org>',
                             '<debian-backports-changes.lists.debian.org>'):
                         self._process_changes(message)
+                        # We can remove processes messages now. They either where not related to us
+                        # or we didn't care.
+                        self.mailer.remove_message(message)
                     elif message['list-id'] == '<debian-mentors.lists.debian.org>':
                         self._process_mentors(message)
+                #self.mailer.remove_message(message)
 
 cronjob = ImportComments
 schedule = 1
