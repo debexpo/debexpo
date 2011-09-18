@@ -4,13 +4,15 @@ ${ c.custom_html }
 
 <h1>The sponsoring process</h1>
 
-As sponsored maintainer you don't have upload permissions to the Debian repository. Therefore you have three possibilities to get your package into Debian:
+<p>As sponsored maintainer you don't have upload permissions to the Debian repository. Therefore you have three possibilities to get your package into Debian:</p>
 
 <ul>
     <li>Join a packaging team</li>
     <li>Ask the <tt>debian-mentors</tt> mailing list</li>
     <li>Talk directly to people willing to sponsor your package</li>
 </ul>
+
+<p>They will ${ h.tags.link_to("review", h.url('intro-reviewers')) } your package. Everyone is invited to review packages, including you for other people in your situation.</p>
 
 <h2>Join a packaging team</h2>
 
@@ -21,6 +23,8 @@ As sponsored maintainer you don't have upload permissions to the Debian reposito
 <h2>Ask the <tt>debian-mentors</tt> mailing list</h2>
 
 <p>If your package does not match the interests of any team, or you are not sure whether a team could be interested in your package, please write to the <tt><a href="http://lists.debian.org/debian-mentors/">debian-mentors</a></tt> mailing list to draw attention to your package. Your request should be formatted according to our RFS ("<em>request for sponsorship</em>") template. If you uploaded your package to ${ config['debexpo.sitename'] }, a RFS template can be shown on your package page.</p>
+
+<p><em>If in doubt, choose this alternative.</em></p>
 
 <p>Don't worry if you get no answer: It does not mean your package is bad. Ask again after a few weeks if you did not find a sponsor by other means yet. </p>
 
