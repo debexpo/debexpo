@@ -36,6 +36,11 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
 
+# Importer related constants
+ORIG_TARBALL_LOCATION_NOT_FOUND = 0
+ORIG_TARBALL_LOCATION_LOCAL = 1
+ORIG_TARBALL_LOCATION_REPOSITORY = 2
+
 # User constants
 USER_TYPE_NORMAL = 1
 USER_TYPE_ADMIN = 2
