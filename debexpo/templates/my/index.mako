@@ -172,7 +172,6 @@ allow_unsigned_uploads = 0
   ${ h.html.tags.form(h.url.current()) }
   ${ h.html.tags.hidden('form', 'metrics') }
 
-  <p>If you are unsure about the implications and meanings of fields, have a look to ${ h.tags.link_to("the sponsoring page", h.url('sponsors')) }</p>
   <table width="100%">
     <tr>
       <td width="20%">${ _('Public visibility of your profile') }:</td>
@@ -203,12 +202,17 @@ allow_unsigned_uploads = 0
         <tr>
             <td>${ oneshot | n}<% oneshot = "&nbsp;" %></td>
             <td>
-                % for weight,label in [(-1, _("-")), \
-                    (0, _("~")), \
-                    (1, _("+")) ]:
-                    ${ h.html.tags.radio(requirement.tag, value=weight, label=label, checked=(c.metrics.get_tag_weight(requirement.tag) == weight)) }
-                % endfor
-                &nbsp; ${ requirement.label }
+                <dl>
+                    <dt>${ requirement.label }</dt>
+                    <dd>"<em>${ requirement.long_description | n}</em>"</dd>
+                    <dd>
+                    % for weight,label in [(-1, _("undesirable")), \
+                        (0, _("undecided")), \
+                        (1, _("preferred")) ]:
+                        ${ h.html.tags.radio(requirement.tag, value=weight, label=label, checked=(c.metrics.get_tag_weight(requirement.tag) == weight)) }
+                    % endfor
+                    </dd>
+                </dl>
             </td>
         </tr>
     % endfor
@@ -217,9 +221,10 @@ allow_unsigned_uploads = 0
         <td>&nbsp;</td>
         <td>
             <ul>
-                <li><strong><tt>-</tt></strong> (first column) You are not accepting packages qualifying for that tag.</li>
-                <li><strong><tt>~</tt></strong> (middle column) You have no strong opinion on that tag.</li>
-                <li><strong><tt>+</tt></strong> (last column) You endorse usage of the implied meaning of the tag.</li>
+                <li><strong>undesirable</strong> (first column) You are not accepting packages qualifying for that tag.</li>
+                <li><strong>undecided</strong> (middle column) You have no strong opinion on that tag.</li>
+                <li><strong>preferred</strong> (last column) You endorse usage of the implied meaning of the tag.</li>
+                <li>Please note, the personal pronouns in the long description address your sponsor. Please see ${ h.tags.link_to("the sponsoring page", h.url('sponsors')) }</li>
             </ul>
         </td>
     </tr>
@@ -249,12 +254,17 @@ allow_unsigned_uploads = 0
         <tr>
             <td>${ oneshot | n}<% oneshot = "&nbsp;" %></td>
             <td>
-                % for weight,label in [(-1, _("-")), \
-                    (0, _("~")), \
-                    (1, _("+")) ]:
-                    ${ h.html.tags.radio(requirement.tag, value=weight, label=label, checked=(c.metrics.get_tag_weight(requirement.tag) == weight)) |n}
-                % endfor
-                &nbsp; ${ requirement.label }
+                <dl>
+                    <dt>${ requirement.label }</dt>
+                    <dd>"<em>${ requirement.long_description | n}</em>"</dd>
+                    <dd>
+                    % for weight,label in [(-1, _("undesirable")), \
+                        (0, _("undecided")), \
+                        (1, _("preferred")) ]:
+                        ${ h.html.tags.radio(requirement.tag, value=weight, label=label, checked=(c.metrics.get_tag_weight(requirement.tag) == weight)) }
+                    % endfor
+                    </dd>
+                </dl>
             </td>
         </tr>
     % endfor
@@ -262,9 +272,10 @@ allow_unsigned_uploads = 0
             <td>&nbsp;</td>
             <td>
                 <ul>
-                    <li><strong><tt>-</tt></strong> (first column) You are not accepting packages qualifying for that tag.</li>
-                    <li><strong><tt>~</tt></strong> (middle column) You have no strong opinion on that tag.</li>
-                    <li><strong><tt>+</tt></strong> (last column) You endorse usage of the implied meaning of the tag.</li>
+                    <li><strong>undesirable</strong> (first column) You are not accepting packages qualifying for that tag.</li>
+                    <li><strong>undecided</strong> (middle column) You have no strong opinion on that tag.</li>
+                    <li><strong>preferred</strong> (last column) You endorse usage of the implied meaning of the tag.</li>
+                    <li>Please note, the personal pronouns in the long description address your sponsor. Please see ${ h.tags.link_to("the sponsoring page", h.url('sponsors')) }</li>
                 </ul>
             </td>
         </tr>
