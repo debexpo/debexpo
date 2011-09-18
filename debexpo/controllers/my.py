@@ -280,7 +280,12 @@ class MyController(BaseController):
             c.technical_tags = meta.session.query(SponsorTags).filter_by(tag_type=constants.SPONSOR_METRICS_TYPE_TECHNICAL).all()
             c.social_tags = meta.session.query(SponsorTags).filter_by(tag_type=constants.SPONSOR_METRICS_TYPE_SOCIAL).all()
             if not c.metrics:
+                # Set some sane defaults
+                log.debug("Generating new defaults for sponsor metrics")
                 c.metrics = SponsorMetrics()
+                c.metrics.availability = constants.SPONSOR_METRICS_PRIVATE
+                c.metrics.guidelines = constants.SPONSOR_GUIDELINES_TYPE_NONE
+
 
         log.debug('Rendering page')
         return render('/my/index.mako')
