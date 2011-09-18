@@ -106,8 +106,8 @@ class CheckFiles(object):
     def find_orig_tarball(self, changes_file):
         """
         Look to see whether there is an orig tarball present, if the dsc refers to one.
-        If it is present or not necessary, this returns True. Otherwise, it returns the
-        name of the file required.
+        This method returns a triple (filename, file_found, location_hint), returning the (expected)
+        name of the original tarball, and whether it was found in the local repository
 
         ```changes_file```
             The changes file to parse for the orig.tar (note the dsc file referenced must exist)
@@ -119,12 +119,22 @@ class CheckFiles(object):
             if (file['name'].endswith('orig.tar.gz') or
                 file['name'].endswith('orig.tar.bz2') or
                 file['name'].endswith('orig.tar.xz')):
-                if os.path.isfile(file['name']):
-                    return (file['name'], True)
-                else:
-                    return (file['name'], False)
+                    full_filename = os.path.join(pylons.config['debexpo.repository'], changes_file.get_pool_path(), file['name'])
+                    # tar.gz was found in the local directory
+                    if os.path.isfile(file['name']):
+                        sum = md5sum(file['name'])
+                        if sum == file['md5sum']:
+                            return (file['name'], constants.ORIG_TARBALL_LOCATION_LOCAL)
+                        # tar.gz was found, but does not seem to be the same file
+                        break
+                    # tar.gz was found in the repository
+                    elif os.path.isfile(full_filename):
+                        return (file['name'], constants.ORIG_TARBALL_LOCATION_REPOSITORY)
+                    # tar.gz was expected but not found at all
+                    else:
+                        return (file['name'], constants.ORIG_TARBALL_LOCATION_NOT_FOUND)
 
-        return (None, False)
+        return (None, constants.ORIG_TARBALL_LOCATION_NOT_FOUND)
 
 
     def find_files_for_package(self, package, absolute_path=False):

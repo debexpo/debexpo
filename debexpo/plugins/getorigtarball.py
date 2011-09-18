@@ -6,6 +6,7 @@
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
+#   Copyright © 2011 Arno Töll <debian@toell.net>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -33,7 +34,7 @@ Holds the getorigtarball plugin.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner, Copyright © 2011 Arno Töll'
 __license__ = 'MIT'
 
 from debian import deb822
@@ -42,7 +43,9 @@ import os
 import urllib
 import re
 
+from debexpo.lib import constants
 from debexpo.lib.utils import md5sum
+from debexpo.lib.filesystem import CheckFiles
 from debexpo.plugins import BasePlugin
 
 import pylons
@@ -67,26 +70,26 @@ class GetOrigTarballPlugin(BasePlugin):
         size = 15728640
         log.debug('Checking whether an orig tarball mentioned in the dsc is missing')
         dsc = deb822.Dsc(file(self.changes.get_dsc()))
+        filecheck = CheckFiles()
 
-        orig = None
-        for dscfile in dsc['Files']:
-            dscfile['size'] = int(dscfile['size'])
-            if re.search('(orig\.tar\.(gz|bz2|xz))$', dscfile['name']):
-                orig = dscfile
-                if dscfile['size'] > size:
-                        log.warning("Skipping eventual download of orig.tar.gz %s: size %d > %d" % (dscfile['name'], dscfile['size'], size))
-                        return
-                break
-
-        # There is no orig.tar.gz file in the dsc file. This is probably a native package.
-        if orig is None:
+        if filecheck.is_native_package(self.changes):
             log.debug('No orig.tar.gz file found; native package?')
             return
 
         # An orig.tar.gz was found in the dsc, and also in the upload.
-        if os.path.isfile(orig['name']):
-            log.debug('%s found successfully', orig['name'])
+        (orig, orig_file_found) = filecheck.find_orig_tarball(self.changes)
+        if orig_file_found > constants.ORIG_TARBALL_LOCATION_NOT_FOUND:
+            log.debug('%s found successfully', orig)
             return
+
+        for dscfile in dsc['Files']:
+            dscfile['size'] = int(dscfile['size'])
+            if orig == dscfile['name']:
+                if dscfile['size'] > size:
+                        log.warning("Skipping eventual download of orig.tar.gz %s: size %d > %d" % (dscfile['name'], dscfile['size'], size))
+                        return
+                orig = dscfile
+                break
 
         log.debug('Could not find %s; looking in Debian for it', orig['name'])
 
