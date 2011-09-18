@@ -31,6 +31,6 @@ TAGS = {
     ('Having already packages in Debian', 'maintainer-already', 'You are living close to your sponsor and you are willing to meet him eventually'),
     ('Maintainer is not upstream', 'maintainer-is-not-upstream', 'You are not upstream of the package you are proposing to Debian'),
     ('Notable user base', 'notable-user-base', 'You can prove people are already using your program and consider it useful'),
-
+    ('Minimizing differences to derivatives', 'package-in-a-derivative', 'Your package feeds changes introduced by any derivative back to Debian to minimize differences'),
     ]
 }
