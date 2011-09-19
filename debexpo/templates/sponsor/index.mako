@@ -4,7 +4,7 @@ ${ c.custom_html }
 
 <h1>The sponsoring process</h1>
 
-<p>As sponsored maintainer you don't have upload permissions to the Debian repository. Therefore you have three possibilities to get your package into Debian:</p>
+<p>As sponsored maintainer you do not have upload permissions to the Debian repository. Therefore you have three possibilities to get your package into Debian:</p>
 
 <ul>
     <li>Join a packaging team</li>
@@ -12,33 +12,33 @@ ${ c.custom_html }
     <li>Talk directly to people willing to sponsor your package</li>
 </ul>
 
-<p>They will ${ h.tags.link_to("review", h.url('intro-reviewers')) } your package. Everyone is invited to review packages, including you for other people in your situation.</p>
+<p>A sponsor, regardless of how you found one will ${ h.tags.link_to("review", h.url('intro-reviewers')) } your package. Yet everyone is invited to review packages, including yourself. We encourage you to review other people's packages - both of you will benefit.</p>
 
 <h2>Join a packaging team</h2>
 
-<p>There are teams in Debian who maintain packages collaboratively. If your package deals with libraries for programming langauges, or is about an ecosystem of associated packages, think of KDE or Gnome packages for example, you may want to join that team. Have a look to <a href="http://wiki.debian.org/Teams/#Packaging_teams">list of packaging teams</a> in Debian.</p>
+<p>There are teams in Debian who maintain packages collaboratively. If your package deals with libraries for programming languages or is about an ecosystem of associated packages, think of KDE or Gnome packages for example, you may want to join the respective team. Have a look at the <a href="http://wiki.debian.org/Teams/#Packaging_teams">(incomplete) list of packaging teams</a> in Debian.</p>
 
-<p>Please note, each of those teams may have their own workflows and policies. Contact their respective mailing lists to learn more.</p>
+<p>Please note, each of those teams may have their own workflows and policies covering how to deal with package uploads. Contact their respective mailing lists and home pages to learn more.</p>
 
 <h2>Ask the <tt>debian-mentors</tt> mailing list</h2>
 
-<p>If your package does not match the interests of any team, or you are not sure whether a team could be interested in your package, please write to the <tt><a href="http://lists.debian.org/debian-mentors/">debian-mentors</a></tt> mailing list to draw attention to your package. Your request should be formatted according to our RFS ("<em>request for sponsorship</em>") template. If you uploaded your package to ${ config['debexpo.sitename'] }, a RFS template can be shown on your package page.</p>
+<p>If your package does not match the interests of any team or you are not sure whether a team could be interested in your package, please write to the <tt><a href="http://lists.debian.org/debian-mentors/">debian-mentors</a></tt> mailing list to draw attention to your package. Your request should be formatted according to our RFS ("<em>request for sponsorship</em>") template. If you uploaded your package to ${ config['debexpo.sitename'] }, a RFS template can be shown on your package page.</p>
 
-<p><em>If in doubt, choose this alternative.</em></p>
+<p><em>If you are unsure or in doubt, choose this alternative</em>.</p>
 
-<p>Don't worry if you get no answer: It does not mean your package is bad. Ask again after a few weeks if you did not find a sponsor by other means yet. </p>
+<p>Typically you will reach the greatest audience by writing to our public mailing list. Eventually also some non-uploading reviewer may have a look at your package. Please do not worry if you get no answer: It happens from time to time that all interested people might be distracted or busy. It does not mean your package is bad. Feel free to ask again after a few weeks or try any of the alternative methods to find a sponsor. </p>
 
 <h2>Finding a sponsor</h2>
 
-<p>If you want, you can write sponsors willing to upload packages to other maintainers directly. <strong>Don't contact them blindly!</strong> Instead watch out for their requirements and guidelines. Contact them only if your package is compatible to their individual requirements and matches their area of interest. To tell apart sponsors who are interested in your package and who are not, they can formulate their own sponsor metrics.</p>
+<p>If you want, you can write sponsors willing to upload packages to other maintainers directly. <em>Please do not send out mass emails!</em> Instead watch out for their individual requirements and guidelines. Contact individuals only if your package is compatible to their respective requirements and matches their area of interest. To tell apart sponsors who are interested in your package and those who are not, we asked developers to formulate their own sponsor traits. Please read them carefully and compare your package with their expectations.</p>
 
 <h2>Sponsor metrics</h2>
 
-To help you finding a sponsor interested in your package, they can formulate sponsor metrics:
+To help you find a sponsor interested in your package, they can formulate sponsor traits for either social or technical aspects. Additionally a sponsor may not usually be interested in every package but only in a certain category.
 
 <h3>Sponsor's personal interests</h3>
 
-<p>Sponsors typically are not interested to upload any package for you. They could, however, be interested if your package matches their area of interest. Please compare those package types with your package. Such categories eventually are certain programming languages your program is written in, a field of endeavour, or software fulfilling a certain task. </p>
+<p>Typically, sponsors are not interested in uploading any package for you. However, they could be interested if your package matched their area of interest. Please compare those package types with your package. Such categories eventually are certain programming languages your program is written in, a field of endeavour or software fulfilling a certain task. </p>
 
 <%def name="tag_helper(requirement)">
     % if not c.sponsor_filter:
@@ -59,10 +59,10 @@ To help you finding a sponsor interested in your package, they can formulate spo
     </tr>
     <tr>
         <td>
-            Debian allows several workflows and best practices to co-exist with each other. All packages <strong>must comply the <a href="http://www.debian.org/doc/debian-policy/">Debian policy</a></strong> as bare essential minimum, but some workflows and best practices beyond that are optional, but nonetheless mandatory <em>for you</em> asking that person to sponsor your upload.
+            Debian allows several workflows and best practices to co-exist with each other. All packages <strong>must comply to the <a href="http://www.debian.org/doc/debian-policy/">Debian policy</a></strong> as a bare essential minimum and although some workflows and best practices beyond that are optional it is nonetheless mandatory <em>for you</em> to ask someone to sponsor your upload.
         </td>
         <td>
-            Some sponsors prefer to upload only packages from people, that fulfill certain social criterias. Please don't ask an uploader to sponsor your request if you don't match them.
+            Some sponsors prefer to only upload packages from people who fulfill certain social criteria. Please don't ask an uploader to sponsor your request if you don't match them.
         </td>
     </tr>
     <tr>
