@@ -18,13 +18,7 @@ ${ c.custom_html }
 
 <h2>Getting your package into Debian</h2>
 
-To get your package into Debian, please do as follows:
-
-<ol>
-    <li>Make a Debian package and upload it to ${ c.config['debexpo.sitetitle'] }. See ${ h.tags.link_to("our introductory page", h.url('intro-maintainers')) } for maintainers and learn how to use ${ c.config['debexpo.sitename'] }.</li>
-    <li>Once you filed a request-for-sponsorship (<em>RFS</em>) you will hopefully get positive feedback for your package. See ${ h.tags.link_to("our page dedicated to reviewers", h.url('intro-reviewers')) } to learn more about package reviews.</li>
-    <li>Ultimately a Debian Developer needs to upload it to Debian. Learn on ${ h.tags.link_to("our introductory page for sponsors", h.url('sponsors')) } how to get in touch with a sponsor.</li>
-</ol>
+<p>See ${ h.tags.link_to("our introductory page", h.url('intro-maintainers')) } for maintainers and learn how to use ${ c.config['debexpo.sitename'] } and get your packages into Debian. Furthermore see our ${ h.tags.link_to("our introductory page for sponsors", h.url('sponsors')) } to learn how to get in touch with a sponsor.</p>
 
 <p>If you are curious about <em>Debexpo</em>, the software which is running this site, you can <a href="http://wiki.debian.org/Debexpo">read more about Debexpo on the Debian Wiki</a>.</p>
 
