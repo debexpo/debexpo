@@ -69,6 +69,9 @@
 	</p>
         </div><!-- end header -->
         <div id="content">
+        % if c.submenu.has_menu():
+            <%include file="submenu.mako" />
+        % endif
 	    <span class="relatedpages">
 
                 % if 'user_id' not in session:
