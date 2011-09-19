@@ -461,9 +461,9 @@ class Importer(object):
                 self._remove_changes()
                 if orig == None:
                     orig = "any original tarball (orig.tar.gz)"
-                self._reject("Rejecting incomplate upload. "
-                    "You did not upload %s and we didn't find it on either one of our alternative resources.\n" \
-                    "If you tried to upload a Debian revision package, make sure you include the full source (pass -sa to dpkg-buildpackage)" %
+                self._reject("Rejecting incomplete upload. "
+                    "You did not upload %s and we didn't find it on any of our alternative resources.\n" \
+                    "If you tried to upload a package which only increased the Debian revision part, make sure you include the full source (pass -sa to dpkg-buildpackage)" %
                     ( orig ))
             else:
                 toinstall.append(orig)
