@@ -30,7 +30,7 @@ ${ c.custom_html }
 
 <h2>Finding a sponsor</h2>
 
-<p>If you want, you can write sponsors willing to upload packages to other maintainers directly. <em>Please do not send out mass emails!</em> Instead watch out for their individual requirements and guidelines. Contact individuals only if your package is compatible to their respective requirements and matches their area of interest. To tell apart sponsors who are interested in your package and those who are not, we asked developers to formulate their own sponsor traits. Please read them carefully and compare your package with their expectations.</p>
+<p>If you want, you can write sponsors willing to upload packages of other maintainers directly. <em>Please do not send out mass emails!</em> Instead watch out for their individual requirements and guidelines. Contact individuals only if your package is compatible to their respective requirements and matches their area of interest. To tell apart sponsors who are interested in your package from those who are not, we asked developers to formulate their own sponsor traits. Please read them carefully and compare your package with their expectations.</p>
 
 <h2>Sponsor metrics</h2>
 

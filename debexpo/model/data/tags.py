@@ -9,7 +9,7 @@ TAGS = {
     ('NMUs','nmu', 'Your package is a <a href="http://www.debian.org/doc/manuals/developers-reference/pkgs.html#nmu">NMU</a>'),
     ('QA uploads','qa', 'Your package is a <a href="http://www.debian.org/doc/manuals/developers-reference/pkgs.html#nmu-qa-upload">QA upload</a>'),
     ('Backports','backports', 'Your package is a <a href="http://backports-master.debian.org/">backported package</a>'),
-    ('Modified tarballs (but good reasons)','modified-tarballs', 'Your package modified the original source tarball somehow in a way. It does not match the original checksum anymore but you have a <a href="http://www.debian.org/doc/manuals/developers-reference/best-pkging-practices.html#bpp-origtargz">good reason</a> to do so'),
+    ('Modified tarballs (but good reasons)','modified-tarballs', 'Your package modified the original source tarball somehow. It does not match the original checksum anymore but you have a <a href="http://www.debian.org/doc/manuals/developers-reference/best-pkging-practices.html#bpp-origtargz">good reason</a> to do so'),
     ('Library package', 'library-package', 'You are packaging a <a href="http://www.debian.org/doc/debian-policy/ch-sharedlibs.html">policy compliant library</a>'),
     ('VCS snapshot tarballs','vcs-tarball', 'Your package is not based on a original source tarball at all but is based on a VCS snapshot',),
     ('contrib/non-free packages', 'non-free-package', 'Your package it targetting the <tt>contrib</tt> or <tt>non-free</tt> branches (<a href="http://www.debian.org/doc/debian-policy/ch-archive.html#s-sections">Information</a>)'),

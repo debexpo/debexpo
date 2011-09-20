@@ -9,7 +9,7 @@ ${ c.custom_html }
 
 <h2>1. Find a requested package</h2>
 
-<p>Debian is a distribution, not a general purpose repository. Many of us do not believe <em>every</em> piece of free software necessarily belongs to Debian. Please do not treat Debian as a platform to advertise your own software, unless there is some <em>real</em> request for it. That said, there is no one who ultimately judges about that. Eventually you may get some feedback on that discussion after filing your WNPP bug (see below) however you are free to interpret that as a suggestion, not as a final vote. After all, you need to find a sponsor believing in the benefit of having your package in Debian. Please have a look at our ${ h.tags.link_to("sponsors page", h.url(controller='sponsor', action='index')) } to learn about personal interests of sponsors.
+<p>Debian is a distribution, not a general purpose repository. Many of us do not believe <em>every</em> piece of free software necessarily belongs in Debian. Please do not treat Debian as a platform to advertise your own software, unless there is some <em>real</em> request for it. That said, there is no one who ultimately judges about that. Eventually you may get some feedback on that discussion after filing your WNPP bug (see below) however you are free to interpret that as a suggestion, not as a final vote. After all, you need to find a sponsor believing in the benefit of having your package in Debian. Please have a look at our ${ h.tags.link_to("sponsors page", h.url(controller='sponsor', action='index')) } to learn about personal interests of sponsors.
 
 <p>If you want to contribute to Debian, but you do not know which package Debian misses yet, take a look at "Request for package" (<em>RFP</em>) bugs. See WNPP below.</p>
 
@@ -131,7 +131,7 @@ If you did everything right, you will get a confirmation mail from our site and 
 
 <h2>7. Maintaining your package in Debian</h2>
 
-<p>Please see the corresponding chapter in the <a href="http://www.debian.org/doc/manuals/maint-guide/update.en.html">New Maintainer's Guide</a> to get the idea. Whenever you feel like, you should update your package in Debian. The general procedure isn't different form your fist upload. Please upload your updated package to ${ config['debexpo.sitename'] } and poke your former sponsor about your change. Alternatively, follow ${ h.tags.link_to("the usual procedures", h.url(controller='sponsor', action='index')) }.</p>
+<p>Please see the corresponding chapter in the <a href="http://www.debian.org/doc/manuals/maint-guide/update.en.html">New Maintainer's Guide</a> to get the idea. Whenever you feel like, you should update your package in Debian. The general procedure is not different from your fist upload. Please upload your updated package to ${ config['debexpo.sitename'] } and poke your former sponsor about your change. Alternatively, follow ${ h.tags.link_to("the usual procedures", h.url(controller='sponsor', action='index')) }.</p>
 
 <p>If your package passes through the sponsoring process for <em>a few</em> successive uploads without any notable correction by your sponsor, you can become a <a href="http://wiki.debian.org/DebianMaintainer">Debian Maintainer</a> which grants you limited upload rights to Debian directly. Get in touch with your sponsor to discuss your chances here. You can also <a href="http://www.debian.org/devel/join/">become a Debian Developer</a> giving you all necessary upload rights.</p>
 
