@@ -32,7 +32,9 @@ ${ c.custom_html }
 
 <p>If you want, you can write sponsors willing to upload packages of other maintainers directly. <em>Please do not send out mass emails!</em> Instead watch out for their individual requirements and guidelines. Contact individuals only if your package is compatible to their respective requirements and matches their area of interest. To tell apart sponsors who are interested in your package from those who are not, we asked developers to formulate their own sponsor traits. Please read them carefully and compare your package with their expectations.</p>
 
-<h2>Sponsor metrics</h2>
+<p>Similarly, you can also try to get in touch with other package maintainers directly. This makes sense if you prepared a package which is extends the functionality of a related package in a useful way or can be used together. Consider you packaged log analysis tool for a web server, the maintainer of that web server might be interested to sponsor you. If you consider to contact a maintainer of such a related package directly, make sure he is actually able to sponsor you. Remember: Only Debian Developer are allowed to sponsor packages. You can identify developers by looking up their name at <a href="http://db.debian.org/">db.debian.org</a>.</p>
+
+<h2>Sponsor guidelines</h2>
 
 To help you find a sponsor interested in your package, they can formulate sponsor traits for either social or technical aspects. Additionally a sponsor may not usually be interested in every package but only in a certain category.
 
