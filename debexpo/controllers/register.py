@@ -84,7 +84,7 @@ class RegisterController(BaseController):
         """
         log.debug('Sending activation email')
         email = Email('register_activate')
-        activate_url = 'http://' + request.host + url.current(action='activate', id=key)
+        activate_url = 'http://' + config['debexpo.sitename'] + url.current(action='activate', id=key)
         email.send([recipient], activate_url=activate_url)
 
     @validate(schema=RegisterForm(), form='register')

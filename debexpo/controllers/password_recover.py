@@ -77,7 +77,7 @@ class PasswordRecoverController(BaseController):
         meta.session.commit()
 
         recipient = u.email
-        password_reset_url = 'http://' + request.host + url.current(
+        password_reset_url = 'http://' + config['debexpo.sitename'] + url.current(
             action='actually_reset_password', id=password_reset_data.temporary_auth_key)
         email.send([recipient], password_reset_url=password_reset_url)
 
