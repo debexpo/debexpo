@@ -39,7 +39,7 @@ __license__ = 'MIT'
 
 import logging
 
-from debexpo.lib.base import BaseController, validate, c,  _, request, render, url, abort
+from debexpo.lib.base import BaseController, validate, c,  _, request, render, url, abort, config
 from debexpo.lib.schemas import PasswordResetForm
 from debexpo.lib.email import Email
 from debexpo.model import meta
