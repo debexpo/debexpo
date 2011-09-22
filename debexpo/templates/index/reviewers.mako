@@ -10,7 +10,7 @@
 <p>Glad you ask! There are many reasons why you should review packages even if you can't actually upload them.</p>
 
 <ul>
-    <li>The person you are reviewing will appreciate it. Chances are, you find problems in a package the person was not aware of yet. So he can learn from you.</li>
+    <li>The person you are reviewing will appreciate it. Chances are, you find problems in a package the person was not aware of yet. So they can learn from you.</li>
     <li>Eventually the package you are reviewing will be in a very good shape and you happen to learn something yourself. Moreover, you will also learn about best practices and workflows other people are using. Even if the package does not meet Debian's quality standards you can learn how <i>not to do</i> things.</li>
     <li>People who <i>can</i> upload may decide based on your review whether the package in question is a suitable candidate or not.</li>
 </ul>
