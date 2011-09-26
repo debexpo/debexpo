@@ -171,7 +171,7 @@ class CheckFiles(object):
             if os.path.exists(file):
                     log.debug("Removing file '%s'" % (file))
                     os.unlink(file)
-        if os.path.isdir(path):
+        if os.path.isdir(path) and os.listdir(path) == []:
             log.debug("Remove empty package repository '%s'" % (path))
             os.rmdir(path)
 
