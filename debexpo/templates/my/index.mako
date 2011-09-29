@@ -197,10 +197,23 @@ allow_unsigned_uploads = 0
       <td>${ _('Type of packages you are interested in') }:</td>
       <td><br />${ h.html.tags.textarea('package_types', c.metrics.types, cols=82, rows=10) }</td>
     </tr>
-    <% oneshot = "Technical choices within packages" %>
-    % for requirement in c.technical_tags:
+
+
         <tr>
-            <td>${ oneshot | n}<% oneshot = "&nbsp;" %></td>
+            <td>Social requirements</td>
+            <td>
+                <ul>
+                    <li><strong>-</strong> (first column) You are not accepting packages qualifying for that tag.</li>
+                    <li><strong>0</strong> (middle column) You have no strong opinion on that tag.</li>
+                    <li><strong>+</strong> (last column) You endorse usage of the implied meaning of the tag.</li>
+                    <li>Please note, the personal pronouns in the long description address your sponsor. Please see ${ h.tags.link_to("the sponsoring page", h.url('sponsors')) }</li>
+                </ul>
+            </td>
+        </tr>
+
+    % for requirement in c.social_tags:
+        <tr>
+            <td>&nbsp;</td>
             <td>
                 <dl>
                     <dt>
@@ -217,18 +230,45 @@ allow_unsigned_uploads = 0
             </td>
         </tr>
     % endfor
+    <tr>
+        <td>
+            ${ _("Additional social notes") }
+        </td>
+        <td>
+        <br />${ h.html.tags.textarea('social_requirements', c.metrics.social_requirements, cols=82, rows=10) }
+        </td>
+    </tr>
 
     <tr>
-        <td>&nbsp;</td>
+        <td>Technical choices within packages</td>
         <td>
             <ul>
-                <li><strong>undesirable</strong> (first column) You are not accepting packages qualifying for that tag.</li>
-                <li><strong>undecided</strong> (middle column) You have no strong opinion on that tag.</li>
-                <li><strong>preferred</strong> (last column) You endorse usage of the implied meaning of the tag.</li>
+                <li><strong>-</strong> (first column) You are not accepting packages qualifying for that tag.</li>
+                <li><strong>0</strong> (middle column) You have no strong opinion on that tag.</li>
+                <li><strong>+</strong> (last column) You endorse usage of the implied meaning of the tag.</li>
                 <li>Please note, the personal pronouns in the long description address your sponsor. Please see ${ h.tags.link_to("the sponsoring page", h.url('sponsors')) }</li>
             </ul>
         </td>
     </tr>
+    % for requirement in c.technical_tags:
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <dl>
+                    <dt>
+                    % for weight,label in [(-1, _("-")), \
+                        (0, _("0")), \
+                        (1, _("+")) ]:
+                        ${ h.html.tags.radio(requirement.tag, value=weight, label=label, checked=(c.metrics.get_tag_weight(requirement.tag) == weight)) }
+                    % endfor
+                        <span style="padding-left: 8px;">${ requirement.label }</span></dt>
+                    <dd>"<em>${ requirement.long_description | n}</em>"</dd>
+                    <dd>
+                    </dd>
+                </dl>
+            </td>
+        </tr>
+    % endfor
     <tr>
         <td>
             ${ _("Additional technical notes") }
@@ -248,45 +288,6 @@ allow_unsigned_uploads = 0
         <br />
         ${ h.html.tags.textarea('packaging_guideline_text', c.metrics.guidelines_text, cols=82, rows=10) }
       </td>
-    </tr>
-
-    <% oneshot = "Social requirements" %>
-    % for requirement in c.social_tags:
-        <tr>
-            <td>${ oneshot | n}<% oneshot = "&nbsp;" %></td>
-            <td>
-                <dl>
-                    <dt>${ requirement.label }</dt>
-                    <dd>"<em>${ requirement.long_description | n}</em>"</dd>
-                    <dd>
-                    % for weight,label in [(-1, _("undesirable")), \
-                        (0, _("undecided")), \
-                        (1, _("preferred")) ]:
-                        ${ h.html.tags.radio(requirement.tag, value=weight, label=label, checked=(c.metrics.get_tag_weight(requirement.tag) == weight)) }
-                    % endfor
-                    </dd>
-                </dl>
-            </td>
-        </tr>
-    % endfor
-        <tr>
-            <td>&nbsp;</td>
-            <td>
-                <ul>
-                    <li><strong>undesirable</strong> (first column) You are not accepting packages qualifying for that tag.</li>
-                    <li><strong>undecided</strong> (middle column) You have no strong opinion on that tag.</li>
-                    <li><strong>preferred</strong> (last column) You endorse usage of the implied meaning of the tag.</li>
-                    <li>Please note, the personal pronouns in the long description address your sponsor. Please see ${ h.tags.link_to("the sponsoring page", h.url('sponsors')) }</li>
-                </ul>
-            </td>
-        </tr>
-    <tr>
-        <td>
-            ${ _("Additional social notes") }
-        </td>
-        <td>
-        <br />${ h.html.tags.textarea('social_requirements', c.metrics.social_requirements, cols=82, rows=10) }
-        </td>
     </tr>
 
     <tr>
