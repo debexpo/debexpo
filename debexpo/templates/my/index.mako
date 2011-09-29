@@ -203,14 +203,15 @@ allow_unsigned_uploads = 0
             <td>${ oneshot | n}<% oneshot = "&nbsp;" %></td>
             <td>
                 <dl>
-                    <dt>${ requirement.label }</dt>
-                    <dd>"<em>${ requirement.long_description | n}</em>"</dd>
-                    <dd>
-                    % for weight,label in [(-1, _("undesirable")), \
-                        (0, _("undecided")), \
-                        (1, _("preferred")) ]:
+                    <dt>
+                    % for weight,label in [(-1, _("-")), \
+                        (0, _("0")), \
+                        (1, _("+")) ]:
                         ${ h.html.tags.radio(requirement.tag, value=weight, label=label, checked=(c.metrics.get_tag_weight(requirement.tag) == weight)) }
                     % endfor
+                        <span style="padding-left: 8px;">${ requirement.label }</span></dt>
+                    <dd>"<em>${ requirement.long_description | n}</em>"</dd>
+                    <dd>
                     </dd>
                 </dl>
             </td>
