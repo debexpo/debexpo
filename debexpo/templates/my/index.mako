@@ -197,7 +197,7 @@ allow_unsigned_uploads = 0
       <td>${ _('Type of packages you are interested in') }:</td>
       <td><br />${ h.html.tags.textarea('package_types', c.metrics.types, cols=82, rows=10) }</td>
     </tr>
-    <% oneshot = "Sponsoring requirements" %>
+    <% oneshot = "Technical choices within packages" %>
     % for requirement in c.technical_tags:
         <tr>
             <td>${ oneshot | n}<% oneshot = "&nbsp;" %></td>
