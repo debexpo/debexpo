@@ -167,7 +167,7 @@ allow_unsigned_uploads = 0
 % if c.debian_developer:
   <hr />
   <fieldset>
-  <strong><legend>${ _('Sponsor metrics') }</legend></strong>
+  <strong><legend>${ _('Public sponsor info') }</legend></strong>
 
   ${ h.html.tags.form(h.url.current()) }
   ${ h.html.tags.hidden('form', 'metrics') }
