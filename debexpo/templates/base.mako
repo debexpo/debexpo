@@ -98,13 +98,15 @@
         <div id="footer">
 	<p>© 2008-2011 ${c.config['debexpo.sitename']}
 	-
+    Hosting and hardware provided by <a href="http://www.wavecon.de">Wavecon</a>
+    -
     <a href="https://alioth.debian.org/projects/debexpo/">${ _('Source code and bugs')}</a>
 	-
     ${ h.tags.link_to( _('Contact'), h.url('contact')) }
 	% if 'user_id' in session:
         -
         <a href="/logout">Logout</a>
-        % endif
+    % endif
     % if c.feed_url:
     <a class="rss_logo" href="${ c.feed_url }">RSS</a>
     % endif
