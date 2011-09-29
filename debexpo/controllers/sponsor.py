@@ -96,6 +96,9 @@ class SponsorController(BaseController):
         This page honors filters configured in the user session
         """
 
+        if not config['debexpo.enable_experimental_code'].lower() == 'true':
+            return render('/sponsor/index-old.mako')
+
         if 'debexpo.html.sponsors_intro' in config:
             f = open(config['debexpo.html.sponsors_intro'])
             c.custom_html = literal(f.read())
