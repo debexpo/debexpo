@@ -36,6 +36,9 @@ __copyright__ = 'Copyright © 2011 Arno Töll'
 __license__ = 'MIT'
 
 import logging
+import random
+import struct
+import socket
 
 from debexpo.lib.base import BaseController, c, config, render, session, \
     redirect, url, abort, request
@@ -130,6 +133,25 @@ class SponsorController(BaseController):
             .options(joinedload(SponsorMetrics.tags))\
             .filter(SponsorMetrics.availability >= constants.SPONSOR_METRICS_RESTRICTED)\
             .all()
+
+        def hash_ip():
+            """
+            This is a simple hashing algorithm not supposed to be called from anywhere
+            but for internal use only.
+            It reads the client IP address and returns a float between 0.01 and 0.91 which is
+            used as input for random.shuffle
+            """
+            ip = request.environ['REMOTE_ADDR']
+            try:
+                ip = struct.unpack( "!L", socket.inet_pton( socket.AF_INET, ip ))
+                ip = ip[0]
+            except socket.error:
+                ip = struct.unpack( "!QQ", socket.inet_pton( socket.AF_INET6, ip ))
+                ip = ip[1]
+            ip = (float(ip % 10) + 0.01) / 10
+            return ip
+
+        random.shuffle(c.sponsors, hash_ip)
 
         # The select above works fine, except that it sucks.
         # It suffers from a poor performance and it could be significantly improved by querying the tag
