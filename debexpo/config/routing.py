@@ -64,7 +64,7 @@ def make_map(config):
     map.connect('intro-maintainers', '/intro-maintainers',
                 controller='index', action='intro_maintainers')
     map.connect('sponsors', '/sponsors', controller='sponsor', action='index')
-    map.connect('sponsor_tag_toggle', '/sponsors/toggle/{tag}', controller='sponsor', action='toggle')
+    map.connect('sponsor_tag_save', '/sponsors/save', controller='sponsor', action='save')
     map.connect('sponsor_tag_clear', '/sponsors/clear', controller='sponsor', action='clear')
     map.connect('intro-reviewers', '/intro-reviewers', controller='index', action='intro_reviewers')
     map.connect('my', '/my', controller='my', action='index')

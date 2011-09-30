@@ -38,7 +38,7 @@ __license__ = 'MIT'
 import logging
 
 from debexpo.lib.base import BaseController, c, config, render, session, \
-    redirect, url, abort
+    redirect, url, abort, request
 from debexpo.lib import constants
 from debexpo.model.sponsor_metrics import SponsorMetrics, SponsorTags, SponsorMetricsTags
 from debexpo.model.users import User
@@ -50,6 +50,28 @@ from debexpo.model import meta
 log = logging.getLogger(__name__)
 
 class SponsorController(BaseController):
+
+    def _validate_tags(self, tags, existing_tags = None):
+        """
+        Validates a list of tags with actual existing ones
+
+        ```tags```
+            A list of tags which need to be verified
+
+        ```existing_tags````
+            The list of existing tags. Might be None to let this method fetch the tag list
+
+        """
+
+        if not existing_tags:
+            existing_tags = [tag.tag for tag in meta.session.query(SponsorTags).all()]
+        else:
+            existing_tags = [tag.tag for tag in existing_tags]
+
+        for tag in tags:
+            if not tag in existing_tags:
+                return False
+        return True
 
     def clear(self):
         """
@@ -65,7 +87,7 @@ class SponsorController(BaseController):
         redirect(url('sponsors'))
 
 
-    def toggle(self, tag):
+    def save(self):
         """
         Toggle a filter within the session.
         This method prepares a list of filters to limit results in the sponsor list
@@ -74,18 +96,14 @@ class SponsorController(BaseController):
             list remove it, add it otherwise.
         """
 
-        if tag not in [x.tag for x in meta.session.query(SponsorTags).all()]:
+        tags = request.params.getall('t')
+        if not self._validate_tags(tags):
             abort(404)
 
         if 'sponsor_filters' not in session:
             session['sponsor_filters'] = []
 
-        if tag in session['sponsor_filters']:
-            log.debug("Removing tag %s from the filter list" % (tag))
-            session['sponsor_filters'].remove(tag)
-        else:
-            log.debug("Adding tag %s to the filter list" % (tag))
-            session['sponsor_filters'].append(tag)
+        session['sponsor_filters'] = tags
         session.save()
 
         redirect(url('sponsors'))
@@ -131,9 +149,13 @@ class SponsorController(BaseController):
             c.sponsor_filter = session['sponsor_filters']
         else:
             c.sponsor_filter = []
+        if request.params.getall('t'):
+            c.sponsor_filter = request.params.getall('t')
 
         c.technical_tags = meta.session.query(SponsorTags).filter_by(tag_type=constants.SPONSOR_METRICS_TYPE_TECHNICAL).all()
         c.social_tags = meta.session.query(SponsorTags).filter_by(tag_type=constants.SPONSOR_METRICS_TYPE_SOCIAL).all()
 
+        if not self._validate_tags(c.sponsor_filter, c.technical_tags + c.social_tags):
+            abort(404)
 
         return render('/sponsor/index.mako')
