@@ -37,27 +37,11 @@ __license__ = 'MIT'
 
 import logging
 import hashlib
-import md5
 import os
 
 from pylons import config
 
 log = logging.getLogger(__name__)
-
-def allowed_upload(filename):
-    """
-    Looks at a filename's extension and decides whether to accept it.
-    We only want package files to be uploaded, after all.
-    It returns a boolean of whether to accept the file or not.
-
-    ``filename``
-        File to test.
-    """
-    for suffix in ['.changes', '.dsc', '.tar.gz', '.diff.gz', '.deb', '.udeb', '.tar.bz2', ".tar.xz"]:
-        if filename.endswith(suffix):
-            return True
-
-    return False
 
 def parse_section(section):
     """
@@ -101,7 +85,7 @@ def md5sum(filename):
     except:
         raise AttributeError('Failed to open file %s.' % filename)
 
-    sum = md5.new()
+    sum = hashlib.md5()
     while True:
         chunk = f.read(10240)
         if not chunk:

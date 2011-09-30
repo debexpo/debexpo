@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 #   debexpo-importer — executable script to import new packages
@@ -382,22 +383,26 @@ class Importer(object):
         self.files = self.changes.get_files()
 
         distribution = self.changes['Distribution'].lower()
-        allowed_distributions = ('unstable', 'stable-backports', 'oldstable-backports', 'stable-backports-sloppy', 'oldstable-backports')
+        allowed_distributions = ('oldstable', 'stable', 'unstable', 'experimental', 'stable-backports', 'oldstable-backports',
+            'oldstable-backports-sloppy', 'stable-security', 'testing-security', 'stable-proposed-updates',
+            'testing-proposed-updates', 'sid', 'wheezy', 'squeeze', 'lenny', 'squeeze-backports', 'lenny-backports',
+            'lenny-security', 'lenny-backports-sloppy', 'lenny-volatile', 'squeeze-security', 'squeeze-updates', 'wheezy-security')
         if distribution not in allowed_distributions:
             self._remove_changes()
             self._reject("You are not uploading to one of those Debian distributions: %s" %
-                (reduce(lambda x,xs: x + xs + " ", allowed_distributions)))
+                (reduce(lambda x,xs: x + " " + xs, allowed_distributions)))
 
         # Look whether the orig tarball is present, and if not, try and get it from
         # the repository.
         (orig, orig_file_found) = filecheck.find_orig_tarball(self.changes)
-        if orig and not orig_file_found:
+        if orig and not orig_file_found == constants.ORIG_TARBALL_LOCATION_NOT_FOUND:
             log.debug("Upload does not contain orig.tar.gz - trying to find it elsewhere")
             filename = os.path.join(pylons.config['debexpo.repository'],
                 self.changes.get_pool_path(), orig)
             if os.path.isfile(filename):
+                log.debug("Found tar.gz in repository as %s" % (filename))
                 shutil.copy(filename, pylons.config['debexpo.upload.incoming'])
-                self.files.append(orig)
+                #self.files.append(orig)
 
         destdir = pylons.config['debexpo.repository']
 
@@ -427,11 +432,14 @@ class Importer(object):
         pool_dir = os.path.join(destdir, self.changes.get_pool_path())
         log.debug("Pool directory: %s", pool_dir)
         for file in self.files:
-            if os.path.isfile(os.path.join(pool_dir, file)):
+            if os.path.isfile(file) and os.path.isfile(os.path.join(pool_dir, file)):
                 log.warning('%s is being installed even though it already exists' % file)
-            else:
+                toinstall.append(file)
+            elif os.path.isfile(file):
                 log.debug('File %s is safe to install' % os.path.join(pool_dir, file))
-            toinstall.append(file)
+                toinstall.append(file)
+            # skip another corner case, where the dsc contains a orig.tar.gz but wasn't uploaded
+            # by doing nothing here for that case
 
         # Run post-upload plugins.
         post_upload = Plugins('post-upload', self.changes, self.changes_file,
@@ -444,16 +452,21 @@ class Importer(object):
         # Check whether a post-upload plugin has got the orig tarball from somewhere.
         if not orig_file_found and not filecheck.is_native_package(self.changes):
             (orig, orig_file_found) = filecheck.find_orig_tarball(self.changes)
-            if not orig_file_found:
+            if orig_file_found == constants.ORIG_TARBALL_LOCATION_NOT_FOUND:
                 # When coming here it means:
                 # a) The uploader did not include a orig.tar.gz in his upload
                 # b) We couldn't find a orig.tar.gz in our repository
                 # c) No plugin could get the orig.tar.gz
                 # ... time to give up
                 self._remove_changes()
-                self._reject("Rejecting incomplate upload. "
-                    "You did not upload %s and we didn't find it on either one of our backup resources" %
+                if orig == None:
+                    orig = "any original tarball (orig.tar.gz)"
+                self._reject("Rejecting incomplete upload. "
+                    "You did not upload %s and we didn't find it on any of our alternative resources.\n" \
+                    "If you tried to upload a package which only increased the Debian revision part, make sure you include the full source (pass -sa to dpkg-buildpackage)" %
                     ( orig ))
+            else:
+                toinstall.append(orig)
 
         # Check whether the debexpo.repository variable is set
         if 'debexpo.repository' not in pylons.config:

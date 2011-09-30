@@ -10,7 +10,7 @@
 <p>Glad you ask! There are many reasons why you should review packages even if you can't actually upload them.</p>
 
 <ul>
-    <li>The person you are reviewing will appreciate it. Chances are, you find problems in a package the person was not aware of yet. So he can learn from you.</li>
+    <li>The person you are reviewing will appreciate it. Chances are, you find problems in a package the person was not aware of yet. So they can learn from you.</li>
     <li>Eventually the package you are reviewing will be in a very good shape and you happen to learn something yourself. Moreover, you will also learn about best practices and workflows other people are using. Even if the package does not meet Debian's quality standards you can learn how <i>not to do</i> things.</li>
     <li>People who <i>can</i> upload may decide based on your review whether the package in question is a suitable candidate or not.</li>
 </ul>
@@ -32,13 +32,4 @@
 
 <h3>Established sponsor guidelines</h3>
 
-<p>Several Debian Developers published their personal sponsor guidelines. Those are rules applying for a particular person or a specific packaging team in case you want to have a package sponsored by them. Typically those rules extend the Debian policy by custom requirements, or require a particular workflow from you. You can have a look at some guidelines from different people here</p>
-
-<ul>
-    <li><a href="http://wiki.debian.org/PaulWise/Standards">Paul Wise</a></li>
-    <li><a href="http://people.debian.org/~codehelp/#sponsor">Neil Williams</a></li>
-    <li><a href="http://wiki.debian.org/KilianKrause">Kilian Krause</a></li>
-    <li><a href="http://people.debian.org/~neilm/sponsorship.html">Neil McGovern</a></li>
-    <li><a href="http://wiki.debian.org/Games/Checklist">Debian games team</a></li>
-    <li>More guidelines in the wiki: <a href="http://wiki.debian.org/SponsorChecklist">SponsorChecklist</a></li>
-</ul>
+<p>Several Debian Developers published their personal sponsor guidelines. Those are rules applying for a particular person or a specific packaging team in case you want to have a package sponsored by them. Typically those rules extend the Debian policy by custom requirements, or require a particular workflow from you. You can have a look at some guidelines from different people on our ${ h.tags.link_to( _('sponsors side'), h.url('sponsors')) }</p>

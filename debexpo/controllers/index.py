@@ -38,12 +38,16 @@ __license__ = 'MIT'
 
 import logging
 
-from debexpo.lib.base import BaseController, c, config, render
+from debexpo.lib.base import BaseController, c, config, render, session
+from debexpo.lib import constants
 from debexpo.controllers.packages import PackagesController, PackageGroups
 from webhelpers.html import literal
 from datetime import datetime, timedelta
 from debexpo.model.package_versions import PackageVersion
 from debexpo.model.packages import Package
+from debexpo.model.users import User
+
+from debexpo.model import meta
 
 log = logging.getLogger(__name__)
 
@@ -89,16 +93,14 @@ class IndexController(BaseController):
         else:
             c.custom_html = ''
 
+        # The template will need to look at the user details.
+        if 'user_id' in session:
+            log.debug('Getting user object for user_id = "%s"' % session['user_id'])
+            self.user = meta.session.query(User).get(session['user_id'])
+            c.user = self.user
+            c.logged_in = True
+        else:
+            c.logged_in = False
+
         return render('/index/intro-maintainers.mako')
 
-
-    def intro_sponsors(self):
-        """Return an introduction page for sponsors"""
-        if 'debexpo.html.sponsors_intro' in config:
-            f = open(config['debexpo.html.sponsors_intro'])
-            c.custom_html = literal(f.read())
-            f.close()
-        else:
-            c.custom_html = ''
-
-        return render('/index/intro-sponsors.mako')

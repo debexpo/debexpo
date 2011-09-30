@@ -40,12 +40,15 @@ import logging
 
 from debexpo.lib.base import *
 from debexpo.lib import constants, form
-from debexpo.lib.schemas import DetailsForm, GpgForm, PasswordForm, OtherDetailsForm
+from debexpo.lib.schemas import DetailsForm, GpgForm, PasswordForm, OtherDetailsForm, MetricsForm
 from debexpo.lib.gnupg import GnuPG
 
 from debexpo.model import meta
 from debexpo.model.users import User
 from debexpo.model.user_countries import UserCountry
+from debexpo.model.sponsor_metrics import SponsorMetrics, SponsorMetricsTags, SponsorTags
+
+from sqlalchemy.orm import joinedload
 
 import debexpo.lib.utils
 
@@ -152,6 +155,45 @@ class MyController(BaseController):
 
         redirect(url('my'))
 
+    @validate(schema=MetricsForm(), form='index')
+    def _metrics(self):
+        """
+        Handles a user submitting the metrics form.
+        """
+        log.debug('Metrics form validated successfully')
+
+        if 'user_id' not in session:
+            log.debug('Requires authentication')
+            session['path_before_login'] = request.path_info
+            session.save()
+            redirect(url('login'))
+
+        sm = SponsorMetrics(user_id=session['user_id'])
+        sm.contact = int(self.form_result['preferred_contact_method'])
+        #XXX TODO: WTF?! Find out why on earth package_types is no string
+        sm.types = str(self.form_result['package_types'])
+        sm.guidelines_text = self.form_result['packaging_guideline_text']
+        sm.social_requirements = self.form_result['social_requirements']
+        sm.availability = self.form_result['availability']
+
+        if self.form_result['packaging_guidelines'] == constants.SPONSOR_GUIDELINES_TYPE_URL:
+            sm.guidelines = constants.SPONSOR_GUIDELINES_TYPE_URL
+        elif self.form_result['packaging_guidelines'] == constants.SPONSOR_GUIDELINES_TYPE_TEXT:
+            sm.guidelines = constants.SPONSOR_GUIDELINES_TYPE_TEXT
+        else:
+            sm.guidelines = constants.SPONSOR_GUIDELINES_TYPE_NONE
+
+        for tag in meta.session.query(SponsorTags).all():
+            if tag.tag in self.form_result:
+                log.debug("Weighten tag %s to %s" % (tag.tag, self.form_result[tag.tag]))
+                metrics = SponsorMetricsTags(tag=tag.tag, user_id=session['user_id'], weight=self.form_result[tag.tag])
+                sm.tags.append(metrics)
+
+        meta.session.merge(sm)
+        meta.session.commit()
+
+        redirect(url('my'))
+
     def index(self, get=False):
         """
         Controller entry point. Displays forms to change user details.
@@ -178,7 +220,8 @@ class MyController(BaseController):
                 return { 'details' : self._details,
                   'gpg' : self._gpg,
                   'password' : self._password,
-                  'other_details' : self._other_details
+                  'other_details' : self._other_details,
+                  'metrics' : self._metrics,
                 }[request.params['form']]()
             except KeyError:
                 log.error('Could not find form name; defaulting to main page')
@@ -216,8 +259,33 @@ class MyController(BaseController):
         # Enable the form to show information on the user's GPG key.
         if self.user.gpg is not None:
             c.currentgpg = c.user.gpg_id
-	else:
+        else:
             c.currentgpg = None
+
+        if self.user.status == constants.USER_STATUS_DEVELOPER:
+            # Fill in various sponsor metrics
+            c.constants = constants
+            c.contact_methods = [
+                (constants.SPONSOR_CONTACT_METHOD_NONE, _('None')),
+                (constants.SPONSOR_CONTACT_METHOD_EMAIL, _('Email')),
+                (constants.SPONSOR_CONTACT_METHOD_IRC, _('IRC')),
+                (constants.SPONSOR_CONTACT_METHOD_JABBER, _('Jabber')),
+                ]
+
+            c.metrics = meta.session.query(SponsorMetrics)\
+                .options(joinedload(SponsorMetrics.user))\
+                .options(joinedload(SponsorMetrics.tags))\
+                .filter_by(user_id = session['user_id'])\
+                .first()
+            c.technical_tags = meta.session.query(SponsorTags).filter_by(tag_type=constants.SPONSOR_METRICS_TYPE_TECHNICAL).all()
+            c.social_tags = meta.session.query(SponsorTags).filter_by(tag_type=constants.SPONSOR_METRICS_TYPE_SOCIAL).all()
+            if not c.metrics:
+                # Set some sane defaults
+                log.debug("Generating new defaults for sponsor metrics")
+                c.metrics = SponsorMetrics()
+                c.metrics.availability = constants.SPONSOR_METRICS_PRIVATE
+                c.metrics.guidelines = constants.SPONSOR_GUIDELINES_TYPE_NONE
+
 
         log.debug('Rendering page')
         return render('/my/index.mako')

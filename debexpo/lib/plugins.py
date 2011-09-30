@@ -141,8 +141,11 @@ class Plugins(object):
         for item in dsc['Files']:
             if item['name'] not in self.changes.get_files():
                 src_file = os.path.join(self.config['debexpo.upload.incoming'], item['name'])
+                repository_src_file = os.path.join(self.config['debexpo.repository'], self.changes.get_pool_path(), item['name'])
                 if os.path.exists(src_file):
                     shutil.copy(src_file, self.tempdir)
+                elif os.path.exists(repository_src_file):
+                    shutil.copy(repository_src_file, self.tempdir)
                 else:
                     log.critical("Trying to copy non-existing file %s" % (src_file))
 

@@ -61,7 +61,7 @@ def import_all_models():
 
     from debexpo.model import binary_packages, package_files, packages, source_packages, \
         user_metrics, package_comments, package_info, package_versions, user_countries, \
-        users, package_subscriptions, user_upload_key, password_reset
+        users, package_subscriptions, user_upload_key, password_reset, sponsor_metrics
 
 class OrmObject(object):
     """
@@ -85,9 +85,8 @@ class OrmObject(object):
                                      'not column in mapped table: %s' % (key,))
 
     def __repr__(self):
-        atts = []
-        for key in dir(self):
-            if not key.startswith('_') and key is not "foreign" and key not in self.foreign:
-                atts.append((key, getattr(self, key)))
-
-        return self.__class__.__name__ + '(' + ', '.join(x[0] + '=' + repr(x[1]) for x in atts) + ')'
+        attrs = []
+        for key in self.__dict__:
+            if not key.startswith('_'):
+                attrs.append((key, getattr(self, key)))
+        return self.__class__.__name__ + '(' + ', '.join(x[0] + '=' + repr(x[1]) for x in attrs) + ')'

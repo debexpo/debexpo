@@ -30,6 +30,6 @@
 <p>
     ${ _('''If you have questions feel free to contact us
         at <a href="mailto:%s">%s</a>.'''
-        % (config['debexpo.email'], config['debexpo.email'])) }
+        % (config['debexpo.email'], config['debexpo.email'])) | n}
 </p>
 </div>

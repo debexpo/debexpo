@@ -3,47 +3,135 @@
 
 ${ c.custom_html }
 
-<h1>Introduction for maintainers</h1>
-
-<h2>Welcome to ${ c.config['debexpo.sitetitle'] }</h2>
+<h1>Introduction for maintainers: How will my package get into Debian</h1>
 
 <p>We are glad that you found your way to our web site. Honestly the whole web site is just there to get your work into Debian. Your contribution is appreciated and it would be a pity if you did not find a sponsor to upload your packages. Read on to see in what ways we will be helping you find a sponsor.</p>
 
+<h2>1. Find a requested package</h2>
 
-<h3>How will my package get into Debian?</h3>
+<p>Debian is a distribution, not a general purpose repository. Many of us do not believe <em>every</em> piece of free software necessarily belongs in Debian. Please do not treat Debian as a platform to advertise your own software, unless there is some <em>real</em> request for it. That said, there is no one who ultimately judges about that. Eventually you may get some feedback on that discussion after filing your WNPP bug (see below) however you are free to interpret that as a suggestion, not as a final vote. After all, you need to find a sponsor believing in the benefit of having your package in Debian. Please have a look at our ${ h.tags.link_to("sponsors page", h.url(controller='sponsor', action='index')) } to learn about personal interests of sponsors.
 
-<p>This web site is a public package repository of source packages. You can upload your package to this server (through special tools like 'dupload' or 'dput') and after a few checks it will be stored in our repository. Interested sponsors can then download the package and upload it to Debian. So the basic procedure is:</p>
+<p>If you want to contribute to Debian, but you do not know which packages to contribute to, take a look at "Request for help" (<em>RFH</em>), "Request for adopter" (<em>RFA</em>), "Orphaned package" (<em>O</em>) and "Request for package" (<em>RFP</em>) bugs. See <em>WNPP</em> below.</p>
+
+<h2>2. File a WNPP bug</h2>
+
+<p><a href="http://www.debian.org/devel/wnpp/">Work-Needing and Prospective Packages</a> (<em>WNPP</em>) is our system of announcing your intent to markup packages being worked on. In particular it is a bug against the <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=wnpp">WNPP pseudo package</a> (<a href="http://wnpp.debian.net/">or use a nice frontend</a> to browse <em>WNPP</em> bugs). If you want to package package something not currently available in Debian, the very first step should be to file an "Intent to package" (<em>ITP</em>) bug against <em>WNPP</em>. You may want to use the <tt><a href="http://packages.debian.org/squeeze/reportbug">reportbug</a></tt> tool to achieve that by selecting "<em>wnpp</em>" as package to report a bug to.</p>
+
+<h2>3. Make the package</h2>
+
+<p>Debian packages must comply to several normative requirements and guidelines. We can't give you exhaustive instructions on how to build packages here. In short, we expect you to provide a <em>source package</em> complying to the Debian policy at least (see below). Please take a look at those excellent resources:</p>
+
+    <dl>
+        <dt><a href="http://www.debian.org/doc/debian-policy/">The Debian Policy Manual</a></dt>
+        <dd>A must-read resource to learn about technical specification and technical requirements of Debian packages.</dd>
+        <dt><a href="http://www.debian.org/doc/manuals/maint-guide/">New Maintainer's Guide</a></dt>
+        <dd>A must-read resource to learn basics of Debian source packages</dd>
+        <dt><a href="http://anonscm.debian.org/gitweb/?p=collab-maint/packaging-tutorial.git;a=blob_plain;f=packaging-tutorial.pdf;hb=8d4e3da6e828af7b3ccaf3bee0c25401958bd700">Lucas Nussbaum's packaging tutorial</a></dt>
+        <dd>A quick introduction to Debian packaging</dd>
+        <dt><a href="http://www.debian.org/doc/manuals/developers-reference/index.html">Developer's Reference</a></dt>
+        <dd>A comprehensive manual describing typical workflows and best practices related to Debian packages</dd>
+        <dt><a href="http://wiki.debian.org/DebianMentorsFaq">Debian Mentors FAQ</a> (Debian Wiki)</dt>
+        <dd>Another valuable resource to learn about common terms and workflows related to Debian</dd>
+    </dl>
+
+
+<h2>4. Publish your package</h2>
+
+<p>This web site is a public package repository of source packages. You can upload your package to this server (through special tools like '<tt><a href="http://packages.debian.org/squeeze/dupload">dupload</a></tt>' or '<tt><a href="http://packages.debian.org/squeeze/dput">dput</a></tt>') and after a few checks it will be stored in our repository. ${ h.tags.link_to("Interested sponsors", h.url(controller='sponsor', action='index')) } can then download the package and upload it to Debian.</p>
+
+<h3>Using ${ c.config['debexpo.sitetitle'] }</h3>
 
 <ul>
-    <li>${ h.tags.link_to("Sign up for an account", h.url(controller='register', action='register')) }. Getting an account on this server is an automatic process and will just take a moment. We require registration so we have a valid email address where sponsors can reach you.</li>
-    <li>Upload your package to mentors.debian.net. You don not need to put your packages into any other web space on the Internet. Everybody will be able to download your package using either the web browser, the 'dget' tools or even through a simple run of apt-get source ....</li>
-    <li>Your package is on display on the main page of ${ c.config['debexpo.sitetitle'] } so interested sponsors will see it and hopefully check it out.</li>
-    <li>You will be shown a RFS (request-for-sponsorship) template that you can send to the debian-mentors mailing list to draw attention to your package.</li>
-    <li>Finally a sponsor will hopefully pick up your package and upload it on your behalf. Bingo - your package is publicly available in Debian. And this server will automatically send you an email in case you did not notice the upload.</li>
+    <li><strong>${ h.tags.link_to("Sign up for an account", h.url(controller='register', action='register')) }</strong>. Getting an account on this server is an automatic process and will just take a moment. We require registration so we have a valid email address where sponsors can reach you.</li>
+    <li><strong>Upload your package</strong> to <tt>${ config['debexpo.sitename'] }</tt>. You do not need to put your packages into any other web space on the Internet. Everybody will be able to download your package using either the web browser, the '<tt>dget</tt>' tools or even through a simple run of <tt>apt-get source ....</tt></li>
+    <li>Have a look at your ${ h.tags.link_to("personal package page", h.url(controller='package', action='my')) }. Your uploaded package should <strong>show up there</strong>. From there you can toggle several settings and retrieve the RFS (request-for-sponsorship) template</li>
+    <li>Your package is on display on the main page of ${ c.config['debexpo.sitetitle'] } (if you enable the "<i>Needs a Sponsor</i>" button) so interested sponsors will see it and hopefully check it out.</li>
+    <li>You will be shown a <strong>RFS (request-for-sponsorship) template</strong> that you should send to the debian-mentors mailing list to draw attention to your package.</li>
 </ul>
 
-<h3>Is my package technically okay?</h3>
+<h3>How to upload packages to <tt>${ config['debexpo.sitename'] }?</tt></h3>
 
-<p>When you upload your package to ${ c.config['debexpo.sitename'] } it will automatically be checked for common mistakes. You will get an information email after the upload. Either your package contains bugs and will be rejected, or the package is clean except for some minor technical issues. You will get hints about how to fix the package. If the email tells you that your package is fine then a sponsor will still do further checks. Don't worry too much. If your package is accepted by mentors.debian.net then let the sponsor help you with the rest.
+<p>You need to use <a href="http://packages.debian.org/dput"><tt>dput</tt></a> to upload packages. We accept your uploads through <em>HTTP</em> or <em>FTP</em>. If you are using <em>FTP</em> your package <strong>must</strong> be signed with the GnuPG key you configured in your control panel. </p>
 
-<h3>How to upload packages?</h3>
+<table>
+    <tr>
+        <td width="50%">HTTP uploads</td>
+        <td width="50%">FTP uploads</td>
+    </tr>
+    <tr>
+        <td>
+        % if c.logged_in:
 
-<p>You need to use <a href="http://packages.debian.org/dput">dput</a> to upload packages.
-See your ${ h.tags.link_to("account page", h.url('my')) } to see how to configure it.</p>
-<p>Once you have it set up, you can run it from your shell like this:</p>
+            <p>See your ${ h.tags.link_to("account page", h.url('my')) } to see how to configure <tt>dput</tt> to use HTTP, or put the following content to your <tt>~/.dput.cf</tt> file:</p>
+
 <pre>
-dput debexpo yourpackage_yourversion_arch.changes
+[mentors]
+fqdn = ${ config['debexpo.sitename'] }
+incoming = /upload/${ c.user.email }/${ c.user.get_upload_key() }
+method = http
+allow_unsigned_uploads = 0
+progress_indicator = 2
 </pre>
 
+<strong>Please keep this configuration private</strong>.
+        % else:
 
-<h3>How long will it take until my upload is available to sponsors?</h3>
+        <p>You need to configure <tt>dput</tt>. Please ${ h.tags.link_to("login", h.url(controller='login', action='index')) } to see your personal <tt>~/.dput.cf</tt> here.</p>
 
-<p>If you upload via HTTP, which is what we recommend, then it will take between 0 and 2 minutes.</p>
+        % endif
+        </td>
+        <td>
+            <p>You can use <em>FTP</em> to upload packages to ${ c.config['debexpo.sitetitle'] }. If you prefer that method make sure you sign your uploads with your GPG key! This is the corresponding <tt>~/.dput.cf</tt> file:</p>
 
-<p>If you upload via FTP, which you must do if a package is too large for the HTTP uploader, then there can be up to a 30 minute delay before your package gets processed.</p>
+<pre>
+[mentors-ftp]
+fqdn = ${ config['debexpo.sitename'] }
+login = anonymous
+progress_indicator = 2
+passive_ftp = 1
+incoming = /
+method = ftp
+allow_unsigned_uploads = 0
 
-<p>During those 0-2 minutes, the server does quality assurance and other checks on your package. You will receive an email when it is ready.</p>
+</pre>
+        </td>
+    </tr>
+</table>
 
-<h3>Will my name stay visible on the package?</h3>
+<p>Once you have it set up, you can run it from your shell like this:</p>
 
-<p>Yes. The Debian project appreciates the work you do. So you will be named as the official maintainer of the package in Debian. You will even get the bug reports if people discover problems in your package. Besides from not being able to upload the package directly into Debian you are treated as a full member of the community.</p>
+<pre>
+$ dput mentors your_sourcepackage_1.0.changes
+</pre>
+
+If you did everything right, you will get a confirmation mail from our site and you can start seeking a sponsor for your package.
+
+<h2>5. Find a sponsor</h2>
+
+<p>Once your package is publicly available on any resource, including but not limited to ${ c.config['debexpo.sitetitle'] } you may start searching for a sponsor for your package. If you have already uploaded packages to Debian, you should ask your former sponsor. A sponsor is any <a href="http://wiki.debian.org/DebianDeveloper">Debian Developer</a> willing to upload your package to Debian on your behalf. Have a look to our ${ h.tags.link_to("sponsor's page", h.url(controller='sponsor', action='index')) } to learn more on sponsors and how to find one.</p>
+
+<p>The main point of the sponsoring process is to review your package to make sure it meets our technical requirements. Everyone can and should review other people's packages. Also, a clean package will increase your likelihood to find a sponsor. Please take a look at our page ${ h.tags.link_to("about package reviews", h.url('intro-reviewers')) }.</p>
+
+<h3>The relation between you and your sponsor</h3>
+
+<p>A sponsor is not technically responsible for your package. <strong>You</strong> will be listed as the official maintainer of the package in Debian. You will even get the bug reports if people discover problems in your package. Apart from not being able to upload the package directly into Debian you are treated as a full member of the community. The Debian project appreciates the work you do.</p>
+
+<h3>What can I do if I don't find a sponsor?</h3>
+
+<p>Do not give up. Sponsoring can take a while. Nonetheless, here are a few hints:</p>
+
+<ul>
+    <li>Ask again on the debian-mentors mailing list. It is common practice to ask again after a few weeks.</li>
+    <li>Offer your package directly to relevant teams and individual developers. We made a ${ h.tags.link_to("a list of sponsors", h.url(controller='sponsor', action='index')) }, eventually willing to upload packages for you. <em>Please don't contact every sponsor listed there. Instead, read their individual requirements and choose the sponsor which matches you and your package best</em>.
+</ul>
+
+<h2>6. Getting an upload to Debian</h2>
+
+<p>Once you find a sponsor interested in your package, he will <em>sponsor</em> it. That means reviewing, building and testing it and then uploading it and then uploading it to Debian. You will get notified by <em>dak</em> - the software used by Debian to manage its repositories - about the upload. Please note, if your package was not at all in Debian before, it needs manual approval by <a href="http://ftp-master.debian.org/">ftpmasters</a> to clear the <a href="http://ftp-master.debian.org/new.html">NEW queue</a>. They will do consistency checks, and review your <tt>debian/copyright</tt> file whether your package matches the <a href="http://www.debian.org/social_contract#guidelines">Debian Free Software Guidelines</a>. ftpmaster's opinion is binding here for both your sponsor and you.</p>
+
+<h2>7. Maintaining your package in Debian</h2>
+
+<p>Please see the corresponding chapter in the <a href="http://www.debian.org/doc/manuals/maint-guide/update.en.html">New Maintainer's Guide</a> to get the idea. Whenever you feel like, you should update your package in Debian. The general procedure is not different from your fist upload. Please upload your updated package to ${ config['debexpo.sitename'] } and notify your former sponsor about your change. Alternatively, follow ${ h.tags.link_to("the usual procedures", h.url(controller='sponsor', action='index')) }.</p>
+
+<p>If your package passes through the sponsoring process for <em>a few</em> successive uploads without any notable correction by your sponsor, you can become a <a href="http://wiki.debian.org/DebianMaintainer">Debian Maintainer</a> which grants you limited upload rights to Debian directly. Get in touch with your sponsor to discuss your chances here. You can also <a href="http://www.debian.org/devel/join/">become a Debian Developer</a> giving you full membership in the project.</p>
+
