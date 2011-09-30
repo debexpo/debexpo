@@ -164,7 +164,7 @@ allow_unsigned_uploads = 0
   </table>
   ${ h.html.tags.end_form() }
   </fieldset>
-% if c.debian_developer:
+% if c.debian_developer and config['debexpo.enable_experimental_code']  == 'true':
   <hr />
   <fieldset>
   <strong><legend>${ _('Public sponsor info') }</legend></strong>
