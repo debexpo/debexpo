@@ -68,7 +68,7 @@ t_sponsor_tags = sa.Table(
 
 t_sponsor_metrics_tags = sa.Table(
     'sponsor_metrics_tags', meta.metadata,
-    sa.Column('tag', sa.Integer, sa.ForeignKey('sponsor_tags.tag'), primary_key=True),
+    sa.Column('tag', sa.Text, sa.ForeignKey('sponsor_tags.tag'), primary_key=True),
     sa.Column('user_id', sa.Integer, sa.ForeignKey('sponsor_metrics.user_id'), primary_key=True),
     sa.Column('weight', sa.Integer),
 )
