@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   importcomments.py — Import RFS comments from debian-mentors
+#   importcomments.py — remove old and uploaded packages from Debexpo
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
@@ -39,29 +39,28 @@ from debexpo.cronjobs import BaseCronjob
 from debexpo.lib.email import Email
 from debexpo.lib.filesystem import CheckFiles
 from debexpo.controllers.package import PackageController
+from debexpo.controllers.packages import PackagesController
 from debexpo.model.users import User
 from debexpo.model import meta
 from debian import deb822
 
 import re
 import apt_pkg
-import datatime
+import datetime
 
-class ImportComments(BaseCronjob):
-    def _belongs_to_package(self, mail):
-        # Policy 5.6.1 defines source package names as collection of
-        # lower case letters (a-z), digits (0-9), plus (+) and minus (-)
-        # signs, and periods (.)
-        match = re.search('(Re: |)RFS: ([a-z0-9\+\-\.]+)', mail['subject'], re.IGNORECASE)
-        if (match):
-            packagename = match.group(2)
-            package = meta.session.query(Package).filter_by(name=packagename).first()
-            #self.log.debug("'%s' => %s" % (packagename, package))
-            if not package:
-                return None
-            return package
+class RemoveOldUploads(BaseCronjob):
 
-        return None
+    def _remove_package(self, package, version, reason):
+        user = meta.session.query(User).filter_by(id=package.user_id).one()
+        if user:
+            self.mailer.send([user.email, ],
+                package=package.name,
+                version=version,
+                reason=reason)
+
+        CheckFiles().delete_files_for_package(package)
+        meta.session.delete(package)
+        meta.session.commit()
 
     def _process_changes(self, mail):
         if mail.is_multipart():
@@ -82,31 +81,32 @@ class ImportComments(BaseCronjob):
             for pv in package.package_versions:
                 if pv.distribution == changes['Distribution'] and apt_pkg.VersionCompare(changes['Version'], pv.version) >= 0:
                     self.log.debug("Package %s was was uploaded to Debian - removing it from Expo" % (changes['Source']))
-                    user = meta.session.query(User).filter_by(id=package.user_id).one()
-                    if user:
-                        self.mailer.send([user.email, ],
-                            package=package.name,
-                            version=pv.version,
-                            reason='Package was uploaded to official Debian repositories')
-                    CheckFiles().delete_files_for_package(package)
-                    meta.session.delete(package)
-                    meta.session.commit()
-                    break
+                    self._remove_package(package, pv.version, "Package was uploaded to official Debian repositories")
         else:
             #self.log.debug("Package %s was not uploaded to Expo before - ignoring it" % (changes['Source']))
             pass
 
-    def _process_mentors(self, mail):
-        return
-        if mail.is_multipart():
-            self.log.debug("Mentors message is multipart?!")
-            return
-        package = self._belongs_to_package(mail)
-        if not package:
-            self.log.debug("Post '%s' on debian-mentors seems not to be related to a package I know" % (mail['subject']))
-            return
-        #XXX: Finish me
+    def _remove_uploaded_packages(self):
+        filter_pattern = ('list-id',
+            ['<debian-devel-changes.lists.debian.org>',
+            '<debian-changes.lists.debian.org>',
+            '<debian-backports-changes.lists.debian.org>']
+        )
 
+        if self.mailer.connection_established():
+            for message in self.mailer.unread_messages(filter_pattern):
+                self._process_changes(message)
+                # We can remove processes messages now. They either where not related to us
+                # or we didn't care.
+                self.mailer.remove_message(message)
+                #self.mailer.mark_as_unseen(message)
+
+    def _remove_old_packages(self):
+        now = datetime.datetime.now()
+        for package in self.pkgs_controller._get_packages():
+            if (now - package.package_versions[-1].uploaded) > datetime.timedelta(weeks = 12):
+                self.log.debug("Removing package %s - uploaded on %s" % (package.name, package.package_versions[-1].uploaded))
+                self._remove_package(package, "all versions", "Your package found no sponsor for 12 weeks")
 
     def setup(self):
         self.mailer = Email('upload_removed_from_expo')
@@ -114,35 +114,22 @@ class ImportComments(BaseCronjob):
         # This is useful to debug
         self.mailer.connect_to_server(readonly=False)
         self.pkg_controller = PackageController()
+        self.pkgs_controller = PackagesController()
         apt_pkg.InitSystem()
+        self.last_cruft_run = datetime.datetime(year=1970, month=1, day=1)
+        self.log.debug("%s loaded successfully" % (__name__))
 
     def teardown(self):
         self.mailer.disconnect_from_server()
 
     def invoke(self):
-        filter_pattern = ('list-id',
-            ['<debian-devel-changes.lists.debian.org>',
-            '<debian-mentors.lists.debian.org>',
-            '<debian-changes.lists.debian.org>',
-            '<debian-backports-changes.lists.debian.org>']
-        )
+        self._remove_uploaded_packages()
 
-        if self.mailer.connection_established():
-            for message in self.mailer.unread_messages(filter_pattern):
-                if 'list-id' in message:
-                    if message['list-id'] in ('<debian-devel-changes.lists.debian.org>',
-                            '<debian-changes.lists.debian.org>',
-                            '<debian-backports-changes.lists.debian.org>'):
-                        self._process_changes(message)
-                        # We can remove processes messages now. They either where not related to us
-                        # or we didn't care.
-                        self.mailer.remove_message(message)
-                        continue
-                    elif message['list-id'] == '<debian-mentors.lists.debian.org>':
-                        self._process_mentors(message)
-                        self.mailer.mark_as_unseen(message)
-                        continue
-                #self.mailer.remove_message(message)
+        # We don't need to run our garbage collection of old cruft that often
+        # It's ok if we purge old packages once a day.
+        if (datetime.datetime.now() - self.last_cruft_run) >= datetime.timedelta(hours = 24):
+            self.last_cruft_run = datetime.datetime.now()
+            self._remove_old_packages()
 
-cronjob = ImportComments
+cronjob = RemoveOldUploads
 schedule = datetime.timedelta(minutes = 10)
