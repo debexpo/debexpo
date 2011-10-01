@@ -114,7 +114,11 @@ class CheckFiles(object):
 
         Returns a tuple (orig_filename, orig_filename_was_found)
         """
-        dsc = deb822.Dsc(open(changes_file.get_dsc()))
+        if not changes_file.get_dsc() or open(changes_file.get_dsc()) != None:
+            return (None, constants.ORIG_TARBALL_LOCATION_NOT_FOUND)
+        dscfile = open(changes_file.get_dsc())
+
+        dsc = deb822.Dsc(dscfile)
         for file in dsc['Files']:
             if (file['name'].endswith('orig.tar.gz') or
                 file['name'].endswith('orig.tar.bz2') or
