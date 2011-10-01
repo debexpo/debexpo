@@ -102,4 +102,4 @@ class ImportUpload(BaseCronjob):
 
 
 cronjob = ImportUpload
-schedule = 2
+schedule = datetime.timedelta(minutes = 2)

@@ -46,6 +46,7 @@ import ConfigParser
 import pylons
 import optparse
 import signal
+import datetime
 
 from paste.deploy import appconfig
 from debexpo.config.environment import load_environment
@@ -151,7 +152,7 @@ class Worker(object):
                     self.jobs[plugin] = {
                             'module': getattr(module, 'cronjob')(parent=self, config=pylons.config, log=log),
                             'schedule': getattr(module, 'schedule'),
-                            'last_run': 0
+                            'last_run': datetime.datetime(year=1970, month=1, day=1)
                     }
             else:
                     log.debug("Cronjob %s seems invalid" % (plugin))
@@ -210,11 +211,11 @@ class Worker(object):
 
         while(True):
             for job in self.jobs:
-                self.jobs[job]['last_run'] += 1
-                if self.jobs[job]['last_run'] % self.jobs[job]['schedule'] == 0:
+                if (datetime.datetime.now() - self.jobs[job]['last_run']) >= self.jobs[job]['schedule']:
                     log.debug("Run job %s" % (job))
                     self.jobs[job]['module'].invoke()
-                    self.jobs[job]['last_run'] = 0
+                    self.jobs[job]['last_run'] = datetime.datetime.now()
+                    log.debug("Job %s complete" % (job))
             time.sleep(delay)
 
 if __name__ == '__main__':

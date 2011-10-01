@@ -8,6 +8,7 @@ Writing cronjobs works similar to plugins. The invokation and arguments
 passed are different though.
 A minimal cronjob looks like this::
 
+    import datetime
     from debexpo.cronjobs import BaseCronjob
 
     class ImportUpload(BaseCronjob):
@@ -17,11 +18,11 @@ A minimal cronjob looks like this::
         def teardown(self):
             pass
 
-        def deploy(self):
+        def invoke(self):
             self.log.debug("Hello World")
 
     cronjob = ImportUpload
-    schedule = 5
+    schedule = datetime.timedelta(seconds = 10)
 
 
 The architecture
@@ -34,15 +35,16 @@ module.
 
 Invokation::
     cronjob = ImportUpload
-    schedule = 5
+    schedule = datetime.timedelta(seconds = 10)
 
 The 'cronjob' attribute is an object reference which should be instantiated upon
 cronjob invokation. The 'schedule' attribute defines how often your cronjob should
-invoke your worker method. This must be an integer and has to be interpreted as
-n-th iteration. For example, setting this to 5 means, the Worker thread will
-execute your `deploy` method every 5th iteration. This is a pure abstract counter
-clock, the actual delay is determined by cronjob runtime and setting of the
-`debexpo.cronjob_delay` variable in your ini file.
+invoke your worker method. This must be a datetime.timedelta object. This is a soft
+guarantee. The Worker thread will gurantee you not to run the job more often than you
+specified, but it will not invoke it precisely for every delta. Your cronjob will not
+be invoked if another cronjob is still pending or running once your delta expires.
+Additionally the Worker thread does not execute the worker queue more often than every
+`debexpo.cronjob_delay` milliseconds.
 
 The constructor
 ===============
@@ -77,7 +79,7 @@ method instead
 The worker method invokation
 ============================
 
-Implement the `deploy` method as your working horse. It will be called regularly
+Implement the `invoke` method as your working horse. It will be called regularly
 and run your stuff. The Worker is designed as single threaded application, which
 means your method will block the entire cron job architecture. Don't do anything
 which shall not be run synchronously.

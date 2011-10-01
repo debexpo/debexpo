@@ -45,6 +45,7 @@ from debian import deb822
 
 import re
 import apt_pkg
+import datatime
 
 class ImportComments(BaseCronjob):
     def _belongs_to_package(self, mail):
@@ -144,4 +145,4 @@ class ImportComments(BaseCronjob):
                 #self.mailer.remove_message(message)
 
 cronjob = ImportComments
-schedule = 1
+schedule = datetime.timedelta(minutes = 10)
