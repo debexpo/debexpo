@@ -74,30 +74,30 @@ class ImportUpload(BaseCronjob):
 
         # 2) Process uploads
         for file in glob.glob( os.path.join(self.config['debexpo.upload.incoming'], '*.changes') ):
-            self.log.debug("Import upload: %s\n" % (file))
+            self.log.debug("Import upload: %s" % (file))
             command = [ self.config['debexpo.importer'], '-i', self.config['global_conf']['__file__'], '-c', file ]
-            subprocess.Popen(command, close_fds=True)
+            subprocess.Popen(command, close_fds=True).wait()
 
         # 3) Scan for incomplete uploads and other crap people might have uploaded through FTP, put uploads on hold
         filenames = [name for (name, _) in self.stale_files]
         file_to_check = []
         for file in glob.glob( os.path.join(self.config['debexpo.upload.incoming'], '*') ):
             if self.files.allowed_upload(file):
-                self.log.debug("Incomplete upload: %s\n" % (file))
+                self.log.debug("Incomplete upload: %s" % (file))
                 if not file in filenames:
                     self.stale_files.append((file,datetime.datetime.now()))
                 else:
                     file_to_check.append(file)
             else:
                 if os.path.isfile(file):
-                    self.log.warning("Remove unknown file: %s\n" % (file))
+                    self.log.warning("Remove unknown file: %s" % (file))
                     os.remove(file)
 
         for file in file_to_check:
             for (file_known, last_check) in self.stale_files:
                 if file == file_known and (datetime.datetime.now() - last_check) > datetime.timedelta(minutes = 60):
                     if os.path.isfile(file):
-                        self.log.warning("Remove incomplete upload: %s\n" % (file))
+                        self.log.warning("Remove incomplete upload: %s" % (file))
                         os.remove(file)
 
 
