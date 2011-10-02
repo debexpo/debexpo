@@ -1,5 +1,24 @@
 debexpo (UNRELEASED)
 
-    * <fill me in>
+    * Support for sponsoring guidelines. Debian Developer are asked to register at
+      mentors.debian.net (if not done already) and provide there their personal
+      sponsoring guidelines. That's is a semi-structured description text to
+      point sponsors to individual developers who are interested to sponsor some
+      packages.
+
+    * Provide worker tasks which run background jobs on the Expo server. Aside of
+      this technical detail, this has the visible effect to our users that
+      packages are automatically being removed from mentors.debian.net if:
+
+          + The package was uploaded to an official Debian archive
+          + The package did not find a sponsor within 12 weeks. You can always
+            reupload the package before, or after it is being removed from Expo to
+            reset the timer.
+
+    * Provide public profile pages for both, maintainer and developers. For
+      maintainer their package list is being displayed among their profile data.
+      On the other hand, for Debian Developers their sponsoring guidelines are
+      being displayed.
+      Both can disable their profiles if desired.
 
  -- Arno Töll <debian@toell.net> Fri, 30 Sep 2011 17:39:10 +0200
