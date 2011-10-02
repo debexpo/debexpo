@@ -45,6 +45,7 @@ from debexpo.lib.base import BaseController, c, config, render, session, \
 from debexpo.lib import constants
 from debexpo.model.sponsor_metrics import SponsorMetrics, SponsorTags, SponsorMetricsTags
 from debexpo.model.users import User
+from debexpo.model.user_countries import UserCountry
 
 from sqlalchemy.orm import joinedload, contains_eager
 
@@ -181,3 +182,20 @@ class SponsorController(BaseController):
             abort(404)
 
         return render('/sponsor/index.mako')
+
+
+    def developer(self, id):
+        if not config['debexpo.enable_experimental_code'].lower() == 'true':
+            return render('/sponsor/index-old.mako')
+
+        log.debug("Getting profile for user = %s" % (id))
+
+        c.constants = constants
+        c.profile = meta.session.query(User).filter_by(email=id).first()
+        if not c.profile:
+            abort(404)
+        c.countries = { -1: '' }
+        for country in meta.session.query(UserCountry).all():
+            c.countries[country.id] = country.name
+
+        return render('/sponsor/profile.mako')

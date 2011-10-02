@@ -52,6 +52,7 @@ from debexpo.model.package_versions import PackageVersion
 from debexpo.model.packages import Package
 from debexpo.model.users import User
 from debexpo.lib import constants
+from debexpo.model.user_countries import UserCountry
 
 log = logging.getLogger(__name__)
 
@@ -205,14 +206,15 @@ class PackagesController(BaseController):
             email = user.email
         else:
             log.warning('Could not find user')
-            packages = []
-            username = id
-            email = id
+            abort(404)
 
+        c.countries = { -1: '' }
+        for country in meta.session.query(UserCountry).all():
+            c.countries[country.id] = country.name
+        c.countries = meta.session.query(UserCountry).all()
+        c.constants = constants
+        c.profile = user
         c.config = config
-        c.email = email
-        c.packages = packages
-        c.username = username
         c.feed_url = url('packages_filter_feed', filter='uploader', id=id)
         c.deltas = self._get_timedeltas(packages)
         return render('/packages/uploader.mako')
