@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   importcomments.py — remove old and uploaded packages from Debexpo
+#   removeolduploads.py -- remove old and uploaded packages from Debexpo
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
