@@ -41,12 +41,15 @@ from debexpo.lib.filesystem import CheckFiles
 from debexpo.controllers.package import PackageController
 from debexpo.controllers.packages import PackagesController
 from debexpo.model.users import User
+from debexpo.model.data_store import DataStore
 from debexpo.model import meta
 from debian import deb822
 
 import re
 import apt_pkg
 import datetime
+
+__namespace__ = '_remove_uploads_'
 
 class RemoveOldUploads(BaseCronjob):
 
@@ -89,11 +92,14 @@ class RemoveOldUploads(BaseCronjob):
     def _remove_uploaded_packages(self):
 
         if self.mailer.connection_established():
-            for list_name in self.lists:
-                for message in self.mailer.unread_messages(list_name, self.lists[list_name]):
+            lists = meta.session.query(DataStore).filter(DataStore.namespace == __namespace__).all()
+            for list_name in lists:
+                for message in self.mailer.unread_messages(list_name.code, list_name.value):
                     self._process_changes(message)
-                self.lists[list_name] = message['X-Debexpo-Message-Number']
-                self.log.debug("Processed all messages up to #%s on %s" % (self.lists[list_name], list_name))
+                list_name.value = message['X-Debexpo-Message-Number']
+                self.log.debug("Processed all messages up to #%s on %s" % (list_name.code, list_name.value))
+                meta.session.merge(list_name)
+            meta.session.commit()
 
     def _remove_old_packages(self):
         now = datetime.datetime.now()
@@ -111,11 +117,6 @@ class RemoveOldUploads(BaseCronjob):
         self.last_cruft_run = datetime.datetime(year=1970, month=1, day=1)
         self.log.debug("%s loaded successfully" % (__name__))
 
-        self.lists = {
-                'gmane.linux.debian.devel.changes.unstable': 249200,
-                'gmane.linux.debian.devel.changes.stable': 5500,
-                'gmane.linux.debian.backports.changes': 14000
-        }
 
 
     def teardown(self):
