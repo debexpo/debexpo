@@ -51,7 +51,7 @@ import pylons
 import debexpo.lib.helpers as h
 from gettext import gettext
 import routes.util
-import imaplib
+import nntplib
 import email.parser
 
 log = logging.getLogger(__name__)
@@ -132,64 +132,47 @@ class Email(object):
             else:
                 log.error("failed: %s" % (msg))
 
-    def unread_messages(self, filter_pattern):
+    def unread_messages(self, list_name, changed_since):
         if not self.connection_established():
             return
 
-        (err, messages) = self.imap.search(None, '(UNSEEN)')
-        self._check_error("IMAP search messages", err)
+        try:
+            (_, count, first, last, _) = self.nntp.group(list_name)
+            log.debug("Fetching messages %s to %s on %s" % (changed_since, last, list_name))
+        except nntplib.NNTPError as e:
+            log.error("Connecting to NNTP server %s failed: %s" % (pylons.config['debexpo.nntp_server'], str(e)))
+            return
 
-        for msg_id in messages[0].split(" "):
-            #(err, msginfo) = self.imap.fetch(msg_id, '(BODY[HEADER.FIELDS (SUBJECT FROM LIST-ID)])')
-            (err, msginfo) = self.imap.fetch(msg_id, 'RFC822')
-            self._check_error("IMAP fetch message", err)
-            if (err != 'OK'):
-                continue
-            ep = email.parser.Parser().parsestr(msginfo[0][1])
-            ep['X-Debexpo-Message-ID'] = msg_id;
-            if not filter_pattern[0] in ep:
-                log.debug("No such header in message: %s" % (filter_pattern[0]))
-                continue
-            if ep[filter_pattern[0]] in filter_pattern[1]:
+        try:
+            (_, messages) = self.nntp.xover(str(changed_since), str(last))
+
+            for (msg_num, _, _, _, msg_id, _, _, _) in messages:
+                (_, _, _, response) = self.nntp.article(msg_id)
+                ep = email.parser.Parser().parsestr(reduce(lambda x,xs: x+"\n"+xs, response))
+                ep['X-Debexpo-Message-ID'] = msg_id;
+                ep['X-Debexpo-Message-Number'] = msg_num;
                 yield ep
-            else:
-                log.debug("Unrecognized message in mailbox: '%s'" % ep["subject"])
+        except nntplib.NNTPError as e:
+            log.error("Connecting to NNTP server %s failed: %s" % (pylons.config['debexpo.nntp_server'], str(e)))
+            return
 
-
-    def connect_to_server(self, readonly=False):
+    def connect_to_server(self):
         self.established = False
-        self.imap = imaplib.IMAP4(pylons.config['debexpo.imap_server'])
-        (err, data) = self.imap.login(pylons.config['debexpo.imap_user'], pylons.config['debexpo.imap_password'])
-        self._check_error("IMAP login", err, data)
-        if err == 'OK':
-            self.established = True
+        try:
+            self.nntp = nntplib.NNTP(pylons.config['debexpo.nntp_server'])
+        except nntplib.NNTPError as e:
+            log.error("Connecting to NNTP server %s failed: %s" % (pylons.config['debexpo.nntp_server'], str(e)))
+            return
 
-        (err, data) = self.imap.select("INBOX", readonly=readonly)
-        self._check_error("IMAP select", err, data)
+        self.established = True
 
     def disconnect_from_server(self):
-        self.imap.close()
-        self.imap.logout()
+        self.nntp.quit()
 
 
     def connection_established(self):
         if not self.established:
-            log.debug("Connection to IMAP server not established");
+            log.debug("Connection to NNTP server not established");
             return False
         return True
 
-    def remove_message(self, message):
-        if 'X-Debexpo-Message-ID' in message:
-            log.debug("Deleteing message ID %s: '%s'" % (message['X-Debexpo-Message-ID'], message['Subject']))
-            (err, msginfo) = self.imap.store(message['X-Debexpo-Message-ID'], '+FLAGS', r'(\Deleted)')
-            self._check_error("IMAP delete message", err)
-            return
-        log.warning("Unknown message passed to remove_message()")
-
-    def mark_as_unseen(self, message):
-        if 'X-Debexpo-Message-ID' in message:
-            log.debug("Marking message ID %s: '%s' as unseen" % (message['X-Debexpo-Message-ID'], message['Subject']))
-            (err, msginfo) = self.imap.store(message['X-Debexpo-Message-ID'], '-FLAGS', r'(\Seen)')
-            self._check_error("IMAP mark message", err)
-            return
-        log.warning("Unknown message passed to mark_as_unseen()")

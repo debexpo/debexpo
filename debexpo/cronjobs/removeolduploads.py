@@ -87,19 +87,13 @@ class RemoveOldUploads(BaseCronjob):
             pass
 
     def _remove_uploaded_packages(self):
-        filter_pattern = ('list-id',
-            ['<debian-devel-changes.lists.debian.org>',
-            '<debian-changes.lists.debian.org>',
-            '<debian-backports-changes.lists.debian.org>']
-        )
 
         if self.mailer.connection_established():
-            for message in self.mailer.unread_messages(filter_pattern):
-                self._process_changes(message)
-                # We can remove processes messages now. They either where not related to us
-                # or we didn't care.
-                self.mailer.remove_message(message)
-                #self.mailer.mark_as_unseen(message)
+            for list_name in self.lists:
+                for message in self.mailer.unread_messages(list_name, self.lists[list_name]):
+                    self._process_changes(message)
+                self.lists[list_name] = message['X-Debexpo-Message-Number']
+                self.log.debug("Processed all messages up to #%s on %s" % (self.lists[list_name], list_name))
 
     def _remove_old_packages(self):
         now = datetime.datetime.now()
@@ -110,14 +104,19 @@ class RemoveOldUploads(BaseCronjob):
 
     def setup(self):
         self.mailer = Email('upload_removed_from_expo')
-        # Set readonly=True to keep messages untouched on the server
-        # This is useful to debug
-        self.mailer.connect_to_server(readonly=False)
+        self.mailer.connect_to_server()
         self.pkg_controller = PackageController()
         self.pkgs_controller = PackagesController()
         apt_pkg.InitSystem()
         self.last_cruft_run = datetime.datetime(year=1970, month=1, day=1)
         self.log.debug("%s loaded successfully" % (__name__))
+
+        self.lists = {
+                'gmane.linux.debian.devel.changes.unstable': 249200,
+                'gmane.linux.debian.devel.changes.stable': 5500,
+                'gmane.linux.debian.backports.changes': 14000
+        }
+
 
     def teardown(self):
         self.mailer.disconnect_from_server()
