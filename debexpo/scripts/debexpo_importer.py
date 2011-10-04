@@ -131,6 +131,12 @@ class Importer(object):
         if os.path.exists(self.changes_file):
                 os.remove(self.changes_file)
 
+    def _remove_temporary_files(self):
+        if hasattr(self, 'files_to_remove'):
+            for file in self.files_to_remove:
+                if os.path.exists(file):
+                    os.remove(file)
+
     def _remove_files(self):
         """
         Removes all the files uploaded.
@@ -141,6 +147,7 @@ class Importer(object):
                     os.remove(file)
 
         self._remove_changes()
+        self._remove_temporary_files()
 
     def _fail(self, reason, use_log=True):
         """
@@ -381,6 +388,7 @@ class Importer(object):
             self._reject("Your changes file appears invalid. Refusing your upload\n%s" % (e.message))
 
         self.files = self.changes.get_files()
+        self.files_to_remove = []
 
         distribution = self.changes['Distribution'].lower()
         allowed_distributions = ('oldstable', 'stable', 'unstable', 'experimental', 'stable-backports', 'oldstable-backports',
@@ -395,14 +403,18 @@ class Importer(object):
         # Look whether the orig tarball is present, and if not, try and get it from
         # the repository.
         (orig, orig_file_found) = filecheck.find_orig_tarball(self.changes)
-        if orig and not orig_file_found == constants.ORIG_TARBALL_LOCATION_NOT_FOUND:
+        if orig_file_found != constants.ORIG_TARBALL_LOCATION_LOCAL:
             log.debug("Upload does not contain orig.tar.gz - trying to find it elsewhere")
+        if orig and orig_file_found == constants.ORIG_TARBALL_LOCATION_REPOSITORY:
             filename = os.path.join(pylons.config['debexpo.repository'],
                 self.changes.get_pool_path(), orig)
             if os.path.isfile(filename):
                 log.debug("Found tar.gz in repository as %s" % (filename))
                 shutil.copy(filename, pylons.config['debexpo.upload.incoming'])
-                #self.files.append(orig)
+                # We need the orig.tar.gz for the import run, plugins need to extract the source package
+                # also Lintian needs it. However the orig.tar.gz is in the repository already, so we can
+                # remove it later
+                self.files_to_remove.append(orig)
 
         destdir = pylons.config['debexpo.repository']
 
@@ -498,6 +510,7 @@ class Importer(object):
             log.debug("Installing new file %s" % (file))
             shutil.move(file, os.path.join(destdir, file))
 
+        self._remove_temporary_files()
         # Create the database rows
         self._create_db_entries(qa)
 

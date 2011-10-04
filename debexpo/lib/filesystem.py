@@ -114,31 +114,35 @@ class CheckFiles(object):
 
         Returns a tuple (orig_filename, orig_filename_was_found)
         """
-        if not changes_file.get_dsc() or open(changes_file.get_dsc()) != None:
-            return (None, constants.ORIG_TARBALL_LOCATION_NOT_FOUND)
-        dscfile = open(changes_file.get_dsc())
 
+        orig_name = None
+        if not changes_file.get_dsc() or open(changes_file.get_dsc()) != None:
+            return (orig_name, constants.ORIG_TARBALL_LOCATION_NOT_FOUND)
+
+        dscfile = open(changes_file.get_dsc())
         dsc = deb822.Dsc(dscfile)
         for file in dsc['Files']:
             if (file['name'].endswith('orig.tar.gz') or
                 file['name'].endswith('orig.tar.bz2') or
                 file['name'].endswith('orig.tar.xz')):
-                    full_filename = os.path.join(pylons.config['debexpo.repository'], changes_file.get_pool_path(), file['name'])
+                    # We know how the orig.tar.gz should be called - at least.
+                    orig_name = file['name']
+                    full_filename = os.path.join(pylons.config['debexpo.repository'], changes_file.get_pool_path(), orig_name)
                     # tar.gz was found in the local directory
                     if os.path.isfile(file['name']):
                         sum = md5sum(file['name'])
                         if sum == file['md5sum']:
-                            return (file['name'], constants.ORIG_TARBALL_LOCATION_LOCAL)
+                            return (orig_name, constants.ORIG_TARBALL_LOCATION_LOCAL)
                         # tar.gz was found, but does not seem to be the same file
-                        break
                     # tar.gz was found in the repository
                     elif os.path.isfile(full_filename):
-                        return (file['name'], constants.ORIG_TARBALL_LOCATION_REPOSITORY)
+                        return (orig_name, constants.ORIG_TARBALL_LOCATION_REPOSITORY)
                     # tar.gz was expected but not found at all
                     else:
-                        return (file['name'], constants.ORIG_TARBALL_LOCATION_NOT_FOUND)
+                        return (orig_name, constants.ORIG_TARBALL_LOCATION_NOT_FOUND)
 
-        return (None, constants.ORIG_TARBALL_LOCATION_NOT_FOUND)
+        # We should neve end up here
+        return (orig_name, constants.ORIG_TARBALL_LOCATION_NOT_FOUND)
 
 
     def find_files_for_package(self, package, absolute_path=False):

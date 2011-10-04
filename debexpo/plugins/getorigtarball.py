@@ -82,6 +82,10 @@ class GetOrigTarballPlugin(BasePlugin):
             log.debug('%s found successfully', orig)
             return
 
+        if not orig:
+            log.debug("Couldn't determine name of the orig.tar.gz?")
+            return
+
         for dscfile in dsc['Files']:
             dscfile['size'] = int(dscfile['size'])
             if orig == dscfile['name']:
@@ -90,6 +94,9 @@ class GetOrigTarballPlugin(BasePlugin):
                         return
                 orig = dscfile
                 break
+        else:
+            log.debug("dsc does not reference our expected orig.tar.gz name '%s'" % (orig))
+            return
 
         log.debug('Could not find %s; looking in Debian for it', orig['name'])
 
