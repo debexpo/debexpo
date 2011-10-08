@@ -191,11 +191,19 @@ class SponsorController(BaseController):
         log.debug("Getting profile for user = %s" % (id))
 
         c.constants = constants
-        c.profile = meta.session.query(User).filter_by(email=id).first()
-        if not c.profile:
+
+        c.sponsor = meta.session.query(SponsorMetrics)\
+            .options(joinedload(SponsorMetrics.user))\
+            .options(joinedload(SponsorMetrics.tags))\
+            .filter(SponsorMetrics.availability >= constants.SPONSOR_METRICS_RESTRICTED)\
+            .filter(User.email == id)\
+            .first()
+        if not c.sponsor:
             abort(404)
+        c.profile = c.sponsor.user
         c.countries = { -1: '' }
         for country in meta.session.query(UserCountry).all():
             c.countries[country.id] = country.name
+
 
         return render('/sponsor/profile.mako')

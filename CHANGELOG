@@ -21,4 +21,10 @@ debexpo (UNRELEASED)
       being displayed.
       Both can disable their profiles if desired.
 
+
+    * Fix a bug in the orig.tar.gz handling (again). Make sure, the orig.tar.gz can
+      be overwritten if the user uploaded a tarball which does not match the MD5 sum
+      of an already known orig.tar.gz
+
+
  -- Arno Töll <debian@toell.net> Fri, 30 Sep 2011 17:39:10 +0200
