@@ -26,5 +26,7 @@ debexpo (UNRELEASED)
       be overwritten if the user uploaded a tarball which does not match the MD5 sum
       of an already known orig.tar.gz
 
+    * Run the QA plugin again, link to the PTS page if the package is in Debian already.
+      Thanks Andrew Starr-Bochicchio for providing a patch
 
- -- Arno Töll <debian@toell.net> Fri, 30 Sep 2011 17:39:10 +0200
+ -- Arno Töll <debian@toell.net> Sat, 05 Nov 2011 14:00:10 +0100
