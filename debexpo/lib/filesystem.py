@@ -116,7 +116,7 @@ class CheckFiles(object):
         """
 
         orig_name = None
-        if not changes_file.get_dsc() or open(changes_file.get_dsc()) != None:
+        if not changes_file.get_dsc() or open(changes_file.get_dsc()) == None:
             return (orig_name, constants.ORIG_TARBALL_LOCATION_NOT_FOUND)
 
         dscfile = open(changes_file.get_dsc())
