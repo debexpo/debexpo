@@ -130,7 +130,7 @@ class PackagesController(BaseController):
         # Render the page.
         c.config = config
         c.packages = packages
-        c.feed_url = url('packages_feed')
+        c.feed_url = url('feed')
         c.deltas = self._get_timedeltas(packages)
         return render('/packages/index.mako')
 
