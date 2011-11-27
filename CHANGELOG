@@ -29,4 +29,10 @@ debexpo (UNRELEASED)
     * Run the QA plugin again, link to the PTS page if the package is in Debian already.
       Thanks Andrew Starr-Bochicchio for providing a patch
 
+
+    * Provide the correct RSS feed URL in the packages index page and fix HTML
+      display issues on the same page.
+      Thanks Paul Wise for providing a patch
+
+
  -- Arno Töll <debian@toell.net> Sat, 05 Nov 2011 14:00:10 +0100
