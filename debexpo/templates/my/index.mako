@@ -300,4 +300,3 @@ allow_unsigned_uploads = 0
   ${ h.html.tags.end_form() }
 % endif
 
-</fieldset>

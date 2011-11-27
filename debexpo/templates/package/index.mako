@@ -241,5 +241,6 @@ ${ h.html.tags.end_form() }
 
 % endif
 
+</fieldset>
 
 % endfor
