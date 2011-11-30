@@ -410,18 +410,28 @@ hr {
 	height: 1px;
 	margin: 1.4375em 0 1.5em 0;
 }
+
+/* Make pre's wrap to the window */
 pre {
 	margin: 1.5em 0 1.5em 0;
 	overflow: auto;
 	font-family: monospace;
 	white-space: pre;
 	color: black;
+    white-space: normal;
 }
+pre { white-space: -moz-pre-wrap; }
+pre { white-space: pre-wrap; }
+
 tt, code {
 	font-family: monospace;
 	white-space: pre;
 	color: black;
+    white-space: normal;
 }
+tt, code { white-space: -moz-pre-wrap; }
+tt, code { pre-wrap; }
+
 dt {
 	margin: 1.5em 0 0 0;
 	font-weight: bold;
