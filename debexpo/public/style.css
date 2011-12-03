@@ -419,6 +419,7 @@ pre {
 	white-space: pre;
 	color: black;
     white-space: normal;
+    width: 600px;
 }
 pre { white-space: -moz-pre-wrap; }
 pre { white-space: pre-wrap; }

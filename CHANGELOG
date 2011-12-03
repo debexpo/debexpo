@@ -35,7 +35,7 @@ debexpo (UNRELEASED)
       Thanks Paul Wise for providing a patch
 
     * Make comments (and other pre-formatted texts flow properly in the browser).
-      Again, thanks Paul Wise for telling us console hackers how pure vain
-      graphical interfaces need to be designed.
+      Again, thanks Paul Wise and Sasa Bozic for telling us console hackers how
+      pure vain graphical interfaces need to be designed.
 
  -- Arno Töll <debian@toell.net> Sat, 05 Nov 2011 14:00:10 +0100
