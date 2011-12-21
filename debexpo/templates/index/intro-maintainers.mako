@@ -26,9 +26,9 @@ ${ c.custom_html }
         <dd>A must-read resource to learn about technical specification and technical requirements of Debian packages.</dd>
         <dt><a href="http://www.debian.org/doc/manuals/maint-guide/">New Maintainer's Guide</a></dt>
         <dd>A must-read resource to learn basics of Debian source packages</dd>
-        <dt><a href="http://anonscm.debian.org/gitweb/?p=collab-maint/packaging-tutorial.git;a=blob_plain;f=packaging-tutorial.pdf;hb=8d4e3da6e828af7b3ccaf3bee0c25401958bd700">Lucas Nussbaum's packaging tutorial</a></dt>
+        <dt><a href="http://www.debian.org/doc/manuals/packaging-tutorial/packaging-tutorial">Lucas Nussbaum's packaging tutorial</a></dt>
         <dd>A quick introduction to Debian packaging</dd>
-        <dt><a href="http://www.debian.org/doc/manuals/developers-reference/index.html">Developer's Reference</a></dt>
+        <dt><a href="http://www.debian.org/doc/manuals/developers-reference/">Developer's Reference</a></dt>
         <dd>A comprehensive manual describing typical workflows and best practices related to Debian packages</dd>
         <dt><a href="http://wiki.debian.org/DebianMentorsFaq">Debian Mentors FAQ</a> (Debian Wiki)</dt>
         <dd>Another valuable resource to learn about common terms and workflows related to Debian</dd>
@@ -131,7 +131,7 @@ If you did everything right, you will get a confirmation mail from our site and 
 
 <h2>7. Maintaining your package in Debian</h2>
 
-<p>Please see the corresponding chapter in the <a href="http://www.debian.org/doc/manuals/maint-guide/update.en.html">New Maintainer's Guide</a> to get the idea. Whenever you feel like, you should update your package in Debian. The general procedure is not different from your fist upload. Please upload your updated package to ${ config['debexpo.sitename'] } and notify your former sponsor about your change. Alternatively, follow ${ h.tags.link_to("the usual procedures", h.url(controller='sponsor', action='index')) }.</p>
+<p>Please see the corresponding chapter in the <a href="http://www.debian.org/doc/manuals/maint-guide/update">New Maintainer's Guide</a> to get the idea. Whenever you feel like, you should update your package in Debian. The general procedure is not different from your fist upload. Please upload your updated package to ${ config['debexpo.sitename'] } and notify your former sponsor about your change. Alternatively, follow ${ h.tags.link_to("the usual procedures", h.url(controller='sponsor', action='index')) }.</p>
 
 <p>If your package passes through the sponsoring process for <em>a few</em> successive uploads without any notable correction by your sponsor, you can become a <a href="http://wiki.debian.org/DebianMaintainer">Debian Maintainer</a> which grants you limited upload rights to Debian directly. Get in touch with your sponsor to discuss your chances here. You can also <a href="http://www.debian.org/devel/join/">become a Debian Developer</a> giving you full membership in the project.</p>
 

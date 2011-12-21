@@ -15,9 +15,9 @@ ${ c.config['debexpo.sitename'] } is a rather complex service. Things can go wro
         <dd>A must read resource to learn about technical specification and technical requirements of Debian packages.</dd>
         <dt><a href="http://www.debian.org/doc/manuals/maint-guide/">New Maintainer's Guide</a></dt>
         <dd>A must read resource to learn basics of Debian source packages</dd>
-        <dt><a href="http://anonscm.debian.org/gitweb/?p=collab-maint/packaging-tutorial.git;a=blob_plain;f=packaging-tutorial.pdf;hb=8d4e3da6e828af7b3ccaf3bee0c25401958bd700">Lucas Nussbaum's packaging tutorial</a></dt>
+        <dt><a href="http://www.debian.org/doc/manuals/packaging-tutorial/packaging-tutorial">Lucas Nussbaum's packaging tutorial</a></dt>
         <dd>A quick introduction to Debian packaging</dd>
-        <dt><a href="http://www.debian.org/doc/manuals/developers-reference/index.html">Developer's Reference</a></dt>
+        <dt><a href="http://www.debian.org/doc/manuals/developers-reference/">Developer's Reference</a></dt>
         <dd>A comprehensive manual describing typical workflows and best practices related to Debian packages</dd>
         <dt><a href="http://wiki.debian.org/DebianMentorsFaq">Debian Mentors FAQ</a> (Debian Wiki)</dt>
         <dd>Another valuable resource to learn about common terms and workflows related to Debian</dd>
