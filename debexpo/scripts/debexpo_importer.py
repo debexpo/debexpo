@@ -392,7 +392,7 @@ class Importer(object):
 
         distribution = self.changes['Distribution'].lower()
         allowed_distributions = ('oldstable', 'stable', 'unstable', 'experimental', 'stable-backports', 'oldstable-backports',
-            'oldstable-backports-sloppy', 'stable-security', 'testing-security', 'stable-proposed-updates',
+            'oldstable-backports-sloppy', 'oldstable-security', 'stable-security', 'testing-security', 'stable-proposed-updates',
             'testing-proposed-updates', 'sid', 'wheezy', 'squeeze', 'lenny', 'squeeze-backports', 'lenny-backports',
             'lenny-security', 'lenny-backports-sloppy', 'lenny-volatile', 'squeeze-security', 'squeeze-updates', 'wheezy-security')
         if distribution not in allowed_distributions:
