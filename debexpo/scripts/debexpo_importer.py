@@ -378,6 +378,29 @@ class Importer(object):
         if self.user_id:
             self.user = meta.session.query(User).filter_by(id=self.user_id).one()
 
+        # If the user ID wasn't specified using the "-u" option then try
+        # to determine it from the "Changed-By:" mentioned in the changes
+        # file.
+        if self.user_id is None:
+            log.debug("Option '-u' was not given. Determining user from 'Changed-By:' field.")
+            maintainer_string = self.changes.get('Changed-By')
+            log.debug("Changed-By is: %s", maintainer_string)
+            maintainer_realname, maintainer_email_address = email.utils.parseaddr(maintainer_string)
+            log.debug("Changed-By's email address is: %s", maintainer_email_address)
+            self.user = meta.session.query(User).filter_by(
+                    email=maintainer_email_address).filter_by(verification=None).first()
+            if self.user is None:
+                self._fail('Couldn\'t find user with email address %s. Exiting.' % maintainer_email_address)
+            log.debug("User found in database. Has id: %s", self.user.id)
+        else:
+            # Get uploader's User object
+            self.user = meta.session.query(User).filter_by(id=self.user_id).filter_by(verification=None).first()
+            if self.user is None:
+                self._remove_changes()
+                self._reject('Couldn\'t find user with id %s. Exiting.' % self.user_id)
+
+
+
         # Try parsing the changes file, but fail if there's an error.
         try:
             self.changes = Changes(filename=self.changes_file)
@@ -418,25 +441,6 @@ class Importer(object):
 
         destdir = pylons.config['debexpo.repository']
 
-        # If the user ID wasn't specified using the "-u" option then try
-        # to determine it from the "Changed-By:" mentioned in the changes
-        # file.
-        if self.user_id is None:
-            log.debug("Option '-u' was not given. Determining user from 'Changed-By:' field.")
-            maintainer_string = self.changes.get('Changed-By')
-            log.debug("Changed-By is: %s", maintainer_string)
-            maintainer_realname, maintainer_email_address = email.utils.parseaddr(maintainer_string)
-            log.debug("Changed-By's email address is: %s", maintainer_email_address)
-            self.user = meta.session.query(User).filter_by(
-                    email=maintainer_email_address).filter_by(verification=None).first()
-            if self.user is None:
-                self._fail('Couldn\'t find user with email address %s. Exiting.' % maintainer_email_address)
-            log.debug("User found in database. Has id: %s", self.user.id)
-        else:
-            # Get uploader's User object
-            self.user = meta.session.query(User).filter_by(id=self.user_id).filter_by(verification=None).first()
-            if self.user is None:
-                self._fail('Couldn\'t find user with id %s. Exiting.' % self.user_id)
 
         # Check whether the files are already present
         log.debug("Checking whether files are already in the repository")
