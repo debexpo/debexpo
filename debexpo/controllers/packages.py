@@ -211,7 +211,6 @@ class PackagesController(BaseController):
         c.countries = { -1: '' }
         for country in meta.session.query(UserCountry).all():
             c.countries[country.id] = country.name
-        c.countries = meta.session.query(UserCountry).all()
         c.constants = constants
         c.profile = user
         c.config = config

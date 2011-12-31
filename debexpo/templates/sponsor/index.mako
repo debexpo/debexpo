@@ -137,7 +137,7 @@ To help you find a sponsor interested in your package, they can formulate sponso
     <% sponsors_found = True %>
     <tr>
         <td>
-            <span style="font-size:120%"><strong>${ sponsor.user.name }</strong></span>
+            <span style="font-size:120%"><strong>${ h.tags.link_to(sponsor.user.name, h.url(controller='sponsor', action='developer', id=sponsor.user.email)) }</strong></span>
             <br />
             <ul>
             % if sponsor.user.email and sponsor.allowed(c.constants.SPONSOR_CONTACT_METHOD_EMAIL):
