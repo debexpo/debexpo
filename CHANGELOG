@@ -38,6 +38,8 @@ debexpo (UNRELEASED)
       pure vain graphical interfaces need to be designed.
 
     * Allow uploads to oldstable-security and fix a substantial amount of bugs
-      causing the importer to crash previously
+      causing the importer to crash previously.
 
- -- Arno Töll <debian@toell.net> Sat, 30 Dec 2011 23:42:10 +0100
+    * For those who didn't notice yet: mentors.debian.net now supports SSL.
+
+ -- Arno Töll <debian@toell.net> Sat, 21 Dec 2011 16:22:10 +0100
