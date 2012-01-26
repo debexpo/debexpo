@@ -64,6 +64,9 @@ def make_map(config):
     map.connect('intro-maintainers', '/intro-maintainers',
                 controller='index', action='intro_maintainers')
     map.connect('sponsors', '/sponsors', controller='sponsor', action='index')
+    map.connect('packaging-team', '/sponsors/spackaging-team', controller='sponsor', action='packaging_team')
+    map.connect('guidelines', '/sponsors/guidelines', controller='sponsor', action='guidelines')
+    map.connect('rfs-howto', '/sponsors/rfs-howto', controller='sponsor', action='rfs_howto')
     map.connect('sponsor-developer', '/sponsors/profile/{id}', controller='sponsor', action='developer')
     map.connect('sponsor_tag_save', '/sponsors/save', controller='sponsor', action='save')
     map.connect('sponsor_tag_clear', '/sponsors/clear', controller='sponsor', action='clear')

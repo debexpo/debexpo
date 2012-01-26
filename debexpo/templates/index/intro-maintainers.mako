@@ -121,7 +121,7 @@ If you did everything right, you will get a confirmation mail from our site and 
 <p>Do not give up. Sponsoring can take a while. Nonetheless, here are a few hints:</p>
 
 <ul>
-    <li>Ask again on the debian-mentors mailing list. It is common practice to ask again after a few weeks.</li>
+    <li>File a follow-up request to your existing <em>sponsorship-requests</em> pseudo-package.</li>
     <li>Offer your package directly to relevant teams and individual developers. We made a ${ h.tags.link_to("a list of sponsors", h.url(controller='sponsor', action='index')) }, eventually willing to upload packages for you. <em>Please don't contact every sponsor listed there. Instead, read their individual requirements and choose the sponsor which matches you and your package best</em>.
 </ul>
 
