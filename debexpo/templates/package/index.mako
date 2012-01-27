@@ -148,20 +148,17 @@
 </table>
 
 % if package_version.package_info:
-<h3>${ _('QA information')}</h3>
+<h3 class="qa-toplevel-header">${ _('QA information') }</h3>
 
-<table>
-
+<ul class="qa">
     ## Print result from plugins
-    % for pkginfo in package_version.package_info:
-        % if pkginfo.data:
-            <tr class="pkg-list">
-                <th>${ h.constants.PLUGIN_SEVERITY[pkginfo.severity] }:</th>
-                <td>${ h.converters.nl2br(pkginfo.data) }</td>
-            </tr>
-        % endif
+    % for pkginfo in sorted(package_version.package_info, key = lambda i: i.from_plugin):
+     <li class="severity-${ h.constants.PLUGIN_SEVERITY[pkginfo.severity].lower() }">
+       <span class="visibility" title="${h.constants.PLUGIN_SEVERITY[pkginfo.severity]}">–</span>
+       ${ pkginfo.render("html") | n }
+     </li>
     % endfor
-</table>
+</ul>
 % endif
 
 <h3>Comments</h3>
