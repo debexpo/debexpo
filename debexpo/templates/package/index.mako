@@ -76,7 +76,6 @@
 
 % for package_version in sorted(c.package.package_versions, key=lambda pv: pv.uploaded, reverse=True):
 
-<fieldset>
   <h2>Version ${ package_version.version }</h2>
 
   <h3>${ _('Information')}</h3>
@@ -210,7 +209,7 @@
 
 % if 'user_id' in c.session:
 <h4>New comment</h4>
-
+<fieldset>
 ${ h.html.tags.form(h.url('comment', packagename=c.package.name), method='post') }
 ${ h.html.tags.hidden('package_version', package_version.id) }
 
@@ -239,8 +238,8 @@ ${ h.html.tags.hidden('package_version', package_version.id) }
 </table>
 ${ h.html.tags.end_form() }
 
-% endif
-
 </fieldset>
+
+% endif
 
 % endfor
