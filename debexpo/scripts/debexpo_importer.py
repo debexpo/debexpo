@@ -339,7 +339,7 @@ class Importer(object):
         # Add PackageInfo objects to the database for the package_version
         for result in qa.result:
             meta.session.add(PackageInfo(package_version=package_version, from_plugin=result.from_plugin,
-                outcome=result.outcome, data=result.data, severity=result.severity))
+                outcome=result.outcome, rich_data=result.data, severity=result.severity))
 
         # Commit all changes to the database
         meta.session.commit()
