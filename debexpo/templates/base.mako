@@ -69,9 +69,6 @@
 	</p>
         </div><!-- end header -->
         <div id="content">
-        % if c.submenu.has_menu():
-            <%include file="submenu.mako" />
-        % endif
 	    <span class="relatedpages">
 
                 % if 'user_id' not in session:
@@ -93,6 +90,9 @@
 
 
 	    </span>
+        % if c.submenu.has_menu():
+            <%include file="submenu.mako" />
+        % endif
 		${next.body()}
 	</div><!-- end content -->
         <div id="footer">
