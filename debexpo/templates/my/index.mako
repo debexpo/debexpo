@@ -123,10 +123,12 @@
       <td>${ h.html.tags.text('jabber', value=c.user.jabber) }</td>
     </tr>
 
+% if config['debexpo.enable_experimental_code']  == 'true':
     <tr>
         <td>${ _('Show personal data publicly') }:</td>
         <td><td>${ h.html.tags.checkbox('profile_visibility') }</td>
     </tr>
+% endif
 
 % if c.config['debexpo.debian_specific'] == 'true':
 

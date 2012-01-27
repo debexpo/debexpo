@@ -1,3 +1,5 @@
+% if config['debexpo.enable_experimental_code']  == 'true':
+
 <h1>${ c.profile.name }</h1>
 <h3>
 % if c.profile.status == c.constants.USER_STATUS_DEVELOPER:
@@ -40,3 +42,4 @@
     </tr>
 </table>
 
+% endif
