@@ -209,7 +209,10 @@ class Plugins(object):
                 for item in self.kw:
                     setattr(p, item, self.kw[item])
 
-                result.extend(p.run())
+                try:
+                    result.extend(p.run())
+                except Exception, e:
+                    log.debug("Something wrong happened while running the plugin '%s': %s" % (plugin, e))
 
         if self.conf['extract']:
             self._cleanup()
