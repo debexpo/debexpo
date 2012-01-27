@@ -35,6 +35,8 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
+import json
+
 import sqlalchemy as sa
 from sqlalchemy import orm
 
@@ -52,6 +54,17 @@ t_package_info = sa.Table('package_info', meta.metadata,
 
 class PackageInfo(OrmObject):
     foreign = ['package_version']
+
+    @property
+    def rich_data(self):
+        try:
+            return json.loads(self.data)
+        except ValueError:
+            return self.data
+
+    @rich_data.setter
+    def rich_data(self, value):
+        self.data = json.dumps(value)
 
 orm.mapper(PackageInfo, t_package_info, properties={
     'package_version' : orm.relation(PackageVersion, backref='package_info'),
