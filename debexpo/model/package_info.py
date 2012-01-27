@@ -36,12 +36,24 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
 import json
+import os
+
+from mako.lookup import TemplateLookup
+from mako.exceptions import TopLevelLookupException
+
+from pylons import config
 
 import sqlalchemy as sa
 from sqlalchemy import orm
 
+import debexpo.lib
+
 from debexpo.model import meta, OrmObject
 from debexpo.model.package_versions import PackageVersion
+
+# templates are in [...]/templates/plugins
+PLUGINS_TEMPLATE_DIRS = [os.path.join(path, "plugins")
+                         for path in config["pylons.paths"]["templates"]]
 
 t_package_info = sa.Table('package_info', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
@@ -65,6 +77,38 @@ class PackageInfo(OrmObject):
     @rich_data.setter
     def rich_data(self, value):
         self.data = json.dumps(value)
+
+
+    def render(self, render_format):
+        """Render the plugin data to the given format"""
+
+        # Files to try out for plugin data rendering
+        try_files = [
+            "%s/%s.mako" % (self.from_plugin, render_format),
+            "%s/text.mako" % (self.from_plugin),
+            "default/%s.mako" % render_format,
+            "default/text.mako",
+            ]
+
+        lookup = TemplateLookup(directories = PLUGINS_TEMPLATE_DIRS)
+
+        for basefile in try_files:
+            try:
+                template = lookup.get_template(basefile)
+            except TopLevelLookupException:
+                continue
+            else:
+                break
+        else:
+            # No template file found, something weird happened
+            return "%s (!! no template found)" % self.data
+
+        try:
+            rendered_data = template.render(o = self, h = debexpo.lib.helpers)
+        except Exception, e:
+            rendered_data = "%s (!! %r)" % (self.data, e)
+
+        return rendered_data
 
 orm.mapper(PackageInfo, t_package_info, properties={
     'package_version' : orm.relation(PackageVersion, backref='package_info'),
