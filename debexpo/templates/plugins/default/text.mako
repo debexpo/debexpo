@@ -1,0 +1,1 @@
+${o.rich_data}
