@@ -3,6 +3,8 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="/style.css">
+        <script src="/jquery-1.7.1.min.js" type="text/javascript"></script>
+        <script src="/debexpo.js" type="text/javascript"></script>
         <title>${ c.config['debexpo.sitename'] }</title>
 % if c.feed_url:
 
