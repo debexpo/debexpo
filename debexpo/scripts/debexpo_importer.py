@@ -77,7 +77,7 @@ from debexpo.lib.changes import Changes
 from debexpo.lib.repository import Repository
 from debexpo.lib.plugins import Plugins
 from debexpo.lib.filesystem import CheckFiles
-
+from debexpo.lib.gnupg import GnuPG
 
 log = None
 
@@ -86,7 +86,7 @@ class Importer(object):
     Class to handle the package that is uploaded and wants to be imported into the database.
     """
 
-    def __init__(self, changes, ini, user_id, skip_email):
+    def __init__(self, changes, ini, skip_email):
         """
         Object constructor. Sets class fields to sane values.
 
@@ -99,9 +99,6 @@ class Importer(object):
         ``ini``
             Path to debexpo configuration file. This is given from the upload controller.
 
-        ``user_id``
-            ID of the user doing the upload. This is given from the upload controller.
-
         ``skip_email``
             If this is set to true, send no email.
         """
@@ -109,7 +106,7 @@ class Importer(object):
         self.ini_file = os.path.abspath(ini)
         self.actually_send_email = not bool(skip_email)
 
-        self.user_id = user_id
+        self.user_id = None
         self.changes = None
         self.user = None
 
@@ -374,32 +371,7 @@ class Importer(object):
 
         log.debug('Importer started with arguments: %s' % sys.argv[1:])
         filecheck = CheckFiles()
-
-        if self.user_id:
-            self.user = meta.session.query(User).filter_by(id=self.user_id).one()
-
-        # If the user ID wasn't specified using the "-u" option then try
-        # to determine it from the "Changed-By:" mentioned in the changes
-        # file.
-        if self.user_id is None:
-            log.debug("Option '-u' was not given. Determining user from 'Changed-By:' field.")
-            maintainer_string = self.changes.get('Changed-By')
-            log.debug("Changed-By is: %s", maintainer_string)
-            maintainer_realname, maintainer_email_address = email.utils.parseaddr(maintainer_string)
-            log.debug("Changed-By's email address is: %s", maintainer_email_address)
-            self.user = meta.session.query(User).filter_by(
-                    email=maintainer_email_address).filter_by(verification=None).first()
-            if self.user is None:
-                self._fail('Couldn\'t find user with email address %s. Exiting.' % maintainer_email_address)
-            log.debug("User found in database. Has id: %s", self.user.id)
-        else:
-            # Get uploader's User object
-            self.user = meta.session.query(User).filter_by(id=self.user_id).filter_by(verification=None).first()
-            if self.user is None:
-                self._remove_changes()
-                self._reject('Couldn\'t find user with id %s. Exiting.' % self.user_id)
-
-
+        signature = GnuPG()
 
         # Try parsing the changes file, but fail if there's an error.
         try:
@@ -408,7 +380,37 @@ class Importer(object):
             filecheck.test_md5sum(self.changes)
         except Exception as e:
             self._remove_changes()
+            # XXX: The user won't ever see this message. The changes file was
+            # invalid, we don't know whom send it to
             self._reject("Your changes file appears invalid. Refusing your upload\n%s" % (e.message))
+
+
+
+        # Determine user from changed-by field
+        if self.user_id is None:
+            maintainer_string = self.changes.get('Changed-By')
+            log.debug("Determining user from 'Changed-By:' field: %s" % maintainer_string)
+            maintainer_realname, maintainer_email_address = email.utils.parseaddr(maintainer_string)
+            log.debug("Changed-By's email address is: %s", maintainer_email_address)
+            self.user = meta.session.query(User).filter_by(
+                    email=maintainer_email_address).filter_by(verification=None).first()
+            if self.user is None:
+                # generate user object, but only to send out reject message
+                self.user = User(id=-1, name=maintainer_realname, email=maintainer_email_address)
+                self._remove_changes()
+                self._reject('Couldn\'t find user %s. Exiting.' % self.user.email)
+            log.debug("User found in database. Has id: %s", self.user.id)
+            self.user_id = self.user.id
+
+        # Next, find out whether the changes file was signed with a valid signature, if not reject immediately
+        if not signature.is_signed(self.changes_file):
+                self._remove_changes()
+                self._reject('Your upload does not appear to be signed')
+        (gpg_out, gpg_status) = signature.verify_sig_full(self.changes_file)
+        if gpg_status != 0:
+                self._remove_changes()
+                self._reject('Your upload does not contain a valid signature. Output was:\n%s' % (gpg_out))
+        log.debug("GPG signature matches user %s" % (self.user.email))
 
         self.files = self.changes.get_files()
         self.files_to_remove = []
@@ -536,18 +538,13 @@ class Importer(object):
         log.debug('Done')
 
 def main():
-    parser = OptionParser(usage="%prog [-u ID] -c FILE -i FILE [--skip-email]")
+    parser = OptionParser(usage="%prog -c FILE -i FILE [--skip-email]")
     parser.add_option('-c', '--changes', dest='changes',
                       help='Path to changes file to import',
                       metavar='FILE', default=None)
     parser.add_option('-i', '--ini', dest='ini',
                       help='Path to application ini file',
                       metavar='FILE', default=None)
-    # If the 'userid' option is not given then the user will be derived
-    # from the email address mentioned in the changes file as Changed-By.
-    parser.add_option('-u', '--userid', dest='user_id',
-                      help='''Uploader's user_id''',
-                      metavar='ID', default=None)
     parser.add_option('--skip-email', dest='skip_email',
                       action="store_true", help="Skip sending emails")
 
@@ -557,7 +554,7 @@ def main():
         parser.print_help()
         sys.exit(0)
 
-    i = Importer(options.changes, options.ini, options.user_id, options.skip_email)
+    i = Importer(options.changes, options.ini, options.skip_email)
 
     i.main()
     return 0

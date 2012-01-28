@@ -1,10 +1,31 @@
-debexpo (UNRELEASED)
+debexpo (UNRELEASED + 1)
 
     * Support for sponsoring guidelines. Debian Developer are asked to register at
       mentors.debian.net (if not done already) and provide there their personal
       sponsoring guidelines. That's is a semi-structured description text to
       point sponsors to individual developers who are interested to sponsor some
       packages.
+
+    * Provide public profile pages for both, maintainer and developers. For
+      maintainer their package list is being displayed among their profile data.
+      On the other hand, for Debian Developers their sponsoring guidelines are
+      being displayed.
+      Both can disable their profiles if desired.
+
+
+
+debexpo (UNRELEASED)
+
+    * Remove identification of uploads by upload hash. This should never have
+      been implemented that way. Instead verify the GnuPG for uploader. Please
+      check your GnuPG key in your profile, your key ID must match your
+      changed-by uploader ID, otherwise Debexpo will reject your upload. This
+      behavior is the same for both, HTTP and FTP uploads.
+      You can, but you do not need to update your ~/.dput.cf if you used to use
+      HTTP. However, The upload hash is not used anymore.
+      n.b.: It can take several hours until a new key is added to the mentors
+      keyring
+
 
     * Provide worker tasks which run background jobs on the Expo server. Aside of
       this technical detail, this has the visible effect to our users that
@@ -14,12 +35,6 @@ debexpo (UNRELEASED)
           + The package did not find a sponsor within 12 weeks. You can always
             reupload the package before, or after it is being removed from Expo to
             reset the timer.
-
-    * Provide public profile pages for both, maintainer and developers. For
-      maintainer their package list is being displayed among their profile data.
-      On the other hand, for Debian Developers their sponsoring guidelines are
-      being displayed.
-      Both can disable their profiles if desired.
 
 
     * Fix a bug in the orig.tar.gz handling (again). Make sure, the orig.tar.gz can

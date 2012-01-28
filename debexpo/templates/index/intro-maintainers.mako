@@ -60,25 +60,17 @@ ${ c.custom_html }
     </tr>
     <tr>
         <td>
-        % if c.logged_in:
-
-            <p>See your ${ h.tags.link_to("account page", h.url('my')) } to see how to configure <tt>dput</tt> to use HTTP, or put the following content to your <tt>~/.dput.cf</tt> file:</p>
+            <p>To use HTTP put the following content to your <tt>~/.dput.cf</tt> file:</p>
 
 <pre>
 [mentors]
 fqdn = ${ config['debexpo.sitename'] }
-incoming = /upload/${ c.user.email }/${ c.user.get_upload_key() }
+incoming = /upload
 method = http
 allow_unsigned_uploads = 0
 progress_indicator = 2
 </pre>
 
-<strong>Please keep this configuration private</strong>.
-        % else:
-
-        <p>You need to configure <tt>dput</tt>. Please ${ h.tags.link_to("login", h.url(controller='login', action='index')) } to see your personal <tt>~/.dput.cf</tt> here.</p>
-
-        % endif
         </td>
         <td>
             <p>You can use <em>FTP</em> to upload packages to ${ c.config['debexpo.sitetitle'] }. If you prefer that method make sure you sign your uploads with your GPG key! This is the corresponding <tt>~/.dput.cf</tt> file:</p>

@@ -37,6 +37,7 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import logging
+import time
 
 from debexpo.lib.base import *
 from debexpo.lib import constants, form
@@ -47,6 +48,7 @@ from debexpo.model import meta
 from debexpo.model.users import User
 from debexpo.model.user_countries import UserCountry
 from debexpo.model.sponsor_metrics import SponsorMetrics, SponsorMetricsTags, SponsorTags
+from debexpo.model.data_store import DataStore
 
 from sqlalchemy.orm import joinedload
 
@@ -95,17 +97,28 @@ class MyController(BaseController):
         """
         log.debug('GPG form validated successfully')
 
+        trigger_gpg_update = False;
         # Should the key be deleted?
         if self.form_result['delete_gpg'] and self.user.gpg is not None:
             log.debug('Deleting current GPG key')
             self.user.gpg = None
             self.user.gpg_id = None
+            trigger_gpg_update = True
 
         # Should the key be updated.
         if 'gpg' in self.form_result and self.form_result['gpg'] is not None:
             log.debug('Setting a new GPG key')
             self.user.gpg = self.form_result['gpg'].value
             self.user.gpg_id = self.gnupg.parse_key_id(self.user.gpg)
+            trigger_gpg_update = True
+
+        # Trigger a keyring update
+        if trigger_gpg_update:
+            gpg_generator = meta.session.query(DataStore).filter(DataStore.namespace == "_gpg_").filter(DataStore.code == "generator_datetime").first()
+            if not gpg_generator:
+                gpg_generator = DataStore(namespace= "_gpg_", code="generator_datetime")
+            gpg_generator.value = str(time.time())
+            meta.session.merge(gpg_generator)
 
         meta.session.commit()
 

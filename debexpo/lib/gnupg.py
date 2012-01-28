@@ -40,7 +40,7 @@ import logging
 import os
 import subprocess
 
-from pylons import config
+import pylons
 
 log = logging.getLogger(__name__)
 
@@ -55,7 +55,7 @@ class GnuPG(object):
 
         Meant to be instantiated only once.
         """
-        self.gpg_path = config.get('debexpo.gpg_path')
+        self.gpg_path = pylons.config['debexpo.gpg_path']
         if self.gpg_path is None:
             log.error('debexpo.gpg_path is not set in configuration file' +
                       ' (or is set to a blank value)')
@@ -65,6 +65,10 @@ class GnuPG(object):
         elif not os.access(self.gpg_path, os.X_OK):
             log.error('debexpo.gpg_path refers to a non-executable file')
             self.gpg_path = None
+        self.default_keyring = pylons.config['debexpo.gpg_keyring']
+        if self.default_keyring is None:
+            log.warning('debexpo.gpg_keyring is not set in configuration file' +
+                    ' (or is set to a blank value)')
 
     def is_unusable(self):
         """Returns true if the gpg binary is not installed or not executable."""
@@ -94,9 +98,20 @@ class GnuPG(object):
             log.error("Failed to extract key id from gpg output: '%s'"
                        % output)
 
+
     def verify_sig(self, signed_file, pubring=None):
         """
-        Returns true if the given GPG-signed file can be verified.
+        Does the same as verify_sig_full() but is meant as compatibility
+        function which returns a boolean only
+
+        """
+        (_, status) = self.verify_sig_full(signed_file, pubring)
+        return status == 0
+
+    def verify_sig_full(self, signed_file, pubring=None):
+        """
+        Returns a tuple (file output, return code) if the given GPG-signed file
+        can be verified.
 
         ``signed_file``
              path to signed file
@@ -105,11 +120,28 @@ class GnuPG(object):
              setting will be used (~/.gnupg/pubring.gpg))
         """
         if pubring is None:
-            args = ('--verify', )
-        else:
-            args = ('--verify', '--keyring', pubring, '--no-default-keyring', signed_file)
-        (_, status) = self._run(args=args)
-        return status == 0
+            pubring = self.default_keyring
+
+        args = ('--no-options', '--batch', '--verify', '--keyring', pubring, '--no-default-keyring', signed_file)
+        return self._run(args=args)
+
+
+    def add_signature(self, signature_file, pubring=None):
+        """
+        Add the signature(s) within the provided file to the supplied keyring
+
+        ```signature_file```
+            A file name containing valid PGP public key data suitable for keyrings
+        ```pubring```
+            A file name pointing to a keyring. May be empty.
+
+        Returns a tuple (file output, return code)
+        """
+        if pubring is None:
+            pubring = self.default_keyring
+
+        args = ('--no-options', '--batch', '--no-default-keyring', '--keyring', pubring, '--import-options', 'import-minimal', '--import', signature_file )
+        return self._run(args=args)
 
     def _run(self, stdin=None, args=None):
         """
@@ -129,11 +161,26 @@ class GnuPG(object):
         if not args is None:
                 cmd.extend(args)
 
-        process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-        (output, _) = process.communicate(input=stdin)
+        process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        output = "\n".join(process.communicate(input=stdin))
         status = process.returncode
 
-        if status != 0:
-            return (None, status)
-        return (output, 0)
+        return (output, status)
 
+    def is_signed(self, signed_file):
+        """
+        Returns true if the given file appears to be GPG signed
+
+        ``signed_file``
+            path to a file
+        """
+        try:
+            f = open(signed_file, 'r')
+            contents = f.read()
+            f.close()
+        except:
+            log.critical('Could not open %s; continuing' % signed_file)
+            return False
+        if contents.startswith('-----BEGIN PGP SIGNED MESSAGE-----'):
+            return True
+        return False
