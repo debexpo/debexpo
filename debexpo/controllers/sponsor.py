@@ -46,6 +46,18 @@ from debexpo.lib import constants
 from debexpo.model.sponsor_metrics import SponsorMetrics, SponsorTags, SponsorMetricsTags
 from debexpo.model.users import User
 from debexpo.model.user_countries import UserCountry
+from debexpo.model.packages import Package
+from debexpo.model.package_versions import PackageVersion
+from debexpo.model.package_comments import PackageComment
+from debexpo.model.package_info import PackageInfo
+from debexpo.model.source_packages import SourcePackage
+from debexpo.model.binary_packages import BinaryPackage
+from debexpo.model.package_files import PackageFile
+from debexpo.model.package_subscriptions import PackageSubscription
+
+
+from debexpo.lib.utils import get_package_dir
+
 
 from sqlalchemy.orm import joinedload, contains_eager
 
@@ -189,7 +201,16 @@ class SponsorController(BaseController):
         return render('/sponsor/packaging_team.mako')
 
 
-    def rfs_howto(self):
+    def rfs_howto(self, packagename = None):
+
+        if packagename:
+            package = meta.session.query(Package).filter_by(name=packagename).first()
+            c.package = package
+            c.package_dir = get_package_dir(package.name)
+        else:
+            c.package = None
+            c.package_dir = None
+
         return render('/sponsor/rfs_howto.mako')
 
     def index(self):

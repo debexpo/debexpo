@@ -10,38 +10,118 @@ automatically by the bug tracker.</p>
 
 <h2>Asking for Sponsorship</h2>
 
-<p>Once a source package has been prepared and made available (for example by uploading it to this site) file a new bug report against the <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=sponsorship-requests"><strong><em>sponsorhip-requests</em></strong></a> pseudo-package. You can also find a mostly-ready template on your packages page for the uploaded package.</p>
+<p>An RFS is a <i>request for sponsorship</i>. If you want to show other people
+that you are looking for a sponsor for your package you can file a bug against
+the sponsorship-request pseudo-package containing information about your
+package. See our ${ h.tags.link_to("RFS procedure page", h.url('rfs-howto')) } for details.</p>
+
+<p><strong>Note</strong>: You might not get a reply to your request if you do not
+subscribe to the debian-mentors mailing list or to your sponsoring-requests
+bug. You can <a href="http://lists.debian.org/debian-mentors"> subscribe to the
+mailing list by clicking here</a> and following the simple steps to confirm
+your subscription request. It can also take time for sponsors to look over the requests, so
+please do not give up quickly and keep a watch over the mailing list.</p>
+
+
+<p>Once a source package has been prepared and made available (for example by
+uploading it to this site) file a new bug report against the <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=sponsorship-requests"><strong><em>sponsorhip-requests</em></strong></a>
+pseudo-package.</p>
+
+
+<h2>
+%if c.package:
+    ${ _('Template for an RFS for "%s"') % c.package.name }
+%else:
+    ${ _('Template for an RFS bug') }
+%endif
+</h2>
 
 <pre>
+%if c.package:
+  From: ${ c.package.user.name } &lt;${ c.package.user.email }&gt
+%else:
+  From: J. Maintainer &lt;j@example.com&gt;
+%endif
   To: submit@bugs.debian.org
-  Subject: RFS: hello/3.1-4 -- friendly greeter
+%if c.package:
+  Subject: RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } [put in NEW, RC, NMU if applicable]
+%else:
+  Subject: RFS: hello/3.1-4 -- friendly greeter [put in NEW, RC, NMU if applicable]
+%endif
+
+
 
   Package: sponsorhip-requests
-  Severity: normal (important for RC bugs, wishlist for new packages)
+  Severity: normal [important for RC bugs, wishlist for new packages]
 
   Dear mentors,
 
+%if c.package:
+  I am looking for a sponsor for my package "${ c.package.name }"
+%else:
   I am looking for a sponsor for my package "hello":
+%endif
 
-  dget -x http://mentors.debian.net/debian/pool/main/h/hello/hello_3.1-4.dsc
+%if c.package:
+ * Package name    : ${ c.package.name }
+   Version         : ${ c.package.package_versions[-1].version }
+%else:
+ * Package name    : hello
+   Version         : 3.1-4
+%endif
+   Upstream Author : [fill in name and email of upstream]
+ * URL             : [fill in URL of upstreams web site]
+ * License         : [fill in]
+%if c.package:
+   Section         : ${ c.package.package_versions[-1].section }
+%else:
+   Section         : [fill in]
+%endif
 
-  It builds these binary packages:
+  It builds those binary packages:
 
+%if c.package:
+    ${ c.package.description }
+%else:
     hello - friendly greeter
+%endif
+
+  To access further information about this package, please visit the following URL:
+
+%if c.package:
+  ${ c.config['debexpo.server'] }${ h.url('package', packagename=c.package.name) }
+%else:
+  ${ c.config['debexpo.server'] }/package/hello
+%endif
+
+
+  Alternatively, one can download the package with dget using this command:
+
+%if c.package:
+% for pkgfile in c.package.package_versions[-1].source_packages[0].package_files:
+  % if pkgfile.filename.endswith('.dsc'):
+    dget -x ${ c.config['debexpo.server'] }/debian/${ pkgfile.filename }
+  % endif
+% endfor
+%else:
+  dget -x ${ c.config['debexpo.server'] }/debian/pool/main/h/hello/hello_3.1-4.dsc
+%endif
 
   More information about hello can be obtained from http://www.example.com.
 
   Changes since the last upload:
 
+  [your most recent changelog entry]
+
   hello (3.1-4) unstable; urgency=low
 
-    * Adopt package. (Closes: #123457)
-    * Fix typo in package description. (Closes: #123456)
-
-   -- J. Maintainer <j@example.com>  Sat, 10 Dec 2011 22:17:05 +0100
 
   Regards,
+%if c.package:
+   ${ c.package.user.name }
+%else:
   J. Maintainer
+%endif
 </pre>
 
 <p>Please indicate in the subject if the package fixes RC bugs, is a QA or

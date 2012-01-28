@@ -107,18 +107,6 @@ class PackageController(BaseController):
         log.debug('Rendering page')
         return render('/package/index.mako')
 
-    def rfs(self, packagename):
-        """
-        RFS boilerplate creation.
-
-        ``packagename``
-            Package name to look at.
-        """
-        package = self._get_package(packagename)
-
-        log.debug('Rendering page')
-        return render('/package/rfs.mako')
-
     def subscribe(self, packagename):
         """
         Package subscription.

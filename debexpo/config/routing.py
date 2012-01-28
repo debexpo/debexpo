@@ -81,7 +81,7 @@ def make_map(config):
     map.connect('sponsor', '/package/{packagename}/needs_sponsor/{key}', controller='package', action='sponsor')
     map.connect('subscribe', '/package/{packagename}/subscribe', controller='package', action='subscribe')
     map.connect('delete', '/package/{packagename}/delete/{key}', controller='package', action='delete')
-    map.connect('rfs', '/package/rfs/{packagename}', controller='package', action='rfs')
+    map.connect('rfs', '/sponsors/rfs-howto/{packagename}', controller='sponsor', action='rfs_howto')
     map.connect('packages', '/packages/{action}', controller='packages', action='index')
     map.connect('all-packages', '/packages', controller='packages', action='index')
     map.connect('packages-uploader', '/packages/uploader/{id}', controller='packages', action='uploader')
