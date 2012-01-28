@@ -204,7 +204,7 @@ class PackageController(BaseController):
         meta.session.delete(package)
         meta.session.commit()
 
-        redirect(url(controller='packages', action='index', filter='my'))
+        redirect(url(controller='packages', action='my'))
 
     @validate(schema=PackageCommentForm(), form='index')
     def _comment_submit(self, packagename):
