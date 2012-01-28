@@ -44,7 +44,7 @@ from debexpo.lib.gnupg import GnuPG
 
 import datetime
 import tempfile
-import os
+import shutil
 
 class UpdateKeyring(BaseCronjob):
     def setup(self):
@@ -99,7 +99,7 @@ class UpdateKeyring(BaseCronjob):
                     continue
                 self.log.debug(out)
 
-            os.rename(keyring, self.config['debexpo.gpg_keyring'])
+            shutil.move(keyring, self.config['debexpo.gpg_keyring'])
             self._last_trigger = gpg_generator.value
 
         meta.session.close()
