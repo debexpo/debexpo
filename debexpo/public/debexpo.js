@@ -28,6 +28,8 @@
  *
  */
 
+/* QA helper functions */
+
 function toggle_qa(header, speed) {
     vis = $(header).siblings(".visibility");
     if (vis.html() == "+") {
@@ -59,6 +61,14 @@ function collapse_qa(header, speed) {
 }
 
 $(document).ready(function() {
+
+    /* General stuff */
+    $('.confirm').click(function(){
+        var answer = confirm('Are you sure?');
+        return answer // answer is a boolean
+    });
+
+    /* QA plugin stuff */
 
     $(".qa-header").click(function() {
         toggle_qa(this, "fast");
