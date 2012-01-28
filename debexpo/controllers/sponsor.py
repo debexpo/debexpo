@@ -203,13 +203,14 @@ class SponsorController(BaseController):
 
     def rfs_howto(self, packagename = None):
 
+
+        c.package = None
+        c.package_dir = None
         if packagename:
             package = meta.session.query(Package).filter_by(name=packagename).first()
-            c.package = package
-            c.package_dir = get_package_dir(package.name)
-        else:
-            c.package = None
-            c.package_dir = None
+            if package:
+                c.package = package
+                c.package_dir = get_package_dir(package.name)
 
         return render('/sponsor/rfs_howto.mako')
 
