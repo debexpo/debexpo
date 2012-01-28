@@ -90,6 +90,11 @@ def make_map(config):
     #map.connect('packages_feed', '/packages/feed', controller='packages', action='feed')
     map.connect('qa', '/qa', controller='index', action='qa')
     #map.connect('register', '/register/{action}/{id}', controller='register', action='index', id=None)
+
+    # LEGACY ROUTE. CAN BE REMOVED LATER
+    map.connect('/upload/{email}/{password}/{filename}', controller='upload',
+                action='index')
+
     map.connect('/upload/{filename}', controller='upload', action='index')
     map.connect('ppa', '/ppa/{email}', controller='ppa', action='index')
     #map.connect('/ppa/{email}/*filename', controller='ppa', action='file')
