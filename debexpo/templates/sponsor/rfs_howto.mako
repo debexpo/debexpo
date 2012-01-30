@@ -4,18 +4,18 @@
 <h1>The sponsorship process</h1>
 
 <p>In general all mails should be sent to the RFS request
-(<em>nnn@bugs.debian.org</em>). Please also Cc the submitter
-(<em>nnn-submitter@bugs.debian.org</em>). A copy will be sent to the mailing list
-automatically by the bug tracker.</p>
+(<em>nnn@bugs.debian.org</em>). A copy will be sent to the mailing list
+automatically by the bug tracker. If you are reviewing packages, please also
+send a copy to the submittet (<em>nnn-submitter@bugs.debian.org</em>)</p>
 
 <h2>Asking for Sponsorship</h2>
 
-<p>An RFS is a <i>request for sponsorship</i>. If you want to show other people
-that you are looking for a sponsor for your package you can file a bug against
-the sponsorship-request pseudo-package containing information about your
-package. See our ${ h.tags.link_to("RFS procedure page", h.url('rfs-howto')) } for details.</p>
+<p>A RFS is a <i>request for sponsorship</i>. If you have a package to be
+uploaded to Debian, you can file a bug against the <em>sponsorship-request</em>
+pseudo-package containing information about your
+package.</p>
 
-<p><strong>Note</strong>: You might not get a reply to your request if you do not
+<p><strong>Note</strong>: You might not receive a reply to your request if you do not
 subscribe to the debian-mentors mailing list or to your sponsoring-requests
 bug. You can <a href="http://lists.debian.org/debian-mentors"> subscribe to the
 mailing list by clicking here</a> and following the simple steps to confirm
@@ -24,7 +24,7 @@ please do not give up quickly and keep a watch over the mailing list.</p>
 
 
 <p>Once a source package has been prepared and made available (for example by
-uploading it to this site) file a new bug report against the <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=sponsorship-requests"><strong><em>sponsorhip-requests</em></strong></a>
+uploading it to this site) file a new bug report against the <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=sponsorship-requests"><em>sponsorship-requests</em></a>
 pseudo-package.</p>
 
 
