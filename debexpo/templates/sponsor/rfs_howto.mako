@@ -3,36 +3,40 @@
 
 <h1>The sponsorship process</h1>
 
-<p>In general all mails should be sent to the RFS request
-(<em>nnn@bugs.debian.org</em>). A copy will be sent to the mailing list
-automatically by the bug tracker. If you are reviewing packages, please also
-send a copy to the submittet (<em>nnn-submitter@bugs.debian.org</em>)</p>
+<p>In general sponsor requests should be handled through the <a
+href="http://www.debian.org/Bugs/">Debian Bug Tracking System</a>. Please make
+sure both, reports and comments are sent to the bug
+report(<em>nnn@bugs.debian.org</em>). A copy is going to be sent to the
+<em>debian-mentors</em> mailing list automatically by the bug tracker. If you
+are reviewing packages, please also send a copy to the submitter
+(<em>nnn-submitter@bugs.debian.org</em>)</p>
 
 <h2>Asking for Sponsorship</h2>
 
-<p>A RFS is a <i>request for sponsorship</i>. If you have a package to be
-uploaded to Debian, you can file a bug against the <em>sponsorship-request</em>
-pseudo-package containing information about your
+<p>A <em>RFS</em> is a <em>request for sponsorship</em>. If you have a package
+to be uploaded to Debian, you should file a bug against the
+<em>sponsorship-request</em> pseudo-package containing information about your
 package.</p>
 
-<p><strong>Note</strong>: You might not receive a reply to your request if you do not
+<p><strong>Note</strong>: We ask people to send a copy to you as a submitter of
+a bug. Nonethelesse you might not receive a reply to your request if you do not
 subscribe to the debian-mentors mailing list or to your sponsoring-requests
 bug. You can <a href="http://lists.debian.org/debian-mentors"> subscribe to the
-mailing list by clicking here</a> and following the simple steps to confirm
-your subscription request. It can also take time for sponsors to look over the requests, so
-please do not give up quickly and keep a watch over the mailing list.</p>
+mailing list by clicking here</a> and follow simple steps to confirm
+your subscription request. It can also take time for sponsors to look over the
+requests, so please do not give up quickly and keep a watch over the mailing
+list.</p>
 
 
 <p>Once a source package has been prepared and made available (for example by
-uploading it to this site) file a new bug report against the <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=sponsorship-requests"><em>sponsorship-requests</em></a>
-pseudo-package.</p>
+uploading it to this site) file a new bug report against the <a
+href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=sponsorship-requests"><em>sponsorship-requests</em></a>
+pseudo-package by using the template below:</p>
 
 
-<h2>
+<h2>${ _('Template for an RFS bug') }
 %if c.package:
-    ${ _('Template for an RFS for "%s"') % c.package.name }
-%else:
-    ${ _('Template for an RFS bug') }
+    ${ _('for "%s"') % c.package.name }
 %endif
 </h2>
 
@@ -164,8 +168,9 @@ package or ask for advice).</p>
 
 <h2>Reviewing Packages</h2>
 
-<p>Anybody feeling competent enough is invited to review sponsoring
-requests. You do not need to be a Debian Developer to do so.</p>
+<p>Anybody feeling competent enough is invited to review sponsoring requests.
+You do not need to be a Debian Developer to do so. We collected hints to review
+package on a ${ h.tags.link_to( _('a dedicated page'), h.url('sponsors')) }.</p>
 
 <p>Please send any comments to <em>nnn@bugs.debian.org</em> (Cc:
 <em>nnn-submitter@bugs.debian.org</em>). You can use the following tags to indicate
@@ -188,9 +193,8 @@ progress:</p>
 is ready for upload, please consider setting yourself as the owner of
 the bug and tag the bug pending:</p>
 
-<code>
-  $ bts owner nnn me@example.com , tag it + pending
-</code>
+<code>$ bts owner nnn me@example.com</code><br />
+<code>$ bts nnn tag +pending</code>
 
 <h2>Uploading Packages</h2>
 
@@ -201,9 +205,9 @@ supplier of the package or anyhow related to the package itself.</p>
 
 <h2>Notes</h2>
 
-<p>Inactive requests should be closed (semi-)automatically after a longer
-term of no activity (two weeks for requests tagged wontfix, six weeks
-for requests tagged moreinfo and six months for others). The same
+<p>People are advised to close inactive requests after a longer term of no
+activity (we consider two weeks for requests tagged wontfix, six weeks
+for requests tagged moreinfo and six months for others appropriate). The same
 applies to uploaded packages for which the sponsor forgot to close the
 RFS bug.</p>
 

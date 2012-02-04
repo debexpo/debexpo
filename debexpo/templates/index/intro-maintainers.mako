@@ -46,12 +46,12 @@ ${ c.custom_html }
     <li><strong>Upload your package</strong> to <tt>${ config['debexpo.sitename'] }</tt>. You do not need to put your packages into any other web space on the Internet. Everybody will be able to download your package using either the web browser, the '<tt>dget</tt>' tools or even through a simple run of <tt>apt-get source ....</tt></li>
     <li>Have a look at your ${ h.tags.link_to("personal package page", h.url(controller='packages', action='my')) }. Your uploaded package should <strong>show up there</strong>. From there you can toggle several settings and retrieve the RFS (request-for-sponsorship) template</li>
     <li>Your package is on display on the main page of ${ c.config['debexpo.sitetitle'] } (if you enable the "<i>Needs a Sponsor</i>" button) so interested sponsors will see it and hopefully check it out.</li>
-    <li>You will be shown a <strong>RFS (request-for-sponsorship) template</strong> that you should send to the debian-mentors mailing list to draw attention to your package.</li>
+    <li>You will be shown a <strong>RFS (request-for-sponsorship) template</strong> that you should send out as a bug report filed against the <em>sponsorship-requests</em> pseudo-package to draw attention to your package.</li>
 </ul>
 
 <h3>How to upload packages to <tt>${ config['debexpo.sitename'] }?</tt></h3>
 
-<p>You need to use <a href="http://packages.debian.org/dput"><tt>dput</tt></a> to upload packages. We accept your uploads through <em>HTTP</em> or <em>FTP</em>. If you are using <em>FTP</em> your package <strong>must</strong> be signed with the GnuPG key you configured in your control panel. </p>
+<p>You need to use <a href="http://packages.debian.org/dput"><tt>dput</tt></a> to upload packages. We accept your uploads through <em>HTTP</em> or <em>FTP</em>. All packages <strong>must be signed</strong> with the GnuPG key you configured in your control panel. </p>
 
 <table>
     <tr>
