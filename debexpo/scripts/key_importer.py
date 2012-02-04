@@ -1,6 +1,7 @@
+#! /usr/bin/python
 # -*- coding: utf-8 -*-
 #
-#   updatekeyring.py — Update the mentors keyring cyclically
+#   key_importer.py — Regenerate the mentors keyring from scratch
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
@@ -30,36 +31,39 @@
 """
 Update the mentors keyring cyclically
 """
+
+from __future__ import print_function
+
 __author__ = 'Arno Töll'
 __copyright__ = 'Copyright © 2012 Arno Töll'
 __license__ = 'MIT'
 
-from debexpo.model.data_store import DataStore
-from debexpo.model.users import User
-from debexpo.model import meta
-
-from debexpo.cronjobs import BaseCronjob
-from debexpo.lib.gnupg import GnuPG
-
-
 import datetime
 import tempfile
 import shutil
+import os.path
+import sys
+import optparse
+import pylons
 
-class UpdateKeyring(BaseCronjob):
-    def setup(self):
+
+from paste.deploy import appconfig
+from debexpo.config.environment import load_environment
+from debexpo.model.users import User
+from debexpo.model import meta
+from debexpo.lib.gnupg import GnuPG
+
+
+class UpdateKeyring(object):
+    def __init__(self, inifile):
         """
         This method does nothing in this cronjob
         """
-        self._last_trigger = 0
-        self.log.debug("%s loaded successfully" % (__name__))
+        self.inifile = os.path.abspath(inifile)
+        conf = appconfig('config:' + self.inifile)
+        pylons.config = load_environment(conf.global_conf, conf.local_conf)
+        self.config = pylons.config
         self.gpg = GnuPG()
-
-    def teardown(self):
-        """
-        This method does nothing in this cronjob
-        """
-        pass
 
     def invoke(self):
         """
@@ -67,43 +71,42 @@ class UpdateKeyring(BaseCronjob):
         """
 
         if 'debexpo.gpg_keyring' not in self.config:
-            self.log.critical("debexpo.gpg_keyring was not configured or is not writable")
+            print("debexpo.gpg_keyring was not configured or is not writable")
             return
 
         try:
             keyring = open(self.config['debexpo.gpg_keyring'], "a+")
             keyring.close()
         except IOError as e:
-            self.log.critical("Can't access file: %s: %s" % (self.config['debexpo.gpg_keyring'], str(e)))
+            print("Can't access file: %s: %s" % (self.config['debexpo.gpg_keyring'], str(e)))
             return
 
-        gpg_generator = meta.session.query(DataStore).filter(DataStore.namespace == "_gpg_").filter(DataStore.code == "generator_datetime").first()
+        print("Regenerate keyring into %s" % (keyring.name))
+        (_, keyring) = tempfile.mkstemp()
+        for user in meta.session.query(User).all():
+            if not user.gpg:
+                continue
+            temp = tempfile.NamedTemporaryFile(delete=True)
+            temp.write(user.gpg)
+            temp.flush()
+            (out, err) = self.gpg.add_signature(temp.name, keyring)
+            temp.close()
+            if err != 0:
+                print("gpg failed to import keyring: %s" % (out))
+                continue
+            print(out)
 
-        gpg_generator.value = float(gpg_generator.value)
-        if not gpg_generator:
-            return
-
-        if gpg_generator.value > self._last_trigger:
-            self.log.info("Regenerate keyring into %s" % (keyring.name))
-            (_, keyring) = tempfile.mkstemp()
-            for user in meta.session.query(User).all():
-                if not user.gpg:
-                    continue
-                temp = tempfile.NamedTemporaryFile(delete=True)
-                temp.write(user.gpg)
-                temp.flush()
-                (out, err) = self.gpg.add_signature(temp.name, keyring)
-                temp.close()
-                if err != 0:
-                    self.log.critical("gpg failed to import keyring: %s" % (out))
-                    continue
-                self.log.debug(out)
-
-            shutil.move(keyring, self.config['debexpo.gpg_keyring'])
-            self._last_trigger = gpg_generator.value
+        shutil.move(keyring, self.config['debexpo.gpg_keyring'])
 
         meta.session.close()
 
 
-cronjob = UpdateKeyring
-schedule = datetime.timedelta(hours = 6)
+if __name__=='__main__':
+    parser = optparse.OptionParser()
+    parser.add_option("-i", "--ini", dest="ini", help="path to application ini file", metavar="FILE")
+    (options, args) = parser.parse_args()
+    if not options.ini:
+        parser.print_help()
+        sys.exit(0)
+    run = UpdateKeyring(options.ini)
+    run.invoke()

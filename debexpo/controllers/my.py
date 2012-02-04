@@ -37,7 +37,7 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import logging
-import time
+import tempfile
 
 from debexpo.lib.base import *
 from debexpo.lib import constants, form
@@ -96,29 +96,36 @@ class MyController(BaseController):
         Handles a user submitting the GPG form.
         """
         log.debug('GPG form validated successfully')
+        self.gpg = GnuPG()
 
-        trigger_gpg_update = False;
         # Should the key be deleted?
         if self.form_result['delete_gpg'] and self.user.gpg is not None:
-            log.debug('Deleting current GPG key')
+            keyid = self.gnupg.extract_key_id(self.user.gpg_id)
+            log.debug('Deleting current GPG key %s' % (keyid))
+            (out, err) = self.gnupg.remove_signature(keyid)
+            if err != 0:
+                log.error("gpg failed to delete keyring: %s" % (out))
+                abort(500)
             self.user.gpg = None
             self.user.gpg_id = None
-            trigger_gpg_update = True
 
         # Should the key be updated.
         if 'gpg' in self.form_result and self.form_result['gpg'] is not None:
             log.debug('Setting a new GPG key')
             self.user.gpg = self.form_result['gpg'].value
             self.user.gpg_id = self.gnupg.parse_key_id(self.user.gpg)
-            trigger_gpg_update = True
 
-        # Trigger a keyring update
-        if trigger_gpg_update:
-            gpg_generator = meta.session.query(DataStore).filter(DataStore.namespace == "_gpg_").filter(DataStore.code == "generator_datetime").first()
-            if not gpg_generator:
-                gpg_generator = DataStore(namespace= "_gpg_", code="generator_datetime")
-            gpg_generator.value = str(time.time())
-            meta.session.merge(gpg_generator)
+            temp = tempfile.NamedTemporaryFile(delete=True)
+            temp.write(self.user.gpg)
+            temp.flush()
+            (out, err) = self.gpg.add_signature(temp.name)
+            temp.close()
+            if err != 0:
+                log.error("gpg failed to import keyring: %s" % (out))
+                abort(500)
+            log.debug(out)
+
+
 
         meta.session.commit()
 

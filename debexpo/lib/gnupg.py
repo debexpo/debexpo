@@ -74,14 +74,32 @@ class GnuPG(object):
         """Returns true if the gpg binary is not installed or not executable."""
         return self.gpg_path is None
 
-    def parse_key_id(self, key):
+    def extract_key_id(self, key):
+        """
+        Returns the key id only of a given GPG public key, e.g.:
+
+        1024D/355304E4 -> 355304E4
+
+        ``key``
+            A public key output as given by gpg(1)
+        """
+        try:
+            r = key.split("/")[1]
+            if not r:
+                raise AttributeError
+            return r
+        except (AttributeError, IndexError):
+            log.error("Failed to extract key only id from gpg output: '%s'"
+                % key)
+
+    def parse_key_id(self, key, email = None):
         """
         Returns the key id of the given GPG public key.
 
         ``key``
             ASCII armored GPG public key.
 
-        Sample output to be parsed:
+         Sample output to be parsed:
 
         pub  1024D/355304E4 2005-09-13 Serafeim Zanikolas <serzan@hellug.gr>
         sub  1024g/C082E9B7 2005-09-13 [expires: 2008-09-12]
@@ -89,7 +107,8 @@ class GnuPG(object):
         """
         try:
             (output, _) = self._run(stdin=key)
-            lines = output.split('\n')
+            output = unicode(output, errors='replace')
+            lines = (output.split('\n'))
             for line in lines:
                 if line.startswith('pub'):
                     # get only the 2nd column of the 1st matching line
@@ -142,6 +161,25 @@ class GnuPG(object):
 
         args = ('--no-options', '--batch', '--no-default-keyring', '--keyring', pubring, '--import-options', 'import-minimal', '--import', signature_file )
         return self._run(args=args)
+
+
+    def remove_signature(self, keyid, pubring=None):
+        """
+        Remove the signature matching the provided keyid from the supplied keyring
+
+        ```keyid```
+            The GnuPG keyid to be removed
+        ```pubring```
+            A file name pointing to a keyring. May be empty.
+
+        Returns a tuple (file output, return code)
+        """
+        if pubring is None:
+            pubring = self.default_keyring
+
+        args = ('--no-options', '--batch', '--no-default-keyring', '--keyring', pubring, '--yes', '--delete-key', keyid )
+        return self._run(args=args)
+
 
     def _run(self, stdin=None, args=None):
         """
