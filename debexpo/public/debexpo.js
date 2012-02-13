@@ -74,6 +74,10 @@ $(document).ready(function() {
         toggle_qa(this, "fast");
     });
 
+    $(".visibility").click(function() {
+        toggle_qa(this, "fast");
+    });
+
     $(".severity-info .qa-header").each(function() {
         toggle_qa(this);
     });
