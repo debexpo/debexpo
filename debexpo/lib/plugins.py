@@ -36,12 +36,14 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
-from debian import deb822
 import logging
 import os
-import tempfile
 import shutil
 import sys
+import tempfile
+import traceback
+
+from debian import deb822
 import pylons
 
 log = logging.getLogger(__name__)
@@ -210,8 +212,8 @@ class Plugins(object):
 
                 try:
                     result.extend(p.run())
-                except Exception, e:
-                    log.debug("Something wrong happened while running the plugin '%s': %s" % (plugin, e))
+                except Exception:
+                    log.debug("Something wrong happened while running the plugin '%s': %s" % (plugin, traceback.format_exc()))
 
         if self.conf['extract']:
             self._cleanup()
