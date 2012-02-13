@@ -203,8 +203,7 @@ class Plugins(object):
             # The 'plugin' object points to the class containing the actual plugin/test
             if hasattr(module, 'plugin'):
                 p = getattr(module, 'plugin')(name=plugin, changes=self.changes, \
-                    changes_file=self.changes_file, tempdir=self.tempdir, \
-                    outcomes=getattr(module, 'outcomes'))
+                    changes_file=self.changes_file, tempdir=self.tempdir)
 
                 for item in self.kw:
                     setattr(p, item, self.kw[item])
