@@ -103,10 +103,7 @@ class PackageInfo(OrmObject):
             # No template file found, something weird happened
             return "%s (!! no template found)" % self.data
 
-        try:
-            rendered_data = template.render(o = self, h = debexpo.lib.helpers)
-        except Exception, e:
-            rendered_data = "%s (!! %r)" % (self.data, e)
+        rendered_data = template.render(o = self, h = debexpo.lib.helpers)
 
         return rendered_data
 
