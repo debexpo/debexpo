@@ -6,6 +6,7 @@
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
+#   Copyright © 2012 Nicolas Dandrimont <nicolas.dandrimont@crans.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -33,10 +34,16 @@ Holds the buildsystem plugin.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
+__copyright__ = ', '.join([
+        'Copyright © 2008 Jonny Lamb',
+        'Copyright © 2010 Jan Dittberner',
+        'Copyright © 2012 Nicolas Dandrimont',
+        ])
 __license__ = 'MIT'
 
 import logging
+import os
+
 from debian import deb822
 
 from debexpo.lib import constants
@@ -54,26 +61,39 @@ class BuildSystemPlugin(BasePlugin):
 
         dsc = deb822.Dsc(file(self.changes.get_dsc()))
 
+        data = {}
+        severity = constants.PLUGIN_SEVERITY_INFO
+
         build_depends = dsc.get('Build-Depends', '')
 
         if 'cdbs' in build_depends:
-            log.debug('Package uses CDBS')
-            self.info('uses-cdbs', None)
-        elif 'debhelper (7' in build_depends:
-            log.debug('Package uses debhelper 7')
-            self.info('uses-dh', None)
+            outcome = "Package uses CDBS"
+            data["build-system"] = "cdbs"
         elif 'debhelper' in build_depends:
-            log.debug('Package uses straight debhelper')
-            self.info('uses-debhelper', None)
+            data["build-system"] = "debhelper"
+
+            # Retrieve the debhelper compat level
+            compatpath = os.path.join(self.tempdir, "extracted/debian/compat")
+            try:
+                with open(compatpath, "rb") as f:
+                    compat_level = int(f.read().strip())
+            except IOError:
+                compat_level = None
+
+            data["compat-level"] = compat_level
+
+            # Warn on old compatibility levels
+            if compat_level is None or compat_level <= 4:
+                outcome = "Package uses debhelper with an old compatibility level"
+                severity = constants.PLUGIN_SEVERITY_WARNING
+            else:
+                outcome = "Package uses debhelper"
         else:
-            log.warning('Build system cannot be determined')
-            self.failed('unknown-build-system', None, constants.PLUGIN_SEVERITY_WARNING)
+            outcome = "Package uses an unknown build system"
+            data["build-system"] = "unknown"
+            severity = constants.PLUGIN_SEVERITY_WARNING
+
+        self.failed(outcome, data, severity)
+
 
 plugin = BuildSystemPlugin
-
-outcomes = {
-    'uses-cdbs' : { 'name' : 'The packages uses CDBS' },
-    'uses-debhelper' : { 'name' : 'The package uses straight debhelper' },
-    'uses-dh' : { 'name' : 'The package uses debhelper 7' },
-    'unknown-build-system' : { 'name' : 'The package\'s build system cannot be determined' },
-}
