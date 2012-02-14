@@ -968,6 +968,18 @@ ul.qa {
     background-color: #C7EA3C;
 }
 
+/* Closed bugs plugin */
+
+.qa .bugs-closed {
+    margin: 0;
+    margin-bottom: 1em;
+    list-style-type: none;
+}
+
+.qa .bugs-closed ul {
+    list-style-type: none;
+}
+
 /* Lintian plugin */
 
 .qa .lintian-E {
