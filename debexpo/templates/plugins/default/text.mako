@@ -1,1 +1,1 @@
-${o.rich_data}
+${str(o.rich_data)}
