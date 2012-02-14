@@ -968,4 +968,62 @@ ul.qa {
     background-color: #C7EA3C;
 }
 
+/* Lintian plugin */
 
+.qa .lintian-E {
+    background-color: #FF6700;
+    margin: 0 3px 0 0;
+    padding: 2px 4px;
+    font-family: monospace;
+    border: none;
+}
+
+.qa .lintian-W {
+    background-color: #FFEB44;
+    margin: 0 3px 0 0;
+    padding: 2px 4px;
+    font-family: monospace;
+    border: none;
+}
+
+.qa .lintian-P {
+    background-color: #C7EA3C;
+    margin: 0 3px 0 0;
+    padding: 2px 4px;
+    font-family: monospace;
+    border: none;
+}
+
+.qa .lintian-I {
+    background-color: #C7EA3C;
+    margin: 0 3px 0 0;
+    padding: 2px 4px;
+    font-family: monospace;
+    border: none;
+}
+
+.qa .lintian-X {
+    background-color: #EE99EE;
+    margin: 0 3px 0 0;
+    padding: 2px 4px;
+    font-family: monospace;
+    border: none;
+}
+
+.qa .lintian-O {
+    background-color: #DDD;
+    margin: 0 3px 0 0;
+    padding: 2px 4px;
+    font-family: monospace;
+    border: none;
+}
+
+.qa .lintian-pkgname {
+    font-weight: bold;
+}
+
+.qa .lintian-contents {
+    margin: 0;
+    margin-bottom: 1em;
+    list-style-type: none;
+}
