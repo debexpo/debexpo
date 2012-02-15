@@ -6,6 +6,7 @@
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
+#   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -33,27 +34,22 @@ Holds the controlfields plugin.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
+__copyright__ = ', '.join([
+        'Copyright © 2008 Jonny Lamb',
+        'Copyright © 2010 Jan Dittberner',
+        'Copyright © 2012 Nicolas Dandrimont',
+        ])
 __license__ = 'MIT'
 
 from debian import deb822
 import logging
 
+from debexpo.lib import constants
 from debexpo.plugins import BasePlugin
 
 log = logging.getLogger(__name__)
 
 fields = ['Homepage', 'Vcs-Browser', 'Vcs-Git', 'Vcs-Svn', 'Vcs-Bzr', 'Vcs-Hg']
-
-def _gen_outcomes():
-    outcomes = {}
-
-    for field in fields:
-        for isisnot in ['', '-not']:
-            outcomes['%s-is%s-present' % (field.lower(), isisnot)] = \
-                'The %s field is%s present in debian/control' % (field, isisnot.replace('-', ' '))
-
-    return outcomes
 
 class ControlFieldsPlugin(BasePlugin):
 
@@ -69,15 +65,21 @@ class ControlFieldsPlugin(BasePlugin):
             log.critical('Could not open dsc file; skipping plugin')
             return
 
+        data = {}
+        severity = constants.PLUGIN_SEVERITY_WARNING
+        outcome = "No Homepage field present"
+
         for item in fields:
             if item in dsc:
-                self.info('%s-is-present' % item.lower(), '%s: %s' % (item, dsc[item]))
-                log.debug('%s: %s' % (item, dsc[item]))
+                data[item] = dsc[item]
+
+        if "Homepage" in data:
+            severity = constants.PLUGIN_SEVERITY_INFO
+            if len(data) > 1:
+                outcome = "Homepage and VCS control fields present"
             else:
-                # don't display missing VCS fields 
-                #self.info('%s-is-not-present' % item.lower(), None)
-                log.debug('%s field is not present' % item)
+                outcome = "Homepage control field present"
+
+        self.failed(outcome, data, severity)
 
 plugin = ControlFieldsPlugin
-
-outcomes = _gen_outcomes()

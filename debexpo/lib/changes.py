@@ -89,6 +89,15 @@ class Changes(object):
         """
         return self._data[key]
 
+    def __contains__(self, key):
+        """
+        Returns whether the specified RFC822 key exists.
+
+        ``key``
+            Key of data to check for existence.
+        """
+        return key in self._data
+
     def get(self, key, default=None):
         """
         Returns the value of the rfc822 key specified, but defaults

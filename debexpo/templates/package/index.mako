@@ -65,7 +65,7 @@
 
   <tr>
     <th>${ _('Delete package') }:</th>
-    <td>${ h.html.tags.link_to(_('Delete this package'), h.url.current(action="delete", packagename=c.package.name, key=c.user.get_upload_key()), confirm=_('Are you sure?')) }</td>
+    <td>${ h.html.tags.link_to(_('Delete this package'), h.url.current(action="delete", packagename=c.package.name, key=c.user.get_upload_key()), class_="confirm") }</td>
   </tr>
 
 % endif
@@ -148,20 +148,17 @@
 </table>
 
 % if package_version.package_info:
-<h3>${ _('QA information')}</h3>
+<h3 class="qa-toplevel-header">${ _('QA information') }</h3>
 
-<table>
-
+<ul class="qa">
     ## Print result from plugins
-    % for pkginfo in package_version.package_info:
-        % if pkginfo.data:
-            <tr class="pkg-list">
-                <th>${ h.constants.PLUGIN_SEVERITY[pkginfo.severity] }:</th>
-                <td>${ h.converters.nl2br(pkginfo.data) }</td>
-            </tr>
-        % endif
+    % for pkginfo in sorted(package_version.package_info, key = lambda i: i.from_plugin):
+     <li class="severity-${ h.constants.PLUGIN_SEVERITY[pkginfo.severity].lower() }">
+       <span class="visibility" title="${h.constants.PLUGIN_SEVERITY[pkginfo.severity]}">–</span>
+       ${ pkginfo.render("html") | n }
+     </li>
     % endfor
-</table>
+</ul>
 % endif
 
 <h3>Comments</h3>
@@ -173,7 +170,7 @@
   % for comment in package_version.package_comments:
 
     <li>
-      <p>
+      <div>
         <pre>${ h.util.html_escape(comment.text) }</pre>
 
 % if comment.outcome == c.constants.PACKAGE_COMMENT_OUTCOME_NEEDS_WORK:
@@ -194,7 +191,7 @@
 
 % endif
 
-     </p>
+     </div>
    </li>
 
   % endfor
@@ -209,9 +206,9 @@
 
 % if 'user_id' in c.session:
 <h4>New comment</h4>
-<fieldset>
 ${ h.html.tags.form(h.url('comment', packagename=c.package.name), method='post') }
-${ h.html.tags.hidden('package_version', package_version.id) }
+<fieldset>
+${ h.html.tags.hidden('package_version', package_version.id, id="package_version_%d" % package_version.id) }
 
 % if hasattr(c, 'form_errors'):
     <% c.form_errors %>
@@ -220,25 +217,25 @@ ${ h.html.tags.hidden('package_version', package_version.id) }
 <table>
     <tr>
         <td>Comment</td>
-        <td>${ h.html.tags.textarea('text', cols=82, rows=10) }</td>
+        <td>${ h.html.tags.textarea('text', cols=82, rows=10, id="text_%d" % package_version.id) }</td>
     </tr>
     <tr>
         <td>Outcome</td>
-        <td>${ h.html.tags.select('outcome', c.constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED, c.outcomes) }</td>
+        <td>${ h.html.tags.select('outcome', c.constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED, c.outcomes, id="outcomes_%d" % package_version.id) }</td>
     </tr>
 % if config['debexpo.debian_specific'] == 'true' and c.user.status == c.constants.USER_STATUS_DEVELOPER:
     <tr>
         <td>${ _('Uploaded to Debian') }</td>
-        <td>${ h.html.tags.checkbox('status') }</td>
+        <td>${ h.html.tags.checkbox('status', id="status_%d" % package_version.id) }</td>
     </tr>
 % endif
     <tr>
-        <td>${ h.html.tags.submit('commit', _('Submit')) }</td>
+        <td>${ h.html.tags.submit('commit', _('Submit'), id="commit_%d" % package_version.id) }</td>
     </tr>
 </table>
+</fieldset>
 ${ h.html.tags.end_form() }
 
-</fieldset>
 
 % endif
 

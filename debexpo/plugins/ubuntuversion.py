@@ -55,10 +55,6 @@ class UbuntuVersionPlugin(BasePlugin):
             # This isn't even worth setting an outcome.
         else:
             log.error('Package has ubuntu in the version')
-            self.failed('package-has-ubuntu-version', None, constants.PLUGIN_SEVERITY_CRITICAL)
+            self.failed('The uploaded package has "ubuntu" in the version', None, constants.PLUGIN_SEVERITY_CRITICAL)
 
 plugin = UbuntuVersionPlugin
-
-outcomes = {
-    'package-has-ubuntu-version' : 'The uploaded package has "ubuntu" in the version'
-}

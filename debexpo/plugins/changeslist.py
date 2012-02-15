@@ -65,5 +65,3 @@ class ChangesListPlugin(BasePlugin):
                 dest=self.changes.get_pool_path())
 
 plugin = ChangesListPlugin
-
-outcomes = {}

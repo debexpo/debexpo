@@ -77,8 +77,6 @@ class BasePlugin(object):
         ``severity``
             Severity of the result.
         """
-        if data is None:
-            data = self.outcomes.get(outcome)['name']
         self.result.append(PluginResult(from_plugin=self.name, outcome=outcome,
             data=data, severity=severity))
 
@@ -96,8 +94,6 @@ class BasePlugin(object):
             Severity of the result.
 
         """
-        if data is None:
-            data = self.outcomes.get(outcome)['name']
         self.result.append(PluginResult(from_plugin=self.name, outcome=outcome,
             data=data, severity=severity))
 
@@ -111,12 +107,6 @@ class BasePlugin(object):
         ``data``
             Resulting data from the plugin, like more detail about the process.
         """
-        if data is None:
-            try:
-                data = self.outcomes.get(outcome)['name']
-            except TypeError:
-                data = self.outcomes.get(outcome)
-
         self.result.append(PluginResult(from_plugin=self.name, outcome=outcome,
             data=data, severity=constants.PLUGIN_SEVERITY_INFO))
 

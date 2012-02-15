@@ -84,5 +84,3 @@ class RemovePackagePlugin(BasePlugin):
         meta.session.commit()
 
 plugin = RemovePackagePlugin
-
-outcomes = {}

@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,9 +33,13 @@ Holds the lintian plugin.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = ', '.join([
+        'Copyright © 2008 Jonny Lamb',
+        'Copyright © 2012 Nicolas Dandrimont',
+        ])
 __license__ = 'MIT'
 
+from collections import defaultdict
 import subprocess
 import logging
 
@@ -51,32 +56,61 @@ class LintianPlugin(BasePlugin):
         """
         log.debug('Running lintian on the package')
 
-        output = subprocess.Popen(["lintian", self.changes_file], stdout=subprocess.PIPE).communicate()[0]
+        output = subprocess.Popen(["lintian",
+                                   "-E",
+                                   "-I",
+                                   "--pedantic",
+                                   "--show-overrides",
+                                   self.changes_file], stdout=subprocess.PIPE).communicate()[0]
 
         items = output.split('\n')
 
-        if items and output != '':
-            severity = constants.PLUGIN_SEVERITY_WARNING
-            outcome = 'lintian-warnings'
-            logmessage = log.warning
-            for item in items:
-                if item.startswith('E:'):
-                    severity = constants.PLUGIN_SEVERITY_ERROR
-                    outcome = 'lintian-errors'
-                    logmessage = log.error
-                    break
 
-            logmessage('Package is not Lintian clean')
-            self.failed(outcome, output, severity)
-            self.info(outcome, None)
+        # Yes, three levels of defaultdict and one of list...
+        def defaultdict_defaultdict_list():
+            def defaultdict_list():
+                return defaultdict(list)
+            return defaultdict(defaultdict_list)
+        lintian_warnings = defaultdict(defaultdict_defaultdict_list)
+
+        lintian_severities = set()
+
+        override_comments = []
+
+        for item in items:
+            if not item:
+                continue
+
+            # lintian output is of the form """SEVERITY: package: lintian_tag [lintian tag arguments]""" or """N: Override comment"""
+            if item.startswith("N: "):
+                override_comments.append(item[3:].strip())
+                continue
+            severity, package, rest = item.split(': ', 2)
+            lintian_severities.add(severity)
+            lintian_tag_data = rest.split()
+            lintian_tag = lintian_tag_data[0]
+            lintian_data = lintian_tag_data[1:]
+            if override_comments:
+                lintian_data.append("(override comment: " + " ".join(override_comments) + ")")
+                override_comments = []
+            lintian_warnings[package][severity][lintian_tag].append(lintian_data)
+
+        severity = constants.PLUGIN_SEVERITY_INFO
+        if 'E' in lintian_severities:
+            severity = constants.PLUGIN_SEVERITY_ERROR
+            outcome = 'Package has lintian errors'
+        elif 'W' in lintian_severities:
+            severity = constants.PLUGIN_SEVERITY_WARNING
+            outcome = 'Package has lintian warnings'
+        elif 'I' in lintian_severities:
+            outcome = 'Package has lintian informational warnings'
+        elif 'O' in lintian_severities:
+            outcome = 'Package has overridden lintian tags'
+        elif 'P' in lintian_severities or 'X' in lintian_severities:
+            outcome = 'Package has lintian pedantic/experimental warnings'
         else:
-            log.debug('Package is Lintian clean')
-            self.passed('lintian-clean', None, constants.PLUGIN_SEVERITY_INFO)
+            outcome = 'Package is lintian clean'
+
+        self.failed(outcome, lintian_warnings, severity)
 
 plugin = LintianPlugin
-
-outcomes = {
-    'lintian-clean' : { 'name' : 'Package is Lintian clean' },
-    'lintian-warnings' : { 'name' : 'Package has Lintian warnings' },
-    'lintian-errors' : { 'name' : 'Package has Lintian errors' },
-}
