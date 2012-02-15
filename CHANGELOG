@@ -64,4 +64,8 @@ debexpo (v2)
 
     * For those who didn't notice yet: mentors.debian.net now supports SSL.
 
+    * We upgraded several templates and workflows to reflect the new
+      'sponsorship-requests' based BTS workflow. Beyond, no automated
+      integration is done yet.
+
  -- Arno Töll <debian@toell.net> Wed, 15 Feb 2012 17:56:10 +0100
