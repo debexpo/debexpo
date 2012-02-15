@@ -421,7 +421,6 @@ pre {
     white-space: normal;
     width: 600px;
 }
-pre { white-space: -moz-pre-wrap; }
 pre { white-space: pre-wrap; }
 
 tt, code {
@@ -430,8 +429,7 @@ tt, code {
 	color: black;
     white-space: normal;
 }
-tt, code { white-space: -moz-pre-wrap; }
-tt, code { pre-wrap; }
+tt, code { white-space: pre-wrap; }
 
 dt {
 	margin: 1.5em 0 0 0;
