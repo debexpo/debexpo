@@ -14,18 +14,25 @@ debexpo (UNRELEASED + 1)
 
 
 
-debexpo (UNRELEASED)
+debexpo (v2)
 
-    * Remove identification of uploads by upload hash. This should never have
-      been implemented that way. Instead verify the GnuPG for uploader. Please
-      check your GnuPG key in your profile, your key ID must match your
+    * This is the "Welcome Nicolas Dandrimont release". He made a lot of
+      substantial and visible improvements in the QA plug-in codebase. The
+      plug-in output (e.g. Lintian runs) not only looks much better now, it is
+      also machine-readable in the backend which means we can tighter integrate
+      plug-in information into semantic workflows based on that information.
+      Thanks for the great work - we can do many useful things founded on that
+      improvements in future.
+
+    * Remove identification of uploads by upload hash when using HTTP. This
+      should never have been implemented that way. Instead verify the GnuPG for
+      uploader. Please check your GnuPG key in your profile, your key ID must match your
       changed-by uploader ID, otherwise Debexpo will reject your upload. This
       behavior is the same for both, HTTP and FTP uploads.
       You can, but you do not need to update your ~/.dput.cf if you used to use
-      HTTP. However, The upload hash is not used anymore.
-      n.b.: It can take several hours until a new key is added to the mentors
-      keyring
-
+      HTTP. However, The upload hash is not used at all anymore. Existing
+      configurations remaing compatible for the time being, but we are going to
+      stop support for these legacy configurations in a future release
 
     * Provide worker tasks which run background jobs on the Expo server. Aside of
       this technical detail, this has the visible effect to our users that
@@ -34,12 +41,12 @@ debexpo (UNRELEASED)
           + The package was uploaded to an official Debian archive
           + The package did not find a sponsor within 12 weeks. You can always
             reupload the package before, or after it is being removed from Expo to
-            reset the timer.
-
+            reset the timer again.
 
     * Fix a bug in the orig.tar.gz handling (again). Make sure, the orig.tar.gz can
       be overwritten if the user uploaded a tarball which does not match the MD5 sum
-      of an already known orig.tar.gz
+      of an already known orig.tar.gz. This bug perhaps caused the most
+      annoyance in the past months.
 
     * Run the QA plugin again, link to the PTS page if the package is in Debian already.
       Thanks Andrew Starr-Bochicchio for providing a patch
@@ -57,4 +64,4 @@ debexpo (UNRELEASED)
 
     * For those who didn't notice yet: mentors.debian.net now supports SSL.
 
- -- Arno Töll <debian@toell.net> Sat, 21 Dec 2011 16:22:10 +0100
+ -- Arno Töll <debian@toell.net> Wed, 15 Feb 2012 17:56:10 +0100
