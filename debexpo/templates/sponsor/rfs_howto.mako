@@ -19,7 +19,7 @@ report (<em>nnn@bugs.debian.org</em>) <strong>only</strong>. A copy is going to 
 <p>Once a source package has been prepared and made available (for example by
 uploading it to this site) file a new bug report against the <a
 href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=sponsorship-requests"><em>sponsorship-requests</em></a>
-pseudo-package by using the template below.i/p>
+pseudo-package by using the template below.</p>
 
 
 <p>You might not receive a reply to your request if you do not
