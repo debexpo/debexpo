@@ -65,7 +65,7 @@ $(document).ready(function() {
     /* General stuff */
     $('.confirm').click(function(){
         var answer = confirm('Are you sure?');
-        return answer // answer is a boolean
+        return answer
     });
 
     /* QA plugin stuff */
@@ -75,7 +75,7 @@ $(document).ready(function() {
     });
 
     $(".visibility").click(function() {
-        toggle_qa(this, "fast");
+        toggle_qa($(this).siblings(".qa-header"), "fast");
     });
 
     $(".severity-info .qa-header").each(function() {
