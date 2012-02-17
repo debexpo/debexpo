@@ -53,9 +53,9 @@ tool.
 %endif
   To: submit@bugs.debian.org
 %if c.package:
-  Subject: RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } [put in NEW, RC, NMU if applicable]
+  Subject: RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } [put in ITP, ITA, RC, NMU if applicable]
 %else:
-  Subject: RFS: hello/3.1-4 [put in NEW, RC, NMU if applicable] -- friendly greeter
+  Subject: RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly greeter
 %endif
 
 
