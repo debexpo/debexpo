@@ -86,7 +86,7 @@ class Importer(object):
     Class to handle the package that is uploaded and wants to be imported into the database.
     """
 
-    def __init__(self, changes, ini, skip_email):
+    def __init__(self, changes, ini, skip_email, skip_gpg):
         """
         Object constructor. Sets class fields to sane values.
 
@@ -105,6 +105,7 @@ class Importer(object):
         self.changes_file_unqualified = changes
         self.ini_file = os.path.abspath(ini)
         self.actually_send_email = not bool(skip_email)
+        self.skip_gpg = skip_gpg
 
         self.user_id = None
         self.changes = None
@@ -403,14 +404,15 @@ class Importer(object):
             self.user_id = self.user.id
 
         # Next, find out whether the changes file was signed with a valid signature, if not reject immediately
-        if not signature.is_signed(self.changes_file):
+        if not self.skip_gpg:
+            if not signature.is_signed(self.changes_file):
                 self._remove_changes()
                 self._reject('Your upload does not appear to be signed')
-        (gpg_out, gpg_status) = signature.verify_sig_full(self.changes_file)
-        if gpg_status != 0:
+            (gpg_out, gpg_status) = signature.verify_sig_full(self.changes_file)
+            if gpg_status != 0:
                 self._remove_changes()
                 self._reject('Your upload does not contain a valid signature. Output was:\n%s' % (gpg_out))
-        log.debug("GPG signature matches user %s" % (self.user.email))
+            log.debug("GPG signature matches user %s" % (self.user.email))
 
         self.files = self.changes.get_files()
         self.files_to_remove = []
@@ -538,7 +540,7 @@ class Importer(object):
         log.debug('Done')
 
 def main():
-    parser = OptionParser(usage="%prog -c FILE -i FILE [--skip-email]")
+    parser = OptionParser(usage="%prog -c FILE -i FILE [--skip-email] [--skip-gpg-check]")
     parser.add_option('-c', '--changes', dest='changes',
                       help='Path to changes file to import',
                       metavar='FILE', default=None)
@@ -547,6 +549,8 @@ def main():
                       metavar='FILE', default=None)
     parser.add_option('--skip-email', dest='skip_email',
                       action="store_true", help="Skip sending emails")
+    parser.add_option('--skip-gpg-check', dest='skip_gpg',
+                      action="store_true", help="Skip the GPG signedness check")
 
     (options, args) = parser.parse_args()
 
@@ -554,7 +558,7 @@ def main():
         parser.print_help()
         sys.exit(0)
 
-    i = Importer(options.changes, options.ini, options.skip_email)
+    i = Importer(options.changes, options.ini, options.skip_email, options.skip_gpg)
 
     i.main()
     return 0
