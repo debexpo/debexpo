@@ -49,8 +49,21 @@ forge_changes () {
 
     cd $temp_dir/extracted
     fakeroot dh_gencontrol
+    mv debian/files debian/files.tmp
+    cat debian/files.tmp | while read deb section priority; do
+        deb_noarch="${deb%_*.deb}"
+        shopt -s nullglob
+        files=(../${deb_noarch}*.deb)
+        if [ "${#files[@]}" -eq 0 ]; then
+            file=$deb
+        else
+            file=$(basename "${files[0]}")
+        fi
+        echo "$file $section $priority" >> debian/files
+    done
     if ! dpkg-genchanges > "../${dsc_root}_forged.changes"; then
-        dpkg-genchanges -S > "../${dsc_root}_forged.changes";
+        echo "!!! dpkg-genchanges for ${dsc_root} failed, a .deb is surely missing. Trying to fake a source-only upload"
+        dpkg-genchanges -S > "../${dsc_root}_forged.changes"
     fi
     cd $cur_dir
 }
@@ -95,5 +108,5 @@ fi
 find "$1" -name '*.dsc' | while read dsc; do
     dsc_root=$(basename "$dsc" .dsc)
     forge_and_upload "$dsc" "${UPLOAD_DIR}"
-    $IMPORTER "${dsc_root}_forged.changes"
+    $IMPORTER "${dsc_root}_forged.changes" >/dev/null 2>/dev/null
 done
