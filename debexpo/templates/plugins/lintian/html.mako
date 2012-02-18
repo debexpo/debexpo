@@ -23,8 +23,8 @@ def severity_key(x):
 <div class="qa-header">
 ${o.outcome}
 </div>
-<div class="qa-content">
 % if o.rich_data:
+<div class="qa-content">
 %   for package in o.rich_data:
 <div class="lintian-pkgname">
 ${package}
@@ -46,5 +46,5 @@ ${decode_severity(severity)} ${tag_to_a(tag)}
 %     endfor
 </ul>
 %   endfor
-% endif
 </div>
+% endif
