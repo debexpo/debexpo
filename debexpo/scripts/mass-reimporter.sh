@@ -56,7 +56,7 @@ forge_changes () {
         cp $file $temp_dir
     done
 
-    dpkg-source -x $dsc_file $temp_dir/extracted
+    dpkg-source -x $dsc_file $temp_dir/extracted >/dev/null
 
     cd $temp_dir/extracted
 
@@ -67,12 +67,14 @@ forge_changes () {
             priority=$(dpkg-deb -f "../$file" Priority)
             echo "$file $section $priority" >> debian/files
         done
-        dpkg-genchanges > "../${dsc_root}_forged.changes"
+        dpkg-genchanges > "../${dsc_root}_forged.changes" 2>/dev/null
     else
-        dpkg-genchanges -S > "../${dsc_root}_forged.changes"
+        dpkg-genchanges -S > "../${dsc_root}_forged.changes" 2>/dev/null
     fi
 
     cd $cur_dir
+
+    echo "Generated ${dsc_root}_forged.changes"
 }
 
 # Copy the files associated to the $1 changes file into $2. Ugly hack:
@@ -81,7 +83,7 @@ copy_changes () {
     changes_file="$1"
     destdir="$2"
 
-    dcmd cp "${changes_file}" "$destdir"
+    dcmd cp "${changes_file}" -v "$destdir"
 }
 
 # Forge a changes file for $1 and upload it into $2.
