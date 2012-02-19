@@ -25,6 +25,7 @@
 #   DEALINGS IN THE SOFTWARE.
 
 set -e
+shopt -s nullglob
 
 # Debexpo importer scripts with arguments. Should end in -c
 IMPORTER="$(dirname "$0")/debexpo_importer.py --skip-email --skip-gpg-check -i development.ini -c"
@@ -41,30 +42,36 @@ forge_changes () {
     dsc_root=$(basename "$dsc_file" .dsc)
     cur_dir=$(pwd)
 
-    find $dsc_dir -maxdepth 1 -type f | while read file; do
+    version=${dsc_root##*_}
+
+    # copy the .dsc and related files
+    dcmd cp $dsc_file $temp_dir
+
+    cd $dsc_dir
+
+    files=(*_${version}_*.deb)
+
+    # copy the other interesting files (.debs)
+    for file in "${files[@]}"; do
         cp $file $temp_dir
     done
 
     dpkg-source -x $dsc_file $temp_dir/extracted
 
     cd $temp_dir/extracted
-    fakeroot dh_gencontrol
-    mv debian/files debian/files.tmp
-    cat debian/files.tmp | while read deb section priority; do
-        deb_noarch="${deb%_*.deb}"
-        shopt -s nullglob
-        files=(../${deb_noarch}*.deb)
-        if [ "${#files[@]}" -eq 0 ]; then
-            file=$deb
-        else
-            file=$(basename "${files[0]}")
-        fi
-        echo "$file $section $priority" >> debian/files
-    done
-    if ! dpkg-genchanges > "../${dsc_root}_forged.changes"; then
-        echo "!!! dpkg-genchanges for ${dsc_root} failed, a .deb is surely missing. Trying to fake a source-only upload"
+
+    if [ "${#files[@]}" -ne "0" ]; then
+        : > debian/files
+        for file in "${files[@]}"; do
+            section=$(dpkg-deb -f "../$file" Section)
+            priority=$(dpkg-deb -f "../$file" Priority)
+            echo "$file $section $priority" >> debian/files
+        done
+        dpkg-genchanges > "../${dsc_root}_forged.changes"
+    else
         dpkg-genchanges -S > "../${dsc_root}_forged.changes"
     fi
+
     cd $cur_dir
 }
 
@@ -74,9 +81,7 @@ copy_changes () {
     changes_file="$1"
     destdir="$2"
 
-    dput -u -s "${changes_file}" | awk '/Uploading/{print $4}' | while read f; do
-        cp "$f" "$destdir"
-    done
+    dcmd cp "${changes_file}" "$destdir"
 }
 
 # Forge a changes file for $1 and upload it into $2.
