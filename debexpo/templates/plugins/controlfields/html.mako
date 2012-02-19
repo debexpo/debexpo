@@ -6,7 +6,7 @@ ${str(o.outcome)}
 <dl>
 %for field, contents in sorted(o.rich_data.items()):
 <dt>${field}</dt>
-<dd><a href="${contents}">${contents}</a></dt>
+<dd><a href="${contents}">${contents}</a></dd>
 %endfor
 </dl>
 </div>
