@@ -9,7 +9,7 @@ ${ c.custom_html }
 
 <h2>1. Find a requested package</h2>
 
-<p>Debian is a distribution, not a general purpose repository. Many of us do not believe <em>every</em> piece of free software necessarily belongs in Debian. Please do not treat Debian as a platform to advertise your own software, unless there is some <em>real</em> request for it. That said, there is no one who ultimately judges about that. Eventually you may get some feedback on that discussion after filing your WNPP bug (see below) however you are free to interpret that as a suggestion, not as a final vote. After all, you need to find a sponsor believing in the benefit of having your package in Debian. Please have a look at our ${ h.tags.link_to("sponsors page", h.url(controller='sponsor', action='index')) } to learn about personal interests of sponsors.
+<p>Debian is a distribution, not a general purpose repository. Many of us do not believe <em>every</em> piece of free software necessarily belongs in Debian. Please do not treat Debian as a platform to advertise your own software, unless there is some <em>real</em> request for it. That said, there is no one who ultimately judges about that. Eventually you may get some feedback on that discussion after filing your WNPP bug (see below) however you are free to interpret that as a suggestion, not as a final vote. After all, you need to find a sponsor believing in the benefit of having your package in Debian. Please have a look at our ${ h.tags.link_to("sponsors page", h.url(controller='sponsor', action='index')) } to learn about personal interests of sponsors.</p>
 
 <p>If you want to contribute to Debian, but you do not know which packages to contribute to, take a look at "Request for help" (<em>RFH</em>), "Request for adopter" (<em>RFA</em>), "Orphaned package" (<em>O</em>) and "Request for package" (<em>RFP</em>) bugs. See <em>WNPP</em> below.</p>
 
@@ -114,7 +114,7 @@ If you did everything right, you will get a confirmation mail from our site and 
 
 <ul>
     <li>File a follow-up request to your existing <em>sponsorship-requests</em> pseudo-package.</li>
-    <li>Offer your package directly to relevant teams and individual developers. We made a ${ h.tags.link_to("a list of sponsors", h.url(controller='sponsor', action='index')) }, eventually willing to upload packages for you. <em>Please don't contact every sponsor listed there. Instead, read their individual requirements and choose the sponsor which matches you and your package best</em>.
+    <li>Offer your package directly to relevant teams and individual developers. We made a ${ h.tags.link_to("a list of sponsors", h.url(controller='sponsor', action='index')) }, eventually willing to upload packages for you. <em>Please don't contact every sponsor listed there. Instead, read their individual requirements and choose the sponsor which matches you and your package best</em>.</li>
 </ul>
 
 <h2>6. Getting an upload to Debian</h2>
