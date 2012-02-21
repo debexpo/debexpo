@@ -25,13 +25,14 @@
 #   DEALINGS IN THE SOFTWARE.
 
 set -e
+#set -x
 shopt -s nullglob
 
 # Debexpo importer scripts with arguments. Should end in -c
-IMPORTER="$(dirname "$0")/debexpo_importer.py --skip-email --skip-gpg-check -i development.ini -c"
+IMPORTER="$(dirname "$0")/debexpo_importer.py --skip-email --skip-gpg-check -i /var/www/debexpo/live.ini -c"
 
 # The directory where files are supposed to be uploaded
-UPLOAD_DIR=$(dirname "$0")/../../tmp/
+UPLOAD_DIR=/var/cache/debexpo/incoming
 
 # Forge a changes file for $1 in directory $2. We copy all the
 # (supposedly) needed files in $2 before forging the changes file.
@@ -45,7 +46,7 @@ forge_changes () {
     version=${dsc_root##*_}
 
     # copy the .dsc and related files
-    dcmd cp $dsc_file $temp_dir
+    dcmd cp $dsc_file $temp_dir || return 1
 
     cd $dsc_dir
 
@@ -67,9 +68,9 @@ forge_changes () {
             priority=$(dpkg-deb -f "../$file" Priority)
             echo "$file $section $priority" >> debian/files
         done
-        dpkg-genchanges > "../${dsc_root}_forged.changes" 2>/dev/null
+        dpkg-genchanges -sa > "../${dsc_root}_forged.changes" 2>/dev/null
     else
-        dpkg-genchanges -S > "../${dsc_root}_forged.changes" 2>/dev/null
+        dpkg-genchanges -S -sa > "../${dsc_root}_forged.changes" 2>/dev/null
     fi
 
     cd $cur_dir
@@ -114,6 +115,9 @@ fi
 
 find "$1" -name '*.dsc' | while read dsc; do
     dsc_root=$(basename "$dsc" .dsc)
-    forge_and_upload "$dsc" "${UPLOAD_DIR}"
-    $IMPORTER "${dsc_root}_forged.changes" >/dev/null 2>/dev/null
+    if forge_and_upload "$dsc" "${UPLOAD_DIR}" ; then
+       $IMPORTER "${dsc_root}_forged.changes" || continue
+    else
+        echo "Skip incomplete package $1"
+    fi
 done
