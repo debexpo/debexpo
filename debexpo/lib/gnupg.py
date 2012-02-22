@@ -138,11 +138,8 @@ class GnuPG(object):
              path to public key ring (when not specified, the default GPG
              setting will be used (~/.gnupg/pubring.gpg))
         """
-        if pubring is None:
-            pubring = self.default_keyring
-
-        args = ('--no-options', '--batch', '--verify', '--keyring', pubring, '--no-default-keyring', signed_file)
-        return self._run(args=args)
+        args = ('--verify', signed_file)
+        return self._run(args=args, pubring=pubring)
 
 
     def add_signature(self, signature_file, pubring=None):
@@ -156,11 +153,8 @@ class GnuPG(object):
 
         Returns a tuple (file output, return code)
         """
-        if pubring is None:
-            pubring = self.default_keyring
-
-        args = ('--no-options', '--batch', '--no-default-keyring', '--keyring', pubring, '--import-options', 'import-minimal', '--import', signature_file )
-        return self._run(args=args)
+        args = ('--import-options', 'import-minimal', '--import', signature_file)
+        return self._run(args=args, pubring=pubring)
 
 
     def remove_signature(self, keyid, pubring=None):
@@ -174,14 +168,11 @@ class GnuPG(object):
 
         Returns a tuple (file output, return code)
         """
-        if pubring is None:
-            pubring = self.default_keyring
-
-        args = ('--no-options', '--batch', '--no-default-keyring', '--keyring', pubring, '--yes', '--delete-key', keyid )
-        return self._run(args=args)
+        args = ('--yes', '--delete-key', keyid)
+        return self._run(args=args, pubring=pubring)
 
 
-    def _run(self, stdin=None, args=None):
+    def _run(self, stdin=None, args=None, pubring=None):
         """
         Run gpg with the given stdin and arguments and return the output and
         exit status.
@@ -190,12 +181,25 @@ class GnuPG(object):
             Feed gpg with this input to stdin
         ``args``
             a list of strings to be passed as argument(s) to gpg
+        ``pubring``
+            the path to the public gpg keyring. Note that
+            ``pubring + ".secret"`` will be used as the private keyring
 
         """
         if self.gpg_path is None:
             return (None, GnuPG.GPG_PATH_NOT_INITIALISED)
 
-        cmd = [ self.gpg_path, ]
+        if pubring is None:
+            pubring = self.default_keyring
+
+        cmd = [
+            self.gpg_path,
+            '--no-options',
+            '--batch',
+            '--no-default-keyring',
+            '--secret-keyring', pubring + ".secret",
+            '--keyring', pubring,
+            ]
         if not args is None:
                 cmd.extend(args)
 
