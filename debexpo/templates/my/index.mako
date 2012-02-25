@@ -3,16 +3,6 @@
 
 <h1>${ _('My account') }</h1>
 
-<p>Put this in ~/.dput.cf</p>
-
-<pre>
-[debexpo]
-fqdn = ${ config['debexpo.sitename'] }
-incoming = /upload/${ c.user.email }/${ c.user.get_upload_key() }
-method = http
-allow_unsigned_uploads = 0
-</pre>
-
 <fieldset>
   <strong><legend>${ _('Change details') }</legend></strong>
 
@@ -132,6 +122,13 @@ allow_unsigned_uploads = 0
       <td>${ _('Jabber address') }:</td>
       <td>${ h.html.tags.text('jabber', value=c.user.jabber) }</td>
     </tr>
+
+% if config['debexpo.enable_experimental_code']  == 'true':
+    <tr>
+        <td>${ _('Show personal data publicly') }:</td>
+        <td><td>${ h.html.tags.checkbox('profile_visibility') }</td>
+    </tr>
+% endif
 
 % if c.config['debexpo.debian_specific'] == 'true':
 
@@ -300,4 +297,3 @@ allow_unsigned_uploads = 0
   ${ h.html.tags.end_form() }
 % endif
 
-</fieldset>

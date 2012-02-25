@@ -36,6 +36,7 @@ __author__ = 'Arno Töll'
 __copyright__ = 'Copyright © 2011 Arno Töll'
 __license__ = 'MIT'
 
+from collections import defaultdict
 import logging
 
 from debexpo.lib import constants
@@ -53,64 +54,69 @@ class ClosedBugsPlugin(BasePlugin):
         Check to make sure the bugs closed belong to the package.
         """
 
-        try:
-            self.changes['Closes']
-        except KeyError:
+        if 'Closes' not in self.changes:
             log.debug('Package does not close any bugs')
             return
 
         log.debug('Checking whether the bugs closed in the package belong to the package')
 
-        bugs = [int(x) for x in self.changes['Closes'].split(' ')]
+        bugs = [int(x) for x in self.changes['Closes'].split()]
 
-        binary_packages = self.changes['Description'].split('\n')
-        binary_packages = [t.strip() for t in binary_packages]
-
-        if (len(bugs)):
+        if bugs:
             log.debug('Creating SOAP proxy to bugs.debian.org')
             try:
-                server = SOAPpy.SOAPProxy( ClosedBugsPlugin.URL, ClosedBugsPlugin.NS, simplify_objects = 1 )
+                server = SOAPpy.SOAPProxy(self.URL, self.NS, simplify_objects = 1)
                 bugs_retrieved = server.get_status( *bugs )
-                bugs_retrieved = bugs_retrieved['item']
+                if 'item' in bugs_retrieved:
+                    bugs_retrieved = bugs_retrieved['item']
+                else:
+                    bugs_retrieved = []
                 # Force argument to be a list, SOAPpy returns a dictionary instead of a dictionary list
                 # if only one bug was found
-                if ( not isinstance( bugs_retrieved, list ) ):
-                    bugs_retrieved = ( bugs_retrieved, )
+                if not isinstance(bugs_retrieved, list):
+                    bugs_retrieved = [bugs_retrieved]
             except Exception as e:
                 log.critical('An error occurred when creating the SOAP proxy at "%s" (ns: "%s"): %s'
-                    % (ClosedBugsPlugin.URL, ClosedBugsPlugin.NS, e))
-                self.failed('invalid-bug-specified', "%s: One or more bugs closed in this package do not exist" % (self.changes['Closes']), constants.PLUGIN_SEVERITY_ERROR)
+                    % (self.URL, self.NS, e))
                 return
+            
+            data = {
+                'buglist': bugs,
+                'raw': {},
+                'errors': [],
+                'bugs': defaultdict(list),
+                }
 
             # Index bugs retrieved
-            bugs_bts = {}
             for bug in bugs_retrieved:
-                if 'key' in bug and  'value' in bug:
-                    bugs_bts[int(bug['key'])] = bug['value']
+                if 'key' in bug and 'value' in bug:
+                    data["raw"][int(bug['key'])] = bug['value']
                 else:
                     continue
 
+            severity = constants.PLUGIN_SEVERITY_INFO
+                
             for bug in bugs:
-                if not bug in bugs_bts:
-                    log.error('Bug #%s does not exist' % bug)
-                    self.failed('bug-does-not-exist', bug, constants.PLUGIN_SEVERITY_ERROR)
+                if not bug in data['raw']:
+                    data["errors"].append('Bug #%s does not exist' % bug)
+                    severity = max(severity, constants.PLUGIN_SEVERITY_ERROR)
 
-                name = bugs_bts[bug]['package']
+                name = data["raw"][bug]['package']
+                data["bugs"][name].append((bug, data["raw"][bug]["subject"], data["raw"][bug]["severity"]))
 
-                if self._package_in_descriptions(name, binary_packages):
-                    message = ('Closes bug #%d: "%s" in package %s' %
-                        (bugs_bts[bug]['bug_num'], bugs_bts[bug]['subject'], bugs_bts[bug]['package']))
-                    log.debug(message)
-                    self.passed('bug-in-package', message, constants.PLUGIN_SEVERITY_INFO)
-                elif name == 'wnpp':
-                    message = ('Closes WNPP bug #%d: "%s"' % (bugs_bts[bug]['bug_num'], bugs_bts[bug]['subject']))
-                    log.debug(message)
-                    self.passed('bug-in-package', message, constants.PLUGIN_SEVERITY_INFO)
-                else:
-                    log.error('Bug #%s does not belong to this package' % bug)
-                    self.failed('bug-not-in-package', bug, constants.PLUGIN_SEVERITY_ERROR)
+                if not data["raw"][bug]['source'] == self.changes["Source"] or name == "wnpp":
+                    data["errors"].append('Bug #%s does not belong to this package' % bug)
+                    severity = max(severity, constants.PLUGIN_SEVERITY_ERROR)
 
+            if severity != constants.PLUGIN_SEVERITY_INFO:
+                outcome = "Package closes bugs in a wrong way"
+            elif "wnpp" in data["bugs"] and len(data["bugs"]) == 1:
+                outcome = "Package closes a WNPP bug"
+            else:
+                outcome = "Package closes bug%s" % ("s" if len(bugs) > 1 else "")
 
+            self.failed(outcome, data, severity)
+                    
         else:
             log.debug('Package does not close any bugs')
 
@@ -133,9 +139,3 @@ class ClosedBugsPlugin(BasePlugin):
         return False
 
 plugin = ClosedBugsPlugin
-
-outcomes = {
-    'invalid-bug-specified': {'name': 'One or more bugs closed in this package do not exist'},
-    'bug-not-in-package' : { 'name' : 'A bug closed in this package doesn\'t belong to this package' },
-    'bug-in-package' : { 'name' : 'A bug closed in this package belongs to this package' },
-}

@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 #
-#   email.py — Helper class for sending email
+#   email.py — Helper class for sending and receiving email
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
+#   Copyright © 2011 Arno Töll <debian@toell.net>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -29,11 +30,15 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 """
-Holds helper class for sending email.
+Holds helper class for sending and receiving email. The latter is achieved to fetch mails from an IMAP mailbox
 """
 
+# You don't like that line?
+# Come over it. Or, alternatively don't call your local modules like Python standard libraries
+from __future__ import absolute_import
+
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner, Copyright © 2011 Arno Töll'
 __license__ = 'MIT'
 
 import logging
@@ -46,6 +51,8 @@ import pylons
 import debexpo.lib.helpers as h
 from gettext import gettext
 import routes.util
+import nntplib
+import email.parser
 
 log = logging.getLogger(__name__)
 
@@ -116,3 +123,56 @@ class Email(object):
                     result[recipient][1]))
         else:
             log.debug('Successfully sent')
+
+
+    def _check_error(self, msg, err, data = None):
+        if err != 'OK':
+            if (data):
+                log.error("%s failed: %s" % (msg, data))
+            else:
+                log.error("failed: %s" % (msg))
+
+    def unread_messages(self, list_name, changed_since):
+        if not self.connection_established():
+            return
+
+        try:
+            (_, count, first, last, _) = self.nntp.group(list_name)
+            log.debug("Fetching messages %s to %s on %s" % (changed_since, last, list_name))
+        except nntplib.NNTPError as e:
+            log.error("Connecting to NNTP server %s failed: %s" % (pylons.config['debexpo.nntp_server'], str(e)))
+            return
+
+        try:
+            (_, messages) = self.nntp.xover(str(changed_since), str(last))
+
+            for (msg_num, _, _, _, msg_id, _, _, _) in messages:
+                (_, _, _, response) = self.nntp.article(msg_id)
+                ep = email.parser.Parser().parsestr(reduce(lambda x,xs: x+"\n"+xs, response))
+                ep['X-Debexpo-Message-ID'] = msg_id;
+                ep['X-Debexpo-Message-Number'] = msg_num;
+                yield ep
+        except nntplib.NNTPError as e:
+            log.error("Connecting to NNTP server %s failed: %s" % (pylons.config['debexpo.nntp_server'], str(e)))
+            return
+
+    def connect_to_server(self):
+        self.established = False
+        try:
+            self.nntp = nntplib.NNTP(pylons.config['debexpo.nntp_server'])
+        except nntplib.NNTPError as e:
+            log.error("Connecting to NNTP server %s failed: %s" % (pylons.config['debexpo.nntp_server'], str(e)))
+            return
+
+        self.established = True
+
+    def disconnect_from_server(self):
+        self.nntp.quit()
+
+
+    def connection_established(self):
+        if not self.established:
+            log.debug("Connection to NNTP server not established");
+            return False
+        return True
+

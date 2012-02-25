@@ -1,0 +1,71 @@
+debexpo (UNRELEASED + 1)
+
+    * Support for sponsoring guidelines. Debian Developer are asked to register at
+      mentors.debian.net (if not done already) and provide there their personal
+      sponsoring guidelines. That's is a semi-structured description text to
+      point sponsors to individual developers who are interested to sponsor some
+      packages.
+
+    * Provide public profile pages for both, maintainer and developers. For
+      maintainer their package list is being displayed among their profile data.
+      On the other hand, for Debian Developers their sponsoring guidelines are
+      being displayed.
+      Both can disable their profiles if desired.
+
+
+
+debexpo (v2)
+
+    * This is the "Welcome Nicolas Dandrimont release". He made a lot of
+      substantial and visible improvements in the QA plug-in codebase. The
+      plug-in output (e.g. Lintian runs) not only looks much better now, it is
+      also machine-readable in the backend which means we can tighter integrate
+      plug-in information into semantic workflows based on that information.
+      Thanks for the great work - we can do many useful things founded on that
+      improvements in future.
+
+    * Remove identification of uploads by upload hash when using HTTP. This
+      should never have been implemented that way. Instead verify the GnuPG for
+      uploader. Please check your GnuPG key in your profile, your key ID must match your
+      changed-by uploader ID, otherwise Debexpo will reject your upload. This
+      behavior is the same for both, HTTP and FTP uploads.
+      You can, but you do not need to update your ~/.dput.cf if you used to use
+      HTTP. However, The upload hash is not used at all anymore. Existing
+      configurations remaing compatible for the time being, but we are going to
+      stop support for these legacy configurations in a future release
+
+    * Provide worker tasks which run background jobs on the Expo server. Aside of
+      this technical detail, this has the visible effect to our users that
+      packages are automatically being removed from mentors.debian.net if:
+
+          + The package was uploaded to an official Debian archive
+          + The package did not find a sponsor within 12 weeks. You can always
+            reupload the package before, or after it is being removed from Expo to
+            reset the timer again.
+
+    * Fix a bug in the orig.tar.gz handling (again). Make sure, the orig.tar.gz can
+      be overwritten if the user uploaded a tarball which does not match the MD5 sum
+      of an already known orig.tar.gz. This bug perhaps caused the most
+      annoyance in the past months.
+
+    * Run the QA plugin again, link to the PTS page if the package is in Debian already.
+      Thanks Andrew Starr-Bochicchio for providing a patch
+
+    * Provide the correct RSS feed URL in the packages index page and fix HTML
+      display issues on the same page.
+      Thanks Paul Wise for providing a patch
+
+    * Make comments (and other pre-formatted texts flow properly in the browser).
+      Again, thanks Paul Wise and Sasa Bozic for telling us console hackers how
+      pure vain graphical interfaces need to be designed.
+
+    * Allow uploads to oldstable-security and fix a substantial amount of bugs
+      causing the importer to crash previously.
+
+    * For those who didn't notice yet: mentors.debian.net now supports SSL.
+
+    * We upgraded several templates and workflows to reflect the new
+      'sponsorship-requests' based BTS workflow. Beyond, no automated
+      integration is done yet.
+
+ -- Arno Töll <debian@toell.net> Wed, 15 Feb 2012 17:56:10 +0100

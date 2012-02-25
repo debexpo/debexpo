@@ -77,7 +77,7 @@ from debexpo.lib.changes import Changes
 from debexpo.lib.repository import Repository
 from debexpo.lib.plugins import Plugins
 from debexpo.lib.filesystem import CheckFiles
-
+from debexpo.lib.gnupg import GnuPG
 
 log = None
 
@@ -86,7 +86,7 @@ class Importer(object):
     Class to handle the package that is uploaded and wants to be imported into the database.
     """
 
-    def __init__(self, changes, ini, user_id, skip_email):
+    def __init__(self, changes, ini, skip_email, skip_gpg):
         """
         Object constructor. Sets class fields to sane values.
 
@@ -99,17 +99,15 @@ class Importer(object):
         ``ini``
             Path to debexpo configuration file. This is given from the upload controller.
 
-        ``user_id``
-            ID of the user doing the upload. This is given from the upload controller.
-
         ``skip_email``
             If this is set to true, send no email.
         """
         self.changes_file_unqualified = changes
         self.ini_file = os.path.abspath(ini)
         self.actually_send_email = not bool(skip_email)
+        self.skip_gpg = skip_gpg
 
-        self.user_id = user_id
+        self.user_id = None
         self.changes = None
         self.user = None
 
@@ -131,6 +129,12 @@ class Importer(object):
         if os.path.exists(self.changes_file):
                 os.remove(self.changes_file)
 
+    def _remove_temporary_files(self):
+        if hasattr(self, 'files_to_remove'):
+            for file in self.files_to_remove:
+                if os.path.exists(file):
+                    os.remove(file)
+
     def _remove_files(self):
         """
         Removes all the files uploaded.
@@ -141,6 +145,7 @@ class Importer(object):
                     os.remove(file)
 
         self._remove_changes()
+        self._remove_temporary_files()
 
     def _fail(self, reason, use_log=True):
         """
@@ -332,7 +337,7 @@ class Importer(object):
         # Add PackageInfo objects to the database for the package_version
         for result in qa.result:
             meta.session.add(PackageInfo(package_version=package_version, from_plugin=result.from_plugin,
-                outcome=result.outcome, data=result.data, severity=result.severity))
+                outcome=result.outcome, rich_data=result.data, severity=result.severity))
 
         # Commit all changes to the database
         meta.session.commit()
@@ -367,9 +372,7 @@ class Importer(object):
 
         log.debug('Importer started with arguments: %s' % sys.argv[1:])
         filecheck = CheckFiles()
-
-        if self.user_id:
-            self.user = meta.session.query(User).filter_by(id=self.user_id).one()
+        signature = GnuPG()
 
         # Try parsing the changes file, but fail if there's an error.
         try:
@@ -378,13 +381,45 @@ class Importer(object):
             filecheck.test_md5sum(self.changes)
         except Exception as e:
             self._remove_changes()
+            # XXX: The user won't ever see this message. The changes file was
+            # invalid, we don't know whom send it to
             self._reject("Your changes file appears invalid. Refusing your upload\n%s" % (e.message))
 
+
+
+        # Determine user from changed-by field
+        if self.user_id is None:
+            maintainer_string = self.changes.get('Changed-By')
+            log.debug("Determining user from 'Changed-By:' field: %s" % maintainer_string)
+            maintainer_realname, maintainer_email_address = email.utils.parseaddr(maintainer_string)
+            log.debug("Changed-By's email address is: %s", maintainer_email_address)
+            self.user = meta.session.query(User).filter_by(
+                    email=maintainer_email_address).filter_by(verification=None).first()
+            if self.user is None:
+                # generate user object, but only to send out reject message
+                self.user = User(id=-1, name=maintainer_realname, email=maintainer_email_address)
+                self._remove_changes()
+                self._reject('Couldn\'t find user %s. Exiting.' % self.user.email)
+            log.debug("User found in database. Has id: %s", self.user.id)
+            self.user_id = self.user.id
+
+        # Next, find out whether the changes file was signed with a valid signature, if not reject immediately
+        if not self.skip_gpg:
+            if not signature.is_signed(self.changes_file):
+                self._remove_changes()
+                self._reject('Your upload does not appear to be signed')
+            (gpg_out, gpg_status) = signature.verify_sig_full(self.changes_file)
+            if gpg_status != 0:
+                self._remove_changes()
+                self._reject('Your upload does not contain a valid signature. Output was:\n%s' % (gpg_out))
+            log.debug("GPG signature matches user %s" % (self.user.email))
+
         self.files = self.changes.get_files()
+        self.files_to_remove = []
 
         distribution = self.changes['Distribution'].lower()
         allowed_distributions = ('oldstable', 'stable', 'unstable', 'experimental', 'stable-backports', 'oldstable-backports',
-            'oldstable-backports-sloppy', 'stable-security', 'testing-security', 'stable-proposed-updates',
+            'oldstable-backports-sloppy', 'oldstable-security', 'stable-security', 'testing-security', 'stable-proposed-updates',
             'testing-proposed-updates', 'sid', 'wheezy', 'squeeze', 'lenny', 'squeeze-backports', 'lenny-backports',
             'lenny-security', 'lenny-backports-sloppy', 'lenny-volatile', 'squeeze-security', 'squeeze-updates', 'wheezy-security')
         if distribution not in allowed_distributions:
@@ -395,36 +430,21 @@ class Importer(object):
         # Look whether the orig tarball is present, and if not, try and get it from
         # the repository.
         (orig, orig_file_found) = filecheck.find_orig_tarball(self.changes)
-        if orig and not orig_file_found == constants.ORIG_TARBALL_LOCATION_NOT_FOUND:
+        if orig_file_found != constants.ORIG_TARBALL_LOCATION_LOCAL:
             log.debug("Upload does not contain orig.tar.gz - trying to find it elsewhere")
+        if orig and orig_file_found == constants.ORIG_TARBALL_LOCATION_REPOSITORY:
             filename = os.path.join(pylons.config['debexpo.repository'],
                 self.changes.get_pool_path(), orig)
             if os.path.isfile(filename):
                 log.debug("Found tar.gz in repository as %s" % (filename))
                 shutil.copy(filename, pylons.config['debexpo.upload.incoming'])
-                #self.files.append(orig)
+                # We need the orig.tar.gz for the import run, plugins need to extract the source package
+                # also Lintian needs it. However the orig.tar.gz is in the repository already, so we can
+                # remove it later
+                self.files_to_remove.append(orig)
 
         destdir = pylons.config['debexpo.repository']
 
-        # If the user ID wasn't specified using the "-u" option then try
-        # to determine it from the "Changed-By:" mentioned in the changes
-        # file.
-        if self.user_id is None:
-            log.debug("Option '-u' was not given. Determining user from 'Changed-By:' field.")
-            maintainer_string = self.changes.get('Changed-By')
-            log.debug("Changed-By is: %s", maintainer_string)
-            maintainer_realname, maintainer_email_address = email.utils.parseaddr(maintainer_string)
-            log.debug("Changed-By's email address is: %s", maintainer_email_address)
-            self.user = meta.session.query(User).filter_by(
-                    email=maintainer_email_address).filter_by(verification=None).first()
-            if self.user is None:
-                self._fail('Couldn\'t find user with email address %s. Exiting.' % maintainer_email_address)
-            log.debug("User found in database. Has id: %s", self.user.id)
-        else:
-            # Get uploader's User object
-            self.user = meta.session.query(User).filter_by(id=self.user_id).filter_by(verification=None).first()
-            if self.user is None:
-                self._fail('Couldn\'t find user with id %s. Exiting.' % self.user_id)
 
         # Check whether the files are already present
         log.debug("Checking whether files are already in the repository")
@@ -498,6 +518,7 @@ class Importer(object):
             log.debug("Installing new file %s" % (file))
             shutil.move(file, os.path.join(destdir, file))
 
+        self._remove_temporary_files()
         # Create the database rows
         self._create_db_entries(qa)
 
@@ -519,20 +540,17 @@ class Importer(object):
         log.debug('Done')
 
 def main():
-    parser = OptionParser(usage="%prog [-u ID] -c FILE -i FILE [--skip-email]")
+    parser = OptionParser(usage="%prog -c FILE -i FILE [--skip-email] [--skip-gpg-check]")
     parser.add_option('-c', '--changes', dest='changes',
                       help='Path to changes file to import',
                       metavar='FILE', default=None)
     parser.add_option('-i', '--ini', dest='ini',
                       help='Path to application ini file',
                       metavar='FILE', default=None)
-    # If the 'userid' option is not given then the user will be derived
-    # from the email address mentioned in the changes file as Changed-By.
-    parser.add_option('-u', '--userid', dest='user_id',
-                      help='''Uploader's user_id''',
-                      metavar='ID', default=None)
     parser.add_option('--skip-email', dest='skip_email',
                       action="store_true", help="Skip sending emails")
+    parser.add_option('--skip-gpg-check', dest='skip_gpg',
+                      action="store_true", help="Skip the GPG signedness check")
 
     (options, args) = parser.parse_args()
 
@@ -540,7 +558,7 @@ def main():
         parser.print_help()
         sys.exit(0)
 
-    i = Importer(options.changes, options.ini, options.user_id, options.skip_email)
+    i = Importer(options.changes, options.ini, options.skip_email, options.skip_gpg)
 
     i.main()
     return 0

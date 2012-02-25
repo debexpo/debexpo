@@ -6,6 +6,7 @@
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
+#   Copyright © 2011 Arno Töll <debian@toell.net>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -36,7 +37,7 @@ utilized by Controllers.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner, Copyright © 2011 Arno Töll'
 __license__ = 'MIT'
 
 from pylons import tmpl_context as c, cache, config, app_globals, request, \
@@ -49,6 +50,58 @@ from pylons.templating import render_mako as render
 
 import debexpo.model as model
 from debexpo.model import meta
+
+class SubMenu(object):
+    """
+    A sub menu class, to be instantiated by controller.
+    This class holds several data structures which are parsed by the template engine and
+    result in a per-controller sub menu.
+    The controller only needs to feed this menu.
+    """
+    def __init__(self):
+        self._label = None
+        self._menu = []
+        self._entries = []
+        self._has_menu = False
+        self._menu_label = None
+
+    def has_menu(self):
+        return self._has_menu
+
+    def has_label(self):
+        return self._label != None
+
+    def has_submenu(self):
+        return len(self._menu) > 0
+
+    def set_label(self, label):
+        self._has_menu = True
+        self._label = label
+
+    def add_menu(self, label, menu):
+        if not isinstance(menu, SubMenu):
+            raise AttributeError("%s is not an instance of SubMenu" % (menu))
+        self._has_menu = True
+        self._menu_label = label
+	self._menu.append(menu)
+
+    def add_entry(self, label, link):
+        self._has_menu = True
+        self._entries.append( (label, link) )
+
+    def submenulabel(self):
+        return self._menu_label
+
+    def label(self):
+        return self._label
+
+    def entries(self):
+        for e in self._entries:
+            yield e
+
+    def menus(self):
+        for e in self._menu:
+            yield e
 
 class BaseController(WSGIController):
     """
@@ -73,6 +126,11 @@ class BaseController(WSGIController):
             redirect(url(controller='login', action='index'))
 
         c.config = config
+        # The templates require the submenu to be existing
+        # If no controller added a submenu, its fair enough to instantiate an empty
+        # object here
+        if not hasattr(c, 'submenu'):
+            c.submenu = SubMenu()
 
     def __call__(self, environ, start_response):
         """

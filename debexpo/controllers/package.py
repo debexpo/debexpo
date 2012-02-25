@@ -63,20 +63,23 @@ log = logging.getLogger(__name__)
 
 class PackageController(BaseController):
 
-    def _get_package(self, packagename):
+    def _get_package(self, packagename, from_controller=True):
         """
         """
         log.debug('Details of package "%s" requested' % packagename)
 
         package = meta.session.query(Package).filter_by(name=packagename).first()
 
-        if package is None:
+        if package is None and from_controller:
             log.error('Could not get package information')
             redirect(url(controller='packages', action='index', packagename=None))
+        if package is None and not from_controller:
+            return None
 
-        c.package = package
-        c.config = config
-        c.package_dir = get_package_dir(package.name)
+	if from_controller:
+            c.package = package
+            c.config = config
+            c.package_dir = get_package_dir(package.name)
         return package
 
     def index(self, packagename = None):
@@ -103,18 +106,6 @@ class PackageController(BaseController):
 
         log.debug('Rendering page')
         return render('/package/index.mako')
-
-    def rfs(self, packagename):
-        """
-        RFS boilerplate creation.
-
-        ``packagename``
-            Package name to look at.
-        """
-        package = self._get_package(packagename)
-
-        log.debug('Rendering page')
-        return render('/package/rfs.mako')
 
     def subscribe(self, packagename):
         """
@@ -213,7 +204,7 @@ class PackageController(BaseController):
         meta.session.delete(package)
         meta.session.commit()
 
-        redirect(url(controller='packages', action='index', filter='my'))
+        redirect(url(controller='packages', action='my'))
 
     @validate(schema=PackageCommentForm(), form='index')
     def _comment_submit(self, packagename):

@@ -45,6 +45,8 @@ import pylons.test
 from debexpo.config.environment import load_environment
 from debexpo.model import import_all_models
 from debexpo.model import meta
+
+import debexpo.model.data_store
 import debexpo.model.user_countries
 
 log = logging.getLogger(__name__)
@@ -96,3 +98,6 @@ def setup_config(command, filename, section, vars):
 
     log.info('Making sure all tags do exist')
     debexpo.model.sponsor_metrics.create_tags()
+
+    log.info('Import data store pre-existing data')
+    debexpo.model.data_store.fill_data_store()

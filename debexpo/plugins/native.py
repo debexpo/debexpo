@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,7 +33,10 @@ Holds the native plugin.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = ", ".join([
+        'Copyright © 2008 Jonny Lamb',
+        'Copyright © 2012 Nicolas Dandrimont',
+        ])
 __license__ = 'MIT'
 
 import logging
@@ -57,14 +61,9 @@ class NativePlugin(BasePlugin):
             # Most uploads will not be native, and especially on mentors, a native
             # package is almost probably in error.
             log.warning('Package is native')
-            self.failed('is-native', None, constants.PLUGIN_SEVERITY_WARNING)
+            self.failed('Package is native', {"native": True}, constants.PLUGIN_SEVERITY_WARNING)
         else:
             log.debug('Package is not native')
-            self.passed('is-not-native', None, constants.PLUGIN_SEVERITY_INFO)
+            self.passed('Package is not native', {"native": False}, constants.PLUGIN_SEVERITY_INFO)
 
 plugin = NativePlugin
-
-outcomes = {
-    'is-native' : { 'name' : 'Package is native' },
-    'is-not-native' : { 'name' : 'Package is not native' },
-}

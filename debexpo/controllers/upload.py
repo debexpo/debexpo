@@ -49,7 +49,6 @@ except ImportError: # for sqlalchemy 0.7.1 and above
 from debexpo.lib.base import *
 from debexpo.lib.filesystem import CheckFiles
 from debexpo.model import meta
-from debexpo.model.user_upload_key import UserUploadKey
 
 log = logging.getLogger(__name__)
 
@@ -58,7 +57,7 @@ class UploadController(BaseController):
     Controller to handle uploading packages via HTTP PUT.
     """
 
-    def index(self, filename, email, password):
+    def index(self, filename):
         """
         Controller entry point. When dput uploads a package via `PUT`, the connection below is made::
 
@@ -72,12 +71,6 @@ class UploadController(BaseController):
         ``filename``
             Name of file being uploaded.
 
-        ``email`` (optional)
-            Used when requesting the URL /upload/email/password/filename scheme.
-
-        ``password`` (optional)
-            Used when requesting the URL /upload/email/password/filename scheme.
-
         The password here is actually a user_upload_key, not the user password.
         """
         if request.method != 'PUT':
@@ -85,22 +78,6 @@ class UploadController(BaseController):
             abort(405, 'The upload controller only deals with PUT requests.', headers=[('Allow', 'PUT')])
 
         log.debug('File upload: %s' % filename)
-
-        # Check the uploader's username and password
-        try:
-            # Get user from database
-            user_upload_key = meta.session.query(UserUploadKey).filter_by(
-                upload_key=password).one()
-            if (user_upload_key.user and
-                user_upload_key.user.email == email):
-                user = user_upload_key.user
-            else:
-                abort(403, 'Authentication failed.')
-
-            log.debug('Authenticated as %s <%s>' % (user.name, user.email))
-        except InvalidRequestError, e:
-            # Couldn't get one() row, therefore unsuccessful authentication
-            abort(403, 'Authentication failed.')
 
 
         # Check whether the file extension is supported by debexpo
@@ -133,8 +110,7 @@ class UploadController(BaseController):
         # call the importer process.
         if filename.endswith('.changes'):
             command = [ config['debexpo.importer'], '-i',
-                config['global_conf']['__file__'], '-c', filename, '-u',
-                str(user.id) ]
+                config['global_conf']['__file__'], '-c', filename ]
 
             subprocess.Popen(command, close_fds=True)
 

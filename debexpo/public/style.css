@@ -410,18 +410,27 @@ hr {
 	height: 1px;
 	margin: 1.4375em 0 1.5em 0;
 }
+
+/* Make pre's wrap to the window */
 pre {
 	margin: 1.5em 0 1.5em 0;
 	overflow: auto;
 	font-family: monospace;
 	white-space: pre;
 	color: black;
+    white-space: normal;
+    width: 600px;
 }
+pre { white-space: pre-wrap; }
+
 tt, code {
 	font-family: monospace;
 	white-space: pre;
 	color: black;
+    white-space: normal;
 }
+tt, code { white-space: pre-wrap; }
+
 dt {
 	margin: 1.5em 0 0 0;
 	font-weight: bold;
@@ -903,5 +912,128 @@ span.relatedpages a:hover {
 span.error-message {
     color: red;
 	font-weight: bold;
-};
+}
 
+/* QA information styles */
+
+ul.qa {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.qa > div {
+    margin-left: 0.5em;
+}
+
+.qa-toggle {
+    font-size: smaller;
+    margin-left: 1em;
+}
+
+.qa-toggle span {
+    text-decoration: underline;
+}
+
+.qa .visibility {
+    font-family: monospace;
+    margin: 0 3px 0 0;
+    padding: 2px 4px;
+    font-weight: bold;
+    font-size: larger;
+}
+
+.qa div.qa-header {
+    font-weight: bold;
+    display: inline;
+    padding: 2px 4px;
+}
+
+.qa div.qa-content {
+    margin-left: 1em;
+    margin-bottom: 0.5em;
+}
+
+.qa .severity-warning .visibility {
+    background-color: #FFEB44;
+}
+
+.qa .severity-error .visibility {
+    background-color: #FF6700;
+}
+
+.qa .severity-info .visibility {
+    background-color: #C7EA3C;
+}
+
+/* Closed bugs plugin */
+
+.qa .bugs-closed {
+    margin: 0;
+    margin-bottom: 1em;
+    list-style-type: none;
+}
+
+.qa .bugs-closed ul {
+    list-style-type: none;
+}
+
+/* Lintian plugin */
+
+.qa .lintian-E {
+    background-color: #FF6700;
+    margin: 0 3px 0 0;
+    padding: 2px 4px;
+    font-family: monospace;
+    border: none;
+}
+
+.qa .lintian-W {
+    background-color: #FFEB44;
+    margin: 0 3px 0 0;
+    padding: 2px 4px;
+    font-family: monospace;
+    border: none;
+}
+
+.qa .lintian-P {
+    background-color: #C7EA3C;
+    margin: 0 3px 0 0;
+    padding: 2px 4px;
+    font-family: monospace;
+    border: none;
+}
+
+.qa .lintian-I {
+    background-color: #C7EA3C;
+    margin: 0 3px 0 0;
+    padding: 2px 4px;
+    font-family: monospace;
+    border: none;
+}
+
+.qa .lintian-X {
+    background-color: #EE99EE;
+    margin: 0 3px 0 0;
+    padding: 2px 4px;
+    font-family: monospace;
+    border: none;
+}
+
+.qa .lintian-O {
+    background-color: #DDD;
+    margin: 0 3px 0 0;
+    padding: 2px 4px;
+    font-family: monospace;
+    border: none;
+}
+
+.qa .lintian-pkgname {
+    font-weight: bold;
+}
+
+.qa .lintian-contents {
+    margin: 0;
+    margin-bottom: 1em;
+    list-style-type: none;
+}

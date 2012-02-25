@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,7 +33,10 @@ Holds the watchfile plugin.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = ', '.join([
+        'Copyright © 2008 Jonny Lamb',
+        'Copyright © 2012 Nicolas Dandrimont',
+        ])
 __license__ = 'MIT'
 
 import subprocess
@@ -61,55 +65,46 @@ class WatchFilePlugin(BasePlugin):
         self._run_uscan()
         return (self.output.find('Newest version on remote site is') != -1)
 
-    def test_watch_file_present(self):
+    def test_uscan(self):
         """
-        Check to see whether there is a watch file in the package.
+        Run the watch file-related checks in the package
         """
+
+        data = {
+            "watch-file-present": False,
+            }
+        
         log.debug('Checking to see whether there is a watch file in the package')
 
         if self._watch_file_present():
             log.debug('Watch file present')
-            self.passed('watch-file-present', None, constants.PLUGIN_SEVERITY_INFO)
+            data["watch-file-present"] = True
         else:
             log.warning('Watch file not present')
-            self.failed('watch-file-not-present', None, constants.PLUGIN_SEVERITY_WARNING)
-
-    def test_watch_file_works(self):
-        """
-        Check to see whether the watch file works.
-        """
-        if not self._watch_file_present(): return []
-        log.debug('Checking to see whether the watch file works')
+            self.failed('Watch file is not present', data, constants.PLUGIN_SEVERITY_WARNING)
+            return
 
         if self._watch_file_works():
             log.debug('Watch file works')
-            self.passed('watch-file-works', None, constants.PLUGIN_SEVERITY_INFO)
+            data["watch-file-works"] = True
+            data["uscan-output"] = self.output
         else:
             log.warning('Watch file does not work')
-            self.failed('watch-file-does-not-work', self.output, constants.PLUGIN_SEVERITY_WARNING)
+            data["watch-file-works"] = False
+            data["uscan-output"] = self.output
+            self.failed("A watch file is present but doesn't work", data, constants.PLUGIN_SEVERITY_WARNING)
+            return
 
-    def test_new_upstream(self):
-        """
-        Check to see whether there is a new upstream version.
-        """
-        if not self._watch_file_present(): return []
-        if not self._watch_file_works(): return []
         log.debug('Looking whether there is a new upstream version')
 
         if self.status == 1:
             log.debug('Package is the latest upstream version')
-            self.passed('no-new-upstream-available', None, constants.PLUGIN_SEVERITY_INFO)
+            data["latest-upstream"] = True
+            self.passed('Package is the latest upstream version', data, constants.PLUGIN_SEVERITY_INFO)
         else:
             log.warning('Package is not the latest upstream version')
-            self.failed('new-upstream-available', self.output, constants.PLUGIN_SEVERITY_WARNING)
+            data["latest-upstream"] = False
+            self.failed('Package is not the latest upstream version', data, constants.PLUGIN_SEVERITY_WARNING)
 
 plugin = WatchFilePlugin
 
-outcomes = {
-    'watch-file-present' : { 'name' : 'A watch file is present' },
-    'watch-file-not-present' : { 'name' : 'A watch file is not present' },
-    'watch-file-works' : { 'name' : 'The watch file works' },
-    'watch-file-does-not-work' : { 'name' : 'The watch file does not work' },
-    'new-upstream-available' : { 'name' : 'A new upstream version is available' },
-    'no-new-upstream-available' : { 'name' : 'Package is the latest upstream version' },
-}

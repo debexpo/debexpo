@@ -43,6 +43,8 @@ from debexpo.lib import constants
 from debexpo.model import meta
 from debexpo.model.packages import Package
 
+from pylons import config
+
 log = logging.getLogger(__name__)
 
 class NotUploaderPlugin(BasePlugin):
@@ -53,7 +55,7 @@ class NotUploaderPlugin(BasePlugin):
         make sure it was uploaded by the same uploader.
         """
         packagename = self.changes['Source']
-        log.debug('Checking whether the %s is in the archive already' % packagename)
+        log.debug('Checking whether %s is in the archive already' % packagename)
 
         package = meta.session.query(Package).filter_by(name=packagename).first()
 
@@ -68,10 +70,8 @@ class NotUploaderPlugin(BasePlugin):
             # This isn't even worth setting an outcome.
         else:
             log.error('Package does not belong to uploader')
-            self.failed('package-does-not-belong-to-user', None, constants.PLUGIN_SEVERITY_CRITICAL)
+            self.failed('This package was previously uploaded to %s by another user' % config["debexpo.sitename"],
+                        None,
+                        constants.PLUGIN_SEVERITY_CRITICAL)
 
 plugin = NotUploaderPlugin
-
-outcomes = {
-    'package-does-not-belong-to-user' : 'The uploaded package already has a version in the archive, which was uploaded by a different user'
-}

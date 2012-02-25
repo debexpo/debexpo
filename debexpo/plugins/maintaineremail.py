@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,9 +33,13 @@ Holds the maintaineremail plugin.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = ', '.join([
+        'Copyright © 2008 Jonny Lamb',
+        'Copyright © 2012 Nicolas Dandrimont',
+        ])
 __license__ = 'MIT'
 
+import email.utils
 import logging
 import re
 
@@ -60,36 +65,36 @@ class MaintainerEmailPlugin(BasePlugin):
             user = meta.session.query(User).get(self.user_id)
 
             if user is not None:
-                regex = re.compile(r'^(.*) ?(<.+@.+>)$')
-                maintainer_email = regex.match(self.changes['Maintainer']).group(2)[1:-1]
+                maintainer_name, maintainer_email = email.utils.parseaddr(self.changes['Maintainer'])
                 uploader_emails = []
 
                 dsc = deb822.Dsc(file(self.changes.get_dsc()))
 
                 if 'Uploaders' in dsc:
-                    for uploader in dsc['Uploaders'].split(','):
-                        match = regex.match(uploader)
-                        if match:
-                            uploader_emails.append(match.group(2)[1:-1])
+                    for uploader_name, uploader_email in email.utils.getaddresses([dsc['Uploaders']]):
+                        uploader_emails.append(uploader_email)
 
+                severity = constants.PLUGIN_SEVERITY_INFO
                 if user.email == maintainer_email:
-                    log.debug('Maintainer email is the same as the uploader')
-                    self.passed('maintainer-is-uploader', None, constants.PLUGIN_SEVERITY_INFO)
+                    log.debug('"Maintainer" email is the same as the uploader')
+                    outcome = '"Maintainer" email is the same as the uploader'
                 elif user.email in uploader_emails:
                     log.debug('The uploader is in the package\'s "Uploaders" field')
-                    self.passed('uploader-in-uploaders', None, constants.PLUGIN_SEVERITY_INFO)
+                    outcome = 'The uploader is in the package\'s "Uploaders" field'
                 else:
                     log.warning('%s != %s' % (user.email, maintainer_email))
-                    self.failed('maintainer-is-not-uploader', '%s != %s' % (user.email, maintainer_email),
-                        constants.PLUGIN_SEVERITY_WARNING)
+                    outcome = 'The uploader is not in the package\'s "Maintainer" or "Uploaders" fields'
+                    severity = constants.PLUGIN_SEVERITY_WARNING
 
+                data = {
+                    'user-is-maintainer': (severity == constants.PLUGIN_SEVERITY_INFO),
+                    'user-email': user.email,
+                    'maintainer-email': maintainer_email,
+                    'uploader-emails': uploader_emails,
+                    }
+
+                self.failed(outcome, data, severity)
         else:
             log.warning('Could not get the uploader\'s user details from the database')
 
 plugin = MaintainerEmailPlugin
-
-outcomes = {
-    'maintainer-is-uploader' : { 'name' : 'The maintainer and uploader emails are the same' },
-    'uploader-in-uploaders' : { 'name' : 'The uploader is in the package\'s "Uploaders" field' },
-    'maintainer-is-not-uploader' : { 'name' : 'The maintainer and uploader emails are not the same' },
-}

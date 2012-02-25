@@ -36,12 +36,14 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
-from debian import deb822
 import logging
 import os
-import tempfile
 import shutil
 import sys
+import tempfile
+import traceback
+
+from debian import deb822
 import pylons
 
 log = logging.getLogger(__name__)
@@ -203,13 +205,15 @@ class Plugins(object):
             # The 'plugin' object points to the class containing the actual plugin/test
             if hasattr(module, 'plugin'):
                 p = getattr(module, 'plugin')(name=plugin, changes=self.changes, \
-                    changes_file=self.changes_file, tempdir=self.tempdir, \
-                    outcomes=getattr(module, 'outcomes'))
+                    changes_file=self.changes_file, tempdir=self.tempdir)
 
                 for item in self.kw:
                     setattr(p, item, self.kw[item])
 
-                result.extend(p.run())
+                try:
+                    result.extend(p.run())
+                except Exception:
+                    log.debug("Something wrong happened while running the plugin '%s': %s" % (plugin, traceback.format_exc()))
 
         if self.conf['extract']:
             self._cleanup()

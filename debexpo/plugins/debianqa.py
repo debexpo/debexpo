@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,12 +33,18 @@ Holds the debian plugin.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = ', '.join([
+        'Copyright © 2008 Jonny Lamb',
+        'Copyright © 2012 Nicolas Dandrimont',
+        ])
 __license__ = 'MIT'
 
 import logging
-import urllib
-import re
+import lxml.etree
+import urllib2
+
+from debexpo.model import meta
+from debexpo.model.users import User
 
 from debexpo.plugins import BasePlugin
 
@@ -45,99 +52,109 @@ log = logging.getLogger(__name__)
 
 class DebianPlugin(BasePlugin):
 
-    def _get_qa_page(self):
-        if not hasattr(self, 'qa_page'):
-            self.qa_page = urllib.urlopen('http://packages.qa.debian.org/%s' % self.changes['Source']).readlines()
-
     def _in_debian(self):
-        self._get_qa_page()
-        return '404' not in self.qa_page
+        try:
+            self.qa_page = urllib2.urlopen('http://packages.qa.debian.org/%s' % self.changes['Source'])
+        except urllib2.HTTPError:
+            self.in_debian = False
+        else:
+            self.in_debian = True
+            self.parsed_qa = lxml.etree.fromstring(self.qa_page.read())
 
-    def test_package_in_debian(self):
+    def _qa_xpath(self, query, item = None):
+        """Perform the xpath query on the given item"""
+        if item is None:
+            item = self.parsed_qa
+        return item.xpath(
+            query,
+            namespaces={'xhtml': 'http://www.w3.org/1999/xhtml'}
+            )
+
+    def _test_package_in_debian(self):
         """
         Finds whether the package is in Debian.
         """
         log.debug('Testing whether the package is in Debian already')
 
-        if self._in_debian():
-            log.debug('Package is in Debian')
-            self.info('package-is-in-debian', None)
+        if self.in_debian:
+            self.outcome = "Package is already in Debian"
         else:
-            log.debug('Package is not in Debian')
-            self.info('package-is-not-in-debian', None)
+            self.outcome = "Package is not in Debian"
 
-    def test_last_upload(self):
+        self.data["in-debian"] = self.in_debian
+
+    def _test_last_upload(self):
         """
         Finds the date of the last upload of the package.
         """
-        if not self._in_debian():
-            return
-
         log.debug('Finding when the last upload of the package was')
 
-        for item in self.qa_page:
-            if 'Accepted' in item:
-                last_change = re.search("\[(\d{4}-\d{2}-\d{2})\]", item)
-                if not last_change:
-                    continue
-                last_change = last_change.group(1)
+        news = self._qa_xpath('//xhtml:ul[@id="news-list"]')[0]
+        for item in news.getchildren():
+            if 'Accepted' in self._qa_xpath('xhtml:a/child::text()', item):
+                last_change = item.text[1:11]
                 log.debug('Last upload on %s' % last_change)
-                self.info('last-debian-upload', 'Last upload on %s' % last_change )
+                self.data["latest-upload"] = last_change
                 return
 
         log.warning('Couldn\'t find last upload date')
 
-    def test_is_nmu(self):
+    def _test_is_nmu(self):
         """
         Finds out whether the package is an NMU.
         """
-        log.debug('Finding out whether the package is an NMU')
+        log.debug('Finding out whether the package is a NMU')
 
-        if 'nmu' in self.changes['Version']:
-            log.debug('Package is an NMU')
-            log.info('package-is-nmu', None)
-        else:
-            log.debug('Package is not an NMU')
+        import string
 
-    def test_is_maintainer(self):
+        delete_chars = string.maketrans(
+            string.ascii_lowercase + "\n", " " * (len(string.ascii_lowercase) + 1)
+            )
+
+        changes = str(self.changes["Changes"]).lower().translate(None, delete_chars).splitlines()
+
+        self.data["nmu"] = (
+            any(change.startswith('nonmaintainerupload') for change in changes) or
+            any(change.startswith('nmu') for change in changes) or
+            'nmu' in self.changes["Version"]
+            )
+
+    def _get_debian_maintainer_data(self):
+
+        self.debian_maintainers = sorted(
+            self._qa_xpath('//xhtml:span[@title="maintainer"]/child::text()') +
+            self._qa_xpath('//xhtml:span[@title="uploader"]/child::text()')
+            )
+
+        self.user_name = ""
+        self.user_email = ""
+
+        if self.user_id is not None:
+            user = meta.session.query(User).get(self.user_id)
+
+            if user is not None:
+                self.user_name = user.name
+                self.user_email = user.email
+
+    def _test_is_debian_maintainer(self):
         """
         Tests whether the package Maintainer is the Debian Maintainer.
         """
-        if not self._in_debian():
-            return
 
         log.debug('Finding out whether the package Maintainer is the Debian Maintainer')
 
-        # TODO
+        self.data["is-debian-maintainer"] = self.user_name in self.debian_maintainers
 
-    def test_is_new_maintainer(self):
+
+    def _test_has_new_maintainer(self):
         """
         Tests whether this package version introduces a new Maintainer.
         """
-        if not self._in_debian():
-            return
-
         log.debug('Finding out whether this package version introduces a new Maintainer')
 
         # TODO
 
-    def test_package_closes_wnpp(self):
-        """
-        Tests whether the package closes wnpp bugs.
-        """
-        log.debug('Finding out whether the package closes wnpp bugs')
-
-        # TODO
-
-    def test_itp_information(self):
-        """
-        Finds information about any ITPs closed.
-        """
-        log.debug('Finding information about any ITPs closed')
-
-        # TODO
-
-    def test_previous_sponsors(self):
+    def _test_previous_sponsors(self):
         """
         Finds previous sponsors.
         """
@@ -145,11 +162,24 @@ class DebianPlugin(BasePlugin):
 
         # TODO
 
-plugin = DebianPlugin
+    def test_qa(self):
+        """Run the Debian QA tests"""
 
-outcomes = {
-    'package-is-in-debian' : { 'name' : 'Package is in Debian' },
-    'package-is-not-in-debian' : { 'name' : 'Package is not in Debian' },
-    'last-debian-upload' : { 'name' : 'Date package was last uploaded to Debian' },
-    'package-is-nmu' : { 'name' : 'Package is a Non-Maintainer Upload' },
-}
+        self._in_debian()
+
+        self.outcome = ""
+        self.data = {}
+
+        self._test_package_in_debian()
+        if self.in_debian:
+            self._test_last_upload()
+            self._test_is_nmu()
+            self._get_debian_maintainer_data()
+            self._test_is_debian_maintainer()
+            self._test_has_new_maintainer()
+            self._test_previous_sponsors()
+
+        self.info(self.outcome, self.data)
+
+
+plugin = DebianPlugin

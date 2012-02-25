@@ -31,6 +31,7 @@ Development documentation
 
 * :ref:`building`
 * :ref:`writing-plugins`
+* :ref:`writing-cronjobs`
 * :ref:`coding-standards`
 * :ref:`contributing`
 * :ref:`api`

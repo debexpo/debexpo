@@ -5,6 +5,7 @@
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,7 +33,10 @@ Holds the diffclean plugin.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = ', '.join([
+        'Copyright © 2008 Jonny Lamb',
+        'Copyright © 2012 Nicolas Dandrimont',
+        ])
 __license__ = 'MIT'
 
 import subprocess
@@ -59,22 +63,23 @@ class DiffCleanPlugin(BasePlugin):
 
         diffstat = subprocess.Popen(["diffstat", "-p1", difffile], stdout=subprocess.PIPE).communicate()[0]
 
-        dirty = False
-        for item in diffstat.split('\n')[:-1]:
-            if not item.startswith(' debian/'):
-                dirty = True
-                break
+        data = {
+            "dirty": False,
+            "modified-files": [],
+            }
 
-        if not dirty:
+        # Last line is the summary line
+        for item in diffstat.splitlines()[:-1]:
+            filename, stats = [i.strip() for i in item.split("|")]
+            if not filename.startswith('debian/'):
+                data["dirty"] = True
+                data["modified-files"].append((filename, stats))
+
+        if not data["dirty"]:
             log.debug('Diff file %s is clean' % difffile)
-            self.passed('diff-clean', None, constants.PLUGIN_SEVERITY_INFO)
+            self.passed("The package's .diff.gz does not modify files outside of debian/", data, constants.PLUGIN_SEVERITY_INFO)
         else:
             log.error('Diff file %s is not clean' % difffile)
-            self.failed('diff-dirty', diffstat, constants.PLUGIN_SEVERITY_ERROR)
+            self.failed("The package's .diff.gz modifies files outside of debian/", data, constants.PLUGIN_SEVERITY_WARNING)
 
 plugin = DiffCleanPlugin
-
-outcomes = {
-    'diff-clean' : { 'name' : 'The diff.gz file is clean' },
-    'diff-dirty' : { 'name' : 'The diff.gz file is dirty' },
-}

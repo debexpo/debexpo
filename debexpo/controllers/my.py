@@ -37,6 +37,7 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import logging
+import tempfile
 
 from debexpo.lib.base import *
 from debexpo.lib import constants, form
@@ -47,6 +48,7 @@ from debexpo.model import meta
 from debexpo.model.users import User
 from debexpo.model.user_countries import UserCountry
 from debexpo.model.sponsor_metrics import SponsorMetrics, SponsorMetricsTags, SponsorTags
+from debexpo.model.data_store import DataStore
 
 from sqlalchemy.orm import joinedload
 
@@ -94,10 +96,16 @@ class MyController(BaseController):
         Handles a user submitting the GPG form.
         """
         log.debug('GPG form validated successfully')
+        self.gpg = GnuPG()
 
         # Should the key be deleted?
         if self.form_result['delete_gpg'] and self.user.gpg is not None:
-            log.debug('Deleting current GPG key')
+            keyid = self.gnupg.extract_key_id(self.user.gpg_id)
+            log.debug('Deleting current GPG key %s' % (keyid))
+            (out, err) = self.gnupg.remove_signature(keyid)
+            if err != 0:
+                log.error("gpg failed to delete keyring: %s" % (out))
+                abort(500)
             self.user.gpg = None
             self.user.gpg_id = None
 
@@ -106,6 +114,18 @@ class MyController(BaseController):
             log.debug('Setting a new GPG key')
             self.user.gpg = self.form_result['gpg'].value
             self.user.gpg_id = self.gnupg.parse_key_id(self.user.gpg)
+
+            temp = tempfile.NamedTemporaryFile(delete=True)
+            temp.write(self.user.gpg)
+            temp.flush()
+            (out, err) = self.gpg.add_signature(temp.name)
+            temp.close()
+            if err != 0:
+                log.error("gpg failed to import keyring: %s" % (out))
+                abort(500)
+            log.debug(out)
+
+
 
         meta.session.commit()
 

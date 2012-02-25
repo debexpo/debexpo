@@ -41,10 +41,23 @@ import struct
 import socket
 
 from debexpo.lib.base import BaseController, c, config, render, session, \
-    redirect, url, abort, request
+    redirect, url, abort, request, SubMenu, _
 from debexpo.lib import constants
 from debexpo.model.sponsor_metrics import SponsorMetrics, SponsorTags, SponsorMetricsTags
 from debexpo.model.users import User
+from debexpo.model.user_countries import UserCountry
+from debexpo.model.packages import Package
+from debexpo.model.package_versions import PackageVersion
+from debexpo.model.package_comments import PackageComment
+from debexpo.model.package_info import PackageInfo
+from debexpo.model.source_packages import SourcePackage
+from debexpo.model.binary_packages import BinaryPackage
+from debexpo.model.package_files import PackageFile
+from debexpo.model.package_subscriptions import PackageSubscription
+
+
+from debexpo.lib.utils import get_package_dir
+
 
 from sqlalchemy.orm import joinedload, contains_eager
 
@@ -53,6 +66,18 @@ from debexpo.model import meta
 log = logging.getLogger(__name__)
 
 class SponsorController(BaseController):
+
+    def __init__(self):
+        """
+        Constructor, does nothing but to define the submenu
+        """
+        c.submenu = SubMenu()
+        c.submenu.set_label("About Sponsoring")
+        c.submenu.add_entry(_("Overview"), url("sponsors"))
+        c.submenu.add_entry(_("Join a packaging team"), url("packaging-team"))
+        c.submenu.add_entry(_("Sponsoring Guidelines"), url("guidelines"))
+        c.submenu.add_entry(_("Request for Sponsorship"), url("rfs-howto"))
+        BaseController.__init__(self)
 
     def _validate_tags(self, tags, existing_tags = None):
         """
@@ -111,21 +136,11 @@ class SponsorController(BaseController):
 
         redirect(url('sponsors'))
 
-    def index(self):
-        """
-        Return an introduction page for sponsors
-        This page honors filters configured in the user session
-        """
+    def guidelines(self):
 
         if not config['debexpo.enable_experimental_code'].lower() == 'true':
             return render('/sponsor/index-old.mako')
 
-        if 'debexpo.html.sponsors_intro' in config:
-            f = open(config['debexpo.html.sponsors_intro'])
-            c.custom_html = literal(f.read())
-            f.close()
-        else:
-            c.custom_html = ''
         c.constants = constants
 
         c.sponsors = meta.session.query(SponsorMetrics)\
@@ -180,4 +195,61 @@ class SponsorController(BaseController):
         if not self._validate_tags(c.sponsor_filter, c.technical_tags + c.social_tags):
             abort(404)
 
+        return render('/sponsor/guidelines.mako')
+
+    def packaging_team(self):
+        return render('/sponsor/packaging_team.mako')
+
+
+    def rfs_howto(self, packagename = None):
+
+
+        c.package = None
+        c.package_dir = None
+        if packagename:
+            package = meta.session.query(Package).filter_by(name=packagename).first()
+            if package:
+                c.package = package
+                c.package_dir = get_package_dir(package.name)
+
+        return render('/sponsor/rfs_howto.mako')
+
+    def index(self):
+        """
+        Return an introduction page for sponsors
+        This page honors filters configured in the user session
+        """
+
+        if 'debexpo.html.sponsors_intro' in config:
+            f = open(config['debexpo.html.sponsors_intro'])
+            c.custom_html = literal(f.read())
+            f.close()
+        else:
+            c.custom_html = ''
+
         return render('/sponsor/index.mako')
+
+
+    def developer(self, id):
+        if not config['debexpo.enable_experimental_code'].lower() == 'true':
+            return render('/sponsor/index-old.mako')
+
+        log.debug("Getting profile for user = %s" % (id))
+
+        c.constants = constants
+
+        c.sponsor = meta.session.query(SponsorMetrics)\
+            .options(joinedload(SponsorMetrics.user))\
+            .options(joinedload(SponsorMetrics.tags))\
+            .filter(SponsorMetrics.availability >= constants.SPONSOR_METRICS_RESTRICTED)\
+            .filter(User.email == id)\
+            .first()
+        if not c.sponsor:
+            abort(404)
+        c.profile = c.sponsor.user
+        c.countries = { -1: '' }
+        for country in meta.session.query(UserCountry).all():
+            c.countries[country.id] = country.name
+
+
+        return render('/sponsor/profile.mako')
