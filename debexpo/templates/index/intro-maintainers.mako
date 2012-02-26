@@ -69,6 +69,8 @@ incoming = /upload
 method = http
 allow_unsigned_uploads = 0
 progress_indicator = 2
+# Allow uploads for UNRELEASED packages
+allowed_distributions = .*
 </pre>
 
         </td>
@@ -84,7 +86,8 @@ passive_ftp = 1
 incoming = /
 method = ftp
 allow_unsigned_uploads = 0
-
+# Allow uploads for UNRELEASED packages
+allowed_distributions = .*
 </pre>
         </td>
     </tr>
