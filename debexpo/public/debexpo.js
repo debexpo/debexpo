@@ -110,4 +110,19 @@ $(document).ready(function() {
                 }
     );
 
+    /* Mark stuff as clickable in CSS when they are */
+
+    $(".visibility").each(function () {
+        if($(this).siblings(".qa-content").size() > 0) {
+            $(this).css("cursor", "pointer");
+        };
+    });
+    $(".qa-header").each(function () {
+        if($(this).siblings(".qa-content").size() > 0) {
+            $(this).css("cursor", "pointer");
+        };
+    });
+    $(".qa-toggle-all").css("cursor", "pointer");
+    $(".qa-toggle-info").css("cursor", "pointer");
+
 });

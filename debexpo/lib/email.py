@@ -140,7 +140,12 @@ class Email(object):
             (_, count, first, last, _) = self.nntp.group(list_name)
             log.debug("Fetching messages %s to %s on %s" % (changed_since, last, list_name))
         except nntplib.NNTPError as e:
+            self.established = False
             log.error("Connecting to NNTP server %s failed: %s" % (pylons.config['debexpo.nntp_server'], str(e)))
+            return
+        except EOFError:
+            self.established = False
+            log.error("NNTP server %s closed connection" % (pylons.config['debexpo.nntp_server']))
             return
 
         try:
@@ -168,11 +173,13 @@ class Email(object):
 
     def disconnect_from_server(self):
         self.nntp.quit()
-
+        self.established = False
 
     def connection_established(self):
         if not self.established:
-            log.debug("Connection to NNTP server not established");
-            return False
+            self.connect_to_server()
+            if not self.established:
+                log.debug("Connection to NNTP server not established");
+            return self.established
         return True
 

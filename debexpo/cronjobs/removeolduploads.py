@@ -82,7 +82,7 @@ class RemoveOldUploads(BaseCronjob):
         package = self.pkg_controller._get_package(changes['Source'], from_controller=False)
         if package != None:
             for pv in package.package_versions:
-                if pv.distribution == changes['Distribution'] and apt_pkg.VersionCompare(changes['Version'], pv.version) >= 0:
+                if pv.distribution == changes['Distribution'] and apt_pkg.VersionCompare(changes['Version'], pv.version) == 0:
                     self.log.debug("Package %s was was uploaded to Debian - removing it from Expo" % (changes['Source']))
                     self._remove_package(package, pv.version, "Package was uploaded to official Debian repositories")
         else:
@@ -97,16 +97,17 @@ class RemoveOldUploads(BaseCronjob):
                 for message in self.mailer.unread_messages(list_name.code, list_name.value):
                     self._process_changes(message)
                 list_name.value = message['X-Debexpo-Message-Number']
-                self.log.debug("Processed all messages up to #%s on %s" % (list_name.code, list_name.value))
+                self.log.debug("Processed all messages up to #%s on %s" % (list_name.value, list_name.code))
                 meta.session.merge(list_name)
             meta.session.commit()
+            self.mailer.disconnect_from_server()
 
     def _remove_old_packages(self):
         now = datetime.datetime.now()
         for package in self.pkgs_controller._get_packages():
-            if (now - package.package_versions[-1].uploaded) > datetime.timedelta(weeks = 12):
+            if (now - package.package_versions[-1].uploaded) > datetime.timedelta(weeks = 20):
                 self.log.debug("Removing package %s - uploaded on %s" % (package.name, package.package_versions[-1].uploaded))
-                self._remove_package(package, "all versions", "Your package found no sponsor for 12 weeks")
+                self._remove_package(package, "all versions", "Your package found no sponsor for 20 weeks")
 
     def setup(self):
         self.mailer = Email('upload_removed_from_expo')
