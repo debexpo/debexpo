@@ -100,6 +100,7 @@ class RemoveOldUploads(BaseCronjob):
                 self.log.debug("Processed all messages up to #%s on %s" % (list_name.value, list_name.code))
                 meta.session.merge(list_name)
             meta.session.commit()
+            self.mailer.disconnect_from_server()
 
     def _remove_old_packages(self):
         now = datetime.datetime.now()
