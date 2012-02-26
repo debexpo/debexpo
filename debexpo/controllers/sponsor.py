@@ -74,7 +74,7 @@ class SponsorController(BaseController):
         c.submenu = SubMenu()
         c.submenu.set_label("About Sponsoring")
         c.submenu.add_entry(_("Overview"), url("sponsors"))
-        c.submenu.add_entry(_("Join a packaging team"), url("packaging-team"))
+        #c.submenu.add_entry(_("Join a packaging team"), url("packaging-team"))
         c.submenu.add_entry(_("Sponsoring Guidelines"), url("guidelines"))
         c.submenu.add_entry(_("Request for Sponsorship"), url("rfs-howto"))
         BaseController.__init__(self)
