@@ -37,8 +37,8 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import os
+import os.path
 import logging
-import subprocess
 import base64
 
 try:
@@ -97,8 +97,11 @@ class UploadController(BaseController):
             log.critical('debexpo.upload.incoming is not writable')
             abort(500, 'The incoming directory has not been set up')
 
-        save_path = os.path.join(config['debexpo.upload.incoming'], filename)
+        save_path = os.path.join(os.path.join(config['debexpo.upload.incoming'], "pub"), filename)
         log.debug('Saving uploaded file to: %s', save_path)
+        if os.path.exists(save_path):
+                log.debug("Aborting. File already exists")
+                abort(403, 'The file was already uploaded')
         f = open(save_path, 'wb')
 
         # The body attribute now contains the entire contents of the uploaded file.
@@ -106,11 +109,4 @@ class UploadController(BaseController):
         f.write(request.body)
         f.close()
 
-        # The .changes file is always sent last, so after it is sent,
-        # call the importer process.
-        if filename.endswith('.changes'):
-            command = [ config['debexpo.importer'], '-i',
-                config['global_conf']['__file__'], '-c', filename ]
-
-            subprocess.Popen(command, close_fds=True)
 

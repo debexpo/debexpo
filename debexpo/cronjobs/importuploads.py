@@ -38,6 +38,7 @@ from debexpo.cronjobs import BaseCronjob
 
 import glob
 import os
+import os.path
 import subprocess
 import datetime
 import shutil
@@ -70,13 +71,21 @@ class ImportUpload(BaseCronjob):
         # 1) Move files from incoming/pub. This is where FTP uploads end up
         pub = os.path.join(self.config['debexpo.upload.incoming'], "pub")
         for file in glob.glob( os.path.join(pub, '*') ):
+            if os.path.exists( os.path.join(self.config['debexpo.upload.incoming'], os.path.basename(file)) ):
+                self.log.debug("Do not import %s: already exists on destination path - removing file instead" % (file))
+                os.remove(file)
+                continue
             shutil.move(file, self.config['debexpo.upload.incoming'])
 
         # 2) Process uploads
         for file in glob.glob( os.path.join(self.config['debexpo.upload.incoming'], '*.changes') ):
             self.log.debug("Import upload: %s" % (file))
             command = [ self.config['debexpo.importer'], '-i', self.config['global_conf']['__file__'], '-c', file ]
-            subprocess.Popen(command, close_fds=True).wait()
+            proc = subprocess.Popen(command, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            (istdout, istderr) = proc.communicate()
+            if proc.returncode != 0:
+                    self.log.critical("Importer failed to import package %s [err=%d]." % (file, proc.returncode))
+                    self.log.debug("Output was\n%s\n%s" % (istdout,istderr))
 
         # 3) Scan for incomplete uploads and other crap people might have uploaded through FTP, put uploads on hold
         filenames = [name for (name, _) in self.stale_files]
@@ -95,11 +104,11 @@ class ImportUpload(BaseCronjob):
 
         for file in file_to_check:
             for (file_known, last_check) in self.stale_files:
-                if file == file_known and (datetime.datetime.now() - last_check) > datetime.timedelta(minutes = 60):
+                if file == file_known and (datetime.datetime.now() - last_check) > datetime.timedelta(hours = 6):
                     if os.path.isfile(file):
                         self.log.warning("Remove incomplete upload: %s" % (file))
                         os.remove(file)
 
 
 cronjob = ImportUpload
-schedule = datetime.timedelta(minutes = 2)
+schedule = datetime.timedelta(minutes = 10)
