@@ -421,7 +421,8 @@ class Importer(object):
         allowed_distributions = ('oldstable', 'stable', 'unstable', 'experimental', 'stable-backports', 'oldstable-backports',
             'oldstable-backports-sloppy', 'oldstable-security', 'stable-security', 'testing-security', 'stable-proposed-updates',
             'testing-proposed-updates', 'sid', 'wheezy', 'squeeze', 'lenny', 'squeeze-backports', 'lenny-backports',
-            'lenny-security', 'lenny-backports-sloppy', 'lenny-volatile', 'squeeze-security', 'squeeze-updates', 'wheezy-security')
+            'lenny-security', 'lenny-backports-sloppy', 'lenny-volatile', 'squeeze-security', 'squeeze-updates', 'wheezy-security',
+            'unreleased')
         if distribution not in allowed_distributions:
             self._remove_changes()
             self._reject("You are not uploading to one of those Debian distributions: %s" %
