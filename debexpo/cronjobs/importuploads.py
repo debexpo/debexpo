@@ -44,6 +44,9 @@ import datetime
 import shutil
 
 import debexpo.lib.filesystem
+from debexpo.lib.changes import Changes
+
+class NotCompleteUpload(Exception): pass
 
 class ImportUpload(BaseCronjob):
     def setup(self):
@@ -68,29 +71,44 @@ class ImportUpload(BaseCronjob):
             self.log.critical("debexpo.upload.incoming was not configured")
             return
 
-        # 1) Move files from incoming/pub. This is where FTP uploads end up
-        pub = os.path.join(self.config['debexpo.upload.incoming'], "pub")
-        for file in glob.glob( os.path.join(pub, '*') ):
-            if os.path.exists( os.path.join(self.config['debexpo.upload.incoming'], os.path.basename(file)) ):
-                self.log.debug("Do not import %s: already exists on destination path - removing file instead" % (file))
-                os.remove(file)
+        # 1) Process uploads
+        for file in glob.glob( os.path.join(os.path.join(self.config['debexpo.upload.incoming'], "pub"), '*.changes') ):
+            try:
+                changes = Changes(filename=file)
+            except:
+                self.log.error('Invalid changes file: %s' % (file))
                 continue
-            shutil.move(file, self.config['debexpo.upload.incoming'])
 
-        # 2) Process uploads
-        for file in glob.glob( os.path.join(self.config['debexpo.upload.incoming'], '*.changes') ):
-            self.log.debug("Import upload: %s" % (file))
-            command = [ self.config['debexpo.importer'], '-i', self.config['global_conf']['__file__'], '-c', file ]
+            try:
+                for filename in changes.get_files() + [ changes.get_filename(), ]:
+                    source_file = os.path.join(os.path.join(self.config['debexpo.upload.incoming'], "pub"), filename)
+                    destination_file = os.path.join(self.config['debexpo.upload.incoming'], filename)
+
+                    if not os.path.exists(source_file):
+                            self.log.debug("Source file %s does not exist - putting upload on hold" % (source_file))
+                            raise NotCompleteUpload;
+                    if os.path.exists(destination_file):
+                            self.log.debug("Do not import %s: already exists on destination path - removing file instead" % (source_file))
+                            os.remove(source_file)
+                            raise NotCompleteUpload;
+                    shutil.move(source_file, self.config['debexpo.upload.incoming'])
+            except NotCompleteUpload:
+                continue
+
+            self.log.info("Import upload: %s" % (file))
+            command = [ self.config['debexpo.importer'], '-i', self.config['global_conf']['__file__'], '-c', changes.get_filename() ]
+            self.log.debug("Executing: %s" % (" ".join(command)))
             proc = subprocess.Popen(command, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             (istdout, istderr) = proc.communicate()
             if proc.returncode != 0:
-                    self.log.critical("Importer failed to import package %s [err=%d]." % (file, proc.returncode))
-                    self.log.debug("Output was\n%s\n%s" % (istdout,istderr))
+                self.log.critical("Importer failed to import package %s [err=%d]." % (file, proc.returncode))
+                self.log.debug("Output was\n%s\n%s" % (istdout,istderr))
 
-        # 3) Scan for incomplete uploads and other crap people might have uploaded through FTP, put uploads on hold
+        # 2) Mark unprocessed files and get rid of them after some time
+        pub = os.path.join(self.config['debexpo.upload.incoming'], "pub")
         filenames = [name for (name, _) in self.stale_files]
         file_to_check = []
-        for file in glob.glob( os.path.join(self.config['debexpo.upload.incoming'], '*') ):
+        for file in glob.glob( os.path.join(pub, '*') ):
             if self.files.allowed_upload(file):
                 self.log.debug("Incomplete upload: %s" % (file))
                 if not file in filenames:
