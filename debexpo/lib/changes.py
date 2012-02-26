@@ -37,8 +37,9 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 from debian import deb822
-
 from debexpo.lib.utils import parse_section
+
+import os.path
 
 class Changes(object):
     """
@@ -73,6 +74,13 @@ class Changes(object):
 
         if len(self._data) == 0:
             raise Exception('Changes file could not be parsed.')
+        self.basename = os.path.basename(filename)
+
+    def get_filename(self):
+        """
+        Returns the filename from which the changes file was generated from
+        """
+        return self.basename
 
     def get_files(self):
         """
