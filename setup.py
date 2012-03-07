@@ -35,7 +35,8 @@ setup(
     main = pylons.util:PylonsInstaller
 
     [console_scripts]
-    debexpo-importer = debexpo.scripts.debexpo_importer:main
-    debexpo-user-importer = debexpo.scripts.user_importer:main
+    debexpo-importer = debexpo.bin.debexpo_importer:main
+    debexpo-worker = debexpo.bin.debexpo_worker
+    debexpo-user-importer = debexpo.bin.user_importer:main
     """,
 )
