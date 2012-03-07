@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 <%inherit file="/base.mako"/>
-${ c.custom_html }
 
 <h1>Welcome to ${ c.config['debexpo.sitename'] }</h1>
 

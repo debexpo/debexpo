@@ -2,7 +2,7 @@
 #
 #   sponsor_metrics.py — rudimentary model for sponsor metrics
 #
-#   This file is part of debexpo - http://debexpo.workaround.org
+#   This file is part of debexpo - https://alioth.debian.org/projects/debexpo/
 #
 #   Copyright © 2011 Arno Töll <debian@toell.net>
 #

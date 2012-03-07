@@ -2,7 +2,7 @@
 #
 #   index.py — index controller
 #
-#   This file is part of debexpo - http://debexpo.workaround.org
+#   This file is part of debexpo - https://alioth.debian.org/projects/debexpo/
 #
 #   Copyright © 2011 Arno Töll <debian@toell.net>
 #
@@ -219,13 +219,6 @@ class SponsorController(BaseController):
         Return an introduction page for sponsors
         This page honors filters configured in the user session
         """
-
-        if 'debexpo.html.sponsors_intro' in config:
-            f = open(config['debexpo.html.sponsors_intro'])
-            c.custom_html = literal(f.read())
-            f.close()
-        else:
-            c.custom_html = ''
 
         return render('/sponsor/index.mako')
 

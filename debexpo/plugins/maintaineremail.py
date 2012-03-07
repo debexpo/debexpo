@@ -2,7 +2,7 @@
 #
 #   maintaineremail.py — maintaineremail plugin
 #
-#   This file is part of debexpo - http://debexpo.workaround.org
+#   This file is part of debexpo - https://alioth.debian.org/projects/debexpo/
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>

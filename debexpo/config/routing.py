@@ -2,7 +2,7 @@
 #
 #   routing.py — Routes configuration
 #
-#   This file is part of debexpo - http://debexpo.workaround.org
+#   This file is part of debexpo - https://alioth.debian.org/projects/debexpo/
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -96,8 +96,6 @@ def make_map(config):
                 action='index')
 
     map.connect('/upload/{filename}', controller='upload', action='index')
-    map.connect('ppa', '/ppa/{email}', controller='ppa', action='index')
-    #map.connect('/ppa/{email}/*filename', controller='ppa', action='file')
     map.connect('/soap.wsdl', controller='soap')
 
     map.connect('/{controller}/{action}')

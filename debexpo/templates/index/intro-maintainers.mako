@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 <%inherit file="/base.mako"/>
 
-${ c.custom_html }
-
 <h1>Introduction for maintainers: How will my package get into Debian</h1>
 
 <p>We are glad that you found your way to our web site. Honestly the whole web site is just there to get your work into Debian. Your contribution is appreciated and it would be a pity if you did not find a sponsor to upload your packages. Read on to see in what ways we will be helping you find a sponsor.</p>

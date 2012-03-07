@@ -3,7 +3,7 @@
 #
 #   key_importer.py — Regenerate the mentors keyring from scratch
 #
-#   This file is part of debexpo - http://debexpo.workaround.org
+#   This file is part of debexpo - https://alioth.debian.org/projects/debexpo/
 #
 #   Copyright © 2012 Arno Töll <debian@toell.net>
 #

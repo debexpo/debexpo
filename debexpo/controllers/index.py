@@ -2,7 +2,7 @@
 #
 #   index.py — index controller
 #
-#   This file is part of debexpo - http://debexpo.workaround.org
+#   This file is part of debexpo - https://alioth.debian.org/projects/debexpo/
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -56,13 +56,6 @@ class IndexController(BaseController):
     def index(self):
         pkg_controller = PackagesController()
 
-        if 'debexpo.html.frontpage' in config:
-            f = open(config['debexpo.html.frontpage'])
-            c.custom_html = literal(f.read())
-            f.close()
-        else:
-            c.custom_html = ''
-
         c.config = config
         c.packages = pkg_controller._get_packages(
 		        package_version_filter=(PackageVersion.uploaded >= (datetime.today() - timedelta(days=30))),
@@ -86,12 +79,6 @@ class IndexController(BaseController):
 
     def intro_maintainers(self):
         """Return an introduction page for package maintainers"""
-        if 'debexpo.html.maintainer_intro' in config:
-            f = open(config['debexpo.html.maintainer_intro'])
-            c.custom_html = literal(f.read())
-            f.close()
-        else:
-            c.custom_html = ''
 
         # The template will need to look at the user details.
         if 'user_id' in session:

@@ -2,7 +2,7 @@
 #
 #   user_upload_key.py — model for upload keys
 #
-#   This file is part of debexpo - http://debexpo.workaround.org
+#   This file is part of debexpo - https://alioth.debian.org/projects/debexpo/
 #
 #   Copyright © 2011 Asheesh Laroia <paulproteus@debian.org>
 #
