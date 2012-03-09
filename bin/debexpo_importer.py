@@ -193,6 +193,7 @@ class Importer(object):
         """
         log.error('Rejected: %s' % reason)
 
+        self._remove_changes()
         self._remove_files()
 
         if self.user is not None:
@@ -360,6 +361,25 @@ class Importer(object):
         self.send_email(email, [self.user.email], package=self.changes['Source'],
             dsc_url=dsc_url, rfs_url=rfs_url)
 
+
+    def _determine_uploader(self):
+        """
+        Create a user object based on the Changed-By entry
+        This object will also exist if the user was NOT found. This is useful
+        to have a user object to send reject mails to
+        """
+        if self.user_id is None:
+            maintainer_string = self.changes.get('Changed-By')
+            log.debug("Determining user from 'Changed-By:' field: %s" % maintainer_string)
+            maintainer_realname, maintainer_email_address = email.utils.parseaddr(maintainer_string)
+            log.debug("Changed-By's email address is: %s", maintainer_email_address)
+            self.user = meta.session.query(User).filter_by(
+                    email=maintainer_email_address).filter_by(verification=None).first()
+            if self.user is None:
+                # generate user object, but only to send out reject message
+                self.user = User(id=-1, name=maintainer_realname, email=maintainer_email_address)
+            self.user_id = self.user.id
+
     def main(self):
         """
         Actually start the import of the package.
@@ -380,7 +400,6 @@ class Importer(object):
             filecheck.test_files_present(self.changes)
             filecheck.test_md5sum(self.changes)
         except Exception as e:
-            self._remove_changes()
             # XXX: The user won't ever see this message. The changes file was
             # invalid, we don't know whom send it to
             self._reject("Your changes file appears invalid. Refusing your upload\n%s" % (e.message))
@@ -388,31 +407,24 @@ class Importer(object):
 
 
         # Determine user from changed-by field
-        if self.user_id is None:
-            maintainer_string = self.changes.get('Changed-By')
-            log.debug("Determining user from 'Changed-By:' field: %s" % maintainer_string)
-            maintainer_realname, maintainer_email_address = email.utils.parseaddr(maintainer_string)
-            log.debug("Changed-By's email address is: %s", maintainer_email_address)
-            self.user = meta.session.query(User).filter_by(
-                    email=maintainer_email_address).filter_by(verification=None).first()
-            if self.user is None:
-                # generate user object, but only to send out reject message
-                self.user = User(id=-1, name=maintainer_realname, email=maintainer_email_address)
-                self._remove_changes()
-                self._reject('Couldn\'t find user %s. Exiting.' % self.user.email)
-            log.debug("User found in database. Has id: %s", self.user.id)
-            self.user_id = self.user.id
+        # This might be temporary, the GPG check should replace the user later
+        # At this stage it is only helpful to get an email address to send blame mails to
+        self._determine_uploader()
 
         # Next, find out whether the changes file was signed with a valid signature, if not reject immediately
         if not self.skip_gpg:
             if not signature.is_signed(self.changes_file):
-                self._remove_changes()
                 self._reject('Your upload does not appear to be signed')
             (gpg_out, gpg_status) = signature.verify_sig_full(self.changes_file)
             if gpg_status != 0:
-                self._remove_changes()
                 self._reject('Your upload does not contain a valid signature. Output was:\n%s' % (gpg_out))
             log.debug("GPG signature matches user %s" % (self.user.email))
+
+        # XXX: Replace self.user by something which was verified by GPG!
+
+        if self.user_id == -1:
+            self._reject('Couldn\'t find user %s. Exiting.' % self.user.email)
+        log.debug("User found in database. Has id: %s", self.user.id)
 
         self.files = self.changes.get_files()
         self.files_to_remove = []
@@ -424,7 +436,6 @@ class Importer(object):
             'lenny-security', 'lenny-backports-sloppy', 'lenny-volatile', 'squeeze-security', 'squeeze-updates', 'wheezy-security',
             'unreleased')
         if distribution not in allowed_distributions:
-            self._remove_changes()
             self._reject("You are not uploading to one of those Debian distributions: %s" %
                 (reduce(lambda x,xs: x + " " + xs, allowed_distributions)))
 
@@ -479,7 +490,6 @@ class Importer(object):
                 # b) We couldn't find a orig.tar.gz in our repository
                 # c) No plugin could get the orig.tar.gz
                 # ... time to give up
-                self._remove_changes()
                 if orig == None:
                     orig = "any original tarball (orig.tar.gz)"
                 self._reject("Rejecting incomplete upload. "

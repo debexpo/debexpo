@@ -103,6 +103,11 @@ class ImportUpload(BaseCronjob):
             if proc.returncode != 0:
                 self.log.critical("Importer failed to import package %s [err=%d]." % (file, proc.returncode))
                 self.log.debug("Output was\n%s\n%s" % (istdout,istderr))
+            for filename in changes.get_files() + [ changes.get_filename(), ]:
+                destination_file = os.path.join(self.config['debexpo.upload.incoming'], filename)
+                if os.path.exists(destination_file):
+                    self.log.debug("Remove stale file %s - the importer probably crashed" % (destination_file))
+                    os.remove(destination_file)
 
         # 2) Mark unprocessed files and get rid of them after some time
         pub = os.path.join(self.config['debexpo.upload.incoming'], "pub")
