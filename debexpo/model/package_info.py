@@ -90,7 +90,11 @@ class PackageInfo(OrmObject):
             "default/text.mako",
             ]
 
-        lookup = TemplateLookup(directories = PLUGINS_TEMPLATE_DIRS)
+        lookup = TemplateLookup(
+            directories = PLUGINS_TEMPLATE_DIRS,
+            input_encoding='utf-8',
+            output_encoding='utf-8',
+            )
 
         for basefile in try_files:
             try:
@@ -103,9 +107,7 @@ class PackageInfo(OrmObject):
             # No template file found, something weird happened
             return "%s (!! no template found)" % self.data
 
-        rendered_data = template.render(o = self, h = debexpo.lib.helpers)
-
-        return rendered_data
+        return template.render_unicode(o = self, h = debexpo.lib.helpers)
 
 orm.mapper(PackageInfo, t_package_info, properties={
     'package_version' : orm.relation(PackageVersion, backref='package_info'),

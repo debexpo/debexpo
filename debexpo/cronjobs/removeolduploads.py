@@ -96,7 +96,7 @@ class RemoveOldUploads(BaseCronjob):
             for list_name in lists:
                 for message in self.mailer.unread_messages(list_name.code, list_name.value):
                     self._process_changes(message)
-                list_name.value = message['X-Debexpo-Message-Number']
+                    list_name.value = message['X-Debexpo-Message-Number']
                 self.log.debug("Processed all messages up to #%s on %s" % (list_name.value, list_name.code))
                 meta.session.merge(list_name)
             meta.session.commit()

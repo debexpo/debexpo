@@ -41,6 +41,12 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner, Copyright © 2011 Arno Töll'
 __license__ = 'MIT'
 
+import email
+import email.charset
+import email.errors
+import email.header
+import email.mime.text
+
 import logging
 import os
 import smtplib
@@ -59,7 +65,10 @@ log = logging.getLogger(__name__)
 class FakeC(object):
     def __init__(self, **kw):
         for key in kw:
-            setattr(self, key, kw[key])
+            value = kw[key]
+            if isinstance(value, str):
+                value = value.decode("utf-8")
+            setattr(self, key, value)
 
 class Email(object):
     def __init__(self, template):
@@ -103,7 +112,38 @@ class Email(object):
         template = Template(filename=template_file, lookup=lookup, module_directory=pylons.config['app_conf']['cache_dir'])
         # Temporarily set up routes.util.url_for as the URL renderer used for h.url() in templates
         pylons.url._push_object(routes.util.url_for)
-        message = template.render(_=gettext, h=h, c=c)
+
+        rendered_message = template.render_unicode(_=gettext, h=h, c=c).encode("utf-8")
+
+        try:
+            # Parse the email message
+            message = email.message_from_string(rendered_message)
+        except email.errors.MessageParseError:
+            # Parsing the message failed, let's send the raw data...
+            message = rendered_message.encode("utf-8")
+        else:
+            # By default, python base64-encodes all UTF-8 text which is annoying. Force quoted-printable
+            email.charset.add_charset('utf-8', email.charset.QP, email.charset.QP, 'utf-8')
+            # Create a new, MIME-aware message
+            new_message = email.mime.text.MIMEText(message.get_payload().decode("utf-8"), "plain", "utf-8")
+
+            for key in message.keys():
+                try:
+                    contents = message[key].decode("utf-8").split(u" ")
+                except UnicodeDecodeError:
+                    # Bad encoding in the header, don't try to do anything more...
+                    header = message[key]
+                else:
+                    # Do some RFC2047-encoding of the headers.  We split on word-boundaries so that
+                    # python doesn't encode the whole header in a RFC2047 blob, but only what's
+                    # needed.
+                    header = email.header.Header()
+                    for c in contents:
+                        header.append(c)
+                new_message[key] = header
+            # And get that back as a string to pass onto sendmail
+            message = new_message.as_string()
+
         pylons.url._pop_object()
 
         log.debug('Starting SMTP session to %s' % self.server)
