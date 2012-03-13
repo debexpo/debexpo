@@ -125,13 +125,17 @@ class ImportUpload(BaseCronjob):
                     self.log.warning("Remove unknown file: %s" % (file))
                     os.remove(file)
 
+        new_file_list = []
         for file in file_to_check:
             for (file_known, last_check) in self.stale_files:
                 if file == file_known and (datetime.datetime.now() - last_check) > datetime.timedelta(hours = 6):
                     if os.path.isfile(file):
                         self.log.warning("Remove incomplete upload: %s" % (file))
                         os.remove(file)
+                        continue
+                new_file_list.append((file_known, last_check))
 
+        self.stale_files = new_file_list
 
 cronjob = ImportUpload
 schedule = datetime.timedelta(minutes = 10)
