@@ -31,6 +31,12 @@
 This module holds the Debian controller which manages the /debian/ directory.
 """
 
+#
+# XXX: This controller is ONLY used if no standalone web server is running.
+#      For productive setups it is suggested to deliver static content through
+#      the web server (e.g. Apache) directly
+#
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
