@@ -56,6 +56,8 @@ def make_map(config):
 
     # CUSTOM ROUTES HERE
 
+    # n.b.: chances are, this route is overriden by a productive setup in its
+    # web server configuration
     if config['debexpo.handle_debian'].lower() == 'true':
         map.connect('/debian/*filename', controller='debian', action='index')
 
