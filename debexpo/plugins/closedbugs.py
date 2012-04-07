@@ -104,7 +104,7 @@ class ClosedBugsPlugin(BasePlugin):
                 name = data["raw"][bug]['package']
                 data["bugs"][name].append((bug, data["raw"][bug]["subject"], data["raw"][bug]["severity"]))
 
-                if not (data["raw"][bug]['source'] == self.changes["Source"] or name == "wnpp"):
+                if not (self.changes["Source"] in data["raw"][bug]['source'].split(', ') or name == "wnpp"):
                     data["errors"].append('Bug #%s does not belong to this package' % bug)
                     severity = max(severity, constants.PLUGIN_SEVERITY_ERROR)
 
