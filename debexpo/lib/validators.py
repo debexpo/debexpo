@@ -83,6 +83,15 @@ class GpgKey(formencode.validators.FieldStorageUploadConverter):
             log.error("Failed to parse GPG key")
             raise formencode.Invalid(_('Invalid GPG key'), value, c)
 
+        """
+        Minimum Key Strength Check.
+        """
+        requiredkeystrength = int(config['debexpo.gpg_minkeystrength'])
+        keystrength = self.gnupg.extract_key_strength(self.key_id())
+        if keystrength < requiredkeystrength:
+            log.debug("Key strength unacceptable in Debian Keyring")
+            raise formencode.Invalid(_('Key strength unacceptable in Debian Keyring. The minimum required key strength is %s bits.' % str(requiredkeystrength)), value, c)
+
         return formencode.validators.FieldStorageUploadConverter._to_python(self, value, c)
 
     def key_id(self):
