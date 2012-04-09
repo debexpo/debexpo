@@ -10,20 +10,20 @@ To help you find a sponsor interested in your package, they can formulate sponso
 
 <%def name="tag_helper(requirement)">
     % if not c.sponsor_filter:
-        <dt id="${requirement.tag}">${ requirement.label } (${ h.tags.link_to(  _('Filter'), h.url.current(action='index', t=requirement.tag))  })</dt>
+        <dt id="${requirement.tag}">${ requirement.label } (${ h.tags.link_to(  _('Filter'), h.url.current(action='guidelines', t=requirement.tag))  })</dt>
         <dd>${ requirement.long_description | n}</dd>
     % elif requirement.tag not in c.sponsor_filter:
         <%
         new_tag_list = c.sponsor_filter[:]
         new_tag_list.append(requirement.tag)
         %>
-        <dt><span id="${requirement.tag}" style="text-decoration: line-through;">${ requirement.label }</span> (${ h.tags.link_to(  _('Add to filter'), h.url.current(action='index', t=new_tag_list))  })</dt>
+        <dt><span id="${requirement.tag}" style="text-decoration: line-through;">${ requirement.label }</span> (${ h.tags.link_to(  _('Add to filter'), h.url.current(action='guidelines', t=new_tag_list))  })</dt>
     % else:
         <%
         new_tag_list = c.sponsor_filter[:]
         new_tag_list.remove(requirement.tag)
         %>
-        <dt id="${requirement.tag}">${ requirement.label } (${ h.tags.link_to(  _('Remove filter'), h.url.current(action='index', t=new_tag_list))  })</dt>
+        <dt id="${requirement.tag}">${ requirement.label } (${ h.tags.link_to(  _('Remove filter'), h.url.current(action='guidelines', t=new_tag_list))  })</dt>
         <dd>${ requirement.long_description | n}</dd>
     % endif
 </%def>
