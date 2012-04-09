@@ -114,7 +114,7 @@ class RemoveOldUploads(BaseCronjob):
         self.mailer.connect_to_server()
         self.pkg_controller = PackageController()
         self.pkgs_controller = PackagesController()
-        apt_pkg.InitSystem()
+        apt_pkg.init_system()
         self.last_cruft_run = datetime.datetime(year=1970, month=1, day=1)
         self.log.debug("%s loaded successfully" % (__name__))
 
