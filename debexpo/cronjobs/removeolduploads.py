@@ -45,6 +45,7 @@ from debexpo.model.data_store import DataStore
 from debexpo.model import meta
 from debian import deb822
 
+import socket
 import re
 import apt_pkg
 import datetime
@@ -124,7 +125,12 @@ class RemoveOldUploads(BaseCronjob):
         self.mailer.disconnect_from_server()
 
     def invoke(self):
-        self._remove_uploaded_packages()
+        try:
+            self._remove_uploaded_packages()
+        except socket.error as e:
+            # better luck next time
+            self.log.debug("Socket error %s: skipping removals his time" % (e))
+            pass
 
         # We don't need to run our garbage collection of old cruft that often
         # It's ok if we purge old packages once a day.
