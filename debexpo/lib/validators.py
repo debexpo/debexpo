@@ -78,14 +78,29 @@ class GpgKey(formencode.validators.FieldStorageUploadConverter):
                                        'properly configured to handle' +
                                        'GPG keys'), value, c)
 
-        self.gpg_id = self.gnupg.parse_key_id(value.value)
+
+        (self.gpg_id, user_ids) = self.gnupg.parse_key_id(value.value)
         if self.gpg_id is None:
             log.error("Failed to parse GPG key")
             raise formencode.Invalid(_('Invalid GPG key'), value, c)
 
+
+        """
+        allow only keys which match the user name
+        """
+
+        user = meta.session.query(User).get(session['user_id'])
+        for (uid, email) in user_ids:
+            if user.email == email:
+                break
+        else:
+            log.debug("No user id in key %s does match the email address the user configured")
+            raise formencode.Invalid(_('None of your user IDs in key %s does match your profile mail address' % (self.gpg_id)), value, c)
+
         """
         Minimum Key Strength Check.
         """
+
         requiredkeystrength = int(config['debexpo.gpg_minkeystrength'])
         keystrength = self.gnupg.extract_key_strength(self.key_id())
         if keystrength < requiredkeystrength:

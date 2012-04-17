@@ -39,6 +39,7 @@ __license__ = 'MIT'
 import logging
 import os
 import subprocess
+import re
 
 import pylons
 
@@ -119,7 +120,7 @@ class GnuPG(object):
 
     def parse_key_id(self, key, email = None):
         """
-        Returns the key id of the given GPG public key.
+        Returns the key id of the given GPG public key along with a list of user ids.
 
         ``key``
             ASCII armored GPG public key.
@@ -134,10 +135,26 @@ class GnuPG(object):
             (output, _) = self._run(stdin=key)
             output = unicode(output, errors='replace')
             lines = (output.split('\n'))
+            key_id = None
+            user_ids = []
+            gpg_addr_pattern =  re.compile('(pub\s+\S+\s+\S+\s+|uid\s+)'
+                                        '(?P<name>.+)'
+                                        '\s+'
+                                        '<(?P<email>.+?)>'
+                                        '$')
+
             for line in lines:
-                if line.startswith('pub'):
+                if not key_id and line.startswith('pub'):
                     # get only the 2nd column of the 1st matching line
-                    return line.split()[1]
+                    key_id = line.split()[1]
+                addr_matcher = gpg_addr_pattern.search(line)
+                if addr_matcher is not None:
+                    user_ids.append( (addr_matcher.group('name'), addr_matcher.group('email')) )
+                if line.startswith('sub'):
+                    break
+
+            return (key_id, user_ids)
+
         except (AttributeError, IndexError):
             log.error("Failed to extract key id from gpg output: '%s'"
                        % output)
@@ -149,7 +166,7 @@ class GnuPG(object):
         function which returns a boolean only
 
         """
-        (_, status) = self.verify_sig_full(signed_file, pubring)
+        (_, _, status) = self.verify_sig_full(signed_file, pubring)
         return status == 0
 
     def verify_sig_full(self, signed_file, pubring=None):
@@ -164,7 +181,18 @@ class GnuPG(object):
              setting will be used (~/.gnupg/pubring.gpg))
         """
         args = ('--verify', signed_file)
-        return self._run(args=args, pubring=pubring)
+        (out, return_code) = self._run(args=args, pubring=pubring)
+        gpg_addr_pattern =  re.compile('"'
+                                        '(?P<name>.+)'
+                                        '\s+'
+                                        '<(?P<email>.+?)>'
+                                        '"')
+        user_ids = []
+        for line in out.split("\n"):
+            addr_matcher = gpg_addr_pattern.search(line)
+            if addr_matcher is not None:
+                user_ids.append( (addr_matcher.group('name'), addr_matcher.group('email')) )
+        return (out, user_ids, return_code)
 
 
     def add_signature(self, signature_file, pubring=None):

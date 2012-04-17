@@ -361,21 +361,13 @@ class Importer(object):
         self.send_email(email, [self.user.email], package=self.changes['Source'],
             dsc_url=dsc_url, rfs_url=rfs_url)
 
-    def _generate_fake_user_if_not_found(self, maintainer_realname, maintainer_email_address):
-        """
-        Creates a fake user object, but only if no user was found before
-        This is useful to have a user object to send reject mails to
-        """
-        if self.user is None:
-            # generate user object, but only to send out reject message
-            self.user = User(id=-1, name=maintainer_realname, email=maintainer_email_address)
-    
     def _find_user_by_email_address(self, email_address):
         """
         Searches user by email address
         """
         # XXX: Maybe model is more appropriate place for such a method
         self.user = meta.session.query(User).filter_by(email=email_address).filter_by(verification=None).first()
+        return self.user
 
     def _determine_uploader_by_changedby_field(self):
         """
@@ -391,16 +383,14 @@ class Importer(object):
         """
         Create a user object based on the gpg output
         """
-        gpg_addr_pattern =  re.compile('"'
-                                        '(?P<name>.+)'
-                                        '\s+'
-                                        '<(?P<email>.+?)>'
-                                        '"')
-        addr_matcher = gpg_addr_pattern.search(gpg_out)
-        if addr_matcher is not None:
-            maintainer_realname, maintainer_email_address = addr_matcher.group('name'), addr_matcher.group('email') 
-            log.debug("GPG signature matches user %s" % (maintainer_email_address))
-            self._find_user_by_email_address(maintainer_email_address)
+
+        for (name, email) in gpg_out:
+            log.debug("GPG signature matches user %s <%s>" % (name, email))
+            if self._find_user_by_email_address(email):
+                log.debug("GPG signature mapped to user %s <%s>" % (self.user.name, self.user.email))
+                return
+
+        return None
 
     def main(self):
         """
@@ -424,24 +414,27 @@ class Importer(object):
         except Exception as e:
             # XXX: The user won't ever see this message. The changes file was
             # invalid, we don't know whom send it to
-            self._reject("Your changes file appears invalid. Refusing your upload\n%s" % (e.message))        
+            self._reject("Your changes file appears invalid. Refusing your upload\n%s" % (e.message))
 
         if not self.skip_gpg:
             # Next, find out whether the changes file was signed with a valid signature, if not reject immediately
             if not signature.is_signed(self.changes_file):
                 self._reject('Your upload does not appear to be signed')
-            (gpg_out, gpg_status) = signature.verify_sig_full(self.changes_file)
+            (gpg_out, gpg_uids, gpg_status) = signature.verify_sig_full(self.changes_file)
             if gpg_status != 0:
                 self._reject('Your upload does not contain a valid signature. Output was:\n%s' % (gpg_out))
-            self._determine_uploader_by_gpg(gpg_out)
+            self._determine_uploader_by_gpg(gpg_uids)
         else:
             self._determine_uploader_by_changedby_field()
-        self._generate_fake_user_if_not_found()
 
-        # XXX: Replace self.user by something which was verified by GPG!        
-        self.user_id = self.user.id
-        if self.user_id == -1:
+        if self.user is None:
+            # Creates a fake user object, but only if no user was found before
+            # This is useful to have a user object to send reject mails to
+            # generate user object, but only to send out reject message
+            self.user = User(id=-1, name=maintainer_realname, email=maintainer_email_address)
             self._reject('Couldn\'t find user %s. Exiting.' % self.user.email)
+
+        self.user_id = self.user.id
         log.debug("User found in database. Has id: %s", self.user.id)
 
         self.files = self.changes.get_files()
