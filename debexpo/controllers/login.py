@@ -110,6 +110,8 @@ class LoginController(BaseController):
             If True, display the form even if request.method is POST.
         """
 
+
+        c.request = request
         if request.method == 'POST' and get is False:
             log.debug('Login form submitted with email = "%s"' % request.POST.get('email'))
             return self._login()
