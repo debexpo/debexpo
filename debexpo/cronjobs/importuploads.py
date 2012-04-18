@@ -40,6 +40,7 @@ import glob
 import os
 import os.path
 import subprocess
+import time
 import datetime
 import shutil
 
@@ -53,7 +54,6 @@ class ImportUpload(BaseCronjob):
         """
         This method does nothing in this cronjob
         """
-        self.stale_files = []
         self.files = debexpo.lib.filesystem.CheckFiles()
         self.log.debug("%s loaded successfully" % (__name__))
 
@@ -111,31 +111,18 @@ class ImportUpload(BaseCronjob):
 
         # 2) Mark unprocessed files and get rid of them after some time
         pub = os.path.join(self.config['debexpo.upload.incoming'], "pub")
-        filenames = [name for (name, _) in self.stale_files]
-        file_to_check = []
         for file in glob.glob( os.path.join(pub, '*') ):
             if self.files.allowed_upload(file):
                 self.log.debug("Incomplete upload: %s" % (file))
-                if not file in filenames:
-                    self.stale_files.append((file,datetime.datetime.now()))
-                else:
-                    file_to_check.append(file)
+                last_change = time.time() - os.stat(file).st_mtime
+                # the file was uploaded more than 6 hours ago
+                if last_change > 6 * 60 * 60:
+                    self.log.warning("Remove old file: %s (last modified %.2f hours ago)" % (file, last_change / 3600.))
+                    os.remove(file)
             else:
                 if os.path.isfile(file):
                     self.log.warning("Remove unknown file: %s" % (file))
                     os.remove(file)
-
-        new_file_list = []
-        for file in file_to_check:
-            for (file_known, last_check) in self.stale_files:
-                if file == file_known and (datetime.datetime.now() - last_check) > datetime.timedelta(hours = 6):
-                    if os.path.isfile(file):
-                        self.log.warning("Remove incomplete upload: %s" % (file))
-                        os.remove(file)
-                        continue
-                new_file_list.append((file_known, last_check))
-
-        self.stale_files = new_file_list
 
 cronjob = ImportUpload
 schedule = datetime.timedelta(minutes = 10)
