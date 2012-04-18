@@ -41,7 +41,7 @@ import tempfile
 
 from debexpo.lib.base import *
 from debexpo.lib import constants, form
-from debexpo.lib.schemas import DetailsForm, GpgForm, PasswordForm, OtherDetailsForm, MetricsForm
+from debexpo.lib.schemas import DetailsForm, GpgForm, PasswordForm, OtherDetailsForm, MetricsForm, DmupForm
 from debexpo.lib.gnupg import GnuPG
 
 from debexpo.model import meta
@@ -214,6 +214,25 @@ class MyController(BaseController):
 
         redirect(url('my'))
 
+    @validate(schema=DmupForm(), form='index')
+    def _dmup(self):
+        """
+        Handles a user submitting the DMUP form
+        """
+        log.debug('DMUP acceptance form validated successfully')
+
+        # set the new value to the 'dmup' boolean in the User object
+        if self.form_result['dmup']:
+            self.user.dmup = True
+        else:
+            self.user.dmup = False
+        meta.session.commit()
+
+        log.debug('Changed DMUP acceptance status and redirecting')
+
+        redirect(url('my'))
+        
+
     def index(self, get=False):
         """
         Controller entry point. Displays forms to change user details.
@@ -242,6 +261,7 @@ class MyController(BaseController):
                   'password' : self._password,
                   'other_details' : self._other_details,
                   'metrics' : self._metrics,
+                  'dmup' : self._dmup,
                 }[request.params['form']]()
             except KeyError:
                 log.error('Could not find form name "%s"; defaulting to main page' % (request.params['form']))
@@ -306,6 +326,9 @@ class MyController(BaseController):
                 c.metrics.availability = constants.SPONSOR_METRICS_PRIVATE
                 c.metrics.guidelines = constants.SPONSOR_GUIDELINES_TYPE_NONE
 
+
+        # Enable the form to show the current DMUP acceptance status
+        c.current_dmup = self.user.dmup
 
         log.debug('Rendering page')
         return render('/my/index.mako')

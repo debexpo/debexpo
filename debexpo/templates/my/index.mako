@@ -102,6 +102,27 @@
 </fieldset>
 <hr />
 <fieldset>
+  <strong><legend>${ _('Accept Debian Machine Usage Policies') }</legend></strong>
+
+  ${ h.html.tags.form(h.url.current()) }
+  ${ h.html.tags.hidden('form', 'dmup') }
+
+  <table width="100%">
+    <tr>
+      <td width="20%"><a href="http://www.debian.org/devel/dmup">${ _('Accept DMUP') }</a>:</td>
+      <td width="80%">${ h.html.tags.checkbox('dmup', checked=c.current_dmup) }</td>
+    </tr>
+
+    <tr>
+      <td>${ h.html.tags.submit('commit', _('Submit')) }</td>
+    </tr>
+  </table>
+
+  ${ h.html.tags.end_form() }
+
+</fieldset>
+<hr />
+<fieldset>
   <strong><legend>${ _('Change other details') }</legend></strong>
 
   ${ h.html.tags.form(h.url.current()) }

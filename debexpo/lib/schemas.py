@@ -193,3 +193,8 @@ class PasswordResetForm(formencode.Schema):
 
 
 
+class DmupForm(MyForm):
+    """
+    Schema for the DMUP accepting form in the my controller.
+    """
+    dmup = CheckBox()

@@ -37,6 +37,13 @@
                 </dd>
                 <dt>GnuPG</dt>
                 <dd>${ c.profile.gpg_id }</dd>
+		<dt>DMUP acceptance</dt>
+		<dd>Debian Machine Usage Policies 
+		% if c.profile.dmup is False:
+		  <strong>not</strong>
+		% endif
+		accepted
+		</dd>
             </dl>
         </td>
     </tr>

@@ -437,6 +437,10 @@ class Importer(object):
         self.user_id = self.user.id
         log.debug("User found in database. Has id: %s", self.user.id)
 
+        if self.user.dmup is False:
+            log.debug("User has not accepted the DMUP")
+            self._reject('You must accept the Debian Machine Usage Policies before uploading a package')
+
         self.files = self.changes.get_files()
         self.files_to_remove = []
 
