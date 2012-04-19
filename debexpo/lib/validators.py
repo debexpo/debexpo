@@ -228,8 +228,8 @@ class GpgSignature(formencode.validators.FieldStorageUploadConverter):
 
     def _to_python(self, value, c):
         tmp = tempfile.NamedTemporaryFile('w')
-        with open(tmp.name, 'w') as f:
-            f.write(value.value)
+        tmp.file.write(value.value)
+        tmp.file.close()
 
         if not self.gnupg.is_signed(tmp.name):
             log.debug('Uploaded file is not GPG-signed')
