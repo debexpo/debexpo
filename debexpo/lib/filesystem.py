@@ -174,6 +174,8 @@ class CheckFiles(object):
         ```package``` package object whose files are supposed to be removed
         """
         files = self.find_files_for_package(package, absolute_path=True)
+        if not files:
+            return
         path = os.path.dirname(files[0])
         for file in files:
             if os.path.exists(file):
