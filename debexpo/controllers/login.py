@@ -44,6 +44,8 @@ from debexpo.lib.schemas import LoginForm
 from debexpo.model import meta
 from debexpo.model.users import User
 
+import debexpo.model
+
 import debexpo.lib.utils
 
 log = logging.getLogger(__name__)
@@ -98,6 +100,13 @@ class LoginController(BaseController):
                 del(session['path_before_login'])
         else:
                 path = url('my')
+
+        # Purge the session upload key
+        keys = meta.session.query(debexpo.model.user_upload_key.UserUploadKey
+                                  ).filter_by(user=u)
+        if keys:
+            for key in keys:
+                meta.session.delete(key)
 
         meta.session.commit()
         redirect(path)
