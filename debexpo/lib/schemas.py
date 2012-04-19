@@ -44,7 +44,7 @@ from debexpo.lib.base import meta
 from debexpo.lib import constants
 from debexpo.lib.validators import NewEmailToSystem, GpgKey, \
     CurrentPassword, CheckBox, NewNameToSystem, ValidateSponsorEmail, \
-    ValidatePackagingGuidelines, DummyValidator
+    ValidatePackagingGuidelines, DummyValidator, GpgSignature
 from debexpo.model.sponsor_metrics import SponsorTags
 
 
@@ -197,4 +197,4 @@ class DmupForm(MyForm):
     """
     Schema for the DMUP accepting form in the my controller.
     """
-    dmup = CheckBox()
+    signed_agreement = GpgSignature()

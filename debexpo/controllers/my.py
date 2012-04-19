@@ -222,10 +222,8 @@ class MyController(BaseController):
         log.debug('DMUP acceptance form validated successfully')
 
         # set the new value to the 'dmup' boolean in the User object
-        if self.form_result['dmup']:
-            self.user.dmup = True
-        else:
-            self.user.dmup = False
+        self.user.dmup = True
+                
         meta.session.commit()
 
         log.debug('Changed DMUP acceptance status and redirecting')
