@@ -45,6 +45,7 @@ from debexpo.model import meta
 from debexpo.model.users import User
 
 import debexpo.model
+import debexpo.model.user_upload_key
 
 import debexpo.lib.utils
 
