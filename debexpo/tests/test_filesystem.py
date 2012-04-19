@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 #
-#   test_utils.py — Test cases for debexpo.lib.utils
+#   test_filesystem.py — CheckFiles class test cases
 #
 #   This file is part of debexpo - https://alioth.debian.org/projects/debexpo/
 #
-#   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2012 Nicolas Dandrimont <nicolas.dandrimont@crans.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -28,40 +28,37 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 """
-Test cases for debexpo.lib.utils.
+CheckFiles class test cases.
 """
 
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__author__ = 'Nicolas Dandrimont'
+__copyright__ = 'Copyright © 2012 Nicolas Dandrimont'
 __license__ = 'MIT'
 
 from unittest import TestCase
 
-from debexpo.lib.utils import *
-from debexpo.lib.changes import Changes
+from debexpo.lib.filesystem import CheckFiles
 
-class TestUtilsController(TestCase):
+class TestCheckFilesController(TestCase):
 
-    def testParseSection(self):
+    def setUp(self):
         """
-        Tests debexpo.lib.utils.parse_section.
+        Setup the environment for tests
         """
-        t = parse_section
+        self.checkfiles = CheckFiles()
 
-        self.assertEqual(t('section'), ['main', 'section'])
-        self.assertEqual(t('component/section'), ['component', 'section'])
+    def testAllowedUpload(self):
+        """
+        Tests CheckFiles.allowed_upload
+        """
+        t = self.checkfiles.allowed_upload
 
-    def testGetPackageDir(self):
-        """
-        Tests debexpo.lib.utils.get_package_dir.
-        """
-        t = get_package_dir
+        self.assertTrue(t('foo_version.orig.tar.gz'))
+        self.assertTrue(t('foo_version.tar.gz'))
+        self.assertTrue(t('foo_version.changes'))
+        self.assertTrue(t('foo_version.dsc'))
+        self.assertTrue(t('foo_version.deb'))
+        self.assertTrue(t('foo_version.diff.gz'))
 
-        self.assertEqual(t('foo'), 'f/foo')
-        self.assertEqual(t('libfoo'), 'libf/libfoo')
+        self.assertFalse(t('foo_version.etc'))
 
-    def testMd5sum(self):
-        """
-        Tests debexpo.lib.utils.md5sum.
-        """
-        self.assertEqual(md5sum('debexpo/tests/changes/synce-hal_0.1-1_source.changes'), 'fbb0b9c81f8a4fa9b8e3b789cf3b5220')
