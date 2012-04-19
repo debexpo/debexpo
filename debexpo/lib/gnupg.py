@@ -181,15 +181,28 @@ class GnuPG(object):
              setting will be used (~/.gnupg/pubring.gpg))
         """
         args = ('--verify', signed_file)
-        (out, return_code) = self._run(args=args, pubring=pubring)
+        (raw_out, return_code) = self._run(args=args, pubring=pubring)
         gpg_addr_pattern =  re.compile('"'
                                         '(?P<name>.+)'
                                         '\s+'
                                         '<(?P<email>.+?)>'
                                         '"')
+        gpg_key_pattern = re.compile(".*Signature made.*using (?P<key_type>\S+) key ID (?P<key_id>\w+)$")
+        
+        out = {}
+        out['raw'] = raw_out
+
         user_ids = []
-        for line in out.split("\n"):
+        for line in raw_out.split("\n"):
+            # key information
+            gpg_key_matcher = gpg_key_pattern.search(line)
+            if gpg_key_matcher is not None:
+                out['key_type'] = gpg_key_matcher.group('key_type')
+                out['key_id'] = gpg_key_matcher.group('key_id')
+
+            # user names and email address
             addr_matcher = gpg_addr_pattern.search(line)
+            
             if addr_matcher is not None:
                 user_ids.append( (addr_matcher.group('name'), addr_matcher.group('email')) )
         return (out, user_ids, return_code)
