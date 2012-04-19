@@ -18,9 +18,14 @@ class TestPackagesController(TestController):
         self.assertEquals('text/html', response.content_type)
 
     def test_uploader(self):
+        response = self.app.get(url('packages-uploader', id='email@example.com'), expect_errors = True)
+        self.assertEquals(404, response.status_int)
+        self._setup_example_user()
         response = self.app.get(url('packages-uploader', id='email@example.com'))
         self.assertEquals(200, response.status_int)
         self.assertEquals('text/html', response.content_type)
+        self._remove_example_user()
+
 
     def test_my(self):
         response = self.app.get(url(controller='packages', action='my'))

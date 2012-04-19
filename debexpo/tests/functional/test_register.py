@@ -8,12 +8,13 @@ class TestRegisterController(TestController):
         count = meta.session.query(User).filter(User.email=='mr_me@example.com').count()
         self.assertEquals(count, 0)
 
-        self.app.post(url(controller='register', action='maintainer'),
+        self.app.post(url(controller='register', action='register'),
                                  {'name': 'Mr. Me',
                                   'password': 'password',
                                   'password_confirm': 'password',
                                   'commit': 'yes',
-                                  'email': 'mr_me@example.com'})
+                                  'email': 'mr_me@example.com',
+                                  'sponsor': '0'})
 
         count = meta.session.query(User).filter(User.email=='mr_me@example.com').count()
         self.assertEquals(count, 1)
@@ -28,12 +29,13 @@ class TestRegisterController(TestController):
     def test_maintainer_signup_with_duplicate_name(self):
         self.test_maintainer_signup(actually_delete_it=False)
 
-        self.app.post(url(controller='register', action='maintainer'),
+        self.app.post(url(controller='register', action='register'),
                                  {'name': 'Mr. Me',
                                   'password': 'password',
                                   'password_confirm': 'password',
                                   'commit': 'yes',
-                                  'email': 'mr_me_again@example.com'})
+                                  'email': 'mr_me_again@example.com',
+                                  'sponsor': '0'})
 
         count = meta.session.query(User).filter(User.email=='mr_me_again@example.com').count()
         self.assertEquals(count, 0)
