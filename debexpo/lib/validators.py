@@ -37,6 +37,7 @@ __license__ = 'MIT'
 
 import formencode
 import logging
+import tempfile
 
 from debexpo.lib.base import *
 from debexpo.lib.gnupg import GnuPG
@@ -212,3 +213,47 @@ def ValidatePackagingGuidelines(values, state, validator):
     except Exception as e:
         return {'packaging_guideline_text': e}
     return None
+
+
+class GpgSignature(formencode.validators.FieldStorageUploadConverter):
+    """
+    Validator for an uploaded GPG-signed file.
+    Checks the signature against the user's GPG key in the database.
+    """
+
+    not_empty = True
+    
+    def __init__(self):
+        self.gnupg = GnuPG()
+
+    def _to_python(self, value, c):
+        tmp = tempfile.NamedTemporaryFile('w')
+        with open(tmp.name, 'w') as f:
+            f.write(value.value)
+
+        if not self.gnupg.is_signed(tmp.name):
+            log.debug('Uploaded file is not GPG-signed')
+            raise formencode.Invalid(_('Not a gpg-signed file'), value, c)
+
+        log.debug('Uploaded file is GPG-signed')
+
+        (gpg_out, user_ids, code) = self.gnupg.verify_sig_full(tmp.name)
+
+        user = meta.session.query(User).get(session['user_id'])
+
+        if code != 0:
+            log.debug('The GPG signature cannot be verified')
+            raise formencode.Invalid(_('GPG signature not verified'), value, c)
+
+        if not 'key_id' in gpg_out:
+            log.debug("Cannot read GPG key information")
+            raise formencode.Invalid_("Not signed with the user's key", value, c)
+        
+        # checking that the file has been signed with the right key
+        if gpg_out['key_id'] != user.gpg_id.split('/', 1)[1]:
+            log.debug("File has not been signed by the user's key")
+            raise formencode.Invalid_("Not signed with the user's key", value, c)
+
+        log.debug("The file has been signed with the user's key")
+        
+        return formencode.validators.FieldStorageUploadConverter._to_python(self, value, c)
