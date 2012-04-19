@@ -332,3 +332,18 @@ class MyController(BaseController):
 
         log.debug('Rendering page')
         return render('/my/index.mako')
+
+
+    def download_dmup(self):
+        """
+        Serves a file containing the agreement to the DMUP
+        """
+        response.content_type = 'text/plain'
+        response.headers['Content-Disposition'] = 'attachment; filename="dmup_agreement.txt"'
+        user= meta.session.query(User).get(session['user_id'])
+        data = """I, %s, agree to the the Debian Machine Usage Policies as stated on http://www.debian.org/devel/dmup
+        """ % user.name # this should be somewhere else
+        
+        log.debug('Serving DMUP agreement file')
+        return data
+    

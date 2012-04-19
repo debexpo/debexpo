@@ -73,6 +73,7 @@ def make_map(config):
     map.connect('sponsor_tag_clear', '/sponsors/clear', controller='sponsor', action='clear')
     map.connect('intro-reviewers', '/intro-reviewers', controller='index', action='intro_reviewers')
     map.connect('my', '/my', controller='my', action='index')
+    map.connect('download-dmup', '/my/download-dmup', controller='my', action='download-dmup')
     map.connect('login', '/login', controller='login', action='index')
     map.connect('logout', '/logout', controller='login', action='logout')
     map.connect('news', '/news', controller='index', action='news')
