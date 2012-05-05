@@ -13,7 +13,7 @@
 
 <h2>2. File a WNPP bug</h2>
 
-<p><a href="http://www.debian.org/devel/wnpp/">Work-Needing and Prospective Packages</a> (<em>WNPP</em>) is our system of announcing your intent to markup packages being worked on. In particular it is a bug against the <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=wnpp">WNPP pseudo package</a> (<a href="http://wnpp.debian.net/">or use a nice frontend</a> to browse <em>WNPP</em> bugs). If you want to package package something not currently available in Debian, the very first step should be to file an "Intent to package" (<em>ITP</em>) bug against <em>WNPP</em>. You may want to use the <tt><a href="http://packages.debian.org/squeeze/reportbug">reportbug</a></tt> tool to achieve that by selecting "<em>wnpp</em>" as package to report a bug to.</p>
+<p><a href="http://www.debian.org/devel/wnpp/">Work-Needing and Prospective Packages</a> (<em>WNPP</em>) is our system of announcing your intent to markup packages being worked on. In particular it is a bug against the <a href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=wnpp">WNPP pseudo package</a> (<a href="http://wnpp.debian.net/">or use a nice frontend</a> to browse <em>WNPP</em> bugs). If you want to package something not currently available in Debian, the very first step should be to file an "Intent to package" (<em>ITP</em>) bug against <em>WNPP</em>. You may want to use the <tt><a href="http://packages.debian.org/squeeze/reportbug">reportbug</a></tt> tool to achieve that by selecting "<em>wnpp</em>" as package to report a bug to.</p>
 
 <h2>3. Make the package</h2>
 
