@@ -48,12 +48,14 @@ Using pip::
   sudo pip install soaplib
 
 
-Installing in an virtualenv 
+Installing in an virtualenv
 ---------------------------
 
 Using this method, you will create a virtual Python environment in
 which you can install dependencies for debexpo without altering your
-system (i.e., without requiring root).
+system (i.e., without requiring root). In addition, this will also let
+you isolate debexpo's requirements, in the event an application installed
+globally might require a conflicting version of a library, or vise versa.
 
 Virtualenv setup
 ~~~~~~~~~~~~~~~~
@@ -62,10 +64,6 @@ Skip this section if you already have a working virtualenv setup.
 
 Install virtualenvwrapper::
   sudo apt-get install virtualenvwrapper
-
-Setup virtualenv::
-  mkdir ~/.virtualenvs
-  source /etc/bash_completion
 
 Dependencies
 ~~~~~~~~~~~~
@@ -84,6 +82,9 @@ First, create a new virtualenv for debexpo, and enter it::
 You can now install debexpo. This will download and install all
 required libraries::
   python setup.py develop
+
+If for any reason you need to exit the virtualenv, you may enter
+`deactivate` to exit the virtualenv.
 
 Editing your configuration
 ---------------------------
@@ -127,7 +128,7 @@ Using Apache
     use = egg:PasteScript#flup_fcgi_thread
     host = 0.0.0.0
     port = 6500
- 
+
 #. Add the following to your config::
 
     <IfModule mod_fastcgi.c>
