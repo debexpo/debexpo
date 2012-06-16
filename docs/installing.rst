@@ -70,7 +70,7 @@ Dependencies
 
 To install lxml from sources, you will need `gcc`, `libxml2`,
 `libxslt1.1` and `python-dev` ::
-  sudo apt-get install gcc libxml2 libxml2-dev libxslt1.1 libxslt1-dev
+  sudo apt-get install gcc libxml2 libxml2-dev libxslt1.1 libxslt1-dev python-dev
 
 Debexpo installation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
