@@ -145,6 +145,26 @@ class CheckFiles(object):
         return (orig_name, constants.ORIG_TARBALL_LOCATION_NOT_FOUND)
 
 
+    def find_files_for_packageversion(self, packageversion, absolute_path=False):
+        """
+        Returns all unique paths for files associated with the supplied
+        package version
+
+        ```packageversion``` The package version to be scanned
+
+        ```absolute_path``` if set to True, returns the absolute path
+            instead of a path relative to the repository root
+        """
+        package_files = []
+        for attr in ('binary_packages', 'source_packages'):
+            if hasattr(packageversion, attr):
+                for bp in getattr(packageversion, attr):
+                    for files in bp.package_files:
+                        if not files.filename in package_files:
+                            package_files.append(files.filename if not absolute_path
+                                                 else pylons.config['debexpo.repository'] + files.filename)
+        return package_files
+
     def find_files_for_package(self, package, absolute_path=False):
         """
         Returns all unique paths for files associated with the supplied
@@ -157,14 +177,28 @@ class CheckFiles(object):
         """
         package_files = []
         for p in package.package_versions:
-                for attr in ('binary_packages', 'source_packages'):
-                    if hasattr(p, attr):
-                        for bp in getattr(p, attr):
-                            for files in bp.package_files:
-                                if not files.filename in package_files:
-                                    package_files.append(files.filename if not absolute_path
-                                        else pylons.config['debexpo.repository'] + files.filename)
+            package_files.extend(self.find_files_for_packageversion(p, absolute_path))
         return package_files
+
+
+
+    def delete_files_for_packageversion(self, packageversion):
+        """
+        Removes all files associated with the package version supplied
+
+        ```packageversion``` PackageVersion object whose files are supposed to be removed
+        """
+        files = self.find_files_for_packageversion(packageversion, absolute_path=True)
+        if not files:
+            return
+        path = os.path.dirname(files[0])
+        for file in files:
+            if os.path.exists(file):
+                    log.debug("Removing file '%s'" % (file))
+                    os.unlink(file)
+        if os.path.isdir(path) and os.listdir(path) == []:
+            log.debug("Remove empty package repository '%s'" % (path))
+            os.rmdir(path)
 
 
     def delete_files_for_package(self, package):
