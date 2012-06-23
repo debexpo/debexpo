@@ -39,13 +39,13 @@ from debexpo.cronjobs import BaseCronjob
 import glob
 import os
 import os.path
-import subprocess
 import time
 import datetime
 import shutil
 
 import debexpo.lib.filesystem
 from debexpo.lib.changes import Changes
+from debexpo.importer.importer import Importer
 
 class NotCompleteUpload(Exception): pass
 
@@ -96,13 +96,14 @@ class ImportUpload(BaseCronjob):
                 continue
 
             self.log.info("Import upload: %s" % (file))
-            command = [ self.config['debexpo.importer'], '-i', self.config['global_conf']['__file__'], '-c', changes.get_filename() ]
-            self.log.debug("Executing: %s" % (" ".join(command)))
-            proc = subprocess.Popen(command, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            (istdout, istderr) = proc.communicate()
-            if proc.returncode != 0:
-                self.log.critical("Importer failed to import package %s [err=%d]." % (file, proc.returncode))
-                self.log.debug("Output was\n%s\n%s" % (istdout,istderr))
+	    importer = Importer(changes.get_filename(),
+				self.config['global_conf']['__file__'],
+				False,
+				False)
+
+	    returncode = importer.main()
+            if returncode != 0:
+                self.log.critical("Importer failed to import package %s [err=%d]." % (file, returncode))
             for filename in changes.get_files() + [ changes.get_filename(), ]:
                 destination_file = os.path.join(self.config['debexpo.upload.incoming'], filename)
                 if os.path.exists(destination_file):
