@@ -93,7 +93,7 @@
 
 
 	    </span>
-        % if c.submenu.has_menu():
+        % if c.submenu and c.submenu.has_menu():
             <%include file="submenu.mako" />
         % endif
 		${next.body()}
