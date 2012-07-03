@@ -84,6 +84,15 @@ First, create a new virtualenv for debexpo, and enter it::
 the following in your shell::
   /etc/bash_completion.d/virtualenvwrapper
 
+Note that now, whenever you run "python", you run an interpreter that
+is sandboxed to the "virtualenv" in question. You can test this by
+typing::
+  which python
+
+and you will see it is not /usr/bin/python! Additionally, your shell prompt
+should have a little prefix before the prompt that looks like::
+  (expo)
+
 You can now install debexpo. This will download and install all
 required libraries::
   python setup.py develop
