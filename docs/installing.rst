@@ -76,6 +76,7 @@ Debexpo installation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 First, create a new virtualenv for debexpo, and enter it::
+
   mkvirtualenv expo
   workon expo
 
