@@ -55,7 +55,7 @@ Using this method, you will create a virtual Python environment in
 which you can install dependencies for debexpo without altering your
 system (i.e., without requiring root). In addition, this will also let
 you isolate debexpo's requirements, in the event an application installed
-globally might require a conflicting version of a library, or vise versa.
+globally might require a conflicting version of a library, or vice versa.
 
 Virtualenv setup
 ~~~~~~~~~~~~~~~~
