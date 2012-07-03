@@ -79,6 +79,10 @@ First, create a new virtualenv for debexpo, and enter it::
   mkvirtualenv expo
   workon expo
 
+*Note*: If you get a "command not found" error for "mkvirtualenv", run
+the following in your shell::
+  /etc/bash_completion.d/virtualenvwrapper
+
 You can now install debexpo. This will download and install all
 required libraries::
   python setup.py develop
