@@ -222,7 +222,7 @@ class GpgSignature(formencode.validators.FieldStorageUploadConverter):
     """
 
     not_empty = True
-    
+
     def __init__(self):
         self.gnupg = GnuPG()
 
@@ -248,12 +248,16 @@ class GpgSignature(formencode.validators.FieldStorageUploadConverter):
         if not 'key_id' in gpg_out:
             log.debug("Cannot read GPG key information")
             raise formencode.Invalid_("Not signed with the user's key", value, c)
-        
+
+        # checking that the user has uploaded a gpg key
+        if user.gpg_id is None:
+            raise formencode.Invalid(_('You have not uploaded any GPG key'), value, c)
+
         # checking that the file has been signed with the right key
         if gpg_out['key_id'] != user.gpg_id.split('/', 1)[1]:
             log.debug("File has not been signed by the user's key")
             raise formencode.Invalid_("Not signed with the user's key", value, c)
 
         log.debug("The file has been signed with the user's key")
-        
+
         return formencode.validators.FieldStorageUploadConverter._to_python(self, value, c)
