@@ -73,7 +73,7 @@ To help you find a sponsor interested in your package, they can formulate sponso
 % endif
 </p>
 
-<table width="100%">
+<table width="100%" class="sponsor-guidelines">
     <tr>
         <th width="30%">Sponsor name and contact data</th>
         <th width="35%">Acceptable package traits</th>
@@ -101,10 +101,35 @@ To help you find a sponsor interested in your package, they can formulate sponso
         <% continue %>
     % endif
     <% sponsors_found = True %>
-    <tr>
+    <tr class="sponsor-guideline-short" data-sponsor="${ sponsor.user.name }">
         <td>
             <span style="font-size:120%"><strong>${ h.tags.link_to(sponsor.user.name, h.url(controller='sponsor', action='developer', id=sponsor.user.email)) }</strong></span>
-            <br />
+	</td>
+	<td class="sponsor-tags-abbrev">
+        <%
+    all_tags = sponsor.get_technical_tags_full()
+    positive_tags = [t for t in all_tags if t.weight > 0]
+    tool_tags = ['<span title="' + t.full_tag.label + '">' + t.tag + '</span>' for t in positive_tags]
+    taglist = ', '.join(tool_tags)
+        %>
+        % if taglist != '':
+        <span style="color: green">+${ taglist|n }</span>
+        % endif
+	</td>
+	<td class="sponsor-tags-abbrev">
+        <%
+    all_tags = sponsor.get_social_tags_full()
+    positive_tags = [t for t in all_tags if t.weight > 0]
+    tool_tags = ['<span title="' + t.full_tag.label + '">' + t.tag + '</span>' for t in positive_tags]
+    taglist = ', '.join(tool_tags)
+        %>
+        % if taglist != '':
+        <span style="color: green">+${ taglist|n }</span>
+        % endif
+	</td>
+    </tr>
+    <tr class="sponsor-guideline-long" data-sponsor="${ sponsor.user.name }">
+        <td>
             <ul>
             % if sponsor.user.email and sponsor.allowed(c.constants.SPONSOR_CONTACT_METHOD_EMAIL):
                 <li>Email: ${ sponsor.user.email } ${ preferred(sponsor.contact == c.constants.SPONSOR_CONTACT_METHOD_EMAIL) }</li>
@@ -166,3 +191,29 @@ To help you find a sponsor interested in your package, they can formulate sponso
 % if c.sponsor_filter:
     <p>${ h.tags.link_to(  _('Remove all filters'), h.url.current(action='clear'))  }</p>
 % endif
+
+<script type="text/javascript">
+$(function() {
+    $('.sponsor-guideline-long').hide();
+
+    // Add detail buttons. We do this in JavaScript instead of in the HTML so
+    // that there are no useless links when people without JavaScript view the
+    // page.
+    $('tr.sponsor-guideline-short td:first-child').each(function() {
+        var sponsor = $(this).parent().data('sponsor');
+        $(this).prepend($('<a href="#" class="guideline-toggle" data-sponsor="' + sponsor + '">[details]</a>'));
+    });
+
+    // Setup the click handler for the expand buttons.
+    $('.guideline-toggle').click(function() {
+        var sponsor = $(this).data('sponsor');
+        var details = $('.sponsor-guideline-long[data-sponsor="' + sponsor + '"]');
+        if (details.is(':visible')) {
+            details.hide('fast');
+        } else {
+            details.show('fast');
+        }
+        return false;
+    });
+});
+</script>

@@ -64,27 +64,18 @@ class TestPackageController(TestController):
                         'packages-uploader',
                         id='email@example.com'))), 1)
         response = self.app.post(url('login'), self._AUTHDATA)
+        user = meta.session.query(User).filter(User.email=='email@example.com').one()
         response = self.app.get(url(controller='package', action='index',
                                     packagename='testpackage'))
         self.assertEquals(response.status_int, 200)
         self.assertEquals(len(response.lxml.xpath(
                     '//a[@href="%s"]' % url(
                         controller='package', action='delete',
-                        packagename='testpackage'))), 1)
+                        packagename='testpackage', key = user.get_upload_key()))), 1)
         self.assertEquals(len(response.lxml.xpath(
                     '//form[@action="%s"]' % url(
                         controller='package', action='comment',
                         packagename='testpackage'))), 1)
-
-    def test_rfs(self):
-        response = self.app.get(url(controller='package', action='rfs'))
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(
-                url(controller='packages', action='index', packagename=None)))
-        response = self.app.get(url(controller='package', action='rfs',
-                                    packagename='testpackage'))
-        self.assertEquals(response.status_int, 200)
-        self.assertTrue('Subject: RFS: testpackage' in response)
 
     def test_subscribe(self):
         response = self.app.get(url(controller='package', action='subscribe',
@@ -157,16 +148,16 @@ class TestPackageController(TestController):
         self.assertEquals(subs, None)
 
     def test_delete(self):
-        response = self.app.get(url(controller='package', action='delete',
-                                    packagename='testpackage'))
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('login')))
         self.app.post(url('login'), self._AUTHDATA)
+        user = meta.session.query(User).filter(User.email=='email@example.com').one()
         response = self.app.get(url(controller='package', action='delete',
-                                    packagename='testpackage'))
+                                    packagename='testpackage', key = "INVALIDKEY"), expect_errors=True)
+        self.assertEquals(response.status_int, 402)
+        response = self.app.get(url(controller='package', action='delete',
+                                    packagename='testpackage', key = user.get_upload_key()))
         self.assertEquals(response.status_int, 302)
         self.assertTrue(response.location.endswith(
-                url(controller='packages', action='index', filter='my')))
+                url(controller='packages', action='my')))
         package = meta.session.query(Package).filter(
             Package.name=='testpackage').first()
         self.assertEquals(package, None)
@@ -175,13 +166,16 @@ class TestPackageController(TestController):
         response = self.app.get(url(controller='package', action='comment',
                                     packagename='testpackage'))
         self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('login')))
+        self.assertTrue(response.location.endswith(
+                url(controller='package', action='index',
+                    packagename='testpackage')))
         self.app.post(url('login'), self._AUTHDATA)
         response = self.app.get(url(controller='package', action='comment',
                                     packagename='testpackage'))
-        self.assertEquals(response.status_int, 200)
-        self.assertEquals(4, len(response.lxml.xpath(
-                    '//span[@class="error-message"]')))
+        self.assertTrue(response.location.endswith(
+                url(controller='package', action='index',
+                    packagename='testpackage')))
+        self.assertEquals(response.status_int, 302)
         response = self.app.post(
             url(controller='package', action='comment',
                 packagename='testpackage'),

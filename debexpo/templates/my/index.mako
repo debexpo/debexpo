@@ -102,6 +102,30 @@
 </fieldset>
 <hr />
 <fieldset>
+  <strong><legend>${ _('Debian Machine Usage Policies') }</legend></strong>
+  
+  ${ h.html.tags.form(h.url.current(), multipart=True) }
+  ${ h.html.tags.hidden('form', 'dmup') }
+  % if c.current_dmup is True:
+  <p>You have accepted the Debian Machine Usage Policies.</p>
+  % else:
+
+  <p>Before you can upload packages, you must accept the <a href="http://www.debian.org/devel/dmup">Debian Machine Usage Policies</a> (DMUP).</p>
+
+  <p>Please download <a href="/my/download-dmup">this file</a>, sign it with your GPG key, and upload it:</p>
+
+  <p>${ h.html.tags.file('signed_agreement') }</p>
+
+  <p>${ h.html.tags.submit('commit', _('Upload')) }</p>
+  % endif
+  
+
+
+  ${ h.html.tags.end_form() }
+  
+</fieldset>
+<hr />
+<fieldset>
   <strong><legend>${ _('Change other details') }</legend></strong>
 
   ${ h.html.tags.form(h.url.current()) }

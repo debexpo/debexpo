@@ -1,25 +1,11 @@
-running debexpo
-===============
+installing and running debexpo
+==============================
 
-First, create a virtualenv.
+For installation instructions, see docs/installing.rst
 
-  % sudo apt-get install virtualenvwrapper
-  % mkdir ~/.virtualenvs
-  % source /etc/bash_completion
-  % mkvirtualenv expo
-  % workon expo
 
-This creates a virtual Python environment in which you can install the
-dependencies for debexpo without altering your system (i.e., without
-requiring root). Once you have the virtualenv set up, run this command to
-download the dependencies and set up the debexpo code so it can be run:
-
-  % python setup.py develop
-
-You might think you are done, but wait! You have to compile the
-translations from "PO" format into "MO" format. To do that:
-
-  % python setup.py compile_catalog
+running tests
+=============
 
 Hooray! Now you're ready to run the automated tests. (The code for the
 tests lives in debexpo/tests/*. This is a test suite; you can read more at

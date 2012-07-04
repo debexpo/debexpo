@@ -41,7 +41,7 @@ import tempfile
 
 from debexpo.lib.base import *
 from debexpo.lib import constants, form
-from debexpo.lib.schemas import DetailsForm, GpgForm, PasswordForm, OtherDetailsForm, MetricsForm
+from debexpo.lib.schemas import DetailsForm, GpgForm, PasswordForm, OtherDetailsForm, MetricsForm, DmupForm
 from debexpo.lib.gnupg import GnuPG
 
 from debexpo.model import meta
@@ -113,7 +113,7 @@ class MyController(BaseController):
         if 'gpg' in self.form_result and self.form_result['gpg'] is not None:
             log.debug('Setting a new GPG key')
             self.user.gpg = self.form_result['gpg'].value
-            self.user.gpg_id = self.gnupg.parse_key_id(self.user.gpg)
+            (self.user.gpg_id, _) = self.gnupg.parse_key_id(self.user.gpg)
 
             temp = tempfile.NamedTemporaryFile(delete=True)
             temp.write(self.user.gpg)
@@ -214,6 +214,23 @@ class MyController(BaseController):
 
         redirect(url('my'))
 
+    @validate(schema=DmupForm(), form='index')
+    def _dmup(self):
+        """
+        Handles a user submitting the DMUP form
+        """
+        log.debug('DMUP acceptance form validated successfully')
+
+        # set the new value to the 'dmup' boolean in the User object
+        self.user.dmup = True
+                
+        meta.session.commit()
+
+        log.debug('Changed DMUP acceptance status and redirecting')
+
+        redirect(url('my'))
+        
+
     def index(self, get=False):
         """
         Controller entry point. Displays forms to change user details.
@@ -242,9 +259,10 @@ class MyController(BaseController):
                   'password' : self._password,
                   'other_details' : self._other_details,
                   'metrics' : self._metrics,
+                  'dmup' : self._dmup,
                 }[request.params['form']]()
             except KeyError:
-                log.error('Could not find form name; defaulting to main page')
+                log.error('Could not find form name "%s"; defaulting to main page' % (request.params['form']))
                 pass
 
         log.debug('Populating template context')
@@ -307,5 +325,23 @@ class MyController(BaseController):
                 c.metrics.guidelines = constants.SPONSOR_GUIDELINES_TYPE_NONE
 
 
+        # Enable the form to show the current DMUP acceptance status
+        c.current_dmup = self.user.dmup
+
         log.debug('Rendering page')
         return render('/my/index.mako')
+
+
+    def download_dmup(self):
+        """
+        Serves a file containing the agreement to the DMUP
+        """
+        response.content_type = 'text/plain'
+        response.headers['Content-Disposition'] = 'attachment; filename="dmup_agreement.txt"'
+        user= meta.session.query(User).get(session['user_id'])
+        data = """I, %s, agree to the the Debian Machine Usage Policies as stated on http://www.debian.org/devel/dmup
+        """ % user.name # this should be somewhere else
+        
+        log.debug('Serving DMUP agreement file')
+        return data
+    

@@ -59,6 +59,7 @@ t_users = sa.Table('users', meta.metadata,
     sa.Column('ircnick', sa.types.String(200), nullable=True),
     sa.Column('jabber', sa.types.String(200), nullable=True),
     sa.Column('verification', sa.types.String(200), nullable=True),
+    sa.Column('dmup', sa.types.Boolean, default=False),
     )
 
 class User(OrmObject):

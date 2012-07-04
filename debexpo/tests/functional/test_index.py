@@ -27,7 +27,7 @@ class TestIndexController(TestController):
         response = self.app.get(testurl)
         self.assertEquals(response.status_int, 200)
 
-        testtext = '<h1>A test front page</h1>'
+        testtext = '<h1>Welcome to debexpo</h1>'
         pylons.test.pylonsapp.config['debexpo.html.frontpage'] = \
             self._generate_temppage('front.html', testtext)
 
@@ -46,7 +46,7 @@ class TestIndexController(TestController):
         response = self.app.get(testurl)
         self.assertEquals(response.status_int, 200)
 
-        testtext = '<h1>A maintainer intro page</h1>'
+        testtext = '<h1>Introduction for maintainers: How will my package get into Debian</h1>'
         pylons.test.pylonsapp.config['debexpo.html.maintainer_intro'] = \
             self._generate_temppage('maintainer_intro.html', testtext)
 
@@ -57,11 +57,11 @@ class TestIndexController(TestController):
         del pylons.test.pylonsapp.config['debexpo.html.maintainer_intro']
 
     def test_intro_sponsors(self):
-        testurl = url('intro-sponsors')
+        testurl = url('sponsors')
         response = self.app.get(testurl)
         self.assertEquals(response.status_int, 200)
 
-        testtext = '<h1>A sponsor intro page</h1>'
+        testtext = '<h1>The sponsoring process</h1>'
         pylons.test.pylonsapp.config['debexpo.html.sponsors_intro'] = \
             self._generate_temppage('sponsor_intro.html', testtext)
 

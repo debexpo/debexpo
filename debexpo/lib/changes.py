@@ -74,7 +74,10 @@ class Changes(object):
 
         if len(self._data) == 0:
             raise Exception('Changes file could not be parsed.')
-        self.basename = os.path.basename(filename)
+        if filename:
+            self.basename = os.path.basename(filename)
+        else:
+            self.basename = None
 
     def get_filename(self):
         """

@@ -93,13 +93,13 @@
 
 
 	    </span>
-        % if c.submenu.has_menu():
+        % if c.submenu and c.submenu.has_menu():
             <%include file="submenu.mako" />
         % endif
 		${next.body()}
 	</div><!-- end content -->
         <div id="footer">
-	<p>© 2008-2011 ${c.config['debexpo.sitename']}
+	<p>© 2008-2012 ${c.config['debexpo.sitename']}
 	-
     Hosting and hardware provided by <a href="http://www.wavecon.de">Wavecon</a>
     -
