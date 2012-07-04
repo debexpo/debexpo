@@ -18,7 +18,7 @@ Getting the source
 
 You can clone the Git repository using::
 
-    git clone git://debexpo.workaround.org/debexpo.git
+    git clone git://git.debian.org/debexpo/debexpo.git
 
 How we use branches
 ===================
