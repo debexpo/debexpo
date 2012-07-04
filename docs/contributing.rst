@@ -20,6 +20,17 @@ You can clone the Git repository using::
 
     git clone git://debexpo.workaround.org/debexpo.git
 
+How we use branches
+===================
+
+Contributions to Debexpo should be based on the "master" branch. This is
+the default when you clone the repository.
+
+We recommend rebasing your work so that it is based on the latest "origin/master"
+just before you submit the changes for review.
+
+We also use the branch name *live* to indicate what is running on the main site.
+
 Where to send patches
 =====================
 
