@@ -19,12 +19,14 @@ You can clone the git repository::
   git clone git://git.debian.org/debexpo/debexpo.git
 
 You should use the 'devel' branch::
+
   git checkout devel
 
 Dependencies needed for both methods
 ------------------------------------
 
 Whatever method you choose, these packages are required::
+
   sudo apt-get install python-apt python-debian iso-codes
 
 If you want to run qa plugins, you will need `lintian` and
@@ -45,6 +47,7 @@ You also need python-soaplib version >= 0.8.2 :
 http://pypi.python.org/pypi/soaplib
 
 Using pip::
+
   sudo pip install soaplib
 
 
