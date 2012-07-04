@@ -66,6 +66,7 @@ Virtualenv setup
 Skip this section if you already have a working virtualenv setup.
 
 Install virtualenvwrapper::
+
   sudo apt-get install virtualenvwrapper
 
 Dependencies
