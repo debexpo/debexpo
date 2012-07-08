@@ -26,6 +26,7 @@
 #   DEALINGS IN THE SOFTWARE.
 
 """ Executable script to import new packages. """
+import string
 
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
@@ -123,6 +124,70 @@ class Importer(object):
         incoming_dir = pylons.config['debexpo.upload.incoming']
         return os.path.join(incoming_dir, self.changes_file_unqualified)
 
+<<<<<<< HEAD
+=======
+    def _clean_path(self, pathToRemove, files):
+        """
+        remove a path from another using magic split
+        ''pathToRemove''
+            the path to remove
+        ''filePath''
+            the a list of original filePath
+        """
+        result = []
+        for filePath in files:
+            filePath = string.split(filePath, pathToRemove)
+            filePath = filePath[1]
+            filePath = string.split(filePath, os.sep)
+            if filePath[0] == '':
+                filePath.remove('')
+            fileName = string.join(filePath, os.sep)
+            result.append(fileName)
+        return result
+
+    def _get_files(self, path):
+        """
+        return all files in a path
+        ''path''
+            the path we are searching
+        """
+        result = []
+        for f in os.listdir(path):
+            if os.path.isdir(os.path.join(path, f)):
+                result += self._get_files(os.path.join(path, f))
+            else:
+                result.append(os.path.join(path, f))
+        return result
+
+    def _build_source(self, gitpath):
+        log.debug('Copying files to a temp directory to run dpkg-source -x on the dsc file')
+        self.tempdir = gitpath
+        log.debug('Temp dir is: %s', self.tempdir)
+        for filename in self.changes.get_files():
+            log.debug('Copying: %s', filename)
+            shutil.copy(os.path.join(pylons.config['debexpo.upload.incoming'], filename), self.tempdir)
+
+        # If the original tarball was pulled from Debian or from the repository, that
+        # also needs to be copied into this directory.
+        dsc = deb822.Dsc(file(self.changes.get_dsc()))
+        for item in dsc['Files']:
+            if item['name'] not in self.changes.get_files():
+                src_file = os.path.join(pylons.config['debexpo.upload.incoming'], item['name'])
+                repository_src_file = os.path.join(pylons.config['debexpo.repository'], self.changes.get_pool_path(),
+                    item['name'])
+                if os.path.exists(src_file):
+                    shutil.copy(src_file, self.tempdir)
+                elif os.path.exists(repository_src_file):
+                    shutil.copy(repository_src_file, self.tempdir)
+                else:
+                    log.critical("Trying to copy non-existing file %s" % (src_file))
+
+        shutil.copy(os.path.join(pylons.config['debexpo.upload.incoming'], self.changes_file), self.tempdir)
+        self.oldcurdir = os.path.abspath(os.path.curdir)
+        os.chdir(self.tempdir)
+        os.system('dpkg-source -x %s extracted' % self.changes.get_dsc())
+
+>>>>>>> c78c5a9... gitStorage & importer:
     def _remove_changes(self):
         """
         Removes the `changes` file.
@@ -447,10 +512,20 @@ class Importer(object):
         self.files_to_remove = []
 
         distribution = self.changes['Distribution'].lower()
+<<<<<<< HEAD
         allowed_distributions = ('oldstable', 'stable', 'unstable', 'experimental', 'stable-backports', 'oldstable-backports',
             'oldstable-backports-sloppy', 'oldstable-security', 'stable-security', 'testing-security', 'stable-proposed-updates',
             'testing-proposed-updates', 'sid', 'wheezy', 'squeeze', 'lenny', 'squeeze-backports', 'lenny-backports',
             'lenny-security', 'lenny-backports-sloppy', 'lenny-volatile', 'squeeze-security', 'squeeze-updates', 'wheezy-security',
+=======
+        allowed_distributions = (
+            'oldstable', 'stable', 'unstable', 'experimental', 'stable-backports', 'oldstable-backports',
+            'oldstable-backports-sloppy', 'oldstable-security', 'stable-security', 'testing-security',
+            'stable-proposed-updates',
+            'testing-proposed-updates', 'sid', 'wheezy', 'squeeze', 'lenny', 'squeeze-backports', 'lenny-backports',
+            'lenny-security', 'lenny-backports-sloppy', 'lenny-volatile', 'squeeze-security', 'squeeze-updates',
+            'wheezy-security',
+>>>>>>> c78c5a9... gitStorage & importer:
             'unreleased')
         if distribution not in allowed_distributions:
             self._reject("You are not uploading to one of those Debian distributions: %s" %
@@ -487,8 +562,46 @@ class Importer(object):
             elif os.path.isfile(file):
                 log.debug('File %s is safe to install' % os.path.join(pool_dir, file))
                 toinstall.append(file)
+<<<<<<< HEAD
             # skip another corner case, where the dsc contains a orig.tar.gz but wasn't uploaded
             # by doing nothing here for that case
+=======
+                # skip another corner case, where the dsc contains a orig.tar.gz but wasn't uploaded
+                # by doing nothing here for that case
+
+
+
+        # initiate the git storage
+        gs = GitStorage(os.path.join(destdir, "git", self.changes['Source']))
+        if os.path.isdir(os.path.join(destdir, 'git', 'last')):
+            log.debug("folder exist, cleaning it")
+            shutil.rmtree(os.path.join(destdir, "git", 'last', ''), True)
+        else:
+            log.debug("last folder doesn't exist, creating one")
+        os.makedirs(os.path.join(destdir, 'git', 'last', ''))
+
+        #building sources
+
+        log.debug("building sources!")
+        self._build_source(os.path.join(destdir, 'git', 'last', ''))
+
+        #removing older file
+        if os.path.isdir(os.path.join(destdir, 'git', self.changes['source'], self.changes['source'])):
+            for i in glob(os.path.join(destdir, 'git', self.changes['source'], self.changes['source'], '*')):
+                if os.path.isdir(i):
+                    shutil.rmtree(i)
+                else:
+                    os.remove(i)
+            os.rmdir(os.path.join(destdir, 'git', self.changes['source'], self.changes['source']))
+        shutil.copytree(os.path.join(destdir, 'git', 'last', 'extracted'),
+            os.path.join(destdir, 'git', self.changes['source'], self.changes['source']))
+        os.path.join(destdir, 'git', self.changes['source'], self.changes['source'])
+        fileToAdd = self._get_files(os.path.join(destdir, 'git', self.changes['source'], self.changes['source']))
+        fileToAdd = self._clean_path(os.path.join(destdir, 'git', self.changes['source']), fileToAdd)
+        gs.change(fileToAdd)
+
+
+>>>>>>> c78c5a9... gitStorage & importer:
 
         # Run post-upload plugins.
         post_upload = Plugins('post-upload', self.changes, self.changes_file,
@@ -545,6 +658,11 @@ class Importer(object):
         for file in toinstall:
             log.debug("Installing new file %s" % (file))
             shutil.move(file, os.path.join(destdir, file))
+<<<<<<< HEAD
+=======
+            #git job is done, cleaning
+        shutil.rmtree(os.path.join(pylons.config['debexpo.repository'], 'git', 'last', ''))
+>>>>>>> c78c5a9... gitStorage & importer:
 
         self._remove_temporary_files()
         # Create the database rows
