@@ -5,7 +5,8 @@
 #   This file is part of debexpo - https://alioth.debian.org/projects/debexpo/
 #
 #   Copyright © 2008 Serafeim Zanikolas <serzan@hellug.gr>
-#               2011 Arno Töll <debian@toell.net>
+#             © 2011 Arno Töll <debian@toell.net>
+#             © 2012 Clément Schreiner <clement@mux.me>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,8 +33,11 @@
 Wrapper for a subset of GnuPG functionality.
 """
 
-__author__ = 'Serafeim Zanikolas, Arno Töll'
-__copyright__ = 'Copyright © 2008 Serafeim Zanikolas, 2011 Arno Töll'
+__author__ = 'Serafeim Zanikolas, Arno Töll, Clément Schreiner'
+__copyright__ = ','.join(['Copyright © 2008 Serafeim Zanikolas',
+                         '2011 Arno Töll',
+                         '2012 Clément Schreiner',
+                         ])
 __license__ = 'MIT'
 
 import logging
@@ -48,11 +52,11 @@ GPG_ADDR_PATTERN = r"^(pub\s+(?P<key_id>\S+)\s+(?P<key_date>\S+)\s|uid\s+)(?P<ui
 
 class GpgFile(object):
     GPG_ARGS = ['--decrypt']
-    
+
     def __init__(self, gpg, data=None, filename=None):
         """ Loads a file and verifies its PGP signature """
         self.gpg = gpg
-        
+
         self.key_id = None
         self.key_type = None
         self.data = None
@@ -65,7 +69,7 @@ class GpgFile(object):
             self._load_data(data)
         elif filename is not None:
             self._load_file(filename)
-        
+
     def _load_data(self, data):
         (out, err, code) = self.gpg.run(args=GpgFile.GPG_ARGS,
                                          stdin=data,
@@ -84,7 +88,7 @@ class GpgFile(object):
     def _parse_gpg_result(self, out, err, code):
         if code != 0:
             return
-        
+
         line_err = err.split('\n')[0]
         m = re.search(GPG_SIGNATURE_PATTERN, line_err)
         if m is not None:
@@ -99,7 +103,7 @@ class GpgKey(object):
         """ Loads a PGP public key block """
 
         self.gpg = gpg
-        
+
         self.key_strength = None
         self.key_type = None
         self.key_id = None
@@ -143,7 +147,7 @@ class GpgKey(object):
         (tmp, self.key_id) = s.split('/', 1)
         self.key_strength = int(tmp [:-1])
         self.key_type = tmp[-1]
-                
+
 class GnuPG(object):
     GPG_PATH_NOT_INITIALISED = -1
     INVALID_GNUPG_RUN_INVOCATION = -2
@@ -160,7 +164,7 @@ class GnuPG(object):
 
         elif not os.access(self.gpg_path, os.X_OK):
             self.gpg_path = None
-            
+
         if self.default_keyring is None:
             print "No keyring"
 
