@@ -61,11 +61,12 @@ GPG_ADDR_PATTERN = r"^(pub\s+(?P<key_id>\S+)\s+(?P<key_date>\S+)\s|uid\s+)(?P<ui
 # Result objects
 #
 
-GpgFileSignature = namedtuple('GpgFileSignature', ['is_valid',  # boolean: signature status
-                                                   'key_id',
-                                                   'key_type',
-                                                   'data',  # plaintext
-                                                   ])
+GpgFileSignature = namedtuple('GpgFileSignature',
+                              ['is_valid',  # boolean: signature status
+                               'key_id',
+                               'key_type',
+                               'data',  # plaintext
+                               ])
 
 GpgKey = namedtuple('GpgKey', ['id', 'type', 'strength'])
 
@@ -91,7 +92,7 @@ class InvalidGnupgRunInvocation(Exception):
 class GpgVerifyNoData(Exception):
     """ No data has been given to gnupg --decrypt """
 
-class GpgVerityInvalidData(Exception):
+class GpgVerifyInvalidData(Exception):
     """ Invalid data given to gnupg --decrypt """
 
 
@@ -102,7 +103,7 @@ class GpgVerityInvalidData(Exception):
 class GnuPG(object):
     """ Wrapper for some GnuPG operations """
 
-    def __init__(self, gpg_path, default_keyring):
+    def __init__(self, gpg_path=None, default_keyring:
         self.gpg_path = gpg_path
         self.default_keyring = default_keyring
 
@@ -269,7 +270,9 @@ class GnuPG(object):
         if args is not None:
             cmd.extend(args)
 
-        process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        process = subprocess.Popen(cmd, stdin=subprocess.PIPE,
+                                   stderr=subprocess.PIPE,
+                                   stdout=subprocess.PIPE)
         (output, outerr) = process.communicate(input=stdin)
         status = process.returncode
 
