@@ -85,6 +85,8 @@ GpgResult = namedtuple('GpgResult', ['code', 'out', 'err'])
 class GpgPathNotInitialised(Exception):
     """ GnuPG has not been initialised properly """
 
+class MissingPublicKeyring(Exception):
+    """ No public keyring has been provided """
 
 class InvalidGnupgRunInvocation(Exception):
     """ GnuPG has not been run properly  """
@@ -95,6 +97,9 @@ class GpgVerifyNoData(Exception):
 class GpgVerifyInvalidData(Exception):
     """ Invalid data given to gnupg --decrypt """
 
+class GpgFailure(Exception):
+    """ Generic exception for errors while running gnupg """
+
 
 #
 # Main class
@@ -103,7 +108,7 @@ class GpgVerifyInvalidData(Exception):
 class GnuPG(object):
     """ Wrapper for some GnuPG operations """
 
-    def __init__(self, gpg_path=None, default_keyring:
+    def __init__(self, gpg_path=None, default_keyring=None):
         self.gpg_path = gpg_path
         self.default_keyring = default_keyring
 
@@ -117,7 +122,33 @@ class GnuPG(object):
             self.gpg_path = None
 
         if self.default_keyring is None:
-            print "No keyring"
+            self.unusable = True
+
+    @staticmethod
+    def string2key(s):
+        """
+        for example '4096R/8123F27C'
+        4096 -> key strength
+        R -> key type
+        8123F27C -> key id
+        Returns a GpgKey object.
+        """
+
+        (tmp, key_id) = s.split('/', 1)
+        key_strength = int(tmp [:-1])
+        key_type = tmp[-1]
+        key = GpgKey(key_id, key_type, key_strength)
+        return key
+
+    @staticmethod
+    def key2string(k):
+        """
+        Reverse function for string2key"
+        """
+        s = "{}{}/{}".format(k.strength,
+                             k.type,
+                             k.id)
+        return s
 
     @property
     def is_unusable(self):
@@ -149,13 +180,12 @@ class GnuPG(object):
 
         (out, err, code) = self._run(args=args,
                                      **keywords_args)
-
         return self._parse_verify_result(out, err, code)
 
     def _parse_verify_result(self, out, err, code):
 
         if code != 0:
-            return
+            GpgFileSignature(False, None, None, None)
 
         line_err = err.split('\n')[0]
         m = re.search(GPG_SIGNATURE_PATTERN, line_err)
@@ -171,17 +201,17 @@ class GnuPG(object):
         else:
             return GpgFileSignature(False, None, None, None)
 
-    def parse_key(self, data):
+    def parse_key_block(self, data):
         """
         Parse a PGP public key block
         """
 
         (out, err, code) = self._run(stdin=data)
-        return self._parse_key_result(out, err, code)
+        return self._parse_key_block_result(out, err, code)
 
-    def _parse_key_result(self, out, err, code):
+    def _parse_key_block_result(self, out, err, code):
         if code != 0:
-            return GpgKey
+            return GpgKey(None, None)
 
         # FIXME: use the system's encoding instead of utf-8
         out = unicode(out, encoding='utf-8', errors='replace')
@@ -194,18 +224,18 @@ class GnuPG(object):
                 user_ids = []
                 if (key is None
                     and m.group('key_id') is not None):
-                    key = self.parse_key_string(m.group('key_id'))
+                    key = self.string2key(m.group('key_id'))
                     uid_name = m.group('uid_name')
                     uid_email = m.group('uid_email')
                     user_id = GpgUserId(uid_name, uid_email)
                     user_ids.append(GpgUserId)
 
-        if key is not None,
-            return GpgKey(key, user_ids)
+        if key is not None:
+            return GpgKeyBlock(key, user_ids)
         else:
-            return GpgKey(None, None)
+            return GpgKeyBlock(None, None)
 
-    def add_signature(self, filename pubring=None):
+    def add_signature(self, filename, pubring=None):
         """
         Adds a key's signature to the public keyring.
         Returns the triple (stdout, stderr, return code).
@@ -223,21 +253,7 @@ class GnuPG(object):
         (out, err, code) = self._run(args=args, pubring=pubring)
         return GpgResult(code, out, err)
 
-    @staticmethod
-    def parse_key_string(self, s):
-        """
-        for example '4096R/8123F27C'
-        4096 -> key strength
-        R -> key type
-        8123F27C -> key id
-        Returns a GpgKey object.
-        """
 
-        (tmp, key_id) = s.split('/', 1)
-        key_strength = int(tmp [:-1])
-        key_type = tmp[-1]
-        key = GpgKey(key_id, key_type, key_strength)
-        return key
 
     def _run(self, stdin=None, args=None, pubring=None):
         """
