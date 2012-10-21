@@ -39,7 +39,7 @@ import formencode
 import logging
 
 from debexpo.lib.base import *
-from debexpo.lib.gnupg import GnuPG
+from debexpo.lib.utils import get_gnupg
 
 from debexpo.model import meta
 from debexpo.model.users import User
@@ -57,7 +57,7 @@ class GpgKey(formencode.validators.FieldStorageUploadConverter):
 
     def __init__(self):
         self.gpg_id = None
-        self.gnupg  = GnuPG()
+        self.gnupg  = get_gnupg()
 
     def _to_python(self, value, c):
         """
@@ -68,18 +68,23 @@ class GpgKey(formencode.validators.FieldStorageUploadConverter):
 
         ``c``
         """
-        if not value.value.startswith('-----BEGIN PGP PUBLIC KEY BLOCK-----'):
-            log.error('GPG key does not start with BEGIN PGP PUBLIC KEY BLOCK')
-            raise formencode.Invalid(_('Invalid GPG key'), value, c)
 
-        if self.gnupg.is_unusable():
+        key_block_raw = value.value
+
+        key_block_parsed = self.gnupg.parse_key_block(key_block_raw)
+
+        if self.gnupg.is_unusable:
             log.error('Unable to validate GPG key because gpg is unusable.')
             raise formencode.Invalid(_('Internal error: debexpo is not ' +
                                        'properly configured to handle' +
                                        'GPG keys'), value, c)
 
+        if key_block_parsed is None:
+            log.error('Given data is not a valid GPG key')
+            raise formencode.Invalid(_('Invalid GPG key'), value, c)
 
-        (self.gpg_id, user_ids) = self.gnupg.parse_key_id(value.value)
+
+        (self.gpg_id, user_ids) = key_block_parsed
         if self.gpg_id is None:
             log.error("Failed to parse GPG key")
             raise formencode.Invalid(_('Invalid GPG key'), value, c)
@@ -90,19 +95,21 @@ class GpgKey(formencode.validators.FieldStorageUploadConverter):
         """
 
         user = meta.session.query(User).get(session['user_id'])
-        for (uid, email) in user_ids:
-            if user.email == email:
+        print user_ids
+        for uid in user_ids:
+            if user.email == uid.email:
                 break
         else:
-            log.debug("No user id in key %s does match the email address the user configured")
-            raise formencode.Invalid(_('None of your user IDs in key %s does match your profile mail address' % (self.gpg_id)), value, c)
+            log.debug("No user id in key %s does match the email address the user configured" % self.gpg_id.id)
+            raise formencode.Invalid(_('None of your user IDs in key %s does match your profile mail address' % (self.gpg_id.id)), value, c)
 
         """
         Minimum Key Strength Check.
         """
 
         requiredkeystrength = int(config['debexpo.gpg_minkeystrength'])
-        keystrength = self.gnupg.extract_key_strength(self.key_id())
+
+        keystrength = key_block_parsed.key.strength
         if keystrength < requiredkeystrength:
             log.debug("Key strength unacceptable in Debian Keyring")
             raise formencode.Invalid(_('Key strength unacceptable in Debian Keyring. The minimum required key strength is %s bits.' % str(requiredkeystrength)), value, c)
