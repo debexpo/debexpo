@@ -41,7 +41,7 @@ import os
 
 import pylons.test
 
-from debexpo.lib.gnupg import GnuPG
+from debexpo.lib.gnupg import GnuPG, GpgUserId
 
 test_gpg_key = \
 """-----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -124,6 +124,17 @@ class TestGnuPGController(TestCase):
         parsed_key_block = gnupg.parse_key_block(test_gpg_key)
         key_string = gnupg.key2string(parsed_key_block.key)
         self.assertEqual(key_string, test_gpg_key_id)
+
+    def testParseUserID(self):
+        """
+        Test the extraction of user ids from a given GPG key.
+        """
+        gnupg = self._get_gnupg()
+        self.assertFalse(gnupg.is_unusable)
+        parsed_key_block = gnupg.parse_key_block(test_gpg_key)
+        (k, u) = parsed_key_block
+        self.assertEqual(u, [GpgUserId('Serafeim Zanikolas',
+                                       'serzan@hellug.gr')])
 
     def testParseInvalidKeyBlock(self):
         gnupg = self._get_gnupg()

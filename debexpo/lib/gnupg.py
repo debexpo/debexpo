@@ -240,7 +240,7 @@ class GnuPG(object):
                     uid_name = m.group('uid_name')
                     uid_email = m.group('uid_email')
                     user_id = GpgUserId(uid_name, uid_email)
-                    user_ids.append(GpgUserId)
+                    user_ids.append(user_id)
 
         if key is not None:
             return GpgKeyBlock(key, user_ids)
