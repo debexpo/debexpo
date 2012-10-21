@@ -121,7 +121,7 @@ class GnuPG(object):
         elif not os.access(self.gpg_path, os.X_OK):
             self.gpg_path = None
 
-        if self.default_keyring is None:
+        if self.gpg_path is None or self.default_keyring is None:
             self.unusable = True
 
     @staticmethod
