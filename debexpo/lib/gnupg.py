@@ -100,6 +100,9 @@ class GpgVerifyInvalidData(Exception):
 class GpgFailure(Exception):
     """ Generic exception for errors while running gnupg """
 
+class GpgMissingData(Exception):
+    """ Some data is missing for the gpg command. """
+
 
 #
 # Main class
@@ -250,19 +253,27 @@ class GnuPG(object):
         else:
             return GpgKeyBlock(None, None)
 
-    def add_signature(self, filename, pubring=None):
+    def add_signature(self, data=None, path=None, pubring=None):
         """
         Adds a key's signature to the public keyring.
-        Returns the triple (stdout, stderr, return code).
+        Returns the triple GpgResult(code, stdout, stderr).
         """
-        args = ('--import-options', 'import-minimal', '--import', filename)
-        (out, err, code) = self._run(args=args, pubring=pubring)
+        args = ('--import-options', 'import-minimal', '--import')
+        stdin = None
+        if data is not None:
+            stdin = data
+        elif path is not None:
+            args.append(path)
+        else:
+            raise GpgMissingData
+
+        (out, err, code) = self._run(stdin=stdin, args=args, pubring=pubring)
         return GpgResult(code, out, err)
 
     def remove_signature(self, keyid, pubring=None):
         """
         Removes a signature from the public keyring
-        Returns the triple (stdout, stderr, return code).
+        Returns the triple GpgResult(code, stdout, stderr).
         """
         args = ('--yes', '--delete-key', keyid)
         (out, err, code) = self._run(args=args, pubring=pubring)
