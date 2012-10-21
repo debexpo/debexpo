@@ -95,7 +95,6 @@ class GpgKey(formencode.validators.FieldStorageUploadConverter):
         """
 
         user = meta.session.query(User).get(session['user_id'])
-        print user_ids
         for uid in user_ids:
             if user.email == uid.email:
                 break
