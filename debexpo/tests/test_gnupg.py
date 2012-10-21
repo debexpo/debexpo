@@ -87,9 +87,12 @@ class TestGnuPGController(TestCase):
 
     def _get_gnupg(self, gpg_path='/usr/bin/gpg'):
         default_keyring = pylons.test.pylonsapp.config.get('debexpo.gpg_keyring', None)
-        print default_keyring
         gnupg = GnuPG(gpg_path, default_keyring)
         return gnupg
+
+    def _get_data_file(self, name):
+        gpg_data_dir = os.path.join(os.path.dirname(__file__), 'gpg')
+        return os.path.join(gpg_data_dir, name)
 
     def testGnuPGfailure1(self):
         """
@@ -122,6 +125,13 @@ class TestGnuPGController(TestCase):
         key_string = gnupg.key2string(parsed_key_block.key)
         self.assertEqual(key_string, test_gpg_key_id)
 
+    def testParseInvalidKeyBlock(self):
+        gnupg = self._get_gnupg()
+        self.assertFalse(gnupg.is_unusable)
+        invalid_block = self._get_data_file('invalid_key_block')
+        kb = gnupg.parse_key_block(path=invalid_block)
+        assert kb.key == None
+
     def testSignatureVerification(self):
         """
         Verify the signature in the file
@@ -129,9 +139,8 @@ class TestGnuPGController(TestCase):
         """
         gnupg = self._get_gnupg()
         self.assertFalse(gnupg.is_unusable)
-        gpg_data_dir = os.path.join(os.path.dirname(__file__), 'gpg')
-        signed_file = os.path.join(gpg_data_dir, 'signed_by_355304E4.gpg')
-        pubring = os.path.join(gpg_data_dir, 'pubring_with_355304E4.gpg')
+        signed_file = self._get_data_file('signed_by_355304E4.gpg')
+        pubring = self._get_data_file('pubring_with_355304E4.gpg')
         assert os.path.exists(signed_file)
         assert os.path.exists(pubring)
         verif = gnupg.verify_file(path=signed_file)
