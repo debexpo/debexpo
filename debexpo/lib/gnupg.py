@@ -201,17 +201,29 @@ class GnuPG(object):
         else:
             return GpgFileSignature(False, None, None, None)
 
-    def parse_key_block(self, data):
+    def parse_key_block(self, data=None, path=None):
         """
         Parse a PGP public key block
         """
 
-        (out, err, code) = self._run(stdin=data)
+
+        stdin = None
+        args = []
+
+        if data is not None:
+            stdin = data
+        elif path is not None:
+            args.append(path)
+
+        else:
+            raise GpgMissingData
+
+        (out, err, code) = self._run(stdin, args)
         return self._parse_key_block_result(out, err, code)
 
     def _parse_key_block_result(self, out, err, code):
         if code != 0:
-            return GpgKey(None, None)
+            return GpgKeyBlock(None, None)
 
         # FIXME: use the system's encoding instead of utf-8
         out = unicode(out, encoding='utf-8', errors='replace')
