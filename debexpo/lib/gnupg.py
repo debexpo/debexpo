@@ -230,13 +230,16 @@ class GnuPG(object):
         lines = (out.split('\n'))
 
         key = None
+        user_ids = []
         for line in lines:
             m = re.match(GPG_ADDR_PATTERN, line)
             if m is not None:
-                user_ids = []
                 if (key is None
                     and m.group('key_id') is not None):
                     key = self.string2key(m.group('key_id'))
+
+                if (m.group('uid_name') is not None
+                    and m.group('uid_email') is not None):
                     uid_name = m.group('uid_name')
                     uid_email = m.group('uid_email')
                     user_id = GpgUserId(uid_name, uid_email)
