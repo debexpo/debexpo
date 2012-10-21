@@ -41,7 +41,7 @@ import os
 
 import pylons.test
 
-from debexpo.lib.gnupg2 import GnuPG
+from debexpo.lib.gnupg import GnuPG
 
 test_gpg_key = \
 """-----BEGIN PGP PUBLIC KEY BLOCK-----
