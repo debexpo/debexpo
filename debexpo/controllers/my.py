@@ -42,7 +42,7 @@ import tempfile
 from debexpo.lib.base import *
 from debexpo.lib import constants, form
 from debexpo.lib.schemas import DetailsForm, GpgForm, PasswordForm, OtherDetailsForm, MetricsForm, DmupForm
-from debexpo.lib.gnupg import GnuPG
+from debexpo.lib.utils import get_gnupg
 
 from debexpo.model import meta
 from debexpo.model.users import User
@@ -68,7 +68,7 @@ class MyController(BaseController):
         """
         c.config = config
         self.user = None
-        self.gnupg = GnuPG()
+        self.gnupg = get_gnupg()
 
     def _details(self):
         """
@@ -96,14 +96,13 @@ class MyController(BaseController):
         Handles a user submitting the GPG form.
         """
         log.debug('GPG form validated successfully')
-        self.gpg = GnuPG()
 
         # Should the key be deleted?
         if self.form_result['delete_gpg'] and self.user.gpg is not None:
-            keyid = self.gnupg.extract_key_id(self.user.gpg_id)
+            keyid = self.gnupg.string2key(self.user.gpg_id).id
             log.debug('Deleting current GPG key %s' % (keyid))
-            (out, err) = self.gnupg.remove_signature(keyid)
-            if err != 0:
+            result = self.gnupg.remove_signature(keyid)
+            if result.code != 0:
                 log.error("gpg failed to delete keyring: %s" % (out))
                 abort(500)
             self.user.gpg = None
@@ -113,17 +112,16 @@ class MyController(BaseController):
         if 'gpg' in self.form_result and self.form_result['gpg'] is not None:
             log.debug('Setting a new GPG key')
             self.user.gpg = self.form_result['gpg'].value
-            (self.user.gpg_id, _) = self.gnupg.parse_key_id(self.user.gpg)
+            (key, uids) = self.gnupg.parse_key_block(self.user.gpg)
+            self.user.gpg_id = key.id
 
-            temp = tempfile.NamedTemporaryFile(delete=True)
-            temp.write(self.user.gpg)
-            temp.flush()
-            (out, err) = self.gpg.add_signature(temp.name)
-            temp.close()
-            if err != 0:
-                log.error("gpg failed to import keyring: %s" % (out))
+            result = self.gnupg.add_signature(data=self.user.gpg)
+
+            log.debug(result.out)
+            if result.code != 0:
+                log.error("gpg failed to import keyring: %s" % (result.err))
                 abort(500)
-            log.debug(out)
+
 
 
 
@@ -223,13 +221,13 @@ class MyController(BaseController):
 
         # set the new value to the 'dmup' boolean in the User object
         self.user.dmup = True
-                
+
         meta.session.commit()
 
         log.debug('Changed DMUP acceptance status and redirecting')
 
         redirect(url('my'))
-        
+
 
     def index(self, get=False):
         """
@@ -341,7 +339,6 @@ class MyController(BaseController):
         user= meta.session.query(User).get(session['user_id'])
         data = """I, %s, agree to the the Debian Machine Usage Policies as stated on http://www.debian.org/devel/dmup
         """ % user.name # this should be somewhere else
-        
+
         log.debug('Serving DMUP agreement file')
         return data
-    

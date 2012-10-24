@@ -31,16 +31,17 @@
 Test cases for debexpo.lib.gnupg.
 """
 
-__author__ = 'Serafeim Zanikolas'
+__author__ = 'Serafeim Zanikolas, Clément Schreiner'
 __copyright__ = 'Copyright © 2008 Serafeim Zanikolas'
+
 __license__ = 'MIT'
 
 from unittest import TestCase
 import os
 
-from pylons import config
+import pylons.test
 
-from debexpo.lib.gnupg import GnuPG
+from debexpo.lib.gnupg import GnuPG, GpgUserId
 
 test_gpg_key = \
 """-----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -85,56 +86,82 @@ test_gpg_key_id = '1024D/355304E4'
 class TestGnuPGController(TestCase):
 
     def _get_gnupg(self, gpg_path='/usr/bin/gpg'):
-        config['debexpo.gpg_path'] = gpg_path
-        gnupg = GnuPG() # instantiate with new debexpo.gpg_path setting
+        default_keyring = pylons.test.pylonsapp.config.get('debexpo.gpg_keyring', None)
+        gnupg = GnuPG(gpg_path, default_keyring)
         return gnupg
+
+    def _get_data_file(self, name):
+        gpg_data_dir = os.path.join(os.path.dirname(__file__), 'gpg')
+        return os.path.join(gpg_data_dir, name)
 
     def testGnuPGfailure1(self):
         """
         Test for debexpo.gpg_path being uninitialised.
         """
         gnupg = self._get_gnupg(None)
-        self.assertTrue(gnupg.is_unusable())
+        self.assertTrue(gnupg.is_unusable)
 
     def testGnuPGfailure2(self):
         """
         Test for debexpo.gpg_path pointing to a non-existent file.
         """
         gnupg = self._get_gnupg('/non/existent')
-        self.assertTrue(gnupg.is_unusable())
+        self.assertTrue(gnupg.is_unusable)
 
     def testGnuPGfailure3(self):
         """
         Test for debexpo.gpg_path pointing to a non-executable file.
         """
         gnupg = self._get_gnupg('/etc/passwd')
-        self.assertTrue(gnupg.is_unusable())
+        self.assertTrue(gnupg.is_unusable)
 
     def testParseKeyID(self):
         """
         Test the extraction of key id from a given GPG key.
         """
         gnupg = self._get_gnupg()
-        self.assertFalse(gnupg.is_unusable())
-        self.assertEqual(gnupg.parse_key_id(test_gpg_key), test_gpg_key_id)
+        self.assertFalse(gnupg.is_unusable)
+        parsed_key_block = gnupg.parse_key_block(test_gpg_key)
+        key_string = gnupg.key2string(parsed_key_block.key)
+        self.assertEqual(key_string, test_gpg_key_id)
+
+    def testParseUserID(self):
+        """
+        Test the extraction of user ids from a given GPG key.
+        """
+        gnupg = self._get_gnupg()
+        self.assertFalse(gnupg.is_unusable)
+        parsed_key_block = gnupg.parse_key_block(test_gpg_key)
+        (k, u) = parsed_key_block
+        self.assertEqual(u, [GpgUserId('Serafeim Zanikolas',
+                                       'serzan@hellug.gr')])
+
+    def testParseInvalidKeyBlock(self):
+        gnupg = self._get_gnupg()
+        self.assertFalse(gnupg.is_unusable)
+        invalid_block = self._get_data_file('invalid_key_block')
+        kb = gnupg.parse_key_block(path=invalid_block)
+        assert kb.key == None
 
     def testSignatureVerification(self):
         """
-        Verify the signature in the file debexpo/tests/gpg/signed_by_355304E4.
+        Verify the signature in the file
+        debexpo/tests/gpg/signed_by_355304E4.gpg
         """
         gnupg = self._get_gnupg()
-        self.assertFalse(gnupg.is_unusable())
-        gpg_data_dir = os.path.join(os.path.dirname(__file__), 'gpg')
-        signed_file = os.path.join(gpg_data_dir, 'signed_by_355304E4.gpg')
-        pubring = os.path.join(gpg_data_dir, 'pubring_with_355304E4.gpg')
+        self.assertFalse(gnupg.is_unusable)
+        signed_file = self._get_data_file('signed_by_355304E4.gpg')
+        pubring = self._get_data_file('pubring_with_355304E4.gpg')
         assert os.path.exists(signed_file)
         assert os.path.exists(pubring)
-        self.assertTrue(gnupg.verify_sig(signed_file, pubring))
+        verif = gnupg.verify_file(path=signed_file)
+        self.assertTrue(verif.is_valid)
 
     def testInvalidSignature(self):
         """
         Test that verify_sig() fails for an unsigned file.
         """
         gnupg = self._get_gnupg()
-        self.assertFalse(gnupg.is_unusable())
-        self.assertFalse(gnupg.verify_sig('/etc/passwd'))
+        self.assertFalse(gnupg.is_unusable)
+        verif = gnupg.verify_file(path='/etc/passwd')
+        self.assertFalse(verif.is_valid)

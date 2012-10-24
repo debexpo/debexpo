@@ -41,6 +41,8 @@ import os
 
 from pylons import config
 
+from debexpo.lib import gnupg
+
 log = logging.getLogger(__name__)
 
 def parse_section(section):
@@ -104,3 +106,7 @@ def hash_it(s):
     if type(s) == unicode:
         s = s.encode('utf-8')
     return hashlib.md5(s).hexdigest()
+
+def get_gnupg():
+    return gnupg.GnuPG(config['debexpo.gpg_path'],
+                       config['debexpo.gpg_keyring'])
