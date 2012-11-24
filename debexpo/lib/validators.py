@@ -230,7 +230,7 @@ class GpgSignature(formencode.validators.FieldStorageUploadConverter):
     not_empty = True
 
     def __init__(self):
-        self.gnupg = GnuPG()
+        self.gnupg = get_gnupg()
 
     def _to_python(self, value, c):
         tmp = tempfile.NamedTemporaryFile('w')
