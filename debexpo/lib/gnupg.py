@@ -300,11 +300,14 @@ class GnuPG(object):
         if pubring is None:
             pubring = self.default_keyring
 
+        in_status_fd, out_status_fd = os.pipe()
+
+
         cmd = [
             self.gpg_path,
             '--no-options',
             '--batch',
-            '--status-fd', '2', # write status strings to stderr
+            '--status-fd', '{0}'.format(out_status_fd),
             '--no-default-keyring',
             '--secret-keyring', pubring + ".secret",
             '--keyring', pubring,
@@ -317,9 +320,10 @@ class GnuPG(object):
                                    stdout=subprocess.PIPE)
         (output, outerr) = process.communicate(input=stdin)
         code = process.returncode
+        os.close(out_status_fd)
 
-        status = [l.split('[GNUPG:] ', 1)[1].split()
-                        for l in outerr.split('\n')
-                        if l.startswith('[GNUPG:] ')]
+        with os.fdopen(in_status_fd, 'r') as f:
+            status = [line[len('[GNUPG:] '):].split()
+                        for line in f.readlines()]
 
         return (output, outerr, status, code)
