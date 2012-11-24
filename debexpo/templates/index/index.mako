@@ -5,7 +5,7 @@
 
 <div class="warning">
     <p>
-    In preparation of the upcoming Debian Wheezy release <a href="https://lists.debian.org/debian-devel-announce/2012/06/msg00009.html">Testing migration has been frozen</a>. Do not expect much sponsoring activity regarding NEW packages or packages not fixing important bugs.
+    In preparation of the upcoming Debian Wheezy release <a href="https://lists.debian.org/debian-devel-announce/2012/06/msg00009.html">Testing migration has been frozen</a>. Do not expect much sponsoring activity regarding NEW packages or packages not fixing important bugs. Please refer to the <a href="http://release.debian.org/wheezy/freeze_policy.html">Wheezy Freeze Policy</a> for more information on what package updates are acceptable during the freeze, and on how to get them into the upcoming release.
     </p>
 </div>
 
