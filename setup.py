@@ -20,7 +20,8 @@ setup(
         "Babel>=0.9.4",
         "python-debian>=0.1.16",
         "python-apt",
-        "soaplib>=0.12",
+        "soaplib>=0.12",         # server
+        "SOAPpy",                # client
         "chardet",
         "dulwich",
         ],
