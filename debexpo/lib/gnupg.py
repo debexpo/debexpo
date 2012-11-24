@@ -114,10 +114,7 @@ class GnuPG(object):
         self.gpg_path = gpg_path
         self.default_keyring = os.path.expanduser(default_keyring)
 
-        if self.gpg_path is None:
-            print "No gpg"
-
-        elif not os.path.isfile(self.gpg_path):
+        if not os.path.isfile(self.gpg_path):
             self.gpg_path = None
 
         elif not os.access(self.gpg_path, os.X_OK):
@@ -192,8 +189,6 @@ class GnuPG(object):
         key_id = None
         is_valid = None
         data = None
-
-        print status
 
         for line in status:
             if line[0] == 'ERRSIG' and line[6] == '9':
