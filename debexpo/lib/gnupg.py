@@ -144,7 +144,7 @@ class GnuPG(object):
         """
         Reverse function for string2key"
         """
-        s = "{}{}/{}".format(k.strength,
+        s = "{0}{1}/{2}".format(k.strength,
                              k.type,
                              k.id)
         return s
