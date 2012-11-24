@@ -221,7 +221,7 @@ def ValidatePackagingGuidelines(values, state, validator):
     return None
 
 
-class GpgSignature(formencode.validators.FieldStorageUploadConverter):
+class DmupSignature(formencode.validators.FieldStorageUploadConverter):
     """
     Validator for an uploaded GPG-signed file.
     Checks the signature against the user's GPG key in the database.
@@ -233,25 +233,23 @@ class GpgSignature(formencode.validators.FieldStorageUploadConverter):
         self.gnupg = get_gnupg()
 
     def _to_python(self, value, c):
-        tmp = tempfile.NamedTemporaryFile('w')
-        tmp.file.write(value.value)
-        tmp.file.close()
 
-        if not self.gnupg.is_signed(tmp.name):
+        v = self.gnupg.verify_file(data=value.value)
+
+        if v is None:
             log.debug('Uploaded file is not GPG-signed')
             raise formencode.Invalid(_('Not a gpg-signed file'), value, c)
 
         log.debug('Uploaded file is GPG-signed')
 
-        (gpg_out, user_ids, code) = self.gnupg.verify_sig_full(tmp.name)
 
         user = meta.session.query(User).get(session['user_id'])
 
-        if code != 0:
+        if not v.is_valid:
             log.debug('The GPG signature cannot be verified')
             raise formencode.Invalid(_('GPG signature not verified'), value, c)
 
-        if not 'key_id' in gpg_out:
+        if v.key_id is None:
             log.debug("Cannot read GPG key information")
             raise formencode.Invalid_("Not signed with the user's key", value, c)
 
@@ -260,10 +258,20 @@ class GpgSignature(formencode.validators.FieldStorageUploadConverter):
             raise formencode.Invalid(_('You have not uploaded any GPG key'), value, c)
 
         # checking that the file has been signed with the right key
-        if gpg_out['key_id'] != user.gpg_id.split('/', 1)[1]:
+        if v.key_id[-8:] != user.gpg_id:
             log.debug("File has not been signed by the user's key")
-            raise formencode.Invalid_("Not signed with the user's key", value, c)
+            raise formencode.Invalid(_("Not signed with the user's key"), value, c)
 
         log.debug("The file has been signed with the user's key")
+
+        # checking that the file's content is actually the expected
+        # agreement form
+        with open('debexpo/public/dmup_agreement_form.txt', 'r') as f:
+            user = meta.session.query(User).get(session['user_id'])
+            expected_data = f.read().format(name=user.name)
+        if v.data != expected_data:
+
+            log.debug("The file is not the expected agreement form.")
+            raise formencode.Invalid(_("Not the expected agreement form."), value, c)
 
         return formencode.validators.FieldStorageUploadConverter._to_python(self, value, c)

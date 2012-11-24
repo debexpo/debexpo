@@ -42,9 +42,10 @@ from pylons import config
 from debexpo.lib.base import meta
 
 from debexpo.lib import constants
+from debexpo.lib.utils import get_gnupg
 from debexpo.lib.validators import NewEmailToSystem, GpgKey, \
     CurrentPassword, CheckBox, NewNameToSystem, ValidateSponsorEmail, \
-    ValidatePackagingGuidelines, DummyValidator, GpgSignature
+    ValidatePackagingGuidelines, DummyValidator, DmupSignature
 from debexpo.model.sponsor_metrics import SponsorTags
 
 
@@ -197,4 +198,4 @@ class DmupForm(MyForm):
     """
     Schema for the DMUP accepting form in the my controller.
     """
-    signed_agreement = GpgSignature()
+    signed_agreement = DmupSignature()
