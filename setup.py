@@ -21,6 +21,8 @@ setup(
         "python-debian>=0.1.16",
         "python-apt",
         "soaplib>=0.12",
+        "chardet",
+        "dulwich",
         ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
