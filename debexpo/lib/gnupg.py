@@ -53,7 +53,6 @@ log = logging.getLogger(__name__)
 # Regular expressions for parsing gnupg's output
 #
 
-GPG_SIGNATURE_PATTERN = r"^.*Signature made.*using (?P<key_type>\S+) key ID (?P<key_id>\w+)$"
 GPG_ADDR_PATTERN = r"^(pub\s+(?P<key_id>\S+)\s+(?P<key_date>\S+)\s|uid\s+)(?P<uid_name>.+)\s+<(?P<uid_email>.+?)>$"
 
 
@@ -113,7 +112,7 @@ class GnuPG(object):
     def __init__(self, gpg_path='/usr/bin/gpg',
                  default_keyring='~/.gnupg/keyring.gpg'):
         self.gpg_path = gpg_path
-        self.default_keyring = default_keyring
+        self.default_keyring = os.path.expanduser(default_keyring)
 
         if self.gpg_path is None:
             print "No gpg"
