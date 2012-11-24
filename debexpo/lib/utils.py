@@ -108,5 +108,8 @@ def hash_it(s):
     return hashlib.md5(s).hexdigest()
 
 def get_gnupg():
+    """
+    Returns an instantiated GnuPG object using debexpo's options for the ``gpg`` binary's and keyring's paths.
+    """
     return gnupg.GnuPG(config['debexpo.gpg_path'],
                        config['debexpo.gpg_keyring'])

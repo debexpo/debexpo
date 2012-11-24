@@ -64,7 +64,6 @@ GPG_ADDR_PATTERN = r"^(pub\s+(?P<key_id>\S+)\s+(?P<key_date>\S+)\s|uid\s+)(?P<ui
 GpgFileSignature = namedtuple('GpgFileSignature',
                               ['is_valid',  # boolean: signature status
                                'key_id',
-                               'key_type',
                                'data',  # plaintext
                                ])
 
@@ -111,7 +110,8 @@ class GpgMissingData(Exception):
 class GnuPG(object):
     """ Wrapper for some GnuPG operations """
 
-    def __init__(self, gpg_path=None, default_keyring=None):
+    def __init__(self, gpg_path='/usr/bin/gpg',
+                 default_keyring='~/.gnupg/keyring.gpg'):
         self.gpg_path = gpg_path
         self.default_keyring = default_keyring
 
@@ -158,7 +158,7 @@ class GnuPG(object):
         """Returns true if the gpg binary is not installed or not executable."""
         return self.gpg_path is None
 
-    def verify_file(self, path=None, file_object=None):
+    def verify_file(self, path=None, file_object=None, data=None):
         """
         Check the status of the given's file signature.
         If ``path`` is not None, pass it as an argument to gnupg.
@@ -168,8 +168,9 @@ class GnuPG(object):
 
         # cmd: --decrypt
         args = ['--decrypt']
-        keywords_args = {'pubring': None}
 
+        keywords_args = {'pubring': None}
+        # keywords_args = {}
         if path is not None and os.path.isfile(path):
             args.append(path)
         elif file_object is not None:
@@ -178,31 +179,35 @@ class GnuPG(object):
             else:
                 data = file_object.read()
                 keywords_args['stdin'] = data
+        elif data is not None:
+            keywords_args['stdin'] = data
         else:
             raise GpgVerifyNoData
 
-        (out, err, code) = self._run(args=args,
+        (out, err, status, code) = self._run(args=args,
                                      **keywords_args)
-        return self._parse_verify_result(out, err, code)
+        return self._parse_verify_result(out, err, status, code)
 
-    def _parse_verify_result(self, out, err, code):
+    def _parse_verify_result(self, out, err, status, code):
+        # documentation for status lines in /usr/share/doc/gnupg/DETAILS
+        key_id = None
+        is_valid = None
+        data = None
 
-        if code != 0:
-            GpgFileSignature(False, None, None, None)
+        print status
 
-        line_err = err.split('\n')[0]
-        m = re.search(GPG_SIGNATURE_PATTERN, line_err)
-        if m is not None:
-            is_valid = True
-            key_id = m.group('key_id')
-            key_type = m.group('key_type')
-            data = out
-            return GpgFileSignature(is_valid,
-                                    key_id,
-                                    key_type,
-                                    data)
-        else:
-            return GpgFileSignature(False, None, None, None)
+        for line in status:
+            if line[0] == 'ERRSIG' and line[6] == '9':
+                raise GpgFailure('Unknown key')
+            if line[0] == 'BADSIG':
+                is_valid = False
+            elif line[0] == 'GOODSIG':
+                is_valid = True
+                key_id = line[1]
+                data = out
+        return GpgFileSignature(is_valid=is_valid,
+                                key_id=key_id,
+                                data=data)
 
     def parse_key_block(self, data=None, path=None):
         """
@@ -221,7 +226,7 @@ class GnuPG(object):
         else:
             raise GpgMissingData
 
-        (out, err, code) = self._run(stdin, args)
+        (out, err, status, code) = self._run(stdin, args)
         return self._parse_key_block_result(out, err, code)
 
     def _parse_key_block_result(self, out, err, code):
@@ -267,7 +272,7 @@ class GnuPG(object):
         else:
             raise GpgMissingData
 
-        (out, err, code) = self._run(stdin=stdin, args=args, pubring=pubring)
+        (out, err, status, code) = self._run(stdin=stdin, args=args, pubring=pubring)
         return GpgResult(code, out, err)
 
     def remove_signature(self, keyid, pubring=None):
@@ -276,7 +281,7 @@ class GnuPG(object):
         Returns the triple GpgResult(code, stdout, stderr).
         """
         args = ('--yes', '--delete-key', keyid)
-        (out, err, code) = self._run(args=args, pubring=pubring)
+        (out, err,  status, code) = self._run(args=args, pubring=pubring)
         return GpgResult(code, out, err)
 
 
@@ -305,6 +310,7 @@ class GnuPG(object):
             self.gpg_path,
             '--no-options',
             '--batch',
+            '--status-fd', '2', # write status strings to stderr
             '--no-default-keyring',
             '--secret-keyring', pubring + ".secret",
             '--keyring', pubring,
@@ -316,6 +322,10 @@ class GnuPG(object):
                                    stderr=subprocess.PIPE,
                                    stdout=subprocess.PIPE)
         (output, outerr) = process.communicate(input=stdin)
-        status = process.returncode
+        code = process.returncode
 
-        return (output, outerr, status)
+        status = [l.split('[GNUPG:] ', 1)[1].split()
+                        for l in outerr.split('\n')
+                        if l.startswith('[GNUPG:] ')]
+
+        return (output, outerr, status, code)
