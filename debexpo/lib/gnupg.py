@@ -114,10 +114,10 @@ class GnuPG(object):
         self.gpg_path = gpg_path
         self.default_keyring = os.path.expanduser(default_keyring)
 
-        if not os.path.isfile(self.gpg_path):
+        if self.gpg_path and not os.path.isfile(self.gpg_path):
             self.gpg_path = None
 
-        elif not os.access(self.gpg_path, os.X_OK):
+        elif self.gpg_path and not os.access(self.gpg_path, os.X_OK):
             self.gpg_path = None
 
         if self.gpg_path is None or self.default_keyring is None:
@@ -187,7 +187,7 @@ class GnuPG(object):
     def _parse_verify_result(self, out, err, status, code):
         # documentation for status lines in /usr/share/doc/gnupg/DETAILS
         key_id = None
-        is_valid = None
+        is_valid = False
         data = None
 
         for line in status:
