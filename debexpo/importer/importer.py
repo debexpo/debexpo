@@ -76,8 +76,8 @@ from debexpo.lib.changes import Changes
 from debexpo.lib.repository import Repository
 from debexpo.lib.plugins import Plugins
 from debexpo.lib.filesystem import CheckFiles
-from debexpo.lib.gnupg import GnuPG
 from debexpo.lib.gitstorage import GitStorage
+from debexpo.lib.utils import get_gnupg
 
 log = None
 
@@ -432,6 +432,7 @@ class Importer(object):
         self.user = meta.session.query(User).filter_by(email=email_address).filter_by(verification=None).first()
         return self.user
 
+
     def _determine_uploader_by_changedby_field(self):
         """
         Create a user object based on the Changed-By entry
@@ -442,18 +443,18 @@ class Importer(object):
         log.debug("Changed-By's email address is: %s", maintainer_email_address)
         self._find_user_by_email_address(maintainer_email_address)
 
-    def _determine_uploader_by_gpg(self, gpg_out):
+    def _determine_uploader_by_gpg(self, gpg_keyid):
         """
         Create a user object based on the gpg output
         """
 
-        for (name, email) in gpg_out:
-            log.debug("GPG signature matches user %s <%s>" % (name, email))
-            if self._find_user_by_email_address(email):
-                log.debug("GPG signature mapped to user %s <%s>" % (self.user.name, self.user.email))
-                return
-
-        return None
+        try:
+            self.user = meta.session.query(User).filter_by(gpg_id=gpg_keyid[-8:]).one()
+        except exceptions.InvalidRequestError:
+            return None
+        else:
+            log.debug("GPG signature mapped to user %s <%s>" % (self.user.name,
+                                                                self.user.email))
 
     def main(self):
         """
@@ -467,7 +468,7 @@ class Importer(object):
 
         log.debug('Importer started with arguments: %s' % sys.argv[1:])
         filecheck = CheckFiles()
-        signature = GnuPG()
+        gpg = get_gnupg()
 
         # Try parsing the changes file, but fail if there's an error.
         try:
@@ -481,12 +482,13 @@ class Importer(object):
 
         if not self.skip_gpg:
             # Next, find out whether the changes file was signed with a valid signature, if not reject immediately
-            if not signature.is_signed(self.changes_file):
+            v = gpg.verify_file(path=self.changes_file)
+            if v is None:
                 self._reject('Your upload does not appear to be signed')
-            (gpg_out, gpg_uids, gpg_status) = signature.verify_sig_full(self.changes_file)
-            if gpg_status != 0:
+
+            if not v.is_valid:
                 self._reject('Your upload does not contain a valid signature. Output was:\n%s' % (gpg_out))
-            self._determine_uploader_by_gpg(gpg_uids)
+            self._determine_uploader_by_gpg(v.key_id)
         else:
             self._determine_uploader_by_changedby_field()
 
