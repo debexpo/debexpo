@@ -102,8 +102,8 @@ class MyController(BaseController):
             keyid = self.user.gpg_id
             log.debug('Deleting current GPG key %s' % (keyid))
             result = self.gnupg.remove_signature(keyid)
-            if result.code != 0:
-                log.error("gpg failed to delete keyring: %s" % (out))
+            if not result.success:
+                log.error("gpg failed to delete keyring: %s" % (result.out))
                 abort(500)
             self.user.gpg = None
             self.user.gpg_id = None
