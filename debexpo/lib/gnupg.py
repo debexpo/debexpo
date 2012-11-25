@@ -111,7 +111,7 @@ class GnuPG(object):
     """ Wrapper for some GnuPG operations """
 
     def __init__(self, gpg_path='/usr/bin/gpg',
-                 default_keyring='~/.gnupg/keyring.gpg'):
+                 default_keyring='~/.gnupg/pubring.gpg'):
         self.gpg_path = gpg_path
         self.default_keyring = os.path.expanduser(default_keyring)
 

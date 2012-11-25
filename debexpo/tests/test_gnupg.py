@@ -179,13 +179,17 @@ test_gpg_key_id = '1024D/355304E4'
 class TestGnuPGController(TestCase):
 
     def _get_gnupg(self, gpg_path='/usr/bin/gpg'):
-        default_keyring = pylons.test.pylonsapp.config.get('debexpo.gpg_keyring', None)
-        gnupg = GnuPG(gpg_path, default_keyring)
+
+        #keyring = self._get_data_file('pubring_with_8123F27C.gpg')
+        #keyring = self._get_data_file('pubring_clemux.gpg')
+        gnupg = GnuPG(gpg_path)
         return gnupg
 
     def _get_data_file(self, name):
         gpg_data_dir = os.path.join(os.path.dirname(__file__), 'gpg')
-        return os.path.join(gpg_data_dir, name)
+        full_path = os.path.join(gpg_data_dir, name)
+        assert os.path.exists(full_path)
+        return full_path
 
     def testGnuPGfailure1(self):
         """
@@ -260,10 +264,8 @@ class TestGnuPGController(TestCase):
         gnupg = self._get_gnupg()
         self.assertFalse(gnupg.is_unusable)
         signed_file = self._get_data_file('signed_by_355304E4.gpg')
-        pubring = self._get_data_file('pubring_with_355304E4.gpg')
+        # pubring = self._get_data_file('pubring_with_355304E4.gpg')
 
-        assert os.path.exists(signed_file)
-        assert os.path.exists(pubring)
         verif = gnupg.verify_file(path=signed_file)
         self.assertFalse(verif.is_valid)
 
@@ -271,14 +273,13 @@ class TestGnuPGController(TestCase):
         gnupg = self._get_gnupg()
         self.assertFalse(gnupg.is_unusable)
         signed_file_path = self._get_data_file('signed_by_8123F27C.gpg')
-        pubring = self._get_data_file('pubring_with_8123F27C.gpg')
-
-        assert os.path.exists(signed_file_path)
-        assert os.path.exists(pubring)
+        # pubring = self._get_data_file('pubring_with_8123F27C.gpg')
 
         verif = gnupg.verify_file(path=signed_file_path)
+
         self.assertTrue(verif.is_valid)
-        assert verif.data == "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+        assert verif.data == "Lorem Ipsum is simply dummy text of the printing" \
+            " and typesetting industry."
 
     def testInvalidSignature(self):
         """
