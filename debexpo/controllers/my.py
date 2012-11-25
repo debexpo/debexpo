@@ -99,7 +99,7 @@ class MyController(BaseController):
 
         # Should the key be deleted?
         if self.form_result['delete_gpg'] and self.user.gpg is not None:
-            keyid = self.gnupg.string2key(self.user.gpg_id).id
+            keyid = self.user.gpg_id
             log.debug('Deleting current GPG key %s' % (keyid))
             result = self.gnupg.remove_signature(keyid)
             if result.code != 0:
