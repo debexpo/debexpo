@@ -218,6 +218,13 @@ class TestGnuPGController(TestCase):
         key_string = gnupg.key2string(parsed_key_block.key)
         self.assertEqual(key_string, test_gpg_key_id)
 
+    def testStringToKey(self):
+        gnupg = self._get_gnupg()
+        expected_key = gnupg.parse_key_block(test_gpg_key).key
+        key_string = gnupg.key2string(expected_key)
+        key = gnupg.string2key(key_string)
+        assert key == expected_key
+
     def testParseUserID(self):
         """
         Test the extraction of user ids from a given GPG key.
