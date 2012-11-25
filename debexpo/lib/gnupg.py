@@ -73,7 +73,8 @@ GpgKeyBlock = namedtuple('GpgKeyBlock', ['key', 'user_ids'])
 GpgUserId = namedtuple('GpgUserId', ['user', 'email'])
 
 # generic object for other results
-GpgResult = namedtuple('GpgResult', ['code', 'out', 'err'])
+GpgResult = namedtuple('GpgResult', ['code', 'out', 'err',
+                                     'status', 'success'])
 
 
 #
@@ -255,7 +256,7 @@ class GnuPG(object):
     def add_signature(self, data=None, path=None, pubring=None):
         """
         Adds a key's signature to the public keyring.
-        Returns the triple GpgResult(code, stdout, stderr).
+        Returns the triple GpgResult(code, stdout, stderr, status, success).
         """
         args = ('--import-options', 'import-minimal', '--import')
         stdin = None
@@ -267,16 +268,27 @@ class GnuPG(object):
             raise GpgMissingData
 
         (out, err, status, code) = self._run(stdin=stdin, args=args, pubring=pubring)
-        return GpgResult(code, out, err)
+
+        success = False
+        for line in status:
+            if line[0] == 'IMPORT_OK':
+                success = True
+                break
+
+        return GpgResult(code, out, err, status, success)
 
     def remove_signature(self, keyid, pubring=None):
         """
         Removes a signature from the public keyring
-        Returns the triple GpgResult(code, stdout, stderr).
+        Returns the triple GpgResult(code, stdout, stderr, status, success).
         """
         args = ('--yes', '--delete-key', keyid)
         (out, err,  status, code) = self._run(args=args, pubring=pubring)
-        return GpgResult(code, out, err)
+
+        success = code == 0
+
+
+        return GpgResult(code, out, err, status, success)
 
 
 

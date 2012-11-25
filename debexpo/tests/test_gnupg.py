@@ -243,6 +243,12 @@ class TestGnuPGController(TestCase):
         kb = gnupg.parse_key_block(path=invalid_block)
         assert kb.key == None
 
+    def testAddSignature(self):
+        gnupg = self._get_gnupg()
+        result = gnupg.add_signature(data=test_gpg_key)
+        print result.status
+        self.assertTrue(result.success)
+
     def testObsoleteSignatureVerification(self):
         """
         Verify the signature in the file
@@ -282,3 +288,9 @@ class TestGnuPGController(TestCase):
         self.assertFalse(gnupg.is_unusable)
         verif = gnupg.verify_file(path='/etc/passwd')
         self.assertFalse(verif.is_valid)
+
+    def testRemoveSignature(self):
+        gnupg = self._get_gnupg()
+        result = gnupg.remove_signature('355304E4')
+        print result.status
+        assert result.success
