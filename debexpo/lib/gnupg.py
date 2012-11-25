@@ -111,7 +111,7 @@ class GnuPG(object):
     """ Wrapper for some GnuPG operations """
 
     def __init__(self, gpg_path='/usr/bin/gpg',
-                 default_keyring='~/.gnupg/pubring.gpg'):
+                 default_keyring='~/.gnupg/keyring.gpg'):
         self.gpg_path = gpg_path
         self.default_keyring = os.path.expanduser(default_keyring)
 
@@ -155,7 +155,7 @@ class GnuPG(object):
         """Returns true if the gpg binary is not installed or not executable."""
         return self.gpg_path is None
 
-    def verify_file(self, path=None, file_object=None, data=None):
+    def verify_file(self, path=None, file_object=None, data=None, pubring=None):
         """
         Check the status of the given's file signature.
         If ``path`` is not None, pass it as an argument to gnupg.
@@ -166,8 +166,7 @@ class GnuPG(object):
         # cmd: --decrypt
         args = ['--decrypt']
 
-        keywords_args = {'pubring': None}
-        # keywords_args = {}
+        keywords_args = {'pubring': pubring}
         if path is not None and os.path.isfile(path):
             args.append(path)
         elif file_object is not None:
