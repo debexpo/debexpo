@@ -430,11 +430,37 @@ class Importer(object):
         self.files_to_remove = []
 
         distribution = self.changes['Distribution'].lower()
-        allowed_distributions = ('oldstable', 'stable', 'unstable', 'experimental', 'stable-backports', 'oldstable-backports',
-            'oldstable-backports-sloppy', 'oldstable-security', 'stable-security', 'testing-security', 'stable-proposed-updates',
-            'testing-proposed-updates', 'sid', 'wheezy', 'squeeze', 'lenny', 'squeeze-backports', 'lenny-backports',
-            'lenny-security', 'lenny-backports-sloppy', 'lenny-volatile', 'squeeze-security', 'squeeze-updates', 'wheezy-security',
-            'unreleased')
+        allowed_distributions = (
+            'experimental',
+            'jessie',
+            'jessie-backports',
+            'jessie-backports-sloppy',
+            'jessie-security',
+            'jessie-updates',
+            'oldstable',
+            'oldstable-backports',
+            'oldstable-backports-sloppy',
+            'oldstable-security',
+            'sid',
+            'squeeze',
+            'squeeze-backports',
+            'squeeze-backports-sloppy',
+            'squeeze-security',
+            'squeeze-updates',
+            'stable',
+            'stable-backports',
+            'stable-proposed-updates',
+            'stable-security',
+            'testing-proposed-updates',
+            'testing-security',
+            'unreleased',
+            'unstable',
+            'wheezy',
+            'wheezy-backports',
+            'wheezy-backports-sloppy',
+            'wheezy-security',
+            'wheezy-updates',
+        )
         if distribution not in allowed_distributions:
             self._reject("You are not uploading to one of those Debian distributions: %s" %
                 (reduce(lambda x,xs: x + " " + xs, allowed_distributions)))
