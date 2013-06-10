@@ -18,10 +18,6 @@ You can clone the git repository::
 
   git clone git://git.debian.org/debexpo/debexpo.git
 
-You should use the 'devel' branch::
-
-  git checkout devel
-
 Dependencies needed for both methods
 ------------------------------------
 
