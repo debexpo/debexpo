@@ -59,7 +59,9 @@
       <td>${ _('GPG key') }:</td>
       <td>${ h.html.tags.file('gpg') }</td>
     </tr>
-
+    <tr>
+      <td colspan="2">Please use the output of <tt>gpg --export --export-options export-minimal --armor <i>keyid</i></tt></td>
+    </tr>
     <tr>
       <td>${ h.html.tags.submit('commit', _('Submit')) }</td>
     </tr>
