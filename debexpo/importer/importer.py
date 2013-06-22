@@ -181,8 +181,10 @@ class Importer(object):
 
         shutil.copy(os.path.join(pylons.config['debexpo.upload.incoming'], self.changes_file), self.tempdir)
         self.oldcurdir = os.path.abspath(os.path.curdir)
+        cwd = os.getcwd()
         os.chdir(self.tempdir)
         os.system('dpkg-source -x %s extracted' % self.changes.get_dsc())
+        os.chdir(cwd)
 
     def _remove_changes(self):
         """
