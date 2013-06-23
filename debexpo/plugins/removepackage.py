@@ -66,7 +66,7 @@ class RemovePackagePlugin(BasePlugin):
 
         keep_package_versions = []
         for package_version in package.package_versions:
-            if apt_pkg.VersionCompare(self.changes['Version'], package_version.version) < 0:
+            if apt_pkg.version_compare(self.changes['Version'], package_version.version) < 0:
                 keep_package_versions.append(package_version.version)
 
         if len(keep_package_versions) == 0:

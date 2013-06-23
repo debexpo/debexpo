@@ -83,7 +83,7 @@ class RemoveOldUploads(BaseCronjob):
         package = self.pkg_controller._get_package(changes['Source'], from_controller=False)
         if package != None:
             for pv in package.package_versions:
-                if pv.distribution == changes['Distribution'] and apt_pkg.VersionCompare(changes['Version'], pv.version) == 0:
+                if pv.distribution == changes['Distribution'] and apt_pkg.version_compare(changes['Version'], pv.version) == 0:
                     self.log.debug("Package %s was was uploaded to Debian - removing it from Expo" % (changes['Source']))
                     self._remove_package(package, pv.version, "Package was uploaded to official Debian repositories")
         else:
