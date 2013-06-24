@@ -78,6 +78,7 @@ from debexpo.lib.repository import Repository
 from debexpo.lib.plugins import Plugins
 from debexpo.lib.filesystem import CheckFiles
 from debexpo.lib.gnupg import GnuPG
+from debexpo.message import publish
 
 log = None
 
@@ -575,6 +576,10 @@ class Importer(object):
         r.update()
 
         log.debug('Done')
+        publish(topic="{}.upload".format(self.changes["Source"]), msg={
+            'version':self.changes["Version"],
+            'uploader':self.changes["Changed-By"]
+        })
 
 def main():
     parser = OptionParser(usage="%prog -c FILE -i FILE [--skip-email] [--skip-gpg-check]")
