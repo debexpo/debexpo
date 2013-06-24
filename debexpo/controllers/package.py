@@ -59,6 +59,8 @@ from debexpo.model.binary_packages import BinaryPackage
 from debexpo.model.package_files import PackageFile
 from debexpo.model.package_subscriptions import PackageSubscription
 
+from debexpo.message import publish
+
 log = logging.getLogger(__name__)
 
 class PackageController(BaseController):
@@ -249,6 +251,13 @@ class PackageController(BaseController):
             email = Email('comment_posted')
             email.send([s.user.email for s in subscribers], package=packagename,
                 comment=self.form_result['text'], user=user)
+
+        publish(topic="{}.comment".format(packagename), msg={
+            'author_name':user.email,
+            'author_email':user.name,
+            'content':comment.text,
+            'outcome':comment.outcome
+            })
 
         redirect(url('package', packagename=packagename))
 
