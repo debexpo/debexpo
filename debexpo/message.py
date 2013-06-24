@@ -41,8 +41,8 @@ from threading import Lock
 
 config = load_config([], None)
 
-config['name'] = "relay_inbound"
-config['active'] = True
+config['name'] = "mentors"
+config['active'] = False
 # XXX: Should be taken from the debexpo config!
 
 __context = FedMsgContext(**config)
