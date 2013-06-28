@@ -38,14 +38,14 @@ __license__ = 'MIT'
 from fedmsg.core import FedMsgContext
 from fedmsg.config import load_config
 from threading import Lock
+from pylons import config
 
-config = load_config([], None)
+# We use the fedmsg configuration from /etc/fedmsg.d/
+fedmsg_config = load_config([], None)
 
-config['name'] = "mentors"
-config['active'] = False
-# XXX: Should be taken from the debexpo config!
+fedmsg_config['name'] = config["debexpo.fedmsg_endpoint_name"]
 
-__context = FedMsgContext(**config)
+__context = FedMsgContext(**fedmsg_config)
 __context_lock = Lock()
 
 def publish(**kw):
