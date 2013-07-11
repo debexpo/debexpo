@@ -245,8 +245,8 @@ class PackageController(BaseController):
             package=packagename).filter(
             PackageSubscription.level <= constants.SUBSCRIPTION_LEVEL_COMMENTS).all()
 
+        user = meta.session.query(User).filter_by(id=session['user_id']).one()
         if len(subscribers) > 0:
-            user = meta.session.query(User).filter_by(id=session['user_id']).one()
 
             email = Email('comment_posted')
             email.send([s.user.email for s in subscribers], package=packagename,
