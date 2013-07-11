@@ -200,7 +200,8 @@ can use the following tags to indicate progress:</p>
 is ready for upload, please consider setting yourself as the owner of
 the bug and tag the bug pending:</p>
 
-<code>$ bts owner nnn me@example.com , tag it + pending</code>
+<code>$ bts owner nnn me@example.com</code><br />
+<code>$ bts tag nnn +pending</code>
 
 <h2>Uploading Packages</h2>
 
