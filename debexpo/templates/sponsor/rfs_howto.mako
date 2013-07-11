@@ -201,7 +201,7 @@ is ready for upload, please consider setting yourself as the owner of
 the bug and tag the bug pending:</p>
 
 <code>$ bts owner nnn me@example.com</code><br />
-<code>$ bts nnn tag +pending</code>
+<code>$ bts tag nnn +pending</code>
 
 <h2>Uploading Packages</h2>
 
