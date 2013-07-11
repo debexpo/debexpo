@@ -122,7 +122,11 @@ class Repository(object):
             return ''
 
         # Read the deb file.
-        deb = debfile.DebFile(filename).debcontrol()
+        try:
+            deb = debfile.DebFile(filename).debcontrol()
+        except debfile.DebError:
+            log.critical('Cannot parse deb file %s' % filename)
+            return ''
 
         # There are a few additions to a debian/control file to make a Packages entry, listed
         # and acted upon below:
