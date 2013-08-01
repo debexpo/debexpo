@@ -252,7 +252,8 @@ class PackageController(BaseController):
             email.send([s.user.email for s in subscribers], package=packagename,
                 comment=self.form_result['text'], user=user)
 
-        publish(topic="{}.comment".format(packagename), msg={
+        publish(topic="package.comment", msg={
+            'source':packagename,
             'author_name':user.email,
             'author_email':user.name,
             'content':comment.text,
