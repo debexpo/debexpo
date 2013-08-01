@@ -576,7 +576,8 @@ class Importer(object):
 
         log.debug('Done')
         from debexpo.message import publish
-        publish(topic="{}.upload".format(self.changes["Source"]), msg={
+        publish(topic="package.upload", msg={
+            'source': self.changes["Source"],
             'version':self.changes["Version"],
             'uploader':self.changes["Changed-By"]
         })
