@@ -252,13 +252,15 @@ class PackageController(BaseController):
             email.send([s.user.email for s in subscribers], package=packagename,
                 comment=self.form_result['text'], user=user)
 
-        publish(topic="package.comment", msg={
-            'source':packagename,
-            'author_name':user.email,
-            'author_email':user.name,
-            'content':comment.text,
-            'outcome':comment.outcome
-            })
+        version = package = meta.session.query(PackageVersion).filter_by(id=self.form_result['package_version']).first()
+
+        data = version.publish_data
+        data['author_email'] = user.email
+        data['author_name'] = user.name
+        data['content'] = comment.text
+        data['outcome'] = comment.outcome
+
+        publish(topic="package.comment", msg=data)
 
         redirect(url('package', packagename=packagename))
 
