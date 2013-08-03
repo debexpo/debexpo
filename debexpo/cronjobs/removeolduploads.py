@@ -62,7 +62,7 @@ class RemoveOldUploads(BaseCronjob):
                 version=version,
                 reason=reason)
         from debexpo.message import publish
-        publish(topic='package.removal', msg={
+        publish(topic='package.remove', msg={
             'source': package.name,
             'version': version,
             'reason': reason
