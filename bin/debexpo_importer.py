@@ -361,6 +361,8 @@ class Importer(object):
         self.send_email(email, [self.user.email], package=self.changes['Source'],
             dsc_url=dsc_url, rfs_url=rfs_url)
 
+        return package_version
+
 
     def _determine_uploader(self):
         """
@@ -557,7 +559,7 @@ class Importer(object):
 
         self._remove_temporary_files()
         # Create the database rows
-        self._create_db_entries(qa)
+        package_version = self._create_db_entries(qa)
 
         # Execute post-successful-upload plugins
         f = open(self.changes_file)
@@ -575,12 +577,12 @@ class Importer(object):
         r.update()
 
         log.debug('Done')
+
+        data = package_version.publish_data
+        data['uploader'] = self.changes["Changed-By"]
+
         from debexpo.message import publish
-        publish(topic="package.upload", msg={
-            'source': self.changes["Source"],
-            'version':self.changes["Version"],
-            'uploader':self.changes["Changed-By"]
-        })
+        publish(topic="package.upload", msg=data)
 
 def main():
     parser = OptionParser(usage="%prog -c FILE -i FILE [--skip-email] [--skip-gpg-check]")
