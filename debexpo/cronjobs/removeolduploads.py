@@ -64,9 +64,12 @@ class RemoveOldUploads(BaseCronjob):
 
         from debexpo.message import publish
         for pv in package.package_versions:
-            data = pv.publish_data
-            data['reason'] = reason
-            publish(topic='package.remove', msg=data)
+            try:
+                data = pv.publish_data
+                data['reason'] = reason
+                publish(topic='package.remove', msg=data)
+            except Exception as e:
+	        print e
 
         CheckFiles().delete_files_for_package(package)
         meta.session.delete(package)
