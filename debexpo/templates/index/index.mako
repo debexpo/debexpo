@@ -9,7 +9,7 @@
 
 <h2>Getting your package into Debian</h2>
 
-<p>See ${ h.tags.link_to("our introductory page", h.url('intro-maintainers')) } for maintainers and learn how to use ${ c.config['debexpo.sitename'] } and get your packages into Debian. Furthermore see ${ h.tags.link_to("our introductory page for sponsors", h.url('sponsors')) } to learn how to get in touch with a sponsor.</p>
+<p>See ${ h.tags.link_to("our introductory page for maintainers", h.url('intro-maintainers')) } and learn how to use ${ c.config['debexpo.sitename'] } and get your packages into Debian. Furthermore see ${ h.tags.link_to("our introductory page on sponsorship", h.url('sponsors')) } to learn how to get in touch with a sponsor.</p>
 
 <p>If you are curious about <em>Debexpo</em>, the software which is running this site, you can <a href="http://wiki.debian.org/Debexpo">read more about Debexpo on the Debian Wiki</a>.</p>
 
