@@ -8,6 +8,4 @@ and then paste it into a login box.</p>
 
 <p>Don't forget to change it!</p>
 
-<div style="margin-left: 5em; border: dotted 1px; padding: 2px;">
-${ c.new_password }
-</div>
+<div style="margin-left: 5em; border: dotted 1px; padding: 2px;">${ c.new_password }</div>
