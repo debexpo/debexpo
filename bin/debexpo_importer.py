@@ -442,6 +442,7 @@ class Importer(object):
             'oldstable',
             'oldstable-backports',
             'oldstable-backports-sloppy',
+            'oldstable-proposed-updates',
             'oldstable-security',
             'sid',
             'squeeze',
