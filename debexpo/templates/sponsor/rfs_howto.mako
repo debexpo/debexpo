@@ -5,7 +5,7 @@
 
 <p>A <em>RFS</em> is a <em>request for sponsorship</em>. If you have a package
 to be uploaded to Debian, you should file a bug against the
-<em>sponsorship-request</em> pseudo-package containing information about your
+<em>sponsorship-requests</em> pseudo-package containing information about your
 package.</p>
 
 <h2>Asking for Sponsorship</h2>
