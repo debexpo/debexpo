@@ -3,8 +3,8 @@ python:
   - "2.6"
   - "2.7"
 # command to install dependencies
-install: pip install --editable .
+install:
+  - sudo apt-get install python-apt
+  - pip install --editable .
 # command to run tests
 script: make test
-# opt-in to the travis-ci Docker world
-sudo: false
