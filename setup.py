@@ -24,6 +24,7 @@ setup(
         "SOAPpy",                # client
         "chardet",
         "dulwich",
+        "nose>=1.3.4",           # ensure in virtualenv
         ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
