@@ -6,4 +6,5 @@ python:
 install: pip install --editable .
 # command to run tests
 script: make test
-
+# opt-in to the travis-ci Docker world
+sudo: false
