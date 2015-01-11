@@ -4,12 +4,7 @@ python:
   - "2.7"
 # command to install dependencies
 install:
-  - sudo apt-get install python-apt python-lxml
+  - sudo apt-get install python-lxml
   - pip install --editable .
 # command to run tests
 script: make test
-
-# Allow the Travis-CI virtualenv to pick up python-apt
-# from the system.
-virtualenv:
-  system_site_packages: true

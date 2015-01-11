@@ -19,7 +19,7 @@ setup(
         "Webhelpers>=0.6.1",
         "Babel>=0.9.4",
         "python-debian>=0.1.16",
-        "python-apt",
+        "apt>=0.7.8",
         "soaplib>=0.12",         # server
         "SOAPpy",                # client
         "chardet",
