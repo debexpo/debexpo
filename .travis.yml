@@ -5,6 +5,7 @@ python:
 # command to install dependencies
 install:
   - sudo apt-get install python-lxml libapt-pkg-dev
+  - pip install https://launchpad.net/python-apt/main/0.7.8/+download/python-apt-0.8.5.tar.gz
   - pip install --editable .
 # command to run tests
 script: make test
