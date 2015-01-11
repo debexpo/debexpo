@@ -13,6 +13,7 @@ setup(
     #author_email='',
     #url='',
     install_requires=[
+        "sphinx",  # for make build
         "webob>=1.0.9",
         "Pylons==1.0.1",
         "repoze.lru",
