@@ -48,7 +48,7 @@ from stat import *
 import pylons
 import email.utils
 
-from sqlalchemy import exceptions
+from sqlalchemy import exc as exceptions
 
 # Horrible imports
 from debexpo.lib.utils import parse_section, md5sum
