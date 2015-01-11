@@ -44,5 +44,8 @@ setup(
     debexpo-importer = debexpo.bin.debexpo_importer:main
     debexpo-worker = debexpo.bin.debexpo_worker
     debexpo-user-importer = debexpo.bin.user_importer:main
+
+    [nose.plugins]
+    pylons = pylons.test:PylonsPlugin
     """,
 )
