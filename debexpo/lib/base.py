@@ -42,7 +42,6 @@ __license__ = 'MIT'
 
 # Monkey patch NilAccept from webob for compatibility.
 import webob.acceptparse
-import pdb
 webob.acceptparse.NilAccept._parsed = property(lambda *args, **kwargs: [])
 
 from pylons import tmpl_context as c, cache, config, app_globals, request, \
