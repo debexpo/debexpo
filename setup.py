@@ -14,7 +14,7 @@ setup(
     #url='',
     install_requires=[
         "webob>=1.0.9",
-        "Pylons==1.0",
+        "Pylons==1.0.1",
         "repoze.lru",
         "SQLAlchemy>=0.6",
         "Webhelpers>=0.6.1",
