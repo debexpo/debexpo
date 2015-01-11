@@ -13,7 +13,7 @@ setup(
     #author_email='',
     #url='',
     install_requires=[
-        "webob==1.0.8",
+        "webob>=1.0.8",
         "Pylons==1.0",
         "SQLAlchemy>=0.6",
         "Webhelpers>=0.6.1",
