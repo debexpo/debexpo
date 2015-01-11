@@ -14,7 +14,7 @@ setup(
     #url='',
     install_requires=[
         "sphinx",  # for make build
-        "webob>=1.0.9",
+        "webob==1.3.1",  # for .exception attribute
         "Pylons==1.0.1",
         "repoze.lru",
         "SQLAlchemy>=0.6",
