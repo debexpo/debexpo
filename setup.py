@@ -21,7 +21,7 @@ setup(
         "Webhelpers>=0.6.1",
         "Babel>=0.9.4",
         "python-debian>=0.1.16",
-        "soaplib>=0.12",         # server
+        "soaplib==0.8.2",         # server
         "SOAPpy",                # client
         "chardet",
         "dulwich",
