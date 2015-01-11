@@ -4,7 +4,7 @@ python:
   - "2.7"
 # command to install dependencies
 install:
-  - sudo apt-get install python-apt
+  - sudo apt-get install python-apt python-lxml
   - pip install --editable .
 # command to run tests
 script: make test
