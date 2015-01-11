@@ -8,3 +8,8 @@ install:
   - pip install --editable .
 # command to run tests
 script: make test
+
+# Allow the Travis-CI virtualenv to pick up python-apt
+# from the system.
+virtualenv:
+  system_site_packages: true
