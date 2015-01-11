@@ -37,7 +37,7 @@ ABRL0EeYuGCJYJRQsw8e8JuRSaVGwfotqkIHtQ==
 =PXiv
 -----END PGP PUBLIC KEY BLOCK-----
 """
-    _LOW_STRENGTH_GPG_ID = '2048R/6758261E'
+    _LOW_STRENGTH_GPG_ID = '6758261E'
 
     _HIGH_STRENGTH_GPGKEY = """-----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v1.4.12 (GNU/Linux)
@@ -92,7 +92,7 @@ aBlMENbthLJ3RAoWPeMwCMfSF0+MPsBkCMCpgGMnXQVW9tEE86yjpyjiVUg=
 -----END PGP PUBLIC KEY BLOCK-----
 """
 
-    _HIGH_STRENGTH_GPG_ID = '4096R/AC4ABA99'
+    _HIGH_STRENGTH_GPG_ID = 'AC4ABA99'
 
     def setUp(self):
         self._setup_models()

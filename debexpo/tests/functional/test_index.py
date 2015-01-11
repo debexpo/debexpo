@@ -27,7 +27,7 @@ class TestIndexController(TestController):
         response = self.app.get(testurl)
         self.assertEquals(response.status_int, 200)
 
-        testtext = '<h1>Welcome to debexpo</h1>'
+        testtext = '<title>mentors.debian.net</title>'
         pylons.test.pylonsapp.config['debexpo.html.frontpage'] = \
             self._generate_temppage('front.html', testtext)
 

@@ -40,6 +40,10 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner, Copyright © 2011 Arno Töll'
 __license__ = 'MIT'
 
+# Monkey patch NilAccept from webob for compatibility.
+import webob.acceptparse
+webob.acceptparse.NilAccept._parsed = property(lambda *args, **kwargs: [])
+
 from pylons import tmpl_context as c, cache, config, app_globals, request, \
     response, session, url
 from pylons.controllers import WSGIController

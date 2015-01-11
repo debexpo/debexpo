@@ -4,8 +4,15 @@ python:
   - "2.7"
 # command to install dependencies
 install:
+# Now, set up postfix to discard all outbound email,
+  - sudo apt-get install postfix
+  - echo '* discard:' | sudo sh -c 'cat > /etc/postfix/discard-transport'
+  - echo 'transport_maps = hash:/etc/postfix/discard-transport' | sudo sh -c 'cat >> /etc/postfix/main.cf'
+  - sudo postmap /etc/postfix/discard-transport
+  - sudo service postfix restart
+# OK, install normal dependencies.
   - sudo apt-get install python-lxml libapt-pkg-dev
   - pip install https://launchpad.net/python-apt/main/0.7.8/+download/python-apt-0.8.5.tar.gz
   - pip install --editable .
 # command to run tests
-script: make test
+script: make build && make test
