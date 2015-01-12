@@ -11,3 +11,5 @@ dist
 debexpo.egg-info/*
 development-arno.ini
 .vagrant/
+venv/
+*.egg/
