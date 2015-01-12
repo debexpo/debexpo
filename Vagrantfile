@@ -43,7 +43,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   config.vm.host_name = "debexpo-dev"
+  config.vm.synced_folder ".", "/home/vagrant/debexpo/"
+  config.vm.network "forwarded_port", guest: 5000, host: 5000
 
-  config.vm.network "forwarded_port", guest: 8000, host: 8000
+  config.vm.provision "shell", path: "provision.sh", privileged: false, keep_color: true
 
 end
