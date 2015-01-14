@@ -1,3 +1,8 @@
+# This needs to happen before the rest of the imports
+from mock import Mock
+import sys
+sys.modules['debexpo.message'] = Mock()
+
 from debexpo.tests import TestController, url
 from debexpo.lib import constants
 from debexpo.model import meta

@@ -49,7 +49,7 @@ class TestUtilsController(TestCase):
         t = parse_section
 
         self.assertEqual(t('section'), ['main', 'section'])
-        self.assertEqual(t('component/section'), ['component', 'section'])
+        self.assertEqual(t('contrib/section'), ['contrib', 'section'])
 
     def testGetPackageDir(self):
         """
