@@ -58,7 +58,12 @@ def parse_section(section):
         Section name to parse.
     """
     if '/' in section:
-        return section.split('/')
+        component, thesection = section.split('/', 1)
+        if component not in ("main", "contrib", "non-free"):
+            log.warning("Parsing weird component %s, assuming main" % component)
+            return main, section.replace('/', '_')
+        else:
+            return component, thesection
     else:
         return ['main', section]
 

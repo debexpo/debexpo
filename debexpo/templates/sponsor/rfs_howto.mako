@@ -5,7 +5,7 @@
 
 <p>A <em>RFS</em> is a <em>request for sponsorship</em>. If you have a package
 to be uploaded to Debian, you should file a bug against the
-<em>sponsorship-request</em> pseudo-package containing information about your
+<em>sponsorship-requests</em> pseudo-package containing information about your
 package.</p>
 
 <h2>Asking for Sponsorship</h2>
@@ -200,7 +200,8 @@ can use the following tags to indicate progress:</p>
 is ready for upload, please consider setting yourself as the owner of
 the bug and tag the bug pending:</p>
 
-<code>$ bts owner nnn me@example.com , tag it + pending</code>
+<code>$ bts owner nnn me@example.com</code><br />
+<code>$ bts tag nnn +pending</code>
 
 <h2>Uploading Packages</h2>
 

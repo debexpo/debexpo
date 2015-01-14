@@ -58,6 +58,28 @@ t_package_versions = sa.Table('package_versions', meta.metadata,
 class PackageVersion(OrmObject):
     foreign = ['package']
 
+    @property
+    def publish_data(self):
+        ret = {
+            'source': self.package.name,
+            'owner_name': self.package.user.name,
+            'owner_email': self.package.user.email,
+            'version': self.version,
+            'maintainer': self.maintainer,
+            'section': self.section,
+            'distribution': self.distribution,
+            'component': self.component,
+            'priority': self.priority,
+        }
+
+        if self.closes:
+            ret['closes'] = self.closes
+        else:
+            ret['closes'] = ''
+
+        return ret
+
+
 orm.mapper(PackageVersion, t_package_versions, properties={
     'package' : orm.relation(Package, backref='package_versions')
 })
