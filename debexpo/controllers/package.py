@@ -59,6 +59,8 @@ from debexpo.model.binary_packages import BinaryPackage
 from debexpo.model.package_files import PackageFile
 from debexpo.model.package_subscriptions import PackageSubscription
 
+from debexpo.message import publish
+
 log = logging.getLogger(__name__)
 
 class PackageController(BaseController):
@@ -243,12 +245,22 @@ class PackageController(BaseController):
             package=packagename).filter(
             PackageSubscription.level <= constants.SUBSCRIPTION_LEVEL_COMMENTS).all()
 
+        user = meta.session.query(User).filter_by(id=session['user_id']).one()
         if len(subscribers) > 0:
-            user = meta.session.query(User).filter_by(id=session['user_id']).one()
 
             email = Email('comment_posted')
             email.send([s.user.email for s in subscribers], package=packagename,
                 comment=self.form_result['text'], user=user)
+
+        version = package = meta.session.query(PackageVersion).filter_by(id=self.form_result['package_version']).first()
+
+        data = version.publish_data
+        data['author_email'] = user.email
+        data['author_name'] = user.name
+        data['content'] = comment.text
+        data['outcome'] = comment.outcome
+
+        publish(topic="package.comment", msg=data)
 
         redirect(url('package', packagename=packagename))
 

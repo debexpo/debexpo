@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 #
-#   test_utils.py — Test cases for debexpo.lib.utils
+#   message.py — Setup the fedmsg context for use within Debexpo
 #
 #   This file is part of debexpo - https://alioth.debian.org/projects/debexpo/
 #
-#   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2013 Simon Chopin <chopin.simon@gmail.com>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -28,40 +28,27 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 """
-Test cases for debexpo.lib.utils.
+Setup a fedmsg context suitable for Debexpo.
 """
 
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__author__ = 'Simon Chopin'
+__copyright__ = 'Copyright © 2013 Simon Chopin'
 __license__ = 'MIT'
 
-from unittest import TestCase
+from fedmsg.core import FedMsgContext
+from fedmsg.config import load_config
+from threading import Lock
+import pylons
 
-from debexpo.lib.utils import *
-from debexpo.lib.changes import Changes
+# We use the fedmsg configuration from /etc/fedmsg.d/
+fedmsg_config = load_config([], None)
 
-class TestUtilsController(TestCase):
+fedmsg_config['name'] = pylons.config["debexpo.fedmsg_endpoint_name"]
 
-    def testParseSection(self):
-        """
-        Tests debexpo.lib.utils.parse_section.
-        """
-        t = parse_section
+__context = FedMsgContext(**fedmsg_config)
+__context_lock = Lock()
 
-        self.assertEqual(t('section'), ['main', 'section'])
-        self.assertEqual(t('contrib/section'), ['contrib', 'section'])
-
-    def testGetPackageDir(self):
-        """
-        Tests debexpo.lib.utils.get_package_dir.
-        """
-        t = get_package_dir
-
-        self.assertEqual(t('foo'), 'f/foo')
-        self.assertEqual(t('libfoo'), 'libf/libfoo')
-
-    def testMd5sum(self):
-        """
-        Tests debexpo.lib.utils.md5sum.
-        """
-        self.assertEqual(md5sum('debexpo/tests/changes/synce-hal_0.1-1_source.changes'), 'fbb0b9c81f8a4fa9b8e3b789cf3b5220')
+def publish(**kw):
+    __context_lock.acquire()
+    __context.publish(**kw)
+    __context_lock.release()

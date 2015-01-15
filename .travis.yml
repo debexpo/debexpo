@@ -4,6 +4,7 @@ python:
   - "2.7"
 # command to install dependencies
 install:
+  - sudo apt-get update
 # Now, set up postfix to discard all outbound email,
   - sudo apt-get install postfix
   - echo '* discard:' | sudo sh -c 'cat > /etc/postfix/discard-transport'
@@ -15,4 +16,4 @@ install:
   - pip install https://launchpad.net/python-apt/main/0.7.8/+download/python-apt-0.8.5.tar.gz
   - pip install --editable .
 # command to run tests
-script: make build && make test
+script: mkdir /tmp/debexpo && mkdir /tmp/debexpo/incoming && make build && make test

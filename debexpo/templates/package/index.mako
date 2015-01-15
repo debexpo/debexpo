@@ -34,7 +34,7 @@
 
   <tr>
     <th>${ _('Description') }:</th>
-    <td>${ c.package.get_description() | semitrusted}</td>
+    <td>${ c.package.get_description() | n,semitrusted }</td>
   </tr>
 
 % if 'user_id' in c.session:

@@ -15,7 +15,7 @@ install:
 	python setup.py install
 
 test:
-	nosetests
+	nosetests --with-pylons=test.ini
 
 clean:
 	python setup.py clean

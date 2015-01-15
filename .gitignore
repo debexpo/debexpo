@@ -13,3 +13,4 @@ development-arno.ini
 .vagrant/
 venv/
 *.egg/
+*.sublime-*

@@ -26,6 +26,8 @@ setup(
         "chardet",
         "dulwich",
         "nose>=1.3.4",           # ensure in virtualenv
+        "fedmsg==0.8.0",
+        "mock==1.0.1",
         ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
