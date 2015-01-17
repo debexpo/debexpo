@@ -45,6 +45,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.host_name = "debexpo-dev"
   config.vm.synced_folder ".", "/home/vagrant/debexpo/"
   config.vm.network "forwarded_port", guest: 5000, host: 5000
+  config.vm.network "forwarded_port", guest: 8000, host: 8000
 
   config.vm.provision "shell", path: "provision.sh", privileged: false, keep_color: true
 
