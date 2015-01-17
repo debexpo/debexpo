@@ -6,10 +6,12 @@ Installing and setting up debexpo
 
 debexpo is easy to set up on your own. Simply follow the instructions below.
 
-There are two solutions:
+There are three solutions:
  1. install all dependencies on your system as root
  2. install dependencies and debexpo in an isolated environment using
     virtualenv
+ 3. Use virtualbox and vagrant. If you choose this method, follow the
+    instructions under "Using Vagrant"
 
 Getting debexpo
 ---------------
@@ -113,6 +115,25 @@ Execute the following commands to setup the application::
 
     paster setup-app development.ini
     python setup.py compile_catalog
+
+Using Vagrant
+-------------
+
+#. Install virtualbox (https://www.virtualbox.org/wiki/Downloads)
+#. Install vagrant (https://www.vagrantup.com/)
+#. In the checked-out debexpo repository on the host machine, run::
+
+    vagrant up --provision
+    vagrant ssh
+
+#. You'll now be in a shell session on your vagrant-configured virtualbox
+#. Run::
+
+    cd debexpo
+    . venv/bin/activate
+
+#. You now have a setup virtualenv with all the dependencies for debexpo
+  installed. Follow the rest of the instructions to run debexpo.
 
 Running debexpo
 ---------------
