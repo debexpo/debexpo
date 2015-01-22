@@ -13,10 +13,7 @@ http://en.wikipedia.org/wiki/Test_suite .)
 
   % nosetests --with-pylons=test.ini
 
-As of the time of writing, all the tests do not pass. That means there is
-work to do on the test suite.
-
-They should at least run, though.
+As of the time of writing, all the tests pass. 
 
 (Nosetests is a "test runner" package that provides some useful add-ons. It
 has its own idiosyncracies, though.)
