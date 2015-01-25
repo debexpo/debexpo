@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/alex/what-happens-when.svg?branch=master
+    :target: https://travis-ci.org/alex/what-happens-when
+
 installing and running debexpo
 ==============================
 
