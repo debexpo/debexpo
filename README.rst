@@ -47,3 +47,11 @@ docs/installing.rst. You should build and view the html docs by executing::
   % cd docs/
   % make html
   % sensible-browser .build/html/index.html
+
+Git synchronization
+===================
+
+This repository is synchronized to Alioth, the official home of the project.
+
+.. image:: http://rose.makesad.us/~debexpogitmirror/git-status.png
+    :target: https://github.com/debexpo/alioth-sync-scripts
