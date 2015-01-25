@@ -5,7 +5,7 @@ set -e
 # For some reasons the tests want this.
 mkdir -p ~/.gnupg
 
-cd /home/vagrant/debexpo/
+cd ~/debexpo/
 if ! grep -q backports /etc/apt/sources.list; then
     echo 'deb http://http.debian.net/debian/ wheezy-backports main contrib non-free' | sudo sh -c 'cat >> /etc/apt/sources.list'
 fi
