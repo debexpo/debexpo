@@ -143,7 +143,7 @@ Using paste's built-in webserver
 
 Simply execute::
 
-    paster serve debexpo.ini
+    paster serve development.ini
 
 and visit http://localhost:5000/ in your web browser.
 
