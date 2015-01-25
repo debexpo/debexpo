@@ -16,4 +16,4 @@ install:
   - pip install https://launchpad.net/python-apt/main/0.7.8/+download/python-apt-0.8.5.tar.gz
   - pip install --editable .
 # command to run tests
-script: mkdir /tmp/debexpo && mkdir /tmp/debexpo/incoming && make build && make test
+script: mkdir /tmp/debexpo && mkdir /tmp/debexpo/incoming && make build && make test && (cd docs && make html)
