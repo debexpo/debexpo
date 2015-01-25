@@ -9,6 +9,11 @@ cd ~/debexpo/
 if ! grep -q backports /etc/apt/sources.list; then
     echo 'deb http://http.debian.net/debian/ wheezy-backports main contrib non-free' | sudo sh -c 'cat >> /etc/apt/sources.list'
 fi
+if ! grep -q deb-src /etc/apt/sources.list; then
+    echo 'deb-src http://mirrors.kernel.org/debian wheezy main' | sudo sh -c 'cat >> /etc/apt/sources.list'
+    echo 'deb-src http://security.debian.org/ wheezy/updates main' | sudo sh -c 'cat >> /etc/apt/sources.list'
+    echo 'deb-src http://mirrors.kernel.org/debian wheezy-updates main' | sudo sh -c 'cat >> /etc/apt/sources.list'
+fi
 export DEBIAN_FRONTEND=noninteractive
 sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
 sudo debconf-set-selections <<< "postfix postfix/mailname string debexpo-dev"
