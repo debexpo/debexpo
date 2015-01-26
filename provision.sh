@@ -27,7 +27,9 @@ if ! grep -q transport_maps /etc/postfix/main.cf; then
 fi
 sudo postmap /etc/postfix/discard-transport
 sudo service postfix restart
-virtualenv venv --system-site-packages
+if ! [ -f ~/debexpo/venv/bin/python ]; then
+    virtualenv venv --system-site-packages
+fi
 . venv/bin/activate
 pip install https://launchpad.net/python-apt/main/0.7.8/+download/python-apt-0.8.5.tar.gz
 pip install --editable .
