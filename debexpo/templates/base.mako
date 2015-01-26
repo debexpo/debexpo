@@ -104,6 +104,8 @@
     Hosting and hardware provided by <a href="http://www.wavecon.de">Wavecon</a>
     -
     <a href="https://alioth.debian.org/projects/debexpo/">${ _('Source code and bugs')}</a>
+    -
+    <a href="https://github.com/debexpo/debexpo">${ _('GitHub if you prefer')}</a>
 	-
     ${ h.tags.link_to( _('Contact'), h.url('contact')) }
 	% if 'user_id' in session:
