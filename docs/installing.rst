@@ -7,53 +7,57 @@ Installing and setting up debexpo
 debexpo is easy to set up on your own. Simply follow the instructions below.
 
 There are three solutions:
- 1. install all dependencies on your system as root
- 2. install dependencies and debexpo in an isolated environment using
-    virtualenv
- 3. Use virtualbox and vagrant. If you choose this method, follow the
-    instructions under "Using Vagrant"
+ 1. Install all dependencies on your system as root.
+ 2. Install dependencies and debexpo in an isolated environment using
+    virtualenv and virtualenvwrapper.
+ 3. Use `VirtualBox`_ and `Vagrant`_. If you choose this method, follow the
+    instructions under `Using Vagrant`_.
+
+.. _`VirtualBox`: https://www.virtualbox.org/
+.. _`Vagrant`: https://www.vagrantup.com/
 
 Getting debexpo
 ---------------
 
 You can clone the git repository::
 
-  git clone git://git.debian.org/debexpo/debexpo.git
+    git clone git://git.debian.org/debexpo/debexpo.git
 
 Dependencies needed for both methods
 ------------------------------------
 
 Whatever method you choose, these packages are required::
 
-  sudo apt-get install python-apt python-debian iso-codes
+    sudo apt-get install python-apt python-debian iso-codes
 
 If you want to run qa plugins, you will need `lintian` and
 `dpkg-dev`::
-  sudo apt-get install lintian dpkg-dev
+
+    sudo apt-get install lintian dpkg-dev
 
 Installing on Debian Squeeze or Wheezy as root
----------------------------------------------------
+----------------------------------------------
 
-You need to install the required packages. Using apt, you should execute::
+You need to install the required packages. Using `apt`, you should execute::
 
     sudo apt-get install python-setuptools python-sphinx python-pylons python-sqlalchemy python-soappy python-nose python-pybabel
 
 `python-nose` is optional if you don't want to run the test suite.
 
 
-You also need python-soaplib version >= 0.8.2 :
-http://pypi.python.org/pypi/soaplib
+You also need `python-soaplib (version >= 0.8.2)`_.
 
 Using pip::
 
-  sudo pip install soaplib
+    sudo pip install soaplib
 
+.. _`python-soaplib (version >= 0.8.2)`: http://pypi.python.org/pypi/soaplib
 
-Installing in an virtualenv
----------------------------
+Installing in a virtualenv
+--------------------------
 
 Using this method, you will create a virtual Python environment in
-which you can install dependencies for debexpo without altering your
+which you can install the dependencies for debexpo without altering your
 system (i.e., without requiring root). In addition, this will also let
 you isolate debexpo's requirements, in the event an application installed
 globally might require a conflicting version of a library, or vice versa.
@@ -63,48 +67,52 @@ Virtualenv setup
 
 Skip this section if you already have a working virtualenv setup.
 
-Install virtualenvwrapper::
+Install `virtualenvwrapper`::
 
-  sudo apt-get install virtualenvwrapper
+    sudo apt-get install virtualenvwrapper
 
 Dependencies
 ~~~~~~~~~~~~
 
-To install lxml from sources, you will need `gcc`, `libxml2`,
-`libxslt1.1` and `python-dev`. python-apt depends on `libapt-pkg-dev`
+To install `lxml` from sources, you will need `gcc`, `libxml2`,
+`libxslt1.1` and `python-dev`, `python-apt` depends on `libapt-pkg-dev`::
 
-  sudo apt-get install gcc libxml2 libxml2-dev libxslt1.1 libxslt1-dev python-dev libapt-pkg-dev
+    sudo apt-get install gcc libxml2 libxml2-dev libxslt1.1 libxslt1-dev python-dev libapt-pkg-dev
 
 Debexpo installation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 
 First, create a new virtualenv for debexpo, and enter it::
 
-  mkvirtualenv expo
-  workon expo
+    mkvirtualenv expo
+    workon expo
 
 *Note*: If you get a "command not found" error for "mkvirtualenv", run
 the following in your shell::
-  /etc/bash_completion.d/virtualenvwrapper
+
+    /etc/bash_completion.d/virtualenvwrapper
 
 Note that now, whenever you run "python", you run an interpreter that
 is sandboxed to the "virtualenv" in question. You can test this by
 typing::
-  which python
+
+    which python
 
 and you will see it is not /usr/bin/python! Additionally, your shell prompt
 should have a little prefix before the prompt that looks like::
-  (expo)
+
+    (expo)
 
 You can now install debexpo. This will download and install all
 required libraries::
-  python setup.py develop
+
+    python setup.py develop
 
 If for any reason you need to exit the virtualenv, you may enter
 `deactivate` to exit the virtualenv.
 
 Editing your configuration
----------------------------
+--------------------------
 
 Now edit `development.ini` to match your configuration.
 
@@ -116,30 +124,35 @@ Execute the following commands to setup the application::
     paster setup-app development.ini
     python setup.py compile_catalog
 
+.. _using_vagrant:
+
 Using Vagrant
 -------------
 
-#. Install virtualbox (https://www.virtualbox.org/wiki/Downloads)
-#. Install vagrant (https://www.vagrantup.com/)
+#. `Install VirtualBox`_.
+#. `Install Vagrant`_.
 #. In the checked-out debexpo repository on the host machine, run::
 
     vagrant up --provision
     vagrant ssh
 
-#. You'll now be in a shell session on your vagrant-configured virtualbox
+#. You'll now be in a shell session on your Vagrant-configured VirtualBox.
 #. Run::
 
     cd debexpo
     . venv/bin/activate
 
 #. You now have a setup virtualenv with all the dependencies for debexpo
-  installed. Follow the rest of the instructions to run debexpo.
+   installed. Follow the rest of the instructions to run debexpo.
+
+.. _`Install VirtualBox`: https://www.virtualbox.org/wiki/Downloads
+.. _`Install Vagrant`: https://www.vagrantup.com/
 
 Running debexpo
 ---------------
 
 Using paste's built-in webserver
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Simply execute::
 
@@ -148,12 +161,12 @@ Simply execute::
 and visit http://localhost:5000/ in your web browser.
 
 Using Apache
-^^^^^^^^^^^^
+~~~~~~~~~~~~
 
 (Canonical instructions for getting Pylons apps working under Apache are
 `here <http://wiki.pylonshq.com/display/pylonsdocs/Running+Pylons+apps+with+Webservers>`_.)
 
-#. Install apache2, mod-fastcgi and flup::
+#. Install `apache2`, `mod-fastcgi` and `flup`::
 
     sudo apt-get install python-flup apache2 libapache2-mod-fastcgi
 
@@ -173,5 +186,4 @@ Using Apache
     </IfModule>
 
   Note: Parts of this may conflict with your `/etc/apache2/conf-available/fastcgi.conf`.
-
   `/some/path/to/debexpo/fcgi` need not physically exist on the webserver.
