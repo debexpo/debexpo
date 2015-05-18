@@ -54,13 +54,13 @@ if you need any setup. The following attributes will be instantiated for your
 cronjob:
 
 ``self.parent``
---------------
+---------------
 
 This is a reference to the worker object, which instantiated your cronjob. You can
 call any method in from there, if necessary.
 
 ``self.config``
---------------
+---------------
 
 This is an instantiated configuration object. You can access every Debexpo
 configuration setting from it.

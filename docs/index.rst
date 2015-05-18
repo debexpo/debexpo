@@ -16,25 +16,34 @@ like PostgreSQL, MySQL or Sqlite.
 Setting up debexpo
 ------------------
 
-* :ref:`installing`
-* :ref:`config-file`
+.. toctree::
+    :maxdepth: 1
+
+    installing
+    config_file
 
 Using debexpo
 -------------
 
-* :ref:`uploading`
-* :ref:`plugins`
-* :ref:`soap`
+.. toctree::
+    :maxdepth: 1
+
+    uploading
+    plugins
+    soap
 
 Development documentation
 -------------------------
 
-* :ref:`building`
-* :ref:`writing-plugins`
-* :ref:`writing-cronjobs`
-* :ref:`coding-standards`
-* :ref:`contributing`
-* :ref:`api`
+.. toctree::
+    :maxdepth: 1
+
+    building
+    writing_plugins
+    writing_cronjobs
+    coding_standards
+    contributing
+    api
 
 Indices and tables
 ==================
