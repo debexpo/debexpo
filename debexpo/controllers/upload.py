@@ -97,7 +97,10 @@ class UploadController(BaseController):
             log.critical('debexpo.upload.incoming is not writable')
             abort(500, 'The incoming directory has not been set up')
 
-        save_path = os.path.join(os.path.join(config['debexpo.upload.incoming'], "pub"), filename)
+        incoming_dir = os.path.join(config['debexpo.upload.incoming'], 'pub')
+        if not os.path.isdir(incoming_dir):
+            os.mkdir(incoming_dir)
+        save_path = os.path.join(incoming_dir, filename)
         log.debug('Saving uploaded file to: %s', save_path)
         if os.path.exists(save_path):
                 log.debug("Aborting. File already exists")
