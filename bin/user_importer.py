@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   debexpo-importer — executable script to import new packages
+#   user_importer.py — executable script to import new users
 #
 #   This file is part of debexpo - https://alioth.debian.org/projects/debexpo/
 #
@@ -24,7 +24,7 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 #   DEALINGS IN THE SOFTWARE.
 
-""" Executable script to import new packages. """
+""" Executable script to import new users. """
 
 __author__ = 'Asheesh Laroia'
 __copyright__ = 'Copyright © 2011 Asheesh Laroia'
