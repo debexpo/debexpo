@@ -40,6 +40,7 @@ import logging
 import random
 import struct
 import socket
+import json
 
 from debexpo.lib.base import BaseController, c, config, render, session, \
     redirect, url, abort, request, SubMenu, _
@@ -206,6 +207,7 @@ class SponsorController(BaseController):
     def rfs_howto(self, packagename=None):
         c.package = None
         c.package_dir = None
+        c.rfstemplate = None
         if packagename:
             package = meta.session.query(Package) \
                 .filter_by(name=packagename) \
@@ -213,6 +215,13 @@ class SponsorController(BaseController):
             if package:
                 c.package = package
                 c.package_dir = get_package_dir(package.name)
+
+                latest = meta.session.query(PackageVersion).filter_by(package_id=package.id).order_by(PackageVersion.id.desc()).first()
+                if latest:
+                    rfstemplate = meta.session.query(PackageInfo).filter_by(package_version_id=latest.id).filter_by(from_plugin='rfstemplate').first()
+                    if rfstemplate:
+                        c.rfstemplate = json.loads(rfstemplate.data)
+                c.mailbody = render('/sponsor/rfs_template.mako')
 
         return render('/sponsor/rfs_howto.mako')
 
