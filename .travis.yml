@@ -6,8 +6,9 @@ install:
   - sudo apt-get update
 # Now, set up postfix to discard all outbound email,
   - sudo apt-get install postfix
-  - echo '* discard:' | sudo sh -c 'cat > /etc/postfix/discard-transport'
-  - echo 'transport_maps = hash:/etc/postfix/discard-transport' | sudo sh -c 'cat >> /etc/postfix/main.cf'
+  - echo '* discard:' | sudo tee /etc/postfix/discard-transport
+  - echo 'transport_maps = hash:/etc/postfix/discard-transport' | sudo tee -a /etc/postfix/main.cf
+  - echo '2525       inet  n       -       -       -       -       smtpd' | sudo tee -a /etc/postfix/master.cf
   - sudo postmap /etc/postfix/discard-transport
   - sudo service postfix restart
 # OK, install normal dependencies.
