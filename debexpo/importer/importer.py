@@ -470,7 +470,8 @@ class Importer(object):
 
         log.debug('Importer started with arguments: %s' % sys.argv[1:])
         filecheck = CheckFiles()
-        gpg = get_gnupg()
+        if not self.skip_gpg:
+            gpg = get_gnupg()
 
         # Try parsing the changes file, but fail if there's an error.
         try:
