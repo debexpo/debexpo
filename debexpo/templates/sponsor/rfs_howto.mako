@@ -78,9 +78,15 @@ tool.
  * Package name    : hello
    Version         : 3.1-4
 %endif
+%if c.rfstemplate:
+   Upstream Author : ${ c.rfstemplate['upstream-author'] }
+ * URL             : ${ c.rfstemplate['upstream-url'] }
+ * License         : ${ c.rfstemplate['upstream-license'] }
+%else:
    Upstream Author : [fill in name and email of upstream]
  * URL             : [fill in URL of upstream's web site]
  * License         : [fill in]
+%endif
 %if c.package:
    Section         : ${ c.package.package_versions[-1].section }
 %else:
@@ -116,12 +122,23 @@ tool.
   dget -x ${ c.config['debexpo.server'] }/debian/pool/main/h/hello/hello_3.1-4.dsc
 %endif
 
+%if c.package:
+  %if c.rfstemplate:
+  More information about ${ c.package.name } can be obtained from ${ c.rfstemplate['upstream-url'] }.
+  %else:
+  More information about ${ c.package.name } can be obtained from http://www.example.com.
+  %endif
+%else:
   More information about hello can be obtained from http://www.example.com.
+%endif
 
   Changes since the last upload:
 
+%if c.rfstemplate:
+  ${ c.rfstemplate['package-changelog'] }
+%else:
   [your most recent changelog entry]
-
+%endif
 
   Regards,
 %if c.package:
