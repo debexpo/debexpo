@@ -119,6 +119,14 @@ class DebianPlugin(BasePlugin):
             'nmu' in self.changes["Version"]
             )
 
+    def _test_is_qa(self):
+        """
+        Finds out whether the package is a QA upload.
+        """
+        log.debug('Finding out whether the package is a QA upload')
+
+        self.data["qa"] = 'Debian QA Group <packages@qa.debian.org>' in self.changes['Maintainer']
+
     def _get_debian_maintainer_data(self):
 
         self.debian_maintainers = sorted(
@@ -174,6 +182,7 @@ class DebianPlugin(BasePlugin):
         if self.in_debian:
             self._test_last_upload()
             self._test_is_nmu()
+            self._test_is_qa()
             self._get_debian_maintainer_data()
             self._test_is_debian_maintainer()
             self._test_has_new_maintainer()
