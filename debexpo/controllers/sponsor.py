@@ -221,6 +221,28 @@ class SponsorController(BaseController):
                     rfstemplate = meta.session.query(PackageInfo).filter_by(package_version_id=latest.id).filter_by(from_plugin='rfstemplate').first()
                     if rfstemplate:
                         c.rfstemplate = json.loads(rfstemplate.data)
+
+                category = []
+                debianqa = meta.session.query(PackageInfo).filter_by(package_version_id=latest.id).filter_by(from_plugin='debianqa').first()
+                if debianqa:
+                    qadata = json.loads(debianqa.data)
+                    if 'nmu' in qadata and qadata['nmu']:
+                        category.append('NMU')
+                    elif 'qa' in qadata and qadata['qa']:
+                        category.append('QA')
+                    elif 'in-debian' in qadata and not qadata['in-debian']:
+                        category.append('ITP')
+                    elif 'in-debian' in qadata and qadata['in-debian']:
+                        # TODO: RC or regular update
+                        pass
+                    else:
+                        # TODO: ITA
+                        pass
+                if len(category) == 0:
+                    c.category = "[put in ITP, ITA, RC, NMU if applicable]"
+                else:
+                    c.category = '[' + ', '.join(category) + ']'
+
                 c.mailbody = render('/sponsor/rfs_template.mako')
 
         return render('/sponsor/rfs_howto.mako')

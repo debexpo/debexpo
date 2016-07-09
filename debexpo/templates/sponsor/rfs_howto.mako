@@ -38,7 +38,7 @@ list. You can browser other packages and give other people feedback while you ar
 </h2>
 
 <p>
-<a href="mailto:submit@bugs.debian.org?subject=RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } [put in ITP, ITA, RC, NMU if applicable]&body=${ c.mailbody | u }">Send the filled out template below by mail</a> to our pseudo-package. If you
+<a href="mailto:submit@bugs.debian.org?subject=RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } ${ c.category }&body=${ c.mailbody | u }">Send the filled out template below by mail</a> to our pseudo-package. If you
 prefer, you can also use the <a
 href="https://packages.debian.org/search?keywords=reportbug&searchon=names&exact=1&suite=all&section=main">reportbug</a>
 tool.
@@ -53,7 +53,7 @@ tool.
 %endif
   To: submit@bugs.debian.org
 %if c.package:
-  Subject: RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } [put in ITP, ITA, RC, NMU if applicable]
+  Subject: RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } ${ c.category }
 %else:
   Subject: RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly greeter
 %endif
