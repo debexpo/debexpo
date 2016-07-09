@@ -243,6 +243,14 @@ class SponsorController(BaseController):
                 else:
                     c.category = '[' + ', '.join(category) + ']'
 
+                if qadata:
+                    if not qadata['in-debian']:
+                        c.severity = 'wishlist'
+                    else:
+                        c.severity = 'normal [important for RC bugs]'
+                else:
+                    c.severity = 'normal [important for RC bugs, wishlist for new packages]'
+
                 c.mailbody = render('/sponsor/rfs_template.mako')
 
         return render('/sponsor/rfs_howto.mako')

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 Package: sponsorship-requests
-Severity: normal [important for RC bugs, wishlist for new packages]
+Severity: ${ c.severity }
 
 Dear mentors,
 
