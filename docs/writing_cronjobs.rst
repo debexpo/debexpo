@@ -40,7 +40,7 @@ Invokation::
 The 'cronjob' attribute is an object reference which should be instantiated upon
 cronjob invokation. The 'schedule' attribute defines how often your cronjob should
 invoke your worker method. This must be a datetime.timedelta object. This is a soft
-guarantee. The Worker thread will gurantee you not to run the job more often than you
+guarantee. The Worker thread will guarantee you not to run the job more often than you
 specified, but it will not invoke it precisely for every delta. Your cronjob will not
 be invoked if another cronjob is still pending or running once your delta expires.
 Additionally the Worker thread does not execute the worker queue more often than every
