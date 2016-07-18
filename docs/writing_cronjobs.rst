@@ -4,7 +4,7 @@
 Writing cronjobs
 ================
 
-Writing cronjobs works similar to plugins. The invokation and arguments
+Writing cronjobs works similar to plugins. The invocation and arguments
 passed are different though.
 A minimal cronjob looks like this::
 
@@ -29,18 +29,18 @@ The architecture
 ================
 
 A cronjob should be subclassed from BaseCronjob. That ensure API compliant
-invokation. A worker thread runs your jobs cyclically, persistence is guaranteed
+invocation. A worker thread runs your jobs cyclically, persistence is guaranteed
 for the object runtime. Technically, you ``must`` define two objects in your
 module.
 
-Invokation::
+Invocation::
     cronjob = ImportUpload
     schedule = datetime.timedelta(seconds = 10)
 
 The 'cronjob' attribute is an object reference which should be instantiated upon
-cronjob invokation. The 'schedule' attribute defines how often your cronjob should
+cronjob invocation. The 'schedule' attribute defines how often your cronjob should
 invoke your worker method. This must be a datetime.timedelta object. This is a soft
-guarantee. The Worker thread will gurantee you not to run the job more often than you
+guarantee. The Worker thread will guarantee you not to run the job more often than you
 specified, but it will not invoke it precisely for every delta. Your cronjob will not
 be invoked if another cronjob is still pending or running once your delta expires.
 Additionally the Worker thread does not execute the worker queue more often than every
@@ -76,7 +76,7 @@ The destructor
 Similarly to the constructor, don't override the destructor. Use the `teardown`
 method instead
 
-The worker method invokation
+The worker method invocation
 ============================
 
 Implement the `invoke` method as your working horse. It will be called regularly
