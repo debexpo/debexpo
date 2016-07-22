@@ -61,6 +61,10 @@
                         _('Contact'),
                         h.url('contact')) }
                 </li>
+		<li>${ h.tags.link_to(
+                        _('Status'),
+                        h.url('status')) }
+                </li>
             </ul>
         </div><!-- end navbar -->
         <p id="breadcrumbs">
