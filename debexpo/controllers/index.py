@@ -37,6 +37,7 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import logging
+import pylons
 
 from debexpo.lib.base import BaseController, c, config, render, session
 from debexpo.lib import constants
@@ -48,6 +49,9 @@ from debexpo.model.packages import Package
 from debexpo.model.users import User
 
 from debexpo.model import meta
+from debexpo.model.cronjob_info import CronJobInfo
+from babel.dates import format_timedelta
+from glob import glob
 
 log = logging.getLogger(__name__)
 
@@ -91,3 +95,25 @@ class IndexController(BaseController):
 
         return render('/index/intro-maintainers.mako')
 
+    def status(self):
+        c.config = config
+        jobs = []
+        for job in meta.session.query(CronJobInfo):
+            status = None
+            if datetime.now() < job.last_run + timedelta(seconds=job.schedule * 2):
+                status = 'info'
+            elif datetime.now() < job.last_run + timedelta(seconds=job.schedule * 3):
+                status = 'warning'
+            else:
+                status = 'error'
+            message = format_timedelta(job.last_run - datetime.now(), add_direction=True)
+            jobs.append({
+                'name': job.name,
+                'last_run': job.last_run.ctime(),
+                'interval': format_timedelta(timedelta(seconds=job.schedule)),
+                'status': status,
+                'message': message
+            })
+        c.pending_packages = len(glob(pylons.config['debexpo.upload.incoming'] + 'pub/*.changes'))
+        c.jobs = jobs
+        return render('/index/status.mako')
