@@ -63,6 +63,7 @@ def make_map(config):
 
     map.connect('index', '/', controller='index', action='index')
     map.connect('contact', '/contact', controller='index', action='contact')
+    map.connect('status', '/status', controller='index', action='status')
     map.connect('intro-maintainers', '/intro-maintainers',
                 controller='index', action='intro_maintainers')
     map.connect('sponsors', '/sponsors', controller='sponsor', action='index')
