@@ -51,6 +51,9 @@ import datetime
 from paste.deploy import appconfig
 from debexpo.config.environment import load_environment
 
+from debexpo.model import meta
+from debexpo.model.cronjob_info import CronJobInfo
+
 log = None
 
 class Worker(object):
@@ -216,6 +219,16 @@ class Worker(object):
                     self.jobs[job]['module'].invoke()
                     self.jobs[job]['last_run'] = datetime.datetime.now()
                     log.debug("Job %s complete" % (job))
+                    cronjob = meta.session.query(CronJobInfo).filter_by(name=job).first()
+                    if cronjob:
+                        cronjob.last_run=self.jobs[job]['last_run']
+                    else:
+                        jobinfo = CronJobInfo(name=job,
+                                              last_run=self.jobs[job]['last_run'],
+                                              schedule=self.jobs[job]['schedule'].total_seconds())
+                        meta.session.add(jobinfo)
+                    meta.session.commit()
+
             time.sleep(delay)
 
 if __name__ == '__main__':
