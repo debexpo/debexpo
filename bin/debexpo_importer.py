@@ -433,6 +433,16 @@ class Importer(object):
 
         distribution = self.changes['Distribution'].lower()
         allowed_distributions = (
+            'bullseye',
+            'bullseye-backports',
+            'bullseye-backports-sloppy',
+            'bullseye-security',
+            'bullseye-updates',
+            'buster',
+            'buster-backports',
+            'buster-backports-sloppy',
+            'buster-security',
+            'buster-updates',
             'experimental',
             'jessie',
             'jessie-backports',
@@ -454,6 +464,11 @@ class Importer(object):
             'stable-backports',
             'stable-proposed-updates',
             'stable-security',
+            'stretch',
+            'stretch-backports',
+            'stretch-backports-sloppy',
+            'stretch-security',
+            'stretch-updates',
             'testing-proposed-updates',
             'testing-security',
             'unreleased',
