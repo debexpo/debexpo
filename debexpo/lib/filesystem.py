@@ -230,7 +230,18 @@ class CheckFiles(object):
         ``filename``
             File to test.
         """
-        for suffix in ['.changes', '.dsc', '.tar.gz', '.diff.gz', '.deb', '.udeb', '.tar.bz2', ".tar.xz"]:
+        for suffix in (
+            '.asc',
+            '.buildinfo',
+            '.changes',
+            '.deb',
+            '.diff.gz',
+            '.dsc',
+            '.tar.bz2',
+            '.tar.gz',
+            '.tar.xz',
+            '.udeb',
+        ):
             if filename.endswith(suffix):
                 return True
 
