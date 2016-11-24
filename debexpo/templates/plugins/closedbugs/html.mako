@@ -13,11 +13,11 @@ Errors:
 <ul class="bugs-closed">
 %for package in o.rich_data["bugs"]:
 <li>
-<a href="http://bugs.debian.org/${package}">${package}</a>:
+<a href="https://bugs.debian.org/${package}">${package}</a>:
 <ul>
 %for bugnum, title, severity in o.rich_data["bugs"][package]:
 <li>
-<a href="http://bugs.debian.org/${bugnum}">#${bugnum}</a> (${severity}): ${title}
+<a href="https://bugs.debian.org/${bugnum}">#${bugnum}</a> (${severity}): ${title}
 </li>
 %endfor
 </ul>

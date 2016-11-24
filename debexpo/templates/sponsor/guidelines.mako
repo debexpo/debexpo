@@ -35,7 +35,7 @@ To help you find a sponsor interested in your package, they can formulate sponso
     </tr>
     <tr>
         <td>
-            Debian allows several workflows and best practices to co-exist with each other. All packages <strong>must comply to the <a href="http://www.debian.org/doc/debian-policy/">Debian policy</a></strong> as a bare essential minimum and although some workflows and best practices beyond that are optional it is nonetheless mandatory <em>for you</em> to ask someone to sponsor your upload.
+            Debian allows several workflows and best practices to co-exist with each other. All packages <strong>must comply to the <a href="https://www.debian.org/doc/debian-policy/">Debian policy</a></strong> as a bare essential minimum and although some workflows and best practices beyond that are optional it is nonetheless mandatory <em>for you</em> to ask someone to sponsor your upload.
         </td>
         <td>
             Some sponsors prefer to only upload packages from people who fulfill certain social criteria. Please don't ask an uploader to sponsor your request if you don't match them.

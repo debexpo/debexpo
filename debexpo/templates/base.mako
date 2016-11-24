@@ -18,7 +18,7 @@
         <div id="header">
         <div id="upperheader">
             <div id="logo">
-		${ h.tags.link_to(  h.tags.image( c.config['debexpo.logo'], c.config['debexpo.sitename']) , 'http://www.debian.org') }
+		${ h.tags.link_to(  h.tags.image( c.config['debexpo.logo'], c.config['debexpo.sitename']) , 'https://www.debian.org') }
             </div><!-- end logo -->
 	    <p class="section">${ h.tags.link_to( c.config['debexpo.sitetitle'], h.url('index')) }</p>
             <div id="searchbox">
@@ -101,7 +101,7 @@
         <div id="footer">
 	<p>© 2008-2011 ${c.config['debexpo.sitename']}
 	-
-    Hosting and hardware provided by <a href="http://www.wavecon.de">Wavecon</a>
+    Hosting and hardware provided by <a href="https://www.wavecon.de">Wavecon</a>
     -
     <a href="https://alioth.debian.org/projects/debexpo/">${ _('Source code and bugs')}</a>
 	-

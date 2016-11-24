@@ -11,7 +11,7 @@
 % for pkginfo in c.package.package_versions[0].package_info:
     % if pkginfo.data == 'Package is in Debian':
 
-        (<a href="http://packages.qa.debian.org/?src=${ c.package.name | u }">PTS</a>)
+        (<a href="https://tracker.debian.org/${ c.package.name | u }">PTS</a>)
 
     % endif
 % endfor
@@ -25,7 +25,7 @@
 
 % if c.config['debexpo.debian_specific'] == 'true':
 
-    (<a href="http://qa.debian.org/developer.php?login=${c.package.user.email | u }">Debian QA page</a>)
+    (<a href="https://qa.debian.org/developer.php?login=${c.package.user.email | u }">Debian QA page</a>)
 
 % endif
 
@@ -136,7 +136,7 @@
 
         % for bug in package_version.closes.split():
 
-      <a href="http://bugs.debian.org/${ bug }">${ bug }</a>
+      <a href="https://bugs.debian.org/${ bug }">${ bug }</a>
 
         % endfor
       </td>

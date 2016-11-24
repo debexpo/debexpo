@@ -11,23 +11,23 @@ ${ c.config['debexpo.sitename'] } is a rather complex service. Things can go wro
     <p>If you want to learn how to create a proper Debian package you can find some interesting documentation to start with:</p>
 
     <dl>
-        <dt><a href="http://www.debian.org/doc/debian-policy/">The Debian Policy Manual</a></dt>
+        <dt><a href="https://www.debian.org/doc/debian-policy/">The Debian Policy Manual</a></dt>
         <dd>A must read resource to learn about technical specification and technical requirements of Debian packages.</dd>
-        <dt><a href="http://www.debian.org/doc/manuals/maint-guide/">New Maintainer's Guide</a></dt>
+        <dt><a href="https://www.debian.org/doc/manuals/maint-guide/">New Maintainer's Guide</a></dt>
         <dd>A must read resource to learn basics of Debian source packages</dd>
-        <dt><a href="http://www.debian.org/doc/manuals/packaging-tutorial/packaging-tutorial">Lucas Nussbaum's packaging tutorial</a></dt>
+        <dt><a href="https://www.debian.org/doc/manuals/packaging-tutorial/packaging-tutorial">Lucas Nussbaum's packaging tutorial</a></dt>
         <dd>A quick introduction to Debian packaging</dd>
-        <dt><a href="http://www.debian.org/doc/manuals/developers-reference/">Developer's Reference</a></dt>
+        <dt><a href="https://www.debian.org/doc/manuals/developers-reference/">Developer's Reference</a></dt>
         <dd>A comprehensive manual describing typical workflows and best practices related to Debian packages</dd>
-        <dt><a href="http://wiki.debian.org/DebianMentorsFaq">Debian Mentors FAQ</a> (Debian Wiki)</dt>
+        <dt><a href="https://wiki.debian.org/DebianMentorsFaq">Debian Mentors FAQ</a> (Debian Wiki)</dt>
         <dd>Another valuable resource to learn about common terms and workflows related to Debian</dd>
     </dl>
 
 <h3>What is the Debian policy?</h3>
 
-<p>Every package must comply with the <a href="http://www.debian.org/doc/debian-policy/ch-scope.html">Debian policy</a> before it can enter the Debian distribution. This is a document which describes the structure and contents of the Debian archive and several design issues of the operating system, as well as technical requirements that each package must satisfy to be included in the distribution.</p>
+<p>Every package must comply with the <a href="https://www.debian.org/doc/debian-policy/ch-scope.html">Debian policy</a> before it can enter the Debian distribution. This is a document which describes the structure and contents of the Debian archive and several design issues of the operating system, as well as technical requirements that each package must satisfy to be included in the distribution.</p>
 
-<p>The policy is not a tutorial. Its a technical manual which specifies normative requirements of packages. Read it to learn package specifications. If you don't know how to package something for Debian, please read additionally the <a href="http://www.debian.org/doc/manuals/maint-guide/">New Maintainer's Guide</a>.</p>
+<p>The policy is not a tutorial. Its a technical manual which specifies normative requirements of packages. Read it to learn package specifications. If you don't know how to package something for Debian, please read additionally the <a href="https://www.debian.org/doc/manuals/maint-guide/">New Maintainer's Guide</a>.</p>
 
 <h3>Is my package technically okay?</h3>
 
@@ -35,9 +35,9 @@ ${ c.config['debexpo.sitename'] } is a rather complex service. Things can go wro
 
 <h3>What is Lintian?</h3>
 
-<p>Lintian is a Debian package checker (and available as <a href="http://packages.debian.org/lintian">Debian package</a> so you can run it yourself). It can be used to check binary and source packages for compliance with the Debian policy and for other common packaging errors.</p>
+<p>Lintian is a Debian package checker (and available as <a href="https://packages.debian.org/lintian">Debian package</a> so you can run it yourself). It can be used to check binary and source packages for compliance with the Debian policy and for other common packaging errors.</p>
 
-<p>Packaging for Debian is rather complex because one has to consider hundreds of guidelines to make the package "policy compliant". Lintian tries to address this issue by providing an automated static analysis framework. You can learn more about Lintian in the <a href="http://lintian.debian.org/manual/index.html">Lintian User's Manual</a>. </p>
+<p>Packaging for Debian is rather complex because one has to consider hundreds of guidelines to make the package "policy compliant". Lintian tries to address this issue by providing an automated static analysis framework. You can learn more about Lintian in the <a href="https://lintian.debian.org/manual/index.html">Lintian User's Manual</a>. </p>
 
 <h2>Your Account</h2>
 

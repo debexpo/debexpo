@@ -14,7 +14,7 @@ def decode_severity(s):
 
 def tag_to_a(tag):
     """Return a link to the lintian tag description"""
-    return '<a href="http://lintian.debian.org/tags/%s.html">%s</a>' % (tag, tag)
+    return '<a href="https://lintian.debian.org/tags/%s.html">%s</a>' % (tag, tag)
 
 def severity_key(x):
     """Key to sort lintian severities"""

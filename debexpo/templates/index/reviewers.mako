@@ -21,9 +21,9 @@
 
 <ul>
     <li>Verify Lintian outputs: Did Lintian miss something, are fixes semantically correct?</li>
-    <li>Does the package satisfy <a href="http://www.debian.org/doc/manuals/developers-reference/best-pkging-practices.html">Debian's best practices</a> for packages?</li>
+    <li>Does the package satisfy <a href="https://www.debian.org/doc/manuals/developers-reference/best-pkging-practices.html">Debian's best practices</a> for packages?</li>
     <li>Does the package correctly declare dependencies as defined in the policy?</li>
-    <li>Does the package meet the <a href="http://www.debian.org/social_contract">DFSG</a>? If yes, is the copyright file up to date and correct?</li>
+    <li>Does the package meet the <a href="https://www.debian.org/social_contract">DFSG</a>? If yes, is the copyright file up to date and correct?</li>
     <li>Do the maintainer scripts supplied with the package look robust, idempotent and useful?</li>
     <li>Is there a watch file? If yes, does it work?</li>
     <li>Can you build the package in a clean build chroot?</li>

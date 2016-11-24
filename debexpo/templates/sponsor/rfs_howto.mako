@@ -11,20 +11,20 @@ package.</p>
 <h2>Asking for Sponsorship</h2>
 
 <p>In general sponsor requests should be handled through the <a
-href="http://www.debian.org/Bugs/">Debian Bug Tracking System</a>. Please make
+href="https://www.debian.org/Bugs/">Debian Bug Tracking System</a>. Please make
 sure both reports and comments are sent to the bug
 report (<em>nnn@bugs.debian.org</em>) <strong>only</strong>. A copy is going to be sent to the
 <em>debian-mentors</em> mailing list automatically by the bug tracker.</p>
 
 <p>Once a source package has been prepared and made available (for example by
 uploading it to this site) file a new bug report against the <a
-href="http://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=sponsorship-requests"><em>sponsorship-requests</em></a>
+href="https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=sponsorship-requests"><em>sponsorship-requests</em></a>
 pseudo-package by using the template below.</p>
 
 
 <p>You might not receive a reply to your request if you do not
 subscribe to the debian-mentors mailing list or to your sponsoring-requests
-bug. You can <a href="http://lists.debian.org/debian-mentors"> subscribe to the
+bug. You can <a href="https://lists.debian.org/debian-mentors"> subscribe to the
 mailing list</a> and follow simple steps to confirm
 your subscription request. It can also take time for sponsors to look over the
 requests, so please do not give up quickly and keep a watch over the mailing
@@ -40,7 +40,7 @@ list. You can browser other packages and give other people feedback while you ar
 <p>
 Send the filled out template below by mail to our pseudo-package. If you
 prefer, you can also use the <a
-href="http://packages.debian.org/search?keywords=reportbug&searchon=names&exact=1&suite=all&section=main">reportbug</a>
+href="https://packages.debian.org/search?keywords=reportbug&searchon=names&exact=1&suite=all&section=main">reportbug</a>
 tool.
 </p>
 
@@ -116,7 +116,7 @@ tool.
   dget -x ${ c.config['debexpo.server'] }/debian/pool/main/h/hello/hello_3.1-4.dsc
 %endif
 
-  More information about hello can be obtained from http://www.example.com.
+  More information about hello can be obtained from https://www.example.com.
 
   Changes since the last upload:
 
@@ -148,11 +148,11 @@ The meaning of this shortcuts is denoted below, in case you are unsure:
     <dt>ITA</dt>
         <dd><tt>ITA</tt> stands for <em>Intend to adopt</em>. These are packages which were orphaned in the past and you intend to adopt.</dd>
     <dt>ITP</dt>
-        <dd><tt>ITP</tt> stands for <em>Intend to package</em>. These are packages which not exist in Debian yet. Such packages need to go through <tt>NEW</tt>. That is the <a href="http://ftp-master.debian.org/new.html">queue on ftp-master</a> for packages uploaded for the first time, which need to be reviewed first. This includes renames, packages moving between areas, and source-packages that build new binary packages.</dd>
+        <dd><tt>ITP</tt> stands for <em>Intend to package</em>. These are packages which not exist in Debian yet. Such packages need to go through <tt>NEW</tt>. That is the <a href="https://ftp-master.debian.org/new.html">queue on ftp-master</a> for packages uploaded for the first time, which need to be reviewed first. This includes renames, packages moving between areas, and source-packages that build new binary packages.</dd>
     <dt>QA</dt>
-        <dd>You upload is a <tt>QA</tt> upload. Please refer to the respective section in the <a href="http://www.debian.org/doc/manuals/developers-reference/pkgs.html#nmu-qa-upload">developer's reference</a> to learn about <tt>QA</tt> uploads.</dd>
+        <dd>You upload is a <tt>QA</tt> upload. Please refer to the respective section in the <a href="https://www.debian.org/doc/manuals/developers-reference/pkgs.html#nmu-qa-upload">developer's reference</a> to learn about <tt>QA</tt> uploads.</dd>
     <dt>NMU</dt>
-        <dd>This is short for "Non-Maintainer Upload"; a version of a package that is not uploaded by the official Maintainer of a package, but rather by you. For <tt>NMU</tt>s special rules apply. Please see the <a href="http://www.debian.org/doc/manuals/developers-reference/pkgs.html#nmu">developer's reference</a> again.</dd>
+        <dd>This is short for "Non-Maintainer Upload"; a version of a package that is not uploaded by the official Maintainer of a package, but rather by you. For <tt>NMU</tt>s special rules apply. Please see the <a href="https://www.debian.org/doc/manuals/developers-reference/pkgs.html#nmu">developer's reference</a> again.</dd>
     <dt>RC</dt>
         <dd>This is short for "Release-Critical". That is a class of bugs which are particularly important. Use this indication if your request fixes such <tt>RC</tt>-bugs.</dd>
 </dl>

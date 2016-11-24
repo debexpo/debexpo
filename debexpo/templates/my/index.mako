@@ -145,7 +145,7 @@
     % else:
 
         <tr>
-          <td><a href="http://wiki.debian.org/Maintainers">${ _('Debian Maintainer') }</a>:</td>
+          <td><a href="https://wiki.debian.org/Maintainers">${ _('Debian Maintainer') }</a>:</td>
           <td>${ h.html.tags.checkbox('status', checked=c.debian_maintainer) }</td>
         </tr>
 
