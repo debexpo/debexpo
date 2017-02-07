@@ -7,7 +7,7 @@
 
 <p><strong>${ _('Site email') }</strong>: <a href="mailto: ${ c.config['debexpo.email'] }">${ c.config['debexpo.email'] }</a>.</p>
 
-<p>Currently Asheesh Laroia (<em>paulproteus</em>), Paul Wise (<em>pabs</em>) and Arno Töll (<em>daemonkeeper</em>) are maintaining this service.</p>
+<p>Currently Asheesh Laroia (<em>paulproteus</em>), Paul Wise (<em>pabs</em>), Mattia Rizzolo (<em>mattia</em>, IRC: <em>mapreri</em>) and Arno Töll (<em>daemonkeeper</em>) are maintaining this service.</p>
 
 <h1>Development</h1>
 
