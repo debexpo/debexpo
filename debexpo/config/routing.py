@@ -96,7 +96,6 @@ def make_map(config):
                 action='index')
 
     map.connect('/upload/{filename}', controller='upload', action='index')
-    map.connect('/soap.wsdl', controller='soap')
 
     map.connect('/{controller}/{action}')
     map.connect('/{controller}/{action}/{id}')
