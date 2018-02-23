@@ -40,6 +40,9 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner, Copyright © 2011 Arno Töll'
 __license__ = 'MIT'
 
+import logging
+log = logging.getLogger(__name__)
+
 from pylons import tmpl_context as c, cache, config, app_globals, request, \
     response, session, url
 from pylons.controllers import WSGIController
@@ -112,9 +115,19 @@ class BaseController(WSGIController):
 
     def __before__(self):
         # Set language according to what the browser requested
-        user_agent_language = request.languages[0][0:2]
-        if user_agent_language in app_globals.supported_languages:
-            set_lang(user_agent_language)
+        try:
+            languages = request.languages
+        except AttributeError:
+            log.debug("Working around Pylons request.languages bug")
+            languages = []
+
+        for ua_lang in languages:
+            log.debug("Trying user agent language %s" % ua_lang)
+            # only get the main language code (fr_FR -> fr)
+            ua_lang = ua_lang[0:2]
+            if ua_lang in app_globals.supported_languages:
+                set_lang(ua_lang)
+                break
         else:
             set_lang(app_globals.default_language)
 
