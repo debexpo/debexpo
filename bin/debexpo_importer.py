@@ -595,11 +595,6 @@ class Importer(object):
 
         log.debug('Done')
 
-        data = package_version.publish_data
-        data['uploader'] = self.changes["Changed-By"]
-
-        from debexpo.message import publish
-        publish(topic="package.upload", msg=data)
 
 def main():
     parser = OptionParser(usage="%prog -c FILE -i FILE [--skip-email] [--skip-gpg-check]")
