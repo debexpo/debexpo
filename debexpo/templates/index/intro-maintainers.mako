@@ -81,7 +81,7 @@ fqdn = ${ config['debexpo.sitename'] }
 login = anonymous
 progress_indicator = 2
 passive_ftp = 1
-incoming = /
+incoming = /pub/UploadQueue/
 method = ftp
 allow_unsigned_uploads = 0
 # Allow uploads for UNRELEASED packages
