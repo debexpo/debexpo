@@ -37,6 +37,7 @@ __license__ = 'MIT'
 from debexpo.cronjobs import BaseCronjob
 
 import glob
+import itertools
 import os
 import os.path
 import subprocess
@@ -72,16 +73,20 @@ class ImportUpload(BaseCronjob):
             return
 
         # 1) Process uploads
-        for file in glob.glob( os.path.join(os.path.join(self.config['debexpo.upload.incoming'], "pub"), '*.changes') ):
+        base_path = os.path.join(self.config['debexpo.upload.incoming'], "pub")
+        directories = [base_path, os.path.join(base_path, 'pub/UploadQueue')]
+        for changes_file in sum((glob.glob(os.path.join(directory, '*.changes')) for directory in directories), []):
             try:
-                changes = Changes(filename=file)
+                parsed_changes = Changes(filename=changes_file)
             except:
-                self.log.error('Invalid changes file: %s' % (file))
+                self.log.exception('Invalid changes file: %s' % changes_file)
                 continue
 
             try:
-                for filename in changes.get_files() + [ changes.get_filename(), ]:
-                    source_file = os.path.join(os.path.join(self.config['debexpo.upload.incoming'], "pub"), filename)
+                directory = os.path.dirname(changes_file)
+                uploaded_files = parsed_changes.get_files() + [parsed_changes.get_filename()]
+                for filename in uploaded_files:
+                    source_file = os.path.join(directory, filename)
                     destination_file = os.path.join(self.config['debexpo.upload.incoming'], filename)
 
                     if not os.path.exists(source_file):
@@ -95,15 +100,15 @@ class ImportUpload(BaseCronjob):
             except NotCompleteUpload:
                 continue
 
-            self.log.info("Import upload: %s" % (file))
-            command = [ self.config['debexpo.importer'], '-i', self.config['global_conf']['__file__'], '-c', changes.get_filename() ]
+            self.log.info("Import upload: %s" % (changes_file))
+            command = [ self.config['debexpo.importer'], '-i', self.config['global_conf']['__file__'], '-c', parsed_changes.get_filename() ]
             self.log.debug("Executing: %s" % (" ".join(command)))
             proc = subprocess.Popen(command, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             (istdout, istderr) = proc.communicate()
             if proc.returncode != 0:
-                self.log.critical("Importer failed to import package %s [err=%d]." % (file, proc.returncode))
+                self.log.critical("Importer failed to import package %s [err=%d]." % (changes_file, proc.returncode))
                 self.log.debug("Output was\n%s\n%s" % (istdout,istderr))
-            for filename in changes.get_files() + [ changes.get_filename(), ]:
+            for filename in uploaded_files:
                 destination_file = os.path.join(self.config['debexpo.upload.incoming'], filename)
                 if os.path.exists(destination_file):
                     self.log.debug("Remove stale file %s - the importer probably crashed" % (destination_file))
