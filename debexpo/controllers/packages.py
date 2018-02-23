@@ -41,7 +41,6 @@ import logging
 import datetime
 
 import apt_pkg
-from sqlalchemy import exceptions
 from pylons.i18n import get_lang
 
 from debexpo.lib.base import *

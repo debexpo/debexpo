@@ -45,7 +45,7 @@ from stat import *
 import pylons
 import email.utils
 
-from sqlalchemy import exceptions
+from sqlalchemy import exc as exceptions
 
 # Horrible imports
 from debexpo.model import meta
