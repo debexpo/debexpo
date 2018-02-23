@@ -572,6 +572,7 @@ class Importer(object):
         for file in toinstall:
             log.debug("Installing new file %s" % (file))
             shutil.move(file, os.path.join(destdir, file))
+            os.chmod(os.path.join(destdir, file), 0o644)
 
         self._remove_temporary_files()
         # Create the database rows
