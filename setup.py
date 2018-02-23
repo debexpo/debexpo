@@ -13,7 +13,7 @@ setup(
     #author_email='',
     #url='',
     install_requires=[
-        "Pylons==1.0.1",
+        "Pylons==1.0.2",
         "SQLAlchemy>=0.6",
         "Webhelpers>=0.6.1",
         "Babel>=0.9.4",
