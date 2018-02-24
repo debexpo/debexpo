@@ -2,7 +2,7 @@
 #
 #   index.py — index controller
 #
-#   This file is part of debexpo - https://alioth.debian.org/projects/debexpo/
+#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2011 Arno Töll <debian@toell.net>
 #

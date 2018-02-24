@@ -2,7 +2,7 @@
 #
 #   validators.py — formencode validators for debexpo
 #
-#   This file is part of debexpo - https://alioth.debian.org/projects/debexpo/
+#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #

@@ -2,7 +2,7 @@
 #
 #   debexpo-importer — executable script to import new packages
 #
-#   This file is part of debexpo - https://alioth.debian.org/projects/debexpo/
+#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2011 Asheesh Laroia <paulproteus@debian.org>
 #

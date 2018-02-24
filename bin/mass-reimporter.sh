@@ -2,7 +2,7 @@
 #
 #   mass-reimporter.sh - Reimport all the packages from a pool into debexpo
 #
-#   This file is part of debexpo - https://alioth.debian.org/projects/debexpo/
+#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2012 Nicolas Dandrimont <nicolas.dandrimont@crans.org>
 #
