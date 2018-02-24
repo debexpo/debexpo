@@ -35,7 +35,7 @@ Holds the watchfile plugin.
 __author__ = 'Jonny Lamb'
 __copyright__ = ', '.join([
         'Copyright © 2008 Jonny Lamb',
-        'Copyright © 2012 Nicolas Dandrimont',
+        'Copyright © 2012-2018 Nicolas Dandrimont',
         ])
 __license__ = 'MIT'
 
@@ -48,6 +48,7 @@ from debexpo.plugins import BasePlugin
 
 log = logging.getLogger(__name__)
 
+
 class WatchFilePlugin(BasePlugin):
 
     def _watch_file_present(self):
@@ -56,7 +57,8 @@ class WatchFilePlugin(BasePlugin):
     def _run_uscan(self):
         if not hasattr(self, 'status') and not hasattr(self, 'output'):
             os.chdir('extracted')
-            call = subprocess.Popen(["uscan", "--verbose", '--report'], stdout=subprocess.PIPE)
+            call = subprocess.Popen(["uscan", "--verbose", '--report'],
+                                    stdout=subprocess.PIPE)
             (self.output, _) = call.communicate()
             self.status = call.returncode
             os.chdir('..')
@@ -73,15 +75,16 @@ class WatchFilePlugin(BasePlugin):
         data = {
             "watch-file-present": False,
             }
-        
-        log.debug('Checking to see whether there is a watch file in the package')
+
+        log.debug('Checking if the package contains a watch file')
 
         if self._watch_file_present():
             log.debug('Watch file present')
             data["watch-file-present"] = True
         else:
             log.warning('Watch file not present')
-            self.failed('Watch file is not present', data, constants.PLUGIN_SEVERITY_WARNING)
+            self.failed('Watch file is not present', data,
+                        constants.PLUGIN_SEVERITY_WARNING)
             return
 
         if self._watch_file_works():
@@ -92,7 +95,8 @@ class WatchFilePlugin(BasePlugin):
             log.warning('Watch file does not work')
             data["watch-file-works"] = False
             data["uscan-output"] = self.output
-            self.failed("A watch file is present but doesn't work", data, constants.PLUGIN_SEVERITY_WARNING)
+            self.failed("A watch file is present but doesn't work", data,
+                        constants.PLUGIN_SEVERITY_WARNING)
             return
 
         log.debug('Looking whether there is a new upstream version')
@@ -100,11 +104,14 @@ class WatchFilePlugin(BasePlugin):
         if self.status == 1:
             log.debug('Package is the latest upstream version')
             data["latest-upstream"] = True
-            self.passed('Package is the latest upstream version', data, constants.PLUGIN_SEVERITY_INFO)
+            self.passed('Package is the latest upstream version', data,
+                        constants.PLUGIN_SEVERITY_INFO)
         else:
             log.warning('Package is not the latest upstream version')
             data["latest-upstream"] = False
-            self.failed('Package is not the latest upstream version', data, constants.PLUGIN_SEVERITY_WARNING)
+            self.failed('Package is not the latest upstream version', data,
+                        constants.PLUGIN_SEVERITY_WARNING)
+
 
 plugin = WatchFilePlugin
 
