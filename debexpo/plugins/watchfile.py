@@ -63,7 +63,7 @@ class WatchFilePlugin(BasePlugin):
 
     def _watch_file_works(self):
         self._run_uscan()
-        return (self.output.find('Newest version on remote site is') != -1)
+        return 'Newest version' in self.output
 
     def test_uscan(self):
         """
