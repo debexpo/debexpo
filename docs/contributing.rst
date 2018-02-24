@@ -7,7 +7,7 @@ Contributing
 Help is always welcome in debexpo. There are also a number of ways
 to contribute:
 
-* `Fixing bugs <http://debexpo.workaround.org/trac/report/1>`_
+* `Fixing bugs <https://salsa.debian.org/mentors.debian.net-team/debexpo/issues/>`_
 * Testing the software and filing bugs
 * Filing wishlist bugs
 * Implementing new features
@@ -18,13 +18,14 @@ Getting the source
 
 You can clone the Git repository using::
 
-    git clone git://debexpo.workaround.org/debexpo.git
+    git clone https://salsa.debian.org/mentors.debian.net-team/debexpo.git
 
 Where to send patches
 =====================
 
-You should send patches or any other feedback and information to the
-`debexpo-devel <http://workaround.org/cgi-bin/mailman/listinfo/debexpo-devel>`_
-mailing list.
+You should send patches either as `merge request <https://salsa.debian.org/mentors.debian.net-team/debexpo/merge_requests>`_
+(preferred) or directly via email to us.
+
+Send any other feedback and information reuqest to support@mentors.debian.net.
 
 We also welcome Git branches.
