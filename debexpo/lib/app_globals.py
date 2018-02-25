@@ -59,6 +59,7 @@ class Globals(object):
             'en': 'English',
             'de': 'Deutsch',
             'it': 'Italiano',
+            'ja': '日本語',
             }
         self.default_language = 'en'
 

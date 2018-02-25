@@ -1,0 +1,453 @@
+# Translations template for debexpo.
+# Copyright (C) 2008 ORGANIZATION
+# This file is distributed under the same license as the debexpo project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: debexpo 0.0.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2008-08-04 22:47+0200\n"
+"PO-Revision-Date: 2011-08-04 20:33+0900\n"
+"Last-Translator: KURASHIKI Satoru <lurdan@gmail.com>\n"
+"Language-Team: Japanese <debian-doc@debian.or.jp>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.1\n"
+
+#: debexpo/controllers/login.py:73
+msgid "Invalid email or password"
+msgstr "メールアドレスもしくはパスワードが無効です"
+
+#: debexpo/controllers/package.py:90
+msgid "Unreviewed"
+msgstr "未レビュー"
+
+#: debexpo/controllers/package.py:91 debexpo/templates/package/index.mako:118
+msgid "Needs work"
+msgstr "作業が必要"
+
+#: debexpo/controllers/package.py:92 debexpo/templates/package/index.mako:122
+msgid "Perfect"
+msgstr ""
+
+#: debexpo/controllers/packages.py:95
+msgid "Yes"
+msgstr "はい"
+
+#: debexpo/controllers/packages.py:96
+msgid "No"
+msgstr "いいえ"
+
+#: debexpo/controllers/packages.py:97
+msgid "Unknown"
+msgstr "不明"
+
+#: debexpo/lib/validators.py:66
+msgid "Invalid GPG key"
+msgstr "GPG 鍵が無効です"
+
+#: debexpo/lib/validators.py:83
+msgid "Incorrect password"
+msgstr "パスワードが間違っています"
+
+#: debexpo/lib/validators.py:119
+msgid "A user with this email address is already registered on the system"
+msgstr "このメールアドレスをもったユーザは、すでにこのシステムに登録されています。"
+
+#: debexpo/lib/validators.py:140
+msgid "You must use your debian.org email address to register"
+msgstr "登録するには、debian.org のメールアドレスを使ってください"
+
+#: debexpo/templates/base.mako:31
+msgid "Start page"
+msgstr "スタートページ"
+
+#: debexpo/templates/base.mako:35
+msgid "News"
+msgstr "ニュース"
+
+#: debexpo/templates/base.mako:45 debexpo/templates/base.mako:67
+msgid "Introduction"
+msgstr "はじめに"
+
+#: debexpo/templates/base.mako:49 debexpo/templates/base.mako:71
+msgid "Sign me up"
+msgstr "サインアップ"
+
+#: debexpo/templates/base.mako:53 debexpo/templates/base.mako:75
+#: debexpo/templates/my/index.mako:4
+msgid "My account"
+msgstr "自分のアカウント"
+
+#: debexpo/templates/base.mako:57
+msgid "My packages"
+msgstr "自分のパッケージ"
+
+#: debexpo/templates/base.mako:85
+msgid "Q & A"
+msgstr "Q & A"
+
+#: debexpo/templates/base.mako:89
+msgid "Contact"
+msgstr "連絡先"
+
+#: debexpo/templates/email/importer_fail_admin.mako:5
+msgid "Failure in importer"
+msgstr "インポート処理に失敗"
+
+#: debexpo/templates/email/importer_fail_admin.mako:7
+msgid ""
+"Hello,\n"
+"\n"
+"There was a failure in importing a package into debexpo. The problem\n"
+"appears to be debexpo itself. The error message was:"
+msgstr ""
+"\n"
+"debexpo にパッケージをインポートすることができませんでした。debexpo 自体に\n"
+"問題があるようです。エラーメッセージはこうなっていました："
+
+#: debexpo/templates/email/importer_fail_admin.mako:14
+msgid "This message can be found in the logs."
+msgstr "このメッセージはログに記録されています。"
+
+#: debexpo/templates/email/importer_fail_admin.mako:16
+#: debexpo/templates/email/importer_fail_maintainer.mako:16
+#: debexpo/templates/email/register_activate.mako:14
+msgid "Thanks,"
+msgstr " "
+
+#: debexpo/templates/email/importer_fail_maintainer.mako:5
+#, python-format
+msgid "Failed to import %s"
+msgstr "%s のインポートに失敗しました"
+
+#: debexpo/templates/email/importer_fail_maintainer.mako:7
+#, python-format
+msgid ""
+"Hello,\n"
+"\n"
+"There was a failure in importing your package \"%s\" into\n"
+"the repository. The problem appears to be in the repository software\n"
+"and not your package.\n"
+"\n"
+"Sorry for the inconvenience. The administrator has been notified.\n"
+"Please try again soon."
+msgstr ""
+"\n"
+"リポジトリに、あなたの \"%s\" パッケージをインポートすることができませんでした。あなたの\n"
+"パッケージではなく、リポジトリのソフトに問題があるようです。\n"
+"\n"
+"ご不便をおかけしてすみません。管理者には連絡がいっています。\n"
+"しばらくしてからもう一度試してみてください。"
+
+#: debexpo/templates/email/register_activate.mako:5
+msgid "Please activate your account"
+msgstr "アカウントを有効化してください"
+
+#: debexpo/templates/email/register_activate.mako:7
+msgid ""
+"Hello,\n"
+"\n"
+"Please activate your account by visiting the following address\n"
+"in your web-browser:"
+msgstr "\n以下のアドレスを Web ブラウザで開いて、アカウントを有効化してください："
+
+#: debexpo/templates/login/index.mako:4 debexpo/templates/login/index.mako:7
+msgid "Login"
+msgstr "ログイン"
+
+#: debexpo/templates/login/index.mako:9
+msgid "Please login to continue"
+msgstr "続けるにはログインしてください"
+
+#: debexpo/templates/login/index.mako:19 debexpo/templates/my/index.mako:19
+#: debexpo/templates/register/maintainer.mako:18
+#: debexpo/templates/register/sponsor.mako:18
+msgid "E-mail"
+msgstr "メールアドレス"
+
+#: debexpo/templates/login/index.mako:24
+#: debexpo/templates/register/maintainer.mako:23
+#: debexpo/templates/register/sponsor.mako:23
+msgid "Password"
+msgstr "パスワード"
+
+#: debexpo/templates/login/index.mako:29 debexpo/templates/my/index.mako:24
+#: debexpo/templates/my/index.mako:64 debexpo/templates/my/index.mako:96
+#: debexpo/templates/my/index.mako:152
+#: debexpo/templates/register/maintainer.mako:33
+#: debexpo/templates/register/sponsor.mako:33
+msgid "Submit"
+msgstr "登録"
+
+#: debexpo/templates/my/index.mako:7
+msgid "Change details"
+msgstr "詳細を変更する"
+
+#: debexpo/templates/my/index.mako:14 debexpo/templates/package/index.mako:8
+msgid "Name"
+msgstr "名前"
+
+#: debexpo/templates/my/index.mako:33
+msgid "Change GPG key"
+msgstr "GPG 鍵を変更する"
+
+#: debexpo/templates/my/index.mako:43
+msgid "Current GPG key"
+msgstr "現在の GPG 鍵"
+
+#: debexpo/templates/my/index.mako:48
+msgid "Delete current key"
+msgstr "現在の鍵を削除する"
+
+#: debexpo/templates/my/index.mako:59
+msgid "GPG key"
+msgstr "GPG 鍵"
+
+#: debexpo/templates/my/index.mako:74
+msgid "Change password"
+msgstr "パスワードを変更する"
+
+#: debexpo/templates/my/index.mako:81
+msgid "Current password"
+msgstr "現在のパスワード"
+
+#: debexpo/templates/my/index.mako:86
+msgid "New password"
+msgstr "新しいパスワード"
+
+#: debexpo/templates/my/index.mako:91
+msgid "Confirm new password"
+msgstr "新しいパスワードを確認する"
+
+#: debexpo/templates/my/index.mako:105
+msgid "Change other details"
+msgstr "その他の詳細を変更"
+
+#: debexpo/templates/my/index.mako:112
+msgid "Country"
+msgstr "国"
+
+#: debexpo/templates/my/index.mako:117
+msgid "IRC nickname"
+msgstr "IRC のニックネーム"
+
+#: debexpo/templates/my/index.mako:122
+msgid "Jabber address"
+msgstr "Jabber アドレス"
+
+#: debexpo/templates/my/index.mako:131
+msgid "Debian status"
+msgstr "Debian での状況"
+
+#: debexpo/templates/my/index.mako:132
+msgid "Debian Developer"
+msgstr "Debian 開発者"
+
+#: debexpo/templates/my/index.mako:139
+msgid "Debian Maintainer"
+msgstr "Debian メンテナ"
+
+#: debexpo/templates/package/index.mako:4
+#, python-format
+msgid "Details about package \"%s\""
+msgstr "\"%s\" パッケージについての詳細"
+
+#: debexpo/templates/package/index.mako:13 debexpo/templates/packages/list.mako:9
+msgid "Uploader"
+msgstr ""
+
+#: debexpo/templates/package/index.mako:26 debexpo/templates/packages/list.mako:7
+msgid "Description"
+msgstr "説明"
+
+#: debexpo/templates/package/index.mako:32
+msgid "Package versions"
+msgstr "パッケージバージョン"
+
+#: debexpo/templates/package/index.mako:41 debexpo/templates/packages/list.mako:8
+msgid "Version"
+msgstr "バージョン"
+
+#: debexpo/templates/package/index.mako:46
+msgid "View RFS template"
+msgstr "RFS テンプレートを見る"
+
+#: debexpo/templates/package/index.mako:54
+msgid "Uploaded"
+msgstr "アップロード済"
+
+#: debexpo/templates/package/index.mako:59
+msgid "Debian Source Control file URL"
+msgstr "Debian ソースコントロールファイルの URL"
+
+#: debexpo/templates/package/index.mako:76
+msgid "Section"
+msgstr "セクション"
+
+#: debexpo/templates/package/index.mako:81
+msgid "Priority"
+msgstr "優先度"
+
+#: debexpo/templates/package/index.mako:92
+msgid "Closes bugs"
+msgstr "クローズするバグ"
+
+#: debexpo/templates/package/index.mako:130
+msgid "Package has been uploaded to Debian"
+msgstr "パッケージは Debian にアップロードされました"
+
+#: debexpo/templates/package/index.mako:143
+msgid "No comments"
+msgstr "コメントなし"
+
+#: debexpo/templates/package/index.mako:160
+msgid "Uploaded to Debian"
+msgstr "Debian へアップロード済"
+
+#: debexpo/templates/package/rfs.mako:4
+#, python-format
+msgid "Template for an RFS for \"%s\""
+msgstr "\"%s\" 用の RFS テンプレート"
+
+#: debexpo/templates/package/rfs.mako:6
+msgid ""
+"An RFS is a <i>request for sponsorship</i>. If you want to show other people\n"
+"that you are looking for a sponsor for your package you can post an email to\n"
+"the debian-mentors mailing list containing information about your package."
+msgstr ""
+"RFS とは <i>スポンサー募集 (request for sponsorship)</i> のことです。自分のパッケージが\n"
+"スポンサー募集中であることを他の人達に示すために、debian-mentors メーリングリストにそのパッケージ\n"
+"についての情報を書いたメールを投稿することができます。"
+
+#: debexpo/templates/packages/index.mako:4
+msgid "Package list"
+msgstr "パッケージ一覧"
+
+#: debexpo/templates/packages/list.mako:6
+msgid "Package"
+msgstr "パッケージ"
+
+#: debexpo/templates/packages/list.mako:10
+msgid "Needs a sponsor"
+msgstr "スポンサーが必要"
+
+#: debexpo/templates/packages/list.mako:28
+msgid "No packages"
+msgstr "パッケージなし"
+
+#: debexpo/templates/packages/maintainer.mako:4
+#, python-format
+msgid "Packages maintained by %s"
+msgstr "%s さんがメンテナンスしているパッケージ"
+
+#: debexpo/templates/packages/section.mako:4
+#, python-format
+msgid "Packages in section %s"
+msgstr "%s セクションのパッケージ"
+
+#: debexpo/templates/packages/uploader.mako:4
+#, python-format
+msgid "Packages uploaded by %s"
+msgstr "%s さんがアップロードしたパッケージ"
+
+#: debexpo/templates/register/activate.mako:5
+msgid "Check your email"
+msgstr "メールの確認"
+
+#: debexpo/templates/register/activate.mako:8
+msgid ""
+"An email has been sent to the email address you specified. Check it for "
+"instructions on how to activate your account."
+msgstr ""
+"指定したメールアドレスにメールを送りました。アカウントの有効化について説明が書かれて\n"
+"いるので、確認してください。"
+
+#: debexpo/templates/register/activated.mako:7
+msgid "User activated"
+msgstr "ユーザが有効化されました"
+
+#: debexpo/templates/register/activated.mako:10
+msgid "Your account has been activated."
+msgstr "アカウントが有効化されました。"
+
+#: debexpo/templates/register/activated.mako:11
+#, python-format
+msgid "You can now %sproceed to login%s."
+msgstr "%s ログインする %s が可能になりました。"
+
+#: debexpo/templates/register/activated.mako:16
+msgid "Invalid verification key"
+msgstr "確認用の鍵が無効です"
+
+#: debexpo/templates/register/activated.mako:19
+msgid "The verification key you entered has not been recognised. Please try again."
+msgstr "入力された確認用の鍵が認識できませんでした。もう一度やってみてください。"
+
+#: debexpo/templates/register/index.mako:5
+#, python-format
+msgid "Sign up for your own account at %s"
+msgstr "%s のアカウントにサインアップする"
+
+#: debexpo/templates/register/index.mako:8
+msgid "What type of account would you like to apply for?"
+msgstr "申し込もうとしているアカウントの種類は何ですか？"
+
+#: debexpo/templates/register/index.mako:11
+msgid "Package Maintainer"
+msgstr "パッケージメンテナ"
+
+#: debexpo/templates/register/index.mako:14
+msgid ""
+"A package maintainer is a person who takes care of Debian packages.\n"
+"    If you create Debian packages from certain pieces of (so called\n"
+"    \"upstream\") software then you are a maintainer. You do not need to be\n"
+"    an official Debian Developer (DD) or Debian Maintainer (DM)."
+msgstr ""
+"パッケージメンテナは、Debian パッケージの面倒を見る人のことです。\n"
+"    何かの (\"開発元\" と呼ばれます) ソフトウェアをもとに Debian パッケージを\n"
+"    作成するのであれば、あなたはメンテナです。公式な Debian 開発者 (DD) や\n"
+"    Debian メンテナ (DM) である必要はありません。"
+
+#: debexpo/templates/register/index.mako:20
+msgid "Sponsor"
+msgstr "スポンサー"
+
+#: debexpo/templates/register/index.mako:23
+msgid ""
+"Uploading new packages into Debian is only possible if you\n"
+"    are a Debian Developer (DD) or Debian Maintainer (DM). If you want\n"
+"    to help package maintainers to get their packages into Debian you\n"
+"    can be a sponsor and check and upload packages on their behalf."
+msgstr ""
+"新しいパッケージを Debian にアップロードすることができるのは、あなたが Debian 開発者 (DD) か\n"
+"    Debian メンテナ (DM) の場合のみです。パッケージメンテナ達が自身のパッケージを Debian に\n"
+"    入れるのを手助けするなら、スポンサーになって、彼らのかわりにパッケージをチェックしてアップロード\n"
+"    することができます。"
+
+#: debexpo/templates/register/maintainer.mako:4
+msgid "Sign up for a maintainer account"
+msgstr "メンテナーアカウントへのサインアップ"
+
+#: debexpo/templates/register/maintainer.mako:7
+#: debexpo/templates/register/sponsor.mako:7
+msgid "Account details"
+msgstr "アカウントの詳細"
+
+#: debexpo/templates/register/maintainer.mako:13
+#: debexpo/templates/register/sponsor.mako:13
+msgid "Full name"
+msgstr "フルネーム"
+
+#: debexpo/templates/register/maintainer.mako:28
+#: debexpo/templates/register/sponsor.mako:28
+msgid "Confirm password"
+msgstr "パスワード確認"
+
+#: debexpo/templates/register/sponsor.mako:4
+msgid "Sign up for a sponsor account"
+msgstr "スポンサーアカウントへのサインアップ"
+
