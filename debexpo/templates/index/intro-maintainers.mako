@@ -3,7 +3,7 @@
 
 <h1>Introduction for maintainers: How will my package get into Debian</h1>
 
-<p>We are glad that you found your way to our web site. Honestly the whole web site is just there to get your work into Debian. Your contribution is appreciated and it would be a pity if you did not find a sponsor to upload your packages. Read on to see in what ways we will be helping you find a sponsor.</p>
+<p>We are glad that you found your way to our web site. Honestly, the whole web site is just there to get your work into Debian. Your contribution is appreciated and it would be a pity if you did not find a sponsor to upload your packages. Read on to see in what ways we will be helping you find a sponsor.</p>
 
 <h2>1. Find a requested package</h2>
 
@@ -120,11 +120,11 @@ If you did everything right, you will get a confirmation mail from our site and 
 
 <h2>6. Getting an upload to Debian</h2>
 
-<p>Once you find a sponsor interested in your package, he will <em>sponsor</em> it. That means reviewing, building and testing it and then uploading it and then uploading it to Debian. You will get notified by <em>dak</em> - the software used by Debian to manage its repositories - about the upload. Please note, if your package was not at all in Debian before, it needs manual approval by <a href="https://ftp-master.debian.org/">ftpmasters</a> to clear the <a href="https://ftp-master.debian.org/new.html">NEW queue</a>. They will do consistency checks, and review your <tt>debian/copyright</tt> file whether your package matches the <a href="https://www.debian.org/social_contract#guidelines">Debian Free Software Guidelines</a>. ftpmaster's opinion is binding here for both your sponsor and you.</p>
+<p>Once you find a sponsor interested in your package, he or she will <em>sponsor</em> it. That means reviewing, building, and testing it and then uploading it to Debian. You will get notified by <em>dak</em> - the software used by Debian to manage its repositories - about the upload. Please note, if your package was not at all in Debian before, it needs manual approval by <a href="https://ftp-master.debian.org/">ftpmasters</a> to clear the <a href="https://ftp-master.debian.org/new.html">NEW queue</a>. They will do consistency checks, and review your <tt>debian/copyright</tt> file whether your package matches the <a href="https://www.debian.org/social_contract#guidelines">Debian Free Software Guidelines</a>. ftpmaster's opinion is binding here for both your sponsor and you.</p>
 
 <h2>7. Maintaining your package in Debian</h2>
 
-<p>Please see the corresponding chapter in the <a href="https://www.debian.org/doc/manuals/maint-guide/update">New Maintainer's Guide</a> to get the idea. Whenever you feel like, you should update your package in Debian. The general procedure is not different from your fist upload. Please upload your updated package to ${ config['debexpo.sitename'] } and notify your former sponsor about your change. Alternatively, follow ${ h.tags.link_to("the usual procedures", h.url(controller='sponsor', action='index')) }.</p>
+<p>Please see the corresponding chapter in the <a href="https://www.debian.org/doc/manuals/maint-guide/update">New Maintainer's Guide</a> to get the idea. Whenever you feel like, you should update your package in Debian. The general procedure is not different from your first upload. Please upload your updated package to ${ config['debexpo.sitename'] } and notify your former sponsor about your change. Alternatively, follow ${ h.tags.link_to("the usual procedures", h.url(controller='sponsor', action='index')) }.</p>
 
 <p>If your package passes through the sponsoring process for <em>a few</em> successive uploads without any notable correction by your sponsor, you can become a <a href="https://wiki.debian.org/DebianMaintainer">Debian Maintainer</a> which grants you limited upload rights to Debian directly. Get in touch with your sponsor to discuss your chances here. You can also <a href="https://www.debian.org/devel/join/">become a Debian Developer</a> giving you full membership in the project.</p>
 
