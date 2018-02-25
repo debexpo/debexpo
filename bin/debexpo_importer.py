@@ -469,6 +469,7 @@ class Importer(object):
             'stretch-backports-sloppy',
             'stretch-security',
             'stretch-updates',
+            'testing',
             'testing-proposed-updates',
             'testing-security',
             'unreleased',
