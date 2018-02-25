@@ -55,8 +55,10 @@ class Globals(object):
         """
         # Supported languages for i18n
         self.supported_languages = {
-            'en':'English',
-            'de':'Deutsch'
+            'el': 'ελληνικά',
+            'en': 'English',
+            'de': 'Deutsch',
+            'it': 'Italiano',
             }
         self.default_language = 'en'
 
