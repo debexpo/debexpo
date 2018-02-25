@@ -259,7 +259,7 @@ msgstr ""
 #: debexpo/templates/package/index.mako:4
 #, python-format
 msgid "Details about package \"%s\""
-msgstr "Στοιχεία πακέτου"
+msgstr "Στοιχεία πακέτου \"%s\""
 
 #: debexpo/templates/package/index.mako:13 debexpo/templates/packages/list.mako:9
 msgid "Uploader"
