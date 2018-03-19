@@ -13,7 +13,7 @@
 
 <h2>2. File a WNPP bug</h2>
 
-<p><a href="https://www.debian.org/devel/wnpp/">Work-Needing and Prospective Packages</a> (<em>WNPP</em>) is our system of announcing your intent to markup packages being worked on. In particular it is a bug against the <a href="https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=wnpp">WNPP pseudo package</a> (<a href="http://wnpp.debian.net/">or use a nice frontend</a> to browse <em>WNPP</em> bugs). If you want to package something not currently available in Debian, the very first step should be to file an "Intent to package" (<em>ITP</em>) bug against <em>WNPP</em>. You may want to use the <tt><a href="https://packages.debian.org/squeeze/reportbug">reportbug</a></tt> tool to achieve that by selecting "<em>wnpp</em>" as package to report a bug to.</p>
+<p><a href="https://www.debian.org/devel/wnpp/">Work-Needing and Prospective Packages</a> (<em>WNPP</em>) is our system of announcing your intent to markup packages being worked on. In particular it is a bug against the <a href="https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=wnpp">WNPP pseudo package</a> (<a href="https://wnpp.debian.net/">or use a nice frontend</a> to browse <em>WNPP</em> bugs). If you want to package something not currently available in Debian, the very first step should be to file an "Intent to package" (<em>ITP</em>) bug against <em>WNPP</em>. You may want to use the <tt><a href="https://packages.debian.org/squeeze/reportbug">reportbug</a></tt> tool to achieve that by selecting "<em>wnpp</em>" as package to report a bug to.</p>
 
 <h2>3. Make the package</h2>
 
@@ -49,16 +49,16 @@
 
 <h3>How to upload packages to <tt>${ config['debexpo.sitename'] }?</tt></h3>
 
-<p>You need to use <a href="https://packages.debian.org/dput"><tt>dput</tt></a> to upload packages. We accept your uploads through <em>HTTP</em> or <em>FTP</em>. All packages <strong>must be signed</strong> with the GnuPG key you configured in your control panel. </p>
+<p>You need to use <a href="https://packages.debian.org/dput"><tt>dput</tt></a> to upload packages. We accept your uploads through <em>HTTPS</em> or <em>FTP</em>. All packages <strong>must be signed</strong> with the GnuPG key you configured in your control panel. </p>
 
 <table>
     <tr>
-        <td width="50%">HTTP uploads</td>
+        <td width="50%">HTTPS uploads</td>
         <td width="50%">FTP uploads</td>
     </tr>
     <tr>
         <td>
-            <p>To use HTTP put the following content to your <tt>~/.dput.cf</tt> file:</p>
+            <p>To use HTTPS put the following content to your <tt>~/.dput.cf</tt> file:</p>
 
 <pre>
 [mentors]
