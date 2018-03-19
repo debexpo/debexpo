@@ -64,7 +64,7 @@
 [mentors]
 fqdn = ${ config['debexpo.sitename'] }
 incoming = /upload
-method = http
+method = https
 allow_unsigned_uploads = 0
 progress_indicator = 2
 # Allow uploads for UNRELEASED packages
