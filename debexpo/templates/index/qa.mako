@@ -2,6 +2,10 @@
 <%inherit file="/base.mako"/>
 
 <h1>Questions &amp; Answers</h1>
+<!--  FYI
+   Those who are reading this as HTML,
+   parts originate from debexpo/templates/index/qa.mako
+-->
 
 ${ c.config['debexpo.sitename'] } is a rather complex service. Things can go wrong on your side or on this server. Before contacting the support please see if your question is answered here: 
 
