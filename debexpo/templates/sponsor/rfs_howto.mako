@@ -23,7 +23,7 @@ pseudo-package by using the template below.</p>
 
 
 <p>You might not receive a reply to your request if you do not
-subscribe to the debian-mentors mailing list or to your sponsoring-requests
+subscribe to the debian-mentors mailing list or to your sponsorship-requests
 bug. You can <a href="https://lists.debian.org/debian-mentors"> subscribe to the
 mailing list</a> and follow simple steps to confirm
 your subscription request. It can also take time for sponsors to look over the
