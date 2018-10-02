@@ -240,6 +240,11 @@ class GnuPG(object):
 class GPGAlgo(object):
     """
     Static data about GPG PubKey Algo. Extracted from GnuPG source.
+
+    Refs:
+      Short names: https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=g10/keyid.c;hb=HEAD#l53
+      Long names: https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=g10/keyid.c;hb=HEAD#l104
+      Ids: https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=common/openpgpdefs.h;hb=HEAD#l157
     """
     gpg_algo = {
         '1': {'short': 'R', 'long': 'rsa', 'with_size': True},
