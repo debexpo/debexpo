@@ -1,0 +1,21 @@
+before_script:
+  - apt-get -q update
+  - env DEBIAN_FRONTEND=noninteractive apt-get -q -y install --no-install-recommends aspcud apt-cudf
+  - env DEBIAN_FRONTEND=noninteractive apt-get -q -y --solver aspcud -o APT::Solver::Strict-Pinning=0 -o Debug::pkgProblemResolver=yes install --no-install-recommends
+    python-sqlalchemy python-pylons python-debian python-babel iso-codes
+
+.test_template: &test
+  script:
+    - python2.7 setup.py test
+
+unstable:
+  <<: *test
+  image: debian:unstable
+
+#testing:
+#  <<: *test
+#  image: debian:testing
+
+stable-bpo:
+  <<: *test
+  image: debian:stable-backports
