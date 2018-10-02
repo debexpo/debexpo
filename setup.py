@@ -8,10 +8,10 @@ except ImportError:
 setup(
     name='debexpo',
     version="",
-    #description='',
-    #author='',
-    #author_email='',
-    #url='',
+    description='the software running behind mentors.debian.net',
+    author='The Debexpo developers',
+    author_email='support@mentors.debian.net',
+    url='https://mentors.debian.net',
     install_requires=[
         "Pylons==1.0.2",
         "SQLAlchemy>=0.6",
@@ -23,7 +23,7 @@ setup(
     include_package_data=True,
     test_suite='nose.collector',
     package_data={'debexpo': ['i18n/*/LC_MESSAGES/*.mo']},
-    message_extractors = {'debexpo': [
+    message_extractors={'debexpo': [
             ('**.py', 'python', None),
             ('templates/**.mako', 'mako', None),
             ('public/**', 'ignore', None)]},
