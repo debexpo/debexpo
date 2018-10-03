@@ -83,8 +83,7 @@
                 ${ h.tags.link_to(
                         _('Login'),
                         h.url('/login')) }
-                % endif
-                % if session.get('user_type') in (h.constants.USER_STATUS_MAINTAINER, h.constants.USER_STATUS_NORMAL):
+                % else:
                 ${ h.tags.link_to(
                         _('My account'),
                         h.url('my')) }
