@@ -116,7 +116,11 @@ tool.
   dget -x ${ c.config['debexpo.server'] }/debian/pool/main/h/hello/hello_3.1-4.dsc
 %endif
 
+%if c.package:
+  More information about ${ c.package.name } can be obtained from https://www.example.com.
+%else:
   More information about hello can be obtained from https://www.example.com.
+%endif
 
   Changes since the last upload:
 
