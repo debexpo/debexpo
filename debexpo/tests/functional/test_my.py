@@ -4,6 +4,9 @@ from debexpo.model import meta
 from debexpo.model.users import User
 from debexpo.model.user_countries import UserCountry
 import md5
+import tempfile
+import os
+import shutil
 
 class TestMyController(TestController):
     _GPGKEY = """-----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -39,7 +42,15 @@ ABRL0EeYuGCJYJRQsw8e8JuRSaVGwfotqkIHtQ==
 """
     _GPG_ID = '2048R/6758261E'
 
+    def _setup_gpg_env(self):
+        self.homedir = tempfile.mkdtemp()
+        os.environ['GNUPGHOME'] = self.homedir
+
+    def _cleanup_gpg_env(self):
+        shutil.rmtree(self.homedir)
+
     def setUp(self):
+        self._setup_gpg_env()
         self._setup_models()
         self._setup_example_user()
         self._setup_example_countries()
@@ -47,6 +58,7 @@ ABRL0EeYuGCJYJRQsw8e8JuRSaVGwfotqkIHtQ==
     def tearDown(self):
         self._remove_example_user()
         self._remove_example_countries()
+        self._cleanup_gpg_env()
 
     def test_index(self):
         response = self.app.get(url(controller='my', action='index'))
