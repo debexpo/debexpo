@@ -60,18 +60,6 @@ class RegisterController(BaseController):
         """
         c.config = config
 
-    def index(self):
-        """
-        Entry point to controller. Displays the index page.
-        """
-        log.debug('Main register form requested')
-
-        if config['debexpo.debian_specific'] != 'true':
-            log.error('debexpo.debian_specific is !true; redirecting to maintainer form')
-            redirect(url(action='maintainer'))
-
-        return render('/register/index.mako')
-
     def _send_activate_email(self, key, recipient):
         """
         Sends an activation email to the potential new user.
