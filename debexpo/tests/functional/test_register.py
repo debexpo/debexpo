@@ -1,6 +1,7 @@
 from debexpo.tests import TestController, url
 from debexpo.model import meta
 from debexpo.model.users import User
+import pylons.test
 
 class TestRegisterController(TestController):
 
@@ -11,6 +12,7 @@ class TestRegisterController(TestController):
         count = meta.session.query(User).filter(User.email=='mr_me@example.com').count()
         self.assertEquals(count, 0)
 
+        pylons.test.pylonsapp.config['debexpo.testsmtp'] = '/tmp/debexpo.msg'
         self.app.post(url(controller='register', action='register'),
                                  {'name': 'Mr. Me',
                                   'password': 'password',

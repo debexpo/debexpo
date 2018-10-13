@@ -8,6 +8,7 @@ from debexpo.model.package_versions import PackageVersion
 from debexpo.model.source_packages import SourcePackage
 from debexpo.model.package_subscriptions import PackageSubscription
 from datetime import datetime
+import pylons.test
 
 class TestPackageController(TestController):
 
@@ -197,6 +198,7 @@ class TestPackageController(TestController):
                           constants.PACKAGE_COMMENT_STATUS_NOT_UPLOADED)
         meta.session.delete(comment)
         # test with a subscriber
+        pylons.test.pylonsapp.config['debexpo.testsmtp'] = '/tmp/debexpo.msg'
         user = meta.session.query(User).filter(User.email=='email@example.com').one()
         packsub = PackageSubscription(
             package='testpackage',
