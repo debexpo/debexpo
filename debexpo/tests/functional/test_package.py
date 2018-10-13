@@ -47,6 +47,8 @@ class TestPackageController(TestController):
         self._remove_example_user()
 
     def test_index(self):
+        user = meta.session.query(User).filter(
+            User.email=='email@example.com').one()
         response = self.app.get(url(controller='package', action='index'))
         self.assertEquals(response.status_int, 302)
         self.assertTrue(response.location.endswith(
@@ -60,8 +62,8 @@ class TestPackageController(TestController):
                                     packagename='testpackage'))
         self.assertEquals(response.status_int, 200)
         self.assertEquals(len(response.lxml.xpath(
-                    '//a[@href="%s"]' % url(
-                        'packages-uploader',
+                    '//a[@href="%s"]' % url(controller='packages',
+                        action='uploader',
                         id='email@example.com'))), 1)
         response = self.app.post(url('login'), self._AUTHDATA)
         response = self.app.get(url(controller='package', action='index',
@@ -70,21 +72,12 @@ class TestPackageController(TestController):
         self.assertEquals(len(response.lxml.xpath(
                     '//a[@href="%s"]' % url(
                         controller='package', action='delete',
-                        packagename='testpackage'))), 1)
+                        packagename='testpackage',
+                        key=user.get_upload_key()))), 1)
         self.assertEquals(len(response.lxml.xpath(
                     '//form[@action="%s"]' % url(
                         controller='package', action='comment',
                         packagename='testpackage'))), 1)
-
-    def test_rfs(self):
-        response = self.app.get(url(controller='package', action='rfs'))
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(
-                url(controller='packages', action='index', packagename=None)))
-        response = self.app.get(url(controller='package', action='rfs',
-                                    packagename='testpackage'))
-        self.assertEquals(response.status_int, 200)
-        self.assertTrue('Subject: RFS: testpackage' in response)
 
     def test_subscribe(self):
         response = self.app.get(url(controller='package', action='subscribe',
@@ -157,31 +150,35 @@ class TestPackageController(TestController):
         self.assertEquals(subs, None)
 
     def test_delete(self):
-        response = self.app.get(url(controller='package', action='delete',
-                                    packagename='testpackage'))
+        user = meta.session.query(User).filter(
+            User.email=='email@example.com').one()
+        response = self.app.get(url(
+            controller='package', action='delete', packagename='testpackage',
+            key=user.get_upload_key()))
         self.assertEquals(response.status_int, 302)
         self.assertTrue(response.location.endswith(url('login')))
         self.app.post(url('login'), self._AUTHDATA)
-        response = self.app.get(url(controller='package', action='delete',
-                                    packagename='testpackage'))
+        response = self.app.get(url(
+            controller='package', action='delete', packagename='testpackage',
+            key=user.get_upload_key()))
         self.assertEquals(response.status_int, 302)
         self.assertTrue(response.location.endswith(
-                url(controller='packages', action='index', filter='my')))
+                url(controller='packages', action='my')))
         package = meta.session.query(Package).filter(
             Package.name=='testpackage').first()
         self.assertEquals(package, None)
 
     def test_comment(self):
-        response = self.app.get(url(controller='package', action='comment',
-                                    packagename='testpackage'))
+        response = self.app.post(
+            url(controller='package', action='comment',
+                packagename='testpackage'),
+            {'package_version': 1,
+             'text': 'This is a test comment',
+             'outcome': constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED,
+             'commit': 'submit'})
         self.assertEquals(response.status_int, 302)
         self.assertTrue(response.location.endswith(url('login')))
         self.app.post(url('login'), self._AUTHDATA)
-        response = self.app.get(url(controller='package', action='comment',
-                                    packagename='testpackage'))
-        self.assertEquals(response.status_int, 200)
-        self.assertEquals(4, len(response.lxml.xpath(
-                    '//span[@class="error-message"]')))
         response = self.app.post(
             url(controller='package', action='comment',
                 packagename='testpackage'),
