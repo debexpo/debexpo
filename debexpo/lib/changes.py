@@ -69,12 +69,13 @@ class Changes(object):
 
         if filename:
             self._data = deb822.Changes(file(filename))
+            self.basename = os.path.basename(filename)
+            if len(self._data) == 0:
+                raise Exception('Changes file {} could not be parsed'.format(self.basename))
         else:
             self._data = deb822.Changes(string)
-
-        if len(self._data) == 0:
-            raise Exception('Changes file could not be parsed.')
-        self.basename = os.path.basename(filename)
+            if len(self._data) == 0:
+                raise Exception('Changes file could not be parsed.')
 
     def get_filename(self):
         """
