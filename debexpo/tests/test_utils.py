@@ -39,6 +39,7 @@ from unittest import TestCase
 
 from debexpo.lib.utils import *
 from debexpo.lib.changes import Changes
+from debexpo.lib.filesystem import CheckFiles
 
 class TestUtilsController(TestCase):
 
@@ -46,7 +47,7 @@ class TestUtilsController(TestCase):
         """
         Tests debexpo.lib.utils.allowed_upload.
         """
-        t = allowed_upload
+        t = CheckFiles().allowed_upload
 
         self.assertTrue(t('foo_version.orig.tar.gz'))
         self.assertTrue(t('foo_version.tar.gz'))
@@ -64,7 +65,7 @@ class TestUtilsController(TestCase):
         t = parse_section
 
         self.assertEqual(t('section'), ['main', 'section'])
-        self.assertEqual(t('component/section'), ['component', 'section'])
+        self.assertEqual(t('contrib/section'), ['contrib', 'section'])
 
     def testGetPackageDir(self):
         """
