@@ -2,6 +2,13 @@ from debexpo.tests import *
 
 class TestPackagesController(TestController):
 
+    def setUp(self):
+        self._setup_models()
+        self._setup_example_user()
+
+    def tearDown(self):
+        self._remove_example_user()
+
     def test_index(self):
         response = self.app.get(url(controller='packages', action='index'))
         self.assertEquals(200, response.status_int)

@@ -59,9 +59,9 @@ def parse_section(section):
         component, thesection = section.split('/', 1)
         if component not in ("main", "contrib", "non-free"):
             log.warning("Parsing weird component %s, assuming main" % component)
-            return main, section.replace('/', '_')
+            return ['main', section.replace('/', '_')]
         else:
-            return component, thesection
+            return [component, thesection]
     else:
         return ['main', section]
 

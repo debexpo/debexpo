@@ -50,10 +50,6 @@ class TestUploadController(TestController):
         """
         TestController.__init__(self, *args, **kwargs)
 
-        # Keep this so tests don't have to constantly create it.
-        self.user_upload_key = 'upload_key'
-        self.email = 'email@example.com'
-
     def setUp(self):
         self._setup_models()
         self._setup_example_user()
@@ -66,56 +62,16 @@ class TestUploadController(TestController):
         Tests whether requests where method != PUT are rejected with error code 405.
         """
         response = self.app.get(url(controller='upload', action='index',
-                                    email=self.email, password=self.user_upload_key,
                                     filename='testname.dsc'), expect_errors=True)
 
         self.assertEqual(response.status_int, 405)
-
-    def testNoAuthorization(self):
-        """
-        Tests whether requests where the "Authorization" header is missing are rejected with
-        error code 401 and whether the "WWW-Authenticate" header is sent in the response with
-        the correct "realm" syntax.
-        """
-        response = self.app.put(
-            url(controller='upload', action='index',
-                filename='testname.dsc', email='email', password='pass'), expect_errors=True)
-
-        self.assertEqual(response.status_int, 403)
-
-    def testFalseAuthentication(self):
-        """
-        Tests whether false authentication details returns a 403 error code.
-        """
-        response = self.app.put(url(controller='upload', action='index',
-                                    filename='testname.dsc', email=self.email,
-                                    password='wrong'),
-                                expect_errors=True)
-
-        self.assertEqual(response.status_int, 403)
-
-    def testTrueAuthentication(self):
-        """
-        Tests whether true authentication details returns a nicer error code.
-        """
-        response = self.app.put(url(controller='upload', action='index',
-                                    filename='testname.dsc', email=self.email,
-                                    password=self.user_upload_key),
-                                expect_errors=False)
-
-        self.assertNotEqual(response.status_int, 403)
-        app_config = pylons.test.pylonsapp.config
-
-        if os.path.isfile(os.path.join(app_config['debexpo.upload.incoming'], 'testfile1.dsc')):
-            os.remove(os.path.join(app_config['debexpo.upload.incoming'], 'testfile1.dsc'))
 
     def testExtensionNotAllowed(self):
         """
         Tests whether uploads of an unknown file extensions are rejected with error code 403.
         """
         response = self.app.put(url(controller='upload', action='index',
-                                    filename='testname.unknown', email=self.email,
-                                    password=self.user_upload_key),
+                                    filename='testname.unknown'),
                                 expect_errors=True)
 
         self.assertEqual(response.status_int, 403)
@@ -126,19 +82,46 @@ class TestUploadController(TestController):
         """
         response = self.app.put(url(
                 controller='upload', action='index',
-                filename='testfile2.dsc',
-                email=self.email,
-                password=self.user_upload_key),
+                filename='testfile2.dsc'),
             params='contents', expect_errors=False)
 
         self.assertEqual(response.status_int, 200)
 
         app_config = pylons.test.pylonsapp.config
         self.assertTrue(os.path.isfile(os.path.join(app_config['debexpo.upload.incoming'],
+                                                    'pub',
                                                     'testfile2.dsc')))
 
         self.assertEqual(file(os.path.join(app_config['debexpo.upload.incoming'],
+                                           'pub',
                                            'testfile2.dsc')).read(), 'contents')
 
-        if os.path.isfile(os.path.join(app_config['debexpo.upload.incoming'], 'testfile2.dsc')):
-            os.remove(os.path.join(app_config['debexpo.upload.incoming'], 'testfile2.dsc'))
+        if os.path.isfile(os.path.join(app_config['debexpo.upload.incoming'],
+                                       'pub', 'testfile2.dsc')):
+            os.remove(os.path.join(app_config['debexpo.upload.incoming'],
+                                   'pub', 'testfile2.dsc'))
+
+    def testDuplicatedUpload(self):
+        """
+        Tests whether a re-uploads of the same file failed with error code 403.
+        """
+        response = self.app.put(url(
+                controller='upload', action='index',
+                filename='testfile.dsc'),
+            params='contents', expect_errors=False)
+
+        self.assertEqual(response.status_int, 200)
+
+        response = self.app.put(url(
+                controller='upload', action='index',
+                filename='testfile.dsc'),
+            params='contents', expect_errors=True)
+
+        self.assertEqual(response.status_int, 403)
+
+        app_config = pylons.test.pylonsapp.config
+
+        if os.path.isfile(os.path.join(app_config['debexpo.upload.incoming'],
+                                       'pub', 'testfile.dsc')):
+            os.remove(os.path.join(app_config['debexpo.upload.incoming'],
+                                   'pub', 'testfile.dsc'))
