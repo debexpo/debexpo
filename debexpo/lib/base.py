@@ -117,7 +117,7 @@ class BaseController(WSGIController):
         # Set language according to what the browser requested
         try:
             languages = request.languages
-        except AttributeError:
+        except (AttributeError, TypeError):
             log.debug("Working around Pylons request.languages bug")
             languages = []
 
