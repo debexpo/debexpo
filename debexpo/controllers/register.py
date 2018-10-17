@@ -123,10 +123,6 @@ class RegisterController(BaseController):
         """
         log.debug('Activation request with key = %s' % id)
 
-        if id is None:
-            log.error('Key is None')
-            abort(404, 'Key is None')
-
         user = meta.session.query(User).filter_by(verification=id).first()
 
         if user is not None:
