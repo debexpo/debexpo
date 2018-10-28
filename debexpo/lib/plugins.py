@@ -115,7 +115,7 @@ class Plugins(object):
             log.debug('Import succeeded.')
             return mod
         except ImportError, e:
-            if e.message.startswith('No module named'):
+            if str(e).startswith('No module named'):
                 # Not fatal: the plugin module was not found at this location
                 # (might be okay because plugins are looked for in several locations)
                 log.debug('Import failed - module not found: %s', e)

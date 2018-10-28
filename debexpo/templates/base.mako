@@ -5,9 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-        <link rel="stylesheet" type="text/css" href="/style.css" />
-        <script src="/jquery-1.7.1.min.js" type="text/javascript"></script>
-        <script src="/debexpo.js" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="${ h.url("/style.css") }" />
+        <script src="${ h.url("/jquery-1.7.1.min.js") }" type="text/javascript"></script>
+        <script src="${ h.url("/debexpo.js") }" type="text/javascript"></script>
         <title>${ c.config['debexpo.sitename'] }</title>
 % if c.feed_url:
 
@@ -109,7 +109,7 @@
     ${ h.tags.link_to( _('Contact'), h.url('contact')) }
 	% if 'user_id' in session:
         -
-        <a href="/logout">Logout</a>
+        <a href="${ h.url("/logout") }">Logout</a>
     % endif
     % if c.feed_url:
     <a class="rss_logo" href="${ c.feed_url }">RSS</a>
