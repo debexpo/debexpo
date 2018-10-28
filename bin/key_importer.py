@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 #   key_importer.py — Regenerate the mentors keyring from scratch

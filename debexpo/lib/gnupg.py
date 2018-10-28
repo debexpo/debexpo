@@ -75,6 +75,27 @@ class GnuPG(object):
         """Returns true if the gpg binary is not installed or not executable."""
         return self.gpg_path is None
 
+    def extract_key_data(self,key,attribute):
+        """
+        Returns the attribute of a given GPG public key.
+        Attribute can be one of "keyid" or "keystrength"
+        """
+        try:
+            if attribute == "keyid":
+                r = key.split("/")[1]
+            elif attribute == "keystrength":
+                r = int(key.split("/")[0][:-1])
+            else:
+                raise AttributeError
+            if not r:
+                raise AttributeError
+            return r
+        except (AttributeError, IndexError):
+            log.error("Failed to extract key data from gpg output: '%s'"
+                % key)
+
+
+
     def extract_key_id(self, key):
         """
         Returns the key id only of a given GPG public key, e.g.:
@@ -84,14 +105,18 @@ class GnuPG(object):
         ``key``
             A public key output as given by gpg(1)
         """
-        try:
-            r = key.split("/")[1]
-            if not r:
-                raise AttributeError
-            return r
-        except (AttributeError, IndexError):
-            log.error("Failed to extract key only id from gpg output: '%s'"
-                % key)
+        return self.extract_key_data(key,"keyid")
+
+    def extract_key_strength(self, key):
+        """
+        Returns the key strength only of a given GPG public key, e.g.:
+
+        1024D/355304E4 -> 1024
+
+        ``key``
+            A public key output as given by gpg(1)
+        """
+        return self.extract_key_data(key,"keystrength")
 
     def parse_key_id(self, key, email = None):
         """
