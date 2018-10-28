@@ -404,7 +404,7 @@ class Importer(object):
         except Exception as e:
             # XXX: The user won't ever see this message. The changes file was
             # invalid, we don't know whom send it to
-            self._reject("Your changes file appears invalid. Refusing your upload\n%s" % (e.message))
+            self._reject("Your changes file appears invalid. Refusing your upload\n%s" % (str(e)))
 
 
 
