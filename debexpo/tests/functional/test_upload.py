@@ -42,6 +42,7 @@ import base64
 from debexpo.tests import TestController, url
 import pylons.test
 
+
 class TestUploadController(TestController):
 
     def __init__(self, *args, **kwargs):
@@ -59,16 +60,20 @@ class TestUploadController(TestController):
 
     def testGetRequest(self):
         """
-        Tests whether requests where method != PUT are rejected with error code 405.
+        Tests whether requests where method != PUT are rejected with error code
+        405.
         """
-        response = self.app.get(url(controller='upload', action='index',
-                                    filename='testname.dsc'), expect_errors=True)
+        response = self.app.get(url(controller='upload',
+                                    action='index',
+                                    filename='testname.dsc'),
+                                expect_errors=True)
 
         self.assertEqual(response.status_int, 405)
 
     def testExtensionNotAllowed(self):
         """
-        Tests whether uploads of an unknown file extensions are rejected with error code 403.
+        Tests whether uploads of an unknown file extensions are rejected with
+        error code 403.
         """
         response = self.app.put(url(controller='upload', action='index',
                                     filename='testname.unknown'),
@@ -78,23 +83,31 @@ class TestUploadController(TestController):
 
     def testSuccessfulUpload(self):
         """
-        Tests whether uploads with sane file extensions and authorization are successful.
+        Tests whether uploads with sane file extensions and authorization are
+        successful.
         """
         response = self.app.put(url(
-                controller='upload', action='index',
-                filename='testfile2.dsc'),
+            controller='upload', action='index',
+            filename='testfile2.dsc'),
             params='contents', expect_errors=False)
 
         self.assertEqual(response.status_int, 200)
 
         app_config = pylons.test.pylonsapp.config
-        self.assertTrue(os.path.isfile(os.path.join(app_config['debexpo.upload.incoming'],
-                                                    'pub',
-                                                    'testfile2.dsc')))
+        self.assertTrue(
+            os.path.isfile(
+                os.path.join(
+                    app_config['debexpo.upload.incoming'],
+                    'pub',
+                    'testfile2.dsc')))
 
-        self.assertEqual(file(os.path.join(app_config['debexpo.upload.incoming'],
-                                           'pub',
-                                           'testfile2.dsc')).read(), 'contents')
+        self.assertEqual(
+            file(
+                os.path.join(
+                    app_config['debexpo.upload.incoming'],
+                    'pub',
+                    'testfile2.dsc')).read(),
+            'contents')
 
         if os.path.isfile(os.path.join(app_config['debexpo.upload.incoming'],
                                        'pub', 'testfile2.dsc')):
@@ -106,15 +119,15 @@ class TestUploadController(TestController):
         Tests whether a re-uploads of the same file failed with error code 403.
         """
         response = self.app.put(url(
-                controller='upload', action='index',
-                filename='testfile.dsc'),
+            controller='upload', action='index',
+            filename='testfile.dsc'),
             params='contents', expect_errors=False)
 
         self.assertEqual(response.status_int, 200)
 
         response = self.app.put(url(
-                controller='upload', action='index',
-                filename='testfile.dsc'),
+            controller='upload', action='index',
+            filename='testfile.dsc'),
             params='contents', expect_errors=True)
 
         self.assertEqual(response.status_int, 403)
@@ -125,3 +138,44 @@ class TestUploadController(TestController):
                                        'pub', 'testfile.dsc')):
             os.remove(os.path.join(app_config['debexpo.upload.incoming'],
                                    'pub', 'testfile.dsc'))
+
+    def testUploadWithoutConfig(self):
+        """
+        Tests whether an uploads without debexpo.upload.incoming fails.
+        """
+        pylons.test.pylonsapp.config.pop('debexpo.upload.incoming')
+
+        response = self.app.put(url(
+            controller='upload', action='index',
+            filename='testfile.dsc'),
+            params='contents', expect_errors=True)
+
+        self.assertEqual(response.status_int, 500)
+
+    def testUploadNonexistantQueue(self):
+        """
+        Tests whether an uploads with an nonexistant queue fails.
+        """
+        app_config = pylons.test.pylonsapp.config
+        app_config['debexpo.upload.incoming'] = '/nonexistant'
+
+        response = self.app.put(url(
+            controller='upload', action='index',
+            filename='testfile.dsc'),
+            params='contents', expect_errors=True)
+
+        self.assertEqual(response.status_int, 500)
+
+    def testUploadNonwritableQueue(self):
+        """
+        Tests whether an uploads with an nonwritable queue fails.
+        """
+        app_config = pylons.test.pylonsapp.config
+        app_config['debexpo.upload.incoming'] = '/proc/sys'
+
+        response = self.app.put(url(
+            controller='upload', action='index',
+            filename='testfile.dsc'),
+            params='contents', expect_errors=True)
+
+        self.assertEqual(response.status_int, 500)

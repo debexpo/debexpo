@@ -79,15 +79,6 @@ class IndexController(BaseController):
 
     def intro_maintainers(self):
         """Return an introduction page for package maintainers"""
-
-        # The template will need to look at the user details.
-        if 'user_id' in session:
-            log.debug('Getting user object for user_id = "%s"' % session['user_id'])
-            self.user = meta.session.query(User).get(session['user_id'])
-            c.user = self.user
-            c.logged_in = True
-        else:
-            c.logged_in = False
-
+        c.config = config
         return render('/index/intro-maintainers.mako')
 

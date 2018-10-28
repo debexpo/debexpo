@@ -6,7 +6,6 @@ before_script:
 
 .test_template: &test
   script:
-    - mkdir -p /tmp/debexpo/pub
     - python2.7 setup.py develop
     - python2.7 setup.py compile_catalog
     - python2.7 setup.py nosetests --with-coverage --cover-erase --cover-html

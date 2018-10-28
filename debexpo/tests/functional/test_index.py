@@ -8,19 +8,6 @@ import pylons.test
 
 
 class TestIndexController(TestController):
-    def setUp(self):
-        self.tempdir = mkdtemp()
-
-    def tearDown(self):
-        rmtree(self.tempdir)
-
-    def _generate_temppage(self, filename, text):
-        temppage = os.path.join(self.tempdir, filename)
-        f = open(temppage, 'w')
-        f.write(text)
-        f.close()
-        return temppage
-
     def test_index(self):
         # test a normal index page
         testurl = url(controller='index', action='index')
@@ -32,11 +19,26 @@ class TestIndexController(TestController):
 
     def test_contact(self):
         response = self.app.get(url(controller='index', action='contact'))
+        testtext = '<h1>Site contact</h1>'
         self.assertEquals(response.status_int, 200)
+        self.assertTrue(testtext in response)
+
+    def test_qa(self):
+        response = self.app.get(url(controller='index', action='qa'))
+        testtext = '<h1>Questions &amp; Answers</h1>'
+        self.assertEquals(response.status_int, 200)
+        self.assertTrue(testtext in response)
+
+    def test_intro_reviewer(self):
+        response = self.app.get(url(controller='index',
+                                    action='intro-reviewers'))
+        testtext = '<h1>Package reviews</h1>'
+        self.assertEquals(response.status_int, 200)
+        self.assertTrue(testtext in response)
 
     def test_intro_maintainers(self):
-        testurl = url('intro-maintainers')
-        response = self.app.get(testurl)
+        response = self.app.get(url(controller='index',
+                                    action='intro-maintainers'))
         testtext = "{}".format('<h1>Introduction for maintainers: How will my',
                                ' package get into Debian</h1>')
         self.assertEquals(response.status_int, 200)

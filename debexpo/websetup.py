@@ -84,6 +84,7 @@ def setup_config(command, filename, section, vars):
     if not os.path.isdir(config['debexpo.upload.incoming']):
         log.info('Creating incoming directory')
         os.mkdir(config['debexpo.upload.incoming'])
+        os.mkdir(os.path.join(config['debexpo.upload.incoming'], 'pub'))
     else:
         log.info('Incoming directory already exists')
 
