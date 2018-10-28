@@ -105,7 +105,7 @@ class PackageInfo(OrmObject):
                 break
         else:
             # No template file found, something weird happened
-            return "%s (!! no template found)" % self.data
+            return "%s (!! no template found)" % self.data # pragma: no cover
 
         return template.render_unicode(o = self, h = debexpo.lib.helpers)
 
