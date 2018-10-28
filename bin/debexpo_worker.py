@@ -116,7 +116,7 @@ class Worker(object):
             log.debug('Import succeeded.')
             return mod
         except ImportError as e:
-            if e.message.startswith('No module named'):
+            if str(e).startswith('No module named'):
                     log.debug('Import failed - module not found: %s', e)
             else:
                     log.warn('Import of module "%s" failed with error: %s', name, e)
