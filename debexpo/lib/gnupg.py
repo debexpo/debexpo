@@ -85,6 +85,8 @@ class GnuPG(object):
                 r = key.split("/")[1]
             elif attribute == "keystrength":
                 r = int(key.split("/")[0][:-1])
+            elif attribute == "keytype":
+                r = key.split("/")[0][-1:]
             else:
                 raise AttributeError
             if not r:
@@ -93,7 +95,6 @@ class GnuPG(object):
         except (AttributeError, IndexError):
             log.error("Failed to extract key data from gpg output: '%s'"
                 % key)
-
 
 
     def extract_key_id(self, key):
@@ -105,7 +106,7 @@ class GnuPG(object):
         ``key``
             A public key output as given by gpg(1)
         """
-        return self.extract_key_data(key,"keyid")
+        return self.extract_key_data(key, "keyid")
 
     def extract_key_strength(self, key):
         """
@@ -116,7 +117,18 @@ class GnuPG(object):
         ``key``
             A public key output as given by gpg(1)
         """
-        return self.extract_key_data(key,"keystrength")
+        return self.extract_key_data(key, "keystrength")
+
+    def extract_key_type(self, key):
+        """
+        Returns the key strength only of a given GPG public key, e.g.:
+
+        1024D/355304E4 -> D
+
+        ``key``
+            A public key output as given by gpg(1)
+        """
+        return self.extract_key_data(key, "keytype")
 
     def parse_key_id(self, key, email = None):
         """

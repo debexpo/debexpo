@@ -88,9 +88,18 @@ class GpgKey(formencode.validators.FieldStorageUploadConverter):
         """
         requiredkeystrength = int(config['debexpo.gpg_minkeystrength'])
         keystrength = self.gnupg.extract_key_strength(self.key_id())
-        if keystrength < requiredkeystrength:
-            log.debug("Key strength unacceptable in Debian Keyring")
-            raise formencode.Invalid(_('Key strength unacceptable in Debian Keyring. The minimum required key strength is %s bits.' % str(requiredkeystrength)), value, c)
+        keytype = self.gnupg.extract_key_type(self.key_id())
+        log.debug('keytype {}, keysize {}'.format(keytype, keystrength))
+        if keytype == 'R':
+            if keystrength < requiredkeystrength:
+                log.debug("Key strength unacceptable in Debian Keyring")
+                raise formencode.Invalid(_('Key strength unacceptable in Debian Keyring. The minimum required key strength is %s bits.' % str(requiredkeystrength)), value, c)
+        elif keytype == 'E' and keystrength == 256:
+            # ECDSA keys have a fixed size.
+            pass
+        else:
+            log.debug("Key type unacceptable in Debian Keyring")
+            raise formencode.Invalid(_('Key type unacceptable in Debian Keyring. It must be RSA or ECDSA.'), value, c)
 
         return formencode.validators.FieldStorageUploadConverter._to_python(self, value, c)
 
