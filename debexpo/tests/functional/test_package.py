@@ -19,38 +19,10 @@ class TestPackageController(TestController):
     def setUp(self):
         self._setup_models()
         self._setup_example_user()
-        user = meta.session.query(User).filter(
-            User.email == 'email@example.com').one()
-        package = Package(name='testpackage', user=user,
-                          description='a test package')
-        meta.session.add(package)
-        package_version = PackageVersion(
-            package=package,
-            version='1.0-1',
-            maintainer='Test User <email@example.com>',
-            section='Admin',
-            distribution='unstable',
-            qa_status=0,
-            component='main',
-            priority='optional',
-            closes='',
-            uploaded=datetime.now())
-        meta.session.add(package_version)
-        meta.session.add(SourcePackage(package_version=package_version))
-        meta.session.commit()
+        self._setup_example_package()
 
     def tearDown(self):
-        package = meta.session.query(Package).filter(
-            Package.name == 'testpackage').first()
-        if package:
-            package_versions = meta.session.query(PackageVersion).filter(
-                PackageVersion.package == package).all()
-            for vers in package_versions:
-                meta.session.query(SourcePackage).filter(
-                    SourcePackage.package_version == vers).delete()
-                meta.session.delete(vers)
-            meta.session.delete(package)
-        meta.session.commit()
+        self._remove_example_package()
         self._remove_example_user()
 
     def _test_no_auth(self, action, redirect_login=True):

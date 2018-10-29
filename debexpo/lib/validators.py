@@ -89,7 +89,7 @@ class GpgKey(formencode.validators.FieldStorageUploadConverter):
         requiredkeystrength = int(config['debexpo.gpg_minkeystrength'])
         keystrength = self.gnupg.extract_key_strength(self.key_id())
         keytype = self.gnupg.extract_key_type(self.key_id())
-        log.debug('keytype {}, keysize {}'.format(keytype, keystrength))
+
         if keytype == 'R':
             if keystrength < requiredkeystrength:
                 log.debug("Key strength unacceptable in Debian Keyring")
