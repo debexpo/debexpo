@@ -161,7 +161,7 @@ class PackagesController(BaseController):
 
             desc += '<br/><br/>'
 
-            if item.needs_sponsor:
+            if item.needs_sponsor == constants.PACKAGE_NEEDS_SPONSOR_YES:
                 desc += _('Uploader is currently looking for a sponsor.')
             else:
                 desc += _('Uploader is currently not looking for a sponsor.')

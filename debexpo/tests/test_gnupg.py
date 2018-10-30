@@ -44,43 +44,21 @@ from debexpo.lib.gnupg import GnuPG
 
 test_gpg_key = \
 """-----BEGIN PGP PUBLIC KEY BLOCK-----
-Version: GnuPG v2.0.9 (GNU/Linux)
 
-mQGiBEMnG4URBADovsaF04fRCsE1w5IHR0YHp2+Zd1Yjd4yo16B/J9nZ5Gj6Swih
-LaWhcjFL+crrP2tk6lKHXR+pYZ7pbm0jit4xAXDA2RQEvqVomps6vZVAQuZGVH57
-7whF0SWrO/XJ7JH68Nk7/8gwz7ISVMlq12pzy+MTFT9216vpahI4h0rv7wCg6Y1K
-RVZUp9sSFZuxJ67+ivoMfUMD/iQD8v2BznLp1XEe0rqQ3LebkGp5uuRWCPWI632e
-wfI+XzNxXvqrQnn6aJ7nRsi65+bPEpz/qjKYsikSCwGMIWa6yTINutYO2ns7Ltez
-y41f73vEdNm+5k4OZ4XB+zTvxoOXrWpl7MWX3O5aulGrB/vnlOTDoqTv+xoNkv2I
-PwoPA/49Lr3Pm1R1rdoEBhsbnYCwBUWtUx4gEcHA45/7Gy0rmqVuCh/sqeWW4nn/
-n8RfCzEDbgfxm8O5jduDkeGsem+AJJ96ERuBWiiVZ6f6rHZRwX3X5rtbGaFB0miY
-48LXBwNvFBu6bcs1LSjjw1H8h5lbcJVaScl2mEn39AXmnHJKk7QlU2VyYWZlaW0g
-WmFuaWtvbGFzIDxzZXJ6YW5AaGVsbHVnLmdyPohhBBMRAgAhBgsJCAcDAgMVAgMD
-FgIBAh4BAheABQJIAJNBBQkMXkW8AAoJEO3CRWI1UwTk7XkAoLCRfv/kVFNq+X2Q
-7E3M8cl8OAJcAKCUBbSr75DtKS9bo6Q0oeK4UkYu3YhbBBMRAgAbBgsJCAcDAgMV
-AgMDFgIBAh4BAheABQJHwhWtAAoJEO3CRWI1UwTkh6MAnibtG603HMtX/fzZfsW0
-hlsVwfGxAKDHyLakJZMm6n6VaLtE96T1UzIDCIhhBBMRAgAhBQJDJxuFBQkFo5qA
-BgsJCAcDAgMVAgMDFgIBAh4BAheAAAoJEO3CRWI1UwTkjrwAn0+NVciUYdIhWFnj
-xgCHU8XAJHGwAKDa4PJgjBMUZixcfcikoCOX4lc5WohhBBMRAgAhBgsJCAcDAgMV
-AgMDFgIBAh4BAheABQJIAI9NBQkMXkHIAAoJEO3CRWI1UwTkJDUAoNX3eS0PRlIb
-ZJLLvTrlQxaCgp/3AKC9Uz7oAe4Blw4C55rBgdZs9/9Gg4hGBBARAgAGBQJIE4J5
-AAoJEBVYlEWZ6B2g3yMAoLjneTTHkTD758PjswGiCbfASXmVAJ95tpgA6q5Xwtj5
-sn6tcv403pNOSIhGBBARAgAGBQJIC88zAAoJELdRFAn8Fdvsvq4AoJtlGCZhhRAt
-V0w8/GY+tVYzY4SHAKDRGk6EzJZ4uVHypdXw/aVYD110R4hGBBARAgAGBQJIO/at
-AAoJEJYs2vc7xAgfW4oAnRyYl8uRtkA+njTJb0BFnkEVToYJAKCG3wte5Y68hkoa
-W4y0FEdywhObybkBDQRDJxuHEAQAjonzPvWecBu80Pte8+9J8FFoNc5THXFHhHU+
-mqKNGk7bU4lCeVRM5tvMPJ/dV7+rmKgNF4MJ7MweQwQWpa0GKreB++EgijKUVtsR
-95pskzJbIbwMAMnkZbMIXB/7H8VChjDH6bRtZxROpw80teQK3jE0Gw8H3Aa/ktOl
-nwgfqPMAAwUD/A4y0e7CgWlCrELidCtEp/Z5DMlUJC+weUOZyknJqy3Ng9KgSD4k
-1HxmF46v8YtU/BcC83ijmZzJowa/P/72WDItC5EloPHhNnu/OQ19JPEvIJlPlkAM
-Y3Y26AsoHQBvZJes99XgGQYpm6N7nmJ9yoheAFIII91gVdipLAi//UuniEwEGBEC
-AAwFAkMnG4cFCQWjmoAACgkQ7cJFYjVTBOS3OwCg0XRWVkOp0Fn1htlXyQO1MdAs
-sS0An1yrKagH2JprS2yHBCLXdPcyAY6I
-=VNMB
+mDMEW9b91RYJKwYBBAHaRw8BAQdAHtUIQWAsmPilu0JDMnLbpPQfT1i3z2IVMoDH
+rhlYkO+0JWRlYmV4cG8gdGVzdGluZyA8ZGViZXhwb0BleGFtcGxlLm9yZz6IkAQT
+FggAOBYhBOF57qTrR+YF2YZjLihiGOfHT5wRBQJb1v3VAhsDBQsJCAcCBhUKCQgL
+AgQWAgMBAh4BAheAAAoJEChiGOfHT5wRdQIBAJ8rciR0e1PaA+LhoTWHaPSgCwvc
+lNFyRk71s75+hRkhAPwPnl6QqGsOa0DyJB5saVcqPCqYFbF1usUWIQnPPRsVC7g4
+BFvW/dUSCisGAQQBl1UBBQEBB0DzrYDCp+OaNFinqKkDWcqftqq/BAFS9lq4de5g
+RNytNAMBCAeIeAQYFggAIBYhBOF57qTrR+YF2YZjLihiGOfHT5wRBQJb1v3VAhsM
+AAoJEChiGOfHT5wRNK8A/115pc8+OwKDy1fGXGX3l0uq1wdfiJreG/9YZddx/JTI
+AQD4ZLpyUg+z6kJ+8YAmHFiOD9Ixv3QVvrfpBwnBVtJZBg==
+=N+9W
 -----END PGP PUBLIC KEY BLOCK-----
 """
 
-test_gpg_key_id = '1024D/355304E4'
+test_gpg_key_id = '256E/C74F9C11'
 
 class TestGnuPGController(TestCase):
 
@@ -120,13 +98,13 @@ class TestGnuPGController(TestCase):
 
     def testSignatureVerification(self):
         """
-        Verify the signature in the file debexpo/tests/gpg/signed_by_355304E4.
+        Verify the signature in the file debexpo/tests/gpg/debian_announcement.gpg.asc.
         """
         gnupg = self._get_gnupg()
         self.assertFalse(gnupg.is_unusable())
         gpg_data_dir = os.path.join(os.path.dirname(__file__), 'gpg')
-        signed_file = os.path.join(gpg_data_dir, 'signed_by_355304E4.gpg')
-        pubring = os.path.join(gpg_data_dir, 'pubring_with_355304E4.gpg')
+        signed_file = os.path.join(gpg_data_dir, 'debian_announcement.gpg.asc')
+        pubring = os.path.join(gpg_data_dir, 'pubring.gpg')
         assert os.path.exists(signed_file)
         assert os.path.exists(pubring)
         self.assertTrue(gnupg.verify_sig(signed_file, pubring))

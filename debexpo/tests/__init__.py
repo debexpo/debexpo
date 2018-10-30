@@ -59,6 +59,9 @@ from webtest import TestApp
 import pylons.test
 from debexpo.model import meta, import_all_models
 from debexpo.model.users import User
+from debexpo.model.packages import Package
+from debexpo.model.package_versions import PackageVersion
+from debexpo.model.source_packages import SourcePackage
 from debexpo.model.user_upload_key import UserUploadKey
 from debexpo.model.user_countries import UserCountry
 
@@ -142,4 +145,65 @@ class TestController(TestCase):
         test classes that use _setup_example_user.
         """
         meta.session.query(User).filter(User.email=='email@example.com').delete()
+        meta.session.commit()
+
+    def _setup_example_package(self):
+        """Add an example package.
+
+        The example package with name ``testpackage`` is added to
+        the database.
+
+        This method may be used in the setUp method of derived test
+        classes.
+        """
+        user = meta.session.query(User).filter(
+            User.email == 'email@example.com').one()
+
+        if not user:
+            raise Exception('Example user must be created before the package')
+
+        package = Package(name='testpackage', user=user,
+                          description='a test package')
+        meta.session.add(package)
+
+        package_version = PackageVersion(
+            package=package,
+            version='1.0-1',
+            maintainer='Test User <email@example.com>',
+            section='Admin',
+            distribution='unstable',
+            qa_status=0,
+            component='main',
+            priority='optional',
+            closes='',
+            uploaded=datetime.now())
+        meta.session.add(package_version)
+        meta.session.add(SourcePackage(package_version=package_version))
+        meta.session.commit()
+
+    def _remove_example_package(self):
+        """Remove the example package.
+
+        This method removes the example package created in
+        _setup_example_package.
+
+        This method must be used in the tearDown method of derived
+        test classes that use _setup_example_package.
+        """
+        package = meta.session.query(
+                Package).filter(Package.name == 'testpackage').first()
+        if not package:
+            return
+
+        package_version = meta.session.query(
+                PackageVersion).filter(
+                        PackageVersion.package == package).first()
+
+        package_source = meta.session.query(
+                SourcePackage).filter(
+                        SourcePackage.package_version == package_version).first()
+
+        meta.session.delete(package_source)
+        meta.session.delete(package_version)
+        meta.session.delete(package)
         meta.session.commit()
