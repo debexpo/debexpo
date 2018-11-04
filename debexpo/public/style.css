@@ -1036,3 +1036,20 @@ ul.qa {
     margin-bottom: 1em;
     list-style-type: none;
 }
+
+/* User information */
+.userinfo p {
+    margin: 0.5em 0 0.5em 0;
+}
+
+/* Sponsor guidelines */
+table.sponsor-guidelines {
+    table-layout: fixed;
+}
+
+.sponsor-tags-abbrev {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
