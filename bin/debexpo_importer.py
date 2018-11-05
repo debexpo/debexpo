@@ -406,12 +406,20 @@ class Importer(object):
             # invalid, we don't know whom send it to
             self._reject("Your changes file appears invalid. Refusing your upload\n%s" % (str(e)))
 
-
-
         # Determine user from changed-by field
         # This might be temporary, the GPG check should replace the user later
         # At this stage it is only helpful to get an email address to send blame mails to
         self._determine_uploader()
+
+        # Checks whether the upload has a dsc file
+        if not self.changes.get_dsc():
+            self._reject("Rejecting incomplete upload.\nYou did not upload the"
+                         " dsc file\nMake sure you include the full source"
+                         " (if you are using sbuild make sure to use the"
+                         " --source option or the equivalent configuration"
+                         " item; if you are using dpkg-buildpackage directly"
+                         " use the default flags or -S for a source only"
+                         " upload)")
 
         # Next, find out whether the changes file was signed with a valid signature, if not reject immediately
         if not self.skip_gpg:
