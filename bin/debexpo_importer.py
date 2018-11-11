@@ -363,24 +363,36 @@ class Importer(object):
 
         return package_version
 
+    def _find_user_by_email_address(self, email_address):
+        """
+        Searches user by email address
+        """
+        # XXX: Maybe model is more appropriate place for such a method
+        self.user = meta.session.query(User).filter_by(email=email_address).filter_by(verification=None).first()
+        return self.user
 
-    def _determine_uploader(self):
+    def _determine_uploader_by_changedby_field(self):
         """
         Create a user object based on the Changed-By entry
-        This object will also exist if the user was NOT found. This is useful
-        to have a user object to send reject mails to
         """
-        if self.user_id is None:
-            maintainer_string = self.changes.get('Changed-By')
-            log.debug("Determining user from 'Changed-By:' field: %s" % maintainer_string)
-            maintainer_realname, maintainer_email_address = email.utils.parseaddr(maintainer_string)
-            log.debug("Changed-By's email address is: %s", maintainer_email_address)
-            self.user = meta.session.query(User).filter_by(
-                    email=maintainer_email_address).filter_by(verification=None).first()
-            if self.user is None:
-                # generate user object, but only to send out reject message
-                self.user = User(id=-1, name=maintainer_realname, email=maintainer_email_address)
-            self.user_id = self.user.id
+        maintainer_string = self.changes.get('Changed-By')
+        log.debug("Determining user from 'Changed-By:' field: %s" % maintainer_string)
+        maintainer_realname, maintainer_email_address = email.utils.parseaddr(maintainer_string)
+        log.debug("Changed-By's email address is: %s", maintainer_email_address)
+        self._find_user_by_email_address(maintainer_email_address)
+
+    def _determine_uploader_by_gpg(self, gpg_out):
+        """
+        Create a user object based on the gpg output
+        """
+
+        for (name, email) in gpg_out:
+            log.debug("GPG signature matches user %s <%s>" % (name, email))
+            if self._find_user_by_email_address(email):
+                log.debug("GPG signature mapped to user %s <%s>" % (self.user.name, self.user.email))
+                return
+
+        return None
 
     def main(self):
         """
@@ -409,7 +421,7 @@ class Importer(object):
         # Determine user from changed-by field
         # This might be temporary, the GPG check should replace the user later
         # At this stage it is only helpful to get an email address to send blame mails to
-        self._determine_uploader()
+        self._determine_uploader_by_changedby_field()
 
         # Checks whether the upload has a dsc file
         if not self.changes.get_dsc():
@@ -421,19 +433,23 @@ class Importer(object):
                          " use the default flags or -S for a source only"
                          " upload)")
 
-        # Next, find out whether the changes file was signed with a valid signature, if not reject immediately
         if not self.skip_gpg:
+            # Next, find out whether the changes file was signed with a valid signature, if not reject immediately
             if not signature.is_signed(self.changes_file):
                 self._reject('Your upload does not appear to be signed')
-            (gpg_out, gpg_status) = signature.verify_sig_full(self.changes_file)
+            (gpg_out, gpg_uids, gpg_status) = signature.verify_sig_full(self.changes_file)
             if gpg_status != 0:
                 self._reject('Your upload does not contain a valid signature. Output was:\n%s' % (gpg_out))
-            log.debug("GPG signature matches user %s" % (self.user.email))
+            self._determine_uploader_by_gpg(gpg_uids)
 
-        # XXX: Replace self.user by something which was verified by GPG!
-
-        if self.user_id == -1:
+        if self.user is None:
+            # Creates a fake user object, but only if no user was found before
+            # This is useful to have a user object to send reject mails to
+            # generate user object, but only to send out reject message
+            self.user = User(id=-1, name=maintainer_realname, email=maintainer_email_address)
             self._reject('Couldn\'t find user %s. Exiting.' % self.user.email)
+
+        self.user_id = self.user.id
         log.debug("User found in database. Has id: %s", self.user.id)
 
         self.files = self.changes.get_files()

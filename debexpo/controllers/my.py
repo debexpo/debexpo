@@ -113,7 +113,7 @@ class MyController(BaseController):
         if 'gpg' in self.form_result and self.form_result['gpg'] is not None:
             log.debug('Setting a new GPG key')
             self.user.gpg = self.form_result['gpg'].value
-            self.user.gpg_id = self.gnupg.parse_key_id(self.user.gpg)
+            (self.user.gpg_id, _) = self.gnupg.parse_key_id(self.user.gpg)
 
             temp = tempfile.NamedTemporaryFile(delete=True)
             temp.write(self.user.gpg)
@@ -244,7 +244,7 @@ class MyController(BaseController):
                   'metrics' : self._metrics,
                 }[request.params['form']]()
             except KeyError:
-                log.error('Could not find form name; defaulting to main page')
+                log.error('Could not find form name "%s"; defaulting to main page' % (request.params['form']))
                 pass
 
         log.debug('Populating template context')

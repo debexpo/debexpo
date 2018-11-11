@@ -1,18 +1,27 @@
-debexpo (UNRELEASED + 1)
+debexpo (UNRELEASED)
 
-    * Support for sponsoring guidelines. Debian Developer are asked to register at
-      mentors.debian.net (if not done already) and provide there their personal
-      sponsoring guidelines. That's is a semi-structured description text to
-      point sponsors to individual developers who are interested to sponsor some
-      packages.
+    * Support for sponsoring guidelines. Debian Developer are asked to
+      register at mentors.debian.net (if not done already) and provide
+      there their personal sponsoring guidelines. That's is a
+      semi-structured description text to point sponsors to individual
+      developers who are interested to sponsor some packages.
 
-    * Provide public profile pages for both, maintainer and developers. For
-      maintainer their package list is being displayed among their profile data.
-      On the other hand, for Debian Developers their sponsoring guidelines are
-      being displayed.
-      Both can disable their profiles if desired.
+    * Provide public profile pages for both, maintainer and developers.
+      For maintainer their package list is being displayed among their
+      profile data.  On the other hand, for Debian Developers their
+      sponsoring guidelines are being displayed.  Both can disable their
+      profiles if desired.
 
-
+    * Determine Debexpo user ID by the GPG key ID. This means Debexpo will
+      now emulate behavior of official Debian archives to identify an
+      upload solely by its signature. Thanks to Aliaksei Palkanau who
+      provided a patch on which this improvement is based on. Previously
+      Debexpo used the Changed-By field to determine the uploader.
+      Moreover GPG keys are being verified upon import now.
+      Thanks to a patch by Vipin Nair the key strength must match Debian
+      keyring maintainer criterias (2048 bit RSA keys).
+      Finally at least one UID of the key to be imported must match the
+      configured profile email address.
 
 debexpo (v2)
 

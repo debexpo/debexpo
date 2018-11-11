@@ -39,6 +39,7 @@ __license__ = 'MIT'
 import logging
 import os
 import subprocess
+import re
 
 import pylons
 import re
@@ -132,7 +133,7 @@ class GnuPG(object):
 
     def parse_key_id(self, key, email = None):
         """
-        Returns the key id of the given GPG public key.
+        Returns the key id of the given GPG public key along with a list of user ids.
 
         ``key``
             ASCII armored GPG public key.
@@ -148,7 +149,7 @@ class GnuPG(object):
             output = unicode(output, errors='replace')
             keys = KeyData.read_from_gpg(output.splitlines())
             for key in keys.values():
-                return key.get_id()
+                return (key.get_id(), key.get_all_uid())
         except (AttributeError, IndexError):
             log.error("Failed to extract key id from gpg output: '%s'"
                        % output)
@@ -160,7 +161,7 @@ class GnuPG(object):
         function which returns a boolean only
 
         """
-        (_, status) = self.verify_sig_full(signed_file, pubring)
+        (_, _, status) = self.verify_sig_full(signed_file, pubring)
         return status == 0
 
     def verify_sig_full(self, signed_file, pubring=None):
@@ -175,7 +176,18 @@ class GnuPG(object):
              setting will be used (~/.gnupg/pubring.gpg))
         """
         args = ('--verify', signed_file)
-        return self._run(args=args, pubring=pubring)
+        (out, return_code) = self._run(args=args, pubring=pubring)
+        gpg_addr_pattern =  re.compile('"'
+                                        '(?P<name>.+)'
+                                        '\s+'
+                                        '<(?P<email>.+?)>'
+                                        '"')
+        user_ids = []
+        for line in out.split("\n"):
+            addr_matcher = gpg_addr_pattern.search(line)
+            if addr_matcher is not None:
+                user_ids.append( (addr_matcher.group('name'), addr_matcher.group('email')) )
+        return (out, user_ids, return_code)
 
 
     def add_signature(self, signature_file, pubring=None):
@@ -340,6 +352,13 @@ class KeyData(object):
         short_id = GPGAlgo.to_short(self.pub[3], self.pub[2])
         short_fpr = self.format_short_fpr(self.pub[4])
         return "{}/{}".format(short_id, short_fpr)
+
+    def get_all_uid(self):
+        user_ids = []
+        for uid_object in self.uids.values():
+            uid = uid_object.split()
+            user_ids.append((uid['name'], uid['email']))
+        return user_ids
 
     def keycheck(self):
         return KeycheckKeyResult(self)

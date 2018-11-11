@@ -59,6 +59,8 @@ AQD4ZLpyUg+z6kJ+8YAmHFiOD9Ixv3QVvrfpBwnBVtJZBg==
 """
 
 test_gpg_key_id = '256E/C74F9C11'
+test_gpg_key_name = 'debexpo testing'
+test_gpg_key_email = 'debexpo@example.org'
 
 class TestGnuPGController(TestCase):
 
@@ -94,7 +96,19 @@ class TestGnuPGController(TestCase):
         """
         gnupg = self._get_gnupg()
         self.assertFalse(gnupg.is_unusable())
-        self.assertEqual(gnupg.parse_key_id(test_gpg_key), test_gpg_key_id)
+        (gpg_key_id, _) = gnupg.parse_key_id(test_gpg_key)
+        self.assertEqual(gpg_key_id, test_gpg_key_id)
+
+    def testParseKeyIDWithUID(self):
+        """
+        Test the extraction of an uid from a given GPG key.
+        """
+        gnupg = self._get_gnupg()
+        self.assertFalse(gnupg.is_unusable())
+        (_, gpg_key_uids) = gnupg.parse_key_id(test_gpg_key)
+        (gpg_key_name, gpg_key_email) = gpg_key_uids[0]
+        self.assertEqual(gpg_key_name, test_gpg_key_name)
+        self.assertEqual(gpg_key_email, test_gpg_key_email)
 
     def testSignatureVerification(self):
         """

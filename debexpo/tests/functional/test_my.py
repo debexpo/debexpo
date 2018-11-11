@@ -9,7 +9,7 @@ import os
 import shutil
 
 class TestMyController(TestController):
-    _GPGKEY = """-----BEGIN PGP PUBLIC KEY BLOCK-----
+    _GPGKEY_WRONG_EMAIL = """-----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mDMEW9b91RYJKwYBBAHaRw8BAQdAHtUIQWAsmPilu0JDMnLbpPQfT1i3z2IVMoDH
 rhlYkO+0JWRlYmV4cG8gdGVzdGluZyA8ZGViZXhwb0BleGFtcGxlLm9yZz6IkAQT
@@ -22,7 +22,23 @@ AAoJEChiGOfHT5wRNK8A/115pc8+OwKDy1fGXGX3l0uq1wdfiJreG/9YZddx/JTI
 AQD4ZLpyUg+z6kJ+8YAmHFiOD9Ixv3QVvrfpBwnBVtJZBg==
 =N+9W
 -----END PGP PUBLIC KEY BLOCK-----"""
-    _GPG_ID = '256E/C74F9C11'
+
+    _GPG_ID_WRONG_EMAIL = '256E/C74F9C11'
+
+    _GPGKEY = """-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mDMEW+iERRYJKwYBBAHaRw8BAQdAZN+9IfILcMWaZ5bOx4Ykmum/1ZMaxZAw1YbI
+KjEWWU60J0RlYmV4cG8gdGVzdGluZyBrZXkgPGVtYWlsQGV4YW1wbGUuY29tPoiQ
+BBMWCAA4FiEEdhj55Cj1+6e2+jO1NU98o/QgaL4FAlvohEUCGwMFCwkIBwIGFQoJ
+CAsCBBYCAwECHgECF4AACgkQNU98o/QgaL7I+wEAjY6np4hgEfkotEM0hpOo1LGF
+sWWiO1OKhi/Nfg+WOoUA/0/DEcGfclpGhpB+unaqn0dLnMKDJeZAxINji7/Lz2gH
+uDgEW+iERRIKKwYBBAGXVQEFAQEHQJwX6mLJZQMkBwKbyJa0+oz15wSiYHFONGYI
+s9TdseYWAwEIB4h4BBgWCAAgFiEEdhj55Cj1+6e2+jO1NU98o/QgaL4FAlvohEUC
+GwwACgkQNU98o/QgaL6XtAEAl+8Pqc8q6EWTudqgynVIpdraSuBrVSaEcxffKaT3
+P6YA/0SM1Yi/F2maISv8k44MzRAdGf2yFabwsfdCH+RLD6YO
+=BYiE
+-----END PGP PUBLIC KEY BLOCK-----"""
+    _GPG_ID= '256E/F42068BE'
 
     def _setup_gpg_env(self):
         self.homedir = tempfile.mkdtemp()
@@ -120,6 +136,25 @@ AQD4ZLpyUg+z6kJ+8YAmHFiOD9Ixv3QVvrfpBwnBVtJZBg==
         self.assertTrue(response.location.endswith(url('my')))
         user = meta.session.query(User).filter(User.email=='email@example.com').one()
         self.assertEquals(user.gpg, None)
+
+    def test__gpg_wrong_email(self):
+        response = self.app.post(url('my'), {'form': 'gpg'})
+        self.assertEquals(response.status_int, 302)
+        self.assertTrue(response.location.endswith(url('login')))
+        response = self.app.post(url('login'), self._AUTHDATA)
+        user = meta.session.query(User).filter(User.email=='email@example.com').one()
+        self.assertEquals(user.gpg, None)
+
+        # upload GPG key
+        response = self.app.post(url('my'), {'form': 'gpg',
+                                             'delete_gpg': 0,
+                                             'commit': 'submit'},
+                                 upload_files = [('gpg', 'mykey.asc',
+                                                  self._GPGKEY_WRONG_EMAIL)])
+        self.assertEquals(response.status_int, 200)
+        self.assertTrue('None of your user IDs in key {} does match your'
+                        ' profile mail address'.format(self._GPG_ID_WRONG_EMAIL)
+                        in response)
 
     def test__details(self):
         response = self.app.post(url('my'), {'form': 'details'})
