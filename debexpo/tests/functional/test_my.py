@@ -155,6 +155,8 @@ P6YA/0SM1Yi/F2maISv8k44MzRAdGf2yFabwsfdCH+RLD6YO
         self.assertTrue('None of your user IDs in key {} does match your'
                         ' profile mail address'.format(self._GPG_ID_WRONG_EMAIL)
                         in response)
+        user = meta.session.query(User).filter(User.email=='email@example.com').one()
+        self.assertEquals(user.gpg, None)
 
     def test__details(self):
         response = self.app.post(url('my'), {'form': 'details'})
