@@ -177,11 +177,7 @@ class GnuPG(object):
         """
         args = ('--verify', signed_file)
         (out, return_code) = self._run(args=args, pubring=pubring)
-        gpg_addr_pattern =  re.compile('"'
-                                        '(?P<name>.+)'
-                                        '\s+'
-                                        '<(?P<email>.+?)>'
-                                        '"')
+        gpg_addr_pattern = re.compile(r"^gpg: Good signature from \"(?P<name>.+?)\s*(?:\((?P<comment>.+)\))?\s*(?:<(?P<email>.+)>)?\"")
         user_ids = []
         for line in out.split("\n"):
             addr_matcher = gpg_addr_pattern.search(line)

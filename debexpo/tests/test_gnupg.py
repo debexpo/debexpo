@@ -123,6 +123,21 @@ class TestGnuPGController(TestCase):
         assert os.path.exists(pubring)
         self.assertTrue(gnupg.verify_sig(signed_file, pubring))
 
+    def testSignatureVerificationWithUID(self):
+        """
+        Verify the signature in the file debexpo/tests/gpg/debian_announcement.gpg.asc.
+        """
+        gnupg = self._get_gnupg()
+        self.assertFalse(gnupg.is_unusable())
+        gpg_data_dir = os.path.join(os.path.dirname(__file__), 'gpg')
+        signed_file = os.path.join(gpg_data_dir, 'debian_announcement.gpg.asc')
+        pubring = os.path.join(gpg_data_dir, 'pubring.gpg')
+        assert os.path.exists(signed_file)
+        assert os.path.exists(pubring)
+        (out, uids, status) = gnupg.verify_sig_full(signed_file, pubring)
+        self.assertEquals(status, 0)
+        self.assertTrue(('debexpo testing', 'debexpo@example.org') in uids)
+
     def testInvalidSignature(self):
         """
         Test that verify_sig() fails for an unsigned file.
