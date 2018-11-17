@@ -145,7 +145,8 @@ class GnuPG(object):
 
         """
         try:
-            (output, _) = self._run(stdin=key)
+            (output, _) = self._run(stdin=key, args=[
+                '--import', '--import-options', 'import-show', '--dry-run'])
             output = unicode(output, errors='replace')
             keys = KeyData.read_from_gpg(output.splitlines())
             for key in keys.values():
@@ -177,7 +178,7 @@ class GnuPG(object):
         """
         args = ('--verify', signed_file)
         (out, return_code) = self._run(args=args, pubring=pubring)
-        gpg_addr_pattern = re.compile(r"^gpg: Good signature from \"(?P<name>.+?)\s*(?:\((?P<comment>.+)\))?\s*(?:<(?P<email>.+)>)?\"")
+        gpg_addr_pattern = re.compile(r"\"(?P<name>.+?)\s*(?:\((?P<comment>.+)\))?\s*(?:<(?P<email>.+)>)?\"")
         user_ids = []
         for line in out.split("\n"):
             addr_matcher = gpg_addr_pattern.search(line)
