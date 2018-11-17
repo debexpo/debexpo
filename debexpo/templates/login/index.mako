@@ -32,6 +32,10 @@
 
   ${ h.html.tags.end_form() }
 
+% if c.request and c.request.scheme == 'http':
+  <p>Secure log-in: <a href="${ h.url.current(protocol='https') }">${ _('Switch to SSL') }</a></p>
+% endif
+
   <p>${ _('Did you lose your password?')}
 
   <a href="${ h.url("password_recover/index") }">${ _('Try resetting your password.')}</a></p>

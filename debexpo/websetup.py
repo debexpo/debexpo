@@ -83,14 +83,14 @@ def setup_config(command, filename, section, vars):
 
     if not os.path.isdir(config['debexpo.upload.incoming']):
         log.info('Creating incoming directory')
-        os.mkdir(config['debexpo.upload.incoming'])
-        os.mkdir(os.path.join(config['debexpo.upload.incoming'], 'pub'))
+        os.makedirs(config['debexpo.upload.incoming'])
+        os.makedirs(os.path.join(config['debexpo.upload.incoming'], 'pub'))
     else:
         log.info('Incoming directory already exists')
 
     if not os.path.isdir(config['debexpo.repository']):
         log.info('Creating repository directory')
-        os.mkdir(config['debexpo.repository'])
+        os.makedirs(config['debexpo.repository'])
     else:
         log.info('Repository directory already exists')
 
