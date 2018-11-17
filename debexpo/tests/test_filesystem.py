@@ -39,6 +39,7 @@ from unittest import TestCase
 
 from debexpo.lib.filesystem import CheckFiles
 
+
 class TestCheckFilesController(TestCase):
 
     def setUp(self):
@@ -54,11 +55,12 @@ class TestCheckFilesController(TestCase):
         t = self.checkfiles.allowed_upload
 
         self.assertTrue(t('foo_version.orig.tar.gz'))
+        self.assertTrue(t('foo_version.orig.tar.xz.asc'))
         self.assertTrue(t('foo_version.tar.gz'))
         self.assertTrue(t('foo_version.changes'))
+        self.assertTrue(t('foo_version_arch.buildinfo'))
         self.assertTrue(t('foo_version.dsc'))
         self.assertTrue(t('foo_version.deb'))
         self.assertTrue(t('foo_version.diff.gz'))
 
         self.assertFalse(t('foo_version.etc'))
-
