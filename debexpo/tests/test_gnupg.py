@@ -45,20 +45,23 @@ from debexpo.lib.gnupg import GnuPG
 test_gpg_key = \
 """-----BEGIN PGP PUBLIC KEY BLOCK-----
 
-mDMEW9b91RYJKwYBBAHaRw8BAQdAHtUIQWAsmPilu0JDMnLbpPQfT1i3z2IVMoDH
-rhlYkO+0JWRlYmV4cG8gdGVzdGluZyA8ZGViZXhwb0BleGFtcGxlLm9yZz6IkAQT
-FggAOBYhBOF57qTrR+YF2YZjLihiGOfHT5wRBQJb1v3VAhsDBQsJCAcCBhUKCQgL
-AgQWAgMBAh4BAheAAAoJEChiGOfHT5wRdQIBAJ8rciR0e1PaA+LhoTWHaPSgCwvc
-lNFyRk71s75+hRkhAPwPnl6QqGsOa0DyJB5saVcqPCqYFbF1usUWIQnPPRsVC7g4
-BFvW/dUSCisGAQQBl1UBBQEBB0DzrYDCp+OaNFinqKkDWcqftqq/BAFS9lq4de5g
-RNytNAMBCAeIeAQYFggAIBYhBOF57qTrR+YF2YZjLihiGOfHT5wRBQJb1v3VAhsM
-AAoJEChiGOfHT5wRNK8A/115pc8+OwKDy1fGXGX3l0uq1wdfiJreG/9YZddx/JTI
-AQD4ZLpyUg+z6kJ+8YAmHFiOD9Ixv3QVvrfpBwnBVtJZBg==
-=N+9W
------END PGP PUBLIC KEY BLOCK-----
-"""
+mDMEW/F8GBYJKwYBBAHaRw8BAQdA6Riq9GZh/HiwtFjPcvz5i5oFzp1I8RiqxBs1
+g06oSh+0HXByaW1hcnkgaWQgPG1haW5AZXhhbXBsZS5vcmc+iJMEExYIADsCGwMF
+CwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQSGVz4uSUdVmCPsPxTH4ZqYGuqOuwUC
+W/F8dAIZAQAKCRDH4ZqYGuqOu9GTAQCCMRbXuueDLcC4eWmMGGiAmqLzKdhGJxQe
+e0k5d6wkKQEA2vdlMg9s3UFL4e8jnJPYeNpsxDaaEPr0jMLnwcBp8wa0JWRlYmV4
+cG8gdGVzdGluZyA8ZGViZXhwb0BleGFtcGxlLm9yZz6IkAQTFggAOBYhBIZXPi5J
+R1WYI+w/FMfhmpga6o67BQJb8XxSAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheA
+AAoJEMfhmpga6o67MjUBAMYVSthPo3oKR1PpV9ebHFiSARmc2BxxL+xmdzfiRT3O
+AP9JQZxCSl3awI5xos8mw2edsDWYcaS2y+RmbTLv8wR2Abg4BFvxfBgSCisGAQQB
+l1UBBQEBB0Doc/H7Tyvf+6kdlnUOqY+0t3pkKYj0EOK6QFKMnlRpJwMBCAeIeAQY
+FggAIBYhBIZXPi5JR1WYI+w/FMfhmpga6o67BQJb8XwYAhsMAAoJEMfhmpga6o67
+Vh8A/AxTKLqACJnSVFrO2sArc7Yt3tymB+of9JeBF6iYBbuDAP9r32J6TYFB9OSz
+r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
+=BMLr
+-----END PGP PUBLIC KEY BLOCK-----"""
 
-test_gpg_key_id = '256E/C74F9C11'
+test_gpg_key_id = '256E/1AEA8EBB'
 test_gpg_key_name = 'debexpo testing'
 test_gpg_key_email = 'debexpo@example.org'
 
@@ -105,10 +108,8 @@ class TestGnuPGController(TestCase):
         """
         gnupg = self._get_gnupg()
         self.assertFalse(gnupg.is_unusable())
-        (_, gpg_key_uids) = gnupg.parse_key_id(test_gpg_key)
-        (gpg_key_name, gpg_key_email) = gpg_key_uids[0]
-        self.assertEqual(gpg_key_name, test_gpg_key_name)
-        self.assertEqual(gpg_key_email, test_gpg_key_email)
+        (_, uids) = gnupg.parse_key_id(test_gpg_key)
+        self.assertTrue((test_gpg_key_name, test_gpg_key_email) in uids)
 
     def testSignatureVerification(self):
         """
@@ -136,7 +137,7 @@ class TestGnuPGController(TestCase):
         assert os.path.exists(pubring)
         (out, uids, status) = gnupg.verify_sig_full(signed_file, pubring)
         self.assertEquals(status, 0)
-        self.assertTrue(('debexpo testing', 'debexpo@example.org') in uids)
+        self.assertTrue((test_gpg_key_name, test_gpg_key_email) in uids)
 
     def testInvalidSignature(self):
         """
