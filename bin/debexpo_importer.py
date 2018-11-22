@@ -559,12 +559,30 @@ class Importer(object):
                 # b) We couldn't find a orig.tar.gz in our repository
                 # c) No plugin could get the orig.tar.gz
                 # ... time to give up
-                if orig == None:
-                    orig = "any original tarball (orig.tar.gz)"
-                self._reject("Rejecting incomplete upload. "
-                    "You did not upload %s and we didn't find it on any of our alternative resources.\n" \
-                    "If you tried to upload a package which only increased the Debian revision part, make sure you include the full source (pass -sa to dpkg-buildpackage)" %
-                    ( orig ))
+
+                orig_from_debian = None
+                for result in post_upload.result:
+                    if result.from_plugin == 'getorigtarball':
+                        orig_from_debian = result.outcome
+
+                if orig_from_debian and orig_from_debian == 'tarball-from-debian-too-big':
+                    self._reject("Rejecting incomplete upload. Your upload did "
+                        "not include the orig tarball.  We did find it on "
+                        "Debian main archive, however it is too big to be "
+                        "downloaded by our system (> 100 MB).\nPlease "
+                        "re-upload your package to mentors.debian.net, "
+                        "including the orig tarball (pass -sa to "
+                        "dpkg-buildpackage). Thanks,")
+                else:
+                    if orig == None:
+                        orig = "any original tarball (orig.tar.gz)"
+                    self._reject("Rejecting incomplete upload. "
+                        "You did not upload %s and we didn't find it on any of our"
+                        " alternative resources.\n"
+                        "If you tried to upload a package which only increased the"
+                        " Debian revision part, make sure you include the full"
+                        " source (pass -sa to dpkg-buildpackage)" %
+                        ( orig ))
             else:
                 toinstall.append(orig)
 

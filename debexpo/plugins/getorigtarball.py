@@ -63,12 +63,13 @@ class GetOrigTarballPlugin(BasePlugin):
         larger than the configured size
         """
 
-        # Set download of files, when the expected file size of the orig.tar.gz is larger
-        # than the configured threshold.
-        # XXX TODO: This size should be the 75% quartile, that is the value where 75% of all
-        #           packages are smaller than that. For now, blindly assume this as 15M
-        size = 15728640
-        log.debug('Checking whether an orig tarball mentioned in the dsc is missing')
+        # Set download of files, when the expected file size of the orig.tar.gz
+        # is larger than the configured threshold.
+        # The 100M limit has been choosen based on the biggest 500 packages as
+        # of late 2018.
+        size = 104857600
+        log.debug('Checking whether an orig tarball mentioned in the dsc is'
+                  ' missing')
         dsc = deb822.Dsc(file(self.changes.get_dsc()))
         filecheck = CheckFiles()
 
@@ -90,8 +91,11 @@ class GetOrigTarballPlugin(BasePlugin):
             dscfile['size'] = int(dscfile['size'])
             if orig == dscfile['name']:
                 if dscfile['size'] > size:
-                        log.warning("Skipping eventual download of orig.tar.gz %s: size %d > %d" % (dscfile['name'], dscfile['size'], size))
-                        return
+                    log.warning("Skipping eventual download of orig.tar.gz %s:"
+                                " size %d > %d" % (dscfile['name'],
+                                                   dscfile['size'], size))
+                    self.info('tarball-from-debian-too-big', None)
+                    return
                 orig = dscfile
                 break
         else:
@@ -119,5 +123,9 @@ class GetOrigTarballPlugin(BasePlugin):
 plugin = GetOrigTarballPlugin
 
 outcomes = {
-    'tarball-taken-from-debian' : { 'name' : 'The original tarball has been retrieved from Debian' },
+    'tarball-taken-from-debian' : { 'name' : 'The original tarball has been'
+                                             ' retrieved from Debian' },
+    'tarball-from-debian-too-big': {'name': 'The original tarball cannot be'
+                                            ' retrieved from Debian: file too'
+                                            ' big'},
 }
