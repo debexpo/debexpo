@@ -33,11 +33,11 @@ ${package}
 %     for severity in sorted(o.rich_data[package], key = severity_key):
 %       for tag in sorted(o.rich_data[package][severity]):
 <li>
-${decode_severity(severity)} ${tag_to_a(tag)}
+${decode_severity(severity)|n} ${tag_to_a(tag)|n}
 %         if any(o.rich_data[package][severity][tag]):
 <ul>
 %           for data in o.rich_data[package][severity][tag]:
-<li>${" ".join(data) | h}</li>
+<li>${" ".join(data)}</li>
 %           endfor
 </ul>
 %         endif
