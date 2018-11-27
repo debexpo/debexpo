@@ -94,6 +94,9 @@ class PackageInfo(OrmObject):
             directories = PLUGINS_TEMPLATE_DIRS,
             input_encoding='utf-8',
             output_encoding='utf-8',
+            default_filters=['escape'],
+            imports=['from webhelpers.html import escape',
+                     'from debexpo.lib.filters import semitrusted']
             )
 
         for basefile in try_files:
