@@ -165,7 +165,8 @@ class Email(object):
             session.login(self.auth['user'], self.auth['password'])
 
         log.debug('Sending email to %s' % ', '.join(recipients))
-        result = session.sendmail(pylons.config['debexpo.email'], recipients, message)
+        result = session.sendmail(pylons.config['debexpo.bounce_email'],
+                recipients, message)
 
         if result:
             # Something went wrong.
