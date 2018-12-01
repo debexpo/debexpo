@@ -368,8 +368,10 @@ class Importer(object):
         Searches user by email address
         """
         # XXX: Maybe model is more appropriate place for such a method
-        self.user = meta.session.query(User).filter_by(email=email_address).filter_by(verification=None).first()
-        return self.user
+        user = meta.session.query(User).filter_by(email=email_address).filter_by(verification=None).first()
+        if user:
+            self.user = user
+        return user
 
     def _determine_uploader_by_changedby_field(self):
         """
@@ -379,7 +381,10 @@ class Importer(object):
         log.debug("Determining user from 'Changed-By:' field: %s" % maintainer_string)
         maintainer_realname, maintainer_email_address = email.utils.parseaddr(maintainer_string)
         log.debug("Changed-By's email address is: %s", maintainer_email_address)
-        self._find_user_by_email_address(maintainer_email_address)
+        if not self._find_user_by_email_address(maintainer_email_address):
+            # Creates a fake user object, but only if no user was found before,
+            # this is useful to have a user object to send reject mails to.
+            self.user = User(id=-1, name=maintainer_realname, email=maintainer_email_address)
 
     def _determine_uploader_by_gpg(self, gpg_out):
         """
@@ -390,9 +395,9 @@ class Importer(object):
             log.debug("GPG signature matches user %s <%s>" % (name, email))
             if self._find_user_by_email_address(email):
                 log.debug("GPG signature mapped to user %s <%s>" % (self.user.name, self.user.email))
-                return
+                return True
 
-        return None
+        return False
 
     def main(self):
         """
@@ -440,13 +445,11 @@ class Importer(object):
             (gpg_out, gpg_uids, gpg_status) = signature.verify_sig_full(self.changes_file)
             if gpg_status != 0:
                 self._reject('Your upload does not contain a valid signature. Output was:\n%s' % (gpg_out))
-            self._determine_uploader_by_gpg(gpg_uids)
+            if not self._determine_uploader_by_gpg(gpg_uids):
+                self._reject('Rejecting your upload. Your GPG key does not'
+                        ' match the email used to register')
 
-        if self.user is None:
-            # Creates a fake user object, but only if no user was found before
-            # This is useful to have a user object to send reject mails to
-            # generate user object, but only to send out reject message
-            self.user = User(id=-1, name=maintainer_realname, email=maintainer_email_address)
+        if self.user.id == -1:
             self._reject('Couldn\'t find user %s. Exiting.' % self.user.email)
 
         self.user_id = self.user.id
