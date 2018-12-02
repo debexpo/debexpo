@@ -67,6 +67,12 @@ class TestImporter(TestImporterController):
         self.assert_no_email()
         self.assert_package_count('hello', '1.0-1', 0)
 
+    def test_import_package_wrong_checksum_in_changes(self):
+        self.import_package('wrong-checksum-in-changes')
+        self.assert_importer_failed()
+        self.assert_no_email()
+        self.assert_package_count('hello', '1.0-1', 0)
+
     def test_import_package_no_dsc(self):
         self.import_package('no-dsc')
         self.assert_importer_failed()
