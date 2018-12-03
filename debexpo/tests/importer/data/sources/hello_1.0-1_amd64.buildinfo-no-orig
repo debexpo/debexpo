@@ -7,13 +7,13 @@ Binary: hello
 Architecture: amd64 source
 Version: 1.0-1
 Checksums-Md5:
- e2d4e2ad265f5f51b6fc510f93fb4057 1062 hello_1.0-1.dsc
+ fd38015ad4958ff23ecc138d87b9fff8 842 hello_1.0-1.dsc
  4c3f75043d99b8a9d3d5019b46a3625c 2316 hello_1.0-1_amd64.deb
 Checksums-Sha1:
- c59b78b30b9c8a143bab393433634670df2da633 1062 hello_1.0-1.dsc
+ 825dd4ad73600f5b90f9e3fa6a9b8b7b5d3f6c03 842 hello_1.0-1.dsc
  4704c98642a0cb7dfd6b9a4cb4c0d61916a1e729 2316 hello_1.0-1_amd64.deb
 Checksums-Sha256:
- 02b78e4ca364c71c990ad77b1648feba0360845643a7ca115695fb1337756356 1062 hello_1.0-1.dsc
+ 55d9d9f0c1a6622ab7d907022821c489f9e349eef127f2f52977753278974d37 842 hello_1.0-1.dsc
  c98b2da09c2abe6b446c36aa3210adacde8d3566f8e76ea62c15b9aa7bbfd1f5 2316 hello_1.0-1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
@@ -163,8 +163,8 @@ Environment:
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYIAB0WIQRVkwbu4cjBst0cc7HENHgc6HHz3wUCXAWoQQAKCRDENHgc6HHz
-3+2YAQDRYiQ9UAnoi0qtZ9CNk+sSiljWI8cZF2my4aI5mv3kWwEA1oTGq3D75DSE
-ndtrUHg+/k5hazO5Dn3mUbnir0iu0Qw=
-=dwkq
+iHUEARYIAB0WIQRVkwbu4cjBst0cc7HENHgc6HHz3wUCXAWpsAAKCRDENHgc6HHz
+31+lAQCu2CuooOgNAKtGbXhu9x2FHE9K/qIrwxDErOnnPHgGQAEA+wAmuqceMuNX
+2lPAwOfKv32VNckgzDvcfJlfEB1RhA4=
+=PWAQ
 -----END PGP SIGNATURE-----
