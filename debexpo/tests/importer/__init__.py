@@ -34,15 +34,18 @@ __license__ = 'MIT'
 
 import pylons
 
-from debexpo.model.users import User
-from debexpo.model import meta
-from bin.debexpo_importer import Importer
-from debexpo.tests import TestController, url
+from email import message_from_file
+from glob import glob
 from os import remove
 from os.path import isdir, isfile, join, dirname
 from shutil import rmtree, copytree
-from glob import glob
 from subprocess import Popen, PIPE
+
+from bin.debexpo_importer import Importer
+from debexpo.model import meta
+from debexpo.model.package_versions import PackageVersion
+from debexpo.model.packages import Package
+from debexpo.tests import TestController, url
 
 class TestImporterController(TestController):
     """
@@ -87,6 +90,15 @@ class TestImporterController(TestController):
             rmtree(self.upload_dir)
         copytree(join(self.data_dir, package_dir), self.upload_dir)
 
+    def _get_email(self):
+        """Parse an email and format the body."""
+        email = None
+
+        # Load mailbox
+        with open(pylons.config['debexpo.testsmtp'], 'r') as mbox:
+            email = message_from_file(mbox)
+        return email
+
     def import_package(self, package_dir):
         """Run debexpo importer on package_dir/*.changes"""
         # Copy uplod files to incomming queue
@@ -130,11 +142,23 @@ class TestImporterController(TestController):
         # The mailbox file has been created
         self.assertTrue(isfile(pylons.config['debexpo.testsmtp']))
 
-    def assert_package_count(self, package, version ,count):
+        # Get the email and assert that the body contains search_text
+        email = self._get_email()
+        self.assertTrue(search_text in email.get_payload())
+
+    def assert_package_count(self, package_name, version, count):
         """
         Assert that a package appears count times in debexpo
 
         If count > 0, this method with also assert that the package is present
         in debexpo repository.
         """
-
+        package = meta.session.query(Package).filter(Package.name ==
+                package_name).all()
+        if package:
+            count_in_db = \
+            meta.session.query(PackageVersion).filter(PackageVersion.package_id
+                    == version and PackageVersion.version == version).count()
+        else:
+            count_in_db = 0
+        self.assertTrue(count_in_db == count)
