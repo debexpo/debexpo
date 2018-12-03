@@ -36,6 +36,7 @@ __author__ = 'Baptiste BEAUPLAT'
 __copyright__ = 'Copyright © 2018 Baptiste BEAUPLAT'
 __license__ = 'MIT'
 
+from pylons.test import pylonsapp
 from debexpo.tests.importer import TestImporterController
 
 class TestImporter(TestImporterController):
@@ -125,11 +126,12 @@ class TestImporter(TestImporterController):
         self.import_package('hello')
         self.assert_importer_succeeded()
         self.assert_email_with("Your upload of the package 'hello' to "
-                "mentors.debian.net was successful.")
+                + pylonsapp.config['debexpo.sitename'] + " was\nsuccessful.")
         self.assert_package_count('hello', '1.0-1', 1)
 
+        self._cleanup_mailbox()
         self.import_package('hello')
         self.assert_importer_succeeded()
-        self.assert_email_with("Your upload of the package 'hello' to"
-                " mentors.debian.net was successful.")
+        self.assert_email_with("Your upload of the package 'hello' to "
+                + pylonsapp.config['debexpo.sitename'] + " was\nsuccessful.")
         self.assert_package_count('hello', '1.0-1', 2)

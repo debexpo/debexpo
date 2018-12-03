@@ -36,10 +36,9 @@ import pylons
 
 from email import message_from_file
 from glob import glob
-from os import remove
+from os import remove, makedirs
 from os.path import isdir, isfile, join, dirname
 from shutil import rmtree, copytree
-from subprocess import Popen, PIPE
 
 from bin.debexpo_importer import Importer
 from debexpo.model import meta
@@ -63,18 +62,25 @@ class TestImporterController(TestController):
         self._setup_models()
         self._setup_example_user(gpg=True)
         self._cleanup_mailbox()
-        self._cleanup_repo()
+        self._create_repo()
 
     def tearDown(self):
         self._remove_example_user()
         self._cleanup_mailbox()
         self._cleanup_repo()
+        self._cleanup_package()
 
     def _cleanup_mailbox(self):
         """Delete mailbox file"""
         if 'debexpo.testsmtp' in pylons.config:
             if isfile(pylons.config['debexpo.testsmtp']):
                 remove(pylons.config['debexpo.testsmtp'])
+
+    def _create_repo(self):
+        """Delete all files present in repo directory"""
+        if 'debexpo.repository' in pylons.config:
+            if not isdir(pylons.config['debexpo.repository']):
+                makedirs(pylons.config['debexpo.repository'])
 
     def _cleanup_repo(self):
         """Delete all files present in repo directory"""
@@ -100,6 +106,22 @@ class TestImporterController(TestController):
         with open(pylons.config['debexpo.testsmtp'], 'r') as mbox:
             email = message_from_file(mbox)
         return email
+
+    def _cleanup_package(self):
+        packages = meta.session.query(Package).all()
+
+        for package in packages:
+            versions = \
+            meta.session.query(PackageVersion).all()
+
+            for version in versions:
+                print('deleting {}'.format(version))
+                meta.session.delete(version)
+
+            print('deleting {}'.format(package))
+            meta.session.delete(package)
+
+        meta.session.commit()
 
     def import_package(self, package_dir):
         """Run debexpo importer on package_dir/*.changes"""
@@ -146,6 +168,7 @@ class TestImporterController(TestController):
 
         # Get the email and assert that the body contains search_text
         email = self._get_email()
+        print('\n{}\n{}\n'.format(search_text, email.get_payload(decode=True)))
         self.assertTrue(search_text in email.get_payload(decode=True))
 
     def assert_package_count(self, package_name, version, count):
@@ -156,11 +179,11 @@ class TestImporterController(TestController):
         in debexpo repository.
         """
         package = meta.session.query(Package).filter(Package.name ==
-                package_name).all()
+                package_name).first()
         if package:
             count_in_db = \
             meta.session.query(PackageVersion).filter(PackageVersion.package_id
-                    == version and PackageVersion.version == version).count()
+                    == package.id and PackageVersion.version == version).count()
         else:
             count_in_db = 0
         self.assertTrue(count_in_db == count)
