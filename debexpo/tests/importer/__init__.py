@@ -144,7 +144,7 @@ class TestImporterController(TestController):
 
         # Get the email and assert that the body contains search_text
         email = self._get_email()
-        self.assertTrue(search_text in email.get_payload())
+        self.assertTrue(search_text in email.get_payload(decode=True))
 
     def assert_package_count(self, package_name, version, count):
         """

@@ -1,3 +1,6 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
 Format: 1.8
 Date: Sun, 02 Dec 2018 22:38:11 +0100
 Source: hello
@@ -15,20 +18,25 @@ Changes:
  .
    * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
 Checksums-Sha1:
- 12b9785a45d1400abc684af9964fed348b2fcf9d 784 hello_1.0-1.dsc
- be505a70074ab85fed3f68026242651fcde85bf2 168 hello_1.0.orig.tar.xz
+ 76c8fcd8adb93cc9a6be5a6f54c360195c893b8d 842 hello_1.0-1.dsc
  1b0605ef708d31b2396ce3f80bd5e52c8a03af59 7808 hello_1.0-1.debian.tar.xz
- 643e7c3bd8a51ec64d186adca2a21ee148105044 4345 hello_1.0-1_amd64.buildinfo
+ edc6aef63dea4d064ad86b62206f6f06f2285c40 4623 hello_1.0-1_amd64.buildinfo
  4704c98642a0cb7dfd6b9a4cb4c0d61916a1e729 2316 hello_1.0-1_amd64.deb
 Checksums-Sha256:
- 07d9ec16bf2d90983f3ad9b11ce2f9f8adf05a7a62b52b31987dad142c09704e 784 hello_1.0-1.dsc
- 622d2165e0ae0aee8b3dac5fbf07f471db2205c4cb60d1c3ce3762a12fbe62bf 168 hello_1.0.orig.tar.xz
+ 46316d9583255ef9fd686f24da5a044427e754589f7486f97cce1d9eb1bad190 842 hello_1.0-1.dsc
  9454f8244e73ab8932833d0e2b4a3e2526407ffd22b687082d1c27876f771555 7808 hello_1.0-1.debian.tar.xz
- 80a9b97283b71496d4a7beae1506537ac427e1ebb31ec4a4ab4699d1b42b8f98 4345 hello_1.0-1_amd64.buildinfo
+ 6d36af5bf1ea26e9d70da4ad0683d5dfc100278a725cf6c36f3f41012329dbbe 4623 hello_1.0-1_amd64.buildinfo
  c98b2da09c2abe6b446c36aa3210adacde8d3566f8e76ea62c15b9aa7bbfd1f5 2316 hello_1.0-1_amd64.deb
 Files:
- a77f08151b482ddd66141744fe1e2312 784 unknown optional hello_1.0-1.dsc
- 3789bf498b8c4cf0387383466ec4c227 168 unknown optional hello_1.0.orig.tar.xz
+ a11fd48e3861ffea6e14e2dd8594f43d 842 unknown optional hello_1.0-1.dsc
  8b4cae66eaf956a2b39b7d3d5482580a 7808 unknown optional hello_1.0-1.debian.tar.xz
- 7c45a75ae2228ca27675a98457552edc 4345 unknown optional hello_1.0-1_amd64.buildinfo
+ 898763eb2836c78ed2b512d117793228 4623 unknown optional hello_1.0-1_amd64.buildinfo
  4c3f75043d99b8a9d3d5019b46a3625c 2316 unknown optional hello_1.0-1_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQRVkwbu4cjBst0cc7HENHgc6HHz3wUCXAWZVQAKCRDENHgc6HHz
+30ZkAQD3/oku8EAnqTgE04gWVqWGU9BtTo6GwsfblxAch1UW2AD9Ho/Haw9ywL1j
+jdj4Gv74JSJt/pVepbKf4E7tqEpHKQM=
+=GIRO
+-----END PGP SIGNATURE-----
