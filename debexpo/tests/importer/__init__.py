@@ -62,6 +62,8 @@ class TestImporterController(TestController):
     def setUp(self):
         self._setup_models()
         self._setup_example_user(gpg=True)
+        self._cleanup_mailbox()
+        self._cleanup_repo()
 
     def tearDown(self):
         self._remove_example_user()
