@@ -131,23 +131,22 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         meta.session.query(UserCountry).delete()
         meta.session.commit()
 
-    def _add_gpg_key(self, user):
+    def _add_gpg_key(self, key, key_id=None, user=None):
         gpg_ctl = GnuPG()
-
-        # Update gpg info in user object
-        user.gpg = self._GPG_KEY
-        user.gpg_id = self._GPG_ID
 
         # Add key to keyring
         temp = tempfile.NamedTemporaryFile(delete=True)
-        temp.write(user.gpg)
+        temp.write(key)
         temp.flush()
         gpg_ctl.add_signature(temp.name)
         temp.close()
 
         # Update user in database
-        meta.session.merge(user)
-        meta.session.commit()
+        if user:
+            user.gpg = key
+            user.gpg_id = key_id
+            meta.session.merge(user)
+            meta.session.commit()
 
 
     def _setup_example_user(self, gpg=False):
@@ -176,7 +175,7 @@ xOwJ1heEnfmgPkuiz7jFCAo=
             meta.session.commit()
 
         if gpg:
-            self._add_gpg_key(user)
+            self._add_gpg_key(self._GPG_KEY, self._GPG_ID, user)
 
     def _remove_example_user(self):
         """Remove the example user.
