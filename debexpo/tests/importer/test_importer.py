@@ -47,6 +47,26 @@ class TestImporter(TestImporterController):
     sent to the user or accepting it and making it available in debexpo repo
     """
 
+    _ORPHAN_GPG_KEY = """
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mDMEW/F8GBYJKwYBBAHaRw8BAQdA6Riq9GZh/HiwtFjPcvz5i5oFzp1I8RiqxBs1
+g06oSh+0HXByaW1hcnkgaWQgPG1haW5AZXhhbXBsZS5vcmc+iJMEExYIADsCGwMF
+CwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQSGVz4uSUdVmCPsPxTH4ZqYGuqOuwUC
+W/F8dAIZAQAKCRDH4ZqYGuqOu9GTAQCCMRbXuueDLcC4eWmMGGiAmqLzKdhGJxQe
+e0k5d6wkKQEA2vdlMg9s3UFL4e8jnJPYeNpsxDaaEPr0jMLnwcBp8wa0JWRlYmV4
+cG8gdGVzdGluZyA8ZGViZXhwb0BleGFtcGxlLm9yZz6IkAQTFggAOBYhBIZXPi5J
+R1WYI+w/FMfhmpga6o67BQJb8XxSAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheA
+AAoJEMfhmpga6o67MjUBAMYVSthPo3oKR1PpV9ebHFiSARmc2BxxL+xmdzfiRT3O
+AP9JQZxCSl3awI5xos8mw2edsDWYcaS2y+RmbTLv8wR2Abg4BFvxfBgSCisGAQQB
+l1UBBQEBB0Doc/H7Tyvf+6kdlnUOqY+0t3pkKYj0EOK6QFKMnlRpJwMBCAeIeAQY
+FggAIBYhBIZXPi5JR1WYI+w/FMfhmpga6o67BQJb8XwYAhsMAAoJEMfhmpga6o67
+Vh8A/AxTKLqACJnSVFrO2sArc7Yt3tymB+of9JeBF6iYBbuDAP9r32J6TYFB9OSz
+r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
+=BMLr
+-----END PGP PUBLIC KEY BLOCK-----
+"""
+
     def __init__(self, *args, **kwargs):
         TestImporterController.__init__(self, *args, **kwargs)
 
@@ -95,6 +115,7 @@ class TestImporter(TestImporterController):
         self.assert_package_count('hello', '1.0-1', 0)
 
     def test_import_package_wrong_gpg_uid(self):
+        self._add_gpg_key(self._ORPHAN_GPG_KEY)
         self.import_package('wrong-gpg-uid')
         self.assert_importer_failed()
         self.assert_email_with('Your GPG key does not match the email used to'
