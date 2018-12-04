@@ -75,24 +75,28 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_importer_failed()
         self.assert_no_email()
         self.assert_package_count('hello', '1.0-1', 0)
+        self.assert_package_not_in_repo('hello', '1.0-1')
 
     def test_import_package_corrupted_changes(self):
         self.import_package('corrupted-changes')
         self.assert_importer_failed()
         self.assert_no_email()
         self.assert_package_count('hello', '1.0-1', 0)
+        self.assert_package_not_in_repo('hello', '1.0-1')
 
     def test_import_package_missing_file_in_changes(self):
         self.import_package('missing-file-in-changes')
         self.assert_importer_failed()
         self.assert_no_email()
         self.assert_package_count('hello', '1.0-1', 0)
+        self.assert_package_not_in_repo('hello', '1.0-1')
 
     def test_import_package_wrong_checksum_in_changes(self):
         self.import_package('wrong-checksum-in-changes')
         self.assert_importer_failed()
         self.assert_no_email()
         self.assert_package_count('hello', '1.0-1', 0)
+        self.assert_package_not_in_repo('hello', '1.0-1')
 
     def test_import_package_no_dsc(self):
         self.import_package('no-dsc')
@@ -100,12 +104,14 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_email_with('Rejecting incomplete upload.\nYou did not'
                 ' upload the dsc file\n')
         self.assert_package_count('hello', '1.0-1', 0)
+        self.assert_package_not_in_repo('hello', '1.0-1')
 
     def test_import_package_not_signed(self):
         self.import_package('not-signed')
         self.assert_importer_failed()
         self.assert_email_with('Your upload does not appear to be signed')
         self.assert_package_count('hello', '1.0-1', 0)
+        self.assert_package_not_in_repo('hello', '1.0-1')
 
     def test_import_package_unknown_key(self):
         self.import_package('unknown-key')
@@ -113,6 +119,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_email_with('Your upload does not contain a valid'
                 ' signature.')
         self.assert_package_count('hello', '1.0-1', 0)
+        self.assert_package_not_in_repo('hello', '1.0-1')
 
     def test_import_package_wrong_gpg_uid(self):
         self._add_gpg_key(self._ORPHAN_GPG_KEY)
@@ -121,6 +128,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_email_with('Your GPG key does not match the email used to'
                 ' register')
         self.assert_package_count('hello', '1.0-1', 0)
+        self.assert_package_not_in_repo('hello', '1.0-1')
 
     def test_import_package_invalid_dist(self):
         self.import_package('invalid-dist')
@@ -128,6 +136,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_email_with('You are not uploading to one of those Debian'
                 ' distribution')
         self.assert_package_count('hello', '1.0-1', 0)
+        self.assert_package_not_in_repo('hello', '1.0-1')
 
     def test_import_package_no_orig(self):
         self.import_package('no-orig')
@@ -135,6 +144,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_email_with('Rejecting incomplete upload. You did not'
                 ' upload any original tarball (orig.tar.gz)')
         self.assert_package_count('non-existent', '1.0-1', 0)
+        self.assert_package_not_in_repo('hello', '1.0-1')
 
     def test_import_package_debian_orig_too_big(self):
         self.import_package('debian-orig-too-big')
@@ -142,6 +152,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_email_with('We did find it on Debian main archive, however'
                 ' it is too big to be downloaded by our system')
         self.assert_package_count('0ad-data', '0.0.23-1', 0)
+        self.assert_package_not_in_repo('0ad-data', '0.0.23-1')
 
     def test_import_package_hello(self):
         self.import_package('hello')
@@ -149,6 +160,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_email_with("Your upload of the package 'hello' to "
                 + pylonsapp.config['debexpo.sitename'] + " was\nsuccessful.")
         self.assert_package_count('hello', '1.0-1', 1)
+        self.assert_package_in_repo('hello', '1.0-1')
 
         self._cleanup_mailbox()
         self.import_package('hello')
@@ -156,3 +168,4 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_email_with("Your upload of the package 'hello' to "
                 + pylonsapp.config['debexpo.sitename'] + " was\nsuccessful.")
         self.assert_package_count('hello', '1.0-1', 2)
+        self.assert_package_in_repo('hello', '1.0-1')

@@ -36,7 +36,7 @@ import pylons
 
 from email import message_from_file
 from glob import glob
-from os import remove, makedirs
+from os import remove, makedirs, walk
 from os.path import isdir, isfile, join, dirname
 from shutil import rmtree, copytree
 
@@ -63,6 +63,7 @@ class TestImporterController(TestController):
         self._setup_example_user(gpg=True)
         self._cleanup_mailbox()
         self._create_repo()
+        self.upload_dir = pylons.config['debexpo.upload.incoming']
 
     def tearDown(self):
         self._remove_example_user()
@@ -91,7 +92,6 @@ class TestImporterController(TestController):
     def _upload_package(self, package_dir):
         """Copy a directory content to incoming queue"""
         self.assertTrue('debexpo.upload.incoming' in pylons.config)
-        self.upload_dir = pylons.config['debexpo.upload.incoming']
 
         # copytree dst dir must not exist
         if isdir(self.upload_dir):
@@ -122,6 +122,20 @@ class TestImporterController(TestController):
             meta.session.delete(package)
 
         meta.session.commit()
+
+    def _package_in_repo(self, package_name, version):
+        """Check if package is present in repo"""
+        matches = self._find_all(package_name + '_' + version + '.dsc',
+                pylons.config['debexpo.repository'])
+        return len(matches)
+
+    def _find_all(self, name, path):
+        """Find a file in a path"""
+        result = []
+        for root, dirs, files in walk(path):
+            if name in files:
+                result.append(join(root, name))
+        return result
 
     def import_package(self, package_dir):
         """Run debexpo importer on package_dir/*.changes"""
@@ -171,12 +185,7 @@ class TestImporterController(TestController):
         self.assertTrue(search_text in email.get_payload(decode=True))
 
     def assert_package_count(self, package_name, version, count):
-        """
-        Assert that a package appears count times in debexpo
-
-        If count > 0, this method with also assert that the package is present
-        in debexpo repository.
-        """
+        """Assert that a package appears count times in debexpo"""
         package = meta.session.query(Package).filter(Package.name ==
                 package_name).first()
         if package:
@@ -186,3 +195,11 @@ class TestImporterController(TestController):
         else:
             count_in_db = 0
         self.assertTrue(count_in_db == count)
+
+    def assert_package_in_repo(self, package_name, version):
+        """Assert that a package is present in debexpo repo"""
+        self.assertTrue(self._package_in_repo(package_name, version) > 0)
+
+    def assert_package_not_in_repo(self, package_name, version):
+        """Assert that a package is present in debexpo repo"""
+        self.assertTrue(self._package_in_repo(package_name, version) == 0)
