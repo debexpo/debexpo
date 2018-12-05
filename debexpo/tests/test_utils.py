@@ -35,6 +35,7 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
+import os
 from unittest import TestCase
 
 from debexpo.lib.utils import *
@@ -80,4 +81,4 @@ class TestUtilsController(TestCase):
         """
         Tests debexpo.lib.utils.md5sum.
         """
-        self.assertEqual(md5sum('debexpo/tests/changes/synce-hal_0.1-1_source.changes'), 'fbb0b9c81f8a4fa9b8e3b789cf3b5220')
+        self.assertEqual(md5sum(os.path.dirname(__file__) + '/changes/synce-hal_0.1-1_source.changes'), 'fbb0b9c81f8a4fa9b8e3b789cf3b5220')

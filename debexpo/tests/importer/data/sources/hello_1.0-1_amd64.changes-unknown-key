@@ -1,0 +1,45 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Sun, 02 Dec 2018 22:38:11 +0100
+Source: hello
+Binary: hello
+Architecture: source amd64
+Version: 1.0-1
+Distribution: unstable
+Urgency: medium
+Maintainer: Baptiste BEAUPLAT <lyknode@cilg.org>
+Changed-By: Baptiste BEAUPLAT <lyknode@cilg.org>
+Description:
+ hello      - <insert up to 60 chars description>
+Changes:
+ hello (1.0-1) unstable; urgency=medium
+ .
+   * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+Checksums-Sha1:
+ a66c0bc7ef7b2141309da011dc93f95fa8aa5c5e 1086 hello_1.0-1.dsc
+ be505a70074ab85fed3f68026242651fcde85bf2 168 hello_1.0.orig.tar.xz
+ 1b0605ef708d31b2396ce3f80bd5e52c8a03af59 7808 hello_1.0-1.debian.tar.xz
+ 5f5cd60fee487dda63627c6313c55a9c38349baf 4650 hello_1.0-1_amd64.buildinfo
+ 4704c98642a0cb7dfd6b9a4cb4c0d61916a1e729 2316 hello_1.0-1_amd64.deb
+Checksums-Sha256:
+ 945ca469a0b1418a50de37a9e80250fc040e39d3c5e6a7c5d266e5fe41094615 1086 hello_1.0-1.dsc
+ 622d2165e0ae0aee8b3dac5fbf07f471db2205c4cb60d1c3ce3762a12fbe62bf 168 hello_1.0.orig.tar.xz
+ 9454f8244e73ab8932833d0e2b4a3e2526407ffd22b687082d1c27876f771555 7808 hello_1.0-1.debian.tar.xz
+ 8dc42df212c4eee5108188e69c38c070c77acff45c2b574e037d4d595984f097 4650 hello_1.0-1_amd64.buildinfo
+ c98b2da09c2abe6b446c36aa3210adacde8d3566f8e76ea62c15b9aa7bbfd1f5 2316 hello_1.0-1_amd64.deb
+Files:
+ 4bda047b0b5feacb9b2a083c49e9e283 1086 unknown optional hello_1.0-1.dsc
+ 3789bf498b8c4cf0387383466ec4c227 168 unknown optional hello_1.0.orig.tar.xz
+ 8b4cae66eaf956a2b39b7d3d5482580a 7808 unknown optional hello_1.0-1.debian.tar.xz
+ e95955eeb29eb8d36a2616c6fa9b2a84 4650 unknown optional hello_1.0-1_amd64.buildinfo
+ 4c3f75043d99b8a9d3d5019b46a3625c 2316 unknown optional hello_1.0-1_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iIcEARYIAC8WIQQt4kiVMTxdp/CJ4U4XSUsQeV3XMwUCXAWcbBEcbHlrbm9kZUBj
+aWxnLm9yZwAKCRAXSUsQeV3XM9qFAP4qgQHweo+E6f81KOHYS68lPIVxAafc4wGo
+h4ShdtmouQD/Q2/lnG2vwsV5bJlQeTKWgnAo6p/euWMcggYuZ1DcmQ0=
+=7oje
+-----END PGP SIGNATURE-----

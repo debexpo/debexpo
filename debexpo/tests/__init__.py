@@ -47,6 +47,7 @@ __license__ = 'MIT'
 import os
 import sys
 import md5
+import tempfile
 from datetime import datetime
 from unittest import TestCase
 
@@ -64,6 +65,7 @@ from debexpo.model.package_versions import PackageVersion
 from debexpo.model.source_packages import SourcePackage
 from debexpo.model.user_upload_key import UserUploadKey
 from debexpo.model.user_countries import UserCountry
+from debexpo.lib.gnupg import GnuPG
 
 __all__ = ['environ', 'url', 'TestController']
 
@@ -79,6 +81,26 @@ class TestController(TestCase):
     _AUTHDATA = {'email': 'email@example.com',
                  'password': 'password',
                  'commit': 'submit'}
+
+    _GPG_KEY = """-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mDMEW/GBqhYJKwYBBAHaRw8BAQdA+6hBA4PcdcPwgMsKGQXrqwbJemLBgS1PkKZg
+RFlKdKi0IHByaW1hcnkgaWQgPHByaW1hcnlAZXhhbXBsZS5vcmc+iJMEExYIADsC
+GwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQRVkwbu4cjBst0cc7HENHgc6HHz
+3wUCW/GB7AIZAQAKCRDENHgc6HHz35EOAP9lXBb8lm72xPeMdjRL+TU83PimD0NZ
+urQfnnLVZOu4tAEAqdrz/2q41mScnKJFAnQ5pan5FYlUnDR2WVp1kiFoPwu0HVRl
+c3QgdXNlciA8ZW1haWxAZXhhbXBsZS5jb20+iJAEExYIADgWIQRVkwbu4cjBst0c
+c7HENHgc6HHz3wUCW/GB6AIbAwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgAAKCRDE
+NHgc6HHz3yr6AP9MyMaz+dsOC3R/WnjE8EdM42mpf3VkKY0icS60K/Aj3QD/XkIA
+qs+ItQAUoeqZM3jh0HvLwUESxm6FtCltwyGlqwW4OARb8YGqEgorBgEEAZdVAQUB
+AQdANrk3qq/eP1TEWfFZqhR0vcz7YB9c5+OnvMV+xO4W3nQDAQgHiHgEGBYIACAW
+IQRVkwbu4cjBst0cc7HENHgc6HHz3wUCW/GBqgIbDAAKCRDENHgc6HHz3/CHAP0c
+hxes4Ebtg7N8B/BoMYwmUVvmMVmoV+ef/vqYvfm6sgEA6fKzMSXllw57UJ90Unyn
+xOwJ1heEnfmgPkuiz7jFCAo=
+=xgUN
+-----END PGP PUBLIC KEY BLOCK-----"""
+
+    _GPG_ID= '256E/E871F3DF'
 
     def __init__(self, *args, **kwargs):
         wsgiapp = pylons.test.pylonsapp
@@ -109,7 +131,25 @@ class TestController(TestCase):
         meta.session.query(UserCountry).delete()
         meta.session.commit()
 
-    def _setup_example_user(self):
+    def _add_gpg_key(self, key, key_id=None, user=None):
+        gpg_ctl = GnuPG()
+
+        # Add key to keyring
+        temp = tempfile.NamedTemporaryFile(delete=True)
+        temp.write(key)
+        temp.flush()
+        gpg_ctl.add_signature(temp.name)
+        temp.close()
+
+        # Update user in database
+        if user:
+            user.gpg = key
+            user.gpg_id = key_id
+            meta.session.merge(user)
+            meta.session.commit()
+
+
+    def _setup_example_user(self, gpg=False):
         """Add an example user.
 
         The example user with name ``Test user``, email address
@@ -134,6 +174,8 @@ class TestController(TestCase):
             meta.session.add(user_upload_key)
             meta.session.commit()
 
+        if gpg:
+            self._add_gpg_key(self._GPG_KEY, self._GPG_ID, user)
 
     def _remove_example_user(self):
         """Remove the example user.

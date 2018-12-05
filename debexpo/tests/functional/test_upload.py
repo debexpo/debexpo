@@ -54,9 +54,13 @@ class TestUploadController(TestController):
     def setUp(self):
         self._setup_models()
         self._setup_example_user()
+        self.incoming = pylons.test.pylonsapp.config['debexpo.upload.incoming']
+        if not os.path.isdir(os.path.join(pylons.test.pylonsapp.config['debexpo.upload.incoming'], 'pub')):
+            os.makedirs(os.path.join(pylons.test.pylonsapp.config['debexpo.upload.incoming'], 'pub'))
 
     def tearDown(self):
         self._remove_example_user()
+        pylons.test.pylonsapp.config['debexpo.upload.incoming'] = self.incoming
 
     def testGetRequest(self):
         """
@@ -143,12 +147,13 @@ class TestUploadController(TestController):
         """
         Tests whether an uploads without debexpo.upload.incoming fails.
         """
-        pylons.test.pylonsapp.config.pop('debexpo.upload.incoming')
+        incoming = pylons.test.pylonsapp.config.pop('debexpo.upload.incoming')
 
         response = self.app.put(url(
             controller='upload', action='index',
             filename='testfile.dsc'),
             params='contents', expect_errors=True)
+
 
         self.assertEqual(response.status_int, 500)
 

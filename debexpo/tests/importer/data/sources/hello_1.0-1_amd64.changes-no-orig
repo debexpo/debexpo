@@ -1,0 +1,42 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Sun, 02 Dec 2018 22:38:11 +0100
+Source: hello
+Binary: hello
+Architecture: source amd64
+Version: 1.0-1
+Distribution: unstable
+Urgency: medium
+Maintainer: Baptiste BEAUPLAT <lyknode@cilg.org>
+Changed-By: Baptiste BEAUPLAT <lyknode@cilg.org>
+Description:
+ hello      - <insert up to 60 chars description>
+Changes:
+ hello (1.0-1) unstable; urgency=medium
+ .
+   * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+Checksums-Sha1:
+ 825dd4ad73600f5b90f9e3fa6a9b8b7b5d3f6c03 842 hello_1.0-1.dsc
+ 1b0605ef708d31b2396ce3f80bd5e52c8a03af59 7808 hello_1.0-1.debian.tar.xz
+ 7bbf2274225b7442359ee7f2457d72e58e43bb48 4623 hello_1.0-1_amd64.buildinfo
+ 4704c98642a0cb7dfd6b9a4cb4c0d61916a1e729 2316 hello_1.0-1_amd64.deb
+Checksums-Sha256:
+ 55d9d9f0c1a6622ab7d907022821c489f9e349eef127f2f52977753278974d37 842 hello_1.0-1.dsc
+ 9454f8244e73ab8932833d0e2b4a3e2526407ffd22b687082d1c27876f771555 7808 hello_1.0-1.debian.tar.xz
+ e02d7d0ae7ff5c026a007ffa533a742fb62b28d18f3739c26d17406eb155c50a 4623 hello_1.0-1_amd64.buildinfo
+ c98b2da09c2abe6b446c36aa3210adacde8d3566f8e76ea62c15b9aa7bbfd1f5 2316 hello_1.0-1_amd64.deb
+Files:
+ fd38015ad4958ff23ecc138d87b9fff8 842 unknown optional hello_1.0-1.dsc
+ 8b4cae66eaf956a2b39b7d3d5482580a 7808 unknown optional hello_1.0-1.debian.tar.xz
+ 60677f972a55c862b3cb3342b0db26c6 4623 unknown optional hello_1.0-1_amd64.buildinfo
+ 4c3f75043d99b8a9d3d5019b46a3625c 2316 unknown optional hello_1.0-1_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQRVkwbu4cjBst0cc7HENHgc6HHz3wUCXAWpsQAKCRDENHgc6HHz
+3ycZAP9PhS3UrRv1wzrQnElUg6P1ysql6hRug69zg9pw8JVrlAEA7kdG/PWz/cli
+xgCiWITp/g0Z0wFqJG5/c4cdcDKjxAs=
+=vibL
+-----END PGP SIGNATURE-----

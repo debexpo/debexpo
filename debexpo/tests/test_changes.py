@@ -35,6 +35,7 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
+import os
 from unittest import TestCase
 
 from debexpo.lib.changes import Changes
@@ -53,11 +54,11 @@ class TestChangesController(TestCase):
         """
         Tests whether the two ways of creating a Changes object output the same result.
         """
-        f = open('debexpo/tests/changes/synce-hal_0.1-1_source.changes')
+        f = open(os.path.dirname(__file__) + '/changes/synce-hal_0.1-1_source.changes')
         contents = f.read()
         f.close()
 
-        a = Changes(filename='debexpo/tests/changes/synce-hal_0.1-1_source.changes')
+        a = Changes(filename=os.path.dirname(__file__) + '/changes/synce-hal_0.1-1_source.changes')
         b = Changes(string=contents)
 
         self.assertEqual(a['Source'], b['Source'])

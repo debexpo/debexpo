@@ -179,8 +179,6 @@ class Importer(object):
         email = Email('importer_fail_admin')
         self.send_email(email, [pylons.config['debexpo.email']], message=reason)
 
-        sys.exit(1)
-
     def _reject(self, reason):
         """
         Reject the package by sending a reason for failure to the log and then remove all
@@ -201,7 +199,6 @@ class Importer(object):
             package = self.changes.get('Source', '')
 
             self.send_email(email, [self.user.email], package=package, message=reason)
-        sys.exit(1)
 
     def _setup_logging(self):
         """
@@ -217,6 +214,7 @@ class Importer(object):
         # Check for the presence of [loggers] in self.ini_file
         if not parser.has_section('loggers'):
             self._fail('Config file does not have [loggers] section', use_log=False)
+            return 1
 
         logging.config.fileConfig(self.ini_file)
 
@@ -224,7 +222,7 @@ class Importer(object):
         logger_name = 'debexpo.importer.%s' % os.getpid()
         log = logging.getLogger(logger_name)
 
-    def _setup(self):
+    def _setup(self, no_env):
         """
         Set up logging, import pylons/paste/debexpo modules, parse config file, create config
         class and chdir to the incoming directory.
@@ -232,15 +230,17 @@ class Importer(object):
         # Look for ini file
         if not os.path.isfile(self.ini_file):
             self._fail('Cannot find ini file')
+            return 1
 
         self._setup_logging()
 
         # Import debexpo root directory
         sys.path.append(os.path.dirname(self.ini_file))
 
-        # Initialize Pylons app
-        conf = appconfig('config:' + self.ini_file)
-        pylons.config = load_environment(conf.global_conf, conf.local_conf)
+        if not no_env:
+            # Initialize Pylons app
+            conf = appconfig('config:' + self.ini_file)
+            pylons.config = load_environment(conf.global_conf, conf.local_conf)
 
         # Change into the incoming directory
         incoming_dir = pylons.config['debexpo.upload.incoming']
@@ -250,6 +250,7 @@ class Importer(object):
         # Look for the changes file
         if not os.path.isfile(self.changes_file):
             self._fail('Cannot find changes file')
+            return 1
 
     def _create_db_entries(self, qa):
         """
@@ -318,6 +319,7 @@ class Importer(object):
                 sum = md5sum(os.path.join(pylons.config['debexpo.repository'], filename))
             except AttributeError as e:
                 self._fail("Could not calculate MD5 sum: %s" % (e))
+                return 1
 
             size = os.stat(os.path.join(pylons.config['debexpo.repository'], filename))[ST_SIZE]
 
@@ -399,7 +401,7 @@ class Importer(object):
 
         return False
 
-    def main(self):
+    def main(self, no_env=False):
         """
         Actually start the import of the package.
 
@@ -407,9 +409,8 @@ class Importer(object):
         create the database entries for the imported package.
         """
         # Set up importer
-        self._setup()
+        self._setup(no_env)
 
-        log.debug('Importer started with arguments: %s' % sys.argv[1:])
         filecheck = CheckFiles()
         signature = GnuPG()
 
@@ -422,6 +423,7 @@ class Importer(object):
             # XXX: The user won't ever see this message. The changes file was
             # invalid, we don't know whom send it to
             self._reject("Your changes file appears invalid. Refusing your upload\n%s" % (str(e)))
+            return 1
 
         # Determine user from changed-by field
         # This might be temporary, the GPG check should replace the user later
@@ -437,20 +439,25 @@ class Importer(object):
                          " item; if you are using dpkg-buildpackage directly"
                          " use the default flags or -S for a source only"
                          " upload)")
+            return 1
 
         if not self.skip_gpg:
             # Next, find out whether the changes file was signed with a valid signature, if not reject immediately
             if not signature.is_signed(self.changes_file):
                 self._reject('Your upload does not appear to be signed')
+                return 1
             (gpg_out, gpg_uids, gpg_status) = signature.verify_sig_full(self.changes_file)
             if gpg_status != 0:
                 self._reject('Your upload does not contain a valid signature. Output was:\n%s' % (gpg_out))
+                return 1
             if not self._determine_uploader_by_gpg(gpg_uids):
                 self._reject('Rejecting your upload. Your GPG key does not'
                         ' match the email used to register')
+                return 1
 
         if self.user.id == -1:
             self._reject('Couldn\'t find user %s. Exiting.' % self.user.email)
+            return 1
 
         self.user_id = self.user.id
         log.debug("User found in database. Has id: %s", self.user.id)
@@ -510,6 +517,7 @@ class Importer(object):
         if distribution not in allowed_distributions:
             self._reject("You are not uploading to one of those Debian distributions: %s" %
                 (reduce(lambda x,xs: x + " " + xs, allowed_distributions)))
+            return 1
 
         # Look whether the orig tarball is present, and if not, try and get it from
         # the repository.
@@ -551,7 +559,7 @@ class Importer(object):
         if post_upload.stop():
             log.critical('post-upload plugins failed')
             self._remove_changes()
-            sys.exit(1)
+            return 1
 
         # Check whether a post-upload plugin has got the orig tarball from somewhere.
         if not orig_file_found and not filecheck.is_native_package(self.changes):
@@ -576,6 +584,7 @@ class Importer(object):
                         "re-upload your package to mentors.debian.net, "
                         "including the orig tarball (pass -sa to "
                         "dpkg-buildpackage). Thanks,")
+                    return 1
                 else:
                     if orig == None:
                         orig = "any original tarball (orig.tar.gz)"
@@ -586,24 +595,29 @@ class Importer(object):
                         " Debian revision part, make sure you include the full"
                         " source (pass -sa to dpkg-buildpackage)" %
                         ( orig ))
+                    return 1
             else:
                 toinstall.append(orig)
 
         # Check whether the debexpo.repository variable is set
         if 'debexpo.repository' not in pylons.config:
             self._fail('debexpo.repository not set')
+            return 1
 
         # Check whether debexpo.repository is a directory
         if not os.path.isdir(pylons.config['debexpo.repository']):
             self._fail('debexpo.repository is not a directory')
+            return 1
 
         # Check whether debexpo.repository is writeable
         if not os.access(pylons.config['debexpo.repository'], os.W_OK):
             self._fail('debexpo.repository is not writeable')
+            return 1
 
         qa = Plugins('qa', self.changes, self.changes_file, user_id=self.user_id)
         if qa.stop():
             self._reject('QA plugins failed the package')
+            return 1
 
         # Loop through parent directories in the target installation directory to make sure they
         # all exist. If not, create them.
@@ -640,6 +654,7 @@ class Importer(object):
         r.update()
 
         log.debug('Done')
+        return 0
 
 
 def main():
@@ -661,10 +676,10 @@ def main():
         parser.print_help()
         sys.exit(0)
 
+    log.debug('Importer started with arguments: %s' % sys.argv[1:])
     i = Importer(options.changes, options.ini, options.skip_email, options.skip_gpg)
 
-    i.main()
-    return 0
+    sys.exit(i.main())
 
 if __name__=='__main__':
     main()
