@@ -115,7 +115,7 @@ class Importer(object):
         if self.actually_send_email:
             email.send(*args, **kwargs)
         else:
-            logging.info("Skipping email send: %s %s", args, kwargs)
+            log.info("Skipping email send: %s %s", args, kwargs)
 
     @property
     def changes_file(self):
@@ -244,7 +244,7 @@ class Importer(object):
 
         # Change into the incoming directory
         incoming_dir = pylons.config['debexpo.upload.incoming']
-        logging.info("Changing dir to %s", incoming_dir)
+        log.info("Changing dir to %s", incoming_dir)
         os.chdir(incoming_dir)
 
         # Look for the changes file
