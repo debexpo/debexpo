@@ -676,7 +676,7 @@ def main():
         parser.print_help()
         sys.exit(0)
 
-    log.debug('Importer started with arguments: %s' % sys.argv[1:])
+    logging.debug('Importer started with arguments: %s' % sys.argv[1:])
     i = Importer(options.changes, options.ini, options.skip_email, options.skip_gpg)
 
     sys.exit(i.main())
