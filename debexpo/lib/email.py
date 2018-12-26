@@ -191,13 +191,9 @@ class Email(object):
         try:
             (_, count, first, last, _) = self.nntp.group(list_name)
             log.debug("Fetching messages %s to %s on %s" % (changed_since, last, list_name))
-        except nntplib.NNTPError as e:
+        except Exception as e:
             self.established = False
-            log.error("Connecting to NNTP server %s failed: %s" % (pylons.config['debexpo.nntp_server'], str(e)))
-            return
-        except EOFError:
-            self.established = False
-            log.error("NNTP server %s closed connection" % (pylons.config['debexpo.nntp_server']))
+            log.error("Failed to communicate with NNTP server %s: %s" % (pylons.config['debexpo.nntp_server'], str(e)))
             return
 
         try:
@@ -209,15 +205,16 @@ class Email(object):
                 ep['X-Debexpo-Message-ID'] = msg_id;
                 ep['X-Debexpo-Message-Number'] = msg_num;
                 yield ep
-        except nntplib.NNTPError as e:
-            log.error("Connecting to NNTP server %s failed: %s" % (pylons.config['debexpo.nntp_server'], str(e)))
+        except Exception as e:
+            self.established = False
+            log.error("Failed to communicate with NNTP server %s: %s" % (pylons.config['debexpo.nntp_server'], str(e)))
             return
 
     def connect_to_server(self):
         self.established = False
         try:
             self.nntp = nntplib.NNTP(pylons.config['debexpo.nntp_server'])
-        except nntplib.NNTPError as e:
+        except Exception as e:
             log.error("Connecting to NNTP server %s failed: %s" % (pylons.config['debexpo.nntp_server'], str(e)))
             return
 
