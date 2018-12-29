@@ -41,7 +41,7 @@ import gzip
 from debian import deb822, debfile
 import logging
 import os
-from sqlalchemy import select
+from sqlalchemy import select, or_
 
 from debexpo.lib.utils import get_package_dir
 
@@ -227,7 +227,7 @@ class Repository(object):
         debfiles = debfiles.filter(PackageFile.binary_package_id == BinaryPackage.id)
 
         # ...where the BinaryPackage has Arch: %(arch)s or Arch: all...
-        debfiles = debfiles.filter(BinaryPackage.arch == arch or BinaryPackage.arch == 'all')
+        debfiles = debfiles.filter(or_(BinaryPackage.arch == arch, BinaryPackage.arch == 'all'))
 
         # ...where there is a PackageVersion instance...
         debfiles = debfiles.filter(BinaryPackage.package_version_id == PackageVersion.id)
