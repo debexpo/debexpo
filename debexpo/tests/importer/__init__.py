@@ -40,7 +40,7 @@ from os import remove, makedirs, walk
 from os.path import isdir, isfile, join, dirname
 from shutil import rmtree, copytree
 
-from bin.debexpo_importer import Importer
+from debexpo.importer.importer import Importer
 from debexpo.model import meta
 from debexpo.model.package_versions import PackageVersion
 from debexpo.model.packages import Package
