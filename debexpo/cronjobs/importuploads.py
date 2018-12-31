@@ -102,12 +102,12 @@ class ImportUpload(BaseCronjob):
 
 
             self.log.info("Import upload: %s" % (changes_file))
-	    importer = Importer(parsed_changes.get_filename(),
-				self.config['global_conf']['__file__'],
-				False,
-				False)
+            importer = Importer(parsed_changes.get_filename(),
+                                self.config['global_conf']['__file__'],
+                                False,
+                                False)
 
-	    returncode = importer.main(no_env=True)
+            returncode = importer.main(no_env=True)
             if returncode != 0:
                 self.log.critical("Importer failed to import package %s [err=%d]." % (changes_file, returncode))
             for filename in uploaded_files:

@@ -277,7 +277,7 @@ class Importer(object):
             log.debug('Package %s is new to the system' % self.changes['Source'])
             package = Package(name=self.changes['Source'], user=self.user)
             package.description = _package_description(self.changes['Description'])
-	    package.needs_sponsor = 0
+            package.needs_sponsor = 0
             meta.session.add(package)
 
         # No need to check whether there is the same source name and same version as an existing

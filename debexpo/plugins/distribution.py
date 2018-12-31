@@ -57,7 +57,7 @@ class DistributionPlugin(BasePlugin):
 
         if distribution.lower() == "unreleased":
             data["is-unreleased"] = True
-            self.failed("Package uploaded for the unreleased distribution", data, constants.PLUGIN_SEVERITY_ERROR)
+            self.failed("Package uploaded for the UNRELEASED distribution", data, constants.PLUGIN_SEVERITY_ERROR)
 
 
 plugin = DistributionPlugin

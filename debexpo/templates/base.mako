@@ -20,46 +20,46 @@
         <div id="header">
         <div id="upperheader">
             <div id="logo">
-		${ h.tags.link_to(  h.tags.image( c.config['debexpo.logo'], c.config['debexpo.sitename']) , 'https://www.debian.org') }
+                ${ h.tags.link_to(  h.tags.image( c.config['debexpo.logo'], c.config['debexpo.sitename']) , 'https://www.debian.org') }
             </div><!-- end logo -->
-	    <p class="section">${ h.tags.link_to( c.config['debexpo.sitetitle'], h.url('index')) }</p>
+            <p class="section">${ h.tags.link_to( c.config['debexpo.sitetitle'], h.url('index')) }</p>
             <div id="searchbox">
-	        ${ c.config['debexpo.tagline'] }
+                ${ c.config['debexpo.tagline'] }
             </div><!-- end searchbox -->
         </div><!-- end upperheader -->
         <div id="navbar">
             <ul>
-		<li>${ h.tags.link_to(
+                <li>${ h.tags.link_to(
                         _('Start page'),
                         h.url('index')) }
                 </li>
 
-		<li>${ h.tags.link_to(
+                <li>${ h.tags.link_to(
                         _('Package list'),
                         h.url('packages')) }
                 </li>
 
-		<li>${ h.tags.link_to(
+                <li>${ h.tags.link_to(
                         _('Maintainer'),
                         h.url('intro-maintainers')) }
                 </li>
 
-		<li>${ h.tags.link_to(
+                <li>${ h.tags.link_to(
                         _('Reviews'),
                         h.url('intro-reviewers')) }
                 </li>
 
-		<li>${ h.tags.link_to(
+                <li>${ h.tags.link_to(
                         _('Sponsors'),
                         h.url('sponsors')) }
                 </li>
 
-		<li>${ h.tags.link_to(
+                <li>${ h.tags.link_to(
                         _('Q & A'),
                         h.url('qa')) }
                 </li>
 
-		<li>${ h.tags.link_to(
+                <li>${ h.tags.link_to(
                         _('Contact'),
                         h.url('contact')) }
                 </li>
@@ -67,14 +67,14 @@
         </div><!-- end navbar -->
         <p id="breadcrumbs">
         <!--
-	% for cur_part in h.url.current().split("/"):
-	${ cur_part  } /
-	% endfor
-	-->
-	</p>
+        % for cur_part in h.url.current().split("/"):
+        ${ cur_part  } /
+        % endfor
+        -->
+        </p>
         </div><!-- end header -->
         <div id="content">
-	    <span class="relatedpages">
+            <span class="relatedpages">
 
                 % if 'user_id' not in session:
                 ${ h.tags.link_to(
@@ -93,28 +93,28 @@
                 % endif
 
 
-	    </span>
-        % if c.submenu.has_menu():
+            </span>
+        % if c.submenu and c.submenu.has_menu():
             <%include file="submenu.mako" />
         % endif
-		${next.body()}
-	</div><!-- end content -->
+                ${next.body()}
+        </div><!-- end content -->
         <div id="footer">
-	<p>© 2008-2011 ${c.config['debexpo.sitename']}
-	-
+        <p>© 2008-2019 ${c.config['debexpo.sitename']}
+        -
     Hosting and hardware provided by <a href="https://www.wavecon.de">Wavecon</a>
     -
     <a href="https://salsa.debian.org/mentors.debian.net-team/debexpo">${ _('Source code and bugs')}</a>
-	-
+        -
     ${ h.tags.link_to( _('Contact'), h.url('contact')) }
-	% if 'user_id' in session:
+        % if 'user_id' in session:
         -
         <a href="${ h.url("/logout") }">Logout</a>
     % endif
     % if c.feed_url:
     <a class="rss_logo" href="${ c.feed_url }">RSS</a>
     % endif
-	</p>
+        </p>
         </div><!-- end footer -->
     </body>
 </html>

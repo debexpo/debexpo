@@ -77,7 +77,7 @@ class PackageController(BaseController):
         if package is None and not from_controller:
             return None
 
-	if from_controller:
+        if from_controller:
             c.package = package
             c.config = config
             c.package_dir = get_package_dir(package.name)
