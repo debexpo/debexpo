@@ -86,7 +86,7 @@ class SubMenu(object):
             raise AttributeError("%s is not an instance of SubMenu" % (menu))
         self._has_menu = True
         self._menu_label = label
-	self._menu.append(menu)
+        self._menu.append(menu)
 
     def add_entry(self, label, link):
         self._has_menu = True

@@ -58,12 +58,12 @@ class IndexController(BaseController):
 
         c.config = config
         c.packages = pkg_controller._get_packages(
-		        package_version_filter=(PackageVersion.uploaded >= (datetime.today() - timedelta(days=30))),
-		        package_filter=(Package.needs_sponsor == 1)
+                        package_version_filter=(PackageVersion.uploaded >= (datetime.today() - timedelta(days=30))),
+                        package_filter=(Package.needs_sponsor == 1)
             )
         c.deltas = pkg_controller._get_timedeltas(c.packages)
         c.deltas.pop()
-	return render('/index/index.mako')
+        return render('/index/index.mako')
 
     def contact(self):
         c.config = config

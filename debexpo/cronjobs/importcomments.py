@@ -37,8 +37,8 @@ __license__ = 'MIT'
 from debexpo.cronjobs import BaseCronjob
 
 class ImportComments(BaseCronjob):
-	def deploy():
-		print("Running ImportUpload")
+        def deploy():
+                print("Running ImportUpload")
 
 cronjob = ImportComments
 schedule = 1
