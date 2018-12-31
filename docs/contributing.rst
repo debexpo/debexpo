@@ -20,6 +20,16 @@ You can clone the Git repository using::
 
     git clone https://salsa.debian.org/mentors.debian.net-team/debexpo.git
 
+How we use branches
+===================
+
+Contributions to Debexpo should be based on the "live" branch.
+
+We recommend rebasing your work so that it is based on the latest "origin/live"
+just before you submit the changes for review.
+
+The branch *live* indicates what is running on the main site.
+
 Where to send patches
 =====================
 
