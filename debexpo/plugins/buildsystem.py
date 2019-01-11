@@ -82,7 +82,7 @@ class BuildSystemPlugin(BasePlugin):
 
             data["compat-level"] = compat_level
 
-            if compat_level is None or compat_level <= 4:
+            if compat_level is None or compat_level < 9:
                 outcome = "Package uses debhelper-compat with an old " \
                           "compatibility level"
                 severity = constants.PLUGIN_SEVERITY_WARNING
@@ -102,7 +102,7 @@ class BuildSystemPlugin(BasePlugin):
             data["compat-level"] = compat_level
 
             # Warn on old compatibility levels
-            if compat_level is None or compat_level <= 4:
+            if compat_level is None or compat_level < 9:
                 outcome = "Package uses debhelper with an old compatibility level"
                 severity = constants.PLUGIN_SEVERITY_WARNING
             else:
