@@ -43,6 +43,7 @@ __license__ = 'MIT'
 
 import logging
 import os
+import re
 
 from debian import deb822
 
@@ -69,6 +70,24 @@ class BuildSystemPlugin(BasePlugin):
         if 'cdbs' in build_depends:
             outcome = "Package uses CDBS"
             data["build-system"] = "cdbs"
+        elif 'debhelper-compat' in build_depends:
+            data["build-system"] = "debhelper"
+
+            matches = re.match('debhelper-compat\s+\(=\s*(\d+)\)',
+                                build_depends)
+            if matches:
+                compat_level = matches.group(1)
+            else:
+                compat_level = None
+
+            data["compat-level"] = compat_level
+
+            if compat_level is None or compat_level <= 4:
+                outcome = "Package uses debhelper-compat with an old " \
+                          "compatibility level"
+                severity = constants.PLUGIN_SEVERITY_WARNING
+            else:
+                outcome = "Package uses debhelper-compat"
         elif 'debhelper' in build_depends:
             data["build-system"] = "debhelper"
 
