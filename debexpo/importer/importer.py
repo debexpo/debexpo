@@ -616,7 +616,11 @@ class Importer(object):
 
         qa = Plugins('qa', self.changes, self.changes_file, user_id=self.user_id)
         if qa.stop():
-            self._reject('QA plugins failed the package')
+            if qa.result > 0 and qa.result[0].from_plugin == "extract":
+                self._reject('Fail to extract your package:'
+                    '\n\n{}'.format(qa.result[0].outcome))
+            else:
+                self._reject('QA plugins failed the package')
             return 1
 
         # Loop through parent directories in the target installation directory to make sure they
