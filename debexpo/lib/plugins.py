@@ -42,6 +42,9 @@ import shutil
 import sys
 import tempfile
 import traceback
+import subprocess
+from debexpo.plugins import PluginResult
+from debexpo.lib import constants
 
 from debian import deb822
 import pylons
@@ -156,7 +159,19 @@ class Plugins(object):
         self.oldcurdir = os.path.abspath(os.path.curdir)
         os.chdir(self.tempdir)
 
-        os.system('dpkg-source -x %s extracted' % self.changes.get_dsc())
+        log.debug("Extracting sources for {}".format(dsc['Source']))
+        extract = subprocess.Popen(['/usr/bin/dpkg-source',
+            '-x', self.changes.get_dsc(), 'extracted'], stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT)
+        (output, _) = extract.communicate()
+
+        if extract.returncode:
+            log.critical("Failed to extract sources for" \
+                    " {}:\n{}".format(dsc['Source'], output))
+            return PluginResult(from_plugin="extract", outcome=output,
+                data=None, severity=constants.PLUGIN_SEVERITY_CRITICAL)
+        else:
+            return None
 
     def _cleanup(self):
         """
@@ -184,7 +199,10 @@ class Plugins(object):
         # Look at whether the plugins need extracting.
         if 'extract' in self.conf and self.conf['extract']:
             log.debug('Extracting package for plugins')
-            self._extract()
+            extract = self._extract()
+
+            if extract:
+                return [extract]
 
         # Run each plugin.
         for plugin in plugins.split(' '):
