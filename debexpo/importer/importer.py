@@ -7,7 +7,6 @@
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
-#
 #   Permission is hereby granted, free of charge, to any person obtaining a
 #   copy of this software and associated documentation files (the "Software"),
 #   to deal in the Software without restriction, including without limitation
@@ -27,8 +26,6 @@
 #   DEALINGS IN THE SOFTWARE.
 
 """ Executable script to import new packages. """
-import string
-
 
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
@@ -45,6 +42,9 @@ import re
 import sys
 import shutil
 from stat import *
+import string
+import subprocess
+import tempfile
 import pylons
 import email.utils
 
@@ -159,9 +159,9 @@ class Importer(object):
                 result.append(os.path.join(path, f))
         return result
 
-    def _build_source(self, gitpath):
+    def _extract_source(self, extract_dir):
         log.debug('Copying files to a temp directory to run dpkg-source -x on the dsc file')
-        self.tempdir = gitpath
+        self.tempdir = tempfile.mkdtemp()
         log.debug('Temp dir is: %s', self.tempdir)
         for filename in self.changes.get_files():
             log.debug('Copying: %s', filename)
@@ -185,7 +185,22 @@ class Importer(object):
         shutil.copy(os.path.join(pylons.config['debexpo.upload.incoming'], self.changes_file), self.tempdir)
         self.oldcurdir = os.path.abspath(os.path.curdir)
         os.chdir(self.tempdir)
-        os.system('dpkg-source -x %s extracted' % self.changes.get_dsc())
+
+        log.debug("Extracting sources for {}".format(dsc['Source']))
+        extract = subprocess.Popen(['/usr/bin/dpkg-source',
+            '-x', '--no-copy', self.changes.get_dsc(), extract_dir],
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        (output, _) = extract.communicate()
+
+        shutil.rmtree(self.tempdir)
+        os.chdir(self.oldcurdir)
+
+        if extract.returncode:
+            log.critical("Failed to extract sources for" \
+                    " {}:\n{}".format(dsc['Source'], output))
+            return False
+        else:
+            return True
 
     def _remove_changes(self):
         """
@@ -433,8 +448,7 @@ class Importer(object):
 
         # Send success email to uploader
         email = Email('successful_upload')
-        dsc_url = pylons.config[
-                  'debexpo.server'] + '/debian/' + self.changes.get_pool_path() + '/' + self.changes.get_dsc()
+        dsc_url = pylons.config['debexpo.server'] + '/debian/' + self.changes.get_pool_path() + '/' + self.changes.get_dsc()
         rfs_url = pylons.config['debexpo.server'] + url('rfs', packagename=self.changes['Source'])
         self.send_email(email, [self.user.email], package=self.changes['Source'],
             dsc_url=dsc_url, rfs_url=rfs_url)
@@ -489,6 +503,27 @@ class Importer(object):
             return False
 
         return True
+
+    def _store_source_as_git_repo(self):
+        # Setup some variable used by git storage
+        destdir = pylons.config['debexpo.repository']
+        git_storage_repo = os.path.join(destdir, "git", self.changes['Source'])
+        git_storage_sources = os.path.join(git_storage_repo,
+                self.changes['Source'])
+
+        # Initiate the git storage
+        gs = GitStorage(git_storage_repo)
+        if os.path.isdir(git_storage_sources):
+            log.debug("git storage: remove previous sources")
+            shutil.rmtree(git_storage_sources, True)
+
+        # Building sources
+        log.debug("git storage: extract sources")
+        if self._extract_source(git_storage_sources):
+            # Record sources
+            fileToAdd = self._get_files(git_storage_sources)
+            fileToAdd = self._clean_path(git_storage_repo, fileToAdd)
+            gs.change(fileToAdd)
 
     def main(self, no_env=False):
         """
@@ -645,38 +680,7 @@ class Importer(object):
                 # skip another corner case, where the dsc contains a orig.tar.gz but wasn't uploaded
                 # by doing nothing here for that case
 
-
-
-        # initiate the git storage
-        gs = GitStorage(os.path.join(destdir, "git", self.changes['Source']))
-        if os.path.isdir(os.path.join(destdir, 'git', 'last')):
-            log.debug("folder exist, cleaning it")
-            shutil.rmtree(os.path.join(destdir, "git", 'last', ''), True)
-        else:
-            log.debug("last folder doesn't exist, creating one")
-        os.makedirs(os.path.join(destdir, 'git', 'last', ''))
-
-        #building sources
-
-        log.debug("building sources!")
-        self._build_source(os.path.join(destdir, 'git', 'last', ''))
-
-        #removing older file
-        if os.path.isdir(os.path.join(destdir, 'git', self.changes['source'], self.changes['source'])):
-            for i in glob(os.path.join(destdir, 'git', self.changes['source'], self.changes['source'], '*')):
-                if os.path.isdir(i):
-                    shutil.rmtree(i)
-                else:
-                    os.remove(i)
-            os.rmdir(os.path.join(destdir, 'git', self.changes['source'], self.changes['source']))
-        shutil.copytree(os.path.join(destdir, 'git', 'last', 'extracted'),
-            os.path.join(destdir, 'git', self.changes['source'], self.changes['source']))
-        os.path.join(destdir, 'git', self.changes['source'], self.changes['source'])
-        fileToAdd = self._get_files(os.path.join(destdir, 'git', self.changes['source'], self.changes['source']))
-        fileToAdd = self._clean_path(os.path.join(destdir, 'git', self.changes['source']), fileToAdd)
-        gs.change(fileToAdd)
-
-
+        self._store_source_as_git_repo()
 
         # Run post-upload plugins.
         post_upload = Plugins('post-upload', self.changes, self.changes_file,
