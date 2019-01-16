@@ -39,6 +39,7 @@ __license__ = 'MIT'
 import logging
 import os
 import pylons
+import shutil
 
 from debexpo.lib import constants
 from debexpo.lib.utils import md5sum
@@ -144,6 +145,16 @@ class CheckFiles(object):
         # We should neve end up here
         return (orig_name, constants.ORIG_TARBALL_LOCATION_NOT_FOUND)
 
+    def delete_git_storage_for_package(self, package):
+        """
+        Removes all files associated with the package supplied
+
+        ```package``` package object whose files are supposed to be removed
+        """
+        git_storage_sources = os.path.join(pylons.config['debexpo.repository'],
+                "git", package.name)
+        if os.path.isdir(git_storage_sources):
+           shutil.rmtree(git_storage_sources, True)
 
     def find_files_for_packageversion(self, packageversion, absolute_path=False):
         """
@@ -208,6 +219,7 @@ class CheckFiles(object):
         ```package``` package object whose files are supposed to be removed
         """
         files = self.find_files_for_package(package, absolute_path=True)
+        self.delete_git_storage_for_package(package)
         if not files:
             return
         path = os.path.dirname(files[0])
