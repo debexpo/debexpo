@@ -88,7 +88,7 @@ class GitStorage():
     #only this function will be used on upload
     def change(self, files):
         """
-        used to change  afile in the git storage can be called for the first upload we don't care
+        used to change a file in the git storage can be called for the first upload we don't care
         ``files``
             a list of file to change
         """
