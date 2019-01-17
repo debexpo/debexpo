@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 #
-#   This file is part of debexpo - https://alioth.debian.org/projects/debexpo/
+#   This file is part of debexpo
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
+#
+#   Copyright © 2012 Baptiste Mouterde <baptiste.mouterde@gmail.com>
 #
 #   Permission is hereby granted, free of charge, to any person obtaining a
 #   copy of this software and associated documentation files (the "Software"),
@@ -19,17 +22,17 @@
 #   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 #   DEALINGS IN THE SOFTWARE.
-from time import time
 
-__author__ = 'kolo'
+__author__ = 'Baptiste Mouterde'
 __license__ = 'MIT'
-from dulwich.repo import Repo
-from dulwich.objects import Blob, Tree, Commit, parse_timezone
 
-import os
-import logging
-import pylons
 from debexpo.lib.base import request
+from dulwich.objects import Blob, Tree, Commit, parse_timezone
+from dulwich.repo import Repo
+from time import time
+import logging
+import os
+import pylons
 import shutil
 
 log = logging.getLogger(__name__)
