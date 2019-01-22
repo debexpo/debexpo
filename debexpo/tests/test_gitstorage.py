@@ -33,8 +33,8 @@ __copyright__ = 'Copyright © 2019 Baptiste BEAUPLAT'
 __license__ = 'MIT'
 
 from debexpo.lib.gitstorage import GitStorage
-from os import chdir, write, close
-from os.path import isdir, abspath, curdir
+from os import write, close
+from os.path import isdir
 from shutil import rmtree
 from subprocess import Popen, PIPE, STDOUT
 from tempfile import mkdtemp, mkstemp
@@ -49,14 +49,10 @@ class TestGitStorage(TestCase):
             rmtree(self.gitdir)
 
     def _git(self, args):
-        self.oldcurdir = abspath(curdir)
-        chdir(self.gitdir)
-
         proc = Popen(['/usr/bin/git'] + args,
-                stdout=PIPE, stderr=STDOUT)
+                stdout=PIPE, stderr=STDOUT, cwd=self.gitdir)
         (output, status) = proc.communicate()
 
-        chdir(self.oldcurdir)
         return (status, output)
 
     def _write_test_file(self):
