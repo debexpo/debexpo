@@ -24,7 +24,7 @@ Dependencies needed for both methods
 Whatever method you choose, these packages are required::
 
     sudo apt-get install python-apt python-debian python-lxml iso-codes
-    python-dulwich
+    python-dulwich git
 
 If you want to run qa plugins, you will need `lintian` and
 `dpkg-dev`::
