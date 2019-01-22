@@ -207,8 +207,4 @@ class GitStorage():
         """
         return a list of all commits
         """
-        return self.repo.commit(self.repo.head())._get_parents()
-
-
-
-
+        return self.repo.get_parents(self.repo.head())

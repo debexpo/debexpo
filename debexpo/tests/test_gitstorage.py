@@ -118,3 +118,12 @@ class TestGitStorage(TestCase):
         (status, output) = self._git(['log', '--format=%T', 'HEAD~1..HEAD'])
         self.assertFalse(status)
         self.assertEquals(output.rstrip(), tree)
+
+    def test_get_older_commits(self):
+        self.test_adding_new_files()
+
+        commits = self.repo.getOlderCommits()
+
+        (status, output) = self._git(['log', '--format=%H', 'HEAD~1'])
+        self.assertFalse(status)
+        self.assertEquals(output.rstrip().split('\n'), commits)
