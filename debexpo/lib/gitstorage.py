@@ -107,8 +107,9 @@ class GitStorage():
 
     def buildTreeDiff(self, dest, tree=None, originalTree=None):
         """
-        creating files from the diff between 2 trees, it will be used in the code browser to get older version
-        (walking on history)
+        creating files from the diff between 2 trees, it will be used in the
+        code browser to get older version (walking on history)
+
         ``tree``
             the tree that you want to compare to
         ``dest``
@@ -116,8 +117,7 @@ class GitStorage():
         ``originalTree``
             the original Tree, by default it's the last one
 
-        by default it's retun the last changed files
-
+        by default it returns last changed files
         """
         if tree is None:
             head = self.repo.commit(self.repo.commit(self.repo.head()).parents[0])
@@ -153,16 +153,16 @@ class GitStorage():
         """
         return the last tree
         """
-        return self.repo.tree(self.repo._commit(self.repo.head()).tree)
+        return self.repo.get_object(self.repo.head()).tree
 
     def getAllTrees(self):
         """
         return trees
         """
-        result = []
-        commit = self.repo._commit(self.repo.head())
-        for c in commit._get_parents():
-            result.append(c.tree)
+        commit = self.repo.head()
+        result = [ self.repo.get_object(commit).tree ]
+        for c in self.repo.get_parents(commit):
+            result.append(self.repo.get_object(c).tree)
         return result
 
     def getOlderFileContent(self, file):
