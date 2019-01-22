@@ -42,6 +42,7 @@ from debexpo.controllers.package import PackageController
 from debexpo.controllers.packages import PackagesController
 from debexpo.model.users import User
 from debexpo.model.data_store import DataStore
+from debexpo.model.package_versions import PackageVersion
 from debexpo.model import meta
 from debian import deb822
 
@@ -59,11 +60,16 @@ class RemoveOldUploads(BaseCronjob):
         if user:
             self.mailer.send([user.email, ],
                 package=package.name,
-                version=version,
+                version=version.version,
                 reason=reason)
 
-        CheckFiles().delete_files_for_package(package)
-        meta.session.delete(package)
+        CheckFiles().delete_files_for_packageversion(version)
+        meta.session.delete(version)
+
+        if (meta.session.query(PackageVersion).filter_by(
+                package_id=package.id).count() == 0):
+            meta.session.delete(package)
+
         meta.session.commit()
 
     def _process_changes(self, mail):
@@ -80,12 +86,26 @@ class RemoveOldUploads(BaseCronjob):
         if not 'Source' in changes:
             #self.log.debug('Changes file "%s" seems incomplete' % (mail['subject']))
             return
-        package = self.pkg_controller._get_package(changes['Source'], from_controller=False)
+
+        package = self.pkg_controller._get_package(changes['Source'],
+                from_controller=False)
         if package != None:
             for pv in package.package_versions:
-                if pv.distribution == changes['Distribution'] and apt_pkg.version_compare(changes['Version'], pv.version) == 0:
-                    self.log.debug("Package %s was was uploaded to Debian - removing it from Expo" % (changes['Source']))
-                    self._remove_package(package, pv.version, "Package was uploaded to official Debian repositories")
+                if pv.distribution == changes['Distribution']:
+                    if (apt_pkg.version_compare(changes['Version'], pv.version)
+                            == 0):
+                        self.log.debug("Package %s was uploaded to Debian - "
+                                "removing it from Expo" % (changes['Source']))
+                        self._remove_package(package, pv, "Package was "
+                                "uploaded to official Debian repositories")
+                    if (apt_pkg.version_compare(changes['Version'], pv.version)
+                            > 0):
+                        self.log.debug("More recent package %s was uploaded to "
+                                "Debian - removing it from Expo" %
+                                (changes['Source']))
+                        self._remove_package(package, pv, "A more "
+                                "recent package was uploaded to official Debian"
+                                " repositories")
         else:
             #self.log.debug("Package %s was not uploaded to Expo before - ignoring it" % (changes['Source']))
             pass
