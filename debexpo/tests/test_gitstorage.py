@@ -99,3 +99,22 @@ class TestGitStorage(TestCase):
 
         self.assertEquals(self._git_count(), 2)
         self.assertTrue(filename in self._git_last_commited_files())
+
+    def test_get_all_trees(self):
+        self.test_adding_new_files()
+
+        trees = self.repo.getAllTrees()
+        self.assertEquals(len(trees), 2)
+
+        (status, output) = self._git(['log', '--format=%T'])
+        self.assertFalse(status)
+        self.assertEquals(output.rstrip().split('\n'), trees)
+
+    def test_get_last_tree(self):
+        self.test_adding_new_files()
+
+        tree = self.repo.getLastTree()
+
+        (status, output) = self._git(['log', '--format=%T', 'HEAD~1..HEAD'])
+        self.assertFalse(status)
+        self.assertEquals(output.rstrip(), tree)
