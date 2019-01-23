@@ -272,11 +272,13 @@ class Importer(object):
             log.debug('Package %s already exists in the database' % self.changes['Source'])
             package = package_query.one()
             # Update description to make sure it reflects the latest upload
-            package.description = _package_description(self.changes['Description'])
+            package.description = _package_description(
+                    self.changes.get('Description', ''))
         else:
             log.debug('Package %s is new to the system' % self.changes['Source'])
             package = Package(name=self.changes['Source'], user=self.user)
-            package.description = _package_description(self.changes['Description'])
+            package.description = _package_description(
+                    self.changes.get('Description', ''))
             package.needs_sponsor = 0
             meta.session.add(package)
 
