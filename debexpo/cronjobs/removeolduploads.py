@@ -128,7 +128,8 @@ class RemoveOldUploads(BaseCronjob):
         for package in self.pkgs_controller._get_packages():
             if (now - package.package_versions[-1].uploaded) > datetime.timedelta(weeks = 20):
                 self.log.debug("Removing package %s - uploaded on %s" % (package.name, package.package_versions[-1].uploaded))
-                self._remove_package(package, "all versions", "Your package found no sponsor for 20 weeks")
+                for pv in package.package_versions:
+                    self._remove_package(package, pv, "Your package found no sponsor for 20 weeks")
 
     def setup(self):
         self.mailer = Email('upload_removed_from_expo')
