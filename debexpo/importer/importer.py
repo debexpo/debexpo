@@ -200,23 +200,24 @@ class Importer(object):
 
             self.send_email(email, [self.user.email], package=package, message=reason)
 
-    def _setup_logging(self):
+    def _setup_logging(self, no_env):
         """
         Parse the config file and create the ``log`` object for other methods to log their
         actions.
         """
         global log
 
-        # Parse the ini file to validate it
-        parser = ConfigParser.ConfigParser()
-        parser.read(self.ini_file)
+        if not no_env:
+            # Parse the ini file to validate it
+            parser = ConfigParser.ConfigParser()
+            parser.read(self.ini_file)
 
-        # Check for the presence of [loggers] in self.ini_file
-        if not parser.has_section('loggers'):
-            self._fail('Config file does not have [loggers] section', use_log=False)
-            return 1
+            # Check for the presence of [loggers] in self.ini_file
+            if not parser.has_section('loggers'):
+                self._fail('Config file does not have [loggers] section', use_log=False)
+                return 1
 
-        logging.config.fileConfig(self.ini_file)
+            logging.config.fileConfig(self.ini_file)
 
         # Use "name.pid" to avoid importer confusions in the logs
         logger_name = 'debexpo.importer.%s' % os.getpid()
@@ -232,7 +233,7 @@ class Importer(object):
             self._fail('Cannot find ini file')
             return 1
 
-        self._setup_logging()
+        self._setup_logging(no_env)
 
         # Import debexpo root directory
         sys.path.append(os.path.dirname(self.ini_file))
