@@ -403,6 +403,19 @@ class Importer(object):
 
         return False
 
+    def _check_changes_files(self):
+        filecheck = CheckFiles()
+
+        try:
+            filecheck.test_files_present(self.changes)
+            filecheck.test_md5sum(self.changes)
+        except Exception as e:
+            self._reject("Your upload looks incomplete or corrupt:\n\n"
+                    "{}".format(str(e)))
+            return False
+
+        return True
+
     def main(self, no_env=False):
         """
         Actually start the import of the package.
@@ -419,8 +432,6 @@ class Importer(object):
         # Try parsing the changes file, but fail if there's an error.
         try:
             self.changes = Changes(filename=self.changes_file)
-            filecheck.test_files_present(self.changes)
-            filecheck.test_md5sum(self.changes)
         except Exception as e:
             # XXX: The user won't ever see this message. The changes file was
             # invalid, we don't know whom send it to
@@ -431,6 +442,11 @@ class Importer(object):
         # This might be temporary, the GPG check should replace the user later
         # At this stage it is only helpful to get an email address to send blame mails to
         self._determine_uploader_by_changedby_field()
+
+        # Check that all files referenced in the changelog are present and match
+        # their checksum
+        if not self._check_changes_files():
+            return 1
 
         # Checks whether the upload has a dsc file
         if not self.changes.get_dsc():

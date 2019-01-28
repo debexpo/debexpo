@@ -77,6 +77,15 @@ class Changes(object):
             if len(self._data) == 0:
                 raise Exception('Changes file could not be parsed.')
 
+        # Per debian policy:
+        # https://www.debian.org/doc/debian-policy/ch-controlfields.html#debian-changes-files-changes
+        for key in ['Architecture', 'Changes', 'Checksums-Sha1',
+                'Checksums-Sha256', 'Date', 'Distribution', 'Files', 'Format',
+                'Maintainer', 'Source', 'Version']:
+            if not key in self._data:
+                raise Exception('Changes file invalid. Missing key '
+                        '{}'.format(key))
+
     def get_filename(self):
         """
         Returns the filename from which the changes file was generated from
