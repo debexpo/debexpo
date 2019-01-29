@@ -37,7 +37,6 @@ __license__ = 'MIT'
 from debexpo.cronjobs import BaseCronjob
 
 import glob
-import itertools
 import os
 import os.path
 import time
@@ -77,7 +76,7 @@ class ImportUpload(BaseCronjob):
         for changes_file in sum((glob.glob(os.path.join(directory, '*.changes')) for directory in directories), []):
             try:
                 parsed_changes = Changes(filename=changes_file)
-            except:
+            except Exception:
                 self.log.exception('Invalid changes file: %s' % changes_file)
                 os.remove(changes_file)
                 continue
@@ -114,7 +113,7 @@ class ImportUpload(BaseCronjob):
 
         # 2) Mark unprocessed files and get rid of them after some time
         pub = os.path.join(self.config['debexpo.upload.incoming'], "pub")
-        for file in glob.glob( os.path.join(pub, '*') ):
+        for file in glob.glob(os.path.join(pub, '*')):
             if self.files.allowed_upload(file):
                 self.log.debug("Incomplete upload: %s" % (file))
                 last_change = time.time() - os.stat(file).st_mtime
@@ -127,5 +126,6 @@ class ImportUpload(BaseCronjob):
                     self.log.warning("Remove unknown file: %s" % (file))
                     os.remove(file)
 
+
 cronjob = ImportUpload
-schedule = datetime.timedelta(minutes = 10)
+schedule = datetime.timedelta(minutes=10)
