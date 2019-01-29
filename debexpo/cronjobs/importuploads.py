@@ -48,7 +48,6 @@ import debexpo.lib.filesystem
 from debexpo.lib.changes import Changes
 from debexpo.importer.importer import Importer
 
-class NotCompleteUpload(Exception): pass
 
 class ImportUpload(BaseCronjob):
     def setup(self):
@@ -90,9 +89,12 @@ class ImportUpload(BaseCronjob):
                 destination_file = os.path.join(self.config['debexpo.upload.incoming'], filename)
 
                 if os.path.exists(destination_file):
+                    self.log.debug("File %s already exists on the destination directory, removing.", filename)
                     os.remove(destination_file)
                 if os.path.exists(source_file):
                     shutil.move(source_file, self.config['debexpo.upload.incoming'])
+                else:
+                    self.log.debug("Source file %s does not exist, continuing.", filename)
 
 
             self.log.info("Import upload: %s" % (changes_file))
