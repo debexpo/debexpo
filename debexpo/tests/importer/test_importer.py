@@ -87,14 +87,15 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
     def test_import_package_missing_file_in_changes(self):
         self.import_package('missing-file-in-changes')
         self.assert_importer_failed()
-        self.assert_no_email()
+        self.assert_email_with('Missing file hello_1.0-1.debian.tar.xz in'
+                ' incoming')
         self.assert_package_count('hello', '1.0-1', 0)
         self.assert_package_not_in_repo('hello', '1.0-1')
 
     def test_import_package_wrong_checksum_in_changes(self):
         self.import_package('wrong-checksum-in-changes')
         self.assert_importer_failed()
-        self.assert_no_email()
+        self.assert_email_with('MD5 sum mismatch in file hello_1.0-1.dsc:')
         self.assert_package_count('hello', '1.0-1', 0)
         self.assert_package_not_in_repo('hello', '1.0-1')
 

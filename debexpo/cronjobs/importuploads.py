@@ -80,25 +80,19 @@ class ImportUpload(BaseCronjob):
                 parsed_changes = Changes(filename=changes_file)
             except:
                 self.log.exception('Invalid changes file: %s' % changes_file)
+                os.remove(changes_file)
                 continue
 
-            try:
-                directory = os.path.dirname(changes_file)
-                uploaded_files = parsed_changes.get_files() + [parsed_changes.get_filename()]
-                for filename in uploaded_files:
-                    source_file = os.path.join(directory, filename)
-                    destination_file = os.path.join(self.config['debexpo.upload.incoming'], filename)
+            directory = os.path.dirname(changes_file)
+            uploaded_files = parsed_changes.get_files() + [parsed_changes.get_filename()]
+            for filename in uploaded_files:
+                source_file = os.path.join(directory, filename)
+                destination_file = os.path.join(self.config['debexpo.upload.incoming'], filename)
 
-                    if not os.path.exists(source_file):
-                            self.log.debug("Source file %s does not exist - putting upload on hold" % (source_file))
-                            raise NotCompleteUpload;
-                    if os.path.exists(destination_file):
-                            self.log.debug("Do not import %s: already exists on destination path - removing file instead" % (source_file))
-                            os.remove(source_file)
-                            raise NotCompleteUpload;
+                if os.path.exists(destination_file):
+                    os.remove(destination_file)
+                if os.path.exists(source_file):
                     shutil.move(source_file, self.config['debexpo.upload.incoming'])
-            except NotCompleteUpload:
-                continue
 
 
             self.log.info("Import upload: %s" % (changes_file))
