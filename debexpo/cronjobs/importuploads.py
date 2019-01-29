@@ -74,6 +74,7 @@ class ImportUpload(BaseCronjob):
         base_path = os.path.join(self.config['debexpo.upload.incoming'], "pub")
         directories = [base_path, os.path.join(base_path, 'pub/UploadQueue')]
         for changes_file in sum((glob.glob(os.path.join(directory, '*.changes')) for directory in directories), []):
+            self.log.info("Importing upload: %s", changes_file)
             try:
                 parsed_changes = Changes(filename=changes_file)
             except Exception:
@@ -95,8 +96,6 @@ class ImportUpload(BaseCronjob):
                 else:
                     self.log.debug("Source file %s does not exist, continuing.", filename)
 
-
-            self.log.info("Import upload: %s" % (changes_file))
             importer = Importer(parsed_changes.get_filename(),
                                 self.config['global_conf']['__file__'],
                                 False,
