@@ -42,6 +42,7 @@ __copyright__ = ', '.join([
 __license__ = 'MIT'
 
 from debian import deb822
+from os.path import join
 import logging
 
 from debexpo.lib import constants
@@ -60,9 +61,10 @@ class ControlFieldsPlugin(BasePlugin):
         log.debug('Checking whether additional debian/control fields are present')
 
         try:
-            dsc = deb822.Dsc(file(self.changes.get_dsc()))
-        except:
-            log.critical('Could not open dsc file; skipping plugin')
+            control = deb822.Dsc(file(join('extracted', 'debian', 'control')))
+        except Exception as e:
+            log.critical('Could not open debian/control file; skipping plugin: '
+                    '{}'.format(str(e)))
             return
 
         data = {}
@@ -70,8 +72,8 @@ class ControlFieldsPlugin(BasePlugin):
         outcome = "No Homepage field present"
 
         for item in fields:
-            if item in dsc:
-                data[item] = dsc[item]
+            if item in control:
+                data[item] = control[item]
 
         if "Homepage" in data:
             severity = constants.PLUGIN_SEVERITY_INFO
@@ -79,6 +81,18 @@ class ControlFieldsPlugin(BasePlugin):
                 outcome = "Homepage and VCS control fields present"
             else:
                 outcome = "Homepage control field present"
+
+        # Compute a list of binary packages description.
+        # Only the short description is used.
+        descriptions = []
+        for package in deb822.Dsc.iter_paragraphs(
+                file(join('extracted', 'debian', 'control'))):
+            if ('Description' in package and 'Package' in package and
+                    package['Package'] and package['Description']):
+                descriptions.append('{} - {}'.format(package['Package'],
+                    package['Description'].split('\n')[0]))
+
+        data['Description'] = '\n'.join(descriptions)
 
         self.failed(outcome, data, severity)
 

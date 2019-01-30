@@ -342,6 +342,15 @@ class Importer(object):
 
         # Add PackageInfo objects to the database for the package_version
         for result in qa.result:
+            # Catch description from controlfields plugin, add it to the package
+            # and remove it from the plugin data
+            if (result.from_plugin == 'controlfields' and
+                    'Description' in result.data):
+                package.description = \
+                        _package_description(result.data.get('Description', ''))
+                result.data.pop('Description')
+                meta.session.commit()
+
             meta.session.add(PackageInfo(package_version=package_version, from_plugin=result.from_plugin,
                 outcome=result.outcome, rich_data=result.data, severity=result.severity))
 
