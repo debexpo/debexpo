@@ -346,8 +346,7 @@ class Importer(object):
             # and remove it from the plugin data
             if (result.from_plugin == 'controlfields' and
                     'Description' in result.data):
-                package.description = \
-                        _package_description(result.data.get('Description', ''))
+                package.description = result.data.get('Description', '')
                 result.data.pop('Description')
                 meta.session.commit()
 
