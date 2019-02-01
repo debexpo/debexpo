@@ -39,6 +39,9 @@ log = logging.getLogger(__name__)
 
 fileToIgnore = []
 
+class NoOlderContent(Exception):
+    pass
+
 class GitStorage():
     def _ignoreFile(self, dirName, fileName):
         """
@@ -165,43 +168,33 @@ class GitStorage():
             result.append(self.repo.get_object(c).tree)
         return result
 
-    def getOlderFileContent(self, file):
+    def getOlderFileContent(self, filename):
         """
-        return the first file's content that changed from the file
-        ``file``
-            the file to work on
+        return the first filename's content that changed from the filename
+        ``filename``
+            the filename to work on
         """
-        with open(file) as f:
-            originalBlob = Blob.from_string("".join(f.readlines()))
-        trees = self.getAllTrees()
-        for t in trees:
-            #parsing tree in order to find the tree where the file change
-            if originalBlob not in t:
-                tree = t
+        # Get a list of Tree (from the newest to the oldest)
+        # and skip the current one
+        last_tree_with_changes = None
+        history = self.getAllTrees()
+        history.pop(0)
+
+        # Find the first Tree that contains our file
+        for sha in history:
+            tree = self.repo.get_object(sha)
+            if filename in tree:
+                last_tree_with_changes = tree
                 break
-                #tree must be existent, other way file is not correct
-        if tree is None:
-            log.error(
-                "there is no tree that contain this blob this souldn't happen, other way this file does not appear to come from this package")
-        else:
-            if self.repo._commit(self.repo.head()).tree == tree:
-                olderTree = self.repo.commit(self.repo.head())._get_parents()[0].tree
-            else:
-                for c in self.repo._commit(self.repo.head())._get_parents():
-                    if c.tree == tree:
-                        try:
-                            olderTree = c.get_parents()[0]
-                        except IndexError:
-                            log.debug("file is the last version")
-                            olderTree = tree
-            if olderTree != tree:
-                #we must check here the blob that contains the older file
-                for b in self.repo.object_store.iter_tree_contents(olderTree.id):
-                    if originalBlob.path == b.path:
-                        #older blob find! awesome, in the first loop we already test if they are the same
-                        # that's why we can now return the content of the file
-                        return self.repo.get_object(b.sha).as_raw_string()
-        return ""
+
+        # File has no previous history or does not exist in the repo
+        if not last_tree_with_changes:
+            raise NoOlderContent("{} has no previous version".format(filename))
+
+        # Get corresponding blob and return its content
+        (_, sha) = last_tree_with_changes[filename];
+        blob = self.repo.get_object(sha)
+        return blob.as_raw_string()
 
     def getOlderCommits(self):
         """
