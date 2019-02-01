@@ -29,7 +29,9 @@ __license__ = 'MIT'
 from debexpo.lib.base import request
 from dulwich.objects import Blob, Tree, Commit, parse_timezone
 from dulwich.repo import Repo
+from dulwich.patch import write_tree_diff
 from time import time
+from io import BytesIO
 import logging
 import os
 import pylons
@@ -108,48 +110,35 @@ class GitStorage():
             self.repo.do_commit("this is so awesome that nobody will never see it",
                 committer="same here <foo@foo.foo>")
 
-    def buildTreeDiff(self, dest, tree=None, originalTree=None):
+    def buildTreeDiff(self, old_sha_tree=None, new_sha_tree=None):
         """
         creating files from the diff between 2 trees, it will be used in the
         code browser to get older version (walking on history)
 
-        ``tree``
+        ``old_sha_tree``
+            the tree that you want to compare from
+        ``new_sha_tree``
             the tree that you want to compare to
-        ``dest``
-            the destination folder to build sources
-        ``originalTree``
-            the original Tree, by default it's the last one
 
         by default it returns last changed files
         """
-        if tree is None:
-            head = self.repo.commit(self.repo.commit(self.repo.head()).parents[0])
-            tree = self.repo.tree(head.tree)
-        if originalTree is None:
-            originalTree = self.repo.tree(self.repo.commit(self.repo.head()).tree)
-        blobToBuild = []
-        #getting blob that have changed
-        for blob in self.repo.object_store.iter_tree_contents(tree.id):
-            if blob not in originalTree:
-                blobToBuild.append(blob)
-                fileToIgnore.append(blob.path)
-        repoLocation = os.path.join(str(self.repo).split("'")[1])
-        #creating the folder with link to older files
-        if os.path.exists(repoLocation + dest):
-            log.warning("%s already exist, copy will not work")
-        else:
-            log.debug("copying files")
-            shutil.copytree(repoLocation, repoLocation + dest, symlinks=True, ignore=self._ignoreFile)
-        for b in blobToBuild:
-            fileDirectory = os.path.split(b.path)
-            fileDirectory.pop()
-            if not os.path.exists(os.path.join(repoLocation + dest, os.path.join(fileDirectory))):
-                os.makedirs(os.path.join(repoLocation + dest, os.path.join(fileDirectory)))
-            file = open(os.path.join(repoLocation + dest, b.path), 'w')
-            file.write(self.repo.get_object(b.sha).as_raw_string())
-            file.close()
-        tree = None
-        originalTree = None
+        # set default for new_tree (current tree)
+        if not new_sha_tree:
+            new_sha_tree = self.getLastTree()
+
+        # set default for old_tree (last tree)
+        if not old_sha_tree:
+            history = self.getAllTrees()
+            if (len(history) > 1):
+                old_sha_tree = history[1]
+            else:
+                old_sha_tree = history[0]
+
+        # calculate changes
+        changes = BytesIO()
+        write_tree_diff(changes, self.repo.object_store, old_sha_tree,
+                new_sha_tree)
+        return changes.getvalue()
 
     #get*
     def getLastTree(self):
