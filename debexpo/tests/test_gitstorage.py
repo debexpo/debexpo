@@ -147,3 +147,13 @@ class TestGitStorage(TestCase):
 
         content = self.repo.getOlderFileContent(filename)
         self.assertEquals(content, initial_text)
+
+    def test_build_tree_diff(self):
+        self.test_get_older_file_content()
+
+        changes = self.repo.buildTreeDiff()
+        self.assertTrue('-Hello world!\n+New version\n' in changes)
+
+        history = self.repo.getAllTrees()
+        changes = self.repo.buildTreeDiff(history[0], history[1])
+        self.assertTrue('-New version\n-\n+Hello world!\n' in changes)
