@@ -33,8 +33,8 @@ __copyright__ = 'Copyright © 2019 Baptiste BEAUPLAT'
 __license__ = 'MIT'
 
 from debexpo.lib.gitstorage import GitStorage
-from os import write, close
-from os.path import isdir
+from os import write, close, open, O_WRONLY
+from os.path import isdir, join
 from shutil import rmtree
 from subprocess import Popen, PIPE, STDOUT
 from tempfile import mkdtemp, mkstemp
@@ -55,10 +55,13 @@ class TestGitStorage(TestCase):
 
         return (status, output)
 
-    def _write_test_file(self):
-        (fd, filename) = mkstemp(dir=self.gitdir)
+    def _write_test_file(self, text, filename=None):
+        if filename:
+            fd = open(join(self.gitdir, filename), O_WRONLY)
+        else:
+            (fd, filename) = mkstemp(dir=self.gitdir)
 
-        write(fd, "Hello world!\n")
+        write(fd, text)
         close(fd)
 
         return filename[len(self.gitdir) + 1:]
@@ -91,10 +94,10 @@ class TestGitStorage(TestCase):
         self.repo = GitStorage(self.gitdir)
         self.assertEquals(self._git_count(), 1)
 
-    def test_adding_new_files(self):
+    def test_adding_new_files(self, text="Hello World!\n"):
         self.test_init_new_repo()
 
-        filename = self._write_test_file()
+        filename = self._write_test_file(text)
         self.repo.change([filename])
 
         self.assertEquals(self._git_count(), 2)
@@ -127,3 +130,20 @@ class TestGitStorage(TestCase):
         (status, output) = self._git(['log', '--format=%H', 'HEAD~1'])
         self.assertFalse(status)
         self.assertEquals(output.rstrip().split('\n'), commits)
+
+    def test_get_older_file_content(self):
+        self.test_init_new_repo()
+
+        initial_text = "Hello world!\n"
+
+        filename = self._write_test_file(initial_text)
+        self.repo.change([filename])
+
+        self._write_test_file("New version\n", filename)
+        self.repo.change([filename])
+
+        self.assertEquals(self._git_count(), 3)
+        self.assertTrue(filename in self._git_last_commited_files())
+
+        content = self.repo.getOlderFileContent(filename)
+        self.assertEquals(content, initial_text)
