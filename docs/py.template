@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 #
-#   py.template — template for new .py files
+#   py.template - template for new .py files
 #
-#   This file is part of debexpo - http://debexpo.workaround.org
+#   This file is part of debexpo
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2019 Jonny Lamb <jonny@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -28,5 +29,5 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__copyright__ = 'Copyright © 2019 Jonny Lamb'
 __license__ = 'MIT'

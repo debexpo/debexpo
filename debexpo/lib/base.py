@@ -124,7 +124,8 @@ class BaseController(WSGIController):
         for ua_lang in languages:
             log.debug("Trying user agent language %s" % ua_lang)
             # only get the main language code (fr_FR -> fr)
-            ua_lang = ua_lang[0:2]
+            if ua_lang:
+                ua_lang = ua_lang[0:2]
             if ua_lang in app_globals.supported_languages:
                 set_lang(ua_lang)
                 break

@@ -68,6 +68,7 @@ class RemoveOldUploads(BaseCronjob):
 
         if (meta.session.query(PackageVersion).filter_by(
                 package_id=package.id).count() == 0):
+            CheckFiles().delete_files_for_package(package)
             meta.session.delete(package)
 
         meta.session.commit()

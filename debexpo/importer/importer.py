@@ -31,7 +31,7 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-from optparse import OptionParser
+from glob import glob
 import ConfigParser
 from datetime import datetime
 from debian import deb822
@@ -42,6 +42,9 @@ import re
 import sys
 import shutil
 from stat import *
+import string
+import subprocess
+import tempfile
 import pylons
 import email.utils
 
@@ -78,6 +81,7 @@ from debexpo.lib.repository import Repository
 from debexpo.lib.plugins import Plugins
 from debexpo.lib.filesystem import CheckFiles
 from debexpo.lib.gnupg import GnuPG
+from debexpo.lib.gitstorage import GitStorage
 
 log = None
 
@@ -122,12 +126,88 @@ class Importer(object):
         incoming_dir = pylons.config['debexpo.upload.incoming']
         return os.path.join(incoming_dir, self.changes_file_unqualified)
 
+    def _clean_path(self, pathToRemove, files):
+        """
+        remove a path from another using magic split
+        ''pathToRemove''
+            the path to remove
+        ''filePath''
+            the a list of original filePath
+        """
+        result = []
+        for filePath in files:
+            filePath = string.split(filePath, pathToRemove)
+            filePath = filePath[1]
+            filePath = string.split(filePath, os.sep)
+            if filePath[0] == '':
+                filePath.remove('')
+            fileName = string.join(filePath, os.sep)
+            result.append(fileName)
+        return result
+
+    def _get_files(self, path):
+        """
+        return all files in a path
+        ''path''
+            the path we are searching
+        """
+        result = []
+        for f in os.listdir(path):
+            if os.path.isdir(os.path.join(path, f)):
+                result += self._get_files(os.path.join(path, f))
+            else:
+                result.append(os.path.join(path, f))
+        return result
+
+    def _extract_source(self, extract_dir):
+        log.debug('Copying files to a temp directory to run dpkg-source -x on the dsc file')
+        self.tempdir = tempfile.mkdtemp()
+        log.debug('Temp dir is: %s', self.tempdir)
+        for filename in self.changes.get_files():
+            log.debug('Copying: %s', filename)
+            shutil.copy(os.path.join(pylons.config['debexpo.upload.incoming'], filename), self.tempdir)
+
+        # If the original tarball was pulled from Debian or from the repository, that
+        # also needs to be copied into this directory.
+        dsc = deb822.Dsc(file(self.changes.get_dsc()))
+        for item in dsc['Files']:
+            if item['name'] not in self.changes.get_files():
+                src_file = os.path.join(pylons.config['debexpo.upload.incoming'], item['name'])
+                repository_src_file = os.path.join(pylons.config['debexpo.repository'], self.changes.get_pool_path(),
+                    item['name'])
+                if os.path.exists(src_file):
+                    shutil.copy(src_file, self.tempdir)
+                elif os.path.exists(repository_src_file):
+                    shutil.copy(repository_src_file, self.tempdir)
+                else:
+                    log.critical("Trying to copy non-existing file %s" % (src_file))
+
+        shutil.copy(os.path.join(pylons.config['debexpo.upload.incoming'], self.changes_file), self.tempdir)
+        self.oldcurdir = os.path.abspath(os.path.curdir)
+        os.chdir(self.tempdir)
+
+        log.debug("Extracting sources for {}".format(dsc['Source']))
+        extract = subprocess.Popen(['/usr/bin/dpkg-source',
+            '-x', '--no-copy', self.changes.get_dsc(), extract_dir],
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        (output, _) = extract.communicate()
+
+        shutil.rmtree(self.tempdir)
+        os.chdir(self.oldcurdir)
+
+        if extract.returncode:
+            log.critical("Failed to extract sources for" \
+                    " {}:\n{}".format(dsc['Source'], output))
+            return False
+        else:
+            return True
+
     def _remove_changes(self):
         """
         Removes the `changes` file.
         """
         if os.path.exists(self.changes_file):
-                os.remove(self.changes_file)
+            os.remove(self.changes_file)
 
     def _remove_temporary_files(self):
         if hasattr(self, 'files_to_remove'):
@@ -172,7 +252,6 @@ class Importer(object):
         if self.user is not None:
             email = Email('importer_fail_maintainer')
             package = self.changes.get('Source', '')
-
 
             self.send_email(email, [self.user.email], package=package)
 
@@ -425,6 +504,31 @@ class Importer(object):
 
         return True
 
+    def _store_source_as_git_repo(self):
+        # Exit now if gitstorage is not enabled
+        if pylons.config['debexpo.gitstorage.enabled'] != 'true':
+            return
+
+        # Setup some variable used by git storage
+        destdir = pylons.config['debexpo.repository']
+        git_storage_repo = os.path.join(destdir, "git", self.changes['Source'])
+        git_storage_sources = os.path.join(git_storage_repo,
+                self.changes['Source'])
+
+        # Initiate the git storage
+        gs = GitStorage(git_storage_repo)
+        if os.path.isdir(git_storage_sources):
+            log.debug("git storage: remove previous sources")
+            shutil.rmtree(git_storage_sources, True)
+
+        # Building sources
+        log.debug("git storage: extract sources")
+        if self._extract_source(git_storage_sources):
+            # Record sources
+            fileToAdd = self._get_files(git_storage_sources)
+            fileToAdd = self._clean_path(git_storage_repo, fileToAdd)
+            gs.change(fileToAdd)
+
     def main(self, no_env=False):
         """
         Actually start the import of the package.
@@ -577,8 +681,10 @@ class Importer(object):
             elif os.path.isfile(file):
                 log.debug('File %s is safe to install' % os.path.join(pool_dir, file))
                 toinstall.append(file)
-            # skip another corner case, where the dsc contains a orig.tar.gz but wasn't uploaded
-            # by doing nothing here for that case
+                # skip another corner case, where the dsc contains a orig.tar.gz but wasn't uploaded
+                # by doing nothing here for that case
+
+        self._store_source_as_git_repo()
 
         # Run post-upload plugins.
         post_upload = Plugins('post-upload', self.changes, self.changes_file,
