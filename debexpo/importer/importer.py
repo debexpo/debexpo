@@ -505,6 +505,10 @@ class Importer(object):
         return True
 
     def _store_source_as_git_repo(self):
+        # Exit now if gitstorage is not enabled
+        if pylons.config['debexpo.gitstorage.enabled'] != 'true':
+            return
+
         # Setup some variable used by git storage
         destdir = pylons.config['debexpo.repository']
         git_storage_repo = os.path.join(destdir, "git", self.changes['Source'])
