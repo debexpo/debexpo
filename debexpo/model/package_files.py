@@ -37,6 +37,7 @@ __license__ = 'MIT'
 
 import sqlalchemy as sa
 from sqlalchemy import orm
+from sqlalchemy.orm import backref
 
 from debexpo.model import meta, OrmObject
 from debexpo.model.binary_packages import BinaryPackage
@@ -55,6 +56,8 @@ class PackageFile(OrmObject):
     foreign = ['binary_package', 'source_package']
 
 orm.mapper(PackageFile, t_package_files, properties={
-    'binary_package' : orm.relation(BinaryPackage, backref='package_files'),
-    'source_package' : orm.relation(SourcePackage, backref='package_files'),
+    'binary_package' : orm.relation(BinaryPackage,
+        backref=backref('package_files', cascade='all, delete-orphan')),
+    'source_package' : orm.relation(SourcePackage,
+        backref=backref('package_files', cascade='all, delete-orphan')),
 })

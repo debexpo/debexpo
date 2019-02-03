@@ -37,6 +37,7 @@ __license__ = 'MIT'
 
 import sqlalchemy as sa
 from sqlalchemy import orm
+from sqlalchemy.orm import backref
 
 from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
@@ -52,5 +53,6 @@ class PackageSubscription(OrmObject):
     foreign = ['user']
 
 orm.mapper(PackageSubscription, t_package_subscriptions, properties={
-    'user' : orm.relation(User, backref='package_subscriptions')
+    'user' : orm.relation(User, backref=backref('package_subscriptions',
+        cascade='all, delete-orphan'))
 })
