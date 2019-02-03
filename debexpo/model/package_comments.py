@@ -37,6 +37,7 @@ __license__ = 'MIT'
 
 import sqlalchemy as sa
 from sqlalchemy import orm
+from sqlalchemy.orm import backref
 
 from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
@@ -56,6 +57,8 @@ class PackageComment(OrmObject):
     foreign = ['package_version', 'user']
 
 orm.mapper(PackageComment, t_package_comments, properties={
-    'package_version' : orm.relation(PackageVersion, backref='package_comments'),
-    'user' : orm.relation(User, backref='package_comments'),
+    'package_version' : orm.relation(PackageVersion,
+        backref=backref('package_comments', cascade='all, delete-orphan')),
+    'user' : orm.relation(User, backref=backref('package_comments',
+        cascade='all, delete-orphan')),
 })

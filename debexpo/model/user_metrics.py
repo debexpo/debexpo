@@ -37,6 +37,7 @@ __license__ = 'MIT'
 
 import sqlalchemy as sa
 from sqlalchemy import orm
+from sqlalchemy.orm import backref
 
 from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
@@ -52,5 +53,6 @@ class UserMetric(OrmObject):
     foreign = ['user']
 
 orm.mapper(UserMetric, t_user_metrics, properties={
-    'user' : orm.relation(User, backref='user_metrics')
+    'user' : orm.relation(User, backref=backref('user_metrics',
+        cascade='all, delete-orphan'))
 })

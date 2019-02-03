@@ -37,6 +37,7 @@ __license__ = 'MIT'
 
 import sqlalchemy as sa
 from sqlalchemy import orm
+from sqlalchemy.orm import backref
 
 from debexpo.model import meta, OrmObject
 from debexpo.model.packages import Package
@@ -81,5 +82,6 @@ class PackageVersion(OrmObject):
 
 
 orm.mapper(PackageVersion, t_package_versions, properties={
-    'package' : orm.relation(Package, backref='package_versions')
+    'package' : orm.relation(Package, backref=backref('package_versions',
+        cascade='all, delete-orphan'))
 })

@@ -45,6 +45,7 @@ from pylons import config
 
 import sqlalchemy as sa
 from sqlalchemy import orm
+from sqlalchemy.orm import backref
 
 import debexpo.lib
 
@@ -113,5 +114,6 @@ class PackageInfo(OrmObject):
         return template.render_unicode(o = self, h = debexpo.lib.helpers)
 
 orm.mapper(PackageInfo, t_package_info, properties={
-    'package_version' : orm.relation(PackageVersion, backref='package_info'),
+    'package_version' : orm.relation(PackageVersion,
+        backref=backref('package_info', cascade='all, delete-orphan')),
 })
