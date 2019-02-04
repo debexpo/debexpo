@@ -18,6 +18,9 @@ setup(
         "Webhelpers>=0.6.1",
         "Babel>=0.9.4",
         "python-debian>=0.1.16",
+        "python-apt",
+        "SOAPpy",                # client
+        "dulwich",
     ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
