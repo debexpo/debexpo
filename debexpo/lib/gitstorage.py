@@ -105,7 +105,7 @@ class GitStorage():
         else:
             log.debug("this will change %i files" % (len(files)))
             for f in files:
-                self.repo.stage(str(f))
+                self.repo.stage(f)
             log.debug("stages dones")
             self.repo.do_commit("this is so awesome that nobody will never see it",
                 committer="same here <foo@foo.foo>")
