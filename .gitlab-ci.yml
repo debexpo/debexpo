@@ -1,8 +1,7 @@
 before_script:
   - apt-get -q update
   - env DEBIAN_FRONTEND=noninteractive apt-get -q -y install --no-install-recommends aspcud apt-cudf
-  - env DEBIAN_FRONTEND=noninteractive apt-get -q -y --solver aspcud -o APT::Solver::Strict-Pinning=0 -o Debug::pkgProblemResolver=yes install --no-install-recommends
-    python-sqlalchemy python-pylons python-debian python-babel iso-codes gnupg python-apt python-lxml python-coverage lintian ca-certificates dpkg-dev python-dulwich git
+  - env DEBIAN_FRONTEND=noninteractive apt-get -q -y --solver aspcud -o APT::Solver::Strict-Pinning=0 -o Debug::pkgProblemResolver=yes install --no-install-recommends python-sqlalchemy python-pylons python-debian python-babel iso-codes gnupg python-apt python-lxml python-coverage lintian ca-certificates dpkg-dev python-dulwich python-sphinx python-setuptools git
 
 .test_template: &test
   script:
