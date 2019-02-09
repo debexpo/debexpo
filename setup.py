@@ -14,6 +14,7 @@ setup(
     url='https://mentors.debian.net',
     install_requires=[
         "Pylons>=1.0.2",
+        "sphinx",  # for make build
         "SQLAlchemy>=0.6",
         "Webhelpers>=0.6.1",
         "Babel>=0.9.4",
@@ -21,6 +22,7 @@ setup(
         "python-apt",
         "SOAPpy",                # client
         "dulwich",
+        "nose>=1.3.7",           # ensure in virtualenv
     ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
