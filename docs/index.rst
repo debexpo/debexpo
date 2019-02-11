@@ -11,29 +11,38 @@ that you may be used to from social networking sites. debexpo is the basis for
 the mentors.debian.net site but may be useful for others as well. It is
 basically a Pylons application that can be deployed on any server. You do
 not need anything more than Pylons, a little harddisk space and a database
-like PostgreSQL, MySQL or Sqlite. 
+like PostgreSQL, MySQL or Sqlite.
 
 Setting up debexpo
 ------------------
 
-* :ref:`installing`
-* :ref:`config-file`
+.. toctree::
+    :maxdepth: 1
+
+    installing
+    config_file
 
 Using debexpo
 -------------
 
-* :ref:`uploading`
-* :ref:`plugins`
+.. toctree::
+    :maxdepth: 1
+
+    uploading
+    plugins
 
 Development documentation
 -------------------------
 
-* :ref:`building`
-* :ref:`writing-plugins`
-* :ref:`writing-cronjobs`
-* :ref:`coding-standards`
-* :ref:`contributing`
-* :ref:`api`
+.. toctree::
+    :maxdepth: 1
+
+    building
+    writing_plugins
+    writing_cronjobs
+    coding_standards
+    contributing
+    api
 
 Indices and tables
 ==================
