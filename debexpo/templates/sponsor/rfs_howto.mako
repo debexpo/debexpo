@@ -79,7 +79,7 @@ tool.
    Version         : 3.1-4
 %endif
    Upstream Author : [fill in name and email of upstream]
- * URL             : [fill in URL of upstreams web site]
+ * URL             : [fill in URL of upstream's web site]
  * License         : [fill in]
 %if c.package:
    Section         : ${ c.package.package_versions[-1].section }
