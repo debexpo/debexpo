@@ -80,6 +80,15 @@ def get_package_dir(source):
     else:
         return os.path.join(source[0], source)
 
+def sha256sum(filename):
+    """
+    Returns the sha256sum of a file specified.
+
+    ``filename``
+        File name of the file to sha256sum.
+    """
+    return _checksum(filename, hashlib.sha256)
+
 def md5sum(filename):
     """
     Returns the md5sum of a file specified.
@@ -87,12 +96,15 @@ def md5sum(filename):
     ``filename``
         File name of the file to md5sum.
     """
+    return _checksum(filename, hashlib.md5)
+
+def _checksum(filename, hash_function):
     try:
         f = file(filename, 'rb')
     except:
         raise AttributeError('Failed to open file %s.' % filename)
 
-    sum = hashlib.md5()
+    sum = hash_function()
     while True:
         chunk = f.read(10240)
         if not chunk:

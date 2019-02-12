@@ -50,6 +50,7 @@ t_package_files = sa.Table('package_files', meta.metadata,
     sa.Column('filename', sa.types.String(200), nullable=False),
     sa.Column('size', sa.types.Integer, nullable=False),
     sa.Column('md5sum', sa.types.String(200), nullable=False),
+    sa.Column('sha256sum', sa.types.String(64), nullable=False),
     )
 
 class PackageFile(OrmObject):

@@ -135,6 +135,7 @@ class Repository(object):
         deb['Filename'] = str(package_file.filename)
         deb['Size'] = str(package_file.size)
         deb['MD5sum'] = str(package_file.md5sum)
+        deb['SHA256'] = str(package_file.sha256sum)
 
         return deb.dump()
 
