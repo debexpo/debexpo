@@ -80,6 +80,10 @@ class Email(object):
         """
         self.template = template
         self.server = pylons.config['global_conf']['smtp_server']
+        if 'smtp_port' in pylons.config['global_conf']:
+            self.port = pylons.config['global_conf']['smtp_port']
+        else:
+            self.port = smtplib.SMTP_PORT
         self.auth = None
 
         # Look whether auth is required.
@@ -157,8 +161,8 @@ class Email(object):
             email.write(message)
 
     def _send_as_mail(self, recipients, message):
-        log.debug('Starting SMTP session to %s' % self.server)
-        session = smtplib.SMTP(self.server)
+        log.debug('Starting SMTP session to %s:%s' % (self.server, self.port))
+        session = smtplib.SMTP(self.server, self.port)
 
         if self.auth:
             log.debug('Authentication requested; logging in')
