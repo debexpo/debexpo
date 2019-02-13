@@ -415,6 +415,11 @@ class Importer(object):
             size = os.stat(os.path.join(
                 pylons.config['debexpo.repository'], filename))[ST_SIZE]
 
+            # Clean old entries referencing the same file.
+            meta.session.query(PackageFile).filter(
+                    PackageFile.filename == filename
+                ).delete()
+
             # Check for binary or source package file
             if file.endswith('.deb'):
                 # Only create a BinaryPackage if there actually binary package files
