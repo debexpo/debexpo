@@ -101,7 +101,12 @@ class Repository(object):
 
         # The dsc file, its size, and its md5sum needs to be added to the "Files" field. This is
         # unsurprisingly not in the original dsc file!
-        dsc['Files'].append({'md5sum' : package_file.md5sum, 'size': str(package_file.size), 'name' : str(package_file.filename.split('/')[-1])})
+        dsc['Files'].append({'md5sum': package_file.md5sum, 'size':
+            str(package_file.size), 'name':
+            str(package_file.filename.split('/')[-1])})
+        dsc['Checksums-Sha256'].append({'sha256': package_file.sha256sum,
+            'size': str(package_file.size), 'name':
+            str(package_file.filename.split('/')[-1])})
 
         # Get a nice rfc822 output of this dsc, now Sources, entry.
         return dsc.dump()
