@@ -16,6 +16,7 @@ setup(
         "Pylons>=1.0.2",
         "sphinx",  # for make build
         "SQLAlchemy>=0.6",
+        "alembic>=1.0.0",
         "Webhelpers>=0.6.1",
         "Babel>=0.9.4",
         "python-debian>=0.1.16",
