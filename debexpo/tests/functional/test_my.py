@@ -3,10 +3,13 @@ from debexpo.lib import constants
 from debexpo.model import meta
 from debexpo.model.users import User
 from debexpo.model.user_countries import UserCountry
+
 import md5
 import tempfile
 import os
 import shutil
+
+from passlib.hash import bcrypt
 
 class TestMyController(TestController):
     _GPGKEY_WRONG_EMAIL = """-----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -191,7 +194,21 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         response = self.app.post(url('my'), {'form': 'password'})
         self.assertEquals(response.status_int, 302)
         self.assertTrue(response.location.endswith(url('login')))
+
+        # Before first login, password is stored as md5
+        user = meta.session.query(User).filter(
+            User.email=='email@example.com').one()
+        self.assertFalse(user.password.startswith('$2'))
+
+        # Login
         response = self.app.post(url('login'), self._AUTHDATA)
+
+        # Password updated with bcrypt
+        user = meta.session.query(User).filter(
+            User.email=='email@example.com').one()
+        self.assertTrue(bcrypt.verify('password', user.password))
+
+        # Test password change
         response = self.app.post(url('my'), {'form': 'password',
                                              'password_current': 'password',
                                              'password_new': 'newpassword',
@@ -199,9 +216,12 @@ xOwJ1heEnfmgPkuiz7jFCAo=
                                              'commit': 'submit'})
         self.assertEquals(response.status_int, 302)
         self.assertTrue(response.location.endswith(url('my')))
+
+        # Test new password value
         user = meta.session.query(User).filter(
-            User.email=='email@example.com').filter(
-            User.password==md5.new('newpassword').hexdigest()).one()
+            User.email=='email@example.com').one()
+        self.assertTrue(bcrypt.verify('newpassword', user.password))
+
         self.assertEquals(user.name, 'Test user')
 
     def test__other_details(self):

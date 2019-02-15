@@ -38,6 +38,7 @@ __license__ = 'MIT'
 
 import logging
 from datetime import datetime
+from passlib.hash import bcrypt
 
 from debexpo.lib.base import BaseController, validate, config, c, session, _, redirect, request, render, url
 from debexpo.lib.schemas import LoginForm
@@ -69,13 +70,17 @@ class LoginController(BaseController):
         Manages submissions to the login form.
         """
         log.debug('Form validated successfully')
-        password = debexpo.lib.utils.hash_it(self.form_result['password'])
+        password = self.form_result['password']
 
         u = None
         try:
-            u = meta.session.query(User).filter_by(email=self.form_result['email']).filter_by(password=password).filter_by(verification=None).one()
+            u = meta.session.query(User).filter_by(email=self.form_result['email']).filter_by(verification=None).one()
         except:
-            log.debug('Invalid email or password')
+            log.debug('Invalid email')
+            c.message = _('Invalid email or password')
+            return self.index(True)
+
+        if not debexpo.lib.utils.validate_password(u, password):
             c.message = _('Invalid email or password')
             return self.index(True)
 
