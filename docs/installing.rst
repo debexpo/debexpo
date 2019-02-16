@@ -36,7 +36,7 @@ Installing on Debian as root
 
 You need to install the required packages. Using `apt`, you should execute::
 
-    sudo apt-get install python-setuptools python-sphinx python-pylons python-sqlalchemy python-soappy python-nose python-pybabel
+    sudo apt-get install python-setuptools python-sphinx python-pylons python-sqlalchemy python-soappy python-nose python-pybabel python-alembic
 
 `python-nose` is optional if you don't want to run the test suite.
 

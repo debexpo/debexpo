@@ -30,6 +30,7 @@ Using debexpo
 
     uploading
     plugins
+    db_migration
 
 Development documentation
 -------------------------

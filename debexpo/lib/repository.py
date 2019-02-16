@@ -42,6 +42,7 @@ from debian import deb822, debfile
 import logging
 import os
 from sqlalchemy import select, or_
+from tempfile import mkstemp
 
 from debexpo.lib.utils import get_package_dir
 
@@ -101,7 +102,12 @@ class Repository(object):
 
         # The dsc file, its size, and its md5sum needs to be added to the "Files" field. This is
         # unsurprisingly not in the original dsc file!
-        dsc['Files'].append({'md5sum' : package_file.md5sum, 'size': str(package_file.size), 'name' : str(package_file.filename.split('/')[-1])})
+        dsc['Files'].append({'md5sum': package_file.md5sum, 'size':
+            str(package_file.size), 'name':
+            str(package_file.filename.split('/')[-1])})
+        dsc['Checksums-Sha256'].append({'sha256': package_file.sha256sum,
+            'size': str(package_file.size), 'name':
+            str(package_file.filename.split('/')[-1])})
 
         # Get a nice rfc822 output of this dsc, now Sources, entry.
         return dsc.dump()
@@ -135,6 +141,7 @@ class Repository(object):
         deb['Filename'] = str(package_file.filename)
         deb['Size'] = str(package_file.size)
         deb['MD5sum'] = str(package_file.md5sum)
+        deb['SHA256'] = str(package_file.sha256sum)
 
         return deb.dump()
 
@@ -440,24 +447,23 @@ class Repository(object):
 
                 # Create Sources file content.
                 sources = self.get_sources_file(dist, component)
-                filename = os.path.join(self.repository, 'dists', dist, component, 'source', 'Sources')
+                dirname = os.path.join(self.repository, 'dists', dist,
+                        component, 'source')
+                filename = os.path.join(dirname, 'Sources')
 
-                # If the Sources file is empty, remove Sources.{gz,bz2} files. This way the
-                # directory will be removed on a clean-up as it is empty.
-                if sources == '':
-                    for format, extension in self.compression:
-                        if os.path.isfile('%s.%s' % (filename, extension)):
-                            log.debug('Removing empty Sources file: %s' % filename)
-                            os.remove('%s.%s' % (filename, extension))
-                else:
-                    for format, extension in self.compression:
-                        # Create the Sources files.
-                        log.debug('Creating Sources file: %s' % filename)
-                        f = format('%s.%s' % (filename, extension), 'w')
-                        if type(sources) != str:
-                            sources = sources.encode('utf-8')
-                        f.write(sources)
-                        f.close()
+                for format, extension in self.compression:
+                    # Create the Sources files.
+                    log.debug('Creating Sources file: %s' % filename)
+
+                    if type(sources) != str:
+                        sources = sources.encode('utf-8')
+
+                    (_, tempfile) = mkstemp(prefix='Sources', dir=dirname)
+                    f = format(tempfile, 'w')
+                    f.write(sources)
+                    f.close()
+
+                    os.rename(tempfile, '%s.%s' % (filename, extension))
 
     def update_packages(self):
         """
@@ -477,24 +483,24 @@ class Repository(object):
 
                     # Create Packages file content.
                     packages = self.get_packages_file(dist, component, arch)
-                    filename = os.path.join(self.repository, 'dists', dist, component, 'binary-%s' % arch, 'Packages')
+                    dirname = os.path.join(self.repository, 'dists', dist,
+                            component, 'binary-%s' % arch)
+                    filename = os.path.join(dirname, 'Packages')
 
-                    # If the Packages file is empty, remove Packages.{gz,bz2} files. This way
-                    # the directory will be removed on a clean-up as it is empty.
-                    if packages == '':
-                        for format, extension in self.compression:
-                            if os.path.isfile('%s.%s' % (filename, extension)):
-                                log.debug('Removing empty Packages file: %s' % filename)
-                                os.remove('%s.%s' % (filename, extension))
-                    else:
-                        for format, extension in self.compression:
-                            # Create the Packages files.
-                            log.debug('Creating Packages file: %s' % filename)
-                            if type(packages) == unicode:
-                                packages = packages.encode('utf-8')
-                            f = format('%s.%s' % (filename, extension), 'w')
-                            f.write(packages)
-                            f.close()
+                    for format, extension in self.compression:
+                        # Create the Packages files.
+                        log.debug('Creating Packages file: %s' % filename)
+
+                        if type(packages) == unicode:
+                            packages = packages.encode('utf-8')
+
+                        (_, tempfile) = mkstemp(prefix='Packages', dir=dirname)
+                        f = format(tempfile, 'w')
+                        f.write(packages)
+                        f.close()
+
+                        os.rename(tempfile, '%s.%s' % (filename, extension))
+
 
     def update(self):
         """

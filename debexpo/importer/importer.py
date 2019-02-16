@@ -53,7 +53,7 @@ from sqlalchemy import exc as exceptions
 # Horrible imports
 from debexpo.model import meta
 import debexpo.lib.helpers as h
-from debexpo.lib.utils import parse_section, md5sum
+from debexpo.lib.utils import parse_section, md5sum, sha256sum
 from debexpo.lib.email import Email
 from debexpo.lib.plugins import Plugins
 from debexpo.lib import constants
@@ -395,15 +395,30 @@ class Importer(object):
         # Add PackageFile objects to the database for each uploaded file
         for file in self.files:
             filename = os.path.join(self.changes.get_pool_path(), file)
-            # This exception should be never caught.
-            # It implies something went wrong before, as we expect a file which does not exist
+
+            # This exception should be never caught.  It implies something went
+            # wrong before, as we expect a file which does not exist
             try:
-                sum = md5sum(os.path.join(pylons.config['debexpo.repository'], filename))
+                md5 = md5sum(os.path.join(
+                    pylons.config['debexpo.repository'], filename))
             except AttributeError as e:
                 self._fail("Could not calculate MD5 sum: %s" % (e))
                 return 1
 
-            size = os.stat(os.path.join(pylons.config['debexpo.repository'], filename))[ST_SIZE]
+            try:
+                sha256 = sha256sum(os.path.join(
+                    pylons.config['debexpo.repository'], filename))
+            except AttributeError as e:
+                self._fail("Could not calculate SHA256 sum: %s" % (e))
+                return 1
+
+            size = os.stat(os.path.join(
+                pylons.config['debexpo.repository'], filename))[ST_SIZE]
+
+            # Clean old entries referencing the same file.
+            meta.session.query(PackageFile).filter(
+                    PackageFile.filename == filename
+                ).delete()
 
             # Check for binary or source package file
             if file.endswith('.deb'):
@@ -412,9 +427,13 @@ class Importer(object):
                     binary_package = BinaryPackage(package_version=package_version, arch=file[:-4].split('_')[-1])
                     meta.session.add(binary_package)
 
-                meta.session.add(PackageFile(filename=filename, binary_package=binary_package, size=size, md5sum=sum))
+                meta.session.add(PackageFile(filename=filename,
+                    binary_package=binary_package, size=size, md5sum=md5,
+                    sha256sum=sha256))
             else:
-                meta.session.add(PackageFile(filename=filename, source_package=source_package, size=size, md5sum=sum))
+                meta.session.add(PackageFile(filename=filename,
+                    source_package=source_package, size=size, md5sum=md5,
+                    sha256sum=sha256))
 
         meta.session.commit()
         log.warning("Finished adding PackageFile objects.")

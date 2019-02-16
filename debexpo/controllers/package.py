@@ -47,6 +47,7 @@ from debexpo.lib.utils import get_package_dir
 from debexpo.lib.email import Email
 from debexpo.lib.filesystem import CheckFiles
 from debexpo.lib.schemas import PackageSubscribeForm, PackageCommentForm
+from debexpo.lib.repository import Repository
 
 from debexpo.model import meta
 from debexpo.model.packages import Package
@@ -204,6 +205,9 @@ class PackageController(BaseController):
         CheckFiles().delete_files_for_package(package)
         meta.session.delete(package)
         meta.session.commit()
+
+        repo = Repository(config['debexpo.repository'])
+        repo.update()
 
         redirect(url(controller='packages', action='my'))
 
