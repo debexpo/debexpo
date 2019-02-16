@@ -107,7 +107,7 @@ class PasswordRecoverController(BaseController):
 
         # FIXME: We should not set u.password directly. Instead, we should
         # use a helper from the User model or something.
-        u.password = debexpo.lib.utils.hash_it(raw_password)
+        u.password = debexpo.lib.utils.hash_password(raw_password)
         u.verification = None # This sets the user's email address as "confirmed"
         meta.session.commit()
 

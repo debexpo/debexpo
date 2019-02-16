@@ -87,7 +87,7 @@ class RegisterController(BaseController):
 
         u = User(name=self.form_result['name'],
             email=self.form_result['email'],
-            password=debexpo.lib.utils.hash_it(self.form_result['password']),
+            password=debexpo.lib.utils.hash_password(self.form_result['password']),
             lastlogin=datetime.now(),
             verification=key)
 

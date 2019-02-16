@@ -39,7 +39,9 @@ import logging
 import hashlib
 import os
 
+from passlib.hash import bcrypt
 from pylons import config
+from debexpo.model import meta
 
 log = logging.getLogger(__name__)
 
@@ -109,3 +111,25 @@ def hash_it(s):
     if type(s) == unicode:
         s = s.encode('utf-8')
     return hashlib.md5(s).hexdigest()
+
+def hash_password(s):
+    if type(s) == unicode:
+        s = s.encode('utf-8')
+    return bcrypt.hash(s)
+
+def validate_password(user, password):
+    if user.password.startswith('$2'):
+        if not bcrypt.verify(password, user.password):
+            log.error('Incorrect password')
+            return False
+
+    else:
+        # Code to handle old MD5 password
+        if user.password != hash_it(password):
+            log.error('Incorrect password')
+            return False
+
+        user.password = hash_password(password)
+        meta.session.commit()
+
+    return True

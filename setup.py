@@ -23,6 +23,8 @@ setup(
         "SOAPpy",                # client
         "dulwich",
         "nose>=1.3.7",           # ensure in virtualenv
+        "passlib>=1.7.0",
+        "bcrypt>=3.1.2",
     ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,

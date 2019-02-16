@@ -140,7 +140,7 @@ class MyController(BaseController):
         log.debug('Password form validated successfully')
 
         # Simply set password.
-        self.user.password = debexpo.lib.utils.hash_it(self.form_result['password_new'])
+        self.user.password = debexpo.lib.utils.hash_password(self.form_result['password_new'])
         meta.session.commit()
         log.debug('Saved new password and redirecting')
 
