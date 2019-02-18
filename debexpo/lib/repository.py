@@ -42,7 +42,7 @@ from debian import deb822, debfile
 import logging
 import os
 from sqlalchemy import select, or_
-from tempfile import mkstemp
+from tempfile import NamedTemporaryFile
 
 from debexpo.lib.utils import get_package_dir
 
@@ -451,19 +451,19 @@ class Repository(object):
                         component, 'source')
                 filename = os.path.join(dirname, 'Sources')
 
-                for format, extension in self.compression:
+                for compress, extension in self.compression:
                     # Create the Sources files.
                     log.debug('Creating Sources file: %s' % filename)
 
                     if type(sources) != str:
                         sources = sources.encode('utf-8')
 
-                    (_, tempfile) = mkstemp(prefix='Sources', dir=dirname)
-                    f = format(tempfile, 'w')
-                    f.write(sources)
-                    f.close()
-
-                    os.rename(tempfile, '%s.%s' % (filename, extension))
+                    with NamedTemporaryFile(prefix='Sources', dir=dirname,
+                                            delete=False) as tempfile:
+                        with compress(tempfile.name, 'w') as f:
+                            f.write(sources)
+                            os.rename(tempfile.name, '%s.%s' % (filename,
+                                                                extension))
 
     def update_packages(self):
         """
@@ -487,19 +487,20 @@ class Repository(object):
                             component, 'binary-%s' % arch)
                     filename = os.path.join(dirname, 'Packages')
 
-                    for format, extension in self.compression:
+                    for compress, extension in self.compression:
                         # Create the Packages files.
                         log.debug('Creating Packages file: %s' % filename)
 
                         if type(packages) == unicode:
                             packages = packages.encode('utf-8')
 
-                        (_, tempfile) = mkstemp(prefix='Packages', dir=dirname)
-                        f = format(tempfile, 'w')
-                        f.write(packages)
-                        f.close()
+                        with NamedTemporaryFile(prefix='Packages', dir=dirname,
+                                                delete=False) as tempfile:
+                            with compress(tempfile.name, 'w') as f:
+                                f.write(packages)
+                                os.rename(tempfile.name, '%s.%s' % (filename,
+                                                                    extension))
 
-                        os.rename(tempfile, '%s.%s' % (filename, extension))
 
 
     def update(self):
