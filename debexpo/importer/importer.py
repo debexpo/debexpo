@@ -703,8 +703,6 @@ class Importer(object):
                 # skip another corner case, where the dsc contains a orig.tar.gz but wasn't uploaded
                 # by doing nothing here for that case
 
-        self._store_source_as_git_repo()
-
         # Run post-upload plugins.
         post_upload = Plugins('post-upload', self.changes, self.changes_file,
             user_id=self.user_id)
@@ -774,6 +772,8 @@ class Importer(object):
             else:
                 self._reject('QA plugins failed the package')
             return 1
+
+        self._store_source_as_git_repo()
 
         # Loop through parent directories in the target installation directory to make sure they
         # all exist. If not, create them.
