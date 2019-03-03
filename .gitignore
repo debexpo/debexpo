@@ -11,3 +11,4 @@ dist
 debexpo.egg-info/*
 development-arno.ini
 cover
+/*.gpg
