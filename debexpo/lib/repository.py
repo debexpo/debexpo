@@ -462,6 +462,7 @@ class Repository(object):
                                             delete=False) as tempfile:
                         with compress(tempfile.name, 'w') as f:
                             f.write(sources)
+                            os.chmod(tempfile.name, 0o644)
                             os.rename(tempfile.name, '%s.%s' % (filename,
                                                                 extension))
 
@@ -498,6 +499,7 @@ class Repository(object):
                                                 delete=False) as tempfile:
                             with compress(tempfile.name, 'w') as f:
                                 f.write(packages)
+                                os.chmod(tempfile.name, 0o644)
                                 os.rename(tempfile.name, '%s.%s' % (filename,
                                                                     extension))
 
