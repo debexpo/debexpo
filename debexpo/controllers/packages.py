@@ -100,6 +100,7 @@ class PackagesController(BaseController):
         if package_version_filter is not None:
             log.debug('Applying package version list filter')
             query = query.filter(Package.id == PackageVersion.package_id)
+            query = query.order_by(PackageVersion.uploaded.asc())
             query = query.filter(package_version_filter)
 
         return query.all()
