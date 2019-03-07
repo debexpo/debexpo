@@ -83,5 +83,5 @@ class PackageVersion(OrmObject):
 
 orm.mapper(PackageVersion, t_package_versions, properties={
     'package' : orm.relation(Package, backref=backref('package_versions',
-        cascade='all, delete-orphan'))
+        cascade='all, delete-orphan', order_by=t_package_versions.c.uploaded))
 })
