@@ -142,18 +142,18 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
     def test_import_package_no_orig(self):
         self.import_package('no-orig')
         self.assert_importer_failed()
-        self.assert_email_with('Rejecting incomplete upload. You did not'
-                ' upload any original tarball (orig.tar.gz)')
+        self.assert_email_with('error: missing orig.tar or debian.tar file in'
+                               ' v2.0 source package')
         self.assert_package_count('non-existent', '1.0-1', 0)
         self.assert_package_not_in_repo('hello', '1.0-1')
 
     def test_import_package_debian_orig_too_big(self):
         self.import_package('debian-orig-too-big')
         self.assert_importer_failed()
-        self.assert_email_with('We did find it on Debian main archive, however'
-                ' it is too big to be downloaded by our system')
-        self.assert_package_count('0ad-data', '0.0.23-1', 0)
-        self.assert_package_not_in_repo('0ad-data', '0.0.23-1')
+        self.assert_email_with('The original tarball cannot be retrieved from'
+                               ' Debian: file too big (> 100MB)')
+        self.assert_package_count('0ad-data', '0.0.23.1-1.1', 0)
+        self.assert_package_not_in_repo('0ad-data', '0.0.23.1-1.1')
 
     def test_import_package_hello(self):
         self.import_package('hello')
