@@ -61,11 +61,15 @@
 
 % endif
 
-% if 'user_id' in c.session and c.session['user_id'] == c.package.user_id:
+% if 'user_id' in c.session and (c.session['user_id'] == c.package.user_id or c.user.is_admin()):
 
   <tr>
     <th>${ _('Delete package') }:</th>
+% if c.user.is_admin() and c.session['user_id'] != c.package.user_id:
+    <td>${ h.html.tags.link_to(_('Admin package deletion'), h.url.current(action="delete", packagename=c.package.name, key=c.user.get_upload_key()), class_="confirm") }</td>
+% else:
     <td>${ h.html.tags.link_to(_('Delete this package'), h.url.current(action="delete", packagename=c.package.name, key=c.user.get_upload_key()), class_="confirm") }</td>
+% endif
   </tr>
 
 % endif
