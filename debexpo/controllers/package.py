@@ -192,7 +192,7 @@ class PackageController(BaseController):
 
         package = self._get_package(packagename)
 
-        if session['user_id'] != package.user_id:
+        if session['user_id'] != package.user_id and not user.is_admin():
             log.error("User %d is not allowed to change properties of foreign package %s" %(session['user_id'], packagename))
             abort(403)
 

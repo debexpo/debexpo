@@ -42,7 +42,7 @@ import os
 
 from debexpo.model import meta, OrmObject
 from debexpo.model.user_countries import UserCountry
-from debexpo.lib.constants import USER_TYPE_NORMAL, USER_STATUS_NORMAL
+from debexpo.lib.constants import USER_TYPE_NORMAL, USER_STATUS_NORMAL, USER_TYPE_ADMIN
 import debexpo.lib.utils
 
 t_users = sa.Table('users', meta.metadata,
@@ -78,6 +78,9 @@ class User(OrmObject):
             meta.session.add(instance)
             meta.session.commit()
             return self.get_upload_key()
+
+    def is_admin(self):
+        return self.type == USER_TYPE_ADMIN
 
 orm.mapper(User, t_users, properties={
     'country' : orm.relation(UserCountry, backref='users')
