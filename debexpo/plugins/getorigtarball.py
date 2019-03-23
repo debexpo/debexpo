@@ -111,7 +111,7 @@ class GetOrigTarballPlugin(BasePlugin):
             # Found tarball in local repository, copying to current directory
             self._get_from_local_repo(orig_file)
 
-        elif official_package.exists():
+        if official_package.exists():
             # Check that we use the same orig as debian's one
             (matched, reason) = official_package.use_same_orig(dsc)
             if not matched:
