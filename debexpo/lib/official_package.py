@@ -38,7 +38,7 @@ import pylons
 
 from apt_pkg import upstream_version
 from os import rename
-from os.path import basename
+from os.path import basename, join
 from tempfile import NamedTemporaryFile
 from urllib import urlopen
 from debexpo.lib.dsc import Dsc
@@ -143,7 +143,8 @@ class OfficialPackage:
                         filename=orig.get('filename'))
         filename = None
 
-        with NamedTemporaryFile(dir='.', delete=False) as tempfile:
+        with NamedTemporaryFile(dir=self.queue, prefix='official_package_',
+                                delete=False) as tempfile:
             content = self._fetch_resource(orig_url)
 
             if content is None:
@@ -153,12 +154,13 @@ class OfficialPackage:
             filename = tempfile.name
 
         if filename:
-            rename(filename, basename(orig.get('filename')))
+            rename(filename, join(self.queue, basename(orig.get('filename'))))
 
         return True
 
     def __init__(self, name, version):
         self.mirror = pylons.config['debexpo.debian_mirror']
+        self.queue = pylons.config['debexpo.upload.incoming']
         self.name = name
         self.version = upstream_version(version)
         self.orig_asc = None

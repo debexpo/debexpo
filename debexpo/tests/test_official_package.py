@@ -55,12 +55,12 @@ class TestOfficialPackage(TestCase):
 
         for (filename, sha) in [(orig_file, orig_sha), (sig_file, sig_sha)]:
             if sha is not None:
-                if not isfile(filename):
+                if not isfile(join(self.queue, filename)):
                     return False
-                if sha256sum(filename) != sha:
+                if sha256sum(join(self.queue, filename)) != sha:
                     return False
             else:
-                if isfile(filename):
+                if isfile(join(self.queue, filename)):
                     return False
 
         return True
@@ -78,19 +78,21 @@ class TestOfficialPackage(TestCase):
         return dsc
 
     def setUp(self):
-        self.old_dir = getcwd()
-        self.work_dir = join(self.old_dir, 'debexpo-dl')
+        self.queue = join(getcwd(), 'debexpo-dl')
+        self.app_config = pylons.test.pylonsapp.config
+        self.old_queue = self.app_config['debexpo.upload.incoming']
+        self.app_config['debexpo.upload.incoming'] = self.queue
 
-        if not isdir(self.work_dir):
-            makedirs(self.work_dir)
+        if isdir(self.queue):
+            rmtree(self.queue)
 
-        chdir(self.work_dir)
+        makedirs(self.queue)
 
     def tearDown(self):
-        if isdir(self.work_dir):
-            rmtree(self.work_dir)
+        if isdir(self.queue):
+            rmtree(self.queue)
 
-        chdir(self.old_dir)
+        self.app_config['debexpo.upload.incoming'] = self.old_queue
 
     #
     # Tests for OfficialPackage.exists()
