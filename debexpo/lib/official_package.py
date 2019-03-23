@@ -32,11 +32,11 @@ __author__ = 'Baptiste BEAUPLAT'
 __copyright__ = 'Copyright © 2019 Baptiste BEAUPLAT'
 __license__ = 'MIT'
 
+import json
 import logging
 import pylons
 
 from apt_pkg import upstream_version
-from json import loads
 from os import rename
 from os.path import basename
 from tempfile import NamedTemporaryFile
@@ -108,7 +108,7 @@ class OfficialPackage:
             return False
 
         try:
-            matches = loads(content)
+            matches = json.loads(content)
         except ValueError:
             log.error('Failed to decode reply from dak api.\nRoute was {}.'
                       'Reply was {}'.format(route, content))
