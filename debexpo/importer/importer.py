@@ -712,6 +712,7 @@ class Importer(object):
 
             if getorigtarball.data:
                 toinstall.append(getorigtarball.data)
+                files_to_remove.append(getorigtarball.data)
 
         # Check whether the debexpo.repository variable is set
         if 'debexpo.repository' not in pylons.config:
