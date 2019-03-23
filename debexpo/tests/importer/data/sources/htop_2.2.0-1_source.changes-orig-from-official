@@ -1,0 +1,43 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Thu, 26 Apr 2018 21:10:00 +0200
+Source: htop
+Architecture: source
+Version: 2.2.0-1
+Distribution: unstable
+Urgency: medium
+Maintainer: Daniel Lange <DLange@debian.org>
+Changed-By: Daniel Lange <DLange@debian.org>
+Changes:
+ htop (2.2.0-1) unstable; urgency=medium
+ .
+   * New upstream release 2.2.0
+   * Update uscan to v4 and add gpg verification of upstream tarball
+   * Drop patches that were merged upstream
+   * Remove OpenVZ patch that wasn't merged upstream
+     (for now, upstream issue 464)
+   * Add upstream issue 780 patch
+   * Fix compile issue with regenerated header files (patch)
+   * Update policy to 4.1.4 (no changes required)
+Checksums-Sha1:
+ 27f9727cfda2cf8801b4b70c59517444512e2ead 1626 htop_2.2.0-1.dsc
+ 6158b758177010bb1e19625f912449adc975e32f 10780 htop_2.2.0-1.debian.tar.xz
+ 6688976dfd6b0d3008b729c84685b7eefccdb042 4637 htop_2.2.0-1_source.buildinfo
+Checksums-Sha256:
+ 8f15261a28535f4c117675710a773feee84c946aa877d3ce4b739671ebe65e76 1626 htop_2.2.0-1.dsc
+ a8c544cce49d9cffbde300bbb96775b6d17eb7aff5076157390b1fde069942e3 10780 htop_2.2.0-1.debian.tar.xz
+ 3bde1b370e270fc58d3a6af728ab24524af0c844a417d1662c1a801b4255fad2 4637 htop_2.2.0-1_source.buildinfo
+Files:
+ 94f89a28a2888cc5b9a97d20ccea51d2 1626 utils optional htop_2.2.0-1.dsc
+ fa4e16326e1ca21ae7b4c4454ff1faad 10780 utils optional htop_2.2.0-1.debian.tar.xz
+ dd54ad72974f179a7f0ae803106b2b89 4637 utils optional htop_2.2.0-1_source.buildinfo
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQRVkwbu4cjBst0cc7HENHgc6HHz3wUCXJZ7qgAKCRDENHgc6HHz
+3+uMAQCvTdeaG/pWoG5W5E0WCiknH5yhtXhvq0prPGRZ0dE1DAEAh1pug1fRU9QE
+8oemBeNy2fEHl5fK04K3mRchUsvOFA0=
+=yHgc
+-----END PGP SIGNATURE-----

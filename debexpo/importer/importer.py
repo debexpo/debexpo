@@ -740,7 +740,6 @@ class Importer(object):
                 self._reject(msg)
                 return 1
 
-
         # Validates orig files from the uploaded dsc
         self._validate_orig_files(self.changes.get_dsc())
 
