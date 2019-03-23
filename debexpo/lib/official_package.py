@@ -135,6 +135,27 @@ class OfficialPackage:
 
         return True
 
+    def _download_from_archive(self, orig):
+        orig_url = '{}/{}/{}/{}'.format(self.mirror,
+                                        'pool',
+                                        orig.get('component'),
+                                        orig.get('filename'))
+        filename = None
+
+        with NamedTemporaryFile(dir='.', delete=False) as tempfile:
+            content = self._fetch_resource(orig_url)
+
+            if content is None:
+                return False
+
+            tempfile.write(content)
+            filename = tempfile.name
+
+        if filename:
+            rename(filename, basename(orig.get('filename')))
+
+        return True
+
     def __init__(self, name, version):
         self.mirror = pylons.config['debexpo.debian_mirror']
         self.name = name
@@ -186,32 +207,9 @@ class OfficialPackage:
         return (True, 'Package use same orig')
 
     def download_orig(self):
-        if self.orig:
-            orig_url = '{}/{}/{}/{}'.format(self.mirror,
-                                            'pool',
-                                            self.orig.get('component'),
-                                            self.orig.get('filename'))
-            with NamedTemporaryFile(dir='.', delete=False) as tempfile:
-                content = self._fetch_resource(orig_url)
-
-                if content is None:
-                    return (False)
-
-                tempfile.write(content)
-                rename(tempfile.name, basename(self.orig.get('filename')))
-
-        if self.orig_asc:
-            orig_asc_url = '{}/{}/{}/{}'.format(self.mirror,
-                                                'pool',
-                                                self.orig_asc.get('component'),
-                                                self.orig_asc.get('filename'))
-            with NamedTemporaryFile(dir='.', delete=False) as tempfile:
-                content = self._fetch_resource(orig_asc_url)
-
-                if content is None:
-                    return (False)
-
-                tempfile.write(content)
-                rename(tempfile.name, basename(self.orig_asc.get('filename')))
+        for orig in (self.orig, self.orig_asc):
+            if orig:
+                if not self._download_from_archive(orig):
+                    return False
 
         return True
