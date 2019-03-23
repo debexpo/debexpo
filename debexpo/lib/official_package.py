@@ -96,7 +96,7 @@ class OfficialPackage:
         return pool
 
     def _lookup_archive(self):
-        route = '{}/{}/{}_{}_{}_{}.orig.tar.%25'.format(self.api,
+        route = '{}/{}/{}/{}/{}_{}.orig.tar.%25'.format(self.api,
                                                         'file_in_archive',
                                                         self._get_pool(),
                                                         self.name,
