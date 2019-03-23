@@ -701,16 +701,17 @@ class Importer(object):
                 getorigtarball = result
 
         # If getorigtarball did not succeed, send a reject mail
-        if getorigtarball.severity == constants.PLUGIN_SEVERITY_ERROR:
-            msg = "Rejecting your upload\n\n"
-            msg += getorigtarball.outcome.get('name')
-            if getorigtarball.data:
-                msg += "\n\nDetails:\n{}".format(getorigtarball.data)
-            self._reject(msg)
-            return 1
+        if getorigtarball:
+            if getorigtarball.severity == constants.PLUGIN_SEVERITY_ERROR:
+                msg = "Rejecting your upload\n\n"
+                msg += getorigtarball.outcome.get('name')
+                if getorigtarball.data:
+                    msg += "\n\nDetails:\n{}".format(getorigtarball.data)
+                self._reject(msg)
+                return 1
 
-        if getorigtarball.data:
-            toinstall.append(getorigtarball.data)
+            if getorigtarball.data:
+                toinstall.append(getorigtarball.data)
 
         # Check whether the debexpo.repository variable is set
         if 'debexpo.repository' not in pylons.config:
