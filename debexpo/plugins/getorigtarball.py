@@ -125,10 +125,12 @@ class GetOrigTarballPlugin(BasePlugin):
                 log.debug('Downloading orig from debian archive')
                 try:
                     downloaded = official_package.download_orig()
-                except OverSized:
+                except OverSized as e:
                     log.debug('Tarball to big to download')
                     return self.failed(outcomes['tarball-from-debian-too-big'],
-                                       None, constants.PLUGIN_SEVERITY_ERROR)
+                                       'File is bigger than download limit: '
+                                       '{} > {}'.format(e.size, e.limit),
+                                       constants.PLUGIN_SEVERITY_ERROR)
 
                 if not downloaded:
                     log.debug('Failed to download from debian archive')

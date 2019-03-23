@@ -50,7 +50,10 @@ LIMIT_SIZE_DOWNLOAD = 100 * 1024 * 1024
 
 
 class OverSized(Exception):
-    pass
+
+    def __init__(self, limit, size):
+        self.limit = limit
+        self.size = size
 
 
 class OfficialPackage:
@@ -72,8 +75,9 @@ class OfficialPackage:
             log.debug('Failed to get resource {}, code: {}'.format(url, code))
             return None
 
-        if int(request.info().get('Content-Length')) > LIMIT_SIZE_DOWNLOAD:
-            raise OverSized
+        size = int(request.info().get('Content-Length'))
+        if size > LIMIT_SIZE_DOWNLOAD:
+            raise OverSized(LIMIT_SIZE_DOWNLOAD, size)
 
         try:
             content = request.read()
