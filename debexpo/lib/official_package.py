@@ -143,20 +143,23 @@ class OfficialPackage:
                         filename=orig.get('filename'))
         filename = None
 
+        log.debug('Downloading from official archive: {}'.format(orig_url))
         with NamedTemporaryFile(dir=self.queue, prefix='official_package_',
                                 delete=False) as tempfile:
             content = self._fetch_resource(orig_url)
 
             if content is None:
-                return False
+                return None
 
             tempfile.write(content)
             filename = tempfile.name
 
         if filename:
-            rename(filename, join(self.queue, basename(orig.get('filename'))))
+            dest_filename = join(self.queue, basename(orig.get('filename')))
+            rename(filename, dest_filename)
+            return dest_filename
 
-        return True
+        return None
 
     def __init__(self, name, version):
         self.mirror = pylons.config['debexpo.debian_mirror']
@@ -210,9 +213,15 @@ class OfficialPackage:
         return (True, 'Package use same orig')
 
     def download_orig(self):
+        downloaded = []
+
         for orig in (self.orig, self.orig_asc):
             if orig:
-                if not self._download_from_archive(orig):
-                    return False
+                filename = self._download_from_archive(orig)
 
-        return True
+                if not filename:
+                    return None
+
+                downloaded.append(filename)
+
+        return downloaded

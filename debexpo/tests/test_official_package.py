@@ -197,20 +197,23 @@ class TestOfficialPackage(TestCase):
     def test_download_native(self):
         package = OfficialPackage('dpkg', '1.19.5')
 
-        package.download_orig()
+        downloaded = package.download_orig()
+        self.assertEquals(len(downloaded), 0)
         self.assertTrue(self._check_download('dpkg', '1.19.5', None, None))
 
     def test_download_orig(self):
         package = OfficialPackage('tmux', '2.8')
 
-        package.download_orig()
+        downloaded = package.download_orig()
+        self.assertEquals(len(downloaded), 1)
         self.assertTrue(self._check_download('tmux', '2.8', _TMUX_ORIG_SHA256,
                                              None))
 
     def test_download_orig_with_sig(self):
         package = OfficialPackage('htop', '2.2.0')
 
-        package.download_orig()
+        downloaded = package.download_orig()
+        self.assertEquals(len(downloaded), 2)
         self.assertTrue(self._check_download('htop', '2.2.0', _HTOP_ORIG_SHA256,
                                              _HTOP_SIG_SHA256))
 
@@ -223,7 +226,8 @@ class TestOfficialPackage(TestCase):
     def test_download_dont_exists(self):
         package = OfficialPackage('this-package-should-not-exist', '42.42.42')
 
-        package.download_orig()
+        downloaded = package.download_orig()
+        self.assertEquals(len(downloaded), 0)
         self.assertTrue(self._check_download('this-package-should-not-exist',
                                              '42.42.42', None, None))
 
@@ -234,7 +238,8 @@ class TestOfficialPackage(TestCase):
 
         package = OfficialPackage('htop', '2.2.0')
 
-        package.download_orig()
+        downloaded = package.download_orig()
+        self.assertEquals(downloaded, None)
         self.assertTrue(self._check_download('htop', '2.2.0', None, None))
 
         app_config['debexpo.debian_mirror'] = old_mirror

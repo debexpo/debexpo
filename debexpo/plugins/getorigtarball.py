@@ -52,6 +52,7 @@ from debexpo.lib.official_package import OfficialPackage, OverSized
 from debexpo.lib.utils import sha256sum
 from debexpo.plugins import BasePlugin
 from debian import deb822
+from os import unlink
 from os.path import join, isfile
 from shutil import copy
 
@@ -67,12 +68,13 @@ class GetOrigTarballPlugin(BasePlugin):
 
         files = (dsc_file for dsc_file in (orig, orig_asc) if dsc_file)
         for dsc_file in files:
-            if not isfile(join(self.queue, dsc_file.get('name'))):
+            filename = join(self.queue, dsc_file.get('name'))
+            if not isfile(filename):
                 return ('{} dsc reference {}, but the file was not found.\n'
                         'Please, include it in your upload.'.format(
                             dsc['Source'], dsc_file.get('name')))
 
-            checksum = sha256sum(join(self.queue, dsc_file.get('name')))
+            checksum = sha256sum(filename)
             if dsc_file.get('sha256') != checksum:
                 return ('{} dsc reference {}, but the file differs:\n'
                         'in dsc: {}\n'
@@ -89,11 +91,13 @@ class GetOrigTarballPlugin(BasePlugin):
         log.debug('Orig found in local repo. '
                   'Copying to {}/{}'.format(self.queue, filename))
         copy(filename, self.queue)
+        self.additional_files.append(join(self.queue, filename))
 
         if isfile(upstream_sig):
             log.debug('Orig signature found in local repo. '
                       'Copying to {}/{}'.format(self.queue, upstream_sig))
             copy(upstream_sig, self.queue)
+            self.additional_files.append(join(self.queue, filename))
 
     def test_orig_tarball(self):
         """
@@ -108,6 +112,7 @@ class GetOrigTarballPlugin(BasePlugin):
         official_package = OfficialPackage(dsc['Source'], dsc['Version'])
         self.queue = pylons.config['debexpo.upload.incoming']
         (orig_file, orig_found) = CheckFiles().find_orig_tarball(self.changes)
+        self.additional_files = []
 
         if orig_found == constants.ORIG_TARBALL_LOCATION_REPOSITORY:
             # Found tarball in local repository, copying to current directory
@@ -139,6 +144,8 @@ class GetOrigTarballPlugin(BasePlugin):
                     return self.failed('failed-to-download', None,
                                        constants.PLUGIN_SEVERITY_ERROR)
 
+                self.additional_files.append(downloaded)
+
         # Wherever the orig was retrived from, validate it against the uploaded
         # dsc.
         result = self._validate_orig(dsc)
@@ -147,7 +154,7 @@ class GetOrigTarballPlugin(BasePlugin):
             return self.failed(outcomes['invalid-orig'], result,
                                constants.PLUGIN_SEVERITY_ERROR)
         else:
-            return self.info(outcomes['valid-orig'], None)
+            return self.info(outcomes['valid-orig'], self.additional_files)
 
 
 plugin = GetOrigTarballPlugin
