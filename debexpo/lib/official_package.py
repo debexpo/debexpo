@@ -114,19 +114,24 @@ class OfficialPackage:
                       'Reply was {}'.format(route, content))
             return False
 
-        if len(matches) > 2:
-            log.error('Found more than one orig for package {}:\n{}'.format(
-                      self.name, matches))
-            return False
-
+        duplicates = False
         for match in matches:
             if 'filename' in match:
                 log.debug('Found a match: {}'.format(match['filename']))
 
                 if match['filename'].endswith('.asc'):
+                    if self.orig_asc:
+                        duplicates = True
                     self.orig_asc = match
                 else:
+                    if self.orig:
+                        duplicates = True
                     self.orig = match
+
+        if duplicates:
+            log.error('Found more than one orig for package'
+                      ' {}:\n{}'.format(self.name, matches))
+            return False
 
         return True
 
