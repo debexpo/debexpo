@@ -45,6 +45,9 @@ from debexpo.lib.dsc import Dsc
 
 log = logging.getLogger(__name__)
 
+# Limit download size to 100 MB
+LIMIT_SIZE_DOWNLOAD = 100 * 1024 * 1024
+
 
 class OverSized(Exception):
     pass
@@ -69,7 +72,7 @@ class OfficialPackage:
             log.debug('Failed to get resource {}, code: {}'.format(url, code))
             return None
 
-        if int(request.info().get('Content-Length')) > 104857600:
+        if int(request.info().get('Content-Length')) > LIMIT_SIZE_DOWNLOAD:
             raise OverSized
 
         try:
