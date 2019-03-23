@@ -54,6 +54,7 @@ from sqlalchemy import exc as exceptions
 from debexpo.model import meta
 import debexpo.lib.helpers as h
 from debexpo.lib.utils import parse_section, md5sum, sha256sum
+from debexpo.lib.dsc import Dsc
 from debexpo.lib.email import Email
 from debexpo.lib.plugins import Plugins
 from debexpo.lib import constants
@@ -548,6 +549,30 @@ class Importer(object):
             fileToAdd = self._clean_path(git_storage_repo, fileToAdd)
             gs.change(fileToAdd)
 
+    def _validate_orig_files(self, dsc):
+        upload = Dsc(deb822.Dsc(file(dsc)))
+        orig = upload.get_dsc_item(Dsc.extract_orig)
+        orig_asc = upload.get_dsc_item(Dsc.extract_orig_asc)
+        queue = pylons.config['debexpo.upload.incoming']
+
+        files = (dsc_file for dsc_file in (orig, orig_asc) if dsc_file)
+        for dsc_file in files:
+            filename = os.path.join(queue, dsc_file.get('name'))
+            if not os.path.isfile(filename):
+                self._reject('{} dsc reference {}, but the file was not found'
+                             '.\nPlease, include it in your upload'
+                             '.'.format(dsc['Source'], dsc_file.get('name')))
+
+            checksum = sha256sum(filename)
+            if dsc_file.get('sha256') != checksum:
+                self._reject('{} dsc reference {}, but the file differs:\n'
+                             'in dsc: {}\n'
+                             'found: {}\n\n'
+                             'Please, rebuild your package against the correct'
+                             ' file.'.format(dsc['Source'],
+                                             dsc_file.get('name'),
+                                             dsc_file.get('sha256'), checksum))
+
     def main(self, no_env=False):
         """
         Actually start the import of the package.
@@ -702,17 +727,22 @@ class Importer(object):
 
         # If getorigtarball did not succeed, send a reject mail
         if getorigtarball:
+            if getorigtarball.data:
+                (details, additional_files) = getorigtarball.data
+                toinstall.extend(additional_files)
+                self.files_to_remove.extend(additional_files)
+
             if getorigtarball.severity == constants.PLUGIN_SEVERITY_ERROR:
                 msg = "Rejecting your upload\n\n"
                 msg += getorigtarball.outcome.get('name')
                 if getorigtarball.data:
-                    msg += "\n\nDetails:\n{}".format(getorigtarball.data)
+                    msg += "\n\nDetails:\n{}".format(details)
                 self._reject(msg)
                 return 1
 
-            if getorigtarball.data:
-                toinstall.append(getorigtarball.data)
-                files_to_remove.append(getorigtarball.data)
+
+        # Validates orig files from the uploaded dsc
+        self._validate_orig_files(self.changes.get_dsc())
 
         # Check whether the debexpo.repository variable is set
         if 'debexpo.repository' not in pylons.config:

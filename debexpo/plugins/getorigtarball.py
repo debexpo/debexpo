@@ -46,13 +46,10 @@ import logging
 import pylons
 
 from debexpo.lib import constants
-from debexpo.lib.dsc import Dsc
 from debexpo.lib.filesystem import CheckFiles
 from debexpo.lib.official_package import OfficialPackage, OverSized
-from debexpo.lib.utils import sha256sum
 from debexpo.plugins import BasePlugin
 from debian import deb822
-from os import unlink
 from os.path import join, isfile
 from shutil import copy
 
@@ -60,28 +57,6 @@ log = logging.getLogger(__name__)
 
 
 class GetOrigTarballPlugin(BasePlugin):
-
-    def _validate_orig(self, dsc):
-        upload = Dsc(dsc)
-        orig = upload.get_dsc_item(Dsc.extract_orig)
-        orig_asc = upload.get_dsc_item(Dsc.extract_orig_asc)
-
-        files = (dsc_file for dsc_file in (orig, orig_asc) if dsc_file)
-        for dsc_file in files:
-            filename = join(self.queue, dsc_file.get('name'))
-            if not isfile(filename):
-                return ('{} dsc reference {}, but the file was not found.\n'
-                        'Please, include it in your upload.'.format(
-                            dsc['Source'], dsc_file.get('name')))
-
-            checksum = sha256sum(filename)
-            if dsc_file.get('sha256') != checksum:
-                return ('{} dsc reference {}, but the file differs:\n'
-                        'in dsc: {}\n'
-                        'found: {}\n'
-                        'Please, rebuild your package against the correct'
-                        ' file.'.format(dsc['Source'], dsc_file.get('name'),
-                                        dsc_file.get('sha256'), checksum))
 
     def _get_from_local_repo(self, orig_file):
         repo = pylons.config['debexpo.repository']
@@ -123,7 +98,8 @@ class GetOrigTarballPlugin(BasePlugin):
             (matched, reason) = official_package.use_same_orig(dsc)
             if not matched:
                 log.debug('{}'.format(reason))
-                return self.failed(outcomes['mismatch-orig-debian'], reason,
+                return self.failed(outcomes['mismatch-orig-debian'],
+                                   (reason, list(set(self.additional_files))),
                                    constants.PLUGIN_SEVERITY_ERROR)
 
             if orig_found == constants.ORIG_TARBALL_LOCATION_NOT_FOUND:
@@ -135,26 +111,22 @@ class GetOrigTarballPlugin(BasePlugin):
                 except OverSized as e:
                     log.debug('Tarball to big to download')
                     return self.failed(outcomes['tarball-from-debian-too-big'],
-                                       'File is bigger than download limit: '
-                                       '{} > {}'.format(e.size, e.limit),
+                                       ('File is bigger than download limit: '
+                                        '{} > {}'.format(e.size, e.limit),
+                                        list(set(self.additional_files))),
                                        constants.PLUGIN_SEVERITY_ERROR)
 
                 if not downloaded:
                     log.debug('Failed to download from debian archive')
-                    return self.failed('failed-to-download', None,
+                    return self.failed('failed-to-download',
+                                       (None,
+                                        list(set(self.additional_files))),
                                        constants.PLUGIN_SEVERITY_ERROR)
 
-                self.additional_files.append(downloaded)
+                self.additional_files.extend(downloaded)
 
-        # Wherever the orig was retrived from, validate it against the uploaded
-        # dsc.
-        result = self._validate_orig(dsc)
-
-        if result:
-            return self.failed(outcomes['invalid-orig'], result,
-                               constants.PLUGIN_SEVERITY_ERROR)
-        else:
-            return self.info(outcomes['valid-orig'], self.additional_files)
+        return self.info(outcomes['found-orig'],
+                         (None, list(set(self.additional_files))))
 
 
 plugin = GetOrigTarballPlugin
@@ -167,8 +139,6 @@ outcomes = {
                                             ' big (> 100MB)'},
     'mismatch-orig-debian': {'name': 'Package was not built with orig.tar.gz'
                                      'file present in the official archives'},
-    'found-in-local-repo': {'name': 'Package orig is already on mentors'},
-    'found-in-upload': {'name': 'Origin tarball was uploaded with the package'},
     'invalid-orig': {'name': 'Could not find a valid orig tarball'},
-    'valid-orig': {'name': 'Valid origin tarball'},
+    'found-orig': {'name': 'Found origin tarball'},
 }
