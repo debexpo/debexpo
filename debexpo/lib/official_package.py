@@ -96,12 +96,12 @@ class OfficialPackage:
         return pool
 
     def _lookup_archive(self):
-        route = '{}/{}/{}/{}/{}_{}.orig.tar.%25'.format(self.api,
-                                                        'file_in_archive',
-                                                        self._get_pool(),
-                                                        self.name,
-                                                        self.name,
-                                                        self.version)
+        route = '{api}/{route}/{pool}/{name}/{name}_{ver}.orig.tar.%25'.format(
+                    api=self.api,
+                    route='file_in_archive',
+                    pool=self._get_pool(),
+                    name=self.name,
+                    ver=self.version)
 
         content = self._fetch_resource(route)
         if content is None:
@@ -136,10 +136,11 @@ class OfficialPackage:
         return True
 
     def _download_from_archive(self, orig):
-        orig_url = '{}/{}/{}/{}'.format(self.mirror,
-                                        'pool',
-                                        orig.get('component'),
-                                        orig.get('filename'))
+        orig_url = '{mirror}/{pool}/{component}/{filename}'.format(
+                        mirror=self.mirror,
+                        pool='pool',
+                        component=orig.get('component'),
+                        filename=orig.get('filename'))
         filename = None
 
         with NamedTemporaryFile(dir='.', delete=False) as tempfile:
