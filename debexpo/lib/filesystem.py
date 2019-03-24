@@ -42,6 +42,7 @@ import pylons
 import shutil
 
 from debexpo.lib import constants
+from debexpo.lib.constants import DPKG_COMPRESSION_ALGO
 from debexpo.lib.utils import md5sum
 
 from debian import deb822
@@ -123,9 +124,8 @@ class CheckFiles(object):
         dscfile = open(changes_file.get_dsc())
         dsc = deb822.Dsc(dscfile)
         for file in dsc['Files']:
-            if (file['name'].endswith('orig.tar.gz') or
-                file['name'].endswith('orig.tar.bz2') or
-                file['name'].endswith('orig.tar.xz')):
+            for algo in DPKG_COMPRESSION_ALGO:
+                if file['name'].endswith('orig.tar.{}'.format(algo)):
                     # We know how the orig.tar.gz should be called - at least.
                     orig_name = file['name']
                     full_filename = os.path.join(pylons.config['debexpo.repository'], changes_file.get_pool_path(), orig_name)
@@ -244,18 +244,20 @@ class CheckFiles(object):
         ``filename``
             File to test.
         """
-        for suffix in (
+        suffixes = [
             '.asc',
             '.buildinfo',
             '.changes',
             '.deb',
             '.diff.gz',
             '.dsc',
-            '.tar.bz2',
-            '.tar.gz',
-            '.tar.xz',
             '.udeb',
-        ):
+        ]
+
+        for algo in DPKG_COMPRESSION_ALGO:
+            suffixes.append('tar.{}'.format(algo))
+
+        for suffix in suffixes:
             if filename.endswith(suffix):
                 return True
 

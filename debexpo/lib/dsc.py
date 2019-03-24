@@ -32,8 +32,24 @@ __author__ = 'Baptiste BEAUPLAT'
 __copyright__ = 'Copyright © 2019 Baptiste BEAUPLAT'
 __license__ = 'MIT'
 
+from debexpo.lib.constants import DPKG_COMPRESSION_ALGO
+
 
 class Dsc:
+
+    @classmethod
+    def _extract_name(self, item, suffix):
+        if item.get('name'):
+            for algo in DPKG_COMPRESSION_ALGO:
+                match = 'orig.tar.{}'.format(algo)
+
+                if suffix:
+                    match += '{}'.format(suffix)
+
+                if item.get('name').endswith(match):
+                    return True
+
+        return False
 
     def __init__(self, dsc):
         self.dsc = dsc
@@ -49,14 +65,8 @@ class Dsc:
 
     @classmethod
     def extract_orig_asc(self, item):
-        return (item.get('name') is not None and (
-                item.get('name').endswith('orig.tar.gz.asc') or
-                item.get('name').endswith('orig.tar.bz2.asc') or
-                item.get('name').endswith('orig.tar.xz.asc')))
+        return (self._extract_name(item, '.asc'))
 
     @classmethod
     def extract_orig(self, item):
-        return (item.get('name') is not None and (
-                item.get('name').endswith('orig.tar.gz') or
-                item.get('name').endswith('orig.tar.bz2') or
-                item.get('name').endswith('orig.tar.xz')))
+        return (self._extract_name(item, None))
