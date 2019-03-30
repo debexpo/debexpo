@@ -66,6 +66,7 @@ class TestImporterController(TestController):
         self.upload_dir = pylons.config['debexpo.upload.incoming']
 
     def tearDown(self):
+        self._assert_no_leftover()
         self._remove_example_user()
         self._cleanup_mailbox()
         self._cleanup_repo()
@@ -120,6 +121,14 @@ class TestImporterController(TestController):
             meta.session.delete(package)
 
         meta.session.commit()
+
+    def _assert_no_leftover(self):
+        matches = self._find_all('', self.upload_dir)
+
+        for match in matches:
+            log.debug('leftover: {}'.format(match))
+
+        self.assertEquals(len(matches), 0)
 
     def _package_in_repo(self, package_name, version):
         """Check if package is present in repo"""
