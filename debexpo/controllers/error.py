@@ -61,9 +61,14 @@ class ErrorController(BaseController):
         Renders the error document.
         """
         resp = request.environ.get('pylons.original_response')
+        orig_request = request.environ.get('pylons.original_request')
         c.message = literal(resp.body) or cgi.escape(request.GET.get('message', ''))
         c.code = cgi.escape(request.GET.get('code', str(resp.status_int)))
         response.headers = resp.headers
+
+        if orig_request.path.startswith('/upload/') and c.code == '403':
+            return render('/upload/forbiden.mako')
+
         return render('/error.mako')
 
     def img(self, id):
