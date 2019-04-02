@@ -37,7 +37,7 @@ import pylons.test
 from debexpo.lib.official_package import OfficialPackage, OverSized
 from debexpo.lib.utils import sha256sum
 from nose.tools import raises
-from os import makedirs, getcwd, chdir
+from os import makedirs, getcwd
 from os.path import isfile, isdir, join
 from shutil import rmtree
 from unittest import TestCase
@@ -46,11 +46,12 @@ _HTOP_SIG_SHA256 = 'dcd37ff7c12ad4e61525d6a5661721201817f380a278c03ba71f8cc919a9
 _HTOP_ORIG_SHA256 = 'becdd93eb41c949750ef2d923d6f7f6157c0d926ebd52d2472a45507eb791d13'
 _BAD_SHA256 = '577115e9ba818b7ea28f2f6aa54229cff4db39c718a320f4a4d0679cb006dee7'
 _TMUX_ORIG_SHA256 = '7f6bf335634fafecff878d78de389562ea7f73a7367f268b66d37ea13617a2ba'
+_0AD_ORIG_SHA256 = 'fdbf774637252dbedf339fbe29b77d7d585ab53a9a5ddede56dd7b8fda66d8ac'
 
 
 class TestOfficialPackage(TestCase):
-    def _check_download(self, package, version, orig_sha, sig_sha):
-        orig_file = '{}_{}.orig.tar.gz'.format(package, version)
+    def _check_download(self, package, version, orig_sha, sig_sha, method='gz'):
+        orig_file = '{}_{}.orig.tar.{}'.format(package, version, method)
         sig_file = '{}.asc'.format(orig_file)
 
         for (filename, sha) in [(orig_file, orig_sha), (sig_file, sig_sha)]:
@@ -65,10 +66,10 @@ class TestOfficialPackage(TestCase):
 
         return True
 
-    def _gen_dsc(self, package, version, orig_sha, sig_sha):
-        orig_file = '{}_{}.orig.tar.gz'.format(package, version)
+    def _gen_dsc(self, package, version, orig_sha, sig_sha, method='gz'):
+        orig_file = '{}_{}.orig.tar.{}'.format(package, version, method)
         sig_file = '{}.asc'.format(orig_file)
-        dsc = {'Checksums-Sha256': []}
+        dsc = {'Checksums-Sha256': [], 'Source': package, 'Version': version}
 
         for (filename, sha) in [(orig_file, orig_sha), (sig_file, sig_sha)]:
             if sha is not None:
@@ -98,12 +99,14 @@ class TestOfficialPackage(TestCase):
     # Tests for OfficialPackage.exists()
     #
     def test_package_exists(self):
-        package = OfficialPackage('hello', '2.10-42')
+        dsc = self._gen_dsc('hello', '2.10', _BAD_SHA256, None)
+        package = OfficialPackage(dsc)
 
         self.assertTrue(package.exists())
 
     def test_package_dont_exists(self):
-        package = OfficialPackage('hello', '2.9.42-42')
+        dsc = self._gen_dsc('hello', '2.9.42', _BAD_SHA256, None)
+        package = OfficialPackage(dsc)
 
         self.assertFalse(package.exists())
 
@@ -127,67 +130,67 @@ class TestOfficialPackage(TestCase):
     # |----+----------+----------+--------|
     #
     def test_same_orig_1_6(self):
-        package = OfficialPackage('dpkg', '1.19.5')
-
         dsc = self._gen_dsc('dpkg', '1.19.5', None, None)
-        (result, outcome) = package.use_same_orig(dsc)
+        package = OfficialPackage(dsc)
+
+        (result, outcome) = package.use_same_orig()
 
         self.assertTrue(result)
 
     def test_same_orig_3(self):
-        package = OfficialPackage('dpkg', '1.19.5')
-
         dsc = self._gen_dsc('dpkg', '1.19.5', _BAD_SHA256, None)
-        (result, outcome) = package.use_same_orig(dsc)
+        package = OfficialPackage(dsc)
+
+        (result, outcome) = package.use_same_orig()
 
         self.assertFalse(result)
 
     def test_same_orig_8(self):
-        package = OfficialPackage('dpkg', '1.19.5')
-
         dsc = self._gen_dsc('dpkg', '1.19.5', None, _BAD_SHA256)
-        (result, outcome) = package.use_same_orig(dsc)
+        package = OfficialPackage(dsc)
+
+        (result, outcome) = package.use_same_orig()
 
         self.assertFalse(result)
 
     def test_same_orig_2_7(self):
-        package = OfficialPackage('htop', '2.2.0')
-
         dsc = self._gen_dsc('htop', '2.2.0', _HTOP_ORIG_SHA256,
                             _HTOP_SIG_SHA256)
-        (result, outcome) = package.use_same_orig(dsc)
+        package = OfficialPackage(dsc)
+
+        (result, outcome) = package.use_same_orig()
 
         self.assertTrue(result)
 
     def test_same_orig_4(self):
-        package = OfficialPackage('htop', '2.2.0')
-
         dsc = self._gen_dsc('htop', '2.2.0', None, _HTOP_SIG_SHA256)
-        (result, outcome) = package.use_same_orig(dsc)
+        package = OfficialPackage(dsc)
+
+        (result, outcome) = package.use_same_orig()
 
         self.assertFalse(result)
 
     def test_same_orig_5(self):
-        package = OfficialPackage('htop', '2.2.0')
-
         dsc = self._gen_dsc('htop', '2.2.0', _BAD_SHA256, _HTOP_SIG_SHA256)
-        (result, outcome) = package.use_same_orig(dsc)
+        package = OfficialPackage(dsc)
+
+        (result, outcome) = package.use_same_orig()
 
         self.assertFalse(result)
 
     def test_same_orig_9(self):
-        package = OfficialPackage('htop', '2.2.0')
-
         dsc = self._gen_dsc('htop', '2.2.0', _HTOP_ORIG_SHA256, None)
-        (result, outcome) = package.use_same_orig(dsc)
+        package = OfficialPackage(dsc)
+
+        (result, outcome) = package.use_same_orig()
 
         self.assertFalse(result)
 
     def test_same_orig_10(self):
-        package = OfficialPackage('htop', '2.2.0')
-
         dsc = self._gen_dsc('htop', '2.2.0', _HTOP_ORIG_SHA256, _BAD_SHA256)
-        (result, outcome) = package.use_same_orig(dsc)
+        package = OfficialPackage(dsc)
+
+        (result, outcome) = package.use_same_orig()
 
         self.assertFalse(result)
 
@@ -195,14 +198,16 @@ class TestOfficialPackage(TestCase):
     # Tests for OfficialPackage.download_orig()
     #
     def test_download_native(self):
-        package = OfficialPackage('dpkg', '1.19.5')
+        dsc = self._gen_dsc('dpkg', '1.19.5', None, None)
+        package = OfficialPackage(dsc)
 
         downloaded = package.download_orig()
         self.assertEquals(len(downloaded), 0)
         self.assertTrue(self._check_download('dpkg', '1.19.5', None, None))
 
     def test_download_orig(self):
-        package = OfficialPackage('tmux', '2.8')
+        dsc = self._gen_dsc('tmux', '2.8', _TMUX_ORIG_SHA256, None)
+        package = OfficialPackage(dsc)
 
         downloaded = package.download_orig()
         self.assertEquals(len(downloaded), 1)
@@ -210,7 +215,9 @@ class TestOfficialPackage(TestCase):
                                              None))
 
     def test_download_orig_with_sig(self):
-        package = OfficialPackage('htop', '2.2.0')
+        dsc = self._gen_dsc('htop', '2.2.0', _HTOP_ORIG_SHA256,
+                            _HTOP_SIG_SHA256)
+        package = OfficialPackage(dsc)
 
         downloaded = package.download_orig()
         self.assertEquals(len(downloaded), 2)
@@ -219,12 +226,16 @@ class TestOfficialPackage(TestCase):
 
     @raises(OverSized)
     def test_download_oversized(self):
-        package = OfficialPackage('0ad-data', '0.0.23')
+        dsc = self._gen_dsc('0ad-data', '0.0.23', _0AD_ORIG_SHA256, None,
+                            method='xz')
+        package = OfficialPackage(dsc)
 
         package.download_orig()
 
     def test_download_dont_exists(self):
-        package = OfficialPackage('this-package-should-not-exist', '42.42.42')
+        dsc = self._gen_dsc('this-package-should-not-exist', '42.42.42', None,
+                            None)
+        package = OfficialPackage(dsc)
 
         downloaded = package.download_orig()
         self.assertEquals(len(downloaded), 0)
@@ -236,7 +247,9 @@ class TestOfficialPackage(TestCase):
         old_mirror = app_config['debexpo.debian_mirror']
         app_config['debexpo.debian_mirror'] = 'http://nxdomain/'
 
-        package = OfficialPackage('htop', '2.2.0')
+        dsc = self._gen_dsc('htop', '2.2.0', _HTOP_ORIG_SHA256,
+                            _HTOP_SIG_SHA256)
+        package = OfficialPackage(dsc)
 
         downloaded = package.download_orig()
         self.assertEquals(downloaded, None)

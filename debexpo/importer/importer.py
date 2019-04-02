@@ -551,8 +551,8 @@ class Importer(object):
 
     def _validate_orig_files(self, dsc):
         upload = Dsc(deb822.Dsc(file(dsc)))
-        orig = upload.get_dsc_item(Dsc.extract_orig)
-        orig_asc = upload.get_dsc_item(Dsc.extract_orig_asc)
+        orig = upload.orig
+        orig_asc = upload.orig_asc
         queue = pylons.config['debexpo.upload.incoming']
 
         files = (dsc_file for dsc_file in (orig, orig_asc) if dsc_file)
@@ -561,7 +561,7 @@ class Importer(object):
             if not os.path.isfile(filename):
                 self._reject('{} dsc reference {}, but the file was not found'
                              '.\nPlease, include it in your upload'
-                             '.'.format(dsc['Source'], dsc_file.get('name')))
+                             '.'.format(upload.name, dsc_file.get('name')))
 
             checksum = sha256sum(filename)
             if dsc_file.get('sha256') != checksum:
@@ -569,7 +569,7 @@ class Importer(object):
                              'in dsc: {}\n'
                              'found: {}\n\n'
                              'Please, rebuild your package against the correct'
-                             ' file.'.format(dsc['Source'],
+                             ' file.'.format(upload.name,
                                              dsc_file.get('name'),
                                              dsc_file.get('sha256'), checksum))
 

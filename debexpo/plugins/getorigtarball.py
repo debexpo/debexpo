@@ -84,7 +84,7 @@ class GetOrigTarballPlugin(BasePlugin):
         """
 
         dsc = deb822.Dsc(file(self.changes.get_dsc()))
-        official_package = OfficialPackage(dsc['Source'], dsc['Version'])
+        official_package = OfficialPackage(dsc)
         self.queue = pylons.config['debexpo.upload.incoming']
         (orig_file, orig_found) = CheckFiles().find_orig_tarball(self.changes)
         self.additional_files = []
@@ -95,7 +95,8 @@ class GetOrigTarballPlugin(BasePlugin):
 
         if official_package.exists():
             # Check that we use the same orig as debian's one
-            (matched, reason) = official_package.use_same_orig(dsc)
+            log.debug('Package already in debian, checking against orig')
+            (matched, reason) = official_package.use_same_orig()
             if not matched:
                 log.debug('{}'.format(reason))
                 return self.failed(outcomes['mismatch-orig-debian'],

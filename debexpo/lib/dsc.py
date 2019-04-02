@@ -37,7 +37,6 @@ from debexpo.lib.constants import DPKG_COMPRESSION_ALGO
 
 class Dsc:
 
-    @classmethod
     def _extract_name(self, item, suffix):
         if item.get('name'):
             for algo in DPKG_COMPRESSION_ALGO:
@@ -53,8 +52,12 @@ class Dsc:
 
     def __init__(self, dsc):
         self.dsc = dsc
+        self.name = dsc['Source']
+        self.version = dsc['Version']
+        self.orig = self._get_dsc_item(self._extract_orig)
+        self.orig_asc = self._get_dsc_item(self._extract_orig_asc)
 
-    def get_dsc_item(self, comp_func):
+    def _get_dsc_item(self, comp_func):
         if self.dsc and 'Checksums-Sha256' in self.dsc:
             orig_match = list(item for item in self.dsc['Checksums-Sha256'] if
                               comp_func(item))
@@ -63,10 +66,8 @@ class Dsc:
 
         return None
 
-    @classmethod
-    def extract_orig_asc(self, item):
+    def _extract_orig_asc(self, item):
         return (self._extract_name(item, '.asc'))
 
-    @classmethod
-    def extract_orig(self, item):
+    def _extract_orig(self, item):
         return (self._extract_name(item, None))
