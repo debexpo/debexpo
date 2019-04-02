@@ -456,7 +456,7 @@ class Importer(object):
         log.debug('Committed package data to the database')
 
         subscribers = meta.session.query(PackageSubscription).filter_by(package=self.changes['Source']).filter(\
-            PackageSubscription.level <= constants.SUBSCRIPTION_LEVEL_UPLOADS).all()
+            PackageSubscription.level >= constants.SUBSCRIPTION_LEVEL_UPLOADS).all()
 
         if len(subscribers) > 0:
             email = Email('package_uploaded')
