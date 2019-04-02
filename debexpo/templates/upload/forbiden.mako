@@ -1,3 +1,3 @@
 Failed to upload file: already present on the server.
 
-Please wait a couple of minutes for the importer to run.
+Please wait a few minutes for the importer to process the old files.
