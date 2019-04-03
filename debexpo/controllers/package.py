@@ -209,6 +209,19 @@ class PackageController(BaseController):
         repo = Repository(config['debexpo.repository'])
         repo.update()
 
+        # Send email on admin deletion
+        if session['user_id'] != package.user_id:
+            owner = meta.session.query(User).filter_by(id=package.user_id).one()
+            email = Email('upload_removed_from_expo')
+            email.send(
+                [owner.email],
+                package=package.name,
+                version='(all versions)',
+                reason='Removed by a debexpo administrator.\n\n'
+                       'If you think this is an error, fell free to email '
+                       '{}\n(Note that we cannot recover your package once '
+                       'removed.)'.format(config['debexpo.email']))
+
         redirect(url(controller='packages', action='my'))
 
     @validate(schema=PackageCommentForm(), form='index')
