@@ -54,6 +54,7 @@ from sqlalchemy import exc as exceptions
 from debexpo.model import meta
 import debexpo.lib.helpers as h
 from debexpo.lib.utils import parse_section, md5sum, sha256sum
+from debexpo.lib.dsc import Dsc
 from debexpo.lib.email import Email
 from debexpo.lib.plugins import Plugins
 from debexpo.lib import constants
@@ -548,6 +549,30 @@ class Importer(object):
             fileToAdd = self._clean_path(git_storage_repo, fileToAdd)
             gs.change(fileToAdd)
 
+    def _validate_orig_files(self, dsc):
+        upload = Dsc(deb822.Dsc(file(dsc)))
+        orig = upload.orig
+        orig_asc = upload.orig_asc
+        queue = pylons.config['debexpo.upload.incoming']
+
+        files = (dsc_file for dsc_file in (orig, orig_asc) if dsc_file)
+        for dsc_file in files:
+            filename = os.path.join(queue, dsc_file.get('name'))
+            if not os.path.isfile(filename):
+                self._reject('{} dsc reference {}, but the file was not found'
+                             '.\nPlease, include it in your upload'
+                             '.'.format(upload.name, dsc_file.get('name')))
+
+            checksum = sha256sum(filename)
+            if dsc_file.get('sha256') != checksum:
+                self._reject('{} dsc reference {}, but the file differs:\n'
+                             'in dsc: {}\n'
+                             'found: {}\n\n'
+                             'Please, rebuild your package against the correct'
+                             ' file.'.format(upload.name,
+                                             dsc_file.get('name'),
+                                             dsc_file.get('sha256'), checksum))
+
     def main(self, no_env=False):
         """
         Actually start the import of the package.
@@ -669,24 +694,7 @@ class Importer(object):
                 (reduce(lambda x,xs: x + " " + xs, allowed_distributions)))
             return 1
 
-        # Look whether the orig tarball is present, and if not, try and get it from
-        # the repository.
-        (orig, orig_file_found) = filecheck.find_orig_tarball(self.changes)
-        if orig_file_found != constants.ORIG_TARBALL_LOCATION_LOCAL:
-            log.debug("Upload does not contain orig.tar.gz - trying to find it elsewhere")
-        if orig and orig_file_found == constants.ORIG_TARBALL_LOCATION_REPOSITORY:
-            filename = os.path.join(pylons.config['debexpo.repository'],
-                self.changes.get_pool_path(), orig)
-            if os.path.isfile(filename):
-                log.debug("Found tar.gz in repository as %s" % (filename))
-                shutil.copy(filename, pylons.config['debexpo.upload.incoming'])
-                # We need the orig.tar.gz for the import run, plugins need to extract the source package
-                # also Lintian needs it. However the orig.tar.gz is in the repository already, so we can
-                # remove it later
-                self.files_to_remove.append(orig)
-
         destdir = pylons.config['debexpo.repository']
-
 
         # Check whether the files are already present
         log.debug("Checking whether files are already in the repository")
@@ -703,8 +711,6 @@ class Importer(object):
                 # skip another corner case, where the dsc contains a orig.tar.gz but wasn't uploaded
                 # by doing nothing here for that case
 
-        self._store_source_as_git_repo()
-
         # Run post-upload plugins.
         post_upload = Plugins('post-upload', self.changes, self.changes_file,
             user_id=self.user_id)
@@ -713,43 +719,29 @@ class Importer(object):
             self._remove_changes()
             return 1
 
-        # Check whether a post-upload plugin has got the orig tarball from somewhere.
-        if not orig_file_found and not filecheck.is_native_package(self.changes):
-            (orig, orig_file_found) = filecheck.find_orig_tarball(self.changes)
-            if orig_file_found == constants.ORIG_TARBALL_LOCATION_NOT_FOUND:
-                # When coming here it means:
-                # a) The uploader did not include a orig.tar.gz in his upload
-                # b) We couldn't find a orig.tar.gz in our repository
-                # c) No plugin could get the orig.tar.gz
-                # ... time to give up
+        # Get results from getorigtarball
+        getorigtarball = None
+        for result in post_upload.result:
+            if result.from_plugin == 'getorigtarball':
+                getorigtarball = result
 
-                orig_from_debian = None
-                for result in post_upload.result:
-                    if result.from_plugin == 'getorigtarball':
-                        orig_from_debian = result.outcome
+        # If getorigtarball did not succeed, send a reject mail
+        if getorigtarball:
+            if getorigtarball.data:
+                (details, additional_files) = getorigtarball.data
+                toinstall.extend(additional_files)
+                self.files_to_remove.extend(additional_files)
 
-                if orig_from_debian and orig_from_debian == 'tarball-from-debian-too-big':
-                    self._reject("Rejecting incomplete upload. Your upload did "
-                        "not include the orig tarball.  We did find it on "
-                        "Debian main archive, however it is too big to be "
-                        "downloaded by our system (> 100 MB).\nPlease "
-                        "re-upload your package to mentors.debian.net, "
-                        "including the orig tarball (pass -sa to "
-                        "dpkg-buildpackage). Thanks,")
-                    return 1
-                else:
-                    if orig == None:
-                        orig = "any original tarball (orig.tar.gz)"
-                    self._reject("Rejecting incomplete upload. "
-                        "You did not upload %s and we didn't find it on any of our"
-                        " alternative resources.\n"
-                        "If you tried to upload a package which only increased the"
-                        " Debian revision part, make sure you include the full"
-                        " source (pass -sa to dpkg-buildpackage)" %
-                        ( orig ))
-                    return 1
-            else:
-                toinstall.append(orig)
+            if getorigtarball.severity == constants.PLUGIN_SEVERITY_ERROR:
+                msg = "Rejecting your upload\n\n"
+                msg += getorigtarball.outcome.get('name')
+                if getorigtarball.data:
+                    msg += "\n\nDetails:\n{}".format(details)
+                self._reject(msg)
+                return 1
+
+        # Validates orig files from the uploaded dsc
+        self._validate_orig_files(self.changes.get_dsc())
 
         # Check whether the debexpo.repository variable is set
         if 'debexpo.repository' not in pylons.config:
@@ -774,6 +766,8 @@ class Importer(object):
             else:
                 self._reject('QA plugins failed the package')
             return 1
+
+        self._store_source_as_git_repo()
 
         # Loop through parent directories in the target installation directory to make sure they
         # all exist. If not, create them.

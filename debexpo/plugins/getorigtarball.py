@@ -2,11 +2,13 @@
 #
 #   getorigtarball.py — getorigtarball plugin
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #   Copyright © 2011 Arno Töll <debian@toell.net>
+#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -34,98 +36,110 @@ Holds the getorigtarball plugin.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner, Copyright © 2011 Arno Töll'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, ' \
+                'Copyright © 2010 Jan Dittberner, ' \
+                'Copyright © 2011 Arno Töll, ' \
+                'Copyright © 2019 Baptiste BEAUPLAT'
 __license__ = 'MIT'
 
-from debian import deb822
 import logging
-import os
-import urllib
-import re
+import pylons
 
 from debexpo.lib import constants
-from debexpo.lib.utils import md5sum
 from debexpo.lib.filesystem import CheckFiles
+from debexpo.lib.official_package import OfficialPackage, OverSized
 from debexpo.plugins import BasePlugin
-
-import pylons
+from debian import deb822
+from os.path import join, isfile
+from shutil import copy
 
 log = logging.getLogger(__name__)
 
+
 class GetOrigTarballPlugin(BasePlugin):
+
+    def _get_from_local_repo(self, orig_file):
+        repo = pylons.config['debexpo.repository']
+        filename = join(repo, self.changes.get_pool_path(), orig_file)
+        upstream_sig = '{}.asc'.format(filename)
+
+        log.debug('Orig found in local repo. '
+                  'Copying to {}/{}'.format(self.queue, filename))
+        copy(filename, self.queue)
+        self.additional_files.append(join(self.queue, filename))
+
+        if isfile(upstream_sig):
+            log.debug('Orig signature found in local repo. '
+                      'Copying to {}/{}'.format(self.queue, upstream_sig))
+            copy(upstream_sig, self.queue)
+            self.additional_files.append(join(self.queue, filename))
 
     def test_orig_tarball(self):
         """
-        Check whether there is an original tarball referenced by the dsc file, but not
-        actually in the package upload.
+        Check whether there is an original tarball referenced by the dsc file,
+        but not actually in the package upload.
 
-        This procedure is skipped to avoid denial of service attacks when a package is
-        larger than the configured size
+        This procedure is skipped to avoid denial of service attacks when a
+        package is larger than the configured size
         """
 
-        # Set download of files, when the expected file size of the orig.tar.gz
-        # is larger than the configured threshold.
-        # The 100M limit has been choosen based on the biggest 500 packages as
-        # of late 2018.
-        size = 104857600
-        log.debug('Checking whether an orig tarball mentioned in the dsc is'
-                  ' missing')
         dsc = deb822.Dsc(file(self.changes.get_dsc()))
-        filecheck = CheckFiles()
+        official_package = OfficialPackage(dsc)
+        self.queue = pylons.config['debexpo.upload.incoming']
+        (orig_file, orig_found) = CheckFiles().find_orig_tarball(self.changes)
+        self.additional_files = []
 
-        if filecheck.is_native_package(self.changes):
-            log.debug('No orig.tar.gz file found; native package?')
-            return
+        if orig_found == constants.ORIG_TARBALL_LOCATION_REPOSITORY:
+            # Found tarball in local repository, copying to current directory
+            self._get_from_local_repo(orig_file)
 
-        # An orig.tar.gz was found in the dsc, and also in the upload.
-        (orig, orig_file_found) = filecheck.find_orig_tarball(self.changes)
-        if orig_file_found > constants.ORIG_TARBALL_LOCATION_NOT_FOUND:
-            log.debug('%s found successfully', orig)
-            return
+        if official_package.exists():
+            # Check that we use the same orig as debian's one
+            log.debug('Package already in debian, checking against orig')
+            (matched, reason) = official_package.use_same_orig()
+            if not matched:
+                log.debug('{}'.format(reason))
+                return self.failed(outcomes['mismatch-orig-debian'],
+                                   (reason, list(set(self.additional_files))),
+                                   constants.PLUGIN_SEVERITY_ERROR)
 
-        if not orig:
-            log.debug("Couldn't determine name of the orig.tar.gz?")
-            return
+            if orig_found == constants.ORIG_TARBALL_LOCATION_NOT_FOUND:
+                # Orig was not uploaded and not found in the local repo.
+                # Download it from Debian archive.
+                log.debug('Downloading orig from debian archive')
+                try:
+                    downloaded = official_package.download_orig()
+                except OverSized as e:
+                    log.debug('Tarball to big to download')
+                    return self.failed(outcomes['tarball-from-debian-too-big'],
+                                       ('File is bigger than download limit: '
+                                        '{} > {}'.format(e.size, e.limit),
+                                        list(set(self.additional_files))),
+                                       constants.PLUGIN_SEVERITY_ERROR)
 
-        for dscfile in dsc['Files']:
-            dscfile['size'] = int(dscfile['size'])
-            if orig == dscfile['name']:
-                if dscfile['size'] > size:
-                    log.warning("Skipping eventual download of orig.tar.gz %s:"
-                                " size %d > %d" % (dscfile['name'],
-                                                   dscfile['size'], size))
-                    self.info('tarball-from-debian-too-big', None)
-                    return
-                orig = dscfile
-                break
-        else:
-            log.debug("dsc does not reference our expected orig.tar.gz name '%s'" % (orig))
-            return
+                if not downloaded:
+                    log.debug('Failed to download from debian archive')
+                    return self.failed('failed-to-download',
+                                       (None,
+                                        list(set(self.additional_files))),
+                                       constants.PLUGIN_SEVERITY_ERROR)
 
-        log.debug('Could not find %s; looking in Debian for it', orig['name'])
+                self.additional_files.extend(downloaded)
 
-        url = os.path.join(pylons.config['debexpo.debian_mirror'], self.changes.get_pool_path(), orig['name'])
-        log.debug('Trying to fetch %s' % url)
-        out = urllib.urlopen(url)
-        contents = out.read()
+        return self.info(outcomes['found-orig'],
+                         (None, list(set(self.additional_files))))
 
-        f = open(orig['name'], "wb")
-        f.write(contents)
-        f.close()
-
-        if md5sum(orig['name']) == orig['md5sum']:
-            log.debug('Tarball %s taken from Debian' % orig['name'])
-            self.info('tarball-taken-from-debian', None)
-        else:
-            log.error('Tarball %s not found in Debian' % orig['name'])
-            os.unlink(orig['name'])
 
 plugin = GetOrigTarballPlugin
 
 outcomes = {
-    'tarball-taken-from-debian' : { 'name' : 'The original tarball has been'
-                                             ' retrieved from Debian' },
+    'tarball-taken-from-debian': {'name': 'The original tarball has been'
+                                          ' retrieved from Debian'},
     'tarball-from-debian-too-big': {'name': 'The original tarball cannot be'
                                             ' retrieved from Debian: file too'
-                                            ' big'},
+                                            ' big (> 100MB)'},
+    'mismatch-orig-debian': {'name': 'Package was not built with orig.tar.gz'
+                                     'file present in the official archives'},
+    'invalid-orig': {'name': 'Could not find a valid orig tarball'},
+    'found-orig': {'name': 'Found origin tarball'},
 }

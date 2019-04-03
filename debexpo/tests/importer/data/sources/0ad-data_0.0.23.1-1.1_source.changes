@@ -1,0 +1,36 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Mon, 11 Mar 2019 21:16:44 +0100
+Source: 0ad-data
+Architecture: source
+Version: 0.0.23.1-1.1
+Distribution: unstable
+Urgency: medium
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Changed-By: Baptiste BEAUPLAT <lyknode@cilg.org>
+Changes:
+ 0ad-data (0.0.23.1-1.1) unstable; urgency=medium
+ .
+   * Non-maintainer upload.
+Checksums-Sha1:
+ 25fe07808369d8d50c92e1471de74500b0917014 1439 0ad-data_0.0.23.1-1.1.dsc
+ 3621529db0010e1641535d59811a9c8f20add028 12960 0ad-data_0.0.23.1-1.1.debian.tar.xz
+ 53b6e8a395c7000a4d628b7f53a947a70c8998e1 4428 0ad-data_0.0.23.1-1.1_source.buildinfo
+Checksums-Sha256:
+ f32948b797caa8b66f206901a4c67ab5847f4b849994cade69d8977809089ea4 1439 0ad-data_0.0.23.1-1.1.dsc
+ 86f6b8b2ccf11995e368626e9bb9b266b0a607223b2e2d5e0370e5659802aeca 12960 0ad-data_0.0.23.1-1.1.debian.tar.xz
+ 80bd637ffca0324f71211ce62fdf54ebd0f94bfc8b2383d6a57aa0479856f451 4428 0ad-data_0.0.23.1-1.1_source.buildinfo
+Files:
+ 51d7b0284c61c383dabf4965fb825383 1439 games optional 0ad-data_0.0.23.1-1.1.dsc
+ 30e3e682fae19782a460f1c6a10512d8 12960 games optional 0ad-data_0.0.23.1-1.1.debian.tar.xz
+ ff5eb008fe1b5869989290d068226b69 4428 games optional 0ad-data_0.0.23.1-1.1_source.buildinfo
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQRVkwbu4cjBst0cc7HENHgc6HHz3wUCXIbHMgAKCRDENHgc6HHz
+393cAQDyylMwweu+ZC/wBiUVKm8ev+lP5NBzlo+PEYzt5X2tnwD7Bv8Bfs027w2h
+zrDXnHvjLWPkFd00s9eFiGErq9OvXQM=
+=rM9c
+-----END PGP SIGNATURE-----
