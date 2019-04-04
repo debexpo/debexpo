@@ -1,0 +1,31 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 3.0 (quilt)
+Source: hello
+Binary: hello
+Architecture: any
+Version: 1.0-1
+Maintainer: Baptiste BEAUPLAT <lyknode@cilg.org>
+Homepage: <insert the upstream URL, if relevant>
+Standards-Version: 4.1.3
+Build-Depends: debhelper (>= 11)
+Package-List:
+ hello deb unknown optional arch=any
+Checksums-Sha1:
+ be505a70074ab85fed3f68026242651fcde85bf2 168 hello_1.0.orig.tar.xz
+ be0d509f38d8336869cc8fba89cf0e87f0fe81bd 1992 hello_1.0-1.debian.tar.xz
+Checksums-Sha256:
+ 622d2165e0ae0aee8b3dac5fbf07f471db2205c4cb60d1c3ce3762a12fbe62bf 168 hello_1.0.orig.tar.xz
+ 0a59211ffb1ce977049c4765f42e31748b160b20fcbceb693f78d1ea064f67cb 1992 hello_1.0-1.debian.tar.xz
+Files:
+ 3789bf498b8c4cf0387383466ec4c227 168 hello_1.0.orig.tar.xz
+ 1ce6c58757dd76f615c23a4e330b022f 1992 hello_1.0-1.debian.tar.xz
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQRVkwbu4cjBst0cc7HENHgc6HHz3wUCXKZj8QAKCRDENHgc6HHz
+31SKAP4moCwBQ5Me2vexx3QjQb/0sknXf8fSU++w7i9omoUEgwEAlxFhWLZnnRrr
++uDXQzsxyqpK94QVTWoU2vrrjg74xQc=
+=EN62
+-----END PGP SIGNATURE-----

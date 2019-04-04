@@ -163,6 +163,16 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_count('htop', '2.2.0-1+b1', 0)
         self.assert_package_not_in_repo('htop', '2.2.0-1+b1')
 
+    def test_import_package_hello_unicode(self):
+        self.import_package('unicode-changes')
+        self.assert_importer_succeeded()
+        self.assert_email_with("Your upload of the package 'hello' to "
+                + pylonsapp.config['debexpo.sitename'] + " was\nsuccessful.")
+        self.assert_package_count('hello', '1.0-1', 1)
+        self.assert_package_in_repo('hello', '1.0-1')
+        self.assert_package_info('hello', 'debianqa',
+                                 'Package is already in Debian')
+
     def test_import_package_hello(self):
         self.import_package('hello')
         self.assert_importer_succeeded()
