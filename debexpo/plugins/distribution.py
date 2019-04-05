@@ -2,7 +2,8 @@
 #
 #   distribution.py — distribution check plugin
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2012 Nicolas Dandrimont <nicolas.dandrimont@crans.org>
 #
@@ -37,11 +38,9 @@ __copyright__ = ', '.join([
         ])
 __license__ = 'MIT'
 
-import logging
-import os
-
 from debexpo.lib import constants
 from debexpo.plugins import BasePlugin
+
 
 class DistributionPlugin(BasePlugin):
 
@@ -57,7 +56,8 @@ class DistributionPlugin(BasePlugin):
 
         if distribution.lower() == "unreleased":
             data["is-unreleased"] = True
-            self.failed("Package uploaded for the UNRELEASED distribution", data, constants.PLUGIN_SEVERITY_ERROR)
+            self.failed("Package uploaded for the UNRELEASED distribution",
+                        data, constants.PLUGIN_SEVERITY_ERROR)
 
 
 plugin = DistributionPlugin

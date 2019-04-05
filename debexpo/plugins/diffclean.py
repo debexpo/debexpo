@@ -2,7 +2,8 @@
 #
 #   diffclean.py — diffclean plugin
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>
@@ -47,6 +48,7 @@ from debexpo.plugins import BasePlugin
 
 log = logging.getLogger(__name__)
 
+
 class DiffCleanPlugin(BasePlugin):
 
     def test_diff_clean(self):
@@ -58,10 +60,12 @@ class DiffCleanPlugin(BasePlugin):
         difffile = self.changes.get_diff()
 
         if difffile is None or not difffile.endswith('.diff.gz'):
-            log.warning('Package has no diff.gz file; native or format 3.0 package?')
+            log.warning('Package has no diff.gz file; native or format 3.0 '
+                        'package?')
             return
 
-        diffstat = subprocess.Popen(["diffstat", "-p1", difffile], stdout=subprocess.PIPE).communicate()[0]
+        diffstat = subprocess.Popen(["diffstat", "-p1", difffile],
+                                    stdout=subprocess.PIPE).communicate()[0]
 
         data = {
             "dirty": False,
@@ -77,9 +81,12 @@ class DiffCleanPlugin(BasePlugin):
 
         if not data["dirty"]:
             log.debug('Diff file %s is clean' % difffile)
-            self.passed("The package's .diff.gz does not modify files outside of debian/", data, constants.PLUGIN_SEVERITY_INFO)
+            self.passed("The package's .diff.gz does not modify files outside "
+                        "of debian/", data, constants.PLUGIN_SEVERITY_INFO)
         else:
             log.error('Diff file %s is not clean' % difffile)
-            self.failed("The package's .diff.gz modifies files outside of debian/", data, constants.PLUGIN_SEVERITY_WARNING)
+            self.failed("The package's .diff.gz modifies files outside of "
+                        "debian/", data, constants.PLUGIN_SEVERITY_WARNING)
+
 
 plugin = DiffCleanPlugin

@@ -2,7 +2,8 @@
 #
 #   debian.py — debian plugin
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>
@@ -50,18 +51,20 @@ from debexpo.plugins import BasePlugin
 
 log = logging.getLogger(__name__)
 
+
 class DebianPlugin(BasePlugin):
 
     def _in_debian(self):
         try:
-            self.qa_page = urllib2.urlopen('http://packages.qa.debian.org/%s' % self.changes['Source'])
+            self.qa_page = urllib2.urlopen('http://packages.qa.debian.org/%s' %
+                                           self.changes['Source'])
         except urllib2.HTTPError:
             self.in_debian = False
         else:
             self.in_debian = True
             self.parsed_qa = lxml.etree.fromstring(self.qa_page.read())
 
-    def _qa_xpath(self, query, item = None):
+    def _qa_xpath(self, query, item=None):
         """Perform the xpath query on the given item"""
         if item is None:
             item = self.parsed_qa
@@ -107,11 +110,13 @@ class DebianPlugin(BasePlugin):
 
         import string
 
-        changes = ''.join((char for char in self.changes["Changes"].lower() if char in
-                           string.ascii_lowercase + '\n')).splitlines()
+        changes = ''.join((char for char in self.changes["Changes"].lower()
+                           if char in string.ascii_lowercase + '\n')) \
+            .splitlines()
 
         self.data["nmu"] = (
-            any(change.startswith('nonmaintainerupload') for change in changes) or
+            any(change.startswith('nonmaintainerupload')
+                for change in changes) or
             any(change.startswith('nmu') for change in changes) or
             'nmu' in self.changes["Version"]
             )
@@ -138,16 +143,18 @@ class DebianPlugin(BasePlugin):
         Tests whether the package Maintainer is the Debian Maintainer.
         """
 
-        log.debug('Finding out whether the package Maintainer is the Debian Maintainer')
+        log.debug('Finding out whether the package Maintainer is the Debian '
+                  'Maintainer')
 
-        self.data["is-debian-maintainer"] = self.user_name in self.debian_maintainers
-
+        self.data["is-debian-maintainer"] = self.user_name in \
+            self.debian_maintainers
 
     def _test_has_new_maintainer(self):
         """
         Tests whether this package version introduces a new Maintainer.
         """
-        log.debug('Finding out whether this package version introduces a new Maintainer')
+        log.debug('Finding out whether this package version introduces a new '
+                  'Maintainer')
 
         # TODO
 

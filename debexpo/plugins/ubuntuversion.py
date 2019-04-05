@@ -2,7 +2,8 @@
 #
 #   ubuntuversion.py — ubuntuversion plugin
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2009 Jonny Lamb <jonny@debian.org>
 #
@@ -42,19 +43,23 @@ from debexpo.lib import constants
 
 log = logging.getLogger(__name__)
 
+
 class UbuntuVersionPlugin(BasePlugin):
 
     def test_ubuntu_version(self):
         """
         Checks whether the word "ubuntu" exists in the package name.
         """
-        log.debug('Checking whether the package version contains the word "ubuntu"')
+        log.debug('Checking whether the package version contains the word '
+                  '"ubuntu"')
 
         if 'ubuntu' in self.changes['Version']:
             log.debug('Package does not have ubuntu in the version')
             # This isn't even worth setting an outcome.
         else:
             log.error('Package has ubuntu in the version')
-            self.failed('The uploaded package has "ubuntu" in the version', None, constants.PLUGIN_SEVERITY_CRITICAL)
+            self.failed('The uploaded package has "ubuntu" in the version',
+                        None, constants.PLUGIN_SEVERITY_CRITICAL)
+
 
 plugin = UbuntuVersionPlugin

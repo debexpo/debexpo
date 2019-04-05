@@ -2,7 +2,8 @@
 #
 #   controlfields.py — controlfields plugin
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -52,19 +53,21 @@ log = logging.getLogger(__name__)
 
 fields = ['Homepage', 'Vcs-Browser', 'Vcs-Git', 'Vcs-Svn', 'Vcs-Bzr', 'Vcs-Hg']
 
+
 class ControlFieldsPlugin(BasePlugin):
 
     def test_control_fields(self):
         """
         Checks whether additional debian/control fields are present.
         """
-        log.debug('Checking whether additional debian/control fields are present')
+        log.debug('Checking whether additional debian/control fields are '
+                  'present')
 
         try:
             control = deb822.Dsc(file(join('extracted', 'debian', 'control')))
         except Exception as e:
             log.critical('Could not open debian/control file; skipping plugin: '
-                    '{}'.format(str(e)))
+                         '{}'.format(str(e)))
             return
 
         data = {}
@@ -90,10 +93,11 @@ class ControlFieldsPlugin(BasePlugin):
             if ('Description' in package and 'Package' in package and
                     package['Package'] and package['Description']):
                 descriptions.append('{} - {}'.format(package['Package'],
-                    package['Description'].split('\n')[0]))
+                                    package['Description'].split('\n')[0]))
 
         data['Description'] = '\n'.join(descriptions)
 
         self.failed(outcome, data, severity)
+
 
 plugin = ControlFieldsPlugin

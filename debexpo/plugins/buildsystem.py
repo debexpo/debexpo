@@ -2,7 +2,8 @@
 #
 #   buildsystem.py — buildsystem plugin
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -52,6 +53,7 @@ from debexpo.plugins import BasePlugin
 
 log = logging.getLogger(__name__)
 
+
 class BuildSystemPlugin(BasePlugin):
 
     def test_build_system(self):
@@ -73,8 +75,8 @@ class BuildSystemPlugin(BasePlugin):
         elif 'debhelper-compat' in build_depends:
             data["build-system"] = "debhelper"
 
-            matches = re.match('debhelper-compat\s+\(=\s*(\d+)\)',
-                                build_depends)
+            matches = re.match(r'debhelper-compat\s+\(=\s*(\d+)\)',
+                               build_depends)
             if matches:
                 compat_level = matches.group(1)
             else:
@@ -103,7 +105,8 @@ class BuildSystemPlugin(BasePlugin):
 
             # Warn on old compatibility levels
             if compat_level is None or compat_level < 9:
-                outcome = "Package uses debhelper with an old compatibility level"
+                outcome = "Package uses debhelper with an old compatibility" \
+                          " level"
                 severity = constants.PLUGIN_SEVERITY_WARNING
             else:
                 outcome = "Package uses debhelper"
