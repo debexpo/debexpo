@@ -32,11 +32,11 @@ __author__ = 'Baptiste BEAUPLAT'
 __copyright__ = 'Copyright © 2019 Baptiste BEAUPLAT'
 __license__ = 'MIT'
 
+import apt_pkg
 import json
 import logging
 import pylons
 
-from apt_pkg import upstream_version
 from os import rename
 from os.path import basename, join
 from tempfile import NamedTemporaryFile
@@ -160,11 +160,13 @@ class OfficialPackage:
         return None
 
     def __init__(self, uploaded_dsc):
+        apt_pkg.init()
+
         self.mirror = pylons.config['debexpo.debian_mirror']
         self.queue = pylons.config['debexpo.upload.incoming']
         self.uploaded_dsc = Dsc(uploaded_dsc)
         self.name = self.uploaded_dsc.name
-        self.version = upstream_version(self.uploaded_dsc.version)
+        self.version = apt_pkg.upstream_version(self.uploaded_dsc.version)
         self.orig_asc = None
         self.orig = None
 
