@@ -2,7 +2,8 @@
 #
 #   environment.py — Pylons environment configuration
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -37,7 +38,6 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import os
-import sys
 
 from mako.lookup import TemplateLookup
 from pylons.configuration import PylonsConfig
@@ -49,6 +49,7 @@ from debexpo.config.routing import make_map
 
 from sqlalchemy import engine_from_config
 from debexpo.model import init_model
+
 
 def load_environment(global_conf, app_conf):
     """
@@ -80,8 +81,8 @@ def load_environment(global_conf, app_conf):
     import pylons
     pylons.cache._push_object(config['pylons.app_globals'].cache)
 
-    #config['pylons.strict_c'] = False
-    #config['pylons.tmpl_context_attach_args'] = True
+    # config['pylons.strict_c'] = False
+    # config['pylons.tmpl_context_attach_args'] = True
 
     # Customize templating options via this variable
     config['pylons.app_globals'].mako_lookup = TemplateLookup(
@@ -89,7 +90,8 @@ def load_environment(global_conf, app_conf):
         error_handler=handle_mako_error,
         module_directory=os.path.join(app_conf['cache_dir'], 'templates'),
         input_encoding='utf-8', default_filters=['escape'],
-        imports=['from webhelpers.html import escape', 'from debexpo.lib.filters import semitrusted'])
+        imports=['from webhelpers.html import escape',
+                 'from debexpo.lib.filters import semitrusted'])
 
     # CONFIGURATION OPTIONS HERE (note: all config options will override
     # any Pylons config options)

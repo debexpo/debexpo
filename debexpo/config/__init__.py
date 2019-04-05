@@ -10,5 +10,5 @@ def easy_app_init(ini_path):
     # Initialize Pylons app
     conf = appconfig('config:' + ini_path)
     import debexpo.config.environment
-    pylons.config = debexpo.config.environment.load_environment(conf.global_conf, conf.local_conf)
-
+    pylons.config = debexpo.config.environment \
+        .load_environment(conf.global_conf, conf.local_conf)
