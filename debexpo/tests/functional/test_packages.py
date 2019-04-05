@@ -1,7 +1,8 @@
-from debexpo.tests import *
+from debexpo.tests import TestController, url
 from debexpo.lib.constants import PACKAGE_NEEDS_SPONSOR_YES
 from debexpo.model import meta
 from debexpo.model.packages import Package
+
 
 class TestPackagesController(TestController):
 
@@ -36,7 +37,8 @@ class TestPackagesController(TestController):
         package.needs_sponsor = PACKAGE_NEEDS_SPONSOR_YES
         meta.session.commit()
         response = self._test_feed_filter()
-        self.assertTrue('Uploader is currently looking for a sponsor.' in response.body)
+        self.assertTrue('Uploader is currently looking for a sponsor.' in
+                        response.body)
 
     def test_feed_section(self):
         self._test_feed_filter('section', 'Admin')
@@ -56,17 +58,20 @@ class TestPackagesController(TestController):
         self._test_feed_filter('maintainer', 'Test User <email@example.com>')
 
     def test_section(self):
-        response = self.app.get(url(controller='packages', action='section', id='main'))
+        response = self.app.get(url(controller='packages', action='section',
+                                    id='main'))
         self.assertEquals(200, response.status_int)
         self.assertEquals('text/html', response.content_type)
 
     def test_uploader(self):
-        response = self.app.get(url('packages-uploader', id='nonexistant@example.com'), expect_errors = True)
+        response = self.app.get(url('packages-uploader',
+                                    id='nonexistant@example.com'),
+                                expect_errors=True)
         self.assertEquals(404, response.status_int)
-        response = self.app.get(url('packages-uploader', id='email@example.com'))
+        response = self.app.get(url('packages-uploader',
+                                    id='email@example.com'))
         self.assertEquals(200, response.status_int)
         self.assertEquals('text/html', response.content_type)
-
 
     def test_my(self):
         response = self.app.get(url(controller='packages', action='my'))
@@ -74,6 +79,7 @@ class TestPackagesController(TestController):
         self.assertTrue(response.location.endswith(url('login')))
 
     def test_maintainer(self):
-        response = self.app.get(url(controller='packages', action='maintainer', id='Test'))
+        response = self.app.get(url(controller='packages', action='maintainer',
+                                    id='Test'))
         self.assertEquals(200, response.status_int)
         self.assertEquals('text/html', response.content_type)

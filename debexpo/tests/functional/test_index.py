@@ -1,9 +1,5 @@
 from debexpo.tests import TestController
 from pylons import url
-from tempfile import mkdtemp
-from shutil import rmtree
-import os
-import os.path
 import pylons.test
 
 

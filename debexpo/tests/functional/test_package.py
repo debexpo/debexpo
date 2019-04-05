@@ -6,7 +6,6 @@ from debexpo.model.packages import Package
 from debexpo.model.package_comments import PackageComment
 from debexpo.model.package_versions import PackageVersion
 from debexpo.model.package_info import PackageInfo
-from debexpo.model.source_packages import SourcePackage
 from debexpo.model.package_subscriptions import PackageSubscription
 from debexpo.controllers.package import PackageController
 from datetime import datetime
@@ -37,8 +36,6 @@ class TestPackageController(TestController):
 
     def _test_wrong_key(self, action):
         self.app.post(url('login'), self._AUTHDATA)
-        user = meta.session.query(User).filter(
-            User.email == 'email@example.com').one()
         response = self.app.get(url(
             controller='package', action=action, packagename='testpackage',
             key='wrong'), expect_errors=True)
@@ -142,11 +139,12 @@ class TestPackageController(TestController):
             len(response.lxml.xpath(
                 '//option[@value="%d" and @selected="selected"]' %
                 constants.SUBSCRIPTION_LEVEL_UPLOADS)), 1)
-        response = self.app.post(url(controller='package',
-                                     action='subscribe',
-                                     packagename='testpackage'),
-                                 {'level': constants.SUBSCRIPTION_LEVEL_COMMENTS,
-                                  'commit': 'submit'})
+        response = self.app.post(
+                url(controller='package',
+                    action='subscribe',
+                    packagename='testpackage'),
+                {'level': constants.SUBSCRIPTION_LEVEL_COMMENTS,
+                 'commit': 'submit'})
         self.assertEquals(response.status_int, 302)
         self.assertTrue(response.location.endswith(
             url('package', packagename='testpackage')))
