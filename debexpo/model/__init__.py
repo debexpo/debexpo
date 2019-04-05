@@ -2,7 +2,8 @@
 #
 #   __init__.py — Model initialisation code
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -35,15 +36,16 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-import sqlalchemy as sa
 from sqlalchemy import orm
 
 from debexpo.model import meta
 
+
 def init_model(engine):
     """
     Initializes the model.
-    This should be called before using any of the tables or classes in the model.
+    This should be called before using any of the tables or classes in the
+    model.
 
     ``engine``
         SQLAlchemy engine to bind to.
@@ -54,15 +56,17 @@ def init_model(engine):
     meta.engine = engine
     meta.session = orm.scoped_session(sm)
 
+
 def import_all_models():
     """
     Import all models from debexpo.models. This is useful when creating tables.
     """
 
-    from debexpo.model import binary_packages, package_files, packages, source_packages, \
-        user_metrics, package_comments, package_info, package_versions, user_countries, \
-        users, package_subscriptions, user_upload_key, password_reset, sponsor_metrics, \
-        data_store
+    from debexpo.model import binary_packages, package_files, packages, \
+        source_packages, user_metrics, package_comments, package_info, \
+        package_versions, user_countries, users, package_subscriptions, \
+        user_upload_key, password_reset, sponsor_metrics, data_store
+
 
 class OrmObject(object):
     """
@@ -90,4 +94,5 @@ class OrmObject(object):
         for key in self.__dict__:
             if not key.startswith('_'):
                 attrs.append((key, getattr(self, key)))
-        return self.__class__.__name__ + '(' + ', '.join(x[0] + '=' + repr(x[1]) for x in attrs) + ')'
+        return self.__class__.__name__ + '(' + ', ' \
+            .join(x[0] + '=' + repr(x[1]) for x in attrs) + ')'

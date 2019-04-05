@@ -2,7 +2,8 @@
 #
 #   data_store.py - Generic, general purpose data store
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2011 Arno Töll <debian@toell.net>
 #
@@ -38,18 +39,19 @@ __license__ = 'MIT'
 import sqlalchemy as sa
 from sqlalchemy import orm
 
-import logging
-
 from debexpo.model import meta, OrmObject
 
-t_user_countries = sa.Table('data_store', meta.metadata,
+t_user_countries = sa.Table(
+    'data_store', meta.metadata,
     sa.Column('namespace', sa.types.String(100), primary_key=True),
     sa.Column('code', sa.types.String(100), primary_key=True, nullable=False),
     sa.Column('value', sa.types.String(100), nullable=True)
     )
 
+
 class DataStore(OrmObject):
     pass
+
 
 orm.mapper(DataStore, t_user_countries)
 
@@ -58,11 +60,12 @@ def fill_data_store():
     import debexpo.model.data.data_store_init
     import logging
     for data in debexpo.model.data.data_store_init.DATA_STORE_INIT_OBJECTS:
-        query = meta.session.query(DataStore).filter(DataStore.code == data.code).filter(DataStore.namespace == data.namespace).count()
+        query = meta.session.query(DataStore) \
+            .filter(DataStore.code == data.code) \
+            .filter(DataStore.namespace == data.namespace) \
+            .count()
         if (query):
             continue
         logging.info("Pre-configure value %s.%s" % (data.namespace, data.code))
         meta.session.add(data)
     meta.session.commit()
-
-

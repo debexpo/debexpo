@@ -2,7 +2,8 @@
 #
 #   user_metrics.py — user_metrics table model
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -42,17 +43,20 @@ from sqlalchemy.orm import backref
 from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
 
-t_user_metrics = sa.Table('user_metrics', meta.metadata,
+t_user_metrics = sa.Table(
+    'user_metrics', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
     sa.Column('user_id', sa.types.Integer, sa.ForeignKey('users.id')),
     sa.Column('name', sa.types.Integer, nullable=False),
     sa.Column('value', sa.types.Integer, nullable=False),
     )
 
+
 class UserMetric(OrmObject):
     foreign = ['user']
 
+
 orm.mapper(UserMetric, t_user_metrics, properties={
-    'user' : orm.relation(User, backref=backref('user_metrics',
-        cascade='all, delete-orphan'))
+    'user': orm.relation(
+        User, backref=backref('user_metrics', cascade='all, delete-orphan'))
 })

@@ -2,7 +2,8 @@
 #
 #   user_upload_key.py — model for upload keys
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2011 Asheesh Laroia <paulproteus@debian.org>
 #
@@ -41,15 +42,18 @@ from sqlalchemy import orm
 from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
 
-t_user_upload_key = sa.Table('user_upload_key', meta.metadata,
+t_user_upload_key = sa.Table(
+    'user_upload_key', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
     sa.Column('user_id', sa.types.Integer, sa.ForeignKey('users.id')),
     sa.Column('upload_key', sa.types.String(200), nullable=False, unique=False),
     )
 
+
 class UserUploadKey(OrmObject):
     foreign = ['user']
 
+
 orm.mapper(UserUploadKey, t_user_upload_key, properties={
-    'user' : orm.relation(User)
+    'user': orm.relation(User)
 })

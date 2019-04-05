@@ -2,7 +2,8 @@
 #
 #   meta.py — SQLAlchemy Metadata and Session object
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -45,6 +46,6 @@ engine = None
 # SQLAlchemy session manager.  Updated by model.init_model().
 session = None
 
-# Global metadata. If you have multiple databases with overlapping table 
-# names, you'll need a metadata for each database.
+# Global metadata. If you have multiple databases with overlapping table names,
+# you'll need a metadata for each database.
 metadata = MetaData()

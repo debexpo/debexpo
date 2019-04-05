@@ -2,7 +2,8 @@
 #
 #   sponsor_metrics.py — rudimentary model for sponsor metrics
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2011 Arno Töll <debian@toell.net>
 #
@@ -35,21 +36,17 @@ __author__ = 'Arno Töll'
 __copyright__ = 'Copyright © 2011 Arno Töll'
 __license__ = 'MIT'
 
-import os
-import datetime
-
 import sqlalchemy as sa
 from sqlalchemy import orm
-from sqlalchemy.ext.associationproxy import association_proxy
 
 from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
 from debexpo.lib import constants
-import debexpo.lib.utils
 
 t_sponsor_metrics = sa.Table(
     'sponsor_metrics', meta.metadata,
-    sa.Column('user_id', sa.types.Integer, sa.ForeignKey('users.id'), primary_key=True),
+    sa.Column('user_id', sa.types.Integer, sa.ForeignKey('users.id'),
+              primary_key=True),
     sa.Column('availability', sa.types.Integer, nullable=False),
     sa.Column('contact', sa.types.Integer, nullable=False),
     sa.Column('types', sa.types.Text, nullable=True),
@@ -68,15 +65,18 @@ t_sponsor_tags = sa.Table(
 
 t_sponsor_metrics_tags = sa.Table(
     'sponsor_metrics_tags', meta.metadata,
-    sa.Column('tag', sa.Text, sa.ForeignKey('sponsor_tags.tag'), primary_key=True),
-    sa.Column('user_id', sa.Integer, sa.ForeignKey('sponsor_metrics.user_id'), primary_key=True),
+    sa.Column('tag', sa.Text, sa.ForeignKey('sponsor_tags.tag'),
+              primary_key=True),
+    sa.Column('user_id', sa.Integer, sa.ForeignKey('sponsor_metrics.user_id'),
+              primary_key=True),
     sa.Column('weight', sa.Integer),
 )
+
 
 class SponsorMetrics(OrmObject):
     foreign = ['user']
 
-    def get_all_tags_weighted(self, weight = 0):
+    def get_all_tags_weighted(self, weight=0):
         if weight > 0:
             return [x.tag for x in self.tags if x.weight > 0]
         elif weight < 0:
@@ -85,7 +85,7 @@ class SponsorMetrics(OrmObject):
             return [x.tag for x in self.tags]
 
     def get_all_tags(self):
-        return get_all_tags_weighted(0)
+        return self.get_all_tags_weighted(0)
 
     def get_technical_tags(self):
         return [x.tag for x in self.get_technical_tags_full()]
@@ -94,10 +94,14 @@ class SponsorMetrics(OrmObject):
         return [x.tag for x in self.get_social_tags_full()]
 
     def get_technical_tags_full(self):
-        return [x for x in self.tags if x.full_tag.tag_type == constants.SPONSOR_METRICS_TYPE_TECHNICAL]
+        return [x for x in self.tags
+                if (x.full_tag.tag_type ==
+                    constants.SPONSOR_METRICS_TYPE_TECHNICAL)]
 
     def get_social_tags_full(self):
-        return [x for x in self.tags if x.full_tag.tag_type == constants.SPONSOR_METRICS_TYPE_SOCIAL]
+        return [x for x in self.tags
+                if (x.full_tag.tag_type ==
+                    constants.SPONSOR_METRICS_TYPE_SOCIAL)]
 
     def get_tag_weight(self, tag):
         for t in self.tags:
@@ -124,8 +128,8 @@ class SponsorMetrics(OrmObject):
 
     def get_social_requirements(self):
         """
-        Return a formatted and sanitized string of the social requirements the sponsor
-        configured
+        Return a formatted and sanitized string of the social requirements the
+        sponsor configured
         """
 
         if self.social_requirements:
@@ -135,12 +139,14 @@ class SponsorMetrics(OrmObject):
 
     def allowed(self, flag):
         """
-        Returns true if the user associated with this object allowed to display a
-        contact address. This method also honors the SPONSOR_METRICS_RESTRICTED flag
+        Returns true if the user associated with this object allowed to display
+        a contact address. This method also honors the
+        SPONSOR_METRICS_RESTRICTED flag
 
         ```flag``` A SPONSOR_CONTACT_METHOD_* flag which should be checked
         """
-        if self.availability == constants.SPONSOR_METRICS_RESTRICTED and self.contact == flag:
+        if (self.availability == constants.SPONSOR_METRICS_RESTRICTED and
+                self.contact == flag):
             return True
         elif self.availability == constants.SPONSOR_METRICS_PUBLIC:
             return True
@@ -149,16 +155,17 @@ class SponsorMetrics(OrmObject):
 
 class SponsorTags(OrmObject):
     pass
-    #keywords = association_proxy('metrics', 'metric')
+    # keywords = association_proxy('metrics', 'metric')
+
 
 class SponsorMetricsTags(OrmObject):
     foreign = ['user', 'tags']
 
-orm.mapper(SponsorMetrics, t_sponsor_metrics, properties={
-    'tags' : orm.relationship(SponsorMetricsTags),
-    'user'  : orm.relationship(User),
-})
 
+orm.mapper(SponsorMetrics, t_sponsor_metrics, properties={
+    'tags': orm.relationship(SponsorMetricsTags),
+    'user': orm.relationship(User),
+})
 
 orm.mapper(SponsorTags, t_sponsor_tags)
 
@@ -170,9 +177,12 @@ orm.mapper(SponsorMetricsTags, t_sponsor_metrics_tags, properties={
 def create_tags():
     import debexpo.model.data.tags
     import logging
-    for metrics_type in [constants.SPONSOR_METRICS_TYPE_TECHNICAL, constants.SPONSOR_METRICS_TYPE_SOCIAL]:
-        for (description, tag, long_description) in debexpo.model.data.tags.TAGS[metrics_type]:
-            st = SponsorTags(tag_type=metrics_type, tag=tag, label=description, long_description=long_description)
+    for metrics_type in [constants.SPONSOR_METRICS_TYPE_TECHNICAL,
+                         constants.SPONSOR_METRICS_TYPE_SOCIAL]:
+        for (description, tag, long_description) in \
+                debexpo.model.data.tags.TAGS[metrics_type]:
+            st = SponsorTags(tag_type=metrics_type, tag=tag, label=description,
+                             long_description=long_description)
             logging.info("Adding tag %s" % (tag))
             meta.session.merge(st)
     meta.session.commit()

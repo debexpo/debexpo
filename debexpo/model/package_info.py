@@ -2,7 +2,8 @@
 #
 #   package_info.py — package_info table model
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -56,14 +57,17 @@ from debexpo.model.package_versions import PackageVersion
 PLUGINS_TEMPLATE_DIRS = [os.path.join(path, "plugins")
                          for path in config["pylons.paths"]["templates"]]
 
-t_package_info = sa.Table('package_info', meta.metadata,
+t_package_info = sa.Table(
+    'package_info', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
-    sa.Column('package_version_id', sa.types.Integer, sa.ForeignKey('package_versions.id')),
+    sa.Column('package_version_id', sa.types.Integer,
+              sa.ForeignKey('package_versions.id')),
     sa.Column('from_plugin', sa.types.String(200), nullable=False),
     sa.Column('outcome', sa.types.String(200), nullable=False),
     sa.Column('data', sa.types.Text, nullable=True),
     sa.Column('severity', sa.types.Integer, nullable=False),
     )
+
 
 class PackageInfo(OrmObject):
     foreign = ['package_version']
@@ -79,7 +83,6 @@ class PackageInfo(OrmObject):
     def rich_data(self, value):
         self.data = json.dumps(value)
 
-
     def render(self, render_format):
         """Render the plugin data to the given format"""
 
@@ -92,7 +95,7 @@ class PackageInfo(OrmObject):
             ]
 
         lookup = TemplateLookup(
-            directories = PLUGINS_TEMPLATE_DIRS,
+            directories=PLUGINS_TEMPLATE_DIRS,
             input_encoding='utf-8',
             output_encoding='utf-8',
             default_filters=['escape'],
@@ -109,11 +112,13 @@ class PackageInfo(OrmObject):
                 break
         else:
             # No template file found, something weird happened
-            return "%s (!! no template found)" % self.data # pragma: no cover
+            return "%s (!! no template found)" % self.data  # pragma: no cover
 
-        return template.render_unicode(o = self, h = debexpo.lib.helpers)
+        return template.render_unicode(o=self, h=debexpo.lib.helpers)
+
 
 orm.mapper(PackageInfo, t_package_info, properties={
-    'package_version' : orm.relation(PackageVersion,
+    'package_version': orm.relation(
+        PackageVersion,
         backref=backref('package_info', cascade='all, delete-orphan')),
 })

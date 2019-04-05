@@ -2,7 +2,8 @@
 #
 #   password_reset.py — model for temporary passwords related to password resets
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2011 Asheesh Laroia <paulproteus@debian.org>
 #
@@ -35,7 +36,6 @@ __author__ = 'Asheesh Laroia'
 __copyright__ = 'Copyright © 2011 Asheesh Laroia'
 __license__ = 'MIT'
 
-import os
 import datetime
 
 import sqlalchemy as sa
@@ -45,15 +45,17 @@ from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
 import debexpo.lib.utils
 
-PASSWORD_RESET_VALID_DAYS=7
+PASSWORD_RESET_VALID_DAYS = 7
 
 t_password_reset = sa.Table(
     'password_reset', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
     sa.Column('user_id', sa.types.Integer, sa.ForeignKey('users.id')),
-    sa.Column('temporary_auth_key', sa.types.String(200), nullable=False, unique=False),
+    sa.Column('temporary_auth_key', sa.types.String(200), nullable=False,
+              unique=False),
     sa.Column('valid_until', sa.types.DateTime, nullable=False),
     )
+
 
 class PasswordReset(OrmObject):
     foreign = ['user']
@@ -67,6 +69,7 @@ class PasswordReset(OrmObject):
             days=PASSWORD_RESET_VALID_DAYS)
         return obj
 
+
 orm.mapper(PasswordReset, t_password_reset, properties={
-    'user' : orm.relation(User)
+    'user': orm.relation(User)
 })
