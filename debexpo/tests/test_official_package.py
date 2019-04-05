@@ -42,11 +42,16 @@ from os.path import isfile, isdir, join
 from shutil import rmtree
 from unittest import TestCase
 
-_HTOP_SIG_SHA256 = 'dcd37ff7c12ad4e61525d6a5661721201817f380a278c03ba71f8cc919a93361'
-_HTOP_ORIG_SHA256 = 'becdd93eb41c949750ef2d923d6f7f6157c0d926ebd52d2472a45507eb791d13'
-_BAD_SHA256 = '577115e9ba818b7ea28f2f6aa54229cff4db39c718a320f4a4d0679cb006dee7'
-_TMUX_ORIG_SHA256 = '7f6bf335634fafecff878d78de389562ea7f73a7367f268b66d37ea13617a2ba'
-_0AD_ORIG_SHA256 = 'fdbf774637252dbedf339fbe29b77d7d585ab53a9a5ddede56dd7b8fda66d8ac'
+_HTOP_SIG_SHA256 = \
+    'dcd37ff7c12ad4e61525d6a5661721201817f380a278c03ba71f8cc919a93361'
+_HTOP_ORIG_SHA256 = \
+    'becdd93eb41c949750ef2d923d6f7f6157c0d926ebd52d2472a45507eb791d13'
+_BAD_SHA256 = \
+    '577115e9ba818b7ea28f2f6aa54229cff4db39c718a320f4a4d0679cb006dee7'
+_TMUX_ORIG_SHA256 = \
+    '7f6bf335634fafecff878d78de389562ea7f73a7367f268b66d37ea13617a2ba'
+_0AD_ORIG_SHA256 = \
+    'fdbf774637252dbedf339fbe29b77d7d585ab53a9a5ddede56dd7b8fda66d8ac'
 
 
 class TestOfficialPackage(TestCase):

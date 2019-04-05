@@ -2,7 +2,8 @@
 #
 #   test_changes.py — Changes class test cases
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -40,6 +41,7 @@ from unittest import TestCase
 
 from debexpo.lib.changes import Changes
 
+
 class TestChangesController(TestCase):
 
     def __init__(self, methodName):
@@ -48,17 +50,21 @@ class TestChangesController(TestCase):
         """
         TestCase.__init__(self, methodName)
 
-        self.changes = Changes(filename='debexpo/tests/changes/synce-hal_0.1-1_source.changes')
+        self.changes = Changes(
+            filename='debexpo/tests/changes/synce-hal_0.1-1_source.changes')
 
     def testInitialize(self):
         """
-        Tests whether the two ways of creating a Changes object output the same result.
+        Tests whether the two ways of creating a Changes object output the same
+        result.
         """
-        f = open(os.path.dirname(__file__) + '/changes/synce-hal_0.1-1_source.changes')
+        f = open(os.path.dirname(__file__) +
+                 '/changes/synce-hal_0.1-1_source.changes')
         contents = f.read()
         f.close()
 
-        a = Changes(filename=os.path.dirname(__file__) + '/changes/synce-hal_0.1-1_source.changes')
+        a = Changes(filename=os.path.dirname(__file__) +
+                    '/changes/synce-hal_0.1-1_source.changes')
         b = Changes(string=contents)
 
         self.assertEqual(a['Source'], b['Source'])
@@ -74,7 +80,10 @@ class TestChangesController(TestCase):
         """
         Tests Changes.get_files.
         """
-        self.assertEqual(self.changes.get_files(), ['synce-hal_0.1-1.dsc', 'synce-hal_0.1.orig.tar.gz', 'synce-hal_0.1-1.diff.gz'])
+        self.assertEqual(self.changes.get_files(),
+                         ['synce-hal_0.1-1.dsc',
+                          'synce-hal_0.1.orig.tar.gz',
+                          'synce-hal_0.1-1.diff.gz'])
 
     def testGetComponent(self):
         """

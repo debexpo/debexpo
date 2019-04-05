@@ -2,7 +2,8 @@
 #
 #   __init__.py — Pylons application test package
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -44,14 +45,11 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
-import os
-import sys
 import md5
 import tempfile
 from datetime import datetime
 from unittest import TestCase
 
-from paste.deploy import loadapp
 from paste.script.appinstall import SetupCommand
 from pylons import url
 from routes.util import URLGenerator
@@ -72,6 +70,7 @@ __all__ = ['environ', 'url', 'TestController']
 SetupCommand('setup-app').run([pylons.test.pylonsapp.config['__file__']])
 
 environ = {}
+
 
 class TestController(TestCase):
     """
@@ -100,7 +99,7 @@ xOwJ1heEnfmgPkuiz7jFCAo=
 =xgUN
 -----END PGP PUBLIC KEY BLOCK-----"""
 
-    _GPG_ID= '256E/E871F3DF'
+    _GPG_ID = '256E/E871F3DF'
 
     def __init__(self, *args, **kwargs):
         wsgiapp = pylons.test.pylonsapp
@@ -111,9 +110,9 @@ xOwJ1heEnfmgPkuiz7jFCAo=
 
     def _setup_models(self):
         """Create all models in the test database."""
-        # Since we are using a sqlite database in memory (at least that's what the default in
-        # test.ini is), we need to create all the tables necessary. So let's import all the models
-        # and create all the tables.
+        # Since we are using a sqlite database in memory (at least that's what
+        # the default in test.ini is), we need to create all the tables
+        # necessary. So let's import all the models and create all the tables.
         import_all_models()
         meta.metadata.create_all(bind=meta.engine)
 
@@ -148,7 +147,6 @@ xOwJ1heEnfmgPkuiz7jFCAo=
             meta.session.merge(user)
             meta.session.commit()
 
-
     def _setup_example_user(self, gpg=False):
         """Add an example user.
 
@@ -161,7 +159,8 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         """
         # Create a test user and save it.
         user = User(name='Test user', email='email@example.com',
-                    password=md5.new('password').hexdigest(), lastlogin=datetime.now())
+                    password=md5.new('password').hexdigest(),
+                    lastlogin=datetime.now())
 
         meta.session.add(user)
         meta.session.commit()
@@ -186,7 +185,9 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         This method must be used in the tearDown method of derived
         test classes that use _setup_example_user.
         """
-        meta.session.query(User).filter(User.email=='email@example.com').delete()
+        meta.session.query(User) \
+            .filter(User.email == 'email@example.com') \
+            .delete()
         meta.session.commit()
 
     def _setup_example_package(self):
@@ -232,18 +233,19 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         This method must be used in the tearDown method of derived
         test classes that use _setup_example_package.
         """
-        package = meta.session.query(
-                Package).filter(Package.name == 'testpackage').first()
+        package = meta.session.query(Package) \
+            .filter(Package.name == 'testpackage') \
+            .first()
         if not package:
             return
 
-        package_version = meta.session.query(
-                PackageVersion).filter(
-                        PackageVersion.package == package).first()
+        package_version = meta.session.query(PackageVersion) \
+            .filter(PackageVersion.package == package) \
+            .first()
 
-        package_source = meta.session.query(
-                SourcePackage).filter(
-                        SourcePackage.package_version == package_version).first()
+        package_source = meta.session.query(SourcePackage) \
+            .filter(SourcePackage.package_version == package_version) \
+            .first()
 
         meta.session.delete(package_source)
         meta.session.delete(package_version)
