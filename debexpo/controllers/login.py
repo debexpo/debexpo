@@ -2,7 +2,8 @@
 #
 #   login.py — Login controller
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -38,9 +39,9 @@ __license__ = 'MIT'
 
 import logging
 from datetime import datetime
-from passlib.hash import bcrypt
 
-from debexpo.lib.base import BaseController, validate, config, c, session, _, redirect, request, render, url
+from debexpo.lib.base import BaseController, validate, config, c, session, _, \
+        redirect, request, render, url
 from debexpo.lib.schemas import LoginForm
 from debexpo.model import meta
 from debexpo.model.users import User
@@ -51,6 +52,7 @@ import debexpo.model.user_upload_key
 import debexpo.lib.utils
 
 log = logging.getLogger(__name__)
+
 
 class LoginController(BaseController):
     """
@@ -74,8 +76,10 @@ class LoginController(BaseController):
 
         u = None
         try:
-            u = meta.session.query(User).filter_by(email=self.form_result['email']).filter_by(verification=None).one()
-        except:
+            u = meta.session.query(User) \
+                    .filter_by(email=self.form_result['email']) \
+                    .filter_by(verification=None).one()
+        except Exception:
             log.debug('Invalid email')
             c.message = _('Invalid email or password')
             return self.index(True)
@@ -92,20 +96,24 @@ class LoginController(BaseController):
 
         u.lastlogin = datetime.now()
 
-        # Clear the 'path_before_login' once it was used once. This is necessary to make sure users won't be redirected
-        # to pages which don't exist anymore, as the path may have been stored in the session for a long time. Consider
-        # following use case:
-        # a) User is not logged in
-        # b) User opens the URL /package/sunflow/delete/... in the browser
-        # c) User is being redirected to /login, he logs in and is being redirected
-        #    to the URL in b). This deletes the package, but leaves the URL in the session.
-        # d) Once the user is trying to log in again - possibly after several weeks, the URL from
-        #    b) is still in the session - but it may not exist anymore.
+        # Clear the 'path_before_login' once it was used once. This is necessary
+        # to make sure users won't be redirected to pages which don't exist
+        # anymore, as the path may have been stored in the session for a long
+        # time. Consider following use case:
+        #
+        # - a) User is not logged in
+        # - b) User opens the URL /package/sunflow/delete/... in the browser
+        # - c) User is being redirected to /login, he logs in and is being
+        #      redirected to the URL in b). This deletes the package, but leaves
+        #      the URL in the session.
+        # - d) Once the user is trying to log in again - possibly after several
+        #      weeks, the URL from b) is still in the session - but it may not
+        #      exist anymore.
         if 'path_before_login' in session:
-                path = session['path_before_login']
-                del(session['path_before_login'])
+            path = session['path_before_login']
+            del(session['path_before_login'])
         else:
-                path = url('my')
+            path = url('my')
 
         # Purge the session upload key
         keys = meta.session.query(debexpo.model.user_upload_key.UserUploadKey
@@ -125,10 +133,10 @@ class LoginController(BaseController):
             If True, display the form even if request.method is POST.
         """
 
-
         c.request = request
         if request.method == 'POST' and get is False:
-            log.debug('Login form submitted with email = "%s"' % request.POST.get('email'))
+            log.debug('Login form submitted with email = "%s"' %
+                      request.POST.get('email'))
             return self._login()
         else:
             return render('/login/index.mako')

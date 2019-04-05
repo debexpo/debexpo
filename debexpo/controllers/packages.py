@@ -2,7 +2,8 @@
 #
 #   packages.py — Packages controller
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -43,7 +44,9 @@ import datetime
 import apt_pkg
 from pylons.i18n import get_lang
 
-from debexpo.lib.base import *
+from debexpo.lib.base import BaseController, _, c, config, url, render, abort, \
+    response, session, request, redirect
+
 from webhelpers import feedgenerator
 
 from debexpo.model import meta
@@ -62,19 +65,20 @@ class PackageGroups(object):
     """
     def __init__(self, label, deltamin, deltamax, packages):
         self.label = label
-        #log.debug("label: %s min: %s, max: %s", label, deltamin, deltamax)
-        if (not deltamin == None and not deltamax == None):
-                self.packages = [x for x in packages if
-                    x.package_versions[-1].uploaded <= deltamin and
-                    x.package_versions[-1].uploaded > deltamax]
-        elif (deltamin == None and not deltamax == None):
-                self.packages = [x for x in packages if
-                    x.package_versions[-1].uploaded > deltamax]
-        elif (not deltamin == None and deltamax == None):
-                self.packages = [x for x in packages if
-                    x.package_versions[-1].uploaded <= deltamin]
+        # log.debug("label: %s min: %s, max: %s", label, deltamin, deltamax)
+        if (deltamin is not None and deltamax is not None):
+            self.packages = [x for x in packages if
+                             x.package_versions[-1].uploaded <= deltamin and
+                             x.package_versions[-1].uploaded > deltamax]
+        elif (deltamin is None and deltamax is not None):
+            self.packages = [x for x in packages if
+                             x.package_versions[-1].uploaded > deltamax]
+        elif (deltamin is not None and deltamax is None):
+            self.packages = [x for x in packages if
+                             x.package_versions[-1].uploaded <= deltamin]
         else:
-                raise("deltaamin == None and deltamax == None")
+            raise("deltaamin == None and deltamax == None")
+
 
 class PackagesController(BaseController):
     def _get_packages(self, package_filter=None, package_version_filter=None):
@@ -87,7 +91,8 @@ class PackagesController(BaseController):
         ``package_version_filter``
             An SQLAlchemy filter on the package.
         """
-        # I want to use apt_pkg.CompareVersions later, so init() needs to be called.
+        # I want to use apt_pkg.CompareVersions later, so init() needs to be
+        # called.
         apt_pkg.init()
 
         log.debug('Getting package list')
@@ -110,12 +115,25 @@ class PackagesController(BaseController):
     def _get_timedeltas(self, packages):
         deltas = []
         now = datetime.datetime.now()
-        deltas.append(PackageGroups(_("Today"), None, now - datetime.timedelta(days=1), packages))
-        deltas.append(PackageGroups(_("Yesterday"), now - datetime.timedelta(days=1), now - datetime.timedelta(days=2), packages))
-        deltas.append(PackageGroups(_("Some days ago"), now - datetime.timedelta(days=2), now - datetime.timedelta(days=7), packages))
-        deltas.append(PackageGroups(_("Older packages"), now - datetime.timedelta(days=7), now - datetime.timedelta(days=30), packages))
-        deltas.append(PackageGroups(_("Uploaded long ago"), now - datetime.timedelta(days=30), None, packages))
-        return deltas;
+        deltas.append(PackageGroups(_("Today"), None, now -
+                                    datetime.timedelta(days=1),
+                                    packages))
+        deltas.append(PackageGroups(_("Yesterday"), now -
+                                    datetime.timedelta(days=1),
+                                    now - datetime.timedelta(days=2),
+                                    packages))
+        deltas.append(PackageGroups(_("Some days ago"), now -
+                                    datetime.timedelta(days=2),
+                                    now - datetime.timedelta(days=7),
+                                    packages))
+        deltas.append(PackageGroups(_("Older packages"), now -
+                                    datetime.timedelta(days=7),
+                                    now - datetime.timedelta(days=30),
+                                    packages))
+        deltas.append(PackageGroups(_("Uploaded long ago"), now -
+                                    datetime.timedelta(days=30),
+                                    None, packages))
+        return deltas
 
     def index(self):
         """
@@ -137,21 +155,24 @@ class PackagesController(BaseController):
         feed = feedgenerator.Rss201rev2Feed(
             title=_('%s packages' % config['debexpo.sitename']),
             link=config['debexpo.server'] + url('packages'),
-            description=_('A feed of packages on %s' % config['debexpo.sitename']),
-            language=get_lang()[0])
+            description=_('A feed of packages on %s' %
+                          config['debexpo.sitename']), language=get_lang()[0])
 
         if filter == 'section':
-            packages = self._get_packages(package_version_filter=(PackageVersion.section == id))
+            packages = self._get_packages(
+                package_version_filter=(PackageVersion.section == id))
 
         elif filter == 'uploader':
             user = self._get_user(id)
             if user is not None:
-                packages = self._get_packages(package_filter=(Package.user_id == user.id))
+                packages = self._get_packages(
+                    package_filter=(Package.user_id == user.id))
             else:
                 packages = []
 
         elif filter == 'maintainer':
-            packages = self._get_packages(package_version_filter=(PackageVersion.maintainer == id))
+            packages = self._get_packages(
+                package_version_filter=(PackageVersion.maintainer == id))
 
         else:
             packages = self._get_packages()
@@ -168,8 +189,10 @@ class PackagesController(BaseController):
 
             desc += '<br/><br/>' + item.description.replace('\n', '<br/>')
 
-            feed.add_item(title='%s %s' % (item.name, item.package_versions[-1].version),
-                link=config['debexpo.server'] + url('package', packagename=item.name),
+            feed.add_item(title='%s %s' % (
+                item.name, item.package_versions[-1].version),
+                link=config['debexpo.server'] + url('package',
+                                                    packagename=item.name),
                 description=desc, unique_id=str(item.package_versions[-1].id))
 
         response.content_type = 'application/rss+xml'
@@ -182,7 +205,8 @@ class PackagesController(BaseController):
         """
         log.debug('Package listing on section = "%s" requested' % id)
 
-        packages = self._get_packages(package_version_filter=(PackageVersion.section == id))
+        packages = self._get_packages(
+            package_version_filter=(PackageVersion.section == id))
 
         c.config = config
         c.packages = packages
@@ -200,14 +224,13 @@ class PackagesController(BaseController):
         user = self._get_user(id)
 
         if user is not None:
-            packages = self._get_packages(package_filter=(Package.user_id == user.id))
-            username = user.name
-            email = user.email
+            packages = self._get_packages(
+                package_filter=(Package.user_id == user.id))
         else:
             log.warning('Could not find user')
             abort(404)
 
-        c.countries = { -1: '' }
+        c.countries = {-1: ''}
         for country in meta.session.query(UserCountry).all():
             c.countries[country.id] = country.name
         c.constants = constants
@@ -229,7 +252,9 @@ class PackagesController(BaseController):
             session.save()
             redirect(url('login'))
 
-        details = meta.session.query(User).filter_by(id=session['user_id']).first()
+        details = meta.session.query(User) \
+            .filter_by(id=session['user_id']) \
+            .first()
         if not details:
             redirect(url(controller='logout'))
 
@@ -239,9 +264,11 @@ class PackagesController(BaseController):
         """
         List of packages depending on the Maintainer email address.
         """
-        log.debug('Package listing on package_version.maintainer = "%s" requested', id)
+        log.debug('Package listing on package_version.maintainer = "%s" '
+                  'requested', id)
 
-        packages = self._get_packages(package_version_filter=(PackageVersion.maintainer == id))
+        packages = self._get_packages(
+            package_version_filter=(PackageVersion.maintainer == id))
 
         c.config = config
         c.packages = packages

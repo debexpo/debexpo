@@ -2,7 +2,8 @@
 #
 #   debian.py — Debian controller for accessing the repository
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -45,9 +46,12 @@ import os
 import logging
 import paste.fileapp
 
-from debexpo.lib.base import *
+from debexpo.lib.base import BaseController
+from pylons import config, request
+from pylons.controllers.util import abort
 
 log = logging.getLogger(__name__)
+
 
 class DebianController(BaseController):
     """
@@ -56,8 +60,8 @@ class DebianController(BaseController):
 
     def index(self, filename):
         """
-        Entry point to the controller. Opens a file in the repository using Paste's
-        FileApp.
+        Entry point to the controller. Opens a file in the repository using
+        Paste's FileApp.
         """
         file = os.path.join(config['debexpo.repository'], filename)
         log.debug('%s requested' % filename)

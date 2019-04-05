@@ -2,7 +2,8 @@
 #
 #   my.py — My Controller
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -39,22 +40,25 @@ __license__ = 'MIT'
 import logging
 import tempfile
 
-from debexpo.lib.base import *
+from debexpo.lib.base import BaseController, c, config, redirect, url, \
+    abort, validate, session, request, _, render
 from debexpo.lib import constants, form
-from debexpo.lib.schemas import DetailsForm, GpgForm, PasswordForm, OtherDetailsForm, MetricsForm
+from debexpo.lib.schemas import DetailsForm, GpgForm, PasswordForm, \
+    OtherDetailsForm, MetricsForm
 from debexpo.lib.gnupg import GnuPG
 
 from debexpo.model import meta
 from debexpo.model.users import User
 from debexpo.model.user_countries import UserCountry
-from debexpo.model.sponsor_metrics import SponsorMetrics, SponsorMetricsTags, SponsorTags
-from debexpo.model.data_store import DataStore
+from debexpo.model.sponsor_metrics import SponsorMetrics, SponsorMetricsTags, \
+    SponsorTags
 
 from sqlalchemy.orm import joinedload
 
 import debexpo.lib.utils
 
 log = logging.getLogger(__name__)
+
 
 class MyController(BaseController):
     """
@@ -77,7 +81,7 @@ class MyController(BaseController):
         log.debug('Validating details form')
         try:
             fields = form.validate(DetailsForm, user_id=self.user.id)
-        except Exception, e:
+        except Exception as e:
             log.error('Failed validation')
             return form.htmlfill(self.index(get=True), e)
 
@@ -125,8 +129,6 @@ class MyController(BaseController):
                 abort(500)
             log.debug(out)
 
-
-
         meta.session.commit()
 
         log.debug('Saved key changes and redirecting')
@@ -140,7 +142,8 @@ class MyController(BaseController):
         log.debug('Password form validated successfully')
 
         # Simply set password.
-        self.user.password = debexpo.lib.utils.hash_password(self.form_result['password_new'])
+        self.user.password = debexpo.lib.utils \
+            .hash_password(self.form_result['password_new'])
         meta.session.commit()
         log.debug('Saved new password and redirecting')
 
@@ -190,23 +193,28 @@ class MyController(BaseController):
 
         sm = SponsorMetrics(user_id=session['user_id'])
         sm.contact = int(self.form_result['preferred_contact_method'])
-        #XXX TODO: WTF?! Find out why on earth package_types is no string
+        # XXX TODO: WTF?! Find out why on earth package_types is no string
         sm.types = str(self.form_result['package_types'])
         sm.guidelines_text = self.form_result['packaging_guideline_text']
         sm.social_requirements = self.form_result['social_requirements']
         sm.availability = self.form_result['availability']
 
-        if self.form_result['packaging_guidelines'] == constants.SPONSOR_GUIDELINES_TYPE_URL:
+        if (self.form_result['packaging_guidelines'] ==
+                constants.SPONSOR_GUIDELINES_TYPE_URL):
             sm.guidelines = constants.SPONSOR_GUIDELINES_TYPE_URL
-        elif self.form_result['packaging_guidelines'] == constants.SPONSOR_GUIDELINES_TYPE_TEXT:
+        elif (self.form_result['packaging_guidelines'] ==
+                constants.SPONSOR_GUIDELINES_TYPE_TEXT):
             sm.guidelines = constants.SPONSOR_GUIDELINES_TYPE_TEXT
         else:
             sm.guidelines = constants.SPONSOR_GUIDELINES_TYPE_NONE
 
         for tag in meta.session.query(SponsorTags).all():
             if tag.tag in self.form_result:
-                log.debug("Weighten tag %s to %s" % (tag.tag, self.form_result[tag.tag]))
-                metrics = SponsorMetricsTags(tag=tag.tag, user_id=session['user_id'], weight=self.form_result[tag.tag])
+                log.debug("Weighten tag %s to %s" % (tag.tag,
+                          self.form_result[tag.tag]))
+                metrics = SponsorMetricsTags(tag=tag.tag,
+                                             user_id=session['user_id'],
+                                             weight=self.form_result[tag.tag])
                 sm.tags.append(metrics)
 
         meta.session.merge(sm)
@@ -219,8 +227,9 @@ class MyController(BaseController):
         Controller entry point. Displays forms to change user details.
 
         ``get``
-            Whether to ignore request.method and assume it's a GET. This is useful
-            for validators to re-display the form if there's something wrong.
+            Whether to ignore request.method and assume it's a GET. This is
+            useful for validators to re-display the form if there's something
+            wrong.
         """
         # Get User object.
         log.debug('Getting user object for user_id = "%s"' % session['user_id'])
@@ -237,14 +246,15 @@ class MyController(BaseController):
         if request.method == 'POST' and get is False:
             log.debug('A form has been submit')
             try:
-                return { 'details' : self._details,
-                  'gpg' : self._gpg,
-                  'password' : self._password,
-                  'other_details' : self._other_details,
-                  'metrics' : self._metrics,
-                }[request.params['form']]()
+                return {'details': self._details,
+                        'gpg': self._gpg,
+                        'password': self._password,
+                        'other_details': self._other_details,
+                        'metrics': self._metrics,
+                        }[request.params['form']]()
             except KeyError:
-                log.error('Could not find form name "%s"; defaulting to main page' % (request.params['form']))
+                log.error('Could not find form name "%s"; defaulting to main '
+                          'page' % (request.params['form']))
                 pass
 
         log.debug('Populating template context')
@@ -253,7 +263,7 @@ class MyController(BaseController):
         c.user = self.user
 
         # Create the countries values.
-        countries = { -1: '' }
+        countries = {-1: ''}
 
         for country in meta.session.query(UserCountry).all():
             countries[country.id] = country.name
@@ -295,17 +305,20 @@ class MyController(BaseController):
             c.metrics = meta.session.query(SponsorMetrics)\
                 .options(joinedload(SponsorMetrics.user))\
                 .options(joinedload(SponsorMetrics.tags))\
-                .filter_by(user_id = session['user_id'])\
+                .filter_by(user_id=session['user_id'])\
                 .first()
-            c.technical_tags = meta.session.query(SponsorTags).filter_by(tag_type=constants.SPONSOR_METRICS_TYPE_TECHNICAL).all()
-            c.social_tags = meta.session.query(SponsorTags).filter_by(tag_type=constants.SPONSOR_METRICS_TYPE_SOCIAL).all()
+            c.technical_tags = meta.session.query(SponsorTags) \
+                .filter_by(tag_type=constants.SPONSOR_METRICS_TYPE_TECHNICAL) \
+                .all()
+            c.social_tags = meta.session.query(SponsorTags) \
+                .filter_by(tag_type=constants.SPONSOR_METRICS_TYPE_SOCIAL) \
+                .all()
             if not c.metrics:
                 # Set some sane defaults
                 log.debug("Generating new defaults for sponsor metrics")
                 c.metrics = SponsorMetrics()
                 c.metrics.availability = constants.SPONSOR_METRICS_PRIVATE
                 c.metrics.guidelines = constants.SPONSOR_GUIDELINES_TYPE_NONE
-
 
         log.debug('Rendering page')
         return render('/my/index.mako')

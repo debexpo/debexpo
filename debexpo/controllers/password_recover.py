@@ -2,7 +2,8 @@
 #
 #   password_recover.py -- controller for doing web-based password recovery
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -34,12 +35,15 @@ Holds the PasswordResetController class.
 """
 
 __author__ = 'Asheesh Laroia'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner, Copyright © 2011 Asheesh Laroia'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, ' \
+    'Copyright © 2010 Jan Dittberner, ' \
+    'Copyright © 2011 Asheesh Laroia'
 __license__ = 'MIT'
 
 import logging
 
-from debexpo.lib.base import BaseController, validate, c,  _, request, render, url, abort, config
+from debexpo.lib.base import BaseController, validate, c,  _, request, render, \
+    url, abort, config
 from debexpo.lib.schemas import PasswordResetForm
 from debexpo.lib.email import Email
 from debexpo.model import meta
@@ -48,6 +52,7 @@ from debexpo.model.password_reset import PasswordReset
 import debexpo.lib.utils
 
 log = logging.getLogger(__name__)
+
 
 class PasswordRecoverController(BaseController):
     """
@@ -61,8 +66,10 @@ class PasswordRecoverController(BaseController):
         """
         log.debug('Form validated successfully')
         try:
-            u = meta.session.query(User).filter_by(email=self.form_result['email']).one()
-        except:
+            u = meta.session.query(User) \
+                .filter_by(email=self.form_result['email']) \
+                .one()
+        except Exception:
             log.debug('Invalid email address somehow')
             c.message = _('We do not have an account with that email address')
             return self.index(get=True)
@@ -77,8 +84,9 @@ class PasswordRecoverController(BaseController):
         meta.session.commit()
 
         recipient = u.email
-        password_reset_url = 'http://' + config['debexpo.sitename'] + url.current(
-            action='actually_reset_password', id=password_reset_data.temporary_auth_key)
+        password_reset_url = 'http://' + config['debexpo.sitename'] + \
+            url.current(action='actually_reset_password',
+                        id=password_reset_data.temporary_auth_key)
         email.send([recipient], password_reset_url=password_reset_url)
 
         # FIXME: This should be a HTTP redirect
@@ -94,7 +102,7 @@ class PasswordRecoverController(BaseController):
         try:
             pr = meta.session.query(PasswordReset).filter_by(
                 temporary_auth_key=id).one()
-        except:
+        except Exception:
             log.debug('Invalid temporary auth key')
             abort(404,
                   "We do not know about that particular password reset key.")
@@ -108,7 +116,8 @@ class PasswordRecoverController(BaseController):
         # FIXME: We should not set u.password directly. Instead, we should
         # use a helper from the User model or something.
         u.password = debexpo.lib.utils.hash_password(raw_password)
-        u.verification = None # This sets the user's email address as "confirmed"
+        # This sets the user's email address as "confirmed"
+        u.verification = None
         meta.session.commit()
 
         log.debug('Password reset successful; saving user object')

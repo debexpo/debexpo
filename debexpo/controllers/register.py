@@ -2,7 +2,8 @@
 #
 #   register.py — Register Controller
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -37,10 +38,10 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import logging
-import random
 from datetime import datetime
 
-from debexpo.lib.base import *
+from debexpo.lib.base import BaseController, c, config, url, render, request, \
+    abort, validate
 from debexpo.lib import constants
 from debexpo.lib.email import Email
 from debexpo.lib.schemas import RegisterForm
@@ -51,6 +52,7 @@ from debexpo.model.users import User
 import debexpo.lib.utils
 
 log = logging.getLogger(__name__)
+
 
 class RegisterController(BaseController):
 
@@ -72,7 +74,8 @@ class RegisterController(BaseController):
         """
         log.debug('Sending activation email')
         email = Email('register_activate')
-        activate_url = 'http://' + config['debexpo.sitename'] + url.current(action='activate', id=key)
+        activate_url = 'http://' + config['debexpo.sitename'] + \
+            url.current(action='activate', id=key)
         email.send([recipient], activate_url=activate_url)
 
     @validate(schema=RegisterForm(), form='register')
@@ -86,13 +89,14 @@ class RegisterController(BaseController):
         key = debexpo.lib.utils.random_hash()
 
         u = User(name=self.form_result['name'],
-            email=self.form_result['email'],
-            password=debexpo.lib.utils.hash_password(self.form_result['password']),
-            lastlogin=datetime.now(),
-            verification=key)
+                 email=self.form_result['email'],
+                 password=debexpo.lib.utils.hash_password(
+                     self.form_result['password']),
+                 lastlogin=datetime.now(),
+                 verification=key)
 
         if self.form_result['sponsor'] == '1':
-            u.status=constants.USER_STATUS_DEVELOPER
+            u.status = constants.USER_STATUS_DEVELOPER
 
         meta.session.add(u)
         meta.session.commit()

@@ -2,7 +2,8 @@
 #
 #   error.py — The application's ErrorController object
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -40,10 +41,13 @@ import cgi
 import os.path
 
 import paste.fileapp
-from pylons.middleware import error_document_template, media_path
+from pylons.middleware import media_path
+from pylons import tmpl_context as c, request, response
+from pylons.templating import render_mako as render
 from webhelpers.html.builder import literal
 
-from debexpo.lib.base import *
+from debexpo.lib.base import BaseController
+
 
 class ErrorController(BaseController):
     """
@@ -62,7 +66,8 @@ class ErrorController(BaseController):
         """
         resp = request.environ.get('pylons.original_response')
         orig_request = request.environ.get('pylons.original_request')
-        c.message = literal(resp.body) or cgi.escape(request.GET.get('message', ''))
+        c.message = literal(resp.body) or cgi.escape(request.GET.get('message',
+                                                                     ''))
         c.code = cgi.escape(request.GET.get('code', str(resp.status_int)))
         response.headers = resp.headers
 
@@ -91,7 +96,8 @@ class ErrorController(BaseController):
 
     def _serve_file(self, path):
         """
-        Calls Paste's FileApp (a WSGI application) to serve the file at the specified path.
+        Calls Paste's FileApp (a WSGI application) to serve the file at the
+        specified path.
 
         ``path``
             Path of the file to serve.

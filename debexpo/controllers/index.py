@@ -2,7 +2,8 @@
 #
 #   index.py — index controller
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -38,18 +39,14 @@ __license__ = 'MIT'
 
 import logging
 
-from debexpo.lib.base import BaseController, c, config, render, session
-from debexpo.lib import constants
-from debexpo.controllers.packages import PackagesController, PackageGroups
-from webhelpers.html import literal
+from debexpo.lib.base import BaseController, c, config, render
+from debexpo.controllers.packages import PackagesController
 from datetime import datetime, timedelta
 from debexpo.model.package_versions import PackageVersion
 from debexpo.model.packages import Package
-from debexpo.model.users import User
-
-from debexpo.model import meta
 
 log = logging.getLogger(__name__)
+
 
 class IndexController(BaseController):
 
@@ -57,9 +54,10 @@ class IndexController(BaseController):
         pkg_controller = PackagesController()
 
         c.config = config
+        max_time = datetime.today() - timedelta(days=30)
         c.packages = pkg_controller._get_packages(
-                        package_version_filter=(PackageVersion.uploaded >= (datetime.today() - timedelta(days=30))),
-                        package_filter=(Package.needs_sponsor == 1)
+                package_version_filter=(PackageVersion.uploaded >= max_time),
+                package_filter=(Package.needs_sponsor == 1)
             )
         c.deltas = pkg_controller._get_timedeltas(c.packages)
         c.deltas.pop()
@@ -81,4 +79,3 @@ class IndexController(BaseController):
         """Return an introduction page for package maintainers"""
         c.config = config
         return render('/index/intro-maintainers.mako')
-
