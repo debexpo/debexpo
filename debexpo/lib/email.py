@@ -2,7 +2,8 @@
 #
 #   email.py — Helper class for sending and receiving email
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -30,15 +31,19 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 """
-Holds helper class for sending and receiving email. The latter is achieved to fetch mails from an IMAP mailbox
+Holds helper class for sending and receiving email. The latter is achieved to
+fetch mails from an IMAP mailbox
 """
 
 # You don't like that line?
-# Come over it. Or, alternatively don't call your local modules like Python standard libraries
+# Come over it. Or, alternatively don't call your local modules like Python
+# standard libraries
 from __future__ import absolute_import
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner, Copyright © 2011 Arno Töll'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, ' \
+    'Copyright © 2010 Jan Dittberner, ' \
+    'Copyright © 2011 Arno Töll'
 __license__ = 'MIT'
 
 import email
@@ -62,6 +67,7 @@ import email.parser
 
 log = logging.getLogger(__name__)
 
+
 class FakeC(object):
     def __init__(self, **kw):
         for key in kw:
@@ -69,6 +75,7 @@ class FakeC(object):
             if isinstance(value, str):
                 value = value.decode("utf-8")
             setattr(self, key, value)
+
 
 class Email(object):
     def __init__(self, template):
@@ -87,11 +94,13 @@ class Email(object):
         self.auth = None
 
         # Look whether auth is required.
-        if 'smtp_username' in pylons.config['global_conf'] and 'smtp_password' in pylons.config['global_conf']:
-            if pylons.config['global_conf']['smtp_username'] != '' and pylons.config['global_conf']['smtp_password'] != '':
+        if ('smtp_username' in pylons.config['global_conf'] and 'smtp_password'
+                in pylons.config['global_conf']):
+            if (pylons.config['global_conf']['smtp_username'] != '' and
+                    pylons.config['global_conf']['smtp_password'] != ''):
                 self.auth = {
-                    'username' : pylons.config['global_conf']['smtp_username'],
-                    'password' : pylons.config['global_conf']['smtp_password']
+                    'username': pylons.config['global_conf']['smtp_username'],
+                    'password': pylons.config['global_conf']['smtp_password']
                 }
 
     def send(self, recipients=None, **kwargs):
@@ -107,17 +116,23 @@ class Email(object):
         log.debug('Getting mail template: %s' % self.template)
 
         to = ', '.join(recipients)
-        sender = '%s <%s>' % (pylons.config['debexpo.sitename'], pylons.config['debexpo.email'])
+        sender = '%s <%s>' % (pylons.config['debexpo.sitename'],
+                              pylons.config['debexpo.email'])
 
         c = FakeC(to=to, sender=sender, config=pylons.config, **kwargs)
 
-        template_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'templates/email/%s.mako' % self.template)
+        template_file = os.path.join(os.path.dirname(os.path.dirname(__file__)),
+                                     'templates/email/%s.mako' % self.template)
         lookup = TemplateLookup(directories=[os.path.dirname(template_file)])
-        template = Template(filename=template_file, lookup=lookup, module_directory=pylons.config['app_conf']['cache_dir'])
-        # Temporarily set up routes.util.url_for as the URL renderer used for h.url() in templates
+        template = Template(
+                filename=template_file, lookup=lookup,
+                module_directory=pylons.config['app_conf']['cache_dir'])
+        # Temporarily set up routes.util.url_for as the URL renderer used for
+        # h.url() in templates
         pylons.url._push_object(routes.util.url_for)
 
-        rendered_message = template.render_unicode(_=gettext, h=h, c=c).encode("utf-8")
+        rendered_message = template.render_unicode(_=gettext, h=h, c=c) \
+            .encode("utf-8")
 
         try:
             # Parse the email message
@@ -126,21 +141,25 @@ class Email(object):
             # Parsing the message failed, let's send the raw data...
             message = rendered_message.encode("utf-8")
         else:
-            # By default, python base64-encodes all UTF-8 text which is annoying. Force quoted-printable
-            email.charset.add_charset('utf-8', email.charset.QP, email.charset.QP, 'utf-8')
+            # By default, python base64-encodes all UTF-8 text which is
+            # annoying. Force quoted-printable
+            email.charset.add_charset('utf-8', email.charset.QP,
+                                      email.charset.QP, 'utf-8')
             # Create a new, MIME-aware message
-            new_message = email.mime.text.MIMEText(message.get_payload().decode("utf-8"), "plain", "utf-8")
+            new_message = email.mime.text.MIMEText(
+                message.get_payload().decode("utf-8"), "plain", "utf-8")
 
             for key in message.keys():
                 try:
                     contents = message[key].decode("utf-8").split(u" ")
                 except UnicodeDecodeError:
-                    # Bad encoding in the header, don't try to do anything more...
+                    # Bad encoding in the header, don't try to do anything
+                    # more...
                     header = message[key]
                 else:
-                    # Do some RFC2047-encoding of the headers.  We split on word-boundaries so that
-                    # python doesn't encode the whole header in a RFC2047 blob, but only what's
-                    # needed.
+                    # Do some RFC2047-encoding of the headers.  We split on
+                    # word-boundaries so that python doesn't encode the whole
+                    # header in a RFC2047 blob, but only what's needed.
                     header = email.header.Header()
                     for c in contents:
                         header.append(c)
@@ -170,18 +189,18 @@ class Email(object):
 
         log.debug('Sending email to %s' % ', '.join(recipients))
         result = session.sendmail(pylons.config['debexpo.bounce_email'],
-                recipients, message)
+                                  recipients, message)
 
         if result:
             # Something went wrong.
             for recipient in result.keys():
-                log.critical('Failed sending to %s: %s, %s' % (recipient, result[recipient][0],
-                    result[recipient][1]))
+                log.critical('Failed sending to %s: %s, %s' %
+                             (recipient, result[recipient][0],
+                              result[recipient][1]))
         else:
             log.debug('Successfully sent')
 
-
-    def _check_error(self, msg, err, data = None):
+    def _check_error(self, msg, err, data=None):
         if err != 'OK':
             if (data):
                 log.error("%s failed: %s" % (msg, data))
@@ -194,10 +213,12 @@ class Email(object):
 
         try:
             (_, count, first, last, _) = self.nntp.group(list_name)
-            log.debug("Fetching messages %s to %s on %s" % (changed_since, last, list_name))
+            log.debug("Fetching messages %s to %s on %s" % (changed_since, last,
+                                                            list_name))
         except Exception as e:
             self.established = False
-            log.error("Failed to communicate with NNTP server %s: %s" % (pylons.config['debexpo.nntp_server'], str(e)))
+            log.error("Failed to communicate with NNTP server %s: %s" %
+                      (pylons.config['debexpo.nntp_server'], str(e)))
             return
 
         try:
@@ -205,13 +226,15 @@ class Email(object):
 
             for (msg_num, _, _, _, msg_id, _, _, _) in messages:
                 (_, _, _, response) = self.nntp.article(msg_id)
-                ep = email.parser.Parser().parsestr(reduce(lambda x,xs: x+"\n"+xs, response))
-                ep['X-Debexpo-Message-ID'] = msg_id;
-                ep['X-Debexpo-Message-Number'] = msg_num;
+                ep = email.parser.Parser() \
+                    .parsestr(reduce(lambda x, xs: x+"\n"+xs, response))
+                ep['X-Debexpo-Message-ID'] = msg_id
+                ep['X-Debexpo-Message-Number'] = msg_num
                 yield ep
         except Exception as e:
             self.established = False
-            log.error("Failed to communicate with NNTP server %s: %s" % (pylons.config['debexpo.nntp_server'], str(e)))
+            log.error("Failed to communicate with NNTP server %s: %s" %
+                      (pylons.config['debexpo.nntp_server'], str(e)))
             return
 
     def connect_to_server(self):
@@ -219,7 +242,8 @@ class Email(object):
         try:
             self.nntp = nntplib.NNTP(pylons.config['debexpo.nntp_server'])
         except Exception as e:
-            log.error("Connecting to NNTP server %s failed: %s" % (pylons.config['debexpo.nntp_server'], str(e)))
+            log.error("Connecting to NNTP server %s failed: %s" %
+                      (pylons.config['debexpo.nntp_server'], str(e)))
             return
 
         self.established = True
@@ -232,7 +256,6 @@ class Email(object):
         if not self.established:
             self.connect_to_server()
             if not self.established:
-                log.debug("Connection to NNTP server not established");
+                log.debug("Connection to NNTP server not established")
             return self.established
         return True
-

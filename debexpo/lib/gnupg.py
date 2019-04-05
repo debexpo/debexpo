@@ -2,7 +2,8 @@
 #
 #   utils.py — Debexpo utility functions
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Serafeim Zanikolas <serzan@hellug.gr>
 #               2011 Arno Töll <debian@toell.net>
@@ -42,9 +43,9 @@ import subprocess
 import re
 
 import pylons
-import re
 
 log = logging.getLogger(__name__)
+
 
 class GnuPG(object):
 
@@ -70,13 +71,13 @@ class GnuPG(object):
         self.default_keyring = pylons.config['debexpo.gpg_keyring']
         if self.default_keyring is None:
             log.warning('debexpo.gpg_keyring is not set in configuration file' +
-                    ' (or is set to a blank value)')
+                        ' (or is set to a blank value)')
 
     def is_unusable(self):
         """Returns true if the gpg binary is not installed or not executable."""
         return self.gpg_path is None
 
-    def extract_key_data(self,key,attribute):
+    def extract_key_data(self, key, attribute):
         """
         Returns the attribute of a given GPG public key.
         Attribute can be one of "keyid" or "keystrength"
@@ -95,8 +96,7 @@ class GnuPG(object):
             return r
         except (AttributeError, IndexError):
             log.error("Failed to extract key data from gpg output: '%s'"
-                % key)
-
+                      % key)
 
     def extract_key_id(self, key):
         """
@@ -131,9 +131,10 @@ class GnuPG(object):
         """
         return self.extract_key_data(key, "keytype")
 
-    def parse_key_id(self, key, email = None):
+    def parse_key_id(self, key, email=None):
         """
-        Returns the key id of the given GPG public key along with a list of user ids.
+        Returns the key id of the given GPG public key along with a list of user
+        ids.
 
         ``key``
             ASCII armored GPG public key.
@@ -153,8 +154,7 @@ class GnuPG(object):
                 return (key.get_id(), key.get_all_uid())
         except (AttributeError, IndexError):
             log.error("Failed to extract key id from gpg output: '%s'"
-                       % output)
-
+                      % output)
 
     def verify_sig(self, signed_file, pubring=None):
         """
@@ -178,33 +178,37 @@ class GnuPG(object):
         """
         args = ('--verify', signed_file)
         (out, return_code) = self._run(args=args, pubring=pubring)
-        gpg_addr_pattern = re.compile(r"\"(?P<name>.+?)\s*(?:\((?P<comment>.+)\))?\s*(?:<(?P<email>.+)>)?\"")
+        gpg_addr_pattern = re.compile(r"\"(?P<name>.+?)"
+                                      r"\s*(?:\((?P<comment>.+)\))?"
+                                      r"\s*(?:<(?P<email>.+)>)?\"")
         user_ids = []
         for line in out.split("\n"):
             addr_matcher = gpg_addr_pattern.search(line)
             if addr_matcher is not None:
-                user_ids.append( (addr_matcher.group('name'), addr_matcher.group('email')) )
+                user_ids.append((addr_matcher.group('name'),
+                                 addr_matcher.group('email')))
         return (out, user_ids, return_code)
-
 
     def add_signature(self, signature_file, pubring=None):
         """
         Add the signature(s) within the provided file to the supplied keyring
 
         ```signature_file```
-            A file name containing valid PGP public key data suitable for keyrings
+            A file name containing valid PGP public key data suitable for
+            keyrings
         ```pubring```
             A file name pointing to a keyring. May be empty.
 
         Returns a tuple (file output, return code)
         """
-        args = ('--import-options', 'import-minimal', '--import', signature_file)
+        args = ('--import-options', 'import-minimal', '--import',
+                signature_file)
         return self._run(args=args, pubring=pubring)
-
 
     def remove_signature(self, keyid, pubring=None):
         """
-        Remove the signature matching the provided keyid from the supplied keyring
+        Remove the signature matching the provided keyid from the supplied
+        keyring
 
         ```keyid```
             The GnuPG keyid to be removed
@@ -215,7 +219,6 @@ class GnuPG(object):
         """
         args = ('--yes', '--delete-key', keyid)
         return self._run(args=args, pubring=pubring)
-
 
     def _run(self, stdin=None, args=None, pubring=None):
         """
@@ -252,8 +255,8 @@ class GnuPG(object):
             '--with-colons',
             '--with-fingerprint'
             ]
-        if not args is None:
-                cmd.extend(args)
+        if args is not None:
+            cmd.extend(args)
 
         process = subprocess.Popen(cmd,
                                    stdin=subprocess.PIPE,
@@ -275,7 +278,7 @@ class GnuPG(object):
             f = open(signed_file, 'r')
             contents = f.read()
             f.close()
-        except:
+        except Exception:
             log.critical('Could not open %s; continuing' % signed_file)
             return False
         if contents.startswith('-----BEGIN PGP SIGNED MESSAGE-----'):
@@ -288,9 +291,12 @@ class GPGAlgo(object):
     Static data about GPG PubKey Algo. Extracted from GnuPG source.
 
     Refs:
-      Short names: https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=g10/keyid.c;hb=HEAD#l53
-      Long names: https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=g10/keyid.c;hb=HEAD#l104
-      Ids: https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=common/openpgpdefs.h;hb=HEAD#l157
+      Short names:
+      https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=g10/keyid.c;hb=HEAD#l53
+      Long names:
+      https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=g10/keyid.c;hb=HEAD#l104
+      Ids:
+      https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=common/openpgpdefs.h;hb=HEAD#l157
     """
     gpg_algo = {
         '1': {'short': 'R', 'long': 'rsa', 'with_size': True},
@@ -357,9 +363,6 @@ class KeyData(object):
             user_ids.append((uid['name'], uid['email']))
         return user_ids
 
-    def keycheck(self):
-        return KeycheckKeyResult(self)
-
     @classmethod
     def read_from_gpg(cls, lines):
         """
@@ -423,9 +426,12 @@ class KeyData(object):
 
 class Uid(object):
     """
-    Collects data about a key uid, parsed from gpg --with-colons --fixed-list-mode
+    Collects data about a key uid, parsed from gpg --with-colons
+    --fixed-list-mode
     """
-    re_uid = re.compile(r"^(?P<name>.+?)\s*(?:\((?P<comment>.+)\))?\s*(?:<(?P<email>.+)>)?$")
+    re_uid = re.compile(r"^(?P<name>.+?)"
+                        r"\s*(?:\((?P<comment>.+)\))?"
+                        r"\s*(?:<(?P<email>.+)>)?$")
 
     def __init__(self, key, uid):
         self.key = key
@@ -441,7 +447,8 @@ class Uid(object):
 
     def split(self):
         mo = self.re_uid.match(self.name)
-        if not mo: return None
+        if not mo:
+            return None
         return {
                 "name": mo.group("name"),
                 "email": mo.group("email"),

@@ -2,7 +2,8 @@
 #
 #   constants.py — Application constants
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -49,9 +50,9 @@ USER_TYPE_NORMAL = 1
 USER_TYPE_ADMIN = 2
 
 # Type of user
-USER_STATUS_NORMAL = 1 # package maintainer
-USER_STATUS_DEVELOPER = 2 # official "Debian Developer"
-USER_STATUS_MAINTAINER = 3 # official "Debian Maintainer"
+USER_STATUS_NORMAL = 1  # package maintainer
+USER_STATUS_DEVELOPER = 2  # official "Debian Developer"
+USER_STATUS_MAINTAINER = 3  # official "Debian Maintainer"
 
 # Package constants
 PACKAGE_NEEDS_SPONSOR_UNKNOWN = 1
@@ -86,7 +87,7 @@ PACKAGE_COMMENT_STATUS_UPLOADED = 2
 SUBSCRIPTION_LEVEL_UPLOADS = 1
 SUBSCRIPTION_LEVEL_COMMENTS = 2
 
-#Sponsor metrics
+# Sponsor metrics
 SPONSOR_METRICS_PRIVATE = 0
 SPONSOR_METRICS_RESTRICTED = 1
 SPONSOR_METRICS_PUBLIC = 2
@@ -102,4 +103,3 @@ SPONSOR_CONTACT_METHOD_JABBER = 3
 SPONSOR_GUIDELINES_TYPE_NONE = 0
 SPONSOR_GUIDELINES_TYPE_URL = 1
 SPONSOR_GUIDELINES_TYPE_TEXT = 2
-

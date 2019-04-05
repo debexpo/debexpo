@@ -2,7 +2,8 @@
 #
 #   schemas.py — Form schemas
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -38,7 +39,6 @@ __license__ = 'MIT'
 
 import formencode
 
-from pylons import config
 from debexpo.lib.base import meta
 
 from debexpo.lib import constants
@@ -64,6 +64,7 @@ class MyForm(formencode.Schema):
     commit = formencode.validators.String()
     form = formencode.validators.String()
 
+
 class DetailsForm(MyForm):
     """
     Schema for updating user details in the my controller.
@@ -71,12 +72,14 @@ class DetailsForm(MyForm):
     name = formencode.validators.String(not_empty=True)
     email = NewEmailToSystem(not_empty=True)
 
+
 class GpgForm(MyForm):
     """
     Schema for updating the user's GPG key in the my controller.
     """
     gpg = GpgKey()
     delete_gpg = formencode.validators.Int()
+
 
 class PasswordForm(MyForm):
     """
@@ -91,6 +94,7 @@ class PasswordForm(MyForm):
         formencode.validators.FieldsMatch('password_new', 'password_confirm')
     ]
 
+
 class OtherDetailsForm(MyForm):
     """
     Schema for updating other details: country, jabber, ircnick and status
@@ -101,6 +105,7 @@ class OtherDetailsForm(MyForm):
     jabber = formencode.validators.String()
     status = CheckBox()
 
+
 class MetricsForm(MyForm):
     """
     Schema for updating the metrics in the controller
@@ -108,7 +113,8 @@ class MetricsForm(MyForm):
 
     def __init__(self, *args, **kwargs):
         for tag in meta.session.query(SponsorTags).all():
-            kwargs[tag.tag] = formencode.validators.Number(min=-10, max=10, not_empty=True)
+            kwargs[tag.tag] = formencode.validators.Number(min=-10, max=10,
+                                                           not_empty=True)
         MyForm.__init__(self, *args, **kwargs)
 
     preferred_contact_method = formencode.compound.All(
@@ -123,13 +129,15 @@ class MetricsForm(MyForm):
         formencode.validators.OneOf([
             constants.SPONSOR_GUIDELINES_TYPE_NONE,
             constants.SPONSOR_GUIDELINES_TYPE_URL,
-            constants.SPONSOR_GUIDELINES_TYPE_TEXT]), formencode.validators.Int(not_empty=True))
+            constants.SPONSOR_GUIDELINES_TYPE_TEXT]),
+        formencode.validators.Int(not_empty=True))
 
     availability = formencode.compound.All(
         formencode.validators.OneOf([
             constants.SPONSOR_METRICS_PRIVATE,
             constants.SPONSOR_METRICS_RESTRICTED,
-            constants.SPONSOR_METRICS_PUBLIC]), formencode.validators.Int(not_empty=True))
+            constants.SPONSOR_METRICS_PUBLIC]),
+        formencode.validators.Int(not_empty=True))
     social_requirements = formencode.validators.String()
 
     # Postpone validation of packaging_guideline_text, as its validation
@@ -138,6 +146,7 @@ class MetricsForm(MyForm):
     chained_validators = [
         formencode.schema.SimpleFormValidator(ValidatePackagingGuidelines)
     ]
+
 
 class RegisterForm(formencode.Schema):
     """
@@ -165,9 +174,10 @@ class PackageSubscribeForm(formencode.Schema):
     level = formencode.compound.All(
         formencode.validators.OneOf([
                 -1, constants.SUBSCRIPTION_LEVEL_UPLOADS,
-                 constants.SUBSCRIPTION_LEVEL_COMMENTS]),
+                constants.SUBSCRIPTION_LEVEL_COMMENTS]),
         formencode.validators.Int(not_empty=True))
     commit = formencode.validators.String()
+
 
 class PackageCommentForm(formencode.Schema):
     """
@@ -184,12 +194,10 @@ class PackageCommentForm(formencode.Schema):
     status = formencode.validators.Bool(if_missing=False)
     commit = formencode.validators.String()
 
+
 class PasswordResetForm(formencode.Schema):
     """
     Schema for the password reset form in the password reset controller.
     """
     email = formencode.validators.Email(not_empty=True)
     commit = formencode.validators.String()
-
-
-
