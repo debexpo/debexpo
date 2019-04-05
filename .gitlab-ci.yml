@@ -27,7 +27,6 @@ stable-bpo:
 
 flake8:
   image: debian:unstable-slim
-  allow_failure: true
   before_script:
     - apt-get -q update
     - env DEBIAN_FRONTEND=noninteractive apt-get -q -y install --no-install-recommends python-flake8
