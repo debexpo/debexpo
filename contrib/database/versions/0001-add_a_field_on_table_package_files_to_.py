@@ -1,7 +1,7 @@
 """Add a field on table package_files to hold file's sha256 checksum
 
 Revision ID: 8d6f497e959e
-Revises: 
+Revises:
 Create Date: 2019-02-13 13:33:36.249795
 
 """
@@ -31,7 +31,7 @@ depends_on = None
 
 def upgrade():
     op.add_column('package_files', sa.Column('sha256sum', sa.types.String(64),
-        nullable=False, server_default=''))
+                  nullable=False, server_default=''))
     with op.batch_alter_table('package_files', schema=None) as batch_op:
         batch_op.alter_column('sha256sum', server_default=None)
     pass
