@@ -2,7 +2,8 @@
 #
 #   user_importer.py — executable script to import new users
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2011 Asheesh Laroia <paulproteus@debian.org>
 #
@@ -45,9 +46,11 @@ from debexpo.config.environment import load_environment
 
 import pylons
 
+
 def import_users(list_of_dicts):
     for d in list_of_dicts:
         import_one_user(d)
+
 
 def import_one_user(data_dict):
     '''This imports user data. It expects the following keys:
@@ -71,12 +74,12 @@ def import_one_user(data_dict):
     # First, make sure that the data_dict has everything we need
     for key in transformation:
         if key not in data_dict:
-            raise ValueError, ("Missing a key from data_dict: %s" % key)
+            raise (ValueError, ("Missing a key from data_dict: %s" % key))
 
     # Then, see if the email address matches a current user
     user_email = data_dict['email']
-    matches = meta.session.query(debexpo.model.users.User
-            ).filter_by(email=user_email)
+    matches = meta.session.query(debexpo.model.users.User) \
+        .filter_by(email=user_email)
     if matches.count():
         logging.warn("A user with email address %s already exists" % (
                 user_email,))
@@ -96,10 +99,12 @@ def import_one_user(data_dict):
     meta.session.add(u)
     meta.session.commit()
 
+
 def main():
     parser = OptionParser(usage="%prog -u FILE -i FILE")
     parser.add_option('-u', '--user-json-path', dest='user_json_path',
-                      help='Path to JSON file with user data to import (/dev/stdin is permissible)',
+                      help='Path to JSON file with user data to import '
+                      '(/dev/stdin is permissible)',
                       metavar='FILE', default=None)
     parser.add_option('-i', '--ini', dest='ini',
                       help='Path to application ini file',
@@ -114,7 +119,6 @@ def main():
     # Initialize Pylons app
     conf = appconfig('config:' + os.path.abspath(options.ini))
     pylons.config = load_environment(conf.global_conf, conf.local_conf)
-
 
     list_of_dicts = simplejson.load(open(options.user_json_path))
 

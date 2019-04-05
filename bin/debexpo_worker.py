@@ -3,7 +3,8 @@
 #
 #   debexpo_worker.py — Worker task
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2011 Arno Töll <debian@toell.net>
 #
@@ -53,6 +54,7 @@ from debexpo.config.environment import load_environment
 
 log = None
 
+
 class Worker(object):
     def __init__(self, pidfile, inifile, daemonize):
         """
@@ -71,7 +73,6 @@ class Worker(object):
         self.daemonize = daemonize
         self.jobs = {}
 
-
     def _daemonize(self):
         """
         Daemonize method. Runs the actual worker thread in the background
@@ -81,7 +82,8 @@ class Worker(object):
             if pid > 0:
                 sys.exit(0)
         except OSError as e:
-            log.error( "%s failed to fork: %s (err %d)" % (__name__, e.strerror, e.errno))
+            log.error("%s failed to fork: %s (err %d)" %
+                      (__name__, e.strerror, e.errno))
             sys.exit(1)
 
         os.chdir("/")
@@ -89,14 +91,13 @@ class Worker(object):
         os.umask(0)
 
         signal.signal(signal.SIGTERM, self._remove_pid)
-        file(self.pidfile, "w+").write( "%d\n" % os.getpid())
+        file(self.pidfile, "w+").write("%d\n" % os.getpid())
 
     def _remove_pid(self, _a, _b):
         """
         Remove the process PID file
         """
         os.remove(self.pidfile)
-
 
     def _import_plugin(self, name):
         """
@@ -119,16 +120,17 @@ class Worker(object):
             if str(e).startswith('No module named'):
                     log.debug('Import failed - module not found: %s', e)
             else:
-                    log.warn('Import of module "%s" failed with error: %s', name, e)
+                    log.warn('Import of module "%s" failed with error: %s',
+                             name, e)
         return None
 
     def _load_jobs(self):
         """
-        Tries to load configured cronjobs. This method roughly works the same way,
-        as does the equivalent method in the plugins code.
+        Tries to load configured cronjobs. This method roughly works the same
+        way, as does the equivalent method in the plugins code.
         """
 
-        if not 'debexpo.cronjobs' in pylons.config:
+        if 'debexpo.cronjobs' not in pylons.config:
             log.error("debexpo.cronjobs it not set - doing nothing?")
             sys.exit(1)
 
@@ -145,14 +147,16 @@ class Worker(object):
                     module = self._import_plugin(name)
 
             if not module:
-                    log.warning("Cronjob %s was configured, but not found" % (plugin))
-                    continue
+                log.warning("Cronjob %s was configured, but not found" %
+                            (plugin))
+                continue
 
             if hasattr(module, 'cronjob') and hasattr(module, 'schedule'):
                     self.jobs[plugin] = {
-                            'module': getattr(module, 'cronjob')(parent=self, config=pylons.config, log=log),
-                            'schedule': getattr(module, 'schedule'),
-                            'last_run': datetime.datetime(year=1970, month=1, day=1)
+                        'module': getattr(module, 'cronjob')(
+                            parent=self, config=pylons.config, log=log),
+                        'schedule': getattr(module, 'schedule'),
+                        'last_run': datetime.datetime(year=1970, month=1, day=1)
                     }
             else:
                     log.debug("Cronjob %s seems invalid" % (plugin))
@@ -171,7 +175,6 @@ class Worker(object):
             print('Config file does not have [loggers] section')
             sys.exit(1)
 
-
         logging.config.fileConfig(self.inifile)
         logger_name = 'debexpo.worker'
         log = logging.getLogger(logger_name)
@@ -179,7 +182,6 @@ class Worker(object):
         sys.path.append(os.path.dirname(self.inifile))
         conf = appconfig('config:' + self.inifile)
         pylons.config = load_environment(conf.global_conf, conf.local_conf)
-
 
     def run(self):
         """
@@ -190,17 +192,18 @@ class Worker(object):
         self._setup()
         if os.path.exists(self.pidfile):
             try:
-                read_pid = file(self.pidfile,'r')
+                read_pid = file(self.pidfile, 'r')
                 pid = read_pid.readline().strip()
                 read_pid.close()
-            except:
+            except Exception:
                 pid = None
         else:
             pid = None
 
         if pid:
-                log.error("Refusing to start - is another instance with PID %s running?" % (pid))
-                sys.exit(1)
+            log.error("Refusing to start - is another instance with PID "
+                      "%s running?" % (pid))
+            sys.exit(1)
 
         if self.daemonize:
             log.debug("Go into background now")
@@ -211,18 +214,23 @@ class Worker(object):
 
         while(True):
             for job in self.jobs:
-                if (datetime.datetime.now() - self.jobs[job]['last_run']) >= self.jobs[job]['schedule']:
+                if ((datetime.datetime.now() - self.jobs[job]['last_run']) >=
+                        self.jobs[job]['schedule']):
                     log.debug("Run job %s" % (job))
                     self.jobs[job]['module'].invoke()
                     self.jobs[job]['last_run'] = datetime.datetime.now()
                     log.debug("Job %s complete" % (job))
             time.sleep(delay)
 
+
 if __name__ == '__main__':
     parser = optparse.OptionParser()
-    parser.add_option("-i", "--ini", dest="ini", help="path to application ini file", metavar="FILE")
-    parser.add_option("-p", "--pid-file", dest="pid", help="path where the PID file is stored", metavar="FILE")
-    parser.add_option("-d", "--daemonize", dest="daemonize", action='store_true', help="go into background")
+    parser.add_option("-i", "--ini", dest="ini",
+                      help="path to application ini file", metavar="FILE")
+    parser.add_option("-p", "--pid-file", dest="pid",
+                      help="path where the PID file is stored", metavar="FILE")
+    parser.add_option("-d", "--daemonize", dest="daemonize",
+                      action='store_true', help="go into background")
 
     (options, args) = parser.parse_args()
     if not options.pid or not options.ini:
