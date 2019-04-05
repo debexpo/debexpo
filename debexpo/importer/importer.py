@@ -3,7 +3,8 @@
 #
 #   debexpo-importer — executable script to import new packages
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -31,35 +32,27 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-from glob import glob
 import ConfigParser
 from datetime import datetime
 from debian import deb822
+from stat import ST_SIZE
 import logging
 import logging.config
 import os
 import re
 import sys
 import shutil
-from stat import *
 import string
 import subprocess
 import tempfile
 import pylons
 import email.utils
 
-from sqlalchemy import exc as exceptions
-
 # Horrible imports
-from debexpo.model import meta
-import debexpo.lib.helpers as h
 from debexpo.lib.utils import parse_section, md5sum, sha256sum
 from debexpo.lib.dsc import Dsc
-from debexpo.lib.email import Email
-from debexpo.lib.plugins import Plugins
 from debexpo.lib import constants
-from pylons import tmpl_context as c
-#from pylons import url
+# from pylons import url
 from routes.util import url_for as url
 
 # Import model objects
@@ -86,9 +79,11 @@ from debexpo.lib.gitstorage import GitStorage
 
 log = None
 
+
 class Importer(object):
     """
-    Class to handle the package that is uploaded and wants to be imported into the database.
+    Class to handle the package that is uploaded and wants to be imported into
+    the database.
     """
 
     def __init__(self, changes, ini, skip_email, skip_gpg):
@@ -99,10 +94,12 @@ class Importer(object):
             Object pointer.
 
         ``changes``
-            Name `changes` file to import. This is given from the upload controller.
+            Name `changes` file to import. This is given from the upload
+            controller.
 
         ``ini``
-            Path to debexpo configuration file. This is given from the upload controller.
+            Path to debexpo configuration file. This is given from the upload
+            controller.
 
         ``skip_email``
             If this is set to true, send no email.
@@ -161,44 +158,55 @@ class Importer(object):
         return result
 
     def _extract_source(self, extract_dir):
-        log.debug('Copying files to a temp directory to run dpkg-source -x on the dsc file')
+        log.debug('Copying files to a temp directory to run dpkg-source -x on'
+                  ' the dsc file')
         self.tempdir = tempfile.mkdtemp()
         log.debug('Temp dir is: %s', self.tempdir)
         for filename in self.changes.get_files():
             log.debug('Copying: %s', filename)
-            shutil.copy(os.path.join(pylons.config['debexpo.upload.incoming'], filename), self.tempdir)
+            shutil.copy(os.path.join(pylons.config['debexpo.upload.incoming'],
+                                     filename), self.tempdir)
 
-        # If the original tarball was pulled from Debian or from the repository, that
-        # also needs to be copied into this directory.
+        # If the original tarball was pulled from Debian or from the repository,
+        # that also needs to be copied into this directory.
         dsc = deb822.Dsc(file(self.changes.get_dsc()))
         for item in dsc['Files']:
             if item['name'] not in self.changes.get_files():
-                src_file = os.path.join(pylons.config['debexpo.upload.incoming'], item['name'])
-                repository_src_file = os.path.join(pylons.config['debexpo.repository'], self.changes.get_pool_path(),
+                src_file = os.path.join(
+                    pylons.config['debexpo.upload.incoming'], item['name'])
+                repository_src_file = os.path.join(
+                    pylons.config['debexpo.repository'],
+                    self.changes.get_pool_path(),
                     item['name'])
                 if os.path.exists(src_file):
                     shutil.copy(src_file, self.tempdir)
                 elif os.path.exists(repository_src_file):
                     shutil.copy(repository_src_file, self.tempdir)
                 else:
-                    log.critical("Trying to copy non-existing file %s" % (src_file))
+                    log.critical("Trying to copy non-existing file %s" %
+                                 (src_file))
 
-        shutil.copy(os.path.join(pylons.config['debexpo.upload.incoming'], self.changes_file), self.tempdir)
+        shutil.copy(os.path.join(pylons.config['debexpo.upload.incoming'],
+                                 self.changes_file), self.tempdir)
         self.oldcurdir = os.path.abspath(os.path.curdir)
         os.chdir(self.tempdir)
 
         log.debug("Extracting sources for {}".format(dsc['Source']))
         extract = subprocess.Popen(['/usr/bin/dpkg-source',
-            '-x', '--no-copy', self.changes.get_dsc(), extract_dir],
-            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                                    '-x',
+                                    '--no-copy',
+                                    self.changes.get_dsc(),
+                                    extract_dir],
+                                   stdout=subprocess.PIPE,
+                                   stderr=subprocess.STDOUT)
         (output, _) = extract.communicate()
 
         shutil.rmtree(self.tempdir)
         os.chdir(self.oldcurdir)
 
         if extract.returncode:
-            log.critical("Failed to extract sources for" \
-                    " {}:\n{}".format(dsc['Source'], output))
+            log.critical("Failed to extract sources for"
+                         " {}:\n{}".format(dsc['Source'], output))
             return False
         else:
             return True
@@ -230,18 +238,19 @@ class Importer(object):
 
     def _fail(self, reason, use_log=True):
         """
-        Fail the upload by sending a reason for failure to the log and then remove all
-        uploaded files.
+        Fail the upload by sending a reason for failure to the log and then
+        remove all uploaded files.
 
-        A package is `fail`ed if there is a problem with debexpo, **not** if there's
-        something wrong with the package.
+        A package is `fail`ed if there is a problem with debexpo, **not** if
+        there's something wrong with the package.
 
         ``reason``
             String of why it failed.
 
         ``use_log``
-            Whether to use the log. This should only be False when actually loading the log fails.
-            In this case, the reason is printed to stderr.
+            Whether to use the log. This should only be False when actually
+            loading the log fails.  In this case, the reason is printed to
+            stderr.
         """
         if use_log:
             log.critical(reason)
@@ -261,8 +270,8 @@ class Importer(object):
 
     def _reject(self, reason):
         """
-        Reject the package by sending a reason for failure to the log and then remove all
-        uploaded files.
+        Reject the package by sending a reason for failure to the log and then
+        remove all uploaded files.
 
         A package is `reject`ed if there is a problem with the package.
 
@@ -278,12 +287,13 @@ class Importer(object):
             email = Email('importer_reject_maintainer')
             package = self.changes.get('Source', '')
 
-            self.send_email(email, [self.user.email], package=package, message=reason)
+            self.send_email(email, [self.user.email], package=package,
+                            message=reason)
 
     def _setup_logging(self, no_env):
         """
-        Parse the config file and create the ``log`` object for other methods to log their
-        actions.
+        Parse the config file and create the ``log`` object for other methods to
+        log their actions.
         """
         global log
 
@@ -294,7 +304,8 @@ class Importer(object):
 
             # Check for the presence of [loggers] in self.ini_file
             if not parser.has_section('loggers'):
-                self._fail('Config file does not have [loggers] section', use_log=False)
+                self._fail('Config file does not have [loggers] section',
+                           use_log=False)
                 return 1
 
             logging.config.fileConfig(self.ini_file)
@@ -305,8 +316,8 @@ class Importer(object):
 
     def _setup(self, no_env):
         """
-        Set up logging, import pylons/paste/debexpo modules, parse config file, create config
-        class and chdir to the incoming directory.
+        Set up logging, import pylons/paste/debexpo modules, parse config file,
+        create config class and chdir to the incoming directory.
         """
         # Look for ini file
         if not os.path.isfile(self.ini_file):
@@ -343,30 +354,33 @@ class Importer(object):
 
         log.debug('Creating database entries')
 
-
         # Parse component and section from field in changes
         component, section = parse_section(self.changes['files'][0]['section'])
 
         # Check whether package is already in the database
-        package_query = meta.session.query(Package).filter_by(name=self.changes['Source'])
+        package_query = meta.session.query(Package) \
+            .filter_by(name=self.changes['Source'])
         if package_query.count() == 1:
-            log.debug('Package %s already exists in the database' % self.changes['Source'])
+            log.debug('Package %s already exists in the database' %
+                      self.changes['Source'])
             package = package_query.one()
             # Update description to make sure it reflects the latest upload
             package.description = _package_description(
-                    self.changes.get('Description', ''))
+                self.changes.get('Description', ''))
         else:
-            log.debug('Package %s is new to the system' % self.changes['Source'])
+            log.debug('Package %s is new to the system' %
+                      self.changes['Source'])
             package = Package(name=self.changes['Source'], user=self.user)
             package.description = _package_description(
                     self.changes.get('Description', ''))
             package.needs_sponsor = 0
             meta.session.add(package)
 
-        # No need to check whether there is the same source name and same version as an existing
-        # entry in the database as the upload controller tested whether similar filenames existed
-        # in the repository. The only way this would be wrong is if the filename had a different
-        # version in than the Version field in changes..
+        # No need to check whether there is the same source name and same
+        # version as an existing entry in the database as the upload controller
+        # tested whether similar filenames existed in the repository. The only
+        # way this would be wrong is if the filename had a different version in
+        # than the Version field in changes..
 
         try:
             closes = self.changes['Closes']
@@ -379,13 +393,21 @@ class Importer(object):
         else:
             qa_status = 0
 
-        maintainer_matches = re.compile(r'(.*) <(.*)>').match(self.changes['Changed-By'])
+        maintainer_matches = re.compile(r'(.*) <(.*)>') \
+            .match(self.changes['Changed-By'])
         maintainer = maintainer_matches.group(2)
 
-        package_version = PackageVersion(package=package, version=self.changes['Version'],
-            section=section, distribution=self.changes['Distribution'], qa_status=qa_status,
-            component=component, priority=self.changes.get_priority(), closes=closes,
-            uploaded=datetime.now(), maintainer=maintainer)
+        package_version = PackageVersion(
+            package=package,
+            version=self.changes['Version'],
+            section=section,
+            distribution=self.changes['Distribution'],
+            qa_status=qa_status,
+            component=component,
+            priority=self.changes.get_priority(),
+            closes=closes,
+            uploaded=datetime.now(),
+            maintainer=maintainer)
         meta.session.add(package_version)
 
         source_package = SourcePackage(package_version=package_version)
@@ -423,18 +445,23 @@ class Importer(object):
 
             # Check for binary or source package file
             if file.endswith('.deb'):
-                # Only create a BinaryPackage if there actually binary package files
+                # Only create a BinaryPackage if there actually binary package
+                # files
                 if binary_package is None:
-                    binary_package = BinaryPackage(package_version=package_version, arch=file[:-4].split('_')[-1])
+                    binary_package = BinaryPackage(
+                        package_version=package_version,
+                        arch=file[:-4].split('_')[-1])
                     meta.session.add(binary_package)
 
                 meta.session.add(PackageFile(filename=filename,
-                    binary_package=binary_package, size=size, md5sum=md5,
-                    sha256sum=sha256))
+                                             binary_package=binary_package,
+                                             size=size, md5sum=md5,
+                                             sha256sum=sha256))
             else:
                 meta.session.add(PackageFile(filename=filename,
-                    source_package=source_package, size=size, md5sum=md5,
-                    sha256sum=sha256))
+                                             source_package=source_package,
+                                             size=size, md5sum=md5,
+                                             sha256sum=sha256))
 
         meta.session.commit()
         log.warning("Finished adding PackageFile objects.")
@@ -449,29 +476,40 @@ class Importer(object):
                 result.data.pop('Description')
                 meta.session.commit()
 
-            meta.session.add(PackageInfo(package_version=package_version, from_plugin=result.from_plugin,
-                outcome=result.outcome, rich_data=result.data, severity=result.severity))
+            meta.session.add(PackageInfo(package_version=package_version,
+                                         from_plugin=result.from_plugin,
+                                         outcome=result.outcome,
+                                         rich_data=result.data,
+                                         severity=result.severity))
 
         # Commit all changes to the database
         meta.session.commit()
         log.debug('Committed package data to the database')
 
-        subscribers = meta.session.query(PackageSubscription).filter_by(package=self.changes['Source']).filter(\
-            PackageSubscription.level >= constants.SUBSCRIPTION_LEVEL_UPLOADS).all()
+        subscribers = meta.session.query(PackageSubscription) \
+            .filter_by(package=self.changes['Source']) \
+            .filter(PackageSubscription.level >=
+                    constants.SUBSCRIPTION_LEVEL_UPLOADS) \
+            .all()
 
         if len(subscribers) > 0:
             email = Email('package_uploaded')
-            self.send_email(email, [s.user.email for s in subscribers], package=self.changes['Source'],
-                version=self.changes['Version'], user=self.user)
+            self.send_email(email, [s.user.email for s in subscribers],
+                            package=self.changes['Source'],
+                            version=self.changes['Version'],
+                            user=self.user)
 
             log.debug('Sent out package subscription emails')
 
         # Send success email to uploader
         email = Email('successful_upload')
-        dsc_url = pylons.config['debexpo.server'] + '/debian/' + self.changes.get_pool_path() + '/' + self.changes.get_dsc()
-        rfs_url = pylons.config['debexpo.server'] + url('rfs', packagename=self.changes['Source'])
-        self.send_email(email, [self.user.email], package=self.changes['Source'],
-            dsc_url=dsc_url, rfs_url=rfs_url)
+        dsc_url = pylons.config['debexpo.server'] + '/debian/' + \
+            self.changes.get_pool_path() + '/' + self.changes.get_dsc()
+        rfs_url = pylons.config['debexpo.server'] + \
+            url('rfs', packagename=self.changes['Source'])
+        self.send_email(email, [self.user.email],
+                        package=self.changes['Source'], dsc_url=dsc_url,
+                        rfs_url=rfs_url)
 
         return package_version
 
@@ -480,7 +518,10 @@ class Importer(object):
         Searches user by email address
         """
         # XXX: Maybe model is more appropriate place for such a method
-        user = meta.session.query(User).filter_by(email=email_address).filter_by(verification=None).first()
+        user = meta.session.query(User) \
+            .filter_by(email=email_address) \
+            .filter_by(verification=None) \
+            .first()
         if user:
             self.user = user
         return user
@@ -490,23 +531,27 @@ class Importer(object):
         Create a user object based on the Changed-By entry
         """
         maintainer_string = self.changes.get('Changed-By')
-        log.debug("Determining user from 'Changed-By:' field: %s" % maintainer_string)
-        maintainer_realname, maintainer_email_address = email.utils.parseaddr(maintainer_string)
+        log.debug("Determining user from 'Changed-By:' field: %s" %
+                  maintainer_string)
+        maintainer_realname, maintainer_email_address = email.utils.parseaddr(
+            maintainer_string)
         log.debug("Changed-By's email address is: %s", maintainer_email_address)
         if not self._find_user_by_email_address(maintainer_email_address):
             # Creates a fake user object, but only if no user was found before,
             # this is useful to have a user object to send reject mails to.
-            self.user = User(id=-1, name=maintainer_realname, email=maintainer_email_address)
+            self.user = User(id=-1, name=maintainer_realname,
+                             email=maintainer_email_address)
 
     def _determine_uploader_by_gpg(self, gpg_out):
         """
         Create a user object based on the gpg output
         """
 
-        for (name, email) in gpg_out:
-            log.debug("GPG signature matches user %s <%s>" % (name, email))
-            if self._find_user_by_email_address(email):
-                log.debug("GPG signature mapped to user %s <%s>" % (self.user.name, self.user.email))
+        for (name, mail) in gpg_out:
+            log.debug("GPG signature matches user %s <%s>" % (name, mail))
+            if self._find_user_by_email_address(mail):
+                log.debug("GPG signature mapped to user %s <%s>" %
+                          (self.user.name, self.user.email))
                 return True
 
         return False
@@ -519,7 +564,7 @@ class Importer(object):
             filecheck.test_md5sum(self.changes)
         except Exception as e:
             self._reject("Your upload looks incomplete or corrupt:\n\n"
-                    "{}".format(str(e)))
+                         "{}".format(str(e)))
             return False
 
         return True
@@ -533,7 +578,7 @@ class Importer(object):
         destdir = pylons.config['debexpo.repository']
         git_storage_repo = os.path.join(destdir, "git", self.changes['Source'])
         git_storage_sources = os.path.join(git_storage_repo,
-                self.changes['Source'])
+                                           self.changes['Source'])
 
         # Initiate the git storage
         gs = GitStorage(git_storage_repo)
@@ -577,13 +622,12 @@ class Importer(object):
         """
         Actually start the import of the package.
 
-        Do several environment sanity checks, move files into the right place, and then
-        create the database entries for the imported package.
+        Do several environment sanity checks, move files into the right place,
+        and then create the database entries for the imported package.
         """
         # Set up importer
         self._setup(no_env)
 
-        filecheck = CheckFiles()
         signature = GnuPG()
 
         # Try parsing the changes file, but fail if there's an error.
@@ -592,12 +636,14 @@ class Importer(object):
         except Exception as e:
             # XXX: The user won't ever see this message. The changes file was
             # invalid, we don't know whom send it to
-            self._reject("Your changes file appears invalid. Refusing your upload\n%s" % (str(e)))
+            self._reject("Your changes file appears invalid. Refusing your "
+                         "upload\n%s" % (str(e)))
             return 1
 
         # Determine user from changed-by field
         # This might be temporary, the GPG check should replace the user later
-        # At this stage it is only helpful to get an email address to send blame mails to
+        # At this stage it is only helpful to get an email address to send blame
+        # mails to
         self._determine_uploader_by_changedby_field()
 
         # Check that all files referenced in the changelog are present and match
@@ -617,17 +663,20 @@ class Importer(object):
             return 1
 
         if not self.skip_gpg:
-            # Next, find out whether the changes file was signed with a valid signature, if not reject immediately
+            # Next, find out whether the changes file was signed with a valid
+            # signature, if not reject immediately
             if not signature.is_signed(self.changes_file):
                 self._reject('Your upload does not appear to be signed')
                 return 1
-            (gpg_out, gpg_uids, gpg_status) = signature.verify_sig_full(self.changes_file)
+            (gpg_out, gpg_uids, gpg_status) = signature.verify_sig_full(
+                self.changes_file)
             if gpg_status != 0:
-                self._reject('Your upload does not contain a valid signature. Output was:\n%s' % (gpg_out))
+                self._reject('Your upload does not contain a valid signature. '
+                             'Output was:\n%s' % (gpg_out))
                 return 1
             if not self._determine_uploader_by_gpg(gpg_uids):
                 self._reject('Rejecting your upload. Your GPG key does not'
-                        ' match the email used to register')
+                             ' match the email used to register')
                 return 1
 
         if self.user.id == -1:
@@ -690,8 +739,10 @@ class Importer(object):
             'wheezy-updates',
         )
         if distribution not in allowed_distributions:
-            self._reject("You are not uploading to one of those Debian distributions: %s" %
-                (reduce(lambda x,xs: x + " " + xs, allowed_distributions)))
+            self._reject("You are not uploading to one of those Debian "
+                         "distributions: %s" %
+                         (reduce(lambda x, xs: x + " " + xs,
+                                 allowed_distributions)))
             return 1
 
         destdir = pylons.config['debexpo.repository']
@@ -702,18 +753,21 @@ class Importer(object):
         pool_dir = os.path.join(destdir, self.changes.get_pool_path())
         log.debug("Pool directory: %s", pool_dir)
         for file in self.files:
-            if os.path.isfile(file) and os.path.isfile(os.path.join(pool_dir, file)):
-                log.warning('%s is being installed even though it already exists' % file)
+            if (os.path.isfile(file) and
+                    os.path.isfile(os.path.join(pool_dir, file))):
+                log.warning('%s is being installed even though it already '
+                            'exists' % file)
                 toinstall.append(file)
             elif os.path.isfile(file):
-                log.debug('File %s is safe to install' % os.path.join(pool_dir, file))
+                log.debug('File %s is safe to install' %
+                          os.path.join(pool_dir, file))
                 toinstall.append(file)
-                # skip another corner case, where the dsc contains a orig.tar.gz but wasn't uploaded
-                # by doing nothing here for that case
+                # skip another corner case, where the dsc contains a orig.tar.gz
+                # but wasn't uploaded by doing nothing here for that case
 
         # Run post-upload plugins.
         post_upload = Plugins('post-upload', self.changes, self.changes_file,
-            user_id=self.user_id)
+                              user_id=self.user_id)
         if post_upload.stop():
             log.critical('post-upload plugins failed')
             self._remove_changes()
@@ -758,19 +812,20 @@ class Importer(object):
             self._fail('debexpo.repository is not writeable')
             return 1
 
-        qa = Plugins('qa', self.changes, self.changes_file, user_id=self.user_id)
+        qa = Plugins('qa', self.changes, self.changes_file,
+                     user_id=self.user_id)
         if qa.stop():
             if qa.result > 0 and qa.result[0].from_plugin == "extract":
                 self._reject('Fail to extract your package:'
-                    '\n\n{}'.format(qa.result[0].outcome))
+                             '\n\n{}'.format(qa.result[0].outcome))
             else:
                 self._reject('QA plugins failed the package')
             return 1
 
         self._store_source_as_git_repo()
 
-        # Loop through parent directories in the target installation directory to make sure they
-        # all exist. If not, create them.
+        # Loop through parent directories in the target installation directory
+        # to make sure they all exist. If not, create them.
         for dir in self.changes.get_pool_path().split('/'):
             destdir = os.path.join(destdir, dir)
 
@@ -786,14 +841,14 @@ class Importer(object):
 
         self._remove_temporary_files()
         # Create the database rows
-        package_version = self._create_db_entries(qa)
+        self._create_db_entries(qa)
 
         # Execute post-successful-upload plugins
         f = open(self.changes_file)
         changes_contents = f.read()
         f.close()
         Plugins('post-successful-upload', self.changes, self.changes_file,
-            changes_contents=changes_contents)
+                changes_contents=changes_contents)
 
         # Remove the changes file
         self._remove_changes()
