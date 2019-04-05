@@ -33,6 +33,7 @@ __copyright__ = 'Copyright © 2018 Baptiste BEAUPLAT'
 __license__ = 'MIT'
 
 import pylons
+import logging
 
 from email import message_from_file
 from glob import glob
@@ -45,7 +46,10 @@ from debexpo.model import meta
 from debexpo.model.package_versions import PackageVersion
 from debexpo.model.package_info import PackageInfo
 from debexpo.model.packages import Package
-from debexpo.tests import TestController, url
+from debexpo.tests import TestController
+
+log = logging.getLogger(__name__)
+
 
 class TestImporterController(TestController):
     """
@@ -113,8 +117,7 @@ class TestImporterController(TestController):
         packages = meta.session.query(Package).all()
 
         for package in packages:
-            versions = \
-            meta.session.query(PackageVersion).all()
+            versions = meta.session.query(PackageVersion).all()
 
             for version in versions:
                 meta.session.delete(version)
@@ -134,7 +137,7 @@ class TestImporterController(TestController):
     def _package_in_repo(self, package_name, version):
         """Check if package is present in repo"""
         matches = self._find_all(package_name + '_' + version + '.dsc',
-                pylons.config['debexpo.repository'])
+                                 pylons.config['debexpo.repository'])
         return len(matches)
 
     def _find_all(self, name, path):
@@ -158,7 +161,7 @@ class TestImporterController(TestController):
 
         # Run the importer on change file
         importer = Importer(changes, pylons.config['global_conf']['__file__'],
-                False, False)
+                            False, False)
         self._status_importer = importer.main(no_env=True)
 
     def assert_importer_failed(self):
@@ -194,12 +197,14 @@ class TestImporterController(TestController):
 
     def assert_package_count(self, package_name, version, count):
         """Assert that a package appears count times in debexpo"""
-        package = meta.session.query(Package).filter(Package.name ==
-                package_name).first()
+        package = meta.session.query(Package) \
+            .filter(Package.name == package_name) \
+            .first()
         if package:
-            count_in_db = \
-            meta.session.query(PackageVersion).filter(PackageVersion.package_id
-                    == package.id and PackageVersion.version == version).count()
+            count_in_db = meta.session.query(PackageVersion) \
+                .filter(PackageVersion.package_id == package.id and
+                        PackageVersion.version == version) \
+                .count()
         else:
             count_in_db = 0
         self.assertTrue(count_in_db == count)
@@ -208,12 +213,11 @@ class TestImporterController(TestController):
         package = meta.session.query(Package).filter(Package.name ==
                                                      package_name).first()
         package_version = meta.session.query(PackageVersion) \
-                             .filter(PackageVersion.package_id ==
-                                     package.id).first()
+            .filter(PackageVersion.package_id == package.id) \
+            .first()
         package_info = meta.session.query(PackageInfo) \
-                           .filter(PackageInfo.package_version_id ==
-                                        package_version.id) \
-                           .filter(PackageInfo.from_plugin == plugin).first()
+            .filter(PackageInfo.package_version_id == package_version.id) \
+            .filter(PackageInfo.from_plugin == plugin).first()
 
         self.assertTrue(package_info)
         self.assertEquals(outcome, package_info.outcome)
