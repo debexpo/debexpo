@@ -107,11 +107,8 @@ class DebianPlugin(BasePlugin):
 
         import string
 
-        delete_chars = string.maketrans(
-            string.ascii_lowercase + "\n", " " * (len(string.ascii_lowercase) + 1)
-            )
-
-        changes = str(self.changes["Changes"]).lower().translate(None, delete_chars).splitlines()
+        changes = ''.join((char for char in self.changes["Changes"].lower() if char in
+                           string.ascii_lowercase + '\n')).splitlines()
 
         self.data["nmu"] = (
             any(change.startswith('nonmaintainerupload') for change in changes) or

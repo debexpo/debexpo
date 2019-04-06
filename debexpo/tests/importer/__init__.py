@@ -43,6 +43,7 @@ from shutil import rmtree, copytree
 from debexpo.importer.importer import Importer
 from debexpo.model import meta
 from debexpo.model.package_versions import PackageVersion
+from debexpo.model.package_info import PackageInfo
 from debexpo.model.packages import Package
 from debexpo.tests import TestController, url
 
@@ -202,6 +203,20 @@ class TestImporterController(TestController):
         else:
             count_in_db = 0
         self.assertTrue(count_in_db == count)
+
+    def assert_package_info(self, package_name, plugin, outcome):
+        package = meta.session.query(Package).filter(Package.name ==
+                                                     package_name).first()
+        package_version = meta.session.query(PackageVersion) \
+                             .filter(PackageVersion.package_id ==
+                                     package.id).first()
+        package_info = meta.session.query(PackageInfo) \
+                           .filter(PackageInfo.package_version_id ==
+                                        package_version.id) \
+                           .filter(PackageInfo.from_plugin == plugin).first()
+
+        self.assertTrue(package_info)
+        self.assertEquals(outcome, package_info.outcome)
 
     def assert_package_in_repo(self, package_name, version):
         """Assert that a package is present in debexpo repo"""
