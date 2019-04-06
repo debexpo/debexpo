@@ -57,6 +57,12 @@ from debexpo.model.users import User
 from debexpo.model.package_comments import PackageComment
 from debexpo.model.package_subscriptions import PackageSubscription
 
+# The following imports are used in the mako templates. Do not delete
+from debexpo.model.package_info import PackageInfo  # NOQA
+from debexpo.model.source_packages import SourcePackage  # NOQA
+from debexpo.model.binary_packages import BinaryPackage  # NOQA
+from debexpo.model.package_files import PackageFile  # NOQA
+
 log = logging.getLogger(__name__)
 
 
