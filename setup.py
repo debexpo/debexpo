@@ -7,7 +7,6 @@ except ImportError:
 
 setup(
     name='debexpo',
-    version="",
     description='the software running behind mentors.debian.net',
     author='The Debexpo developers',
     author_email='support@mentors.debian.net',
