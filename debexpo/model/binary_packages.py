@@ -2,7 +2,8 @@
 #
 #   binary_packages.py — binary_packages table model
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -42,16 +43,21 @@ from sqlalchemy.orm import backref
 from debexpo.model import meta, OrmObject
 from debexpo.model.package_versions import PackageVersion
 
-t_binary_packages = sa.Table('binary_packages', meta.metadata,
+t_binary_packages = sa.Table(
+    'binary_packages', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
-    sa.Column('package_version_id', sa.types.Integer, sa.ForeignKey('package_versions.id')),
+    sa.Column('package_version_id', sa.types.Integer,
+              sa.ForeignKey('package_versions.id')),
     sa.Column('arch', sa.types.String(200), nullable=False),
     )
+
 
 class BinaryPackage(OrmObject):
     foreign = ['package_version']
 
+
 orm.mapper(BinaryPackage, t_binary_packages, properties={
-    'package_version' : orm.relation(PackageVersion,
+    'package_version': orm.relation(
+        PackageVersion,
         backref=backref('binary_packages', cascade='all, delete-orphan')),
 })

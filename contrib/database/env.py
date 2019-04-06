@@ -68,7 +68,7 @@ def run_migrations_online():
     """
     # specify here how the engine is acquired
     engine = meta.engine
-    #raise NotImplementedError("Please specify engine connectivity here")
+    # raise NotImplementedError("Please specify engine connectivity here")
 
     with engine.connect() as connection:  # noqa
         context.configure(

@@ -2,7 +2,8 @@
 #
 #   utils.py — Debexpo utility functions
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Serafeim Zanikolas <serzan@hellug.gr>
 #
@@ -42,8 +43,7 @@ from pylons import config
 
 from debexpo.lib.gnupg import GnuPG
 
-test_gpg_key = \
-"""-----BEGIN PGP PUBLIC KEY BLOCK-----
+test_gpg_key = """-----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mDMEW/F8GBYJKwYBBAHaRw8BAQdA6Riq9GZh/HiwtFjPcvz5i5oFzp1I8RiqxBs1
 g06oSh+0HXByaW1hcnkgaWQgPG1haW5AZXhhbXBsZS5vcmc+iJMEExYIADsCGwMF
@@ -65,11 +65,12 @@ test_gpg_key_id = '256E/1AEA8EBB'
 test_gpg_key_name = 'debexpo testing'
 test_gpg_key_email = 'debexpo@example.org'
 
+
 class TestGnuPGController(TestCase):
 
     def _get_gnupg(self, gpg_path='/usr/bin/gpg'):
         config['debexpo.gpg_path'] = gpg_path
-        gnupg = GnuPG() # instantiate with new debexpo.gpg_path setting
+        gnupg = GnuPG()  # instantiate with new debexpo.gpg_path setting
         return gnupg
 
     def testGnuPGfailure1(self):
@@ -113,7 +114,8 @@ class TestGnuPGController(TestCase):
 
     def testSignatureVerification(self):
         """
-        Verify the signature in the file debexpo/tests/gpg/debian_announcement.gpg.asc.
+        Verify the signature in the file
+        debexpo/tests/gpg/debian_announcement.gpg.asc.
         """
         gnupg = self._get_gnupg()
         self.assertFalse(gnupg.is_unusable())
@@ -126,7 +128,8 @@ class TestGnuPGController(TestCase):
 
     def testSignatureVerificationWithUID(self):
         """
-        Verify the signature in the file debexpo/tests/gpg/debian_announcement.gpg.asc.
+        Verify the signature in the file
+        debexpo/tests/gpg/debian_announcement.gpg.asc.
         """
         gnupg = self._get_gnupg()
         self.assertFalse(gnupg.is_unusable())

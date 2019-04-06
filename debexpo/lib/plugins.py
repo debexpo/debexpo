@@ -2,7 +2,8 @@
 #
 #   plugins.py — Plugin loader
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -53,19 +54,20 @@ log = logging.getLogger(__name__)
 
 # Different plugin stages and their options.
 plugin_stages = {
-    'post-upload' : {
-        'extract' : False,
+    'post-upload': {
+        'extract': False,
     },
-    'qa' : {
-        'extract' : True,
+    'qa': {
+        'extract': True,
     },
-    'post-upload-to-debian' : {
-        'extract' : False,
+    'post-upload-to-debian': {
+        'extract': False,
     },
-    'post-successful-upload' : {
-        'extract' : False,
+    'post-successful-upload': {
+        'extract': False,
     },
 }
+
 
 class Plugins(object):
 
@@ -117,10 +119,11 @@ class Plugins(object):
                 mod = getattr(mod, comp)
             log.debug('Import succeeded.')
             return mod
-        except ImportError, e:
+        except ImportError as e:
             if str(e).startswith('No module named'):
                 # Not fatal: the plugin module was not found at this location
-                # (might be okay because plugins are looked for in several locations)
+                # (might be okay because plugins are looked for in several
+                # locations)
                 log.debug('Import failed - module not found: %s', e)
             else:
                 # The module was found but failed to import for other reasons.
@@ -130,53 +133,64 @@ class Plugins(object):
 
     def _extract(self):
         """
-        Copy the files to a temporary directory and run dpkg-source -x on the dsc file
-        to extract them.
+        Copy the files to a temporary directory and run dpkg-source -x on the
+        dsc file to extract them.
         """
-        log.debug('Copying files to a temp directory to run dpkg-source -x on the dsc file')
+        log.debug('Copying files to a temp directory to run dpkg-source -x on '
+                  'the dsc file')
         self.tempdir = tempfile.mkdtemp()
         log.debug('Temp dir is: %s', self.tempdir)
         for filename in self.changes.get_files():
             log.debug('Copying: %s', filename)
-            shutil.copy(os.path.join(self.config['debexpo.upload.incoming'], filename), self.tempdir)
+            shutil.copy(os.path.join(self.config['debexpo.upload.incoming'],
+                                     filename), self.tempdir)
 
-        # If the original tarball was pulled from Debian or from the repository, that
-        # also needs to be copied into this directory.
+        # If the original tarball was pulled from Debian or from the repository,
+        # that also needs to be copied into this directory.
         dsc = deb822.Dsc(file(self.changes.get_dsc()))
         for item in dsc['Files']:
             if item['name'] not in self.changes.get_files():
-                src_file = os.path.join(self.config['debexpo.upload.incoming'], item['name'])
-                repository_src_file = os.path.join(self.config['debexpo.repository'], self.changes.get_pool_path(), item['name'])
+                src_file = os.path.join(self.config['debexpo.upload.incoming'],
+                                        item['name'])
+                repository_src_file = os.path.join(
+                    self.config['debexpo.repository'],
+                    self.changes.get_pool_path(), item['name'])
                 if os.path.exists(src_file):
                     shutil.copy(src_file, self.tempdir)
                 elif os.path.exists(repository_src_file):
                     shutil.copy(repository_src_file, self.tempdir)
                 else:
-                    log.critical("Trying to copy non-existing file %s" % (src_file))
+                    log.critical("Trying to copy non-existing file %s" %
+                                 (src_file))
 
-        shutil.copy(os.path.join(self.config['debexpo.upload.incoming'], self.changes_file), self.tempdir)
+        shutil.copy(os.path.join(self.config['debexpo.upload.incoming'],
+                    self.changes_file), self.tempdir)
 
         self.oldcurdir = os.path.abspath(os.path.curdir)
         os.chdir(self.tempdir)
 
         log.debug("Extracting sources for {}".format(dsc['Source']))
         extract = subprocess.Popen(['/usr/bin/dpkg-source',
-            '-x', self.changes.get_dsc(), 'extracted'], stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT)
+                                    '-x',
+                                    self.changes.get_dsc(),
+                                    'extracted'],
+                                   stdout=subprocess.PIPE,
+                                   stderr=subprocess.STDOUT)
         (output, _) = extract.communicate()
 
         if extract.returncode:
-            log.critical("Failed to extract sources for" \
-                    " {}:\n{}".format(dsc['Source'], output))
+            log.critical("Failed to extract sources for"
+                         " {}:\n{}".format(dsc['Source'], output))
             return PluginResult(from_plugin="extract", outcome=output,
-                data=None, severity=constants.PLUGIN_SEVERITY_CRITICAL)
+                                data=None,
+                                severity=constants.PLUGIN_SEVERITY_CRITICAL)
         else:
             return None
 
     def _cleanup(self):
         """
-        Remove the previously-created temporary directory and chdir back to where the importer
-        was.
+        Remove the previously-created temporary directory and chdir back to
+        where the importer was.
         """
         if self.tempdir is not None:
             shutil.rmtree(self.tempdir)
@@ -220,10 +234,12 @@ class Plugins(object):
                 name = 'debexpo.plugins.%s' % plugin
                 module = self._import_plugin(name)
 
-            # The 'plugin' object points to the class containing the actual plugin/test
+            # The 'plugin' object points to the class containing the actual
+            # plugin/test
             if hasattr(module, 'plugin'):
-                p = getattr(module, 'plugin')(name=plugin, changes=self.changes, \
-                    changes_file=self.changes_file, tempdir=self.tempdir)
+                p = getattr(module, 'plugin')(name=plugin, changes=self.changes,
+                                              changes_file=self.changes_file,
+                                              tempdir=self.tempdir)
 
                 for item in self.kw:
                     setattr(p, item, self.kw[item])
@@ -231,7 +247,9 @@ class Plugins(object):
                 try:
                     result.extend(p.run())
                 except Exception:
-                    log.debug("Something wrong happened while running the plugin '%s': %s" % (plugin, traceback.format_exc()))
+                    log.debug("Something wrong happened while running the "
+                              "plugin '%s': %s" % (plugin,
+                                                   traceback.format_exc()))
 
         if self.conf['extract']:
             self._cleanup()

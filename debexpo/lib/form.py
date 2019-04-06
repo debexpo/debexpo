@@ -2,7 +2,8 @@
 #
 #   form.py — Helpers for more complex formencode forms
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -28,8 +29,8 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 """
-Holds helper functions for dealing with the state in formencode form validation schemas
-and validators.
+Holds helper functions for dealing with the state in formencode form validation
+schemas and validators.
 """
 
 __author__ = 'Jonny Lamb'
@@ -43,9 +44,11 @@ import pylons
 
 log = logging.getLogger(__name__)
 
+
 class State(object):
     """
-    Trivial state class to be used by formencode validators to store information.
+    Trivial state class to be used by formencode validators to store
+    information.
 
     For example::
 
@@ -58,6 +61,7 @@ class State(object):
     def __init__(self, **kw):
         for key in kw:
             setattr(self, key, kw[key])
+
 
 def validate(schema, **state_kwargs):
     """
@@ -76,6 +80,7 @@ def validate(schema, **state_kwargs):
 
     log.debug('Validating form against schema %s' % schema)
     return schema.to_python(pylons.request.params, state)
+
 
 def htmlfill(html, exception_error=None):
     """

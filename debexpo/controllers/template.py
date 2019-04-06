@@ -2,7 +2,8 @@
 #
 #   template.py — The application's TemplateController object
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -35,7 +36,8 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-from debexpo.lib.base import *
+from debexpo.lib.base import BaseController, abort
+
 
 class TemplateController(BaseController):
     """

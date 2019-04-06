@@ -2,7 +2,8 @@
 #
 #   changes.py — .changes file handling class
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -41,6 +42,7 @@ from debexpo.lib.utils import parse_section
 
 import os.path
 
+
 class Changes(object):
     """
     Helper class to parse *changes* files nicely.
@@ -71,7 +73,8 @@ class Changes(object):
             self._data = deb822.Changes(file(filename))
             self.basename = os.path.basename(filename)
             if len(self._data) == 0:
-                raise Exception('Changes file {} could not be parsed'.format(self.basename))
+                raise Exception('Changes file {} could not be parsed'.format(
+                    self.basename))
         else:
             self._data = deb822.Changes(string)
             if len(self._data) == 0:
@@ -80,11 +83,11 @@ class Changes(object):
         # Per debian policy:
         # https://www.debian.org/doc/debian-policy/ch-controlfields.html#debian-changes-files-changes
         for key in ['Architecture', 'Changes', 'Checksums-Sha1',
-                'Checksums-Sha256', 'Date', 'Distribution', 'Files', 'Format',
-                'Maintainer', 'Source', 'Version']:
-            if not key in self._data:
+                    'Checksums-Sha256', 'Date', 'Distribution', 'Files',
+                    'Format', 'Maintainer', 'Source', 'Version']:
+            if key not in self._data:
                 raise Exception('Changes file invalid. Missing key '
-                        '{}'.format(key))
+                                '{}'.format(key))
 
     def get_filename(self):
         """

@@ -3,7 +3,8 @@
 #
 #   debexpo-importer — executable script to import new packages
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -36,8 +37,10 @@ import sys
 from optparse import OptionParser
 from debexpo.importer.importer import Importer
 
+
 def main():
-    parser = OptionParser(usage="%prog -c FILE -i FILE [--skip-email] [--skip-gpg-check]")
+    parser = OptionParser(
+        usage="%prog -c FILE -i FILE [--skip-email] [--skip-gpg-check]")
     parser.add_option('-c', '--changes', dest='changes',
                       help='Path to changes file to import',
                       metavar='FILE', default=None)
@@ -56,9 +59,11 @@ def main():
         sys.exit(0)
 
     logging.debug('Importer started with arguments: %s' % sys.argv[1:])
-    i = Importer(options.changes, options.ini, options.skip_email, options.skip_gpg)
+    i = Importer(options.changes, options.ini, options.skip_email,
+                 options.skip_gpg)
 
     sys.exit(i.main())
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     main()

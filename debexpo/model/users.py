@@ -2,7 +2,8 @@
 #
 #   users.py — users table model
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -38,14 +39,13 @@ __license__ = 'MIT'
 import sqlalchemy as sa
 from sqlalchemy import orm
 
-import os
-
 from debexpo.model import meta, OrmObject
 from debexpo.model.user_countries import UserCountry
-from debexpo.lib.constants import USER_TYPE_NORMAL, USER_STATUS_NORMAL, USER_TYPE_ADMIN
-import debexpo.lib.utils
+from debexpo.lib.constants import USER_TYPE_NORMAL, USER_STATUS_NORMAL, \
+    USER_TYPE_ADMIN
 
-t_users = sa.Table('users', meta.metadata,
+t_users = sa.Table(
+    'users', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
     sa.Column('name', sa.types.String(200), nullable=False),
     sa.Column('email', sa.types.String(200), nullable=False),
@@ -53,21 +53,25 @@ t_users = sa.Table('users', meta.metadata,
     sa.Column('gpg_id', sa.types.String(30), nullable=True),
     sa.Column('password', sa.types.String(200), nullable=False),
     sa.Column('lastlogin', sa.types.DateTime, nullable=False),
-    sa.Column('type', sa.types.Integer, nullable=False, default=USER_TYPE_NORMAL),
-    sa.Column('status', sa.types.Integer, nullable=False, default=USER_STATUS_NORMAL),
-    sa.Column('country_id', sa.types.Integer, sa.ForeignKey('user_countries.id')),
+    sa.Column('type', sa.types.Integer, nullable=False,
+              default=USER_TYPE_NORMAL),
+    sa.Column('status', sa.types.Integer, nullable=False,
+              default=USER_STATUS_NORMAL),
+    sa.Column('country_id', sa.types.Integer,
+              sa.ForeignKey('user_countries.id')),
     sa.Column('ircnick', sa.types.String(200), nullable=True),
     sa.Column('jabber', sa.types.String(200), nullable=True),
     sa.Column('verification', sa.types.String(200), nullable=True),
     )
+
 
 class User(OrmObject):
     foreign = ['country']
 
     def get_upload_key(self):
         import debexpo.model.user_upload_key
-        keys = meta.session.query(debexpo.model.user_upload_key.UserUploadKey
-            ).filter_by(user=self)
+        keys = meta.session.query(debexpo.model.user_upload_key.UserUploadKey) \
+            .filter_by(user=self)
         if keys.count() > 0:
             return keys[0].upload_key
         else:
@@ -82,6 +86,7 @@ class User(OrmObject):
     def is_admin(self):
         return self.type == USER_TYPE_ADMIN
 
+
 orm.mapper(User, t_users, properties={
-    'country' : orm.relation(UserCountry, backref='users')
+    'country': orm.relation(UserCountry, backref='users')
 })

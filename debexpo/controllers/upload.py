@@ -2,7 +2,8 @@
 #
 #   upload.py — Upload controller
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -39,18 +40,12 @@ __license__ = 'MIT'
 import os
 import os.path
 import logging
-import base64
 
-try:
-    from sqlalchemy.exceptions import InvalidRequestError
-except ImportError: # for sqlalchemy 0.7.1 and above
-    from sqlalchemy.exc import InvalidRequestError
-
-from debexpo.lib.base import *
+from debexpo.lib.base import BaseController, abort, config, request
 from debexpo.lib.filesystem import CheckFiles
-from debexpo.model import meta
 
 log = logging.getLogger(__name__)
+
 
 class UploadController(BaseController):
     """
@@ -59,14 +54,15 @@ class UploadController(BaseController):
 
     def index(self, filename):
         """
-        Controller entry point. When dput uploads a package via `PUT`, the connection below is made::
+        Controller entry point. When dput uploads a package via `PUT`, the
+        connection below is made::
 
           PUT /upload/packagename_version.dsc
 
         assuming the file being uploaded is the `dsc`.
 
-        This method takes writes the uploaded file to disk and calls the import script in another
-        process.
+        This method takes writes the uploaded file to disk and calls the import
+        script in another process.
 
         ``filename``
             Name of file being uploaded.
@@ -74,11 +70,12 @@ class UploadController(BaseController):
         The password here is actually a user_upload_key, not the user password.
         """
         if request.method != 'PUT':
-            log.error('Request with method %s attempted on Upload controller.' % request.method)
-            abort(405, 'The upload controller only deals with PUT requests.', headers=[('Allow', 'PUT')])
+            log.error('Request with method %s attempted on Upload controller.' %
+                      request.method)
+            abort(405, 'The upload controller only deals with PUT requests.',
+                  headers=[('Allow', 'PUT')])
 
         log.debug('File upload: %s' % filename)
-
 
         # Check whether the file extension is supported by debexpo
         if not CheckFiles().allowed_upload(filename):
@@ -103,13 +100,12 @@ class UploadController(BaseController):
         save_path = os.path.join(incoming_dir, filename)
         log.debug('Saving uploaded file to: %s', save_path)
         if os.path.exists(save_path):
-                log.debug("Aborting. File already exists")
-                abort(403, 'The file was already uploaded')
+            log.debug("Aborting. File already exists")
+            abort(403, 'The file was already uploaded')
         f = open(save_path, 'wb')
 
-        # The body attribute now contains the entire contents of the uploaded file.
+        # The body attribute now contains the entire contents of the uploaded
+        # file.
         # TODO: This looks dangerous if huge files are loaded into memory.
         f.write(request.body)
         f.close()
-
-

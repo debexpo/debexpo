@@ -2,7 +2,8 @@
 #
 #   websetup.py — Setup the debexpo application
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -51,10 +52,11 @@ import debexpo.model.user_countries
 
 log = logging.getLogger(__name__)
 
+
 def setup_config(command, filename, section, vars):
     """
-    Run when debexpo is being set up, when ``paster setup-app`` is executed and shouldn't
-    be called directly.
+    Run when debexpo is being set up, when ``paster setup-app`` is executed and
+    shouldn't be called directly.
 
     ``command``
         Pointer to the setup function.

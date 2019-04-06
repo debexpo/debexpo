@@ -2,7 +2,8 @@
 #
 #   importcomments.py — Import RFS comments from debian-mentors
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2011 Arno Töll <debian@toell.net>
 #
@@ -36,9 +37,11 @@ __license__ = 'MIT'
 
 from debexpo.cronjobs import BaseCronjob
 
+
 class ImportComments(BaseCronjob):
-        def deploy():
-                print("Running ImportUpload")
+    def deploy():
+        print("Running ImportUpload")
+
 
 cronjob = ImportComments
 schedule = 1

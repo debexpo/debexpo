@@ -2,7 +2,8 @@
 #
 #   package_subscriptions.py — package_subscriptions table model
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -42,17 +43,21 @@ from sqlalchemy.orm import backref
 from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
 
-t_package_subscriptions = sa.Table('package_subscriptions', meta.metadata,
+t_package_subscriptions = sa.Table(
+    'package_subscriptions', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
     sa.Column('user_id', sa.types.Integer, sa.ForeignKey('users.id')),
     sa.Column('package', sa.types.String(200), nullable=False),
     sa.Column('level', sa.types.Integer, nullable=False),
     )
 
+
 class PackageSubscription(OrmObject):
     foreign = ['user']
 
+
 orm.mapper(PackageSubscription, t_package_subscriptions, properties={
-    'user' : orm.relation(User, backref=backref('package_subscriptions',
-        cascade='all, delete-orphan'))
+    'user': orm.relation(
+        User,
+        backref=backref('package_subscriptions', cascade='all, delete-orphan'))
 })

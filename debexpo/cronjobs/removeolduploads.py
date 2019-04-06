@@ -2,7 +2,8 @@
 #
 #   removeolduploads.py -- remove old and uploaded packages from Debexpo
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2011 Arno Töll <debian@toell.net>
 #
@@ -47,11 +48,11 @@ from debexpo.model import meta
 from debian import deb822
 
 import socket
-import re
 import apt_pkg
 import datetime
 
 __namespace__ = '_remove_uploads_'
+
 
 class RemoveOldUploads(BaseCronjob):
 
@@ -59,9 +60,9 @@ class RemoveOldUploads(BaseCronjob):
         user = meta.session.query(User).filter_by(id=package.user_id).one()
         if user:
             self.mailer.send([user.email, ],
-                package=package.name,
-                version=version.version,
-                reason=reason)
+                             package=package.name,
+                             version=version.version,
+                             reason=reason)
 
         CheckFiles().delete_files_for_packageversion(version)
         meta.session.delete(version)
@@ -80,46 +81,56 @@ class RemoveOldUploads(BaseCronjob):
         changes = mail.get_payload(decode=True)
         try:
             changes = deb822.Changes(changes)
-        except:
-            self.log.error('Could not open changes file; skipping mail "%s"' % (mail['subject']))
+        except Exception:
+            self.log.error('Could not open changes file; skipping mail "%s"' %
+                           (mail['subject']))
             return
 
-        if not 'Source' in changes:
-            #self.log.debug('Changes file "%s" seems incomplete' % (mail['subject']))
+        if 'Source' not in changes:
+            # self.log.debug('Changes file "%s" seems incomplete' %
+            #               (mail['subject']))
             return
 
         package = self.pkg_controller._get_package(changes['Source'],
-                from_controller=False)
-        if package != None:
+                                                   from_controller=False)
+        if package is not None:
             for pv in package.package_versions:
                 if pv.distribution == changes['Distribution']:
                     if (apt_pkg.version_compare(changes['Version'], pv.version)
                             == 0):
                         self.log.debug("Package %s was uploaded to Debian - "
-                                "removing it from Expo" % (changes['Source']))
-                        self._remove_package(package, pv, "Package was "
-                                "uploaded to official Debian repositories")
+                                       "removing it from Expo" %
+                                       (changes['Source']))
+                        self._remove_package(package, pv,
+                                             "Package was uploaded to "
+                                             "official Debian repositories")
                     if (apt_pkg.version_compare(changes['Version'], pv.version)
                             > 0):
                         self.log.debug("More recent package %s was uploaded to "
-                                "Debian - removing it from Expo" %
-                                (changes['Source']))
-                        self._remove_package(package, pv, "A more "
-                                "recent package was uploaded to official Debian"
-                                " repositories")
+                                       "Debian - removing it from Expo" %
+                                       (changes['Source']))
+                        self._remove_package(package, pv,
+                                             "A more recent package was "
+                                             "uploaded to official Debian "
+                                             "repositories")
         else:
-            #self.log.debug("Package %s was not uploaded to Expo before - ignoring it" % (changes['Source']))
+            # self.log.debug("Package %s was not uploaded to Expo before - "
+            #                "ignoring it" % (changes['Source']))
             pass
 
     def _remove_uploaded_packages(self):
 
         if self.mailer.connection_established():
-            lists = meta.session.query(DataStore).filter(DataStore.namespace == __namespace__).all()
+            lists = meta.session.query(DataStore) \
+                    .filter(DataStore.namespace == __namespace__) \
+                    .all()
             for list_name in lists:
-                for message in self.mailer.unread_messages(list_name.code, list_name.value):
+                for message in self.mailer.unread_messages(list_name.code,
+                                                           list_name.value):
                     self._process_changes(message)
                     list_name.value = message['X-Debexpo-Message-Number']
-                self.log.debug("Processed all messages up to #%s on %s" % (list_name.value, list_name.code))
+                self.log.debug("Processed all messages up to #%s on %s" %
+                               (list_name.value, list_name.code))
                 meta.session.merge(list_name)
             meta.session.commit()
             self.mailer.disconnect_from_server()
@@ -127,10 +138,15 @@ class RemoveOldUploads(BaseCronjob):
     def _remove_old_packages(self):
         now = datetime.datetime.now()
         for package in self.pkgs_controller._get_packages():
-            if (now - package.package_versions[-1].uploaded) > datetime.timedelta(weeks = 20):
-                self.log.debug("Removing package %s - uploaded on %s" % (package.name, package.package_versions[-1].uploaded))
+            if (now - package.package_versions[-1].uploaded) > \
+                    datetime.timedelta(weeks=20):
+                self.log.debug("Removing package %s - uploaded on %s" %
+                               (package.name,
+                                package.package_versions[-1].uploaded))
                 for pv in package.package_versions:
-                    self._remove_package(package, pv, "Your package found no sponsor for 20 weeks")
+                    self._remove_package(package, pv,
+                                         "Your package found no sponsor for "
+                                         "20 weeks")
 
     def setup(self):
         self.mailer = Email('upload_removed_from_expo')
@@ -140,8 +156,6 @@ class RemoveOldUploads(BaseCronjob):
         apt_pkg.init_system()
         self.last_cruft_run = datetime.datetime(year=1970, month=1, day=1)
         self.log.debug("%s loaded successfully" % (__name__))
-
-
 
     def teardown(self):
         self.mailer.disconnect_from_server()
@@ -156,9 +170,11 @@ class RemoveOldUploads(BaseCronjob):
 
         # We don't need to run our garbage collection of old cruft that often
         # It's ok if we purge old packages once a day.
-        if (datetime.datetime.now() - self.last_cruft_run) >= datetime.timedelta(hours = 24):
+        if (datetime.datetime.now() - self.last_cruft_run) >= \
+                datetime.timedelta(hours=24):
             self.last_cruft_run = datetime.datetime.now()
             self._remove_old_packages()
 
+
 cronjob = RemoveOldUploads
-schedule = datetime.timedelta(minutes = 10)
+schedule = datetime.timedelta(minutes=10)

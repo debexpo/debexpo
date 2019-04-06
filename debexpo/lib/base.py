@@ -2,7 +2,8 @@
 #
 #   base.py — The base Controller API
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -37,11 +38,12 @@ utilized by Controllers.
 """
 
 __author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner, Copyright © 2011 Arno Töll'
+__copyright__ = 'Copyright © 2008 Jonny Lamb, ' \
+    'Copyright © 2010 Jan Dittberner, ' \
+    'Copyright © 2011 Arno Töll'
 __license__ = 'MIT'
 
 import logging
-log = logging.getLogger(__name__)
 
 from pylons import tmpl_context as c, cache, config, app_globals, request, \
     response, session, url
@@ -54,11 +56,14 @@ from pylons.templating import render_mako as render
 import debexpo.model as model
 from debexpo.model import meta
 
+log = logging.getLogger(__name__)
+
+
 class SubMenu(object):
     """
     A sub menu class, to be instantiated by controller.
-    This class holds several data structures which are parsed by the template engine and
-    result in a per-controller sub menu.
+    This class holds several data structures which are parsed by the template
+    engine and result in a per-controller sub menu.
     The controller only needs to feed this menu.
     """
     def __init__(self):
@@ -72,7 +77,7 @@ class SubMenu(object):
         return self._has_menu
 
     def has_label(self):
-        return self._label != None
+        return self._label is not None
 
     def has_submenu(self):
         return len(self._menu) > 0
@@ -90,7 +95,7 @@ class SubMenu(object):
 
     def add_entry(self, label, link):
         self._has_menu = True
-        self._entries.append( (label, link) )
+        self._entries.append((label, link))
 
     def submenulabel(self):
         return self._menu_label
@@ -105,6 +110,7 @@ class SubMenu(object):
     def menus(self):
         for e in self._menu:
             yield e
+
 
 class BaseController(WSGIController):
     """
@@ -141,8 +147,8 @@ class BaseController(WSGIController):
 
         c.config = config
         # The templates require the submenu to be existing
-        # If no controller added a submenu, its fair enough to instantiate an empty
-        # object here
+        # If no controller added a submenu, its fair enough to instantiate an
+        # empty object here
         if not hasattr(c, 'submenu'):
             c.submenu = SubMenu()
 
@@ -159,6 +165,7 @@ class BaseController(WSGIController):
         finally:
             meta.session.remove()
 
+
 # Include the '_' function in the public names
-__all__ = [__name for __name in locals().keys() if not __name.startswith('_') \
+__all__ = [__name for __name in locals().keys() if not __name.startswith('_')
            or __name == '_']

@@ -2,7 +2,8 @@
 #
 #   changeslist.py — changeslist plugin
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -44,6 +45,7 @@ import pylons
 
 log = logging.getLogger(__name__)
 
+
 class ChangesListPlugin(BasePlugin):
 
     def test_send_mail(self):
@@ -61,7 +63,9 @@ class ChangesListPlugin(BasePlugin):
         email = Email('changes_list')
         to = pylons.config['debexpo.changes_list']
         email.send([to], changes=self.changes,
-                changes_contents=self.changes_contents.decode('ascii', 'ignore'),
-                dest=self.changes.get_pool_path())
+                   changes_contents=self.changes_contents.decode('ascii',
+                                                                 'ignore'),
+                   dest=self.changes.get_pool_path())
+
 
 plugin = ChangesListPlugin

@@ -2,7 +2,8 @@
 #
 #   removepackage.py — removepackage plugin
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -45,6 +46,7 @@ from debexpo.model.packages import Package
 
 log = logging.getLogger(__name__)
 
+
 class RemovePackagePlugin(BasePlugin):
 
     def test_remove_package(self):
@@ -57,7 +59,8 @@ class RemovePackagePlugin(BasePlugin):
         package = meta.session.query(Package).filter_by(name=source).first()
 
         if package is None:
-            # The package is not in the repository. This will happen the most often.
+            # The package is not in the repository. This will happen the most
+            # often.
             log.debug('Package is not in the repository')
             return
 
@@ -66,7 +69,8 @@ class RemovePackagePlugin(BasePlugin):
 
         keep_package_versions = []
         for package_version in package.package_versions:
-            if apt_pkg.version_compare(self.changes['Version'], package_version.version) < 0:
+            if apt_pkg.version_compare(self.changes['Version'],
+                                       package_version.version) < 0:
                 keep_package_versions.append(package_version.version)
 
         if len(keep_package_versions) == 0:
@@ -82,5 +86,6 @@ class RemovePackagePlugin(BasePlugin):
                     meta.session.delete(package_version)
 
         meta.session.commit()
+
 
 plugin = RemovePackagePlugin

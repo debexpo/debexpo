@@ -2,7 +2,8 @@
 #
 #   test_upload.py — UploadController test cases
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -37,7 +38,6 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
 __license__ = 'MIT'
 
 import os
-import base64
 
 from debexpo.tests import TestController, url
 import pylons.test
@@ -55,8 +55,11 @@ class TestUploadController(TestController):
         self._setup_models()
         self._setup_example_user()
         self.incoming = pylons.test.pylonsapp.config['debexpo.upload.incoming']
-        if not os.path.isdir(os.path.join(pylons.test.pylonsapp.config['debexpo.upload.incoming'], 'pub')):
-            os.makedirs(os.path.join(pylons.test.pylonsapp.config['debexpo.upload.incoming'], 'pub'))
+        if not os.path.isdir(os.path.join(
+                pylons.test.pylonsapp.config['debexpo.upload.incoming'],
+                'pub')):
+            os.makedirs(os.path.join(
+                pylons.test.pylonsapp.config['debexpo.upload.incoming'], 'pub'))
 
     def tearDown(self):
         self._remove_example_user()
@@ -147,13 +150,12 @@ class TestUploadController(TestController):
         """
         Tests whether an uploads without debexpo.upload.incoming fails.
         """
-        incoming = pylons.test.pylonsapp.config.pop('debexpo.upload.incoming')
+        pylons.test.pylonsapp.config.pop('debexpo.upload.incoming')
 
         response = self.app.put(url(
             controller='upload', action='index',
             filename='testfile.dsc'),
             params='contents', expect_errors=True)
-
 
         self.assertEqual(response.status_int, 500)
 

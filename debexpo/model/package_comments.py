@@ -2,7 +2,8 @@
 #
 #   package_comments.py — package_comments table model
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -43,22 +44,28 @@ from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
 from debexpo.model.package_versions import PackageVersion
 
-t_package_comments = sa.Table('package_comments', meta.metadata,
+t_package_comments = sa.Table(
+    'package_comments', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
     sa.Column('user_id', sa.types.Integer, sa.ForeignKey('users.id')),
-    sa.Column('package_version_id', sa.types.Integer, sa.ForeignKey('package_versions.id')),
+    sa.Column('package_version_id', sa.types.Integer,
+              sa.ForeignKey('package_versions.id')),
     sa.Column('text', sa.types.Text, nullable=False),
     sa.Column('time', sa.types.DateTime, nullable=False),
     sa.Column('outcome', sa.types.Integer, nullable=False),
     sa.Column('status', sa.types.Integer, nullable=False),
     )
 
+
 class PackageComment(OrmObject):
     foreign = ['package_version', 'user']
 
+
 orm.mapper(PackageComment, t_package_comments, properties={
-    'package_version' : orm.relation(PackageVersion,
+    'package_version': orm.relation(
+        PackageVersion,
         backref=backref('package_comments', cascade='all, delete-orphan')),
-    'user' : orm.relation(User, backref=backref('package_comments',
-        cascade='all, delete-orphan')),
+    'user': orm.relation(
+        User,
+        backref=backref('package_comments', cascade='all, delete-orphan')),
 })

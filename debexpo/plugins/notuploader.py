@@ -2,7 +2,8 @@
 #
 #   notuploader.py — notuploader plugin
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -47,31 +48,37 @@ from pylons import config
 
 log = logging.getLogger(__name__)
 
+
 class NotUploaderPlugin(BasePlugin):
 
     def test_not_uploader(self):
         """
-        If there is a package already in the archive with the new package uploaded name,
-        make sure it was uploaded by the same uploader.
+        If there is a package already in the archive with the new package
+        uploaded name, make sure it was uploaded by the same uploader.
         """
         packagename = self.changes['Source']
         log.debug('Checking whether %s is in the archive already' % packagename)
 
-        package = meta.session.query(Package).filter_by(name=packagename).first()
+        package = meta.session.query(Package) \
+            .filter_by(name=packagename) \
+            .first()
 
         if package is None:
             log.debug('It is not')
             return
 
-        log.debug('It is in the archive; checking whether the uploader is the same as before')
+        log.debug('It is in the archive; checking whether the uploader is the '
+                  'same as before')
 
         if package.user_id == int(self.user_id):
             log.debug('Package belongs to uploader')
             # This isn't even worth setting an outcome.
         else:
             log.error('Package does not belong to uploader')
-            self.failed('This package was previously uploaded to %s by another user' % config["debexpo.sitename"],
+            self.failed('This package was previously uploaded to %s by another'
+                        'user' % config["debexpo.sitename"],
                         None,
                         constants.PLUGIN_SEVERITY_CRITICAL)
+
 
 plugin = NotUploaderPlugin

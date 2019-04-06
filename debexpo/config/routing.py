@@ -2,7 +2,8 @@
 #
 #   routing.py — Routes configuration
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -41,6 +42,7 @@ __license__ = 'MIT'
 
 from routes import Mapper
 
+
 def make_map(config):
     """
     Creates, configures and returns the routes Mapper.
@@ -66,30 +68,49 @@ def make_map(config):
     map.connect('intro-maintainers', '/intro-maintainers',
                 controller='index', action='intro_maintainers')
     map.connect('sponsors', '/sponsors', controller='sponsor', action='index')
-    map.connect('packaging-team', '/sponsors/spackaging-team', controller='sponsor', action='packaging_team')
-    map.connect('guidelines', '/sponsors/guidelines', controller='sponsor', action='guidelines')
-    map.connect('sponsor-developer', '/sponsors/profile/{id}', controller='sponsor', action='developer')
-    map.connect('sponsor_tag_save', '/sponsors/save', controller='sponsor', action='save')
-    map.connect('sponsor_tag_clear', '/sponsors/clear', controller='sponsor', action='clear')
-    map.connect('intro-reviewers', '/intro-reviewers', controller='index', action='intro_reviewers')
+    map.connect('packaging-team', '/sponsors/spackaging-team',
+                controller='sponsor', action='packaging_team')
+    map.connect('guidelines', '/sponsors/guidelines', controller='sponsor',
+                action='guidelines')
+    map.connect('sponsor-developer', '/sponsors/profile/{id}',
+                controller='sponsor', action='developer')
+    map.connect('sponsor_tag_save', '/sponsors/save', controller='sponsor',
+                action='save')
+    map.connect('sponsor_tag_clear', '/sponsors/clear', controller='sponsor',
+                action='clear')
+    map.connect('intro-reviewers', '/intro-reviewers', controller='index',
+                action='intro_reviewers')
     map.connect('my', '/my', controller='my', action='index')
     map.connect('login', '/login', controller='login', action='index')
     map.connect('logout', '/logout', controller='login', action='logout')
     map.connect('news', '/news', controller='index', action='news')
     map.connect('/package', controller='package', action='index')
-    map.connect('package', '/package/{packagename}', controller='package', action='index')
-    map.connect('comment', '/package/{packagename}/comment', controller='package', action='comment')
-    map.connect('sponsor', '/package/{packagename}/needs_sponsor/{key}', controller='package', action='sponsor')
-    map.connect('subscribe', '/package/{packagename}/subscribe', controller='package', action='subscribe')
-    map.connect('delete', '/package/{packagename}/delete/{key}', controller='package', action='delete')
-    map.connect('rfs-howto', '/sponsors/rfs-howto', controller='sponsor', action='rfs_howto')
-    map.connect('rfs', '/sponsors/rfs-howto/{packagename}', controller='sponsor', action='rfs_howto')
-    map.connect('packages', '/packages/{action}', controller='packages', action='index')
-    map.connect('all-packages', '/packages', controller='packages', action='index')
-    map.connect('packages-uploader', '/packages/uploader/{id}', controller='packages', action='uploader')
-    #map.connect('/packages/{action}/{id}', controller='packages', action='index', id=None)
-    map.connect('packages_filter_feed', '/packages/{filter}/{id}/feed', controller='packages', action='feed')
-    #map.connect('packages_feed', '/packages/feed', controller='packages', action='feed')
+    map.connect('package', '/package/{packagename}', controller='package',
+                action='index')
+    map.connect('comment', '/package/{packagename}/comment',
+                controller='package', action='comment')
+    map.connect('sponsor', '/package/{packagename}/needs_sponsor/{key}',
+                controller='package', action='sponsor')
+    map.connect('subscribe', '/package/{packagename}/subscribe',
+                controller='package', action='subscribe')
+    map.connect('delete', '/package/{packagename}/delete/{key}',
+                controller='package', action='delete')
+    map.connect('rfs-howto', '/sponsors/rfs-howto', controller='sponsor',
+                action='rfs_howto')
+    map.connect('rfs', '/sponsors/rfs-howto/{packagename}',
+                controller='sponsor', action='rfs_howto')
+    map.connect('packages', '/packages/{action}', controller='packages',
+                action='index')
+    map.connect('all-packages', '/packages', controller='packages',
+                action='index')
+    map.connect('packages-uploader', '/packages/uploader/{id}',
+                controller='packages', action='uploader')
+    # map.connect('/packages/{action}/{id}', controller='packages',
+    #             action='index', id=None)
+    map.connect('packages_filter_feed', '/packages/{filter}/{id}/feed',
+                controller='packages', action='feed')
+    # map.connect('packages_feed', '/packages/feed', controller='packages',
+    #             action='feed')
     map.connect('qa', '/qa', controller='index', action='qa')
 
     # LEGACY ROUTE. CAN BE REMOVED LATER
@@ -100,6 +121,6 @@ def make_map(config):
 
     map.connect('/{controller}/{action}')
     map.connect('/{controller}/{action}/{id}')
-    #map.connect('/*url', controller='template', action='view')
+    # map.connect('/*url', controller='template', action='view')
 
     return map

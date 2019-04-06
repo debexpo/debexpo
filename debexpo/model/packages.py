@@ -2,7 +2,8 @@
 #
 #   packages.py — packages table model
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -43,15 +44,18 @@ from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
 from debexpo.lib.constants import PACKAGE_NEEDS_SPONSOR_UNKNOWN
 
-t_packages = sa.Table('packages', meta.metadata,
+t_packages = sa.Table(
+    'packages', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
     sa.Column('name', sa.types.Text(), nullable=False),
     sa.Column('user_id', sa.types.Integer, sa.ForeignKey('users.id')),
     sa.Column('description', sa.types.Text(), nullable=True),
     sa.Column('watch_counter', sa.types.Integer, default=0),
     sa.Column('download_counter', sa.types.Integer, default=0),
-    sa.Column('needs_sponsor', sa.types.Integer, nullable=False, default=PACKAGE_NEEDS_SPONSOR_UNKNOWN),
+    sa.Column('needs_sponsor', sa.types.Integer, nullable=False,
+              default=PACKAGE_NEEDS_SPONSOR_UNKNOWN),
     )
+
 
 class Package(OrmObject):
     foreign = ['user']
@@ -59,7 +63,9 @@ class Package(OrmObject):
     def get_description(self):
         return self.description
 
+
 orm.mapper(Package, t_packages, properties={
-    'user' : orm.relation(User, backref=backref('packages',
-        cascade='all, delete-orphan'))
+    'user': orm.relation(
+        User,
+        backref=backref('packages', cascade='all, delete-orphan'))
 })

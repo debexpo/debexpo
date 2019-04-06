@@ -15,6 +15,7 @@ down_revision = '8d6f497e959e'
 branch_labels = None
 depends_on = None
 
+
 def upgrade():
     with op.batch_alter_table('package_files', schema=None) as batch_op:
         batch_op.alter_column('md5sum', type_=sa.types.String(32))

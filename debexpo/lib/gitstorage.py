@@ -26,8 +26,7 @@
 __author__ = 'Baptiste Mouterde'
 __license__ = 'MIT'
 
-from debexpo.lib.base import request
-from dulwich.objects import Blob, Tree, Commit, parse_timezone
+from dulwich.objects import Tree, Commit, parse_timezone
 from dulwich.repo import Repo
 from dulwich.patch import write_tree_diff
 from time import time
@@ -35,14 +34,15 @@ from io import BytesIO
 import logging
 import os
 import pylons
-import shutil
 
 log = logging.getLogger(__name__)
 
 fileToIgnore = []
 
+
 class NoOlderContent(Exception):
     pass
+
 
 class GitStorage():
     def _ignoreFile(self, dirName, fileName):
@@ -69,7 +69,8 @@ class GitStorage():
         commit = Commit()
         commit.tree = tree.id
         commit.encoding = "UTF-8"
-        commit.committer = commit.author = 'debexpo <%s>' % (pylons.config['debexpo.email'])
+        commit.committer = commit.author = ('debexpo <%s>' %
+                                            (pylons.config['debexpo.email']))
         commit.commit_time = commit.author_time = int(time())
         tz = parse_timezone('-0200')[0]
         commit.commit_timezone = commit.author_timezone = tz
@@ -81,7 +82,7 @@ class GitStorage():
         return commit.id
 
     def __init__(self, path):
-        #creating the repository
+        # Creating the repository
         if os.path.isdir(path):
             log.debug("directory exist, taking it as a git repository")
             self.repo = Repo(path)
@@ -93,10 +94,12 @@ class GitStorage():
             log.debug("adding an empty tree to the repository")
             self._commit(Tree())
 
-    #only this function will be used on upload
+    # Only this function will be used on upload
     def change(self, files):
         """
-        used to change a file in the git storage can be called for the first upload we don't care
+        used to change a file in the git storage can be called for the first
+        upload we don't care
+
         ``files``
             a list of file to change
         """
@@ -107,8 +110,8 @@ class GitStorage():
             for f in files:
                 self.repo.stage(f)
             log.debug("stages dones")
-            self.repo.do_commit("this is so awesome that nobody will never see it",
-                committer="same here <foo@foo.foo>")
+            self.repo.do_commit("this is so awesome that nobody will never see "
+                                "it", committer="same here <foo@foo.foo>")
 
     def buildTreeDiff(self, old_sha_tree=None, new_sha_tree=None):
         """
@@ -137,10 +140,10 @@ class GitStorage():
         # calculate changes
         changes = BytesIO()
         write_tree_diff(changes, self.repo.object_store, old_sha_tree,
-                new_sha_tree)
+                        new_sha_tree)
         return changes.getvalue()
 
-    #get*
+    # get*
     def getLastTree(self):
         """
         return the last tree
@@ -152,7 +155,7 @@ class GitStorage():
         return trees
         """
         commit = self.repo.head()
-        result = [ self.repo.get_object(commit).tree ]
+        result = [self.repo.get_object(commit).tree]
         for c in self.repo.get_parents(commit):
             result.append(self.repo.get_object(c).tree)
         return result
@@ -181,7 +184,7 @@ class GitStorage():
             raise NoOlderContent("{} has no previous version".format(filename))
 
         # Get corresponding blob and return its content
-        (_, sha) = last_tree_with_changes[filename];
+        (_, sha) = last_tree_with_changes[filename]
         blob = self.repo.get_object(sha)
         return blob.as_raw_string()
 

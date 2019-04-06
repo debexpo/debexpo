@@ -3,7 +3,8 @@
 #
 #   key_importer.py — Regenerate the mentors keyring from scratch
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2012 Arno Töll <debian@toell.net>
 #
@@ -38,14 +39,12 @@ __author__ = 'Arno Töll'
 __copyright__ = 'Copyright © 2012 Arno Töll'
 __license__ = 'MIT'
 
-import datetime
 import tempfile
 import shutil
 import os.path
 import sys
 import optparse
 import pylons
-
 
 from paste.deploy import appconfig
 from debexpo.config.environment import load_environment
@@ -67,7 +66,8 @@ class UpdateKeyring(object):
 
     def invoke(self):
         """
-        Loops through the debexpo.upload.incoming directory and runs the debexpo.importer for each file
+        Loops through the debexpo.upload.incoming directory and runs the
+        debexpo.importer for each file
         """
 
         if 'debexpo.gpg_keyring' not in self.config:
@@ -78,7 +78,8 @@ class UpdateKeyring(object):
             keyring = open(self.config['debexpo.gpg_keyring'], "a+")
             keyring.close()
         except IOError as e:
-            print("Can't access file: %s: %s" % (self.config['debexpo.gpg_keyring'], str(e)))
+            print("Can't access file: %s: %s" %
+                  (self.config['debexpo.gpg_keyring'], str(e)))
             return
 
         print("Regenerate keyring into %s" % (keyring.name))
@@ -101,9 +102,10 @@ class UpdateKeyring(object):
         meta.session.close()
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     parser = optparse.OptionParser()
-    parser.add_option("-i", "--ini", dest="ini", help="path to application ini file", metavar="FILE")
+    parser.add_option("-i", "--ini", dest="ini",
+                      help="path to application ini file", metavar="FILE")
     (options, args) = parser.parse_args()
     if not options.ini:
         parser.print_help()

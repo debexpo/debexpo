@@ -2,7 +2,8 @@
 #
 #   __init__.py — Helpful classes for plugins
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -37,6 +38,7 @@ __license__ = 'MIT'
 
 from debexpo.lib import constants
 
+
 class BasePlugin(object):
     """
     The class all other plugins should extend.
@@ -44,8 +46,8 @@ class BasePlugin(object):
 
     def __init__(self, **kw):
         """
-        Class constructor. Sets class attributes depending on the arguments of the
-        constructor.
+        Class constructor. Sets class attributes depending on the arguments of
+        the constructor.
 
         ``kw``
             Values to assign to class attributes.
@@ -78,7 +80,7 @@ class BasePlugin(object):
             Severity of the result.
         """
         self.result.append(PluginResult(from_plugin=self.name, outcome=outcome,
-            data=data, severity=severity))
+                                        data=data, severity=severity))
 
     def failed(self, outcome, data, severity):
         """
@@ -95,7 +97,7 @@ class BasePlugin(object):
 
         """
         self.result.append(PluginResult(from_plugin=self.name, outcome=outcome,
-            data=data, severity=severity))
+                                        data=data, severity=severity))
 
     def info(self, outcome, data):
         """
@@ -107,8 +109,10 @@ class BasePlugin(object):
         ``data``
             Resulting data from the plugin, like more detail about the process.
         """
-        self.result.append(PluginResult(from_plugin=self.name, outcome=outcome,
-            data=data, severity=constants.PLUGIN_SEVERITY_INFO))
+        self.result.append(PluginResult(
+            from_plugin=self.name, outcome=outcome, data=data,
+            severity=constants.PLUGIN_SEVERITY_INFO))
+
 
 class PluginResult(object):
     """
@@ -147,4 +151,3 @@ class PluginResult(object):
         Returns whether the process should stop after the test.
         """
         return self.severity >= constants.PLUGIN_SEVERITY_CRITICAL
-

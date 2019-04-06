@@ -2,7 +2,8 @@
 #
 #   middleware.py — Pylons middleware initialization
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyrithg © 2010 Jan Dittberner <jandd@debian.org>
@@ -43,11 +44,11 @@ from paste.deploy.converters import asbool
 from beaker.middleware import SessionMiddleware
 from routes.middleware import RoutesMiddleware
 
-import pylons
 from pylons.middleware import ErrorHandler, StatusCodeRedirect
 from pylons.wsgiapp import PylonsApp
 
 from debexpo.config.environment import load_environment
+
 
 def make_app(global_conf, full_stack=True, static_files=True, **app_conf):
     """Creates a Pylons WSGI application and returns it.

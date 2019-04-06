@@ -39,6 +39,7 @@ __license__ = 'MIT'
 from pylons.test import pylonsapp
 from debexpo.tests.importer import TestImporterController
 
+
 class TestImporter(TestImporterController):
     """
     This class tests debexpo's importer.
@@ -88,7 +89,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.import_package('missing-file-in-changes')
         self.assert_importer_failed()
         self.assert_email_with('Missing file hello_1.0-1.debian.tar.xz in'
-                ' incoming')
+                               ' incoming')
         self.assert_package_count('hello', '1.0-1', 0)
         self.assert_package_not_in_repo('hello', '1.0-1')
 
@@ -103,7 +104,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.import_package('no-dsc')
         self.assert_importer_failed()
         self.assert_email_with('Rejecting incomplete upload.\nYou did not'
-                ' upload the dsc file\n')
+                               ' upload the dsc file\n')
         self.assert_package_count('hello', '1.0-1', 0)
         self.assert_package_not_in_repo('hello', '1.0-1')
 
@@ -118,7 +119,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.import_package('unknown-key')
         self.assert_importer_failed()
         self.assert_email_with('Your upload does not contain a valid'
-                ' signature.')
+                               ' signature.')
         self.assert_package_count('hello', '1.0-1', 0)
         self.assert_package_not_in_repo('hello', '1.0-1')
 
@@ -127,7 +128,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.import_package('wrong-gpg-uid')
         self.assert_importer_failed()
         self.assert_email_with('Your GPG key does not match the email used to'
-                ' register')
+                               ' register')
         self.assert_package_count('hello', '1.0-1', 0)
         self.assert_package_not_in_repo('hello', '1.0-1')
 
@@ -135,7 +136,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.import_package('invalid-dist')
         self.assert_importer_failed()
         self.assert_email_with('You are not uploading to one of those Debian'
-                ' distribution')
+                               ' distribution')
         self.assert_package_count('hello', '1.0-1', 0)
         self.assert_package_not_in_repo('hello', '1.0-1')
 
@@ -167,7 +168,8 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.import_package('unicode-changes')
         self.assert_importer_succeeded()
         self.assert_email_with("Your upload of the package 'hello' to "
-                + pylonsapp.config['debexpo.sitename'] + " was\nsuccessful.")
+                               + pylonsapp.config['debexpo.sitename']
+                               + " was\nsuccessful.")
         self.assert_package_count('hello', '1.0-1', 1)
         self.assert_package_in_repo('hello', '1.0-1')
         self.assert_package_info('hello', 'debianqa',
@@ -177,7 +179,8 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.import_package('hello')
         self.assert_importer_succeeded()
         self.assert_email_with("Your upload of the package 'hello' to "
-                + pylonsapp.config['debexpo.sitename'] + " was\nsuccessful.")
+                               + pylonsapp.config['debexpo.sitename']
+                               + " was\nsuccessful.")
         self.assert_package_count('hello', '1.0-1', 1)
         self.assert_package_in_repo('hello', '1.0-1')
 
@@ -185,7 +188,8 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.import_package('hello')
         self.assert_importer_succeeded()
         self.assert_email_with("Your upload of the package 'hello' to "
-                + pylonsapp.config['debexpo.sitename'] + " was\nsuccessful.")
+                               + pylonsapp.config['debexpo.sitename']
+                               + " was\nsuccessful.")
         self.assert_package_count('hello', '1.0-1', 2)
         self.assert_package_in_repo('hello', '1.0-1')
 
@@ -193,7 +197,8 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.import_package('orig-from-official')
         self.assert_importer_succeeded()
         self.assert_email_with("Your upload of the package 'htop' to "
-                + pylonsapp.config['debexpo.sitename'] + " was\nsuccessful.")
+                               + pylonsapp.config['debexpo.sitename']
+                               + " was\nsuccessful.")
         self.assert_package_count('htop', '2.2.0-1+b1', 1)
         self.assert_package_in_repo('htop', '2.2.0-1')
 
@@ -201,6 +206,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.import_package('orig-from-official')
         self.assert_importer_succeeded()
         self.assert_email_with("Your upload of the package 'htop' to "
-                + pylonsapp.config['debexpo.sitename'] + " was\nsuccessful.")
+                               + pylonsapp.config['debexpo.sitename']
+                               + " was\nsuccessful.")
         self.assert_package_count('htop', '2.2.0-1+b1', 2)
         self.assert_package_in_repo('htop', '2.2.0-1')

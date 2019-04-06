@@ -4,12 +4,12 @@ from debexpo.model import meta
 from debexpo.model.users import User
 from debexpo.model.user_countries import UserCountry
 
-import md5
 import tempfile
 import os
 import shutil
 
 from passlib.hash import bcrypt
+
 
 class TestMyController(TestController):
     _GPGKEY_WRONG_EMAIL = """-----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -45,7 +45,7 @@ hxes4Ebtg7N8B/BoMYwmUVvmMVmoV+ef/vqYvfm6sgEA6fKzMSXllw57UJ90Unyn
 xOwJ1heEnfmgPkuiz7jFCAo=
 =xgUN
 -----END PGP PUBLIC KEY BLOCK-----"""
-    _GPG_ID= '256E/E871F3DF'
+    _GPG_ID = '256E/E871F3DF'
 
     def _setup_gpg_env(self):
         self.homedir = tempfile.mkdtemp()
@@ -76,18 +76,21 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         self.assertTrue('<a href="%s">' % (url('logout')) in response)
 
         # test user with country
-        user = meta.session.query(User).filter(
-            User.email=='email@example.com').one()
-        user.country = meta.session.query(UserCountry).filter(
-            UserCountry.name=='Germany').one()
+        user = meta.session.query(User) \
+            .filter(User.email == 'email@example.com') \
+            .one()
+        user.country = meta.session.query(UserCountry) \
+            .filter(UserCountry.name == 'Germany') \
+            .one()
         meta.session.commit()
         response = self.app.get(url(controller='my', action='index'))
         self.assertEquals(response.status_int, 200)
         self.assertTrue('<a href="%s">' % (url('logout')) in response)
 
         # test DD user
-        user = meta.session.query(User).filter(
-            User.email=='email@example.com').one()
+        user = meta.session.query(User) \
+            .filter(User.email == 'email@example.com') \
+            .one()
         user.status = constants.USER_STATUS_DEVELOPER
         meta.session.commit()
         response = self.app.get(url(controller='my', action='index'))
@@ -96,7 +99,7 @@ xOwJ1heEnfmgPkuiz7jFCAo=
 
         # test DM user
         user = meta.session.query(User).filter(
-            User.email=='email@example.com').one()
+            User.email == 'email@example.com').one()
         user.status = constants.USER_STATUS_MAINTAINER
         meta.session.commit()
         response = self.app.get(url(controller='my', action='index'))
@@ -114,18 +117,22 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         self.assertEquals(response.status_int, 302)
         self.assertTrue(response.location.endswith(url('login')))
         response = self.app.post(url('login'), self._AUTHDATA)
-        user = meta.session.query(User).filter(User.email=='email@example.com').one()
+        user = meta.session.query(User) \
+            .filter(User.email == 'email@example.com') \
+            .one()
         self.assertEquals(user.gpg, None)
 
         # upload GPG key
         response = self.app.post(url('my'), {'form': 'gpg',
                                              'delete_gpg': 0,
                                              'commit': 'submit'},
-                                 upload_files = [('gpg', 'mykey.asc',
-                                                  self._GPGKEY)])
+                                 upload_files=[('gpg', 'mykey.asc',
+                                               self._GPGKEY)])
         self.assertEquals(response.status_int, 302)
         self.assertTrue(response.location.endswith(url('my')))
-        user = meta.session.query(User).filter(User.email=='email@example.com').one()
+        user = meta.session.query(User) \
+            .filter(User.email == 'email@example.com') \
+            .one()
         self.assertEquals(user.gpg, self._GPGKEY)
 
         # test whether index page contains GPG delete link
@@ -141,7 +148,9 @@ xOwJ1heEnfmgPkuiz7jFCAo=
                                              'gpg': ''})
         self.assertEquals(response.status_int, 302)
         self.assertTrue(response.location.endswith(url('my')))
-        user = meta.session.query(User).filter(User.email=='email@example.com').one()
+        user = meta.session.query(User) \
+            .filter(User.email == 'email@example.com') \
+            .one()
         self.assertEquals(user.gpg, None)
 
     def test__gpg_wrong_email(self):
@@ -149,20 +158,24 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         self.assertEquals(response.status_int, 302)
         self.assertTrue(response.location.endswith(url('login')))
         response = self.app.post(url('login'), self._AUTHDATA)
-        user = meta.session.query(User).filter(User.email=='email@example.com').one()
+        user = meta.session.query(User) \
+            .filter(User.email == 'email@example.com') \
+            .one()
         self.assertEquals(user.gpg, None)
 
         # upload GPG key
         response = self.app.post(url('my'), {'form': 'gpg',
                                              'delete_gpg': 0,
                                              'commit': 'submit'},
-                                 upload_files = [('gpg', 'mykey.asc',
-                                                  self._GPGKEY_WRONG_EMAIL)])
+                                 upload_files=[('gpg', 'mykey.asc',
+                                               self._GPGKEY_WRONG_EMAIL)])
         self.assertEquals(response.status_int, 200)
         self.assertTrue('None of your user IDs in key {} does match your'
                         ' profile mail address'.format(self._GPG_ID_WRONG_EMAIL)
                         in response)
-        user = meta.session.query(User).filter(User.email=='email@example.com').one()
+        user = meta.session.query(User) \
+            .filter(User.email == 'email@example.com') \
+            .one()
         self.assertEquals(user.gpg, None)
 
     def test__details(self):
@@ -175,17 +188,21 @@ xOwJ1heEnfmgPkuiz7jFCAo=
                                              'email': 'email2@example.com',
                                              'commit': 'submit'})
         self.assertEquals(response.status_int, 200)
-        self.assertEquals(len(response.lxml.xpath('//input[@id="name" and @class="error"]')),
-                          1)
+        self.assertEquals(len(response.lxml.xpath(
+            '//input[@id="name" and @class="error"]')), 1)
         response = self.app.post(url('my'), {'form': 'details',
                                              'name': 'Test user2',
                                              'email': 'email2@example.com',
                                              'commit': 'submit'})
         self.assertEquals(response.status_int, 302)
         self.assertTrue(response.location.endswith(url('my')))
-        user = meta.session.query(User).filter(User.email=='email@example.com').first()
+        user = meta.session.query(User) \
+            .filter(User.email == 'email@example.com') \
+            .first()
         self.assertEquals(user, None)
-        user = meta.session.query(User).filter(User.email=='email2@example.com').one()
+        user = meta.session.query(User) \
+            .filter(User.email == 'email2@example.com') \
+            .one()
         self.assertEquals(user.name, 'Test user2')
         meta.session.delete(user)
         meta.session.commit()
@@ -196,16 +213,18 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         self.assertTrue(response.location.endswith(url('login')))
 
         # Before first login, password is stored as md5
-        user = meta.session.query(User).filter(
-            User.email=='email@example.com').one()
+        user = meta.session.query(User) \
+            .filter(User.email == 'email@example.com') \
+            .one()
         self.assertFalse(user.password.startswith('$2'))
 
         # Login
         response = self.app.post(url('login'), self._AUTHDATA)
 
         # Password updated with bcrypt
-        user = meta.session.query(User).filter(
-            User.email=='email@example.com').one()
+        user = meta.session.query(User) \
+            .filter(User.email == 'email@example.com') \
+            .one()
         self.assertTrue(bcrypt.verify('password', user.password))
 
         # Test password change
@@ -218,8 +237,9 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         self.assertTrue(response.location.endswith(url('my')))
 
         # Test new password value
-        user = meta.session.query(User).filter(
-            User.email=='email@example.com').one()
+        user = meta.session.query(User) \
+            .filter(User.email == 'email@example.com') \
+            .one()
         self.assertTrue(bcrypt.verify('newpassword', user.password))
 
         self.assertEquals(user.name, 'Test user')
@@ -237,7 +257,9 @@ xOwJ1heEnfmgPkuiz7jFCAo=
                                              'commit': 'submit'})
         self.assertEquals(response.status_int, 302)
         self.assertTrue(response.location.endswith(url('my')))
-        user = meta.session.query(User).filter(User.email=='email@example.com').one()
+        user = meta.session.query(User) \
+            .filter(User.email == 'email@example.com') \
+            .one()
         self.assertEquals(user.ircnick, 'tester')
         # test DM switch
         response = self.app.post(url('my'), {'form': 'other_details',
@@ -248,7 +270,9 @@ xOwJ1heEnfmgPkuiz7jFCAo=
                                              'commit': 'submit'})
         self.assertEquals(response.status_int, 302)
         self.assertTrue(response.location.endswith(url('my')))
-        user = meta.session.query(User).filter(User.email=='email@example.com').one()
+        user = meta.session.query(User) \
+            .filter(User.email == 'email@example.com')\
+            .one()
         self.assertEquals(user.status, constants.USER_STATUS_MAINTAINER)
 
     def test__invalid_form(self):

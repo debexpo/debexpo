@@ -2,7 +2,8 @@
 #
 #   package_files.py — package_files table model
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -43,22 +44,29 @@ from debexpo.model import meta, OrmObject
 from debexpo.model.binary_packages import BinaryPackage
 from debexpo.model.source_packages import SourcePackage
 
-t_package_files = sa.Table('package_files', meta.metadata,
+t_package_files = sa.Table(
+    'package_files', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
-    sa.Column('binary_package_id', sa.types.Integer, sa.ForeignKey('binary_packages.id'), nullable=True),
-    sa.Column('source_package_id', sa.types.Integer, sa.ForeignKey('source_packages.id'), nullable=True),
+    sa.Column('binary_package_id', sa.types.Integer,
+              sa.ForeignKey('binary_packages.id'), nullable=True),
+    sa.Column('source_package_id', sa.types.Integer,
+              sa.ForeignKey('source_packages.id'), nullable=True),
     sa.Column('filename', sa.types.String(200), nullable=False),
     sa.Column('size', sa.types.Integer, nullable=False),
     sa.Column('md5sum', sa.types.String(32), nullable=False),
     sa.Column('sha256sum', sa.types.String(64), nullable=False),
     )
 
+
 class PackageFile(OrmObject):
     foreign = ['binary_package', 'source_package']
 
+
 orm.mapper(PackageFile, t_package_files, properties={
-    'binary_package' : orm.relation(BinaryPackage,
+    'binary_package': orm.relation(
+        BinaryPackage,
         backref=backref('package_files', cascade='all, delete-orphan')),
-    'source_package' : orm.relation(SourcePackage,
+    'source_package': orm.relation(
+        SourcePackage,
         backref=backref('package_files', cascade='all, delete-orphan')),
 })

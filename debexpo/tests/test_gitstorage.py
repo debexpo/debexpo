@@ -40,6 +40,7 @@ from subprocess import Popen, PIPE, STDOUT
 from tempfile import mkdtemp, mkstemp
 from unittest import TestCase
 
+
 class TestGitStorage(TestCase):
     def setUp(self):
         self.gitdir = mkdtemp()
@@ -50,7 +51,7 @@ class TestGitStorage(TestCase):
 
     def _git(self, args):
         proc = Popen(['/usr/bin/git'] + args,
-                stdout=PIPE, stderr=STDOUT, cwd=self.gitdir)
+                     stdout=PIPE, stderr=STDOUT, cwd=self.gitdir)
         (output, status) = proc.communicate()
 
         return (status, output)
@@ -74,7 +75,7 @@ class TestGitStorage(TestCase):
 
     def _git_last_commited_files(self):
         (status, output) = self._git(['show', '--format=', '--name-only',
-            'HEAD'])
+                                      'HEAD'])
         self.assertFalse(status)
 
         return output.split('\n')

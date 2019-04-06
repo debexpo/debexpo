@@ -2,7 +2,8 @@
 #
 #   package_versions.py — package_versions table model
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -42,7 +43,8 @@ from sqlalchemy.orm import backref
 from debexpo.model import meta, OrmObject
 from debexpo.model.packages import Package
 
-t_package_versions = sa.Table('package_versions', meta.metadata,
+t_package_versions = sa.Table(
+    'package_versions', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
     sa.Column('package_id', sa.types.Integer, sa.ForeignKey('packages.id')),
     sa.Column('version', sa.types.Text(), nullable=False),
@@ -55,6 +57,7 @@ t_package_versions = sa.Table('package_versions', meta.metadata,
     sa.Column('closes', sa.types.Text(), nullable=True),
     sa.Column('uploaded', sa.types.DateTime, nullable=False),
     )
+
 
 class PackageVersion(OrmObject):
     foreign = ['package']
@@ -82,6 +85,8 @@ class PackageVersion(OrmObject):
 
 
 orm.mapper(PackageVersion, t_package_versions, properties={
-    'package' : orm.relation(Package, backref=backref('package_versions',
-        cascade='all, delete-orphan', order_by=t_package_versions.c.uploaded))
+    'package': orm.relation(
+        Package,
+        backref=backref('package_versions', cascade='all, delete-orphan',
+                        order_by=t_package_versions.c.uploaded))
 })

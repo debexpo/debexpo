@@ -2,7 +2,8 @@
 #
 #   package.py — Package controller
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
@@ -39,9 +40,9 @@ __license__ = 'MIT'
 
 from datetime import datetime
 import logging
-import os
 
-from debexpo.lib.base import *
+from debexpo.lib.base import BaseController, c, redirect, url, config, \
+    session, _, render, request, abort, validate
 from debexpo.lib import constants, form
 from debexpo.lib.utils import get_package_dir
 from debexpo.lib.email import Email
@@ -54,14 +55,10 @@ from debexpo.model.packages import Package
 from debexpo.model.package_versions import PackageVersion
 from debexpo.model.users import User
 from debexpo.model.package_comments import PackageComment
-from debexpo.model.package_info import PackageInfo
-from debexpo.model.source_packages import SourcePackage
-from debexpo.model.binary_packages import BinaryPackage
-from debexpo.model.package_files import PackageFile
 from debexpo.model.package_subscriptions import PackageSubscription
 
-
 log = logging.getLogger(__name__)
+
 
 class PackageController(BaseController):
 
@@ -70,11 +67,14 @@ class PackageController(BaseController):
         """
         log.debug('Details of package "%s" requested' % packagename)
 
-        package = meta.session.query(Package).filter_by(name=packagename).first()
+        package = meta.session.query(Package) \
+            .filter_by(name=packagename) \
+            .first()
 
         if package is None and from_controller:
             log.error('Could not get package information')
-            redirect(url(controller='packages', action='index', packagename=None))
+            redirect(url(controller='packages', action='index',
+                         packagename=None))
         if package is None and not from_controller:
             return None
 
@@ -84,14 +84,14 @@ class PackageController(BaseController):
             c.package_dir = get_package_dir(package.name)
         return package
 
-    def index(self, packagename = None):
+    def index(self, packagename=None):
         """
         Entry point into the controller. Displays information about the package.
 
         ``packagename``
             Package name to look at.
         """
-        package = self._get_package(packagename)
+        self._get_package(packagename)
 
         c.session = session
         c.constants = constants
@@ -102,7 +102,9 @@ class PackageController(BaseController):
         ]
 
         if 'user_id' in session:
-            c.user = meta.session.query(User).filter_by(id=session['user_id']).one()
+            c.user = meta.session.query(User) \
+                .filter_by(id=session['user_id']) \
+                .one()
         else:
             c.user = None
 
@@ -122,7 +124,7 @@ class PackageController(BaseController):
             session.save()
             redirect(url('login'))
 
-        package = self._get_package(packagename)
+        self._get_package(packagename)
 
         query = meta.session.query(PackageSubscription).filter_by(
             package=packagename).filter_by(user_id=session['user_id'])
@@ -134,14 +136,15 @@ class PackageController(BaseController):
             try:
                 fields = form.validate(PackageSubscribeForm,
                                        user_id=session['user_id'])
-            except Exception, e:
+            except Exception as e:
                 log.error('Failed validation')
                 validation = e
             if not validation:
                 if subscription is None:
                     # There is no previous subscription.
                     if fields['level'] != -1:
-                        log.debug('Creating new subscription on %s' % packagename)
+                        log.debug('Creating new subscription on %s' %
+                                  packagename)
                         subscription = PackageSubscription(
                             package=packagename,
                             user_id=session['user_id'],
@@ -150,10 +153,12 @@ class PackageController(BaseController):
                 else:
                     # There is a previous subscription.
                     if fields['level'] != -1:
-                        log.debug('Changing previous subscription on %s' % packagename)
+                        log.debug('Changing previous subscription on %s' %
+                                  packagename)
                         subscription.level = fields['level']
                     else:
-                        log.debug('Deleting previous subscription on %s' % packagename)
+                        log.debug('Deleting previous subscription on %s' %
+                                  packagename)
                         meta.session.delete(subscription)
                 meta.session.commit()
                 redirect(url('package', packagename=packagename))
@@ -188,16 +193,20 @@ class PackageController(BaseController):
             session.save()
             redirect(url('login'))
         else:
-            user = meta.session.query(User).filter_by(id=session['user_id']).one()
+            user = meta.session.query(User) \
+                .filter_by(id=session['user_id']) \
+                .one()
 
         package = self._get_package(packagename)
 
         if session['user_id'] != package.user_id and not user.is_admin():
-            log.error("User %d is not allowed to change properties of foreign package %s" %(session['user_id'], packagename))
+            log.error("User %d is not allowed to change properties of foreign "
+                      "package %s" % (session['user_id'], packagename))
             abort(403)
 
         if user.get_upload_key() != key:
-            log.error("Possible CSRF attack, upload key does not match user's session key")
+            log.error("Possible CSRF attack, upload key does not match user's "
+                      "session key")
             abort(402)
 
         # The user should have already been prompted with a nice dialog box
@@ -240,35 +249,40 @@ class PackageController(BaseController):
             session.save()
             redirect(url('login'))
 
-        package = self._get_package(packagename)
+        self._get_package(packagename)
 
         status = constants.PACKAGE_COMMENT_STATUS_NOT_UPLOADED
 
         if self.form_result['status']:
             status = constants.PACKAGE_COMMENT_STATUS_UPLOADED
 
-        comment = PackageComment(user_id=session['user_id'],
-            package_version_id=self.form_result['package_version'],
-            text=self.form_result['text'],
-            time=datetime.now(),
-            outcome=self.form_result['outcome'],
-            status=status)
+        comment = PackageComment(
+                user_id=session['user_id'],
+                package_version_id=self.form_result['package_version'],
+                text=self.form_result['text'],
+                time=datetime.now(),
+                outcome=self.form_result['outcome'],
+                status=status)
 
         meta.session.add(comment)
         meta.session.commit()
 
-        subscribers = meta.session.query(PackageSubscription).filter_by(
-            package=packagename).filter(
-            PackageSubscription.level <= constants.SUBSCRIPTION_LEVEL_COMMENTS).all()
+        subscribers = meta.session.query(PackageSubscription) \
+            .filter_by(package=packagename) \
+            .filter(PackageSubscription.level <=
+                    constants.SUBSCRIPTION_LEVEL_COMMENTS) \
+            .all()
 
         user = meta.session.query(User).filter_by(id=session['user_id']).one()
         if len(subscribers) > 0:
 
             email = Email('comment_posted')
             email.send([s.user.email for s in subscribers], package=packagename,
-                comment=self.form_result['text'], user=user)
+                       comment=self.form_result['text'], user=user)
 
-        version = package = meta.session.query(PackageVersion).filter_by(id=self.form_result['package_version']).first()
+        meta.session.query(PackageVersion) \
+            .filter_by(id=self.form_result['package_version'])\
+            .first()
 
         redirect(url('package', packagename=packagename))
 
@@ -277,7 +291,7 @@ class PackageController(BaseController):
             log.debug("Comment form submitted")
             return self._comment_submit(packagename)
         else:
-            #abort(405)
+            # abort(405)
             redirect(url('package', packagename=packagename))
 
     def sponsor(self, packagename, key):
@@ -287,22 +301,26 @@ class PackageController(BaseController):
             session.save()
             redirect(url('login'))
         else:
-            user = meta.session.query(User).filter_by(id=session['user_id']).one()
+            user = meta.session.query(User) \
+                .filter_by(id=session['user_id']) \
+                .one()
 
         if user.get_upload_key() != key:
-            log.error("Possible CSRF attack, upload key does not match user's session key")
+            log.error("Possible CSRF attack, upload key does not match user's "
+                      "session key")
             abort(402)
 
         package = meta.session.query(Package).filter_by(name=packagename).one()
 
         if session['user_id'] != package.user_id:
-            log.error("User %d is not allowed to change properties of foreign package %s" %(session['user_id'], packagename))
+            log.error("User %d is not allowed to change properties of foreign "
+                      "package %s" % (session['user_id'], packagename))
             abort(403)
 
         if package.needs_sponsor:
-                package.needs_sponsor = 0
+            package.needs_sponsor = 0
         else:
-                package.needs_sponsor = 1
+            package.needs_sponsor = 1
         log.debug("Toggle 'needs sponsor' flag = %d" % package.needs_sponsor)
         meta.session.commit()
 

@@ -2,7 +2,8 @@
 #
 #   lintian.py — lintian plugin
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>
@@ -48,6 +49,7 @@ from debexpo.plugins import BasePlugin
 
 log = logging.getLogger(__name__)
 
+
 class LintianPlugin(BasePlugin):
 
     def test_lintian(self):
@@ -61,10 +63,10 @@ class LintianPlugin(BasePlugin):
                                    "-I",
                                    "--pedantic",
                                    "--show-overrides",
-                                   self.changes_file], stdout=subprocess.PIPE).communicate()[0]
+                                   self.changes_file],
+                                  stdout=subprocess.PIPE).communicate()[0]
 
         items = output.split('\n')
-
 
         # Yes, three levels of defaultdict and one of list...
         def defaultdict_defaultdict_list():
@@ -81,7 +83,8 @@ class LintianPlugin(BasePlugin):
             if not item:
                 continue
 
-            # lintian output is of the form """SEVERITY: package: lintian_tag [lintian tag arguments]""" or """N: Override comment"""
+            # lintian output is of the form """SEVERITY: package: lintian_tag
+            # [lintian tag arguments]""" or """N: Override comment"""
             if item.startswith("N: "):
                 override_comments.append(item[3:].strip())
                 continue
@@ -91,9 +94,11 @@ class LintianPlugin(BasePlugin):
             lintian_tag = lintian_tag_data[0]
             lintian_data = lintian_tag_data[1:]
             if override_comments:
-                lintian_data.append("(override comment: " + " ".join(override_comments) + ")")
+                lintian_data.append("(override comment: " +
+                                    " ".join(override_comments) + ")")
                 override_comments = []
-            lintian_warnings[package][severity][lintian_tag].append(lintian_data)
+            lintian_warnings[package][severity][lintian_tag] \
+                .append(lintian_data)
 
         severity = constants.PLUGIN_SEVERITY_INFO
         if 'E' in lintian_severities:
@@ -112,5 +117,6 @@ class LintianPlugin(BasePlugin):
             outcome = 'Package is lintian clean'
 
         self.failed(outcome, lintian_warnings, severity)
+
 
 plugin = LintianPlugin

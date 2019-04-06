@@ -2,7 +2,8 @@
 #
 #   native.py — native QA plugin
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>
@@ -46,6 +47,7 @@ from debexpo.plugins import BasePlugin
 
 log = logging.getLogger(__name__)
 
+
 class NativePlugin(BasePlugin):
 
     def test_native(self):
@@ -58,12 +60,15 @@ class NativePlugin(BasePlugin):
         native = filecheck.is_native_package(self.changes)
 
         if native:
-            # Most uploads will not be native, and especially on mentors, a native
-            # package is almost probably in error.
+            # Most uploads will not be native, and especially on mentors, a
+            # native package is almost probably in error.
             log.warning('Package is native')
-            self.failed('Package is native', {"native": True}, constants.PLUGIN_SEVERITY_WARNING)
+            self.failed('Package is native', {"native": True},
+                        constants.PLUGIN_SEVERITY_WARNING)
         else:
             log.debug('Package is not native')
-            self.passed('Package is not native', {"native": False}, constants.PLUGIN_SEVERITY_INFO)
+            self.passed('Package is not native', {"native": False},
+                        constants.PLUGIN_SEVERITY_INFO)
+
 
 plugin = NativePlugin

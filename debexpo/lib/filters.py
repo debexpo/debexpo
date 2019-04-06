@@ -2,7 +2,8 @@
 #
 #   filter.py — Output filters for the template engine
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2011 Arno Töll <debian@toell.net>
 #
@@ -36,6 +37,7 @@ __copyright__ = 'Copyright © 2011 Arno Töll'
 __license__ = 'MIT'
 
 import cgi
+
 
 def semitrusted(input_filter):
     """

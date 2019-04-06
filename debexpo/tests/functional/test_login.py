@@ -1,5 +1,5 @@
-from debexpo.tests import *
-from pylons import session
+from debexpo.tests import TestController, url
+
 
 class TestLoginController(TestController):
     def setUp(self):
@@ -37,7 +37,8 @@ class TestLoginController(TestController):
         response = self.app.post(url(controller='login', action='index'),
                                  self._AUTHDATA)
         self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url(controller='packages', action='my')))
+        self.assertTrue(response.location.endswith(url(controller='packages',
+                                                       action='my')))
 
     def test_logout_loggedout(self):
         response = self.app.get(url(controller='login', action='logout'))

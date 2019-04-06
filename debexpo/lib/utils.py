@@ -2,7 +2,8 @@
 #
 #   utils.py — Debexpo utility functions
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -40,19 +41,21 @@ import hashlib
 import os
 
 from passlib.hash import bcrypt
-from pylons import config
 from debexpo.model import meta
 
 log = logging.getLogger(__name__)
+
 
 def parse_section(section):
     """
     Works out the component and section from the "Section" field.
     Sections like `python` or `libdevel` are in main.
-    Sections with a prefix, separated with a forward-slash also show the component.
+    Sections with a prefix, separated with a forward-slash also show the
+    component.
     It returns a list of strings in the form [component, section].
 
-    For example, `non-free/python` has component `non-free` and section `python`.
+    For example, `non-free/python` has component `non-free` and section
+    `python`.
 
     ``section``
         Section name to parse.
@@ -67,10 +70,11 @@ def parse_section(section):
     else:
         return ['main', section]
 
+
 def get_package_dir(source):
     """
-    Returns the directory name where the package with name supplied as the first argument
-    should be installed.
+    Returns the directory name where the package with name supplied as the first
+    argument should be installed.
 
     ``source``
         Source package name to use to work out directory name.
@@ -79,6 +83,7 @@ def get_package_dir(source):
         return os.path.join(source[:4], source)
     else:
         return os.path.join(source[0], source)
+
 
 def sha256sum(filename):
     """
@@ -89,6 +94,7 @@ def sha256sum(filename):
     """
     return _checksum(filename, hashlib.sha256)
 
+
 def md5sum(filename):
     """
     Returns the md5sum of a file specified.
@@ -98,10 +104,11 @@ def md5sum(filename):
     """
     return _checksum(filename, hashlib.md5)
 
+
 def _checksum(filename, hash_function):
     try:
         f = file(filename, 'rb')
-    except:
+    except Exception:
         raise AttributeError('Failed to open file %s.' % filename)
 
     sum = hash_function()
@@ -115,19 +122,23 @@ def _checksum(filename, hash_function):
 
     return sum.hexdigest()
 
+
 def random_hash():
     s = os.urandom(20)
     return hash_it(s)
+
 
 def hash_it(s):
     if type(s) == unicode:
         s = s.encode('utf-8')
     return hashlib.md5(s).hexdigest()
 
+
 def hash_password(s):
     if type(s) == unicode:
         s = s.encode('utf-8')
     return bcrypt.hash(s)
+
 
 def validate_password(user, password):
     if user.password.startswith('$2'):

@@ -2,7 +2,8 @@
 #
 #   importuploads.py — Import FTP uploads to Debexpo
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2011 Arno Töll <debian@toell.net>
 #
@@ -64,16 +65,19 @@ class ImportUpload(BaseCronjob):
 
     def invoke(self):
         """
-        Loops through the debexpo.upload.incoming directory and runs the debexpo.importer for each file
+        Loops through the debexpo.upload.incoming directory and runs the
+        debexpo.importer for each file
         """
-        if 'debexpo.upload.incoming' not in self.config or not os.path.isdir(self.config['debexpo.upload.incoming']):
+        if ('debexpo.upload.incoming' not in self.config or not
+                os.path.isdir(self.config['debexpo.upload.incoming'])):
             self.log.critical("debexpo.upload.incoming was not configured")
             return
 
         # 1) Process uploads
         base_path = os.path.join(self.config['debexpo.upload.incoming'], "pub")
         directories = [base_path, os.path.join(base_path, 'pub/UploadQueue')]
-        for changes_file in sum((glob.glob(os.path.join(directory, '*.changes')) for directory in directories), []):
+        for changes_file in sum((glob.glob(os.path.join(directory, '*.changes'))
+                                for directory in directories), []):
             self.log.info("Importing upload: %s", changes_file)
             try:
                 parsed_changes = Changes(filename=changes_file)
@@ -83,18 +87,23 @@ class ImportUpload(BaseCronjob):
                 continue
 
             directory = os.path.dirname(changes_file)
-            uploaded_files = parsed_changes.get_files() + [parsed_changes.get_filename()]
+            uploaded_files = parsed_changes.get_files() + \
+                [parsed_changes.get_filename()]
             for filename in uploaded_files:
                 source_file = os.path.join(directory, filename)
-                destination_file = os.path.join(self.config['debexpo.upload.incoming'], filename)
+                destination_file = os.path.join(
+                    self.config['debexpo.upload.incoming'], filename)
 
                 if os.path.exists(destination_file):
-                    self.log.debug("File %s already exists on the destination directory, removing.", filename)
+                    self.log.debug("File %s already exists on the destination "
+                                   "directory, removing.", filename)
                     os.remove(destination_file)
                 if os.path.exists(source_file):
-                    shutil.move(source_file, self.config['debexpo.upload.incoming'])
+                    shutil.move(source_file,
+                                self.config['debexpo.upload.incoming'])
                 else:
-                    self.log.debug("Source file %s does not exist, continuing.", filename)
+                    self.log.debug("Source file %s does not exist, continuing.",
+                                   filename)
 
             importer = Importer(parsed_changes.get_filename(),
                                 self.config['global_conf']['__file__'],
@@ -103,11 +112,14 @@ class ImportUpload(BaseCronjob):
 
             returncode = importer.main(no_env=True)
             if returncode != 0:
-                self.log.critical("Importer failed to import package %s [err=%d]." % (changes_file, returncode))
+                self.log.critical("Importer failed to import package %s "
+                                  "[err=%d]." % (changes_file, returncode))
             for filename in uploaded_files:
-                destination_file = os.path.join(self.config['debexpo.upload.incoming'], filename)
+                destination_file = os.path.join(
+                    self.config['debexpo.upload.incoming'], filename)
                 if os.path.exists(destination_file):
-                    self.log.debug("Remove stale file %s - the importer probably crashed" % (destination_file))
+                    self.log.debug("Remove stale file %s - the importer "
+                                   "probably crashed" % (destination_file))
                     os.remove(destination_file)
 
         # 2) Mark unprocessed files and get rid of them after some time
@@ -118,7 +130,8 @@ class ImportUpload(BaseCronjob):
                 last_change = time.time() - os.stat(file).st_mtime
                 # the file was uploaded more than 6 hours ago
                 if last_change > 6 * 60 * 60:
-                    self.log.warning("Remove old file: %s (last modified %.2f hours ago)" % (file, last_change / 3600.))
+                    self.log.warning("Remove old file: %s (last modified %.2f "
+                                     "hours ago)" % (file, last_change / 3600.))
                     os.remove(file)
             else:
                 if os.path.isfile(file):

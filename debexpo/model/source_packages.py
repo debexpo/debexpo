@@ -2,7 +2,8 @@
 #
 #   source_packages.py — source_packages table model
 #
-#   This file is part of debexpo - https://salsa.debian.org/mentors.debian.net-team/debexpo
+#   This file is part of debexpo -
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #
@@ -42,15 +43,20 @@ from sqlalchemy.orm import backref
 from debexpo.model import meta, OrmObject
 from debexpo.model.package_versions import PackageVersion
 
-t_source_packages = sa.Table('source_packages', meta.metadata,
+t_source_packages = sa.Table(
+    'source_packages', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
-    sa.Column('package_version_id', sa.types.Integer, sa.ForeignKey('package_versions.id')),
+    sa.Column('package_version_id', sa.types.Integer,
+              sa.ForeignKey('package_versions.id')),
     )
+
 
 class SourcePackage(OrmObject):
     foreign = ['package_version']
 
+
 orm.mapper(SourcePackage, t_source_packages, properties={
-    'package_version' : orm.relation(PackageVersion,
+    'package_version': orm.relation(
+        PackageVersion,
         backref=backref('source_packages', cascade='all, delete-orphan')),
 })
