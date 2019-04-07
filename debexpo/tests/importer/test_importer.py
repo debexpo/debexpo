@@ -175,6 +175,25 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_info('hello', 'debianqa',
                                  'Package is already in Debian')
 
+    def test_import_package_mismatch_orig_uploaded(self):
+        self.import_package('hello')
+        self.assert_importer_succeeded()
+        self.assert_email_with("Your upload of the package 'hello' to "
+                               + pylonsapp.config['debexpo.sitename']
+                               + " was\nsuccessful.")
+        self.assert_package_count('hello', '1.0-1', 1)
+        self.assert_package_in_repo('hello', '1.0-1')
+
+        self.import_package('hello-mismatch-orig')
+        self.assert_importer_failed()
+        self.assert_email_with("hello dsc reference hello_1.0.orig.tar.xz, but "
+                               "the file differs:\nin dsc: aaaaaaaaaaaaaaaaaaaa"
+                               "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nf"
+                               "ound: 622d2165e0ae0aee8b3dac5fbf07f471db2205c4c"
+                               "b60d1c3ce3762a12fbe62bf")
+        self.assert_package_count('hello', '1.0-1', 1)
+        self.assert_package_in_repo('hello', '1.0-1')
+
     def test_import_package_hello(self):
         self.import_package('hello')
         self.assert_importer_succeeded()

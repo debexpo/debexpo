@@ -607,6 +607,7 @@ class Importer(object):
                 self._reject('{} dsc reference {}, but the file was not found'
                              '.\nPlease, include it in your upload'
                              '.'.format(upload.name, dsc_file.get('name')))
+                return False
 
             checksum = sha256sum(filename)
             if dsc_file.get('sha256') != checksum:
@@ -617,6 +618,9 @@ class Importer(object):
                              ' file.'.format(upload.name,
                                              dsc_file.get('name'),
                                              dsc_file.get('sha256'), checksum))
+                return False
+
+        return True
 
     def main(self, no_env=False):
         """
@@ -795,7 +799,8 @@ class Importer(object):
                 return 1
 
         # Validates orig files from the uploaded dsc
-        self._validate_orig_files(self.changes.get_dsc())
+        if not self._validate_orig_files(self.changes.get_dsc()):
+            return 1
 
         # Check whether the debexpo.repository variable is set
         if 'debexpo.repository' not in pylons.config:
