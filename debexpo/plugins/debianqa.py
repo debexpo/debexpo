@@ -41,7 +41,7 @@ __copyright__ = ', '.join([
 __license__ = 'MIT'
 
 import logging
-import lxml.etree
+import lxml.html
 import urllib2
 
 from debexpo.model import meta
@@ -55,23 +55,24 @@ log = logging.getLogger(__name__)
 class DebianPlugin(BasePlugin):
 
     def _in_debian(self):
+        self.in_debian = False
+
         try:
-            self.qa_page = urllib2.urlopen('http://packages.qa.debian.org/%s' %
+            self.qa_page = urllib2.urlopen('https://tracker.debian.org/%s' %
                                            self.changes['Source'])
         except urllib2.HTTPError:
-            self.in_debian = False
-        else:
+            return
+
+        self.parsed_qa = lxml.html.fromstring(self.qa_page.read())
+
+        if len(self._qa_xpath('//span[@class="news-title"]')) > 0:
             self.in_debian = True
-            self.parsed_qa = lxml.etree.fromstring(self.qa_page.read())
 
     def _qa_xpath(self, query, item=None):
         """Perform the xpath query on the given item"""
         if item is None:
             item = self.parsed_qa
-        return item.xpath(
-            query,
-            namespaces={'xhtml': 'http://www.w3.org/1999/xhtml'}
-            )
+        return item.xpath(query)
 
     def _test_package_in_debian(self):
         """
@@ -92,10 +93,11 @@ class DebianPlugin(BasePlugin):
         """
         log.debug('Finding when the last upload of the package was')
 
-        news = self._qa_xpath('//xhtml:ul[@id="news-list"]')[0]
-        for item in news.getchildren():
-            if 'Accepted' in self._qa_xpath('xhtml:a/child::text()', item):
-                last_change = item.text[1:11]
+        news = self._qa_xpath('//span[@class="news-title"]')
+        for item in news:
+            if 'Accepted' in item.text:
+                last_change = self._qa_xpath('../../span[@class="news-date"]',
+                                             item)[0].text
                 log.debug('Last upload on %s' % last_change)
                 self.data["latest-upload"] = last_change
                 return
@@ -124,8 +126,8 @@ class DebianPlugin(BasePlugin):
     def _get_debian_maintainer_data(self):
 
         self.debian_maintainers = sorted(
-            self._qa_xpath('//xhtml:span[@title="maintainer"]/child::text()') +
-            self._qa_xpath('//xhtml:span[@title="uploader"]/child::text()')
+                self._qa_xpath('//li[span="maintainer:"]/a/child::text()') +
+                self._qa_xpath('//li[span="uploaders:"]/a/child::text()')
             )
 
         self.user_name = ""
