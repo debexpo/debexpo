@@ -1,0 +1,5 @@
+this-package-should-not-exist (1.0-1) unstable; urgency=medium
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Baptiste BEAUPLAT <lyknode@cilg.org>  Wed, 10 Apr 2019 19:03:40 +0200
