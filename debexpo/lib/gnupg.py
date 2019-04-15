@@ -47,6 +47,11 @@ import pylons
 log = logging.getLogger(__name__)
 
 
+class ExceptionGnuPG(Exception):
+    def __init__(self, message):
+        self.message = message
+
+
 class GnuPG(object):
 
     GPG_PATH_NOT_INITIALISED = -1
@@ -150,6 +155,10 @@ class GnuPG(object):
                 '--import', '--import-options', 'import-show', '--dry-run'])
             output = unicode(output, errors='replace')
             keys = KeyData.read_from_gpg(output.splitlines())
+
+            if len(keys) > 1:
+                raise ExceptionGnuPG("Multiple keys not supported.")
+
             for key in keys.values():
                 return (key.get_id(), key.get_all_uid())
         except (AttributeError, IndexError):
