@@ -41,8 +41,11 @@ import os
 import os.path
 import logging
 
+from glob import glob
+
 from debexpo.lib.base import BaseController, abort, config, request
 from debexpo.lib.filesystem import CheckFiles
+from debexpo.lib.changes import Changes
 
 log = logging.getLogger(__name__)
 
@@ -51,6 +54,38 @@ class UploadController(BaseController):
     """
     Controller to handle uploading packages via HTTP PUT.
     """
+
+    def _queued_for_import(self, filename):
+        # File does not exist. Return now
+        if not os.path.exists(filename):
+            return False
+
+        log.debug("File already exists: {}".format(filename))
+
+        # Changes file can't be overwritten
+        if filename.endswith('.changes'):
+            log.debug("Changes file can't be overwritten. Abort upload.")
+            return True
+
+        # For each changes files...
+        for changes_file in glob(os.path.join(self.incoming_dir, '*.changes')):
+            try:
+                changes = Changes(filename=changes_file)
+            except Exception as e:
+                log.debug("Failed to parse changes file {}: "
+                          "{}".format(changes_file, e))
+                continue
+
+            # ... check that filename is not referenced
+            for referenced_file in changes.get_files():
+                if referenced_file == os.path.basename(filename):
+                    log.debug("File queued for importation. Abort upload.")
+                    return True
+
+        # Look like an interrupted upload. Allow to reupload
+        log.debug("File not referenced by any changes. "
+                  "Allowing overwrite.")
+        return False
 
     def index(self, filename):
         """
@@ -94,13 +129,13 @@ class UploadController(BaseController):
             log.critical('debexpo.upload.incoming is not writable')
             abort(500, 'The incoming directory has not been set up')
 
-        incoming_dir = os.path.join(config['debexpo.upload.incoming'], 'pub')
-        if not os.path.isdir(incoming_dir):
-            os.mkdir(incoming_dir)
-        save_path = os.path.join(incoming_dir, filename)
+        self.incoming_dir = os.path.join(config['debexpo.upload.incoming'],
+                                         'pub')
+        if not os.path.isdir(self.incoming_dir):
+            os.mkdir(self.incoming_dir)
+        save_path = os.path.join(self.incoming_dir, filename)
         log.debug('Saving uploaded file to: %s', save_path)
-        if os.path.exists(save_path):
-            log.debug("Aborting. File already exists")
+        if self._queued_for_import(save_path):
             abort(403, 'The file was already uploaded')
         f = open(save_path, 'wb')
 
