@@ -41,7 +41,7 @@ import logging
 from pylons.i18n import _
 
 from debexpo.lib.base import session, config
-from debexpo.lib.gnupg import GnuPG, ExceptionGnuPG
+from debexpo.lib.gnupg import GnuPG, ExceptionGnuPGMultipleKeys
 
 from debexpo.model import meta
 from debexpo.model.users import User
@@ -83,8 +83,8 @@ class GpgKey(formencode.validators.FieldStorageUploadConverter):
 
         try:
             (self.gpg_id, user_ids) = self.gnupg.parse_key_id(value.value)
-        except ExceptionGnuPG as e:
-            raise formencode.Invalid(_(e.message), value, c)
+        except ExceptionGnuPGMultipleKeys:
+            raise formencode.Invalid(_('Multiple keys not supported'), value, c)
 
         if self.gpg_id is None:
             log.error("Failed to parse GPG key")

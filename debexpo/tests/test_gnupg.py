@@ -42,7 +42,7 @@ import os
 
 from pylons import config
 
-from debexpo.lib.gnupg import GnuPG, ExceptionGnuPG
+from debexpo.lib.gnupg import GnuPG, ExceptionGnuPGMultipleKeys
 
 test_gpg_key = """-----BEGIN PGP PUBLIC KEY BLOCK-----
 
@@ -118,7 +118,7 @@ class TestGnuPGController(TestCase):
         gnupg = self._get_gnupg('/etc/passwd')
         self.assertTrue(gnupg.is_unusable())
 
-    @raises(ExceptionGnuPG)
+    @raises(ExceptionGnuPGMultipleKeys)
     def testParseKeyIDMultipleKey(self):
         """
         Test limit ParseKey to one key only

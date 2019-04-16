@@ -48,8 +48,11 @@ log = logging.getLogger(__name__)
 
 
 class ExceptionGnuPG(Exception):
-    def __init__(self, message):
-        self.message = message
+    pass
+
+
+class ExceptionGnuPGMultipleKeys(ExceptionGnuPG):
+    pass
 
 
 class GnuPG(object):
@@ -157,7 +160,7 @@ class GnuPG(object):
             keys = KeyData.read_from_gpg(output.splitlines())
 
             if len(keys) > 1:
-                raise ExceptionGnuPG("Multiple keys not supported.")
+                raise ExceptionGnuPGMultipleKeys
 
             for key in keys.values():
                 return (key.get_id(), key.get_all_uid())
