@@ -57,12 +57,11 @@ class WatchFilePlugin(BasePlugin):
 
     def _run_uscan(self):
         if not hasattr(self, 'status') and not hasattr(self, 'output'):
-            os.chdir('extracted')
             call = subprocess.Popen(["uscan", "--verbose", '--report'],
-                                    stdout=subprocess.PIPE)
+                                    stdout=subprocess.PIPE,
+                                    cwd='extracted')
             (self.output, _) = call.communicate()
             self.status = call.returncode
-            os.chdir('..')
 
     def _watch_file_works(self):
         self._run_uscan()
