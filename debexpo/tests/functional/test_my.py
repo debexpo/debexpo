@@ -26,6 +26,29 @@ AQD4ZLpyUg+z6kJ+8YAmHFiOD9Ixv3QVvrfpBwnBVtJZBg==
 =N+9W
 -----END PGP PUBLIC KEY BLOCK-----"""
 
+    _GPGKEY_MULTI = """-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mDMEXLTbcxYJKwYBBAHaRw8BAQdAoh3VCQpeRnjWSsGxL8TmOE6AOc5W/3BGt+TH
+NlTNv2e0LVZpbmNlbnQgVElNRSAoVEVTVElORyBLRVkgMSkgPHZ0aW1lQGNpbGcu
+b3JnPoiQBBMWCAA4FiEE2QTvCDJA2cJrCuaBNkkwohbvF/0FAly023MCGwMFCwkI
+BwIGFQoJCAsCBBYCAwECHgECF4AACgkQNkkwohbvF/24QgEAhjlLjQzHSR7xR4+I
+i0KVuRBw9gTiLGN80UVt8s0ONGEA/3Ft1HQ5b37rFSY44Yvnuv8ejdTMqhO0sZ0J
+3OKTuVcBuDgEXLTbcxIKKwYBBAGXVQEFAQEHQBQ1AKhzJ+miI9wlpeTPfKzbYPIb
+fN3+uHMNRAsP0zoaAwEIB4h4BBgWCAAgFiEE2QTvCDJA2cJrCuaBNkkwohbvF/0F
+Aly023MCGwwACgkQNkkwohbvF/0hGAEAxkUFu5BAKwEToaoLs/0sePvL0S+EnR7F
+b0uzAD7qCN0BAKEKKL6PoMD5cwSlaN1j6z3K5UbPvkMulGXK38vt110LmDMEXLTb
+lxYJKwYBBAHaRw8BAQdA0nglRFeDWhHZq7a9UfIjLyupPutx9DL7+qk+Wfml0Uy0
+LVZpbmNlbnQgVElNRSAoVEVTVElORyBLRVkgMikgPHZ0aW1lQGNpbGcub3JnPoiQ
+BBMWCAA4FiEEdLUyC8hsXaia62wnbaTvWsnriSoFAly025cCGwMFCwkIBwIGFQoJ
+CAsCBBYCAwECHgECF4AACgkQbaTvWsnriSpQCwEA5sJ8Bfm1BMwhMZet53o5k74t
+X6P/piUOFeifO/c6tQ0A/33bE2W/7m9S8SJzcsin9ISEOSV2Z2dPQhCPj8afu+EC
+uDgEXLTblxIKKwYBBAGXVQEFAQEHQPuCyECR7wFvp1wKwzBMK/bBMi/UFxeh0qoZ
+GdQ6ChBXAwEIB4h4BBgWCAAgFiEEdLUyC8hsXaia62wnbaTvWsnriSoFAly025cC
+GwwACgkQbaTvWsnriSqzewD+JDfQwbYmNVzshxGGHslGO9yx3WShsdQUxZgs4HeD
+qd4BAMRseQ8Lg7Np6xDdqm4m2YaNhQmebe3pnwN81514V20J
+=gMOI
+-----END PGP PUBLIC KEY BLOCK-----"""
+
     _GPG_ID_WRONG_EMAIL = '256E/C74F9C11'
 
     _GPGKEY = """-----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -148,6 +171,29 @@ xOwJ1heEnfmgPkuiz7jFCAo=
                                              'gpg': ''})
         self.assertEquals(response.status_int, 302)
         self.assertTrue(response.location.endswith(url('my')))
+        user = meta.session.query(User) \
+            .filter(User.email == 'email@example.com') \
+            .one()
+        self.assertEquals(user.gpg, None)
+
+    def test__gpg_multi_keys(self):
+        response = self.app.post(url('my'), {'form': 'gpg'})
+        self.assertEquals(response.status_int, 302)
+        self.assertTrue(response.location.endswith(url('login')))
+        response = self.app.post(url('login'), self._AUTHDATA)
+        user = meta.session.query(User) \
+            .filter(User.email == 'email@example.com') \
+            .one()
+        self.assertEquals(user.gpg, None)
+
+        # upload GPG key
+        response = self.app.post(url('my'), {'form': 'gpg',
+                                             'delete_gpg': 0,
+                                             'commit': 'submit'},
+                                 upload_files=[('gpg', 'mykey.asc',
+                                               self._GPGKEY_MULTI)])
+        self.assertEquals(response.status_int, 200)
+        self.assertTrue('Multiple keys not supported' in response)
         user = meta.session.query(User) \
             .filter(User.email == 'email@example.com') \
             .one()

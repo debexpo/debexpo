@@ -37,11 +37,12 @@ __copyright__ = 'Copyright © 2008 Serafeim Zanikolas'
 __license__ = 'MIT'
 
 from unittest import TestCase
+from nose.tools import raises
 import os
 
 from pylons import config
 
-from debexpo.lib.gnupg import GnuPG
+from debexpo.lib.gnupg import GnuPG, ExceptionGnuPGMultipleKeys
 
 test_gpg_key = """-----BEGIN PGP PUBLIC KEY BLOCK-----
 
@@ -59,6 +60,29 @@ FggAIBYhBIZXPi5JR1WYI+w/FMfhmpga6o67BQJb8XwYAhsMAAoJEMfhmpga6o67
 Vh8A/AxTKLqACJnSVFrO2sArc7Yt3tymB+of9JeBF6iYBbuDAP9r32J6TYFB9OSz
 r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
 =BMLr
+-----END PGP PUBLIC KEY BLOCK-----"""
+
+test_multi_gpg_key = """-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mDMEXLTbcxYJKwYBBAHaRw8BAQdAoh3VCQpeRnjWSsGxL8TmOE6AOc5W/3BGt+TH
+NlTNv2e0LVZpbmNlbnQgVElNRSAoVEVTVElORyBLRVkgMSkgPHZ0aW1lQGNpbGcu
+b3JnPoiQBBMWCAA4FiEE2QTvCDJA2cJrCuaBNkkwohbvF/0FAly023MCGwMFCwkI
+BwIGFQoJCAsCBBYCAwECHgECF4AACgkQNkkwohbvF/24QgEAhjlLjQzHSR7xR4+I
+i0KVuRBw9gTiLGN80UVt8s0ONGEA/3Ft1HQ5b37rFSY44Yvnuv8ejdTMqhO0sZ0J
+3OKTuVcBuDgEXLTbcxIKKwYBBAGXVQEFAQEHQBQ1AKhzJ+miI9wlpeTPfKzbYPIb
+fN3+uHMNRAsP0zoaAwEIB4h4BBgWCAAgFiEE2QTvCDJA2cJrCuaBNkkwohbvF/0F
+Aly023MCGwwACgkQNkkwohbvF/0hGAEAxkUFu5BAKwEToaoLs/0sePvL0S+EnR7F
+b0uzAD7qCN0BAKEKKL6PoMD5cwSlaN1j6z3K5UbPvkMulGXK38vt110LmDMEXLTb
+lxYJKwYBBAHaRw8BAQdA0nglRFeDWhHZq7a9UfIjLyupPutx9DL7+qk+Wfml0Uy0
+LVZpbmNlbnQgVElNRSAoVEVTVElORyBLRVkgMikgPHZ0aW1lQGNpbGcub3JnPoiQ
+BBMWCAA4FiEEdLUyC8hsXaia62wnbaTvWsnriSoFAly025cCGwMFCwkIBwIGFQoJ
+CAsCBBYCAwECHgECF4AACgkQbaTvWsnriSpQCwEA5sJ8Bfm1BMwhMZet53o5k74t
+X6P/piUOFeifO/c6tQ0A/33bE2W/7m9S8SJzcsin9ISEOSV2Z2dPQhCPj8afu+EC
+uDgEXLTblxIKKwYBBAGXVQEFAQEHQPuCyECR7wFvp1wKwzBMK/bBMi/UFxeh0qoZ
+GdQ6ChBXAwEIB4h4BBgWCAAgFiEEdLUyC8hsXaia62wnbaTvWsnriSoFAly025cC
+GwwACgkQbaTvWsnriSqzewD+JDfQwbYmNVzshxGGHslGO9yx3WShsdQUxZgs4HeD
+qd4BAMRseQ8Lg7Np6xDdqm4m2YaNhQmebe3pnwN81514V20J
+=gMOI
 -----END PGP PUBLIC KEY BLOCK-----"""
 
 test_gpg_key_id = '256E/1AEA8EBB'
@@ -93,6 +117,15 @@ class TestGnuPGController(TestCase):
         """
         gnupg = self._get_gnupg('/etc/passwd')
         self.assertTrue(gnupg.is_unusable())
+
+    @raises(ExceptionGnuPGMultipleKeys)
+    def testParseKeyIDMultipleKey(self):
+        """
+        Test limit ParseKey to one key only
+        """
+        gnupg = self._get_gnupg()
+        self.assertFalse(gnupg.is_unusable())
+        (gpg_key_id, _) = gnupg.parse_key_id(test_multi_gpg_key)
 
     def testParseKeyID(self):
         """

@@ -1,4 +1,4 @@
-# Translations template for debexpo.
+# Italian translations for debexpo.
 # Copyright (C) 2008 ORGANIZATION
 # This file is distributed under the same license as the debexpo project.
 # David Paleino <d.paleino@gmail.com>, 2008.
@@ -7,103 +7,329 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo 0.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2008-08-04 22:47+0200\n"
+"POT-Creation-Date: 2019-04-16 09:36+0200\n"
 "PO-Revision-Date: 2009-02-04 11:05+0100\n"
 "Last-Translator: David Paleino <d.paleino@gmail.com>\n"
+"Language: it\n"
 "Language-Team: Italian\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 0.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Generated-By: Babel 2.6.0\n"
 
-#: debexpo/controllers/login.py:73
+#: debexpo/controllers/login.py:84 debexpo/controllers/login.py:88
 msgid "Invalid email or password"
 msgstr "Email o password non valida"
 
-#: debexpo/controllers/package.py:90
+#: debexpo/controllers/my.py:299 debexpo/templates/my/index.mako:178
+#: debexpo/templates/my/index.mako:277 debexpo/templates/my/index.mako:283
+msgid "None"
+msgstr ""
+
+#: debexpo/controllers/my.py:300
+#, fuzzy
+#| msgid "E-mail"
+msgid "Email"
+msgstr "E-mail"
+
+#: debexpo/controllers/my.py:301
+msgid "IRC"
+msgstr ""
+
+#: debexpo/controllers/my.py:302
+msgid "Jabber"
+msgstr ""
+
+#: debexpo/controllers/package.py:105
 msgid "Unreviewed"
 msgstr "Non revisionato"
 
-#: debexpo/controllers/package.py:91
-#: debexpo/templates/package/index.mako:118
+#: debexpo/controllers/package.py:106 debexpo/templates/package/index.mako:182
 msgid "Needs work"
 msgstr "Necessita lavoro"
 
-#: debexpo/controllers/package.py:92
-#: debexpo/templates/package/index.mako:122
+#: debexpo/controllers/package.py:107 debexpo/templates/package/index.mako:186
 msgid "Perfect"
 msgstr "Perfetto"
 
-#: debexpo/controllers/packages.py:95
-msgid "Yes"
-msgstr "Sì"
+#: debexpo/controllers/package.py:173
+#, fuzzy
+#| msgid "Description"
+msgid "No subscription"
+msgstr "Descrizione"
 
-#: debexpo/controllers/packages.py:96
-msgid "No"
-msgstr "No"
+#: debexpo/controllers/package.py:175
+msgid "Package upload notifications only"
+msgstr ""
 
-#: debexpo/controllers/packages.py:97
-msgid "Unknown"
-msgstr "Sconosciuto"
+#: debexpo/controllers/package.py:177
+msgid "Package upload and comment notifications"
+msgstr ""
 
-#: debexpo/lib/validators.py:66
+#: debexpo/controllers/packages.py:118
+msgid "Today"
+msgstr ""
+
+#: debexpo/controllers/packages.py:121
+msgid "Yesterday"
+msgstr ""
+
+#: debexpo/controllers/packages.py:125
+msgid "Some days ago"
+msgstr ""
+
+#: debexpo/controllers/packages.py:129
+#, fuzzy
+#| msgid "No packages"
+msgid "Older packages"
+msgstr "Nessun pacchetto"
+
+#: debexpo/controllers/packages.py:133
+#, fuzzy
+#| msgid "Uploaded to Debian"
+msgid "Uploaded long ago"
+msgstr "Uploadato in Debian"
+
+#: debexpo/controllers/packages.py:156
+#, python-format
+msgid "%s packagesdebexpo.sitename"
+msgstr ""
+
+#: debexpo/controllers/packages.py:158
+#, python-format
+msgid "A feed of packages on %sdebexpo.sitename"
+msgstr ""
+
+#: debexpo/controllers/packages.py:181
+#, fuzzy, python-format
+#| msgid "Packages uploaded by %s"
+msgid "Package %s uploaded by %s."
+msgstr "Pacchetti uploadati da %s"
+
+#: debexpo/controllers/packages.py:186
+msgid "Uploader is currently looking for a sponsor."
+msgstr ""
+
+#: debexpo/controllers/packages.py:188
+msgid "Uploader is currently not looking for a sponsor."
+msgstr ""
+
+#: debexpo/controllers/password_recover.py:74
+msgid "We do not have an account with that email address"
+msgstr ""
+
+#: debexpo/controllers/sponsor.py:69
+msgid "Overview"
+msgstr ""
+
+#: debexpo/controllers/sponsor.py:71
+msgid "Sponsoring Guidelines"
+msgstr ""
+
+#: debexpo/controllers/sponsor.py:72
+#, fuzzy
+#| msgid "Needs a sponsor"
+msgid "Request for Sponsorship"
+msgstr "Necessita di uno sponsor"
+
+#: debexpo/lib/validators.py:76 debexpo/lib/validators.py:91
 msgid "Invalid GPG key"
 msgstr "Chiave GPG non valida"
 
-#: debexpo/lib/validators.py:83
+#: debexpo/lib/validators.py:80
+msgid "Internal error: debexpo is not properly configured to handleGPG keys"
+msgstr ""
+
+#: debexpo/lib/validators.py:87
+msgid "Multiple keys not supported"
+msgstr ""
+
+#: debexpo/lib/validators.py:107
+#, python-format
+msgid "None of your user IDs in key %s does match your profile mail address"
+msgstr ""
+
+#: debexpo/lib/validators.py:123
+#, python-format
+msgid ""
+"Key strength unacceptable in Debian Keyring. The minimum required key "
+"strength is %s bits."
+msgstr ""
+
+#: debexpo/lib/validators.py:129
+msgid "Key type unacceptable in Debian Keyring. It must be RSA or ECDSA."
+msgstr ""
+
+#: debexpo/lib/validators.py:152
 msgid "Incorrect password"
 msgstr "Password non corretta"
 
-#: debexpo/lib/validators.py:119
+#: debexpo/lib/validators.py:190
 msgid "A user with this email address is already registered on the system"
 msgstr "Un utente con questo indirizzo email è già registrato nel sistema"
 
-#: debexpo/lib/validators.py:140
-msgid "You must use your debian.org email address to register"
-msgstr "Devi utilizzare il tuo indirizzo email debian.org per registrarti"
+#: debexpo/lib/validators.py:222
+msgid ""
+"A user with this name is already registered on the system. If it is you, "
+"use that account! Otherwise use a different name to register."
+msgstr ""
 
-#: debexpo/templates/base.mako:31
+#: debexpo/templates/base.mako:33
 msgid "Start page"
 msgstr "Pagina iniziale"
 
-#: debexpo/templates/base.mako:35
-msgid "News"
-msgstr "Notizie"
+#: debexpo/templates/base.mako:38 debexpo/templates/packages/index.mako:4
+msgid "Package list"
+msgstr "Lista pacchetti"
 
-#: debexpo/templates/base.mako:45
-#: debexpo/templates/base.mako:67
-msgid "Introduction"
-msgstr "Introduzione"
+#: debexpo/templates/base.mako:43 debexpo/templates/user.mako:10
+#, fuzzy
+#| msgid "Debian Maintainer"
+msgid "Maintainer"
+msgstr "Debian Maintainer"
 
-#: debexpo/templates/base.mako:49
-#: debexpo/templates/base.mako:71
-msgid "Sign me up"
-msgstr "Registrazione"
+#: debexpo/templates/base.mako:48
+#, fuzzy
+#| msgid "Unreviewed"
+msgid "Reviews"
+msgstr "Non revisionato"
 
 #: debexpo/templates/base.mako:53
-#: debexpo/templates/base.mako:75
-#: debexpo/templates/my/index.mako:4
-msgid "My account"
-msgstr "Il mio account"
+#, fuzzy
+#| msgid "Sponsor"
+msgid "Sponsors"
+msgstr "Sponsor"
 
-#: debexpo/templates/base.mako:57
-msgid "My packages"
-msgstr "I miei pacchetti"
-
-#: debexpo/templates/base.mako:85
+#: debexpo/templates/base.mako:58 debexpo/templates/index/contact.mako:6
 msgid "Q & A"
 msgstr "Q & A"
 
-#: debexpo/templates/base.mako:89
+#: debexpo/templates/base.mako:63 debexpo/templates/base.mako:109
 msgid "Contact"
 msgstr "Contatto"
 
-#: debexpo/templates/email/importer_fail_admin.mako:5
+#: debexpo/templates/base.mako:81
+msgid "Sign me up"
+msgstr "Registrazione"
+
+#: debexpo/templates/base.mako:84 debexpo/templates/login/index.mako:4
+#: debexpo/templates/login/index.mako:7
+msgid "Login"
+msgstr "Login"
+
+#: debexpo/templates/base.mako:88 debexpo/templates/my/index.mako:4
+msgid "My account"
+msgstr "Il mio account"
+
+#: debexpo/templates/base.mako:91
+msgid "My packages"
+msgstr "I miei pacchetti"
+
+#: debexpo/templates/base.mako:107
+msgid "Source code and bugs"
+msgstr ""
+
+#: debexpo/templates/error.mako:6 debexpo/templates/error.mako:11
+#: debexpo/templates/error.mako:16
+msgid "Error"
+msgstr ""
+
+#: debexpo/templates/error.mako:6
+msgid "Authentication required"
+msgstr ""
+
+#: debexpo/templates/error.mako:8
+msgid "You need to be logged in to use this function."
+msgstr ""
+
+#: debexpo/templates/error.mako:11
+msgid "Not authorized"
+msgstr ""
+
+#: debexpo/templates/error.mako:13
+msgid "You do not have the permission to use this function."
+msgstr ""
+
+#: debexpo/templates/error.mako:16
+msgid "Page not found"
+msgstr ""
+
+#: debexpo/templates/error.mako:18
+msgid "The page you requested does not exist."
+msgstr ""
+
+#: debexpo/templates/error.mako:21
+#, python-format
+msgid "Internal error %s"
+msgstr ""
+
+#: debexpo/templates/error.mako:23
+msgid ""
+"An unexpected error occured in this application.\n"
+"            The administrator will get a detailed report about the\n"
+"            error situation. We appreciate if you give us more\n"
+"            information how this error situation happened."
+msgstr ""
+
+#: debexpo/templates/error.mako:33
+#, python-format
+msgid ""
+"If you have questions feel free to contact us\n"
+"        at <a href=\"mailto:%s\">%s</a>."
+msgstr ""
+
+#: debexpo/templates/my/index.mako:141 debexpo/templates/user.mako:6
+msgid "Debian Developer"
+msgstr "Debian Developer"
+
+#: debexpo/templates/my/index.mako:148 debexpo/templates/user.mako:8
+msgid "Debian Maintainer"
+msgstr "Debian Maintainer"
+
+#: debexpo/templates/user.mako:35
+msgid "Not specified"
+msgstr ""
+
+#: debexpo/templates/email/comment_posted.mako:3
+#, python-format
+msgid "Comment posted on %s"
+msgstr ""
+
+#: debexpo/templates/email/comment_posted.mako:7
+#, python-format
+msgid ""
+"A comment has been posted on a package that you are subscribed to.\n"
+"\n"
+"%s made the following comment about the %s package:"
+msgstr ""
+
+#: debexpo/templates/email/comment_posted.mako:11
+#: debexpo/templates/email/package_uploaded.mako:7
+msgid "You can view information on the package by visiting:"
+msgstr ""
+
+#: debexpo/templates/email/comment_posted.mako:15
+#: debexpo/templates/email/package_uploaded.mako:11
+msgid "You can change your subscription by visiting your user account settings."
+msgstr ""
+
+#: debexpo/templates/email/comment_posted.mako:17
+#: debexpo/templates/email/importer_fail_admin.mako:14
+#: debexpo/templates/email/importer_fail_maintainer.mako:14
+#: debexpo/templates/email/package_uploaded.mako:13
+#: debexpo/templates/email/password_reset.mako:12
+#: debexpo/templates/email/register_activate.mako:12
+#: debexpo/templates/email/successful_upload.mako:28
+#: debexpo/templates/email/upload_removed_from_expo.mako:9
+msgid "Thanks,"
+msgstr "Grazie,"
+
+#: debexpo/templates/email/importer_fail_admin.mako:3
 msgid "Failure in importer"
 msgstr "Errore nell'importazione"
 
-#: debexpo/templates/email/importer_fail_admin.mako:7
+#: debexpo/templates/email/importer_fail_admin.mako:5
 msgid ""
 "Hello,\n"
 "\n"
@@ -115,22 +341,16 @@ msgstr ""
 "C'è stato un errore durante l'importazione di un pacchetto in debexpo.\n"
 "Il problema sembra essere in debexpo stesso. Il messaggio è stato:"
 
-#: debexpo/templates/email/importer_fail_admin.mako:14
+#: debexpo/templates/email/importer_fail_admin.mako:12
 msgid "This message can be found in the logs."
 msgstr "Questo messaggio può essere trovato nei log."
 
-#: debexpo/templates/email/importer_fail_admin.mako:16
-#: debexpo/templates/email/importer_fail_maintainer.mako:16
-#: debexpo/templates/email/register_activate.mako:14
-msgid "Thanks,"
-msgstr "Grazie,"
-
-#: debexpo/templates/email/importer_fail_maintainer.mako:5
+#: debexpo/templates/email/importer_fail_maintainer.mako:3
 #, python-format
 msgid "Failed to import %s"
 msgstr "Errore durante l'importazione di %s"
 
-#: debexpo/templates/email/importer_fail_maintainer.mako:7
+#: debexpo/templates/email/importer_fail_maintainer.mako:5
 #, python-format
 msgid ""
 "Hello,\n"
@@ -151,11 +371,53 @@ msgstr ""
 "Spiacente per l'inconveniente. L'amministratore è stato notificato.\n"
 "Per favore ritenta presto."
 
-#: debexpo/templates/email/register_activate.mako:5
-msgid "Please activate your account"
-msgstr "Per favore attiva il tuo account"
+#: debexpo/templates/email/importer_reject_maintainer.mako:3
+#, python-format
+msgid "Package %s was rejected"
+msgstr ""
 
-#: debexpo/templates/email/register_activate.mako:7
+#: debexpo/templates/email/importer_reject_maintainer.mako:5
+#, python-format
+msgid ""
+"Hello,\n"
+"\n"
+"Unfortunately your package \"%s\" was rejected because of the following\n"
+"reason:"
+msgstr ""
+
+#: debexpo/templates/email/importer_reject_maintainer.mako:12
+msgid "Please try to fix it and re-upload. Thanks,"
+msgstr ""
+
+#: debexpo/templates/email/package_uploaded.mako:3
+#, fuzzy, python-format
+#| msgid "Packages uploaded by %s"
+msgid "New %s package uploaded"
+msgstr "Pacchetti uploadati da %s"
+
+#: debexpo/templates/email/package_uploaded.mako:5
+#, fuzzy, python-format
+#| msgid "Package has been uploaded to Debian"
+msgid "%s %s has been uploaded to the archive by %s."
+msgstr "Il pacchetto è stato uploadato in Debian"
+
+#: debexpo/templates/email/password_reset.mako:3
+msgid "You requested a password reset"
+msgstr ""
+
+#: debexpo/templates/email/password_reset.mako:5
+msgid ""
+"Hello,\n"
+"\n"
+"You can reset your password by clicking on the link below. If you did\n"
+"not request a password reset, then you can ignore this."
+msgstr ""
+
+#: debexpo/templates/email/register_activate.mako:3
+msgid "Next step: Confirm your email address"
+msgstr ""
+
+#: debexpo/templates/email/register_activate.mako:5
 msgid ""
 "Hello,\n"
 "\n"
@@ -166,44 +428,122 @@ msgstr ""
 "\n"
 "Per favore attiva il tuo account visitando il seguente indirizzo:\n"
 
-#: debexpo/templates/login/index.mako:4
-#: debexpo/templates/login/index.mako:7
-msgid "Login"
-msgstr "Login"
+#: debexpo/templates/email/successful_upload.mako:3
+#, fuzzy, python-format
+#| msgid "Packages uploaded by %s"
+msgid "%s uploaded to %s"
+msgstr "Pacchetti uploadati da %s"
+
+#: debexpo/templates/email/successful_upload.mako:5
+msgid "Hi."
+msgstr ""
+
+#: debexpo/templates/email/successful_upload.mako:9
+#, python-format
+msgid ""
+"Your upload of the package '%s' to %s was\n"
+"successful. Others can now see it. The URL of your package is:"
+msgstr ""
+
+#: debexpo/templates/email/successful_upload.mako:12
+msgid "The respective dsc file can be found at:"
+msgstr ""
+
+#: debexpo/templates/email/successful_upload.mako:16
+#, python-format
+msgid ""
+"If you do not yet have a sponsor for your package you may want to go to\n"
+"%s\n"
+"and set the \"Seeking a sponsor\" option to highlight your package on the"
+"\n"
+"welcome page."
+msgstr ""
+
+#: debexpo/templates/email/successful_upload.mako:21
+msgid ""
+"You can also send an RFS (request for sponsorship) to the debian-mentors\n"
+"mailing list. Your package page will give your suggestions on how to\n"
+"send that mail."
+msgstr ""
+
+#: debexpo/templates/email/successful_upload.mako:25
+msgid "Good luck in finding a sponsor!"
+msgstr ""
+
+#: debexpo/templates/email/upload_removed_from_expo.mako:3
+#, fuzzy, python-format
+#| msgid "Package has been uploaded to Debian"
+msgid "%s package has been removed from %s"
+msgstr "Il pacchetto è stato uploadato in Debian"
+
+#: debexpo/templates/email/upload_removed_from_expo.mako:5
+#, python-format
+msgid "Your package %s %s has been removed from %s for the following reason:"
+msgstr ""
+
+#: debexpo/templates/index/contact.mako:4
+#, fuzzy
+#| msgid "Contact"
+msgid "Site contact"
+msgstr "Contatto"
+
+#: debexpo/templates/index/contact.mako:6
+msgid "file a RFS bug"
+msgstr ""
+
+#: debexpo/templates/index/contact.mako:8 debexpo/templates/index/qa.mako:50
+msgid "Site email"
+msgstr ""
+
+#: debexpo/templates/index/reviewers.mako:35
+#, fuzzy
+#| msgid "Sponsor"
+msgid "sponsors side"
+msgstr "Sponsor"
 
 #: debexpo/templates/login/index.mako:9
 msgid "Please login to continue"
 msgstr "Per favore accedi per continuare"
 
-#: debexpo/templates/login/index.mako:19
-#: debexpo/templates/my/index.mako:19
-#: debexpo/templates/register/maintainer.mako:18
-#: debexpo/templates/register/sponsor.mako:18
+#: debexpo/templates/login/index.mako:19 debexpo/templates/my/index.mako:19
+#: debexpo/templates/register/register.mako:17
 msgid "E-mail"
 msgstr "E-mail"
 
 #: debexpo/templates/login/index.mako:24
-#: debexpo/templates/register/maintainer.mako:23
-#: debexpo/templates/register/sponsor.mako:23
+#: debexpo/templates/register/register.mako:22
 msgid "Password"
 msgstr "Password"
 
-#: debexpo/templates/login/index.mako:29
-#: debexpo/templates/my/index.mako:24
-#: debexpo/templates/my/index.mako:64
-#: debexpo/templates/my/index.mako:96
-#: debexpo/templates/my/index.mako:152
-#: debexpo/templates/register/maintainer.mako:33
-#: debexpo/templates/register/sponsor.mako:33
+#: debexpo/templates/login/index.mako:29 debexpo/templates/my/index.mako:24
+#: debexpo/templates/my/index.mako:66 debexpo/templates/my/index.mako:98
+#: debexpo/templates/my/index.mako:161 debexpo/templates/my/index.mako:293
+#: debexpo/templates/package/index.mako:237
+#: debexpo/templates/package/subscribe.mako:9
+#: debexpo/templates/password_recover/index.mako:29
+#: debexpo/templates/register/register.mako:39
 msgid "Submit"
 msgstr "Invia"
+
+#: debexpo/templates/login/index.mako:36
+msgid "Switch to SSL"
+msgstr ""
+
+#: debexpo/templates/login/index.mako:39
+#, fuzzy
+#| msgid "Invalid email or password"
+msgid "Did you lose your password?"
+msgstr "Email o password non valida"
+
+#: debexpo/templates/login/index.mako:41
+msgid "Try resetting your password."
+msgstr ""
 
 #: debexpo/templates/my/index.mako:7
 msgid "Change details"
 msgstr "Cambia dettagli"
 
-#: debexpo/templates/my/index.mako:14
-#: debexpo/templates/package/index.mako:8
+#: debexpo/templates/my/index.mako:14 debexpo/templates/package/index.mako:8
 msgid "Name"
 msgstr "Nome"
 
@@ -223,138 +563,225 @@ msgstr "Cancella chiave attuale"
 msgid "GPG key"
 msgstr "Chiave GPG"
 
-#: debexpo/templates/my/index.mako:74
+#: debexpo/templates/my/index.mako:76
 msgid "Change password"
 msgstr "Cambia password"
 
-#: debexpo/templates/my/index.mako:81
+#: debexpo/templates/my/index.mako:83
 msgid "Current password"
 msgstr "Password attuale"
 
-#: debexpo/templates/my/index.mako:86
+#: debexpo/templates/my/index.mako:88
 msgid "New password"
 msgstr "Nuova password"
 
-#: debexpo/templates/my/index.mako:91
+#: debexpo/templates/my/index.mako:93
 msgid "Confirm new password"
 msgstr "Conferma nuova password"
 
-#: debexpo/templates/my/index.mako:105
+#: debexpo/templates/my/index.mako:107
 msgid "Change other details"
 msgstr "Cambia altri dettagli"
 
-#: debexpo/templates/my/index.mako:112
+#: debexpo/templates/my/index.mako:114
 msgid "Country"
 msgstr "Nazione"
 
-#: debexpo/templates/my/index.mako:117
+#: debexpo/templates/my/index.mako:119
 msgid "IRC nickname"
 msgstr "Nickname IRC"
 
-#: debexpo/templates/my/index.mako:122
+#: debexpo/templates/my/index.mako:124
 msgid "Jabber address"
 msgstr "Indirizzo Jabber"
 
-#: debexpo/templates/my/index.mako:131
+#: debexpo/templates/my/index.mako:130
+msgid "Show personal data publicly"
+msgstr ""
+
+#: debexpo/templates/my/index.mako:140
 msgid "Debian status"
 msgstr "Stato Debian"
 
-#: debexpo/templates/my/index.mako:132
-msgid "Debian Developer"
-msgstr "Debian Developer"
+#: debexpo/templates/my/index.mako:169
+msgid "Public sponsor info"
+msgstr ""
 
-#: debexpo/templates/my/index.mako:139
-msgid "Debian Maintainer"
-msgstr "Debian Maintainer"
+#: debexpo/templates/my/index.mako:176
+msgid "Public visibility of your profile"
+msgstr ""
+
+#: debexpo/templates/my/index.mako:179
+msgid "Restricted"
+msgstr ""
+
+#: debexpo/templates/my/index.mako:180
+msgid "Full"
+msgstr ""
+
+#: debexpo/templates/my/index.mako:191
+msgid "Preferred contact method for sponsored maintainer"
+msgstr ""
+
+#: debexpo/templates/my/index.mako:196
+msgid "Type of packages you are interested in"
+msgstr ""
+
+#: debexpo/templates/my/index.mako:219 debexpo/templates/my/index.mako:258
+msgid "-"
+msgstr ""
+
+#: debexpo/templates/my/index.mako:220 debexpo/templates/my/index.mako:259
+msgid "0"
+msgstr ""
+
+#: debexpo/templates/my/index.mako:221 debexpo/templates/my/index.mako:260
+msgid "+"
+msgstr ""
+
+#: debexpo/templates/my/index.mako:234
+msgid "Additional social notes"
+msgstr ""
+
+#: debexpo/templates/my/index.mako:273
+msgid "Additional technical notes"
+msgstr ""
+
+#: debexpo/templates/my/index.mako:278 debexpo/templates/my/index.mako:284
+msgid "Free text"
+msgstr ""
+
+#: debexpo/templates/my/index.mako:279 debexpo/templates/my/index.mako:285
+msgid "URL reference"
+msgstr ""
 
 #: debexpo/templates/package/index.mako:4
 #, python-format
 msgid "Details about package \"%s\""
 msgstr "Dettagli sul pacchetto \"%s\""
 
-#: debexpo/templates/package/index.mako:13
-#: debexpo/templates/packages/list.mako:9
+#: debexpo/templates/package/index.mako:23
+#: debexpo/templates/packages/list.mako:15
 msgid "Uploader"
 msgstr "Uploader"
 
-#: debexpo/templates/package/index.mako:26
-#: debexpo/templates/packages/list.mako:7
+#: debexpo/templates/package/index.mako:36
+#: debexpo/templates/packages/list.mako:13
 msgid "Description"
 msgstr "Descrizione"
 
-#: debexpo/templates/package/index.mako:32
-msgid "Package versions"
-msgstr "Versioni pacchetto"
-
-#: debexpo/templates/package/index.mako:41
-#: debexpo/templates/packages/list.mako:8
-msgid "Version"
-msgstr "Versione"
-
-#: debexpo/templates/package/index.mako:46
-msgid "View RFS template"
-msgstr "Visualizza modello RFS"
-
-#: debexpo/templates/package/index.mako:54
-msgid "Uploaded"
-msgstr "Uploadato"
-
-#: debexpo/templates/package/index.mako:59
-msgid "Debian Source Control file URL"
-msgstr "URL file Debian Source Control"
-
-#: debexpo/templates/package/index.mako:76
-msgid "Section"
-msgstr "Sezione"
-
-#: debexpo/templates/package/index.mako:81
-msgid "Priority"
-msgstr "Priorità"
-
-#: debexpo/templates/package/index.mako:92
-msgid "Closes bugs"
-msgstr "Chiude i bug"
-
-#: debexpo/templates/package/index.mako:130
-msgid "Package has been uploaded to Debian"
-msgstr "Il pacchetto è stato uploadato in Debian"
-
-#: debexpo/templates/package/index.mako:143
-msgid "No comments"
-msgstr "Nessun commento"
-
-#: debexpo/templates/package/index.mako:160
-msgid "Uploaded to Debian"
-msgstr "Uploadato in Debian"
-
-#: debexpo/templates/package/rfs.mako:4
-#, python-format
-msgid "Template for an RFS for \"%s\""
-msgstr "Modello di RFS per \"%s\""
-
-#: debexpo/templates/package/rfs.mako:6
-msgid ""
-"An RFS is a <i>request for sponsorship</i>. If you want to show other people\n"
-"that you are looking for a sponsor for your package you can post an email to\n"
-"the debian-mentors mailing list containing information about your package."
+#: debexpo/templates/package/index.mako:43
+msgid "Subscribe"
 msgstr ""
-"Una RFS è una <i>richiesta di sponsorizzazione</i>. Se vuoi mostrare ad altre\n"
-"persone che stai cercando uno sponsor per il tuo pacchetto, puoi inviare una\n"
-"email alla mailing list debian-mentors, con informazioni riguardo il tuo pacchetto."
 
-#: debexpo/templates/packages/index.mako:4
-msgid "Package list"
-msgstr "Lista pacchetti"
+#: debexpo/templates/package/index.mako:44
+#, fuzzy
+#| msgid "Description"
+msgid "Edit your subscription"
+msgstr "Descrizione"
 
-#: debexpo/templates/packages/list.mako:6
-msgid "Package"
-msgstr "Pacchetto"
-
-#: debexpo/templates/packages/list.mako:10
+#: debexpo/templates/package/index.mako:49
+#: debexpo/templates/packages/list.mako:16
 msgid "Needs a sponsor"
 msgstr "Necessita di uno sponsor"
 
-#: debexpo/templates/packages/list.mako:28
+#: debexpo/templates/package/index.mako:52
+#: debexpo/templates/packages/list.mako:27
+msgid "Yes"
+msgstr "Sì"
+
+#: debexpo/templates/package/index.mako:54
+#: debexpo/templates/packages/list.mako:29
+msgid "No"
+msgstr "No"
+
+#: debexpo/templates/package/index.mako:57
+msgid "Change"
+msgstr ""
+
+#: debexpo/templates/package/index.mako:67
+#, fuzzy
+#| msgid "No packages"
+msgid "Delete package"
+msgstr "Nessun pacchetto"
+
+#: debexpo/templates/package/index.mako:69
+msgid "Admin package deletion"
+msgstr ""
+
+#: debexpo/templates/package/index.mako:71
+msgid "Delete this package"
+msgstr ""
+
+#: debexpo/templates/package/index.mako:79
+msgid "Package versions"
+msgstr "Versioni pacchetto"
+
+#: debexpo/templates/package/index.mako:85
+msgid "Information"
+msgstr ""
+
+#: debexpo/templates/package/index.mako:89
+#: debexpo/templates/packages/list.mako:14
+msgid "Version"
+msgstr "Versione"
+
+#: debexpo/templates/package/index.mako:94
+msgid "View RFS template"
+msgstr "Visualizza modello RFS"
+
+#: debexpo/templates/package/index.mako:102
+msgid "Uploaded"
+msgstr "Uploadato"
+
+#: debexpo/templates/package/index.mako:107
+#, fuzzy
+#| msgid "No packages"
+msgid "Source package"
+msgstr "Nessun pacchetto"
+
+#: debexpo/templates/package/index.mako:124
+msgid "Section"
+msgstr "Sezione"
+
+#: debexpo/templates/package/index.mako:129
+msgid "Priority"
+msgstr "Priorità"
+
+#: debexpo/templates/package/index.mako:138
+msgid "Closes bugs"
+msgstr "Chiude i bug"
+
+#: debexpo/templates/package/index.mako:155
+msgid "QA information"
+msgstr ""
+
+#: debexpo/templates/package/index.mako:194
+msgid "Package has been uploaded to Debian"
+msgstr "Il pacchetto è stato uploadato in Debian"
+
+#: debexpo/templates/package/index.mako:207
+msgid "No comments"
+msgstr "Nessun commento"
+
+#: debexpo/templates/package/index.mako:232
+msgid "Uploaded to Debian"
+msgstr "Uploadato in Debian"
+
+#: debexpo/templates/package/subscribe.mako:4
+#, python-format
+msgid "Subscribe to package %s"
+msgstr ""
+
+#: debexpo/templates/package/subscribe.mako:12
+msgid "Back to package details"
+msgstr ""
+
+#: debexpo/templates/packages/list.mako:12
+msgid "Package"
+msgstr "Pacchetto"
+
+#: debexpo/templates/packages/list.mako:39
 msgid "No packages"
 msgstr "Nessun pacchetto"
 
@@ -368,18 +795,38 @@ msgstr "Pacchetti mantenuti da %s"
 msgid "Packages in section %s"
 msgstr "Pacchetti nella sezione %s"
 
-#: debexpo/templates/packages/uploader.mako:4
+#: debexpo/templates/packages/uploader.mako:6
 #, python-format
 msgid "Packages uploaded by %s"
 msgstr "Pacchetti uploadati da %s"
+
+#: debexpo/templates/password_recover/_reset.mako:4
+msgid "Password recovery in progress"
+msgstr ""
+
+#: debexpo/templates/password_recover/actually_reset_password.mako:4
+msgid "Okay! You have a new password"
+msgstr ""
+
+#: debexpo/templates/password_recover/index.mako:4
+msgid "Password recovery"
+msgstr ""
+
+#: debexpo/templates/password_recover/index.mako:24
+msgid "Your email address"
+msgstr ""
 
 #: debexpo/templates/register/activate.mako:5
 msgid "Check your email"
 msgstr "Controlla la tua email"
 
 #: debexpo/templates/register/activate.mako:8
-msgid "An email has been sent to the email address you specified. Check it for instructions on how to activate your account."
-msgstr "Un'email è stata inviata all'indirizzo da te specificato. Controlla la tua casella di posta per istruzioni su come attivare il tuo account."
+msgid ""
+"An email has been sent to the email address you specified. Check it for "
+"instructions on how to activate your account."
+msgstr ""
+"Un'email è stata inviata all'indirizzo da te specificato. Controlla la "
+"tua casella di posta per istruzioni su come attivare il tuo account."
 
 #: debexpo/templates/register/activated.mako:7
 msgid "User activated"
@@ -399,69 +846,166 @@ msgid "Invalid verification key"
 msgstr "Chiave di verifica non valida"
 
 #: debexpo/templates/register/activated.mako:19
-msgid "The verification key you entered has not been recognised. Please try again."
-msgstr "La chiave di verifica inserita non è stato riconosciuta. Per favore ritenta."
-
-#: debexpo/templates/register/index.mako:5
-#, python-format
-msgid "Sign up for your own account at %s"
-msgstr "Registra il tuo account su %s"
-
-#: debexpo/templates/register/index.mako:8
-msgid "What type of account would you like to apply for?"
-msgstr "Per che tipo di account vuoi registrarti?"
-
-#: debexpo/templates/register/index.mako:11
-msgid "Package Maintainer"
-msgstr "Maintainer Pacchetti"
-
-#: debexpo/templates/register/index.mako:14
 msgid ""
-"A package maintainer is a person who takes care of Debian packages.\n"
-"    If you create Debian packages from certain pieces of (so called\n"
-"    \"upstream\") software then you are a maintainer. You do not need to be\n"
-"    an official Debian Developer (DD) or Debian Maintainer (DM)."
+"The verification key you entered has not been recognised. Please try "
+"again."
 msgstr ""
-"Un maintainer pacchetti è una persona che si prende cura dei pacchetti Debian.\m    Se crei pacchetti Debian da certi software cosiddetti \"upstream\", allora\n"
-"    sei un maintainer. Non devi essere ufficialmente un Debian Developer (DD)\n"
-"    o Debian Maintainer (DM)."
+"La chiave di verifica inserita non è stato riconosciuta. Per favore "
+"ritenta."
 
-#: debexpo/templates/register/index.mako:20
-msgid "Sponsor"
-msgstr "Sponsor"
+#: debexpo/templates/register/register.mako:4
+#, fuzzy
+#| msgid "Sign up for a sponsor account"
+msgid "Sign up for an account"
+msgstr "Registrati per un account sponsor"
 
-#: debexpo/templates/register/index.mako:23
-msgid ""
-"Uploading new packages into Debian is only possible if you\n"
-"    are a Debian Developer (DD) or Debian Maintainer (DM). If you want\n"
-"    to help package maintainers to get their packages into Debian you\n"
-"    can be a sponsor and check and upload packages on their behalf."
-msgstr ""
-"L'upload di nuovi pacchetti in Debian è possibile solo se sei un Debian\n"
-"    Developer (DD) o un Debian Maintainer (DM). Se vuoi aiutare i\n"
-"    maintainer di pacchetti a far entrare i propri pacchetti in Debian, puoi\n"
-"    diventare uno sponsor e controllare e caricare i pacchetti per loro."
-
-#: debexpo/templates/register/maintainer.mako:4
-msgid "Sign up for a maintainer account"
-msgstr "Registrati per un account maintainer"
-
-#: debexpo/templates/register/maintainer.mako:7
-#: debexpo/templates/register/sponsor.mako:7
+#: debexpo/templates/register/register.mako:7
 msgid "Account details"
 msgstr "Dettagli account"
 
-#: debexpo/templates/register/maintainer.mako:13
-#: debexpo/templates/register/sponsor.mako:13
+#: debexpo/templates/register/register.mako:12
 msgid "Full name"
 msgstr "Nome completo"
 
-#: debexpo/templates/register/maintainer.mako:28
-#: debexpo/templates/register/sponsor.mako:28
+#: debexpo/templates/register/register.mako:27
 msgid "Confirm password"
 msgstr "Conferma password"
 
-#: debexpo/templates/register/sponsor.mako:4
-msgid "Sign up for a sponsor account"
+#: debexpo/templates/register/register.mako:32
+#, fuzzy
+#| msgid "My account"
+msgid "Account type"
+msgstr "Il mio account"
+
+#: debexpo/templates/sponsor/guidelines.mako:13
+msgid "Filter"
+msgstr ""
+
+#: debexpo/templates/sponsor/guidelines.mako:20
+msgid "Add to filter"
+msgstr ""
+
+#: debexpo/templates/sponsor/guidelines.mako:26
+msgid "Remove filter"
+msgstr ""
+
+#: debexpo/templates/sponsor/guidelines.mako:71
+msgid "Store filter as default"
+msgstr ""
+
+#: debexpo/templates/sponsor/guidelines.mako:72
+#: debexpo/templates/sponsor/guidelines.mako:192
+msgid "Remove all filters"
+msgstr ""
+
+#: debexpo/templates/sponsor/guidelines.mako:182
+msgid "No sponsor matched your criteria"
+msgstr ""
+
+#: debexpo/templates/sponsor/guidelines.mako:186
+#, fuzzy
+#| msgid "Sign up for a sponsor account"
+msgid "No sponsors found"
 msgstr "Registrati per un account sponsor"
+
+#: debexpo/templates/sponsor/rfs_howto.mako:34
+#, fuzzy, python-format
+#| msgid "Template for an RFS for \"%s\""
+msgid "Template for an RFS bug"
+msgstr "Modello di RFS per \"%s\""
+
+#: debexpo/templates/sponsor/rfs_howto.mako:36
+#, python-format
+msgid "for \"%s\""
+msgstr ""
+
+#: debexpo/templates/sponsor/rfs_howto.mako:183
+msgid "a dedicated page"
+msgstr ""
+
+#~ msgid "Unknown"
+#~ msgstr "Sconosciuto"
+
+#~ msgid "You must use your debian.org email address to register"
+#~ msgstr "Devi utilizzare il tuo indirizzo email debian.org per registrarti"
+
+#~ msgid "News"
+#~ msgstr "Notizie"
+
+#~ msgid "Introduction"
+#~ msgstr "Introduzione"
+
+#~ msgid "Please activate your account"
+#~ msgstr "Per favore attiva il tuo account"
+
+#~ msgid "Debian Source Control file URL"
+#~ msgstr "URL file Debian Source Control"
+
+#~ msgid ""
+#~ "An RFS is a <i>request for "
+#~ "sponsorship</i>. If you want to show "
+#~ "other people\n"
+#~ "that you are looking for a sponsor"
+#~ " for your package you can post "
+#~ "an email to\n"
+#~ "the debian-mentors mailing list "
+#~ "containing information about your package."
+#~ msgstr ""
+#~ "Una RFS è una <i>richiesta di "
+#~ "sponsorizzazione</i>. Se vuoi mostrare ad "
+#~ "altre\n"
+#~ "persone che stai cercando uno sponsor"
+#~ " per il tuo pacchetto, puoi inviare"
+#~ " una\n"
+#~ "email alla mailing list debian-mentors,"
+#~ " con informazioni riguardo il tuo "
+#~ "pacchetto."
+
+#~ msgid "Sign up for your own account at %s"
+#~ msgstr "Registra il tuo account su %s"
+
+#~ msgid "What type of account would you like to apply for?"
+#~ msgstr "Per che tipo di account vuoi registrarti?"
+
+#~ msgid "Package Maintainer"
+#~ msgstr "Maintainer Pacchetti"
+
+#~ msgid ""
+#~ "A package maintainer is a person who takes care of Debian packages.\n"
+#~ "    If you create Debian packages from certain pieces of (so called\n"
+#~ "    \"upstream\") software then you are"
+#~ " a maintainer. You do not need "
+#~ "to be\n"
+#~ "    an official Debian Developer (DD) or Debian Maintainer (DM)."
+#~ msgstr ""
+#~ "Un maintainer pacchetti è una persona"
+#~ " che si prende cura dei pacchetti "
+#~ "Debian.\\m    Se crei pacchetti Debian "
+#~ "da certi software cosiddetti \"upstream\", "
+#~ "allora\n"
+#~ "    sei un maintainer. Non devi "
+#~ "essere ufficialmente un Debian Developer "
+#~ "(DD)\n"
+#~ "    o Debian Maintainer (DM)."
+
+#~ msgid ""
+#~ "Uploading new packages into Debian is only possible if you\n"
+#~ "    are a Debian Developer (DD) or"
+#~ " Debian Maintainer (DM). If you want"
+#~ "\n"
+#~ "    to help package maintainers to get their packages into Debian you\n"
+#~ "    can be a sponsor and check and upload packages on their behalf."
+#~ msgstr ""
+#~ "L'upload di nuovi pacchetti in Debian"
+#~ " è possibile solo se sei un "
+#~ "Debian\n"
+#~ "    Developer (DD) o un Debian Maintainer (DM). Se vuoi aiutare i\n"
+#~ "    maintainer di pacchetti a far "
+#~ "entrare i propri pacchetti in Debian,"
+#~ " puoi\n"
+#~ "    diventare uno sponsor e controllare"
+#~ " e caricare i pacchetti per loro."
+
+#~ msgid "Sign up for a maintainer account"
+#~ msgstr "Registrati per un account maintainer"
 
