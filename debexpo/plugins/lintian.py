@@ -63,6 +63,7 @@ class LintianPlugin(BasePlugin):
                                    "-I",
                                    "--pedantic",
                                    "--show-overrides",
+                                   "--allow-root",
                                    self.changes_file],
                                   stdout=subprocess.PIPE).communicate()[0]
 
