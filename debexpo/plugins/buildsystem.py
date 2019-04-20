@@ -75,8 +75,8 @@ class BuildSystemPlugin(BasePlugin):
         elif 'debhelper-compat' in build_depends:
             data["build-system"] = "debhelper"
 
-            matches = re.match(r'debhelper-compat\s+\(=\s*(\d+)\)',
-                               build_depends)
+            matches = re.search(r'\bdebhelper-compat\s+\(=\s*(\d+)\)',
+                                build_depends)
             if matches:
                 compat_level = matches.group(1)
             else:

@@ -108,6 +108,14 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_count('hello', '1.0-1', 0)
         self.assert_package_not_in_repo('hello', '1.0-1')
 
+    def test_import_package_no_first_debhelper_compat(self):
+        self.import_package('no-first-debhelper-compat')
+        self.assert_importer_succeeded()
+        self.assert_package_count('hello', '1.0-2', 1)
+        self.assert_package_in_repo('hello', '1.0-2')
+        self.assert_package_info('hello', 'buildsystem',
+                                 'Package uses debhelper-compat')
+
     def test_import_package_not_signed(self):
         self.import_package('not-signed')
         self.assert_importer_failed()
