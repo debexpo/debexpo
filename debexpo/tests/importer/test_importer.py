@@ -246,6 +246,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
                                + " was\nsuccessful.")
         self.assert_package_count('hello', '1.0-1', 1)
         self.assert_package_in_repo('hello', '1.0-1')
+        self.assert_package_data('hello', 'debianqa', '{"latest-upload": "')
 
         self._cleanup_mailbox()
         self.import_package('hello')

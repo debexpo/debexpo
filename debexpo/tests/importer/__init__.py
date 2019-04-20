@@ -209,7 +209,7 @@ class TestImporterController(TestController):
             count_in_db = 0
         self.assertTrue(count_in_db == count)
 
-    def assert_package_info(self, package_name, plugin, outcome):
+    def _lookup_package_info(self, package_name, plugin):
         package = meta.session.query(Package).filter(Package.name ==
                                                      package_name).first()
         package_version = meta.session.query(PackageVersion) \
@@ -220,7 +220,15 @@ class TestImporterController(TestController):
             .filter(PackageInfo.from_plugin == plugin).first()
 
         self.assertTrue(package_info)
+        return (package_info)
+
+    def assert_package_info(self, package_name, plugin, outcome):
+        package_info = self._lookup_package_info(package_name, plugin)
         self.assertEquals(outcome, package_info.outcome)
+
+    def assert_package_data(self, package_name, plugin, data):
+        package_info = self._lookup_package_info(package_name, plugin)
+        self.assertTrue(data in package_info.data)
 
     def assert_package_in_repo(self, package_name, version):
         """Assert that a package is present in debexpo repo"""
