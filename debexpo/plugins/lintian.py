@@ -63,6 +63,9 @@ class LintianPlugin(BasePlugin):
                                    "-I",
                                    "--pedantic",
                                    "--show-overrides",
+                                   # To avoid warnings in the testsuite when
+                                   # run as root in CI.
+                                   "--allow-root",
                                    self.changes_file],
                                   stdout=subprocess.PIPE).communicate()[0]
 
