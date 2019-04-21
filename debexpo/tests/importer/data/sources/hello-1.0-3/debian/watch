@@ -1,0 +1,3 @@
+version=WRONG
+
+unknownprotocol://ftp.gnu.org/gnu/hello/hello-(.*).tar.gz

@@ -124,6 +124,14 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_count('hello', '1.0-1', 1)
         self.assert_package_in_repo('hello', '1.0-1')
 
+    def test_import_package_watchfile_invalid(self):
+        self.import_package('watchfile-invalid')
+        self.assert_importer_succeeded()
+        self.assert_package_info('hello', 'watchfile',
+                                 'A watch file is present but doesn\'t work')
+        self.assert_package_count('hello', '1.0-3', 1)
+        self.assert_package_in_repo('hello', '1.0-3')
+
     def test_import_package_not_signed(self):
         self.import_package('not-signed')
         self.assert_importer_failed()
