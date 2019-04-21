@@ -116,6 +116,14 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_info('hello', 'buildsystem',
                                  'Package uses debhelper-compat')
 
+    def test_import_package_watchfile_no_present(self):
+        self.import_package('hello')
+        self.assert_importer_succeeded()
+        self.assert_package_info('hello', 'watchfile',
+                                 'Watch file is not present')
+        self.assert_package_count('hello', '1.0-1', 1)
+        self.assert_package_in_repo('hello', '1.0-1')
+
     def test_import_package_not_signed(self):
         self.import_package('not-signed')
         self.assert_importer_failed()
