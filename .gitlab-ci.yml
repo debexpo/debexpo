@@ -18,13 +18,10 @@ unstable:
   <<: *test
   image: debian:unstable
 
-#testing:
-#  <<: *test
-#  image: debian:testing
-
-stable-bpo:
+buster-bpo:
   <<: *test
-  image: debian:stable-backports
+  #image: debian:buster-backports
+  image: debian:buster
 
 flake8:
   image: debian:unstable-slim
