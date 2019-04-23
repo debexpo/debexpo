@@ -45,6 +45,31 @@ import pylons.test
 
 class TestUploadController(TestController):
 
+    _CHANGES_CONTENT = """
+Format: 1.8
+Date: Tue, 12 Mar 2019 17:31:31 +0100
+Source: vitetris
+Binary: vitetris vitetris-dbgsym
+Architecture: source amd64
+Version: 0.58.0-1
+Distribution: unstable
+Urgency: medium
+Maintainer: Baptiste BEAUPLAT <lyknode@cilg.org>
+Changed-By: Baptiste BEAUPLAT <lyknode@cilg.org>
+Description:
+ vitetris   - Virtual terminal *tris clone
+Changes:
+ vitetris (0.58.0-1) unstable; urgency=medium
+ .
+   * New upstream version 0.58.0
+Checksums-Sha1:
+ aaaa 1261 vitetris_0.58.0-1.dsc
+Checksums-Sha256:
+ aaaa 1261 vitetris_0.58.0-1.dsc
+Files:
+ aaaa 1261 games optional vitetris_0.58.0-1.dsc
+"""
+
     def __init__(self, *args, **kwargs):
         """
         Sets up database with data to provide a database to test.
@@ -125,26 +150,46 @@ class TestUploadController(TestController):
         """
         Tests whether a re-uploads of the same file failed with error code 403.
         """
+        # First upload allowed
         response = self.app.put(url(
             controller='upload', action='index',
-            filename='testfile.dsc'),
+            filename='vitetris_0.58.0-1.dsc'),
             params='contents', expect_errors=False)
 
         self.assertEqual(response.status_int, 200)
 
+        # Upload a file not referenced allowed
         response = self.app.put(url(
             controller='upload', action='index',
-            filename='testfile.dsc'),
+            filename='testfile.changes'),
+            params=self._CHANGES_CONTENT, expect_errors=False)
+
+        self.assertEqual(response.status_int, 200)
+
+        # Second upload denined (.changes)
+        response = self.app.put(url(
+            controller='upload', action='index',
+            filename='testfile.changes'),
+            params=self._CHANGES_CONTENT, expect_errors=True)
+
+        self.assertEqual(response.status_int, 403)
+
+        # Second upload denined (others)
+        response = self.app.put(url(
+            controller='upload', action='index',
+            filename='vitetris_0.58.0-1.dsc'),
             params='contents', expect_errors=True)
 
         self.assertEqual(response.status_int, 403)
 
         app_config = pylons.test.pylonsapp.config
 
-        if os.path.isfile(os.path.join(app_config['debexpo.upload.incoming'],
-                                       'pub', 'testfile.dsc')):
-            os.remove(os.path.join(app_config['debexpo.upload.incoming'],
-                                   'pub', 'testfile.dsc'))
+        for filename in (os.path.join(app_config['debexpo.upload.incoming'],
+                                      'pub', 'vitetris_0.58.0-1.dsc'),
+                         os.path.join(app_config['debexpo.upload.incoming'],
+                                      'pub', 'testfile.changes')):
+            if os.path.isfile(filename):
+                os.remove(filename)
 
     def testUploadWithoutConfig(self):
         """
