@@ -226,6 +226,18 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_count('hello', '1.0-1', 1)
         self.assert_package_in_repo('hello', '1.0-1')
 
+    def test_import_package_not_in_debian(self):
+        self.import_package('not-in-debian')
+        self.assert_importer_succeeded()
+        self.assert_email_with("Your upload of the package "
+                               "'this-package-should-not-exist' to "
+                               + pylonsapp.config['debexpo.sitename']
+                               + " was\nsuccessful.")
+        self.assert_package_count('this-package-should-not-exist', '1.0-1', 1)
+        self.assert_package_in_repo('this-package-should-not-exist', '1.0-1')
+        self.assert_package_info('this-package-should-not-exist', 'debianqa',
+                                 'Package is not in Debian')
+
     def test_import_package_hello(self):
         self.import_package('hello')
         self.assert_importer_succeeded()
@@ -234,6 +246,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
                                + " was\nsuccessful.")
         self.assert_package_count('hello', '1.0-1', 1)
         self.assert_package_in_repo('hello', '1.0-1')
+        self.assert_package_data('hello', 'debianqa', '{"latest-upload": "')
 
         self._cleanup_mailbox()
         self.import_package('hello')
