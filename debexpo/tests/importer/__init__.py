@@ -47,6 +47,7 @@ from debexpo.model.package_versions import PackageVersion
 from debexpo.model.package_info import PackageInfo
 from debexpo.model.packages import Package
 from debexpo.tests import TestController
+from debexpo.tests.importer.source_package import TestSourcePackage
 
 log = logging.getLogger(__name__)
 
@@ -102,7 +103,7 @@ class TestImporterController(TestController):
         # copytree dst dir must not exist
         if isdir(self.upload_dir):
             rmtree(self.upload_dir)
-        copytree(join(self.data_dir, package_dir), self.upload_dir)
+        copytree(package_dir, self.upload_dir)
 
     def _get_email(self):
         """Parse an email and format the body."""
@@ -148,10 +149,19 @@ class TestImporterController(TestController):
                 result.append(join(root, name))
         return result
 
+    def import_source_package(self, package_dir):
+        source_package = TestSourcePackage(package_dir)
+
+        source_package.build()
+        self._run_importer(source_package.get_package_dir())
+
     def import_package(self, package_dir):
+        self._run_importer(join(self.data_dir, package_dir))
+
+    def _run_importer(self, package_dir):
         """Run debexpo importer on package_dir/*.changes"""
         # Copy uplod files to incomming queue
-        self.assertTrue(isdir(join(self.data_dir, package_dir)))
+        self.assertTrue(isdir(package_dir))
         self._upload_package(package_dir)
 
         # Get change file
