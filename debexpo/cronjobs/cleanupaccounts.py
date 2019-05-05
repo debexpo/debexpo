@@ -37,6 +37,10 @@ from debexpo.cronjobs import BaseCronjob
 from debexpo.model import meta
 from debexpo.model.users import User
 
+# This import is used by the orm to map the DELETE ON CASCADE
+# between Users and PasswordReset
+from debexpo.model.password_reset import PasswordReset # NOQA
+
 
 class CleanupAccounts(BaseCronjob):
     def setup(self):
@@ -65,7 +69,11 @@ class CleanupAccounts(BaseCronjob):
         return datetime.now() - timedelta(days=self.expire_in)
 
     def _remove_expired_accounts(self, accounts):
-        count = accounts.delete()
+        count = 0
+        for account in accounts.all():
+            self.db.delete(account)
+            count += 1
+
         self.db.commit()
         return count
 
