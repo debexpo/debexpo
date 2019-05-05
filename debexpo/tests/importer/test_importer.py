@@ -239,7 +239,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
                                  'Package is not in Debian')
 
     def test_import_package_hello(self):
-        self.import_package('hello')
+        self.import_source_package('hello')
         self.assert_importer_succeeded()
         self.assert_email_with("Your upload of the package 'hello' to "
                                + pylonsapp.config['debexpo.sitename']
@@ -249,7 +249,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_data('hello', 'debianqa', '{"latest-upload": "')
 
         self._cleanup_mailbox()
-        self.import_package('hello')
+        self.import_source_package('hello')
         self.assert_importer_succeeded()
         self.assert_email_with("Your upload of the package 'hello' to "
                                + pylonsapp.config['debexpo.sitename']
