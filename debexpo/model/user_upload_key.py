@@ -38,6 +38,7 @@ __license__ = 'MIT'
 
 import sqlalchemy as sa
 from sqlalchemy import orm
+from sqlalchemy.orm import backref
 
 from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
@@ -55,5 +56,6 @@ class UserUploadKey(OrmObject):
 
 
 orm.mapper(UserUploadKey, t_user_upload_key, properties={
-    'user': orm.relation(User)
+    'user': orm.relation(
+        User, backref=backref('user_upload_key', cascade='all, delete-orphan'))
 })
