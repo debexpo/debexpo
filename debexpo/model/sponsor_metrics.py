@@ -38,6 +38,7 @@ __license__ = 'MIT'
 
 import sqlalchemy as sa
 from sqlalchemy import orm
+from sqlalchemy.orm import backref
 
 from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
@@ -164,7 +165,8 @@ class SponsorMetricsTags(OrmObject):
 
 orm.mapper(SponsorMetrics, t_sponsor_metrics, properties={
     'tags': orm.relationship(SponsorMetricsTags),
-    'user': orm.relationship(User),
+    'user': orm.relation(
+        User, backref=backref('sponsor_metrics', cascade='all, delete-orphan'))
 })
 
 orm.mapper(SponsorTags, t_sponsor_tags)

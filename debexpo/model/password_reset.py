@@ -40,6 +40,7 @@ import datetime
 
 import sqlalchemy as sa
 from sqlalchemy import orm
+from sqlalchemy.orm import backref
 
 from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
@@ -71,5 +72,6 @@ class PasswordReset(OrmObject):
 
 
 orm.mapper(PasswordReset, t_password_reset, properties={
-    'user': orm.relation(User)
+    'user': orm.relation(
+        User, backref=backref('password_reset', cascade='all, delete-orphan'))
 })
