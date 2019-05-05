@@ -37,6 +37,7 @@ from datetime import timedelta, datetime
 
 from debexpo.tests.cronjobs import TestCronjob
 from debexpo.model.users import User
+from debexpo.model.password_reset import PasswordReset
 
 
 class TestCronjobCleanupAccounts(TestCronjob):
@@ -74,6 +75,17 @@ class TestCronjobCleanupAccounts(TestCronjob):
 
         self._assert_account_cleaned_up()
 
+    # Ask for a cleanup, all accounts are expired, with a reference to a
+    # password reset.
+    def test_cleanup_all_expired_accounts_with_reset(self):
+        self._create_accounts(True)
+        self._add_password_reset()
+
+        self._invoke_plugin()
+
+        self._assert_account_cleaned_up()
+        self.assertEquals(self.db.query(PasswordReset).count(), 0)
+
     # Ask for a cleanup, some account are expired
     def test_cleanup_mixed_expired_accounts(self):
         self._create_accounts(True)
@@ -97,6 +109,16 @@ class TestCronjobCleanupAccounts(TestCronjob):
         self._assert_account_cleaned_up()
 
         app_config['token_expiration_days'] = default_config
+
+    def _add_password_reset(self):
+        accounts = self._get_accounts()
+
+        expired = self._get_expired_accounts(accounts)
+        for user in expired:
+            reset = PasswordReset.create_for_user(user)
+            self.db.add(reset)
+
+        self.db.commit()
 
     def _create_accounts(self, expired, token='token'):
         if expired:
@@ -124,12 +146,15 @@ class TestCronjobCleanupAccounts(TestCronjob):
 
         return datetime.now() - timedelta(days=delta)
 
+    def _get_expired_accounts(self, users):
+        return users.filter(
+            (User.lastlogin < self._get_expiration_date()) &
+            (User.verification != None)) # NOQA
+
     def _assert_account_cleaned_up(self):
         # SQLAchemly has to work with !=/== None, so no pep8 here
         users = self._get_accounts()
-        users_to_cleanup = users.filter(
-            (User.lastlogin < self._get_expiration_date()) &
-            (User.verification != None)) # NOQA
+        users_to_cleanup = self._get_expired_accounts(users)
         users_activated = users.filter(User.verification == None) # NOQA
 
         # No more expired accounts
