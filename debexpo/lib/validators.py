@@ -100,7 +100,8 @@ class GpgKey(formencode.validators.FieldStorageUploadConverter):
                 break
         else:
             log.debug("User id {} [{}]: fail to upload GPG key: no uid "
-                      "matching email <{}>".format(user.id, user.name,
+                      "matching email <{}>".format(user.id,
+                                                   user.name.encode('utf-8'),
                                                    user.email))
             raise formencode.Invalid(_('None of your user IDs in key %s does '
                                        'match your profile mail address' %
