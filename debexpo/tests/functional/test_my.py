@@ -75,6 +75,7 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         os.environ['GNUPGHOME'] = self.homedir
 
     def _cleanup_gpg_env(self):
+        os.unsetenv('GNUPGHOME')
         shutil.rmtree(self.homedir)
 
     def setUp(self):
