@@ -1,5 +1,0 @@
-hello (1.0-2) unstable; urgency=medium
-
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
-
- -- Baptiste BEAUPLAT <lyknode@cilg.org>  Sun, 02 Dec 2018 22:38:11 +0100

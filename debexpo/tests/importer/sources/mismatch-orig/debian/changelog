@@ -1,0 +1,11 @@
+0ad-data (0.0.23.1-2) unstable; urgency=medium
+
+  * New version to generate mismatch in orig tarball
+
+ -- Vincent TIME <vtime@example.org>  Thu, 26 Apr 2018 21:10:00 +0200
+
+0ad-data (0.0.23.1-1) unstable; urgency=medium
+
+  * New upstream release 2.2.0
+
+ -- Vincent TIME <vtime@example.org>  Thu, 26 Apr 2018 21:10:00 +0200

@@ -109,15 +109,15 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_not_in_repo('hello', '1.0-1')
 
     def test_import_package_no_first_debhelper_compat(self):
-        self.import_package('no-first-debhelper-compat')
+        self.import_source_package('no-first-debhelper-compat')
         self.assert_importer_succeeded()
-        self.assert_package_count('hello', '1.0-2', 1)
-        self.assert_package_in_repo('hello', '1.0-2')
+        self.assert_package_count('hello', '1.0-1', 1)
+        self.assert_package_in_repo('hello', '1.0-1')
         self.assert_package_info('hello', 'buildsystem',
                                  'Package uses debhelper-compat')
 
     def test_import_package_watchfile_no_present(self):
-        self.import_package('hello')
+        self.import_source_package('hello')
         self.assert_importer_succeeded()
         self.assert_package_info('hello', 'watchfile',
                                  'Watch file is not present')
@@ -125,20 +125,20 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_in_repo('hello', '1.0-1')
 
     def test_import_package_watchfile_invalid(self):
-        self.import_package('watchfile-invalid')
+        self.import_source_package('watchfile-invalid')
         self.assert_importer_succeeded()
         self.assert_package_info('hello', 'watchfile',
                                  'A watch file is present but doesn\'t work')
-        self.assert_package_count('hello', '1.0-3', 1)
-        self.assert_package_in_repo('hello', '1.0-3')
+        self.assert_package_count('hello', '1.0-1', 1)
+        self.assert_package_in_repo('hello', '1.0-1')
 
     def test_import_package_watchfile_valid(self):
-        self.import_package('watchfile-valid')
+        self.import_source_package('watchfile-valid')
         self.assert_importer_succeeded()
         self.assert_package_info('hello', 'watchfile',
                                  'Package is not the latest upstream version')
-        self.assert_package_count('hello', '1.0-4', 1)
-        self.assert_package_in_repo('hello', '1.0-4')
+        self.assert_package_count('hello', '1.0-1', 1)
+        self.assert_package_in_repo('hello', '1.0-1')
 
     def test_import_package_not_signed(self):
         self.import_package('not-signed')
@@ -165,7 +165,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_not_in_repo('hello', '1.0-1')
 
     def test_import_package_invalid_dist(self):
-        self.import_package('invalid-dist')
+        self.import_source_package('invalid-dist')
         self.assert_importer_failed()
         self.assert_email_with('You are not uploading to one of those Debian'
                                ' distribution')
@@ -189,15 +189,15 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_not_in_repo('0ad-data', '0.0.23.1-1.1')
 
     def test_import_package_mismatch_orig_official(self):
-        self.import_package('mismatch-orig')
+        self.import_source_package('mismatch-orig')
         self.assert_importer_failed()
         self.assert_email_with('Orig tarball used in the Dsc does not match'
                                ' orig present in the archive')
-        self.assert_package_count('htop', '2.2.0-1+b1', 0)
-        self.assert_package_not_in_repo('htop', '2.2.0-1+b1')
+        self.assert_package_count('0ad-data', '0.0.23.1-2', 0)
+        self.assert_package_not_in_repo('0ad-data', '0.0.23.1-2')
 
     def test_import_package_hello_unicode(self):
-        self.import_package('unicode-changes')
+        self.import_source_package('unicode-changes')
         self.assert_importer_succeeded()
         self.assert_email_with("Your upload of the package 'hello' to "
                                + pylonsapp.config['debexpo.sitename']
@@ -208,7 +208,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
                                  'Package is already in Debian')
 
     def test_import_package_mismatch_orig_uploaded(self):
-        self.import_package('hello')
+        self.import_source_package('hello')
         self.assert_importer_succeeded()
         self.assert_email_with("Your upload of the package 'hello' to "
                                + pylonsapp.config['debexpo.sitename']
@@ -216,18 +216,15 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_count('hello', '1.0-1', 1)
         self.assert_package_in_repo('hello', '1.0-1')
 
-        self.import_package('hello-mismatch-orig')
+        self.import_source_package('hello-mismatch-orig')
         self.assert_importer_failed()
         self.assert_email_with("hello dsc reference hello_1.0.orig.tar.xz, but "
-                               "the file differs:\nin dsc: aaaaaaaaaaaaaaaaaaaa"
-                               "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nf"
-                               "ound: 622d2165e0ae0aee8b3dac5fbf07f471db2205c4c"
-                               "b60d1c3ce3762a12fbe62bf")
-        self.assert_package_count('hello', '1.0-1', 1)
-        self.assert_package_in_repo('hello', '1.0-1')
+                               "the file differs")
+        self.assert_package_count('hello', '1.0-2', 0)
+        self.assert_package_not_in_repo('hello', '1.0-2')
 
     def test_import_package_not_in_debian(self):
-        self.import_package('not-in-debian')
+        self.import_source_package('not-in-debian')
         self.assert_importer_succeeded()
         self.assert_email_with("Your upload of the package "
                                "'this-package-should-not-exist' to "
@@ -263,7 +260,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_email_with("Your upload of the package 'htop' to "
                                + pylonsapp.config['debexpo.sitename']
                                + " was\nsuccessful.")
-        self.assert_package_count('htop', '2.2.0-1+b1', 1)
+        self.assert_package_count('htop', '2.2.0-1', 1)
         self.assert_package_in_repo('htop', '2.2.0-1')
 
         self._cleanup_mailbox()
@@ -272,5 +269,5 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_email_with("Your upload of the package 'htop' to "
                                + pylonsapp.config['debexpo.sitename']
                                + " was\nsuccessful.")
-        self.assert_package_count('htop', '2.2.0-1+b1', 2)
+        self.assert_package_count('htop', '2.2.0-1', 2)
         self.assert_package_in_repo('htop', '2.2.0-1')
