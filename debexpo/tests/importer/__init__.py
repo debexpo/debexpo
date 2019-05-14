@@ -212,8 +212,8 @@ class TestImporterController(TestController):
             .first()
         if package:
             count_in_db = meta.session.query(PackageVersion) \
-                .filter(PackageVersion.package_id == package.id and
-                        PackageVersion.version == version) \
+                .filter(PackageVersion.package_id == package.id) \
+                .filter(PackageVersion.version == version) \
                 .count()
         else:
             count_in_db = 0
