@@ -72,6 +72,13 @@ class Worker(object):
         self.inifile = os.path.abspath(inifile)
         self.daemonize = daemonize
         self.jobs = {}
+        self.can_continue = True
+        signal.signal(signal.SIGTERM, self._on_sig_term)
+
+    def _on_sig_term(self, sig, frame):
+        log.info("Received SIGTERM, shutting down worker after current run.")
+        self._remove_pid()
+        self.can_continue = False
 
     def _daemonize(self):
         """
@@ -90,14 +97,15 @@ class Worker(object):
         os.setsid()
         os.umask(0)
 
-        signal.signal(signal.SIGTERM, self._remove_pid)
         file(self.pidfile, "w+").write("%d\n" % os.getpid())
 
-    def _remove_pid(self, _a, _b):
+    def _remove_pid(self):
         """
         Remove the process PID file
         """
-        os.remove(self.pidfile)
+        log.debug("Removing pid file")
+        if os.path.isfile(self.pidfile):
+            os.remove(self.pidfile)
 
     def _import_plugin(self, name):
         """
@@ -212,7 +220,7 @@ class Worker(object):
         self._load_jobs()
         delay = int(pylons.config['debexpo.cronjob_delay'])
 
-        while(True):
+        while self.can_continue:
             for job in self.jobs:
                 if ((datetime.datetime.now() - self.jobs[job]['last_run']) >=
                         self.jobs[job]['schedule']):
@@ -220,6 +228,10 @@ class Worker(object):
                     self.jobs[job]['module'].invoke()
                     self.jobs[job]['last_run'] = datetime.datetime.now()
                     log.debug("Job %s complete" % (job))
+
+                if not self.can_continue:
+                    return
+
             time.sleep(delay)
 
 
