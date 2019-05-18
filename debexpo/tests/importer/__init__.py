@@ -236,6 +236,10 @@ class TestImporterController(TestController):
         package_info = self._lookup_package_info(package_name, plugin)
         self.assertEquals(outcome, package_info.outcome)
 
+    def assert_package_severity(self, package_name, plugin, severity):
+        package_info = self._lookup_package_info(package_name, plugin)
+        self.assertTrue(severity == package_info.severity)
+
     def assert_package_data(self, package_name, plugin, data):
         package_info = self._lookup_package_info(package_name, plugin)
         self.assertTrue(data in package_info.data)
