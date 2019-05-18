@@ -42,6 +42,7 @@ __license__ = 'MIT'
 
 import email.utils
 import logging
+import re
 
 from debian import deb822
 
@@ -92,6 +93,12 @@ class MaintainerEmailPlugin(BasePlugin):
                     outcome = 'The uploader is not in the package\'s ' \
                         '"Maintainer" or "Uploaders" fields'
                     severity = constants.PLUGIN_SEVERITY_WARNING
+
+                team_upload = re.compile(r'\b[Tt]eam\b\s*\b[Uu]pload*\b')
+                if team_upload.search(self.changes['Changes']) is not None:
+                    log.debug('Team upload detected.')
+                    outcome += ' (Team upload)'
+                    severity = constants.PLUGIN_SEVERITY_INFO
 
                 data = {
                     'user-is-maintainer': (severity ==
