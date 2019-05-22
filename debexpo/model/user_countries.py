@@ -61,7 +61,10 @@ def create_iso_countries():
         open('/usr/share/xml/iso-codes/iso_3166.xml'))
     entries = parsed.getElementsByTagName('iso_3166_entry')
     for entry in entries:
-        value = entry.attributes['name'].value
+        if entry.attributes.get('common_name') is not None:
+            value = entry.attributes['common_name'].value
+        else:
+            value = entry.attributes['name'].value
         add_country(value, commit=False)
     meta.session.commit()
 
