@@ -280,7 +280,6 @@ class Importer(object):
         """
         log.error('Rejected: %s' % reason)
 
-        self._remove_changes()
         self._remove_files()
 
         if self.user is not None:
@@ -774,7 +773,7 @@ class Importer(object):
                               user_id=self.user_id)
         if post_upload.stop():
             log.critical('post-upload plugins failed')
-            self._remove_changes()
+            self._remove_files()
             return 1
 
         # Get results from getorigtarball
@@ -856,7 +855,7 @@ class Importer(object):
                 changes_contents=changes_contents)
 
         # Remove the changes file
-        self._remove_changes()
+        self._remove_files()
 
         # Refresh the Sources/Packages files.
         log.debug('Updating Sources and Packages files')
