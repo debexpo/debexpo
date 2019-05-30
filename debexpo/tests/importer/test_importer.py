@@ -207,6 +207,15 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_info('hello', 'debianqa',
                                  'Package is already in Debian')
 
+    def test_import_package_hello_no_repository(self):
+        repo = pylonsapp.config.pop('debexpo.repository')
+        self.import_source_package('hello')
+        pylonsapp.config['debexpo.repository'] = repo
+        self.assert_importer_failed()
+        self.assert_email_with("There was a failure in importing your package")
+        self.assert_package_count('hello', '1.0-1', 0)
+        self.assert_package_not_in_repo('hello', '1.0-1')
+
     def test_import_package_mismatch_orig_uploaded(self):
         self.import_source_package('hello')
         self.assert_importer_succeeded()
