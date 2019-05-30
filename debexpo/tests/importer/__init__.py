@@ -46,8 +46,11 @@ from debexpo.model import meta
 from debexpo.model.package_versions import PackageVersion
 from debexpo.model.package_info import PackageInfo
 from debexpo.model.packages import Package
+from debexpo.model.package_subscriptions import PackageSubscription
+from debexpo.model.users import User
 from debexpo.tests import TestController
 from debexpo.tests.importer.source_package import TestSourcePackage
+from debexpo.lib.constants import SUBSCRIPTION_LEVEL_UPLOADS
 
 log = logging.getLogger(__name__)
 
@@ -73,10 +76,24 @@ class TestImporterController(TestController):
 
     def tearDown(self):
         self._assert_no_leftover()
+        self._remove_subscribers()
         self._remove_example_user()
         self._cleanup_mailbox()
         self._cleanup_repo()
         self._cleanup_package()
+
+    def _remove_subscribers(self):
+        meta.session.query(PackageSubscription).delete()
+        meta.session.commit()
+
+    def setup_subscribers(self, package, level=SUBSCRIPTION_LEVEL_UPLOADS):
+        user = meta.session.query(User) \
+            .filter(User.email == 'email@example.com').one()
+
+        subscription = PackageSubscription(package=package, user_id=user.id,
+                                           level=level)
+        meta.session.add(subscription)
+        meta.session.commit()
 
     def _cleanup_mailbox(self):
         """Delete mailbox file"""
@@ -149,16 +166,16 @@ class TestImporterController(TestController):
                 result.append(join(root, name))
         return result
 
-    def import_source_package(self, package_dir):
+    def import_source_package(self, package_dir, skip_gpg=False):
         source_package = TestSourcePackage(package_dir)
 
         source_package.build()
-        self._run_importer(source_package.get_package_dir())
+        self._run_importer(source_package.get_package_dir(), skip_gpg=skip_gpg)
 
     def import_package(self, package_dir):
         self._run_importer(join(self.data_dir, package_dir))
 
-    def _run_importer(self, package_dir):
+    def _run_importer(self, package_dir, skip_gpg=False):
         """Run debexpo importer on package_dir/*.changes"""
         # Copy uplod files to incomming queue
         self.assertTrue(isdir(package_dir))
@@ -171,7 +188,7 @@ class TestImporterController(TestController):
 
         # Run the importer on change file
         importer = Importer(changes, pylons.config['global_conf']['__file__'],
-                            False, False)
+                            False, skip_gpg)
         self._status_importer = importer.main(no_env=True)
 
     def assert_importer_failed(self):
