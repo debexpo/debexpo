@@ -116,6 +116,15 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_info('hello', 'buildsystem',
                                  'Package uses debhelper-compat')
 
+    def test_import_package_hello_no_user(self):
+        self._remove_example_user()
+        self.import_source_package('hello', skip_gpg=True)
+        self._setup_example_user(gpg=True)
+        self.assert_importer_failed()
+        self.assert_email_with('Couldn\'t find user')
+        self.assert_package_count('hello', '1.0-1', 0)
+        self.assert_package_not_in_repo('hello', '1.0-1')
+
     def test_import_package_watchfile_no_present(self):
         self.import_source_package('hello')
         self.assert_importer_succeeded()

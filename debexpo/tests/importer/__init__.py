@@ -149,16 +149,16 @@ class TestImporterController(TestController):
                 result.append(join(root, name))
         return result
 
-    def import_source_package(self, package_dir):
+    def import_source_package(self, package_dir, skip_gpg=False):
         source_package = TestSourcePackage(package_dir)
 
         source_package.build()
-        self._run_importer(source_package.get_package_dir())
+        self._run_importer(source_package.get_package_dir(), skip_gpg=skip_gpg)
 
     def import_package(self, package_dir):
         self._run_importer(join(self.data_dir, package_dir))
 
-    def _run_importer(self, package_dir):
+    def _run_importer(self, package_dir, skip_gpg=False):
         """Run debexpo importer on package_dir/*.changes"""
         # Copy uplod files to incomming queue
         self.assertTrue(isdir(package_dir))
@@ -171,7 +171,7 @@ class TestImporterController(TestController):
 
         # Run the importer on change file
         importer = Importer(changes, pylons.config['global_conf']['__file__'],
-                            False, False)
+                            False, skip_gpg)
         self._status_importer = importer.main(no_env=True)
 
     def assert_importer_failed(self):
