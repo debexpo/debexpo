@@ -225,6 +225,14 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_count('hello', '1.0-1', 0)
         self.assert_package_not_in_repo('hello', '1.0-1')
 
+    def test_import_package_hello_missing_orig(self):
+        self.import_source_package('hello-mismatch-orig')
+        self.assert_importer_failed()
+        self.assert_email_with("hello dsc reference hello_1.0.orig.tar.xz, but "
+                               "the file was not found")
+        self.assert_package_count('hello', '1.0-2', 0)
+        self.assert_package_not_in_repo('hello', '1.0-2')
+
     def test_import_package_mismatch_orig_uploaded(self):
         self.import_source_package('hello')
         self.assert_importer_succeeded()
