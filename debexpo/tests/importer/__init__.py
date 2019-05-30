@@ -46,8 +46,11 @@ from debexpo.model import meta
 from debexpo.model.package_versions import PackageVersion
 from debexpo.model.package_info import PackageInfo
 from debexpo.model.packages import Package
+from debexpo.model.package_subscriptions import PackageSubscription
+from debexpo.model.users import User
 from debexpo.tests import TestController
 from debexpo.tests.importer.source_package import TestSourcePackage
+from debexpo.lib.constants import SUBSCRIPTION_LEVEL_UPLOADS
 
 log = logging.getLogger(__name__)
 
@@ -73,10 +76,24 @@ class TestImporterController(TestController):
 
     def tearDown(self):
         self._assert_no_leftover()
+        self._remove_subscribers()
         self._remove_example_user()
         self._cleanup_mailbox()
         self._cleanup_repo()
         self._cleanup_package()
+
+    def _remove_subscribers(self):
+        meta.session.query(PackageSubscription).delete()
+        meta.session.commit()
+
+    def setup_subscribers(self, package, level=SUBSCRIPTION_LEVEL_UPLOADS):
+        user = meta.session.query(User) \
+            .filter(User.email == 'email@example.com').one()
+
+        subscription = PackageSubscription(package=package, user_id=user.id,
+                                           level=level)
+        meta.session.add(subscription)
+        meta.session.commit()
 
     def _cleanup_mailbox(self):
         """Delete mailbox file"""

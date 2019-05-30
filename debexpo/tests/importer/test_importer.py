@@ -253,6 +253,14 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_info('this-package-should-not-exist', 'debianqa',
                                  'Package is not in Debian')
 
+    def test_import_package_hello_with_subscribers(self):
+        self.setup_subscribers('hello')
+        self.import_source_package('hello')
+        self.assert_importer_succeeded()
+        self.assert_email_with('hello 1.0-1 has been uploaded to the archive')
+        self.assert_package_count('hello', '1.0-1', 1)
+        self.assert_package_in_repo('hello', '1.0-1')
+
     def test_import_package_hello(self):
         self.import_source_package('hello')
         self.assert_importer_succeeded()
