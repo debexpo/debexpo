@@ -75,7 +75,7 @@ class ImportUpload(BaseCronjob):
 
         # 1) Process uploads
         base_path = os.path.join(self.config['debexpo.upload.incoming'], "pub")
-        directories = [base_path, os.path.join(base_path, 'pub/UploadQueue')]
+        directories = map(lambda tree: tree[0], os.walk(base_path))
         for changes_file in sum((glob.glob(os.path.join(directory, '*.changes'))
                                 for directory in directories), []):
             self.log.info("Importing upload: %s", changes_file)
@@ -123,20 +123,21 @@ class ImportUpload(BaseCronjob):
                     os.remove(destination_file)
 
         # 2) Mark unprocessed files and get rid of them after some time
-        pub = os.path.join(self.config['debexpo.upload.incoming'], "pub")
-        for file in glob.glob(os.path.join(pub, '*')):
-            if self.files.allowed_upload(file):
-                self.log.debug("Incomplete upload: %s" % (file))
-                last_change = time.time() - os.stat(file).st_mtime
-                # the file was uploaded more than 6 hours ago
-                if last_change > 6 * 60 * 60:
-                    self.log.warning("Remove old file: %s (last modified %.2f "
-                                     "hours ago)" % (file, last_change / 3600.))
-                    os.remove(file)
-            else:
-                if os.path.isfile(file):
-                    self.log.warning("Remove unknown file: %s" % (file))
-                    os.remove(file)
+        for pub in directories:
+            for file in glob.glob(os.path.join(pub, '*')):
+                if self.files.allowed_upload(file):
+                    self.log.debug("Incomplete upload: %s" % (file))
+                    last_change = time.time() - os.stat(file).st_mtime
+                    # the file was uploaded more than 6 hours ago
+                    if last_change > 6 * 60 * 60:
+                        self.log.warning("Remove old file: %s (last modified "
+                                         "%.2f hours ago)" %
+                                         (file, last_change / 3600.))
+                        os.remove(file)
+                else:
+                    if os.path.isfile(file):
+                        self.log.warning("Remove unknown file: %s" % (file))
+                        os.remove(file)
 
 
 cronjob = ImportUpload
