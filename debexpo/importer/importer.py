@@ -748,6 +748,21 @@ class Importer(object):
                                  allowed_distributions)))
             return 1
 
+        # Check whether the debexpo.repository variable is set
+        if 'debexpo.repository' not in pylons.config:
+            self._fail('debexpo.repository not set')
+            return 1
+
+        # Check whether debexpo.repository is a directory
+        if not os.path.isdir(pylons.config['debexpo.repository']):
+            self._fail('debexpo.repository is not a directory')
+            return 1
+
+        # Check whether debexpo.repository is writeable
+        if not os.access(pylons.config['debexpo.repository'], os.W_OK):
+            self._fail('debexpo.repository is not writeable')
+            return 1
+
         destdir = pylons.config['debexpo.repository']
 
         # Check whether the files are already present
@@ -799,21 +814,6 @@ class Importer(object):
 
         # Validates orig files from the uploaded dsc
         if not self._validate_orig_files(self.changes.get_dsc()):
-            return 1
-
-        # Check whether the debexpo.repository variable is set
-        if 'debexpo.repository' not in pylons.config:
-            self._fail('debexpo.repository not set')
-            return 1
-
-        # Check whether debexpo.repository is a directory
-        if not os.path.isdir(pylons.config['debexpo.repository']):
-            self._fail('debexpo.repository is not a directory')
-            return 1
-
-        # Check whether debexpo.repository is writeable
-        if not os.access(pylons.config['debexpo.repository'], os.W_OK):
-            self._fail('debexpo.repository is not writeable')
             return 1
 
         qa = Plugins('qa', self.changes, self.changes_file,
