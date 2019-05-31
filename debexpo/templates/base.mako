@@ -105,6 +105,10 @@
     Hosting and hardware provided by <a href="https://www.wavecon.de">Wavecon</a>
     -
     <a href="https://salsa.debian.org/mentors.debian.net-team/debexpo">${ _('Source code and bugs')}</a>
+    % if 'debexpo.version' in c.config:
+        (${_('Version')}
+        <a href="https://salsa.debian.org/mentors.debian.net-team/debexpo/tree/${c.config['debexpo.version']}">${c.config['debexpo.version'][:7]}</a>)
+    % endif
         -
     ${ h.tags.link_to( _('Contact'), h.url('contact')) }
         % if 'user_id' in session:

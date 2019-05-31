@@ -45,6 +45,7 @@ from pylons.error import handle_mako_error
 
 import debexpo.lib.app_globals as app_globals
 import debexpo.lib.helpers
+from debexpo.lib.utils import get_debexpo_version
 from debexpo.config.routing import make_map
 
 from sqlalchemy import engine_from_config
@@ -98,5 +99,9 @@ def load_environment(global_conf, app_conf):
 
     engine = engine_from_config(config, 'sqlalchemy.')
     init_model(engine)
+
+    version = get_debexpo_version()
+    if version:
+        config['debexpo.version'] = version
 
     return config
