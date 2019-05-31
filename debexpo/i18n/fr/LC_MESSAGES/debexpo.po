@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo 0.0.0\n"
 "Report-Msgid-Bugs-To: support@mentors.debian.net\n"
-"POT-Creation-Date: 2019-04-16 09:36+0200\n"
+"POT-Creation-Date: 2019-05-31 11:42+0200\n"
 "PO-Revision-Date: 2019-04-16 17:25+0200\n"
 "Last-Translator: Baptiste BEAUPLAT <lyknode@cilg.org>\n"
 "Language: fr\n"
 "Language-Team: support@mentors.debian.net\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
-"X-Generator: Lokalize 18.12.3\n"
 
 #: debexpo/controllers/login.py:84 debexpo/controllers/login.py:88
 msgid "Invalid email or password"
@@ -137,44 +136,44 @@ msgstr ""
 msgid "Multiple keys not supported"
 msgstr "Multiple clefs GPG non pris en charge"
 
-#: debexpo/lib/validators.py:107
+#: debexpo/lib/validators.py:108
 #, python-format
 msgid "None of your user IDs in key %s does match your profile mail address"
 msgstr ""
-"Aucun des identifiants utilisateur de votre clef GPG %s ne correspond à"
+"Aucun des identifiants utilisateur de votre clef GPG %s ne correspond à "
 "l'adresse de courriel de votre profil"
 
-#: debexpo/lib/validators.py:123
+#: debexpo/lib/validators.py:124
 #, python-format
 msgid ""
 "Key strength unacceptable in Debian Keyring. The minimum required key "
 "strength is %s bits."
 msgstr ""
-"Cette taille de clef n'est pas acceptable dans le trousseau de clefs de Debian. La taille "
-"minimale requise est de %s bits."
+"Cette taille de clef n'est pas acceptable dans le trousseau de clefs de "
+"Debian. La taille minimale requise est de %s bits."
 
-#: debexpo/lib/validators.py:129
+#: debexpo/lib/validators.py:130
 msgid "Key type unacceptable in Debian Keyring. It must be RSA or ECDSA."
 msgstr ""
-"Ce type de clef n'est pas acceptable dans le trousseau de clefs de Debian. Elle doit "
-"être de type RSA ou ECDSA."
+"Ce type de clef n'est pas acceptable dans le trousseau de clefs de "
+"Debian. Elle doit être de type RSA ou ECDSA."
 
-#: debexpo/lib/validators.py:152
+#: debexpo/lib/validators.py:153
 msgid "Incorrect password"
 msgstr "Mot de passe incorrect"
 
-#: debexpo/lib/validators.py:190
+#: debexpo/lib/validators.py:191
 msgid "A user with this email address is already registered on the system"
 msgstr "Un utilisateur avec cette adresse de courriel existe déjà sur ce site"
 
-#: debexpo/lib/validators.py:222
+#: debexpo/lib/validators.py:223
 msgid ""
 "A user with this name is already registered on the system. If it is you, "
 "use that account! Otherwise use a different name to register."
 msgstr ""
 "Un utilisateur avec ce nom existe déjà sur ce site. Si ce compte vous "
-"appartient, utilisez-le ! Sinon, merci de choisir un nom différent pour la "
-"création de votre compte."
+"appartient, utilisez-le ! Sinon, merci de choisir un nom différent pour "
+"la création de votre compte."
 
 #: debexpo/templates/base.mako:33
 msgid "Start page"
@@ -200,7 +199,7 @@ msgstr "Parrains"
 msgid "Q & A"
 msgstr "FAQ"
 
-#: debexpo/templates/base.mako:63 debexpo/templates/base.mako:109
+#: debexpo/templates/base.mako:63 debexpo/templates/base.mako:113
 msgid "Contact"
 msgstr "Contact"
 
@@ -224,6 +223,11 @@ msgstr "Mes paquets"
 #: debexpo/templates/base.mako:107
 msgid "Source code and bugs"
 msgstr "Code source et bogues"
+
+#: debexpo/templates/base.mako:109 debexpo/templates/package/index.mako:89
+#: debexpo/templates/packages/list.mako:14
+msgid "Version"
+msgstr "Version"
 
 #: debexpo/templates/error.mako:6 debexpo/templates/error.mako:11
 #: debexpo/templates/error.mako:16
@@ -267,8 +271,10 @@ msgid ""
 "            information how this error situation happened."
 msgstr ""
 "Une erreur inattendue est survenue dans cette application.\n"
-"            Les administrateurs vont recevoir un rapport détaillé indiquant\n"
-"            la nature exacte de l'erreur. N'hésitez pas à nous envoyer plus\n"
+"            Les administrateurs vont recevoir un rapport détaillé "
+"indiquant\n"
+"            la nature exacte de l'erreur. N'hésitez pas à nous envoyer "
+"plus\n"
 "            d'informations sur comment cette erreur s'est produite."
 
 #: debexpo/templates/error.mako:33
@@ -315,11 +321,10 @@ msgstr "Vous pouvez consulter les informations sur ce paquet en visitant :"
 
 #: debexpo/templates/email/comment_posted.mako:15
 #: debexpo/templates/email/package_uploaded.mako:11
-msgid ""
-"You can change your subscription by visiting your user account settings."
+msgid "You can change your subscription by visiting your user account settings."
 msgstr ""
-"Vous pouvez mettre à jour votre abonnement en accédant aux paramètres "
-"de votre compte utilisateur."
+"Vous pouvez mettre à jour votre abonnement en accédant aux paramètres de "
+"votre compte utilisateur."
 
 #: debexpo/templates/email/comment_posted.mako:17
 #: debexpo/templates/email/importer_fail_admin.mako:14
@@ -375,7 +380,7 @@ msgstr ""
 "Le problème semble venir du logiciel de gestion du dépôt\n"
 "et non de votre paquet.\n"
 "\n"
-"Nous sommes désolés de la gêne occasionnée. Les administrateurs ont été"
+"Nous sommes désolés de la gêne occasionnée. Les administrateurs ont été "
 "avertis\n"
 "Merci de réessayer prochainement."
 
@@ -425,7 +430,8 @@ msgstr ""
 "Bonjour,\n"
 "\n"
 "Vous pouvez réinitialiser votre mot de passe en cliquant sur le lien\n"
-"ci-dessous. Si vous n'avez pas demandé cette réinitialisation, vous pouvez\n"
+"ci-dessous. Si vous n'avez pas demandé cette réinitialisation, vous "
+"pouvez\n"
 "ignorer ce message."
 
 #: debexpo/templates/email/register_activate.mako:3
@@ -475,10 +481,11 @@ msgid ""
 "\n"
 "welcome page."
 msgstr ""
-"Si vous n'avez pas encore trouvé de parrain pour votre paquet, vous pourriez\n"
+"Si vous n'avez pas encore trouvé de parrain pour votre paquet, vous "
+"pourriez\n"
 "être intéressé pour aller sur %s\n"
-"et activer l'option \"Recherche de parrain\" pour mettre en avant votre paquet"
-"\n"
+"et activer l'option \"Recherche de parrain\" pour mettre en avant votre "
+"paquet\n"
 "sur la page d'accueil."
 
 #: debexpo/templates/email/successful_upload.mako:21
@@ -735,11 +742,6 @@ msgstr "Versions du paquet"
 msgid "Information"
 msgstr "Informations"
 
-#: debexpo/templates/package/index.mako:89
-#: debexpo/templates/packages/list.mako:14
-msgid "Version"
-msgstr "Version"
-
 #: debexpo/templates/package/index.mako:94
 msgid "View RFS template"
 msgstr "Visualiser le modèle RFS"
@@ -837,8 +839,8 @@ msgid ""
 "An email has been sent to the email address you specified. Check it for "
 "instructions on how to activate your account."
 msgstr ""
-"Un courriel a été envoyé à l'adresse que vous avez spécifiée. Vous y trouverez "
-"toutes les instructions sur comment activer votre compte."
+"Un courriel a été envoyé à l'adresse que vous avez spécifiée. Vous y "
+"trouverez toutes les instructions sur comment activer votre compte."
 
 #: debexpo/templates/register/activated.mako:7
 msgid "User activated"

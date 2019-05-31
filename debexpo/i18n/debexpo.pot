@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo 0.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-04-16 09:36+0200\n"
+"POT-Creation-Date: 2019-05-31 11:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -133,31 +133,31 @@ msgstr ""
 msgid "Multiple keys not supported"
 msgstr ""
 
-#: debexpo/lib/validators.py:107
+#: debexpo/lib/validators.py:108
 #, python-format
 msgid "None of your user IDs in key %s does match your profile mail address"
 msgstr ""
 
-#: debexpo/lib/validators.py:123
+#: debexpo/lib/validators.py:124
 #, python-format
 msgid ""
 "Key strength unacceptable in Debian Keyring. The minimum required key "
 "strength is %s bits."
 msgstr ""
 
-#: debexpo/lib/validators.py:129
+#: debexpo/lib/validators.py:130
 msgid "Key type unacceptable in Debian Keyring. It must be RSA or ECDSA."
 msgstr ""
 
-#: debexpo/lib/validators.py:152
+#: debexpo/lib/validators.py:153
 msgid "Incorrect password"
 msgstr ""
 
-#: debexpo/lib/validators.py:190
+#: debexpo/lib/validators.py:191
 msgid "A user with this email address is already registered on the system"
 msgstr ""
 
-#: debexpo/lib/validators.py:222
+#: debexpo/lib/validators.py:223
 msgid ""
 "A user with this name is already registered on the system. If it is you, use "
 "that account! Otherwise use a different name to register."
@@ -187,7 +187,7 @@ msgstr ""
 msgid "Q & A"
 msgstr ""
 
-#: debexpo/templates/base.mako:63 debexpo/templates/base.mako:109
+#: debexpo/templates/base.mako:63 debexpo/templates/base.mako:113
 msgid "Contact"
 msgstr ""
 
@@ -210,6 +210,11 @@ msgstr ""
 
 #: debexpo/templates/base.mako:107
 msgid "Source code and bugs"
+msgstr ""
+
+#: debexpo/templates/base.mako:109 debexpo/templates/package/index.mako:89
+#: debexpo/templates/packages/list.mako:14
+msgid "Version"
 msgstr ""
 
 #: debexpo/templates/error.mako:6 debexpo/templates/error.mako:11
@@ -666,10 +671,6 @@ msgstr ""
 
 #: debexpo/templates/package/index.mako:85
 msgid "Information"
-msgstr ""
-
-#: debexpo/templates/package/index.mako:89 debexpo/templates/packages/list.mako:14
-msgid "Version"
 msgstr ""
 
 #: debexpo/templates/package/index.mako:94
