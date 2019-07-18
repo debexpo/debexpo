@@ -118,6 +118,9 @@ class PasswordRecoverController(BaseController):
         u.password = debexpo.lib.utils.hash_password(raw_password)
         # This sets the user's email address as "confirmed"
         u.verification = None
+
+        # Remove password reset entry
+        meta.session.delete(pr)
         meta.session.commit()
 
         log.debug('Password reset successful; saving user object')
