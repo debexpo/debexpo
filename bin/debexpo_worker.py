@@ -121,15 +121,14 @@ class Worker(object):
             mod = __import__(name)
             components = name.split('.')
             for comp in components[1:]:
-                    mod = getattr(mod, comp)
+                mod = getattr(mod, comp)
             log.debug('Import succeeded.')
             return mod
         except ImportError as e:
             if str(e).startswith('No module named'):
-                    log.debug('Import failed - module not found: %s', e)
+                log.debug('Import failed - module not found: %s', e)
             else:
-                    log.warn('Import of module "%s" failed with error: %s',
-                             name, e)
+                log.warn('Import of module "%s" failed with error: %s', name, e)
         return None
 
     def _load_jobs(self):
@@ -148,11 +147,11 @@ class Worker(object):
                 sys.path.append(pylons.config['debexpo.cronjobdir'])
                 module = self._import_plugin(plugin)
                 if module is not None:
-                        log.debug('Found cronjob in debexpo.cronjobdir')
+                    log.debug('Found cronjob in debexpo.cronjobdir')
 
             if module is None:
-                    name = 'debexpo.cronjobs.%s' % plugin
-                    module = self._import_plugin(name)
+                name = 'debexpo.cronjobs.%s' % plugin
+                module = self._import_plugin(name)
 
             if not module:
                 log.warning("Cronjob %s was configured, but not found" %
@@ -160,14 +159,14 @@ class Worker(object):
                 continue
 
             if hasattr(module, 'cronjob') and hasattr(module, 'schedule'):
-                    self.jobs[plugin] = {
-                        'module': getattr(module, 'cronjob')(
-                            parent=self, config=pylons.config, log=log),
-                        'schedule': getattr(module, 'schedule'),
-                        'last_run': datetime.datetime(year=1970, month=1, day=1)
-                    }
+                self.jobs[plugin] = {
+                    'module': getattr(module, 'cronjob')(
+                        parent=self, config=pylons.config, log=log),
+                    'schedule': getattr(module, 'schedule'),
+                    'last_run': datetime.datetime(year=1970, month=1, day=1)
+                }
             else:
-                    log.debug("Cronjob %s seems invalid" % (plugin))
+                log.debug("Cronjob %s seems invalid" % (plugin))
 
     def _setup(self):
         """
