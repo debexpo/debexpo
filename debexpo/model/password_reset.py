@@ -65,7 +65,7 @@ class PasswordReset(OrmObject):
     def create_for_user(u):
         obj = PasswordReset()
         obj.user = u
-        obj.temporary_auth_key = debexpo.lib.utils.random_hash()[:10]
+        obj.temporary_auth_key = debexpo.lib.utils.random_hash()
         obj.valid_until = datetime.datetime.utcnow() + datetime.timedelta(
             days=PASSWORD_RESET_VALID_DAYS)
         return obj
