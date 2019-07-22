@@ -40,9 +40,6 @@ from debian import deb822, copyright
 from debexpo.lib import constants
 from debexpo.plugins import BasePlugin
 
-from debexpo.model import meta
-from debexpo.model.users import User
-
 log = logging.getLogger(__name__)
 
 
@@ -96,42 +93,29 @@ class RfsTemplatePlugin(BasePlugin):
         upstream_url = "[fill in URL of upstream's web site]"
         package_changelog = "[your most recent changelog entry]"
 
-        if self.user_id is not None:
+        package_changelog = self.changes['Changes']
 
-            user = meta.session.query(User).get(self.user_id)
-            log.debug(user)
+        copyright_info = self._extract_copyright_info()
+        control_info = self._extract_control_info()
 
-            package_changelog = self.changes['Changes']
+        if 'author' in copyright_info:
+            upstream_author = copyright_info['author']
+        if 'license' in copyright_info:
+            upstream_license = copyright_info['license']
 
-            copyright_info = self._extract_copyright_info()
-            control_info = self._extract_control_info()
+        if 'url' in control_info:
+            upstream_url = control_info['url']
 
-            if 'author' in copyright_info:
-                upstream_author = copyright_info['author']
-            if 'license' in copyright_info:
-                upstream_license = copyright_info['license']
+        data = {
+            'upstream-author': upstream_author,
+            'upstream-url': upstream_url,
+            'upstream-license': upstream_license,
+            'package-changelog': package_changelog,
+        }
 
-            if 'url' in control_info:
-                upstream_url = control_info['url']
-
-            print('  Upstream Author : %s' % upstream_author)
-            print('* URL             : %s' % upstream_url)
-            print('* License         : %s' % upstream_license)
-            print('  Changes         : %s' % package_changelog)
-
-            data = {
-                'upstream-author': upstream_author,
-                'upstream-url': upstream_url,
-                'upstream-license': upstream_license,
-                'package-changelog': package_changelog,
-            }
-
-            outcome = "RFS template information"
-            severity = constants.PLUGIN_SEVERITY_INFO
-            self.passed(outcome, data, severity)
-        else:
-            log.warning('Could not get the uploader\'s user details from the '
-                        'database')
+        outcome = "RFS template information"
+        severity = constants.PLUGIN_SEVERITY_INFO
+        self.passed(outcome, data, severity)
 
 
 plugin = RfsTemplatePlugin
