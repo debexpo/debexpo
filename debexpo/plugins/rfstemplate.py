@@ -45,11 +45,13 @@ from debexpo.model.users import User
 
 log = logging.getLogger(__name__)
 
+
 class RfsTemplatePlugin(BasePlugin):
 
     def _extract_copyright_info(self):
         dict = {}
-        copyright_path = os.path.join(self.tempdir, "extracted/debian/copyright")
+        copyright_path = os.path.join(self.tempdir,
+                                      "extracted/debian/copyright")
         with open(copyright_path, 'r') as f:
             context = copyright.Copyright(f)
             header = context.header
@@ -80,24 +82,25 @@ class RfsTemplatePlugin(BasePlugin):
         Tests whether there are enough information for RFS template.
 
         This plugin collects:
-        
+
         - Upstream Author (from debian/copyright)
         - URL (from debian/control)
         - License (from debian/copyright)
         - Changelog (from debian/changelog)
-        
+
         """
-        log.debug('Checking whether there are enough information for RFS template')
+        log.debug('Checking whether there are enough information for RFS '
+                  'template')
         upstream_author = "[fill in name and email of upstream]"
         upstream_license = "[fill in]"
         upstream_url = "[fill in URL of upstream's web site]"
         package_changelog = "[your most recent changelog entry]"
-        
+
         if self.user_id is not None:
 
             user = meta.session.query(User).get(self.user_id)
             log.debug(user)
-            
+
             package_changelog = self.changes['Changes']
 
             copyright_info = self._extract_copyright_info()
@@ -110,7 +113,7 @@ class RfsTemplatePlugin(BasePlugin):
 
             if 'url' in control_info:
                 upstream_url = control_info['url']
-                
+
             print('  Upstream Author : %s' % upstream_author)
             print('* URL             : %s' % upstream_url)
             print('* License         : %s' % upstream_license)
@@ -127,6 +130,8 @@ class RfsTemplatePlugin(BasePlugin):
             severity = constants.PLUGIN_SEVERITY_INFO
             self.passed(outcome, data, severity)
         else:
-            log.warning('Could not get the uploader\'s user details from the database')
+            log.warning('Could not get the uploader\'s user details from the '
+                        'database')
+
 
 plugin = RfsTemplatePlugin

@@ -48,6 +48,8 @@ from debexpo.lib import constants
 from debexpo.model.sponsor_metrics import SponsorMetrics, SponsorTags
 from debexpo.model.users import User
 from debexpo.model.user_countries import UserCountry
+from debexpo.model.package_versions import PackageVersion
+from debexpo.model.package_info import PackageInfo
 from debexpo.model.packages import Package
 
 from debexpo.lib.utils import get_package_dir
@@ -216,14 +218,23 @@ class SponsorController(BaseController):
                 c.package = package
                 c.package_dir = get_package_dir(package.name)
 
-                latest = meta.session.query(PackageVersion).filter_by(package_id=package.id).order_by(PackageVersion.id.desc()).first()
+                latest = meta.session.query(PackageVersion) \
+                    .filter_by(package_id=package.id) \
+                    .order_by(PackageVersion.id.desc()) \
+                    .first()
                 if latest:
-                    rfstemplate = meta.session.query(PackageInfo).filter_by(package_version_id=latest.id).filter_by(from_plugin='rfstemplate').first()
+                    rfstemplate = meta.session.query(PackageInfo) \
+                        .filter_by(package_version_id=latest.id) \
+                        .filter_by(from_plugin='rfstemplate') \
+                        .first()
                     if rfstemplate:
                         c.rfstemplate = json.loads(rfstemplate.data)
 
                 category = []
-                debianqa = meta.session.query(PackageInfo).filter_by(package_version_id=latest.id).filter_by(from_plugin='debianqa').first()
+                debianqa = meta.session.query(PackageInfo) \
+                    .filter_by(package_version_id=latest.id) \
+                    .filter_by(from_plugin='debianqa') \
+                    .first()
                 if debianqa:
                     qadata = json.loads(debianqa.data)
                     if 'nmu' in qadata and qadata['nmu']:
@@ -249,7 +260,8 @@ class SponsorController(BaseController):
                     else:
                         c.severity = 'normal [important for RC bugs]'
                 else:
-                    c.severity = 'normal [important for RC bugs, wishlist for new packages]'
+                    c.severity = 'normal [important for RC bugs, wishlist ' \
+                                 'for new packages]'
 
                 c.mailbody = render('/sponsor/rfs_template.mako')
 
