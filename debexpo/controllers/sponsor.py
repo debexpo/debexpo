@@ -249,10 +249,10 @@ class SponsorController(BaseController):
                     else:
                         # TODO: ITA
                         pass
-                if len(category) == 0:
+                if not category:
                     c.category = "[put in ITP, ITA, RC, NMU if applicable]"
                 else:
-                    c.category = '[' + ', '.join(category) + ']'
+                    c.category = '[ {} ]'.format(', '.join(category))
 
                 if qadata:
                     if not qadata['in-debian']:
