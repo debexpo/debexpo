@@ -49,33 +49,33 @@ log = logging.getLogger(__name__)
 class RfsTemplatePlugin(BasePlugin):
 
     def _extract_copyright_info(self):
-        dict = {}
+        info = {}
         copyright_path = os.path.join(self.tempdir,
                                       "extracted/debian/copyright")
         with open(copyright_path, 'r') as f:
             context = copyright.Copyright(f)
             header = context.header
             if header.upstream_contact:
-                dict['author'] = header.upstream_contact[0]
+                info['author'] = header.upstream_contact[0]
 
             lic = header.license
             if lic:
-                dict['license'] = lic.synopsis
+                info['license'] = lic.synopsis
 
             if not lic:
                 default_license = context.find_files_paragraph('*')
                 if default_license:
-                    dict['license'] = default_license.license.synopsis
-        return dict
+                    info['license'] = default_license.license.synopsis
+        return info
 
     def _extract_control_info(self):
-        dict = {}
+        info = {}
         control_path = os.path.join(self.tempdir, "extracted/debian/control")
         with open(control_path, 'r') as f:
             content = deb822.Deb822(f)
             if 'Homepage' in content:
-                dict['url'] = content['Homepage']
-        return dict
+                info['url'] = content['Homepage']
+        return info
 
     def test_rfs_template(self):
         """
