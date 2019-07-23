@@ -296,6 +296,11 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
                                + " was\nsuccessful.")
         self.assert_package_count('htop', '2.2.0-1', 1)
         self.assert_package_in_repo('htop', '2.2.0-1')
+        for filename in ('htop_2.2.0-1.dsc',
+                         'htop_2.2.0-1.debian.tar.xz',
+                         'htop_2.2.0.orig.tar.gz',
+                         'htop_2.2.0.orig.tar.gz.asc'):
+            self.assert_file_in_repo(filename)
 
         self._cleanup_mailbox()
         self.import_package('orig-from-official')
@@ -305,3 +310,8 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
                                + " was\nsuccessful.")
         self.assert_package_count('htop', '2.2.0-1', 2)
         self.assert_package_in_repo('htop', '2.2.0-1')
+        for filename in ('htop_2.2.0-1.dsc',
+                         'htop_2.2.0-1.debian.tar.xz',
+                         'htop_2.2.0.orig.tar.gz',
+                         'htop_2.2.0.orig.tar.gz.asc'):
+            self.assert_file_in_repo(filename)

@@ -158,6 +158,12 @@ class TestImporterController(TestController):
                                  pylons.config['debexpo.repository'])
         return len(matches)
 
+    def _file_in_repo(self, filename):
+        """Check if package is present in repo"""
+        matches = self._find_all(filename,
+                                 pylons.config['debexpo.repository'])
+        return len(matches)
+
     def _find_all(self, name, path):
         """Find a file in a path"""
         result = []
@@ -260,6 +266,11 @@ class TestImporterController(TestController):
     def assert_package_data(self, package_name, plugin, data):
         package_info = self._lookup_package_info(package_name, plugin)
         self.assertTrue(data in package_info.data)
+
+    def assert_file_in_repo(self, filename):
+        """Assert that a file is present in debexpo repo"""
+        log.debug('Checking file in repo: {}'.format(filename))
+        self.assertTrue(self._file_in_repo(filename) > 0)
 
     def assert_package_in_repo(self, package_name, version):
         """Assert that a package is present in debexpo repo"""
