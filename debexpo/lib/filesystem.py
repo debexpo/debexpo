@@ -175,7 +175,7 @@ class CheckFiles(object):
         git_storage_sources = os.path.join(pylons.config['debexpo.repository'],
                                            "git", package.name)
         if os.path.isdir(git_storage_sources):
-            shutil.rmtree(git_storage_sources, True)
+            shutil.rmtree(str(git_storage_sources), True)
 
     def find_files_for_packageversion(self, packageversion,
                                       absolute_path=False):
