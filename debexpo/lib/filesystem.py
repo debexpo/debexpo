@@ -175,6 +175,9 @@ class CheckFiles(object):
         git_storage_sources = os.path.join(pylons.config['debexpo.repository'],
                                            "git", package.name)
         if os.path.isdir(git_storage_sources):
+            # Wrap the path name in str() to workaround
+            # https://bugs.python.org/issue24672 .  See:
+            # https://salsa.debian.org/mentors.debian.net-team/debexpo/issues/66
             shutil.rmtree(str(git_storage_sources), True)
 
     def find_files_for_packageversion(self, packageversion,
