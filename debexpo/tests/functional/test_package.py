@@ -1,3 +1,36 @@
+# -*- coding: utf-8 -*-
+#
+#   test_package.py - Test the package controller
+#
+#   This file is part of debexpo
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
+#
+#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
+#
+#   Permission is hereby granted, free of charge, to any person
+#   obtaining a copy of this software and associated documentation
+#   files (the "Software"), to deal in the Software without
+#   restriction, including without limitation the rights to use,
+#   copy, modify, merge, publish, distribute, sublicense, and/or sell
+#   copies of the Software, and to permit persons to whom the
+#   Software is furnished to do so, subject to the following
+#   conditions:
+#
+#   The above copyright notice and this permission notice shall be
+#   included in all copies or substantial portions of the Software.
+#
+#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+#   OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+#   HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+#   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+#   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+#   OTHER DEALINGS IN THE SOFTWARE.
+
+__author__ = 'Baptiste BEAUPLAT'
+__copyright__ = 'Copyright © 2019 Baptiste BEAUPLAT'
+__license__ = 'MIT'
 from debexpo.tests import TestController, url
 from debexpo.lib import constants
 from debexpo.model import meta
@@ -9,6 +42,8 @@ from debexpo.model.package_info import PackageInfo
 from debexpo.model.package_subscriptions import PackageSubscription
 from debexpo.controllers.package import PackageController
 from datetime import datetime
+from os import makedirs
+from os.path import join
 import pylons.test
 import md5
 
@@ -184,6 +219,16 @@ class TestPackageController(TestController):
 
     def test_delete_wrong_key(self):
         self._test_wrong_key('delete')
+
+    def test_delete_gitstorage_utf8(self):
+        gitdir = join(pylons.test.pylonsapp.config['debexpo.repository'],
+                      'git', 'testpackage', 'source')
+
+        makedirs(gitdir)
+        with open(join(gitdir, 'Bodø'), 'w'):
+            pass
+
+        self.test_delete_successful()
 
     def test_delete_successful(self):
         self.app.post(url('login'), self._AUTHDATA)
