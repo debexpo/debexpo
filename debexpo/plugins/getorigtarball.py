@@ -50,7 +50,7 @@ from debexpo.lib.filesystem import CheckFiles
 from debexpo.lib.official_package import OfficialPackage, OverSized
 from debexpo.plugins import BasePlugin
 from debian import deb822
-from os.path import join, isfile
+from os.path import join, isfile, basename
 from shutil import copy
 
 log = logging.getLogger(__name__)
@@ -64,15 +64,17 @@ class GetOrigTarballPlugin(BasePlugin):
         upstream_sig = '{}.asc'.format(filename)
 
         log.debug('Orig found in local repo. '
-                  'Copying to {}/{}'.format(self.queue, filename))
+                  'Copying to {}/{}'.format(self.queue, basename(filename)))
         copy(filename, self.queue)
-        self.additional_files.append(join(self.queue, filename))
+        self.additional_files.append(join(self.queue, basename(filename)))
 
         if isfile(upstream_sig):
             log.debug('Orig signature found in local repo. '
-                      'Copying to {}/{}'.format(self.queue, upstream_sig))
+                      'Copying to {}/{}'.format(self.queue,
+                                                basename(upstream_sig)))
             copy(upstream_sig, self.queue)
-            self.additional_files.append(join(self.queue, filename))
+            self.additional_files.append(join(self.queue,
+                                              basename(upstream_sig)))
 
     def test_orig_tarball(self):
         """

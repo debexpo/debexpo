@@ -839,9 +839,11 @@ class Importer(object):
 
         # Install files in repository
         for file in toinstall:
-            log.debug("Installing new file %s" % (file))
-            shutil.move(file, os.path.join(destdir, file))
-            os.chmod(os.path.join(destdir, file), 0o644)
+            filename = os.path.basename(file)
+            log.debug("Installing new file {} to {}".format(
+                filename, os.path.join(destdir, filename)))
+            shutil.move(file, os.path.join(destdir, filename))
+            os.chmod(os.path.join(destdir, filename), 0o644)
 
         self._remove_temporary_files()
         # Create the database rows
