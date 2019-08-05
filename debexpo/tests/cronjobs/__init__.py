@@ -52,7 +52,7 @@ class TestCronjob(TestController):
     def tearDown(self):
         pass
 
-    def _setup_plugin(self, plugin):
+    def _setup_plugin(self, plugin, run_setup=True):
         # Dynamically import plugin module
         module = __import__('debexpo.cronjobs.{}'.format(plugin))
         module = getattr(module, 'cronjobs')
@@ -65,7 +65,9 @@ class TestCronjob(TestController):
 
         # Instanciate the cronjob class
         self.plugin = module(parent=self, config=self.config, log=self.log)
-        self.plugin.setup()
+
+        if run_setup:
+            self.plugin.setup()
 
     def _invoke_plugin(self):
         self.plugin.invoke()

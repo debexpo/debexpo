@@ -621,6 +621,28 @@ class Importer(object):
 
         return True
 
+    def _overlap_with_other_distrib(self):
+        name = self.changes['Source']
+        version = self.changes['Version']
+        distribution = self.changes['Distribution']
+
+        package = meta.session.query(Package).filter_by(name=name).first()
+
+        if package:
+            if meta.session.query(PackageVersion) \
+                    .filter(PackageVersion.version == version,
+                            PackageVersion.distribution != distribution,
+                            PackageVersion.package == package).all():
+                self._reject('An upload with the same version but '
+                             'different distribution exists on mentors.\n'
+                             'If you wish to upload this version for an '
+                             'other distribution, delete the old '
+                             'one.')
+
+                return True
+
+        return False
+
     def main(self, no_env=False):
         """
         Actually start the import of the package.
@@ -824,6 +846,9 @@ class Importer(object):
                              '\n\n{}'.format(qa.result[0].outcome))
             else:
                 self._reject('QA plugins failed the package')
+            return 1
+
+        if self._overlap_with_other_distrib():
             return 1
 
         self._store_source_as_git_repo()
