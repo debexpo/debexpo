@@ -60,16 +60,6 @@ Alternatively, one can download the package with dget using this command:
   dget -x ${ c.config['debexpo.server'] }/debian/pool/main/h/hello/hello_3.1-4.dsc
 %endif
 
-%if c.package:
-%if c.rfstemplate:
-More information about ${ c.package.name } can be obtained from ${ c.rfstemplate['upstream-url'] }.
-%else:
-More information about ${ c.package.name } can be obtained from https://www.example.com.
-%endif
-%else:
-More information about hello can be obtained from https://www.example.com.
-%endif
-
 Changes since the last upload:
 
 %if c.rfstemplate:
