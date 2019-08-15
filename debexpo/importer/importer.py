@@ -55,6 +55,9 @@ from debexpo.lib import constants
 # from pylons import url
 from routes.util import url_for as url
 
+# Import GitStorage exceptions
+from dulwich.errors import NotGitRepository
+
 # Import model objects
 from debexpo.model import meta
 from debexpo.model.users import User
@@ -580,7 +583,11 @@ class Importer(object):
                                            self.changes['Source'])
 
         # Initiate the git storage
-        gs = GitStorage(git_storage_repo)
+        try:
+            gs = GitStorage(git_storage_repo)
+        except NotGitRepository as e:
+            log.error('{}'.format(e))
+            gs = None
         if os.path.isdir(git_storage_sources):
             log.debug("git storage: remove previous sources")
             shutil.rmtree(git_storage_sources, True)
@@ -591,7 +598,8 @@ class Importer(object):
             # Record sources
             fileToAdd = self._get_files(git_storage_sources)
             fileToAdd = self._clean_path(git_storage_repo, fileToAdd)
-            gs.change(fileToAdd)
+            if gs:
+                gs.change(fileToAdd)
 
     def _validate_orig_files(self, dsc):
         upload = Dsc(deb822.Dsc(file(dsc)))

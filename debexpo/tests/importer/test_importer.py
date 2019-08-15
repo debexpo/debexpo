@@ -36,6 +36,9 @@ __author__ = 'Baptiste BEAUPLAT'
 __copyright__ = 'Copyright © 2018 Baptiste BEAUPLAT'
 __license__ = 'MIT'
 
+from os import makedirs
+from os.path import join
+
 from pylons.test import pylonsapp
 from debexpo.tests.importer import TestImporterController
 
@@ -266,6 +269,16 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.import_source_package('hello')
         self.assert_importer_succeeded()
         self.assert_email_with('hello 1.0-1 has been uploaded to the archive')
+        self.assert_package_count('hello', '1.0-1', 1)
+        self.assert_package_in_repo('hello', '1.0-1')
+
+    def test_import_package_hello_inconsistent_gitstorage(self):
+        makedirs(join(pylonsapp.config['debexpo.repository'], 'git', 'hello'))
+        self.import_source_package('hello')
+        self.assert_importer_succeeded()
+        self.assert_email_with("Your upload of the package 'hello' to "
+                               + pylonsapp.config['debexpo.sitename']
+                               + " was\nsuccessful.")
         self.assert_package_count('hello', '1.0-1', 1)
         self.assert_package_in_repo('hello', '1.0-1')
 
