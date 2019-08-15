@@ -252,19 +252,25 @@ class TestImporterController(TestController):
             .filter(PackageInfo.package_version_id == package_version.id) \
             .filter(PackageInfo.from_plugin == plugin).first()
 
-        self.assertTrue(package_info)
         return (package_info)
+
+    def assert_package_no_info(self, package_name, plugin):
+        package_info = self._lookup_package_info(package_name, plugin)
+        self.assertFalse(package_info)
 
     def assert_package_info(self, package_name, plugin, outcome):
         package_info = self._lookup_package_info(package_name, plugin)
+        self.assertTrue(package_info)
         self.assertEquals(outcome, package_info.outcome)
 
     def assert_package_severity(self, package_name, plugin, severity):
         package_info = self._lookup_package_info(package_name, plugin)
+        self.assertTrue(package_info)
         self.assertTrue(severity == package_info.severity)
 
     def assert_package_data(self, package_name, plugin, data):
         package_info = self._lookup_package_info(package_name, plugin)
+        self.assertTrue(package_info)
         self.assertTrue(data in package_info.data)
 
     def assert_file_in_repo(self, filename):
