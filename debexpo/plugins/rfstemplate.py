@@ -49,24 +49,28 @@ class RfsTemplatePlugin(BasePlugin):
         info = {}
         copyright_path = os.path.join(self.tempdir,
                                       "extracted/debian/copyright")
-        with open(copyright_path, 'r') as f:
-            try:
-                context = copyright.Copyright(f)
-            except copyright.NotMachineReadableError:
-                return info
+        try:
+            with open(copyright_path, 'r') as f:
+                try:
+                    context = copyright.Copyright(f)
+                except copyright.NotMachineReadableError:
+                    return info
 
-            header = context.header
-            if header.upstream_contact:
-                info['author'] = header.upstream_contact[0]
+                header = context.header
+                if header.upstream_contact:
+                    info['author'] = header.upstream_contact[0]
 
-            lic = header.license
-            if lic:
-                info['license'] = lic.synopsis
+                lic = header.license
+                if lic:
+                    info['license'] = lic.synopsis
 
-            if not lic:
-                default_license = context.find_files_paragraph('*')
-                if default_license:
-                    info['license'] = default_license.license.synopsis
+                if not lic:
+                    default_license = context.find_files_paragraph('*')
+                    if default_license:
+                        info['license'] = default_license.license.synopsis
+        except IOError as e:
+            log.warning('{}'.format(e))
+
         return info
 
     def _extract_control_info(self):
