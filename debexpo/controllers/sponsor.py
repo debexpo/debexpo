@@ -41,6 +41,7 @@ import random
 import struct
 import socket
 import json
+import urllib
 
 from debexpo.lib.base import BaseController, c, config, render, session, \
     redirect, url, abort, request, SubMenu, _
@@ -286,7 +287,10 @@ class SponsorController(BaseController):
                     c.severity = 'normal [important for RC bugs, wishlist ' \
                                  'for new packages]'
 
+                # This is a workaround for Thunderbird and some other clients
+                # not handling properly '+' in the mailto body parameter.
                 c.mailbody = render('/sponsor/rfs_template.mako')
+                c.mailbody = urllib.quote_plus(c.mailbody).replace('+', '%20')
 
         return render('/sponsor/rfs_howto.mako')
 
