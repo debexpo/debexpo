@@ -50,7 +50,11 @@ class RfsTemplatePlugin(BasePlugin):
         copyright_path = os.path.join(self.tempdir,
                                       "extracted/debian/copyright")
         with open(copyright_path, 'r') as f:
-            context = copyright.Copyright(f)
+            try:
+                context = copyright.Copyright(f)
+            except copyright.NotMachineReadableError:
+                return info
+
             header = context.header
             if header.upstream_contact:
                 info['author'] = header.upstream_contact[0]
