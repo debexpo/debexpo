@@ -21,6 +21,9 @@ I am looking for a sponsor for my package "hello":
    Upstream Author : ${ c.rfstemplate['upstream-author'] }
  * URL             : ${ c.rfstemplate['upstream-url'] }
  * License         : ${ c.rfstemplate['upstream-license'] }
+%if 'package-vcs' in c.rfstemplate:
+ * Vcs             : ${ c.rfstemplate['package-vcs'] }
+%endif
 %else:
    Upstream Author : [fill in name and email of upstream]
  * URL             : [fill in URL of upstream's web site]

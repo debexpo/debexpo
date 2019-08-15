@@ -249,6 +249,10 @@ class SponsorController(BaseController):
                             c.rfstemplate['upstream-url'] = \
                                     fields['Homepage']
 
+                        if 'Vcs-Browser' in fields:
+                            c.rfstemplate['package-vcs'] = \
+                                    fields['Vcs-Browser']
+
                 category = []
                 debianqa = meta.session.query(PackageInfo) \
                     .filter_by(package_version_id=latest.id) \
