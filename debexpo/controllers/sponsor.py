@@ -52,6 +52,10 @@ from debexpo.model.package_versions import PackageVersion
 from debexpo.model.package_info import PackageInfo
 from debexpo.model.packages import Package
 
+# The following import are used in the template rfs_template
+from debexpo.model.source_packages import SourcePackage  # NOQA
+from debexpo.model.package_files import PackageFile  # NOQA
+
 from debexpo.lib.utils import get_package_dir
 
 from sqlalchemy.orm import joinedload
