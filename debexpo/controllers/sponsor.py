@@ -227,8 +227,23 @@ class SponsorController(BaseController):
                         .filter_by(package_version_id=latest.id) \
                         .filter_by(from_plugin='rfstemplate') \
                         .first()
+
                     if rfstemplate:
                         c.rfstemplate = json.loads(rfstemplate.data)
+                        c.rfstemplate['upstream-url'] = \
+                            "[fill in URL of upstream's web site]"
+
+                    control_fields = meta.session.query(PackageInfo) \
+                        .filter_by(package_version_id=latest.id) \
+                        .filter_by(from_plugin='controlfields') \
+                        .first()
+
+                    if rfstemplate and control_fields:
+                        fields = json.loads(control_fields.data)
+
+                        if 'Homepage' in fields:
+                            c.rfstemplate['upstream-url'] = \
+                                    fields['Homepage']
 
                 category = []
                 debianqa = meta.session.query(PackageInfo) \

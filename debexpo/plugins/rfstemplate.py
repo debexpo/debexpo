@@ -36,7 +36,7 @@ __license__ = 'MIT'
 import logging
 import os
 
-from debian import deb822, copyright
+from debian import copyright
 from debexpo.lib import constants
 from debexpo.plugins import BasePlugin
 
@@ -73,15 +73,6 @@ class RfsTemplatePlugin(BasePlugin):
 
         return info
 
-    def _extract_control_info(self):
-        info = {}
-        control_path = os.path.join(self.tempdir, "extracted/debian/control")
-        with open(control_path, 'r') as f:
-            content = deb822.Deb822(f)
-            if 'Homepage' in content:
-                info['url'] = content['Homepage']
-        return info
-
     def test_rfs_template(self):
         """
         Tests whether there are enough information for RFS template.
@@ -98,25 +89,19 @@ class RfsTemplatePlugin(BasePlugin):
                   'template')
         upstream_author = "[fill in name and email of upstream]"
         upstream_license = "[fill in]"
-        upstream_url = "[fill in URL of upstream's web site]"
         package_changelog = "[your most recent changelog entry]"
 
         package_changelog = self.changes['Changes']
 
         copyright_info = self._extract_copyright_info()
-        control_info = self._extract_control_info()
 
         if 'author' in copyright_info:
             upstream_author = copyright_info['author']
         if 'license' in copyright_info:
             upstream_license = copyright_info['license']
 
-        if 'url' in control_info:
-            upstream_url = control_info['url']
-
         data = {
             'upstream-author': upstream_author,
-            'upstream-url': upstream_url,
             'upstream-license': upstream_license,
             'package-changelog': package_changelog,
         }
