@@ -586,7 +586,7 @@ class Importer(object):
         try:
             gs = GitStorage(git_storage_repo)
         except NotGitRepository as e:
-            log.debug('{}'.format(e))
+            log.error('{}'.format(e))
             gs = None
         if os.path.isdir(git_storage_sources):
             log.debug("git storage: remove previous sources")
