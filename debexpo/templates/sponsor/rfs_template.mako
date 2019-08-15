@@ -79,8 +79,3 @@ ${ c.rfstemplate['package-changelog'] }
 %endif
 
 Regards,
-%if c.package:
-  ${ c.package.user.name }
-%else:
-  J. Maintainer
-%endif

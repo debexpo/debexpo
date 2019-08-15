@@ -59,6 +59,12 @@ Subject: RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly g
 %endif
 
 <%include file="rfs_template.mako"/>
+--
+%if c.package:
+  ${ c.package.user.name }
+%else:
+  J. Maintainer
+%endif
 </pre>
 
 <p>Please indicate in the subject if the package fixes <tt>RC</tt> bugs, is a <tt>QA</tt> or
