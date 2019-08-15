@@ -47,15 +47,15 @@ tool.
 
 <pre>
 %if c.package:
-  From: ${ c.package.user.name } &lt;${ c.package.user.email }&gt
+From: ${ c.package.user.name } &lt;${ c.package.user.email }&gt
 %else:
-  From: J. Maintainer &lt;j@example.com&gt;
+From: J. Maintainer &lt;j@example.com&gt;
 %endif
-  To: submit@bugs.debian.org
+To: submit@bugs.debian.org
 %if c.package:
-  Subject: RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } ${ c.category }
+Subject: RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } ${ c.category }
 %else:
-  Subject: RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly greeter
+Subject: RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly greeter
 %endif
 
 <%include file="rfs_template.mako"/>

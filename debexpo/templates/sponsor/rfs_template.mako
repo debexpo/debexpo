@@ -11,25 +11,25 @@ I am looking for a sponsor for my package "hello":
 %endif
 
 %if c.package:
-* Package name    : ${ c.package.name }
-  Version         : ${ c.package.package_versions[-1].version }
+ * Package name    : ${ c.package.name }
+   Version         : ${ c.package.package_versions[-1].version }
 %else:
-* Package name    : hello
-  Version         : 3.1-4
+ * Package name    : hello
+   Version         : 3.1-4
 %endif
 %if c.rfstemplate:
-  Upstream Author : ${ c.rfstemplate['upstream-author'] }
-* URL             : ${ c.rfstemplate['upstream-url'] }
-* License         : ${ c.rfstemplate['upstream-license'] }
+   Upstream Author : ${ c.rfstemplate['upstream-author'] }
+ * URL             : ${ c.rfstemplate['upstream-url'] }
+ * License         : ${ c.rfstemplate['upstream-license'] }
 %else:
-  Upstream Author : [fill in name and email of upstream]
-* URL             : [fill in URL of upstreams web site]
-* License         : [fill in]
+   Upstream Author : [fill in name and email of upstream]
+ * URL             : [fill in URL of upstream's web site]
+ * License         : [fill in]
 %endif
 %if c.package:
-  Section         : ${ c.package.package_versions[-1].section }
+   Section         : ${ c.package.package_versions[-1].section }
 %else:
-  Section         : [fill in]
+   Section         : [fill in]
 %endif
 
 It builds those binary packages:
@@ -43,9 +43,9 @@ It builds those binary packages:
 To access further information about this package, please visit the following URL:
 
 %if c.package:
-${ c.config['debexpo.server'] }${ h.url('package', packagename=c.package.name) }
+  ${ c.config['debexpo.server'] }${ h.url('package', packagename=c.package.name) }
 %else:
-${ c.config['debexpo.server'] }/package/hello
+  ${ c.config['debexpo.server'] }/package/hello
 %endif
 
 Alternatively, one can download the package with dget using this command:
@@ -64,10 +64,10 @@ Alternatively, one can download the package with dget using this command:
 %if c.rfstemplate:
 More information about ${ c.package.name } can be obtained from ${ c.rfstemplate['upstream-url'] }.
 %else:
-More information about ${ c.package.name } can be obtained from http://www.example.com.
+More information about ${ c.package.name } can be obtained from https://www.example.com.
 %endif
 %else:
-More information about hello can be obtained from http://www.example.com.
+More information about hello can be obtained from https://www.example.com.
 %endif
 
 Changes since the last upload:
@@ -80,7 +80,7 @@ ${ c.rfstemplate['package-changelog'] }
 
 Regards,
 %if c.package:
- ${ c.package.user.name }
+  ${ c.package.user.name }
 %else:
   J. Maintainer
 %endif
