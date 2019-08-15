@@ -91,7 +91,10 @@ class RfsTemplatePlugin(BasePlugin):
         upstream_license = "[fill in]"
         package_changelog = "[your most recent changelog entry]"
 
-        package_changelog = self.changes['Changes']
+        package_changelog = self.changes.get('Changes', '').strip()
+
+        if len(package_changelog.split('\n')) > 2:
+            package_changelog = '\n'.join(package_changelog.split('\n')[2:])
 
         copyright_info = self._extract_copyright_info()
 
