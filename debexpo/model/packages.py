@@ -36,6 +36,8 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
+import re
+
 import sqlalchemy as sa
 from sqlalchemy import orm
 from sqlalchemy.orm import backref
@@ -62,6 +64,9 @@ class Package(OrmObject):
 
     def get_description(self):
         return self.description
+
+    def short_description(self):
+        return re.sub(r'^[^-]* - ', '', self.description)
 
 
 orm.mapper(Package, t_packages, properties={
