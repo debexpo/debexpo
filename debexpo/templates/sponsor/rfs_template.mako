@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 Package: sponsorship-requests
+%if c.severity:
 Severity: ${ c.severity }
+%else:
+Severity: normal [important for RC bugs, wishlist for new packages]
+%endif
 
 Dear mentors,
 
@@ -19,10 +23,16 @@ I am looking for a sponsor for my package "hello":
 %endif
 %if c.rfstemplate:
    Upstream Author : ${ c.rfstemplate['upstream-author'] }
+%if 'upstream-url' in c.rfstemplate:
  * URL             : ${ c.rfstemplate['upstream-url'] }
+%else:
+ * URL             : [fill in URL of upstream's web site]
+%endif
  * License         : ${ c.rfstemplate['upstream-license'] }
 %if 'package-vcs' in c.rfstemplate:
  * Vcs             : ${ c.rfstemplate['package-vcs'] }
+%else:
+ * Vcs             : None
 %endif
 %else:
    Upstream Author : [fill in name and email of upstream]

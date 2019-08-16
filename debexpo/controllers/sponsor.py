@@ -215,6 +215,9 @@ class SponsorController(BaseController):
         c.package = None
         c.package_dir = None
         c.rfstemplate = None
+        c.category = None
+        c.severity = None
+
         if packagename:
             package = meta.session.query(Package) \
                 .filter_by(name=packagename) \
@@ -235,8 +238,6 @@ class SponsorController(BaseController):
 
                     if rfstemplate:
                         c.rfstemplate = json.loads(rfstemplate.data)
-                        c.rfstemplate['upstream-url'] = \
-                            "[fill in URL of upstream's web site]"
 
                     control_fields = meta.session.query(PackageInfo) \
                         .filter_by(package_version_id=latest.id) \
@@ -267,30 +268,22 @@ class SponsorController(BaseController):
                         category.append('QA')
                     elif 'in-debian' in qadata and not qadata['in-debian']:
                         category.append('ITP')
+                        c.severity = 'wishlist'
                     elif 'in-debian' in qadata and qadata['in-debian']:
+                        c.severity = 'normal [important for RC bugs]'
                         # TODO: RC or regular update
                         pass
                     else:
                         # TODO: ITA
                         pass
-                if not category:
-                    c.category = "[put in ITP, ITA, RC, NMU if applicable]"
-                else:
+
+                if category:
                     c.category = '[ {} ]'.format(', '.join(category))
 
-                if qadata:
-                    if not qadata['in-debian']:
-                        c.severity = 'wishlist'
-                    else:
-                        c.severity = 'normal [important for RC bugs]'
-                else:
-                    c.severity = 'normal [important for RC bugs, wishlist ' \
-                                 'for new packages]'
-
-                # This is a workaround for Thunderbird and some other clients
-                # not handling properly '+' in the mailto body parameter.
-                c.mailbody = render('/sponsor/rfs_template.mako')
-                c.mailbody = urllib.quote_plus(c.mailbody).replace('+', '%20')
+        # This is a workaround for Thunderbird and some other clients
+        # not handling properly '+' in the mailto body parameter.
+        c.mailbody = render('/sponsor/rfs_template.mako')
+        c.mailbody = urllib.quote_plus(c.mailbody).replace('+', '%20')
 
         return render('/sponsor/rfs_howto.mako')
 

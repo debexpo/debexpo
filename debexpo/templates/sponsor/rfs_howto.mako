@@ -38,9 +38,18 @@ list. You can browser other packages and give other people feedback while you ar
 </h2>
 
 <p>
-<a href="mailto:submit@bugs.debian.org?subject=RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } ${ c.category }&body=${ c.mailbody }">Send the filled out template below by mail</a> to our pseudo-package. If you
-prefer, you can also use the <a
-href="https://packages.debian.org/search?keywords=reportbug&searchon=names&exact=1&suite=all&section=main">reportbug</a>
+%if c.package:
+%if c.category:
+<a href="mailto:submit@bugs.debian.org?subject=RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } ${ c.category } -- ${ c.package.short_description() }&body=${ c.mailbody }">
+%else:
+<a href="mailto:submit@bugs.debian.org?subject=RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } [put in ITP, ITA, RC, NMU if applicable] -- ${ c.package.short_description() }&body=${ c.mailbody }">
+%endif
+%else:
+<a href="mailto:submit@bugs.debian.org?subject=RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly greeter&body=${ c.mailbody }">
+%endif
+Send the filled out template below by mail</a> to our pseudo-package. If you
+prefer, you can also use the
+<a href="https://packages.debian.org/search?keywords=reportbug&searchon=names&exact=1&suite=all&section=main">reportbug</a>
 tool.
 </p>
 
@@ -53,7 +62,11 @@ From: J. Maintainer &lt;j@example.com&gt;
 %endif
 To: submit@bugs.debian.org
 %if c.package:
-Subject: RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } ${ c.category }
+%if c.category:
+Subject: RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } ${ c.category } -- ${ c.package.short_description() }
+%else:
+Subject: RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } [put in ITP, ITA, RC, NMU if applicable] -- ${ c.package.short_description() }
+%endif
 %else:
 Subject: RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly greeter
 %endif
@@ -71,11 +84,19 @@ Subject: RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly g
 <tt>NMU</tt> upload or a new package or a package you adopted:</p>
 
 <pre>
+%if c.package:
+  Subject: RFS: ${ c.package.name }/1.0-1 [ITP] -- ${ c.package.short_description() }
+  Subject: RFS: ${ c.package.name }/1.0-3 [QA] -- ${ c.package.short_description() }
+  Subject: RFS: ${ c.package.name }/1.0-1.1 [NMU] [RC] -- ${ c.package.short_description() }
+  Subject: RFS: ${ c.package.name }/1.0-2 [RC] -- ${ c.package.short_description() }
+  Subject: RFS: ${ c.package.name }/1.0-2 [ITA] -- ${ c.package.short_description() }
+%else:
   Subject: RFS: hello/1.0-1 [ITP] -- friendly greeter
   Subject: RFS: hello/1.0-3 [QA] -- friendly greeter
   Subject: RFS: hello/1.0-1.1 [NMU] [RC] -- friendly greeter
   Subject: RFS: hello/1.0-2 [RC] -- friendly greeter
   Subject: RFS: hello/1.0-2 [ITA] -- friendly greeter
+%endif
 </pre>
 
 The meaning of this shortcuts is denoted below, in case you are unsure:
