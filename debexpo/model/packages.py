@@ -66,7 +66,7 @@ class Package(OrmObject):
         return self.description
 
     def short_description(self):
-        return re.sub(r'^[^-]* - ', '', self.description)
+        return re.sub(r'^[^-]* - ', '', self.description).split('\n')[0]
 
 
 orm.mapper(Package, t_packages, properties={
