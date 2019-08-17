@@ -105,6 +105,7 @@ class ClosedBugsPlugin(BasePlugin):
                 if bug not in data['raw']:
                     data["errors"].append('Bug #%s does not exist' % bug)
                     severity = max(severity, constants.PLUGIN_SEVERITY_ERROR)
+                    continue
 
                 name = data["raw"][bug]['package']
                 data["bugs"][name].append((bug, data["raw"][bug]["subject"],
