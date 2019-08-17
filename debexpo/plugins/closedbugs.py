@@ -121,7 +121,12 @@ class ClosedBugsPlugin(BasePlugin):
             if severity != constants.PLUGIN_SEVERITY_INFO:
                 outcome = "Package closes bugs in a wrong way"
             elif "wnpp" in data["bugs"] and len(data["bugs"]) == 1:
-                outcome = "Package closes a WNPP bug"
+                if data['bugs']['wnpp'][0][1].startswith('ITP'):
+                    outcome = "Package closes a ITP bug"
+                elif data['bugs']['wnpp'][0][1].startswith('ITA'):
+                    outcome = "Package closes a ITA bug"
+                else:
+                    outcome = "Package closes a WNPP bug"
             else:
                 outcome = "Package closes bug%s" % \
                     ("s" if len(bugs) > 1 else "")
