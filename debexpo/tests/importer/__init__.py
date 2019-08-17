@@ -34,6 +34,7 @@ __license__ = 'MIT'
 
 import pylons
 import logging
+import socket
 
 from email import message_from_file
 from glob import glob
@@ -53,6 +54,17 @@ from debexpo.tests.importer.source_package import TestSourcePackage
 from debexpo.lib.constants import SUBSCRIPTION_LEVEL_UPLOADS
 
 log = logging.getLogger(__name__)
+
+
+def test_network():
+    socket.setdefaulttimeout(2)
+
+    try:
+        socket.gethostbyname('bugs.debian.org')
+    except socket.error as e:
+        return e
+
+    return None
 
 
 class TestImporterController(TestController):

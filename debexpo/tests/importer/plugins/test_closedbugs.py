@@ -32,14 +32,19 @@ __author__ = 'Baptiste BEAUPLAT'
 __copyright__ = 'Copyright © 2019 Baptiste BEAUPLAT'
 __license__ = 'MIT'
 
-from debexpo.tests.importer import TestImporterController
+from debexpo.tests.importer import TestImporterController, test_network
 from debexpo.lib.constants import PLUGIN_SEVERITY_INFO, PLUGIN_SEVERITY_ERROR
+
+import unittest
+
+has_network = test_network()
 
 
 class TestPluginClosedBugs(TestImporterController):
     def __init__(self, *args, **kwargs):
         TestImporterController.__init__(self, *args, **kwargs)
 
+    @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_no_bugs(self):
         self.import_source_package('hello-no-bug')
         self.assert_importer_succeeded()
@@ -50,6 +55,7 @@ class TestPluginClosedBugs(TestImporterController):
         self.assert_rfs_content('hello',
                                 'Severity: normal')
 
+    @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_invalid_bugs(self):
         self.import_source_package('hello')
         self.assert_importer_succeeded()
@@ -63,6 +69,7 @@ class TestPluginClosedBugs(TestImporterController):
         self.assert_rfs_content('hello',
                                 'Severity: normal')
 
+    @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_normal_bug(self):
         self.import_source_package('hello-normal-bug')
         self.assert_importer_succeeded()
@@ -76,6 +83,7 @@ class TestPluginClosedBugs(TestImporterController):
         self.assert_rfs_content('hello',
                                 'Severity: normal')
 
+    @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_multi_bug(self):
         self.import_source_package('hello-multi-bug')
         self.assert_importer_succeeded()
@@ -92,6 +100,7 @@ class TestPluginClosedBugs(TestImporterController):
         self.assert_rfs_content('hello',
                                 'Severity: normal')
 
+    @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_rc_bug(self):
         self.import_source_package('hello-rc-bug')
         self.assert_importer_succeeded()
@@ -105,6 +114,7 @@ class TestPluginClosedBugs(TestImporterController):
         self.assert_rfs_content('hello',
                                 'Severity: important')
 
+    @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_itp_bug(self):
         self.import_source_package('hello-itp-bug')
         self.assert_importer_succeeded()
@@ -118,6 +128,7 @@ class TestPluginClosedBugs(TestImporterController):
         self.assert_rfs_content('hello',
                                 'Severity: wishlist')
 
+    @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_ita_bug(self):
         self.import_source_package('hello-ita-bug')
         self.assert_importer_succeeded()
