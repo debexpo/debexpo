@@ -44,6 +44,11 @@ class TestPluginClosedBugs(TestImporterController):
         self.import_source_package('hello-no-bug')
         self.assert_importer_succeeded()
         self.assert_package_no_info('hello', 'closedbugs')
+        self.assert_rfs_content('hello',
+                                'Subject: RFS: hello/1.0-1 -- Test package for '
+                                'debexpo')
+        self.assert_rfs_content('hello',
+                                'Severity: normal')
 
     def test_closes_invalid_bugs(self):
         self.import_source_package('hello')
@@ -52,6 +57,11 @@ class TestPluginClosedBugs(TestImporterController):
                                      PLUGIN_SEVERITY_ERROR)
         self.assert_package_info('hello', 'closedbugs',
                                  'Package closes bugs in a wrong way')
+        self.assert_rfs_content('hello',
+                                'Subject: RFS: hello/1.0-1 -- Test package for '
+                                'debexpo')
+        self.assert_rfs_content('hello',
+                                'Severity: normal')
 
     def test_closes_normal_bug(self):
         self.import_source_package('hello-normal-bug')
@@ -60,6 +70,11 @@ class TestPluginClosedBugs(TestImporterController):
                                      PLUGIN_SEVERITY_INFO)
         self.assert_package_info('hello', 'closedbugs',
                                  'Package closes bug')
+        self.assert_rfs_content('hello',
+                                'Subject: RFS: hello/1.0-1 -- Test package for '
+                                'debexpo')
+        self.assert_rfs_content('hello',
+                                'Severity: normal')
 
     def test_closes_multi_bug(self):
         self.import_source_package('hello-multi-bug')
@@ -71,6 +86,11 @@ class TestPluginClosedBugs(TestImporterController):
         for bug in ('616444', '696855', '719848'):
             self.assert_package_data('hello', 'closedbugs',
                                      bug)
+        self.assert_rfs_content('hello',
+                                'Subject: RFS: hello/1.0-1 -- Test package for '
+                                'debexpo')
+        self.assert_rfs_content('hello',
+                                'Severity: normal')
 
     def test_closes_rc_bug(self):
         self.import_source_package('hello-rc-bug')
@@ -79,6 +99,11 @@ class TestPluginClosedBugs(TestImporterController):
                                      PLUGIN_SEVERITY_INFO)
         self.assert_package_info('hello', 'closedbugs',
                                  'Package closes a RC bug')
+        self.assert_rfs_content('hello',
+                                'Subject: RFS: hello/1.0-1 [RC] -- Test '
+                                'package for debexpo')
+        self.assert_rfs_content('hello',
+                                'Severity: important')
 
     def test_closes_itp_bug(self):
         self.import_source_package('hello-itp-bug')
@@ -87,6 +112,11 @@ class TestPluginClosedBugs(TestImporterController):
                                      PLUGIN_SEVERITY_INFO)
         self.assert_package_info('hello', 'closedbugs',
                                  'Package closes a ITP bug')
+        self.assert_rfs_content('hello',
+                                'Subject: RFS: hello/1.0-1 [ITP] -- Test '
+                                'package for debexpo')
+        self.assert_rfs_content('hello',
+                                'Severity: wishlist')
 
     def test_closes_ita_bug(self):
         self.import_source_package('hello-ita-bug')
@@ -95,3 +125,8 @@ class TestPluginClosedBugs(TestImporterController):
                                      PLUGIN_SEVERITY_INFO)
         self.assert_package_info('hello', 'closedbugs',
                                  'Package closes a ITA bug')
+        self.assert_rfs_content('hello',
+                                'Subject: RFS: hello/1.0-1 [ITA] -- Test '
+                                'package for debexpo')
+        self.assert_rfs_content('hello',
+                                'Severity: normal')

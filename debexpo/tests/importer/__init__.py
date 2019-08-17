@@ -48,7 +48,7 @@ from debexpo.model.package_info import PackageInfo
 from debexpo.model.packages import Package
 from debexpo.model.package_subscriptions import PackageSubscription
 from debexpo.model.users import User
-from debexpo.tests import TestController
+from debexpo.tests import TestController, url
 from debexpo.tests.importer.source_package import TestSourcePackage
 from debexpo.lib.constants import SUBSCRIPTION_LEVEL_UPLOADS
 
@@ -285,3 +285,10 @@ class TestImporterController(TestController):
     def assert_package_not_in_repo(self, package_name, version):
         """Assert that a package is present in debexpo repo"""
         self.assertTrue(self._package_in_repo(package_name, version) == 0)
+
+    def assert_rfs_content(self, package, content):
+        response = self.app.get(url(controller='sponsors', action='rfs-howto',
+                                    id=package))
+        self.assertEquals(response.status_int, 200)
+        log.debug('rfs: {}'.format(response))
+        self.assertTrue(content in response)
