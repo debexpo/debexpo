@@ -139,8 +139,11 @@ class ClosedBugsPlugin(BasePlugin):
             elif closes_rc:
                 outcome = "Package closes a RC bug"
             else:
-                outcome = "Package closes bug%s" % \
-                    ("s" if len(bugs) > 1 else "")
+                if 'RC' in bugtype:
+                    outcome = "Package closes a RC bug"
+                else:
+                    outcome = "Package closes bug%s" % \
+                        ("s" if len(bugs) > 1 else "")
 
             self.failed(outcome, data, severity)
 

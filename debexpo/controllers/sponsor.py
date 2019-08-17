@@ -103,6 +103,48 @@ class SponsorController(BaseController):
                 return False
         return True
 
+    def _get_package_rfs_info(self, package_version):
+        category = []
+        categories = None
+        severity = None
+
+        # Info from debianqa (NMU, QA, Team or normal upload)
+        debianqa = meta.session.query(PackageInfo) \
+            .filter_by(package_version_id=package_version.id) \
+            .filter_by(from_plugin='debianqa') \
+            .first()
+        if debianqa:
+            qadata = json.loads(debianqa.data)
+            if 'nmu' in qadata and qadata['nmu']:
+                category.append('NMU')
+            if 'qa' in qadata and qadata['qa']:
+                category.append('QA')
+            if 'team' in qadata and qadata['team']:
+                category.append('Team')
+            if 'in-debian' in qadata and qadata['in-debian']:
+                severity = 'normal'
+
+        # Info from closedbugs (ITP, ITA or RC)
+        closedbugs = meta.session.query(PackageInfo) \
+            .filter_by(package_version_id=package_version.id) \
+            .filter_by(from_plugin='closedbugs') \
+            .first()
+
+        if closedbugs:
+            if 'ITP' in closedbugs.outcome:
+                category.append('ITP')
+                severity = 'wishlist'
+            if 'RC' in closedbugs.outcome:
+                category.append('RC')
+                severity = 'important'
+            if 'ITA' in closedbugs.outcome:
+                category.append('ITA')
+
+        if category:
+            categories = '[{}]'.format(', '.join(category))
+
+        return (categories, severity)
+
     def clear(self):
         """
         Clear applied filters in the session.
@@ -255,30 +297,7 @@ class SponsorController(BaseController):
                             c.rfstemplate['package-vcs'] = \
                                     fields['Vcs-Browser']
 
-                category = []
-                debianqa = meta.session.query(PackageInfo) \
-                    .filter_by(package_version_id=latest.id) \
-                    .filter_by(from_plugin='debianqa') \
-                    .first()
-                if debianqa:
-                    qadata = json.loads(debianqa.data)
-                    if 'nmu' in qadata and qadata['nmu']:
-                        category.append('NMU')
-                    elif 'qa' in qadata and qadata['qa']:
-                        category.append('QA')
-                    elif 'in-debian' in qadata and not qadata['in-debian']:
-                        category.append('ITP')
-                        c.severity = 'wishlist'
-                    elif 'in-debian' in qadata and qadata['in-debian']:
-                        c.severity = 'normal [important for RC bugs]'
-                        # TODO: RC or regular update
-                        pass
-                    else:
-                        # TODO: ITA
-                        pass
-
-                if category:
-                    c.category = '[ {} ]'.format(', '.join(category))
+                (c.category, c.severity) = self._get_package_rfs_info(latest)
 
         # This is a workaround for Thunderbird and some other clients
         # not handling properly '+' in the mailto body parameter.
