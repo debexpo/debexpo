@@ -100,6 +100,7 @@ class ClosedBugsPlugin(BasePlugin):
                     continue
 
             severity = constants.PLUGIN_SEVERITY_INFO
+            closes_rc = False
 
             for bug in bugs:
                 if bug not in data['raw']:
@@ -121,6 +122,11 @@ class ClosedBugsPlugin(BasePlugin):
                                           'package' % bug)
                     severity = max(severity, constants.PLUGIN_SEVERITY_ERROR)
 
+                rc_severities = ['grave', 'serious', 'critical']
+                if any(data["raw"][bug]["severity"] == severity for severity in
+                        rc_severities):
+                    closes_rc = True
+
             if severity != constants.PLUGIN_SEVERITY_INFO:
                 outcome = "Package closes bugs in a wrong way"
             elif "wnpp" in data["bugs"] and len(data["bugs"]) == 1:
@@ -130,6 +136,8 @@ class ClosedBugsPlugin(BasePlugin):
                     outcome = "Package closes a ITA bug"
                 else:
                     outcome = "Package closes a WNPP bug"
+            elif closes_rc:
+                outcome = "Package closes a RC bug"
             else:
                 outcome = "Package closes bug%s" % \
                     ("s" if len(bugs) > 1 else "")
