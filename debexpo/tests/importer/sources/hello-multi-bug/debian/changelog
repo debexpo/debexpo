@@ -1,0 +1,7 @@
+hello (1.0-1) unstable; urgency=medium
+
+  * Some change (closes: #616444)
+  * Some other changes (closes: #696855, #719848)
+  * Initial release
+
+ -- Vincent TIME <vtime@example.org>  Sun, 02 Dec 2018 22:38:11 +0100
