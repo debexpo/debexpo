@@ -252,7 +252,7 @@ class TestImporterController(TestController):
             .filter(PackageInfo.package_version_id == package_version.id) \
             .filter(PackageInfo.from_plugin == plugin).first()
 
-        return (package_info)
+        return package_info
 
     def assert_package_no_info(self, package_name, plugin):
         package_info = self._lookup_package_info(package_name, plugin)

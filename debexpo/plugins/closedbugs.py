@@ -100,12 +100,12 @@ class ClosedBugsPlugin(BasePlugin):
                     continue
 
             severity = constants.PLUGIN_SEVERITY_INFO
-            closes_rc = False
+            bugtype = []
 
             for bug in bugs:
                 if bug not in data['raw']:
                     data["errors"].append('Bug #%s does not exist' % bug)
-                    log.debug('{}'.format(data["errors"][-1]))
+                    log.debug(data["errors"][-1])
                     severity = max(severity, constants.PLUGIN_SEVERITY_ERROR)
                     continue
 
@@ -122,22 +122,20 @@ class ClosedBugsPlugin(BasePlugin):
                                           'package' % bug)
                     severity = max(severity, constants.PLUGIN_SEVERITY_ERROR)
 
-                rc_severities = ['grave', 'serious', 'critical']
-                if any(data["raw"][bug]["severity"] == severity for severity in
-                        rc_severities):
-                    closes_rc = True
+                rc_severities = ('grave', 'serious', 'critical')
+                if data['raw'][bug]['severity'] in rc_severities:
+                    bugtype.append('RC')
 
             if severity != constants.PLUGIN_SEVERITY_INFO:
                 outcome = "Package closes bugs in a wrong way"
-            elif "wnpp" in data["bugs"] and len(data["bugs"]) == 1:
+            elif "wnpp" in data["bugs"]:
                 if data['bugs']['wnpp'][0][1].startswith('ITP'):
-                    outcome = "Package closes a ITP bug"
+                    bugtype.append('ITP')
                 elif data['bugs']['wnpp'][0][1].startswith('ITA'):
-                    outcome = "Package closes a ITA bug"
+                    bugtype.append('ITA')
                 else:
-                    outcome = "Package closes a WNPP bug"
-            elif closes_rc:
-                outcome = "Package closes a RC bug"
+                    bugtype.append('WNPP')
+                outcome = 'Package closes a {} bug'.format('/'.join(bugtype))
             else:
                 if 'RC' in bugtype:
                     outcome = "Package closes a RC bug"
