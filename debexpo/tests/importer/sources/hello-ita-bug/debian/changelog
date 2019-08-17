@@ -1,0 +1,5 @@
+hello (1.0-1) unstable; urgency=medium
+
+  * New maintainer (Closes: #931405)
+
+ -- Vincent TIME <vtime@example.org>  Sun, 02 Dec 2018 22:38:11 +0100

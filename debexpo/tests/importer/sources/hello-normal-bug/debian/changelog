@@ -1,0 +1,6 @@
+hello (1.0-1) unstable; urgency=medium
+
+  * Hello says goodbye (Closes: #906521)
+  * Initial release
+
+ -- Vincent TIME <vtime@example.org>  Sun, 02 Dec 2018 22:38:11 +0100

@@ -38,98 +38,43 @@ list. You can browser other packages and give other people feedback while you ar
 </h2>
 
 <p>
-Send the filled out template below by mail to our pseudo-package. If you
-prefer, you can also use the <a
-href="https://packages.debian.org/search?keywords=reportbug&searchon=names&exact=1&suite=all&section=main">reportbug</a>
+%if c.package:
+%if c.category:
+<a href="mailto:submit@bugs.debian.org?subject=RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } ${ c.category } -- ${ c.package.short_description() }&body=${ c.mailbody }">
+%else:
+<a href="mailto:submit@bugs.debian.org?subject=RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } -- ${ c.package.short_description() }&body=${ c.mailbody }">
+%endif
+%else:
+<a href="mailto:submit@bugs.debian.org?subject=RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly greeter&body=${ c.mailbody }">
+%endif
+Send the filled out template below by mail</a> to our pseudo-package. If you
+prefer, you can also use the
+<a href="https://packages.debian.org/search?keywords=reportbug&searchon=names&exact=1&suite=all&section=main">reportbug</a>
 tool.
 </p>
 
 
 <pre>
 %if c.package:
-  From: ${ c.package.user.name } &lt;${ c.package.user.email }&gt
+From: ${ c.package.user.name } &lt;${ c.package.user.email }&gt
 %else:
-  From: J. Maintainer &lt;j@example.com&gt;
+From: J. Maintainer &lt;j@example.com&gt;
 %endif
-  To: submit@bugs.debian.org
+To: submit@bugs.debian.org
 %if c.package:
-  Subject: RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } [put in ITP, ITA, RC, NMU if applicable]
+%if c.category:
+Subject: RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } ${ c.category } -- ${ c.package.short_description() }
 %else:
-  Subject: RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly greeter
+Subject: RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } -- ${ c.package.short_description() }
 %endif
-
-
-
-  Package: sponsorship-requests
-  Severity: normal [important for RC bugs, wishlist for new packages]
-
-  Dear mentors,
-
-%if c.package:
-  I am looking for a sponsor for my package "${ c.package.name }"
 %else:
-  I am looking for a sponsor for my package "hello":
+Subject: RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly greeter
 %endif
 
+<%include file="rfs_template.mako"/>
+--
 %if c.package:
- * Package name    : ${ c.package.name }
-   Version         : ${ c.package.package_versions[-1].version }
-%else:
- * Package name    : hello
-   Version         : 3.1-4
-%endif
-   Upstream Author : [fill in name and email of upstream]
- * URL             : [fill in URL of upstream's web site]
- * License         : [fill in]
-%if c.package:
-   Section         : ${ c.package.package_versions[-1].section }
-%else:
-   Section         : [fill in]
-%endif
-
-  It builds those binary packages:
-
-%if c.package:
-    ${ c.package.description }
-%else:
-    hello - friendly greeter
-%endif
-
-  To access further information about this package, please visit the following URL:
-
-%if c.package:
-  ${ c.config['debexpo.server'] }${ h.url('package', packagename=c.package.name) }
-%else:
-  ${ c.config['debexpo.server'] }/package/hello
-%endif
-
-
-  Alternatively, one can download the package with dget using this command:
-
-%if c.package:
-% for pkgfile in c.package.package_versions[-1].source_packages[0].package_files:
-  % if pkgfile.filename.endswith('.dsc'):
-    dget -x ${ c.config['debexpo.server'] }/debian/${ pkgfile.filename }
-  % endif
-% endfor
-%else:
-  dget -x ${ c.config['debexpo.server'] }/debian/pool/main/h/hello/hello_3.1-4.dsc
-%endif
-
-%if c.package:
-  More information about ${ c.package.name } can be obtained from https://www.example.com.
-%else:
-  More information about hello can be obtained from https://www.example.com.
-%endif
-
-  Changes since the last upload:
-
-  [your most recent changelog entry]
-
-
-  Regards,
-%if c.package:
-   ${ c.package.user.name }
+  ${ c.package.user.name }
 %else:
   J. Maintainer
 %endif
@@ -139,11 +84,19 @@ tool.
 <tt>NMU</tt> upload or a new package or a package you adopted:</p>
 
 <pre>
+%if c.package:
+  Subject: RFS: ${ c.package.name }/1.0-1 [ITP] -- ${ c.package.short_description() }
+  Subject: RFS: ${ c.package.name }/1.0-3 [QA] -- ${ c.package.short_description() }
+  Subject: RFS: ${ c.package.name }/1.0-1.1 [NMU] [RC] -- ${ c.package.short_description() }
+  Subject: RFS: ${ c.package.name }/1.0-2 [RC] -- ${ c.package.short_description() }
+  Subject: RFS: ${ c.package.name }/1.0-2 [ITA] -- ${ c.package.short_description() }
+%else:
   Subject: RFS: hello/1.0-1 [ITP] -- friendly greeter
   Subject: RFS: hello/1.0-3 [QA] -- friendly greeter
   Subject: RFS: hello/1.0-1.1 [NMU] [RC] -- friendly greeter
   Subject: RFS: hello/1.0-2 [RC] -- friendly greeter
   Subject: RFS: hello/1.0-2 [ITA] -- friendly greeter
+%endif
 </pre>
 
 The meaning of this shortcuts is denoted below, in case you are unsure:

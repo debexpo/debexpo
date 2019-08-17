@@ -100,15 +100,20 @@ class ClosedBugsPlugin(BasePlugin):
                     continue
 
             severity = constants.PLUGIN_SEVERITY_INFO
+            bugtype = []
 
             for bug in bugs:
                 if bug not in data['raw']:
                     data["errors"].append('Bug #%s does not exist' % bug)
+                    log.debug(data["errors"][-1])
                     severity = max(severity, constants.PLUGIN_SEVERITY_ERROR)
+                    continue
 
                 name = data["raw"][bug]['package']
                 data["bugs"][name].append((bug, data["raw"][bug]["subject"],
                                            data["raw"][bug]["severity"]))
+                log.debug('Changes closes #{}: '
+                          '{}'.format(bug, data["raw"][bug]["subject"]))
 
                 if not (self.changes["Source"] in
                         data["raw"][bug]['source'].split(', ') or
@@ -117,13 +122,28 @@ class ClosedBugsPlugin(BasePlugin):
                                           'package' % bug)
                     severity = max(severity, constants.PLUGIN_SEVERITY_ERROR)
 
+                rc_severities = ('grave', 'serious', 'critical')
+                if data['raw'][bug]['severity'] in rc_severities:
+                    bugtype.append('RC')
+                if data['raw'][bug]['subject'].startswith('ITS'):
+                    bugtype.append('ITS')
+
             if severity != constants.PLUGIN_SEVERITY_INFO:
                 outcome = "Package closes bugs in a wrong way"
-            elif "wnpp" in data["bugs"] and len(data["bugs"]) == 1:
-                outcome = "Package closes a WNPP bug"
+            elif "wnpp" in data["bugs"]:
+                if data['bugs']['wnpp'][0][1].startswith('ITP'):
+                    bugtype.append('ITP')
+                elif data['bugs']['wnpp'][0][1].startswith('ITA'):
+                    bugtype.append('ITA')
+                else:
+                    bugtype.append('WNPP')
+                outcome = 'Package closes a {} bug'.format('/'.join(bugtype))
             else:
-                outcome = "Package closes bug%s" % \
-                    ("s" if len(bugs) > 1 else "")
+                if 'RC' in bugtype:
+                    outcome = "Package closes a RC bug"
+                else:
+                    outcome = "Package closes bug%s" % \
+                        ("s" if len(bugs) > 1 else "")
 
             self.failed(outcome, data, severity)
 

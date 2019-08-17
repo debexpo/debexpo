@@ -34,6 +34,7 @@ __license__ = 'MIT'
 
 import pylons
 import logging
+import socket
 
 from email import message_from_file
 from glob import glob
@@ -48,11 +49,22 @@ from debexpo.model.package_info import PackageInfo
 from debexpo.model.packages import Package
 from debexpo.model.package_subscriptions import PackageSubscription
 from debexpo.model.users import User
-from debexpo.tests import TestController
+from debexpo.tests import TestController, url
 from debexpo.tests.importer.source_package import TestSourcePackage
 from debexpo.lib.constants import SUBSCRIPTION_LEVEL_UPLOADS
 
 log = logging.getLogger(__name__)
+
+
+def test_network():
+    socket.setdefaulttimeout(2)
+
+    try:
+        socket.gethostbyname('bugs.debian.org')
+    except socket.error as e:
+        return e
+
+    return None
 
 
 class TestImporterController(TestController):
@@ -252,19 +264,25 @@ class TestImporterController(TestController):
             .filter(PackageInfo.package_version_id == package_version.id) \
             .filter(PackageInfo.from_plugin == plugin).first()
 
-        self.assertTrue(package_info)
-        return (package_info)
+        return package_info
+
+    def assert_package_no_info(self, package_name, plugin):
+        package_info = self._lookup_package_info(package_name, plugin)
+        self.assertFalse(package_info)
 
     def assert_package_info(self, package_name, plugin, outcome):
         package_info = self._lookup_package_info(package_name, plugin)
+        self.assertTrue(package_info)
         self.assertEquals(outcome, package_info.outcome)
 
     def assert_package_severity(self, package_name, plugin, severity):
         package_info = self._lookup_package_info(package_name, plugin)
+        self.assertTrue(package_info)
         self.assertTrue(severity == package_info.severity)
 
     def assert_package_data(self, package_name, plugin, data):
         package_info = self._lookup_package_info(package_name, plugin)
+        self.assertTrue(package_info)
         self.assertTrue(data in package_info.data)
 
     def assert_file_in_repo(self, filename):
@@ -279,3 +297,10 @@ class TestImporterController(TestController):
     def assert_package_not_in_repo(self, package_name, version):
         """Assert that a package is present in debexpo repo"""
         self.assertTrue(self._package_in_repo(package_name, version) == 0)
+
+    def assert_rfs_content(self, package, content):
+        response = self.app.get(url(controller='sponsors', action='rfs-howto',
+                                    id=package))
+        self.assertEquals(response.status_int, 200)
+        log.debug('rfs: {}'.format(response))
+        self.assertTrue(content in response)

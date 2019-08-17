@@ -40,6 +40,8 @@ import logging
 import random
 import struct
 import socket
+import json
+import urllib
 
 from debexpo.lib.base import BaseController, c, config, render, session, \
     redirect, url, abort, request, SubMenu, _
@@ -47,7 +49,13 @@ from debexpo.lib import constants
 from debexpo.model.sponsor_metrics import SponsorMetrics, SponsorTags
 from debexpo.model.users import User
 from debexpo.model.user_countries import UserCountry
+from debexpo.model.package_versions import PackageVersion
+from debexpo.model.package_info import PackageInfo
 from debexpo.model.packages import Package
+
+# The following import are used in the template rfs_template
+from debexpo.model.source_packages import SourcePackage  # NOQA
+from debexpo.model.package_files import PackageFile  # NOQA
 
 from debexpo.lib.utils import get_package_dir
 
@@ -94,6 +102,50 @@ class SponsorController(BaseController):
             if tag not in existing_tags:
                 return False
         return True
+
+    def _get_package_rfs_info(self, package_version):
+        category = []
+        categories = None
+        severity = None
+
+        # Info from debianqa (NMU, QA, Team or normal upload)
+        debianqa = meta.session.query(PackageInfo) \
+            .filter_by(package_version_id=package_version.id) \
+            .filter_by(from_plugin='debianqa') \
+            .first()
+        if debianqa:
+            qadata = json.loads(debianqa.data)
+            if 'nmu' in qadata and qadata['nmu']:
+                category.append('NMU')
+            if 'qa' in qadata and qadata['qa']:
+                category.append('QA')
+            if 'team' in qadata and qadata['team']:
+                category.append('Team')
+            if 'in-debian' in qadata and qadata['in-debian']:
+                severity = 'normal'
+
+        # Info from closedbugs (ITP, ITA or RC)
+        closedbugs = meta.session.query(PackageInfo) \
+            .filter_by(package_version_id=package_version.id) \
+            .filter_by(from_plugin='closedbugs') \
+            .first()
+
+        if closedbugs:
+            if 'ITP' in closedbugs.outcome:
+                category.append('ITP')
+                severity = 'wishlist'
+            if 'RC' in closedbugs.outcome:
+                category.append('RC')
+                severity = 'important'
+            if 'ITS' in closedbugs.outcome:
+                category.append('ITS')
+            if 'ITA' in closedbugs.outcome:
+                category.append('ITA')
+
+        if category:
+            categories = '[{}]'.format(', '.join(category))
+
+        return (categories, severity)
 
     def clear(self):
         """
@@ -206,6 +258,10 @@ class SponsorController(BaseController):
     def rfs_howto(self, packagename=None):
         c.package = None
         c.package_dir = None
+        c.rfstemplate = None
+        c.category = None
+        c.severity = None
+
         if packagename:
             package = meta.session.query(Package) \
                 .filter_by(name=packagename) \
@@ -213,6 +269,42 @@ class SponsorController(BaseController):
             if package:
                 c.package = package
                 c.package_dir = get_package_dir(package.name)
+
+                latest = meta.session.query(PackageVersion) \
+                    .filter_by(package_id=package.id) \
+                    .order_by(PackageVersion.id.desc()) \
+                    .first()
+                if latest:
+                    rfstemplate = meta.session.query(PackageInfo) \
+                        .filter_by(package_version_id=latest.id) \
+                        .filter_by(from_plugin='rfstemplate') \
+                        .first()
+
+                    if rfstemplate:
+                        c.rfstemplate = json.loads(rfstemplate.data)
+
+                    control_fields = meta.session.query(PackageInfo) \
+                        .filter_by(package_version_id=latest.id) \
+                        .filter_by(from_plugin='controlfields') \
+                        .first()
+
+                    if rfstemplate and control_fields:
+                        fields = json.loads(control_fields.data)
+
+                        if 'Homepage' in fields:
+                            c.rfstemplate['upstream-url'] = \
+                                    fields['Homepage']
+
+                        if 'Vcs-Browser' in fields:
+                            c.rfstemplate['package-vcs'] = \
+                                    fields['Vcs-Browser']
+
+                (c.category, c.severity) = self._get_package_rfs_info(latest)
+
+        # This is a workaround for Thunderbird and some other clients
+        # not handling properly '+' in the mailto body parameter.
+        c.mailbody = render('/sponsor/rfs_template.mako')
+        c.mailbody = urllib.quote_plus(c.mailbody).replace('+', '%20')
 
         return render('/sponsor/rfs_howto.mako')
 
