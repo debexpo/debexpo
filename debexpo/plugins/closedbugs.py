@@ -125,6 +125,8 @@ class ClosedBugsPlugin(BasePlugin):
                 rc_severities = ('grave', 'serious', 'critical')
                 if data['raw'][bug]['severity'] in rc_severities:
                     bugtype.append('RC')
+                if data['raw'][bug]['subject'].startswith('ITS'):
+                    bugtype.append('ITS')
 
             if severity != constants.PLUGIN_SEVERITY_INFO:
                 outcome = "Package closes bugs in a wrong way"

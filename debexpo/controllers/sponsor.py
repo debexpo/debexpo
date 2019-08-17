@@ -137,6 +137,8 @@ class SponsorController(BaseController):
             if 'RC' in closedbugs.outcome:
                 category.append('RC')
                 severity = 'important'
+            if 'ITS' in closedbugs.outcome:
+                category.append('ITS')
             if 'ITA' in closedbugs.outcome:
                 category.append('ITA')
 
