@@ -104,12 +104,15 @@ class ClosedBugsPlugin(BasePlugin):
             for bug in bugs:
                 if bug not in data['raw']:
                     data["errors"].append('Bug #%s does not exist' % bug)
+                    log.debug('{}'.format(data["errors"][-1]))
                     severity = max(severity, constants.PLUGIN_SEVERITY_ERROR)
                     continue
 
                 name = data["raw"][bug]['package']
                 data["bugs"][name].append((bug, data["raw"][bug]["subject"],
                                            data["raw"][bug]["severity"]))
+                log.debug('Changes closes #{}: '
+                          '{}'.format(bug, data["raw"][bug]["subject"]))
 
                 if not (self.changes["Source"] in
                         data["raw"][bug]['source'].split(', ') or
