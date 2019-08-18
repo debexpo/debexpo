@@ -47,8 +47,8 @@ I am looking for a sponsor for my package "hello":
 
 It builds those binary packages:
 
-%if c.package:
-  ${ c.package.description }
+%if c.package and c.package.description:
+  ${ '\n  '.join(c.package.description.splitlines()) }
 %else:
   hello - friendly greeter
 %endif
