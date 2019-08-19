@@ -91,6 +91,9 @@ class RfsTemplatePlugin(BasePlugin):
         upstream_license = "[fill in]"
         package_changelog = "[your most recent changelog entry]"
 
+        outcome = "RFS: license, author and changelog parsed"
+        severity = constants.PLUGIN_SEVERITY_INFO
+
         package_changelog = self.changes.get('Changes', '').strip()
 
         if len(package_changelog.split('\n')) > 2:
@@ -100,8 +103,15 @@ class RfsTemplatePlugin(BasePlugin):
 
         if 'author' in copyright_info:
             upstream_author = copyright_info['author']
+        else:
+            outcome = "RFS: author info missing"
+            severity = constants.PLUGIN_SEVERITY_WARNING
+
         if 'license' in copyright_info:
             upstream_license = copyright_info['license']
+        else:
+            outcome = "RFS: no dep5 license"
+            severity = constants.PLUGIN_SEVERITY_ERROR
 
         data = {
             'upstream-author': upstream_author,
@@ -109,8 +119,6 @@ class RfsTemplatePlugin(BasePlugin):
             'package-changelog': package_changelog,
         }
 
-        outcome = "RFS template information"
-        severity = constants.PLUGIN_SEVERITY_INFO
         self.passed(outcome, data, severity)
 
 
