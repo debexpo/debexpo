@@ -104,6 +104,35 @@ class SponsorController(BaseController):
         return True
 
     def _get_package_rfs_info(self, package_version):
+        info = None
+
+        rfstemplate = meta.session.query(PackageInfo) \
+            .filter_by(package_version_id=package_version.id) \
+            .filter_by(from_plugin='rfstemplate') \
+            .first()
+
+        if rfstemplate:
+            info = json.loads(rfstemplate.data)
+
+        control_fields = meta.session.query(PackageInfo) \
+            .filter_by(package_version_id=package_version.id) \
+            .filter_by(from_plugin='controlfields') \
+            .first()
+
+        if rfstemplate and control_fields:
+            fields = json.loads(control_fields.data)
+
+            if 'Homepage' in fields:
+                info['upstream-url'] = \
+                        fields['Homepage']
+
+            if 'Vcs-Browser' in fields:
+                info['package-vcs'] = \
+                        fields['Vcs-Browser']
+
+        return info
+
+    def _get_package_extra_info(self, package_version):
         category = []
         categories = None
         severity = None
@@ -266,6 +295,7 @@ class SponsorController(BaseController):
             package = meta.session.query(Package) \
                 .filter_by(name=packagename) \
                 .first()
+
             if package:
                 c.package = package
                 c.package_dir = get_package_dir(package.name)
@@ -274,32 +304,11 @@ class SponsorController(BaseController):
                     .filter_by(package_id=package.id) \
                     .order_by(PackageVersion.id.desc()) \
                     .first()
+
                 if latest:
-                    rfstemplate = meta.session.query(PackageInfo) \
-                        .filter_by(package_version_id=latest.id) \
-                        .filter_by(from_plugin='rfstemplate') \
-                        .first()
-
-                    if rfstemplate:
-                        c.rfstemplate = json.loads(rfstemplate.data)
-
-                    control_fields = meta.session.query(PackageInfo) \
-                        .filter_by(package_version_id=latest.id) \
-                        .filter_by(from_plugin='controlfields') \
-                        .first()
-
-                    if rfstemplate and control_fields:
-                        fields = json.loads(control_fields.data)
-
-                        if 'Homepage' in fields:
-                            c.rfstemplate['upstream-url'] = \
-                                    fields['Homepage']
-
-                        if 'Vcs-Browser' in fields:
-                            c.rfstemplate['package-vcs'] = \
-                                    fields['Vcs-Browser']
-
-                (c.category, c.severity) = self._get_package_rfs_info(latest)
+                    c.rfstemplate = self._get_package_rfs_info(latest)
+                    (c.category, c.severity) = \
+                        self._get_package_extra_info(latest)
 
         # This is a workaround for Thunderbird and some other clients
         # not handling properly '+' in the mailto body parameter.
