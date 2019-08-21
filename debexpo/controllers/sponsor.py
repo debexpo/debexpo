@@ -103,6 +103,18 @@ class SponsorController(BaseController):
                 return False
         return True
 
+    def _get_package_description(self, package_version):
+        control = meta.session.query(PackageInfo) \
+            .filter_by(package_version_id=package_version.id) \
+            .filter_by(from_plugin='controlfields') \
+            .first()
+
+        if control:
+            info = json.loads(control.data)
+
+            if info:
+                return info.get('Short-Description')
+
     def _get_package_rfs_info(self, package_version):
         info = None
 
@@ -290,6 +302,7 @@ class SponsorController(BaseController):
         c.rfstemplate = None
         c.category = None
         c.severity = None
+        c.description = None
 
         if packagename:
             package = meta.session.query(Package) \
@@ -309,6 +322,7 @@ class SponsorController(BaseController):
                     c.rfstemplate = self._get_package_rfs_info(latest)
                     (c.category, c.severity) = \
                         self._get_package_extra_info(latest)
+                    c.description = self._get_package_description(latest)
 
         # This is a workaround for Thunderbird and some other clients
         # not handling properly '+' in the mailto body parameter.
