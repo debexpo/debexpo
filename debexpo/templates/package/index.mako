@@ -103,6 +103,7 @@
       <td>${ package_version.uploaded.strftime("%Y-%m-%d %H:%M %Z")}</td>
     </tr>
 
+%if package_version.source_packages[0].package_files:
     <tr>
       <th>${ _('Source package') }:</th>
       <td>
@@ -119,6 +120,7 @@
 
       </td>
     </tr>
+%endif
 
     <tr class="pkg-list">
       <th>${ _('Section') }:</th>
