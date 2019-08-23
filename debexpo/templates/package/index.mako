@@ -123,6 +123,11 @@
 %endif
 
     <tr class="pkg-list">
+      <th>${ _('Distribution') }:</th>
+      <td>${ package_version.distribution }</td>
+    </tr>
+
+    <tr class="pkg-list">
       <th>${ _('Section') }:</th>
       <td>${ package_version.section }</td>
     </tr>
