@@ -39,11 +39,13 @@
 
 % if 'user_id' in c.session:
 
+% if c.session['user_id'] != c.package.user_id:
   <tr>
     <th>${ _('Subscribe') }:</th>
     <td><a href="${h.url('subscribe', packagename=c.package.name)}">${ _('Edit your subscription') }</a></td>
   </tr>
 
+%endif
 
   <tr>
   <th>${ _('Needs a sponsor') }:</th>

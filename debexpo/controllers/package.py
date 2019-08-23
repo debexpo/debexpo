@@ -255,7 +255,7 @@ class PackageController(BaseController):
             session.save()
             redirect(url('login'))
 
-        self._get_package(packagename)
+        package = self._get_package(packagename)
 
         status = constants.PACKAGE_COMMENT_STATUS_NOT_UPLOADED
 
@@ -281,10 +281,13 @@ class PackageController(BaseController):
 
         user = meta.session.query(User).filter_by(id=session['user_id']).one()
         if len(subscribers) > 0:
-
             email = Email('comment_posted')
             email.send([s.user.email for s in subscribers], package=packagename,
-                       comment=self.form_result['text'], user=user)
+                       comment=self.form_result['text'], user=user, owner=False)
+
+        email = Email('comment_posted')
+        email.send([package.user.email], package=packagename,
+                   comment=self.form_result['text'], user=user, owner=True)
 
         meta.session.query(PackageVersion) \
             .filter_by(id=self.form_result['package_version'])\
