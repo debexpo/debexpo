@@ -90,12 +90,17 @@ class ControlFieldsPlugin(BasePlugin):
         descriptions = []
         for package in deb822.Dsc.iter_paragraphs(
                 file(join('extracted', 'debian', 'control'))):
-            if ('Description' in package and 'Package' in package and
-                    package['Package'] and package['Description']):
+            if all(package.get(i) for i in ('Package', 'Description')):
+                if package['Package'] == control.get('Source'):
+                    data['Short-Description'] = \
+                            package['Description'].split('\n')[0]
                 descriptions.append('{} - {}'.format(package['Package'],
                                     package['Description'].split('\n')[0]))
 
         data['Description'] = '\n'.join(descriptions)
+
+        if 'Short-Description' not in data and descriptions:
+            data['Short-Description'] = descriptions[0].split(' - ')[1]
 
         self.failed(outcome, data, severity)
 

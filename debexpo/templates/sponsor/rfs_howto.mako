@@ -40,9 +40,9 @@ list. You can browser other packages and give other people feedback while you ar
 <p>
 %if c.package:
 %if c.category:
-<a href="mailto:submit@bugs.debian.org?subject=RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } ${ c.category } -- ${ c.package.short_description() }&body=${ c.mailbody }">
+<a href="mailto:submit@bugs.debian.org?subject=RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } ${ c.category } -- ${ c.description }&body=${ c.mailbody }">
 %else:
-<a href="mailto:submit@bugs.debian.org?subject=RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } -- ${ c.package.short_description() }&body=${ c.mailbody }">
+<a href="mailto:submit@bugs.debian.org?subject=RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } -- ${ c.description }&body=${ c.mailbody }">
 %endif
 %else:
 <a href="mailto:submit@bugs.debian.org?subject=RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly greeter&body=${ c.mailbody }">
@@ -63,9 +63,9 @@ From: J. Maintainer &lt;j@example.com&gt;
 To: submit@bugs.debian.org
 %if c.package:
 %if c.category:
-Subject: RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } ${ c.category } -- ${ c.package.short_description() }
+Subject: RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } ${ c.category } -- ${ c.description }
 %else:
-Subject: RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } -- ${ c.package.short_description() }
+Subject: RFS: ${ c.package.name }/${ c.package.package_versions[-1].version } -- ${ c.description }
 %endif
 %else:
 Subject: RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly greeter

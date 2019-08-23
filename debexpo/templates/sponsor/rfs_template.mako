@@ -38,6 +38,7 @@ I am looking for a sponsor for my package "hello":
    Upstream Author : [fill in name and email of upstream]
  * URL             : [fill in URL of upstream's web site]
  * License         : [fill in]
+ * Vcs             : [fill in URL of packaging vcs]
 %endif
 %if c.package:
    Section         : ${ c.package.package_versions[-1].section }
@@ -47,8 +48,8 @@ I am looking for a sponsor for my package "hello":
 
 It builds those binary packages:
 
-%if c.package:
-  ${ c.package.description }
+%if c.package and c.package.description:
+  ${ '\n  '.join(c.package.description.splitlines()) }
 %else:
   hello - friendly greeter
 %endif
