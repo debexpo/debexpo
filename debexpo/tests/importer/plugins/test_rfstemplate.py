@@ -40,6 +40,17 @@ class TestPluginRFSTemplate(TestImporterController):
     def __init__(self, *args, **kwargs):
         TestImporterController.__init__(self, *args, **kwargs)
 
+    def test_utf8_changelog(self):
+        self.import_source_package('hello-utf8-changelog')
+        self.assert_importer_succeeded()
+        self.assert_package_severity('hello', 'rfstemplate',
+                                     PLUGIN_SEVERITY_INFO)
+        self.assert_rfs_content('hello',
+                                'Subject: RFS: hello/1.0-1 -- Test package for '
+                                'debexpo')
+        self.assert_rfs_content('hello',
+                                'Severity: normal')
+
     def test_dep5_license(self):
         self.import_source_package('hello')
         self.assert_importer_succeeded()
