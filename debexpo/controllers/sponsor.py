@@ -327,7 +327,8 @@ class SponsorController(BaseController):
         # This is a workaround for Thunderbird and some other clients
         # not handling properly '+' in the mailto body parameter.
         c.mailbody = render('/sponsor/rfs_template.mako')
-        c.mailbody = urllib.quote_plus(c.mailbody).replace('+', '%20')
+        c.mailbody = urllib.quote_plus(c.mailbody.encode('utf-8')) \
+            .replace('+', '%20')
 
         return render('/sponsor/rfs_howto.mako')
 
