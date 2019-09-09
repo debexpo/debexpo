@@ -38,6 +38,8 @@ __copyright__ = 'Copyright © 2019 Baptiste BEAUPLAT'
 __license__ = 'MIT'
 
 
+import apt_pkg
+import re
 import logging
 import logging.config
 import os
@@ -50,10 +52,20 @@ from paste.deploy import appconfig
 from debexpo.config.environment import load_environment
 from debexpo.model import meta
 from debexpo.model.packages import Package
+from debexpo.model.package_versions import PackageVersion
 from debexpo.lib.repository import Repository
 from debexpo.lib.filesystem import CheckFiles
 
 log = None
+compare = {
+    '<<': lambda x, y: apt_pkg.version_compare(x, y) < 0,
+    '<=': lambda x, y: (apt_pkg.version_compare(x, y) == 0 or
+                        apt_pkg.version_compare(x, y) < 0),
+    '=': lambda x, y: apt_pkg.version_compare(x, y) == 0,
+    '>=': lambda x, y: (apt_pkg.version_compare(x, y) == 0 or
+                        apt_pkg.version_compare(x, y) > 0),
+    '>>': lambda x, y: apt_pkg.version_compare(x, y) > 0,
+}
 
 
 class PackageRemover():
@@ -82,15 +94,58 @@ class PackageRemover():
         pylons.config = load_environment(conf.global_conf, conf.local_conf)
 
     def __init__(self, config_file, packages):
+        apt_pkg.init_system()
         self.config_file = config_file
         self._setup()
 
         updated = 0
         for package in packages:
-            updated += self._remove_package(package)
+            match = re.search(r'^(?P<name>.*?)'
+                              r'(?P<op>\<\<|\<=|\>=|=|\>\>)'
+                              r'(?P<version>.*)$',
+                              package)
+
+            if match:
+                updated += self._remove_package_version(match.group('name'),
+                                                        match.group('op'),
+                                                        match.group('version'))
+            else:
+                updated += self._remove_package(package)
 
         if updated > 0:
             self._update_repo()
+
+    def _remove_package_version(self, name, op, version):
+        packages = meta.session.query(Package)
+        package = packages.filter_by(name=name).first()
+
+        if not package:
+            log.warn('Package {} not found'.format(name))
+            return 0
+
+        package_versions = meta.session.query(PackageVersion)
+        package_versions = package_versions.filter_by(package=package).all()
+
+        if not package_versions:
+            log.warn('No package version found for {}'.format(name))
+            return 0
+
+        deleted = 0
+        for package_version in package_versions:
+            if compare[op](package_version.version, version):
+                CheckFiles().delete_files_for_packageversion(package_version)
+                meta.session.delete(package_version)
+                deleted += 1
+                log.info('Package version {} for {} '
+                         'deleted'.format(package_version.version, name))
+
+        if deleted == len(package_versions):
+            self._remove_package(name)
+
+        if deleted:
+            meta.session.commit()
+
+        return deleted > 0
 
     def _remove_package(self, package_name):
         packages = meta.session.query(Package)
