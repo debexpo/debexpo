@@ -1,50 +1,83 @@
-Installing and running debexpo
-==============================
+Debexpo
+=======
 
-For installation instructions, see `<docs/installing.rst>`__
+debexpo is the software running behind https://mentors.debian.net.
 
-Running tests
-=============
+It allows contributors to debian packaging to propose new software for inclusion
+into `Debian`_.
 
-Hooray! Now you're ready to run the automated tests. (The code for the
-tests lives in ``debexpo/tests/*``. This is a test suite; you can read
-more about test suites `here`_.)
+The source is available from:
 
-::
+https://salsa.debian.org/mentors.debian.net-team/debexpo
 
-  % nosetests --with-pylons=test.ini
+Licensing and authors
+---------------------
 
-As of the time of writing, all the tests pass.
+debexpo is released under the MIT license available in the `<COPYRIGHT>`__ file.
 
-(Nosetests is a "test runner" package that provides some useful add-ons. It
-has its own idiosyncracies, though.)
+Current and former contributors are listed into the `<AUTHORS>`__ file.
 
-.. _here: http://en.wikipedia.org/wiki/Test_suite
-
-Debugging a debexpo test that fails
-===================================
-
-So you've found a test that fails (F) or exits with an unhandled exception (E)?
-Time to use the Python debugger.
-
-Run the test suite with these parameters::
-
-  % nosetests --with-pylons=test.ini --pdb-failures --pdb-errors
-
-(If you've used ``pdb.set_trace()``, this is an automatic way that Nose gives
-you that functionality.)
-
-debexpo documentation
-=====================
+Documentation
+-------------
 
 The debexpo documentation is written in `reStructuredText`_ and can be found
 inside the ``docs/`` directory. You can find the current installation guide at
 `<docs/installing.rst>`__. You can build and view the HTML docs locally by
 executing::
 
-  % sudo apt-get install python-sphinx # needed to build the docs
+  % sudo apt install python3-sphinx # needed to build the docs
   % cd docs/
   % make html
-  % sensible-browser .build/html/index.html
+  % sensible-browser _build/html/index.html
+
+Installing
+----------
+
+Installation documentation is available in `<docs/installing.rst>`__.
+
+Contributing
+------------
+
+Report a bug
+~~~~~~~~~~~~
+
+To report a bug to debexpo, please fill-in an issue at this URL:
+
+https://salsa.debian.org/mentors.debian.net-team/debexpo/issues
+
+Include as much information as you can. We must be able to reproduce the crash
+in order to fix it.
+
+Contribute to debexpo
+~~~~~~~~~~~~~~~~~~~~~
+
+If you have enough knowledge (or willingness to learn) python, django and
+debian packaging, you can help hacking debexpo code to add new feature or fix
+bugs reported on the `issue tracker`_.
+
+The current workflow for contributing is:
+
+- Fork debexpo project to your personal workspace
+- Work on a dedicated branch. (you can prefix your branch by fix/, feature/,
+  doc/)
+- When the hack is ready AND covered by tests, create a new merge request
+  against the ``live`` branch for us to review.
+
+We do ask that any code added/modified is covered by tests before merging.
+
+Don't hesitate to join us on IRC (detail below).
+
+Contact
+-------
+
+You can reach us by email using the address `support@mentors.debian.net`_.
+
+For any question, we also are available on the IRC channel `#debexpo`_ from the
+`OFTC`_ network.
 
 .. _reStructuredText: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
+.. _#debexpo: https://webchat.oftc.net/?channels=%23debexpo
+.. _OFTC: https://www.oftc.net
+.. _Debian: https://www.debian.org
+.. _support@mentors.debian.net: mailto:support@mentors.debian.net
+.. _issue tracker: https://salsa.debian.org/mentors.debian.net-team/debexpo/issues
