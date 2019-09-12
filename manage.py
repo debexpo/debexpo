@@ -5,7 +5,7 @@ import sys
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'debexpo.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'debexpo.settings.debexpo')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
