@@ -4,22 +4,26 @@
 Coding standards
 ================
 
-Parts of this document are copied from `netconf's coding standards <http://git.debian.org/?p=netconf/netconf.git;a=blob;f=doc/coding_standards.txt;hb=HEAD>`_.
-
 Python
 ======
 
-* Python code adheres to `PEP-8 coding guidelines <http://www.python.org/dev/peps/pep-0008/>`_.
+* Python code adheres to `PEP-8 coding guidelines
+  <http://www.python.org/dev/peps/pep-0008/>`_.
 
-* Write all code for Python 2.5; thus, all features up until and including Python 2.5 may be used.
+* Write all code for Python 3.7; thus, all features up until and including
+  Python 3.7 may be used.
 
-* If the choice is between a Python 2.5 way of implementing something, and a pre-2.5 way, the former should be taken.
+* If the choice is between a Python 3.7 way of implementing something, and a
+  pre-3.7 way, the former should be taken.
 
-* Existing pre-2.5 constructs which have been deprecated by Python 2.5 must be reimplemented accordingly.
+* Existing pre-3.7 constructs which have been deprecated by Python 3.7 must be
+  reimplemented accordingly.
 
-* Existing pre-2.5 constructs which can merely be expressed more concisely with Python 2.5 can be migrated, and probably should be.
+* Existing pre-3.7 constructs which can merely be expressed more concisely with
+  Python 3.7 can be migrated, and probably should be.
 
-* Use the ``docs/py.template`` file as a start to all Python files. Alter author and copyright information if needed.
+* Use the ``docs/templates/new.py`` file as a start to all Python files. Alter
+  author and copyright information if needed.
 
 * Use Python unicode strings -- ``u'foo'`` instead of ``'foo'``.
 
@@ -30,13 +34,16 @@ General
 
 * Use UTF-8 everywhere.
 
-* Limit line width to 100 characters.
+* Limit line width to 80 characters.
 
 * Everything is in English (including comments, variable names, etc.)
 
-* All text that will be shown to users **must** be localized `using the Pylons framework <http://wiki.pylonshq.com/display/pylonsdocs/Internationalization+and+Localization>`_
+* All text that will be shown to users **must** be localized `using the Django
+  framework
+  <https://docs.djangoproject.com/en/2.2/topics/i18n/>`_
 
-* `Create tests <http://wiki.pylonshq.com/display/pylonsdocs/Unit+Testing>`_ using the Pylons framework for all functions or features that it is feasible for
+* `Create tests <https://docs.djangoproject.com/en/2.2/topics/testing/>`_
+  using the Django framework for all functions and features
 
 * When showing potentially long lists of things use the `paginate` module.
 
