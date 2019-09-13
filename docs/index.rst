@@ -43,7 +43,6 @@ Development documentation
     writing_cronjobs
     coding_standards
     contributing
-    api
 
 Indices and tables
 ==================
