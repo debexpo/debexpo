@@ -5,26 +5,27 @@ Building the software
 =======================
 
 If you like to build the software you can get the Git repository from
-`debexpo.workaround.org <http://debexpo.workaround.org/>`_ using::
+https://salsa.debian.org/mentors.debian.net-team/debexpo using::
 
-    git clone git://debexpo.workaround.org/debexpo.git
+    git clone https://salsa.debian.org/mentors.debian.net-team/debexpo.git
 
-Then simply enter into the debexpo directory and execute ``make build``::
+Then simply enter into the debexpo directory and execute ``python3 setup.py
+build``::
 
     cd debexpo
-    make build
+    python3 setup.py build
 
 It is easier in some situations to leave debexpo in its source directory and
 run it from there. However, if you wish to have it installed, create a
 virtualenv environment::
 
-    aptitude install python-virtualenv
-    virtualenv .
-    source bin/activate
+    sudo apt install python3-venv
+    python3 -m venv venv
+    source ./venv/bin/activate
 
 Then you can safely::
 
-    make install
+    python3 setup.py install
 
 to install the package in your encapsulated environment.
 

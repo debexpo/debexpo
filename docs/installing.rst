@@ -9,7 +9,7 @@ debexpo is easy to set up on your own. Simply follow the instructions below.
 There are two solutions:
  1. Install all dependencies on your system as root.
  2. Install dependencies and debexpo in an isolated environment using
-    virtualenv and virtualenvwrapper.
+    virtualenv.
 
 Getting debexpo
 ---------------
@@ -23,31 +23,16 @@ Dependencies needed for both methods
 
 Whatever method you choose, these packages are required::
 
-    sudo apt-get install python-apt python-debian python-lxml iso-codes
-    python-dulwich git python-passlib python-bcrypt
-
-If you want to run qa plugins, you will need `lintian` and
-`dpkg-dev`::
-
-    sudo apt-get install lintian dpkg-dev
+    sudo apt-get install python3
 
 Installing on Debian as root
 ----------------------------
 
 You need to install the required packages. Using `apt`, you should execute::
 
-    sudo apt-get install python-setuptools python-sphinx python-pylons python-sqlalchemy python-soappy python-nose python-pybabel python-alembic
+    sudo apt-get install python3-django tox
 
-`python-nose` is optional if you don't want to run the test suite.
-
-
-You also need `python-soaplib (version >= 0.8.2)`_.
-
-Using pip::
-
-    sudo pip install soaplib
-
-.. _`python-soaplib (version >= 0.8.2)`: http://pypi.python.org/pypi/soaplib
+`tox` is optional if you don't want to run the test suite.
 
 Installing in a virtualenv
 --------------------------
@@ -63,36 +48,26 @@ Virtualenv setup
 
 Skip this section if you already have a working virtualenv setup.
 
-Install `virtualenvwrapper`::
+Install python module `venv`::
 
-    sudo apt-get install virtualenvwrapper
+    sudo apt install python3-venv
 
 Debexpo installation
 ~~~~~~~~~~~~~~~~~~~~
 
 First, create a new virtualenv for debexpo, and enter it::
 
-    mkvirtualenv --system-site-packages expo
-    workon expo
+   python3 -m venv venv
+   source ./venv/bin/activate
 
-*Note*: If you get a "command not found" error for "mkvirtualenv", run
-the following in your shell::
-
-    . /etc/bash_completion.d/virtualenvwrapper
-
-Note that now, whenever you run "python", you run an interpreter that
+ote that now, whenever you run "python", you run an interpreter that
 is sandboxed to the "virtualenv" in question. You can test this by
 typing::
 
     which python
 
-and you will see it is not /usr/bin/python! Additionally, your shell prompt
-should have a little prefix before the prompt that looks like::
-
-    (expo)
-
-You can now install debexpo. This will download and install all
-required libraries::
+and you will see it is not /usr/bin/python! You can now install debexpo. This
+will download and install all required libraries::
 
     python setup.py develop
 
@@ -102,52 +77,66 @@ If for any reason you need to exit the virtualenv, you may enter
 Editing your configuration
 --------------------------
 
-Now edit `development.ini` to match your configuration.
+Now edit `debexpo/settings/develop.py` to match your configuration.
 
 Setting up the application
 --------------------------
 
 Execute the following commands to setup the application::
 
-    paster setup-app development.ini
-    python setup.py compile_catalog
+    python manage.py migrate
 
 Running debexpo
 ---------------
 
-Using paste's built-in webserver
+Using django's built-in webserver
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Simply execute::
 
-    paster serve development.ini
+    python manage.py runserver
 
-and visit http://localhost:5000/ in your web browser.
+and visit http://localhost:8000/ in your web browser.
 
 Using Apache
 ~~~~~~~~~~~~
 
-(Canonical instructions for getting Pylons apps working under Apache are
-`here <http://wiki.pylonshq.com/display/pylonsdocs/Running+Pylons+apps+with+Webservers>`_.)
+(Canonical instructions for getting Django apps working under Apache are
+`here <https://docs.djangoproject.com/en/2.2/howto/deployment/wsgi/modwsgi/#using-mod-wsgi-daemon-mode>`_.)
 
-#. Install `apache2`, `mod-fastcgi` and `flup`::
+#. Install `apache2` and `libapache2-mod-wsgi-py3`::
 
-    sudo apt-get install python-flup apache2 libapache2-mod-fastcgi
+    sudo apt install apache2 libapache2-mod-wsgi-py3
 
-#. Edit the ``server:main`` section of your `debexpo.ini` so it reads
-   something like this::
+#. Enable the module::
 
-    [server:main]
-    use = egg:PasteScript#flup_fcgi_thread
-    host = 0.0.0.0
-    port = 6500
+    sudo a2enmod wsgi-py3
 
-#. Add the following to your config::
+#. Add the following to your site configuration::
 
-    <IfModule mod_fastcgi.c>
-      FastCgiIpcDir /tmp
-      FastCgiExternalServer /some/path/to/debexpo.fcgi -host localhost:6500
-    </IfModule>
+   WSGIDaemonProcess example.com python-home=/path/to/venv python-path=/path/to/mysite.com
+   WSGIProcessGroup example.com
 
-  Note: Parts of this may conflict with your `/etc/apache2/conf-available/fastcgi.conf`.
-  `/some/path/to/debexpo/fcgi` need not physically exist on the webserver.
+   WSGIScriptAlias / /path/to/mysite.com/mysite/wsgi.py process-group=example.com
+
+   Alias /robots.txt /path/to/mysite.com/static/robots.txt
+   Alias /favicon.ico /path/to/mysite.com/static/favicon.ico
+
+   Alias /media/ /path/to/mysite.com/media/
+   Alias /static/ /path/to/mysite.com/static/
+
+   <Directory /path/to/mysite.com/static>
+       Require all granted
+   </Directory>
+
+   <Directory /path/to/mysite.com/media>
+       Require all granted
+   </Directory>
+
+   WSGIScriptAlias / /path/to/mysite.com/mysite/wsgi.py
+
+   <Directory /path/to/mysite.com/mysite>
+       <Files wsgi.py>
+           Require all granted
+       </Files>
+   </Directory>
