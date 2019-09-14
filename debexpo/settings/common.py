@@ -10,6 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+from os import path
+
+# Build paths inside the project like this: path.join(BASE_DIR, ...)
+BASE_DIR = path.dirname(
+    path.dirname(path.dirname(path.abspath(__file__)))
+)
+
 # Application definition
 
 INSTALLED_APPS = [
