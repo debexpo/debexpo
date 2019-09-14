@@ -12,7 +12,7 @@ suitable for development purposes.
 All configuration files must include the ``common.py`` that define base
 settings for all environment.
 
-The following example demonstrate how to create a configuration file for a new
+The following example demonstrates how to create a configuration file for a new
 environment::
 
    cd debexpo/settings
