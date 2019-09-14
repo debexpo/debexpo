@@ -7,8 +7,14 @@ from os import path
 
 DEBEXPO_CONF_DIR = '/etc/debexpo'
 
-with open(path.join(DEBEXPO_CONF_DIR, 'secretkey')) as f:
-    secret_key = f.read().strip()
+try:
+    with open(path.join(DEBEXPO_CONF_DIR, 'secretkey')) as f:
+        secret_key = f.read().strip()
+except IOError as e:
+    raise Exception('Could not read secret key: {}'.format(e))
+
+if len(secret_key) < 64:
+    raise Exception('Secret key too weak. Must be at least 64 char.')
 
 SECRET_KEY = secret_key
 DEBUG = False
