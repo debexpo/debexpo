@@ -7,6 +7,7 @@ https://github.com/pypa/sampleproject
 
 from setuptools import setup, find_packages
 from os import path
+from .project import PROJECT, VERSION, AUTHOR
 
 here = path.abspath(path.dirname(__file__))
 
@@ -16,8 +17,8 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     # Project name and version
-    name='debexpo',
-    version='3.0.0',
+    name=PROJECT,
+    version=VERSION,
 
     # Descriptions
     description='the software running behind mentors.debian.net',
@@ -27,7 +28,7 @@ setup(
     url='https://mentors.debian.net',
 
     # Authors
-    author='The Debexpo maintainers (see AUTHORS)',
+    author=AUTHOR,
     author_email='support@mentors.debian.net',
 
     # Related metadata

@@ -10,19 +10,21 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from project import PROJECT, COPYRIGHT, AUTHOR, VERSION
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'debexpo'
-copyright = '2008-2019, Debexpo maintainers (see AUTHORS)'
-author = 'Debexpo maintainers (see AUTHORS)'
+project = PROJECT
+copyright = COPYRIGHT
+author = AUTHOR
 
 # The full version, including alpha/beta/rc tags
-release = '3.0.0'
+release = VERSION
 
 
 # -- General configuration ---------------------------------------------------
