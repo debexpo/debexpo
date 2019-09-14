@@ -88,7 +88,7 @@ Running debexpo
 ---------------
 
 Using django's built-in webserver
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Simply execute::
 
@@ -112,29 +112,29 @@ Using Apache
 
 #. Add the following to your site configuration::
 
-   WSGIDaemonProcess example.com python-home=/path/to/venv python-path=/path/to/mysite.com
-   WSGIProcessGroup example.com
+    WSGIDaemonProcess example.com python-home=/path/to/venv python-path=/path/to/mysite.com
+    WSGIProcessGroup example.com
 
-   WSGIScriptAlias / /path/to/mysite.com/mysite/wsgi.py process-group=example.com
+    WSGIScriptAlias / /path/to/mysite.com/mysite/wsgi.py process-group=example.com
 
-   Alias /robots.txt /path/to/mysite.com/static/robots.txt
-   Alias /favicon.ico /path/to/mysite.com/static/favicon.ico
+    Alias /robots.txt /path/to/mysite.com/static/robots.txt
+    Alias /favicon.ico /path/to/mysite.com/static/favicon.ico
 
-   Alias /media/ /path/to/mysite.com/media/
-   Alias /static/ /path/to/mysite.com/static/
+    Alias /media/ /path/to/mysite.com/media/
+    Alias /static/ /path/to/mysite.com/static/
 
-   <Directory /path/to/mysite.com/static>
-       Require all granted
-   </Directory>
+    <Directory /path/to/mysite.com/static>
+        Require all granted
+    </Directory>
 
-   <Directory /path/to/mysite.com/media>
-       Require all granted
-   </Directory>
+    <Directory /path/to/mysite.com/media>
+        Require all granted
+    </Directory>
 
-   WSGIScriptAlias / /path/to/mysite.com/mysite/wsgi.py
+    WSGIScriptAlias / /path/to/mysite.com/mysite/wsgi.py
 
-   <Directory /path/to/mysite.com/mysite>
-       <Files wsgi.py>
-           Require all granted
-       </Files>
-   </Directory>
+    <Directory /path/to/mysite.com/mysite>
+        <Files wsgi.py>
+            Require all granted
+        </Files>
+    </Directory>
