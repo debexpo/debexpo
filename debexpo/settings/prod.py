@@ -5,10 +5,9 @@ Django settings for debexpo project in production environment.
 from .common import *  # noqa
 from os import path
 
-DEBEXPO_CONF_DIR = '/etc/debexpo'
-
 try:
-    with open(path.join(DEBEXPO_CONF_DIR, 'secretkey')) as f:
+    with open(path.join(path.dirname(path.abspath(__file__)),
+                        'secretkey')) as f:
         secret_key = f.read().strip()
 except IOError as e:
     raise Exception('Could not read secret key: {}'.format(e))
