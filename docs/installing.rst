@@ -30,9 +30,7 @@ Installing on Debian as root
 
 You need to install the required packages. Using `apt`, you should execute::
 
-    sudo apt-get install python3-django tox
-
-`tox` is optional if you don't want to run the test suite.
+    sudo apt-get install python3-django
 
 Installing in a virtualenv
 --------------------------

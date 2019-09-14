@@ -21,6 +21,19 @@ You can clone the Git repository using::
 
     git clone https://salsa.debian.org/mentors.debian.net-team/debexpo.git
 
+Running tests
+=============
+
+`tox` is used to run tests. Install it with::
+
+   sudo apt install tox
+
+Then, run it::
+
+   tox
+
+This will run tests, coverage (available in ``htmlcov``) and flake8.
+
 How we use branches
 ===================
 
