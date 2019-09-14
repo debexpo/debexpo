@@ -5,11 +5,14 @@ https://packaging.python.org/guides/distributing-packages-using-setuptools/
 https://github.com/pypa/sampleproject
 """
 
+import sys
 from setuptools import setup, find_packages
 from os import path
-from .project import PROJECT, VERSION, AUTHOR
 
 here = path.abspath(path.dirname(__file__))
+sys.path.insert(0, here)
+
+from project import PROJECT, VERSION, AUTHOR
 
 # Get the long description from the README file
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
@@ -44,6 +47,7 @@ setup(
 
     # What packages to install
     packages=find_packages(exclude=['contrib', 'docs', 'tests', 'old']),
+    data_files=[('.', ['project.py'])],
 
     # Python version requirements
     python_requires='>=3.7, <4',
