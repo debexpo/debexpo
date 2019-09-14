@@ -27,7 +27,3 @@
 #   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
-
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2019 Jonny Lamb'
-__license__ = 'MIT'
