@@ -33,14 +33,10 @@ setup(
     # Related metadata
     classifiers=[
         'Development Status :: 5 - Production/Stable',
-
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
-
         'License :: OSI Approved :: MIT License',
-
         'Programming Language :: Python :: 3.7',
-
         'Framework :: Django :: 2.2',
     ],
     keywords='debian mentors packaging',
