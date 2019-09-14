@@ -43,6 +43,6 @@ flake8:
     - apt-get -q update
     - env DEBIAN_FRONTEND=noninteractive
       apt-get -q -y install --no-install-recommends
-      python-flake8
+      python3-flake8
   script:
-    - python -m flake8 debexpo/ tests/
+    - python3 -m flake8 debexpo/ tests/
