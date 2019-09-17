@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 from os import path
 
+from django.utils.translation import gettext_lazy as _
+
 # Build paths inside the project like this: path.join(BASE_DIR, ...)
 BASE_DIR = path.dirname(
     path.dirname(path.dirname(path.abspath(__file__)))
@@ -28,6 +30,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -49,6 +52,15 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+LANGUAGES = [
+  ('en', _('English')),
+  ('fr', _('French')),
+]
+
+LOCALE_PATHS = [
+    path.join(BASE_DIR, 'debexpo', 'locale')
 ]
 
 WSGI_APPLICATION = 'debexpo.wsgi.application'
@@ -77,5 +89,5 @@ STATIC_URL = '/static/'
 LOGO = '/img/debexpo-logo.png'
 SITE_NAME = 'debexpo'
 SITE_TITLE = 'Debexpo'
-TAGLINE = 'Helps you get your packages into Debian'
+TAGLINE = _('Helps you get your packages into Debian')
 VCS_BROWSER = 'https://salsa.debian.org/mentors.debian.net-team/debexpo'
