@@ -22,6 +22,7 @@ BASE_DIR = path.dirname(
 INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debexpo.base'
 ]
 
 MIDDLEWARE = [
