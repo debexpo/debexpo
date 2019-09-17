@@ -72,3 +72,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Debexpo common settings
+LOGO = '/img/debexpo-logo.png'
+SITE_NAME = 'debexpo'
+SITE_TITLE = 'Debexpo'
+TAGLINE = 'Helps you get your packages into Debian'
+VCS_BROWSER = 'https://salsa.debian.org/mentors.debian.net-team/debexpo'

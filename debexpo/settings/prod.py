@@ -28,3 +28,10 @@ DATABASES = {
         'NAME': path.join(BASE_DIR, 'db.sqlite3'),  # noqa: F405
     }
 }
+
+# Debexpo settings
+SITE_NAME = 'mentors.debian.net'
+SITE_TITLE = 'Mentors'
+
+HOSTING_URL = 'https://www.wavecon.de/'
+HOSTING = 'Wavecon'
