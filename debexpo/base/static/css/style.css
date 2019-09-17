@@ -71,11 +71,11 @@ body {
 	line-height: 1.5;
 	color: #222;
 	background-color: white;
-	background-image:url('gradient.png');
+	background-image:url('../img/gradient.png');
 	background-position: 0 0;
 	background-repeat: repeat-x;
 	/* Uncomment to show baseline grid 
-	background-image: url('24grid.png');
+	background-image: url('../img/24grid.png');
 	background-position: 30px 9px; 
 	*/
 }
@@ -453,7 +453,7 @@ acronym, abbr {
 .toc {
 	font-size: 0.75em;
 	list-style:none;
-	background-image: url('greydot.png');
+	background-image: url('../img/greydot.png');
 	background-position: bottom left;
 	background-repeat: repeat-x;
 	line-height:1.833;
@@ -462,7 +462,7 @@ acronym, abbr {
 	margin: 2em 0 2em 0;
 }
 .toc li {
-	background-image: url('greydot.png');
+	background-image: url('../img/greydot.png');
 	background-position: top left;
 	background-repeat: repeat-x;
 	padding: 0.0833em 0 0.0833em 0;
@@ -478,7 +478,7 @@ acronym, abbr {
 }
 .toc dt {
 	margin: 0;
-	background-image: url('greydot.png');
+	background-image: url('../img/greydot.png');
 	background-position: top left;
 	background-repeat: repeat-x;
 	padding: 0.0833em 0 0.0833em 0;
@@ -709,7 +709,7 @@ div.downloads .col50 {
 ul.downlist {
 	padding-left: 30px;
 	text-indent:0;
-	background: url('emblem-downloads.png') no-repeat 0 0.15em;
+	background: url('../img/emblem-downloads.png') no-repeat 0 0.15em;
 	min-height: 23px;
 	/* 
 	 * border-top: 0.17em solid #339900;
@@ -751,17 +751,17 @@ div.tip p
 	margin: 1em 0 1em 0;
 }
 div.tip {
-	background-image: url('admon-tip.png');
+	background-image: url('../img/admon-tip.png');
 }
 div.important{
-	background-image: url('admon-important.png');
+	background-image: url('../img/admon-important.png');
 }
 div.warning {
-	background-image: url('admon-warning.png');
+	background-image: url('../img/admon-warning.png');
 }
 div.note
 , div.trans-note  {
-	background-image: url('admon-note.png');
+	background-image: url('../img/admon-note.png');
 }
 
 /* Layout Elements */
@@ -825,7 +825,7 @@ table th {
 	padding-right: 1.5em;
 }
 div.tabular table td, table.tabular td, table.vendors td {
-	background-image: url(Pics/greydot.png);
+	background-image: url(../img/greydot.png);
 	background-position: top left;
 	background-repeat: repeat-x;
 }
@@ -860,7 +860,7 @@ tr.pkg-list:hover {
 	padding-top: 0.5em;
 /*	background-color: #f5f6f7;
 	background-color: white;
-	background-image:url('Pics/gradient-flipped.png');
+	background-image:url('../img/gradient-flipped.png');
 	background-position: bottom;
 	background-repeat: repeat-x;
 	display: none;
