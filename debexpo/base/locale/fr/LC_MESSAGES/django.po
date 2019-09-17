@@ -1,0 +1,154 @@
+# French translation for debexpo.
+# Copyright 2019 - Debexpo authors
+# This file is distributed under the same license as the debexpo package.
+# Baptiste BEAUPLAT <lyknode@cilg.org>.
+#
+# Baptiste BEAUPLAT <lyknode@cilg.org>, 2019.
+msgid ""
+msgstr ""
+"Project-Id-Version: debexpo 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-09-17 17:38+0200\n"
+"PO-Revision-Date: 2019-09-17 17:33+0200\n"
+"Last-Translator: Baptiste BEAUPLAT <lyknode@cilg.org>\n"
+"Language-Team: French <>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Lokalize 19.08.1\n"
+
+#: base/templates/base.html:50
+msgid "Start page"
+msgstr "Page d'accueil"
+
+#: base/templates/base.html:56
+msgid "Package list"
+msgstr "Liste des paquets"
+
+#: base/templates/base.html:62
+msgid "Maintainer"
+msgstr "Mainteneur"
+
+#: base/templates/base.html:68
+msgid "Reviews"
+msgstr "Revues"
+
+#: base/templates/base.html:74
+msgid "Sponsors"
+msgstr "Parrains"
+
+#: base/templates/base.html:80
+msgid "Q &amp; A"
+msgstr "F.A.Q."
+
+#: base/templates/base.html:86 base/templates/base.html:138
+msgid "Contact"
+msgstr "Contact"
+
+#: base/templates/base.html:97
+msgid "My account"
+msgstr "Mon compte"
+
+#: base/templates/base.html:100
+msgid "My packages"
+msgstr "Mes paquets"
+
+#: base/templates/base.html:104
+msgid "Sign me up"
+msgstr "Inscription"
+
+#: base/templates/base.html:107
+msgid "Login"
+msgstr "Connexion"
+
+#: base/templates/base.html:122
+msgid "Hosting and hardware provided by"
+msgstr "Hébergement et matériel mis à disposition par "
+
+#: base/templates/base.html:127
+msgid "Source code and bugs"
+msgstr "Code source et bugs"
+
+#: base/templates/base.html:130
+msgid "Version"
+msgstr "Version"
+
+#: base/templates/base.html:143
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: base/templates/base.html:148
+msgid "RSS"
+msgstr "RSS"
+
+#: base/templates/index.html:8
+#, python-format
+msgid "Welcome to %(name)s"
+msgstr "Bienvenue sur %(name)s"
+
+#: base/templates/index.html:14
+msgid ""
+"Only approved members of the Debian project (Debian Developers) are granted "
+"the permission to upload software packages into the Debian distribution. "
+"Still a large number of packages is maintained by non-official developers. "
+"How do they get their work into Debian when they are not allowed to upload "
+"their own packages directly? By means of a process called <em>sponsorship</"
+"em>.  Sponsorship means that a Debian Developer uploads the package on "
+"behalf of the actual maintainer. The Debian Developer will also check the "
+"package for technical correctness and help the maintainer to improve the "
+"package if necessary. Therefore the sponsor is sometimes also called a "
+"mentor."
+msgstr ""
+"Seuls les membres approuvés du projet Debian (Développeurs Debian) reçoivent "
+"la permission d'envoyer des paquets logiciels dans la distribution Debian. "
+"Il existe un grand nombre de paquets qui sont maintenu par des développeurs "
+"non-officiel. Comment font-ils pour mettre leurs travail dans Debian alors "
+"qu'ils ne sont pas autorisé à envoyer leurs propre paquets directement ? "
+"Grâce à un processus appelé le <em>parrainage</em>. Le parrainage veut dire "
+"que c'est un Développeur Debian qui envoie le paquets à la place du vrai "
+"mainteneur. Le Développeur Debian vérifiera également que le paquet est "
+"techniquement correct et aidera le mainteneur à améliorer le paquets si "
+"nécessaire. Ainsi, le parrain est aussi appelé un mentor."
+
+#: base/templates/index.html:29
+msgid ""
+"Note, not only Debian Developer are allowed to review packages. Everyone is "
+"encouraged to review packages! We appreciate your efforts as well."
+msgstr ""
+"Notez que, les Développeurs Debian ne sont pas les seuls autorisés à faire "
+"les revue de paquets. Tout le monde est encouragé à le faire ! Nous "
+"apprécions également vos efforts."
+
+#: base/templates/index.html:35
+msgid "Getting your package into Debian"
+msgstr "Envoyez vos paquets dans Debian"
+
+#: base/templates/index.html:38
+#, python-format
+msgid ""
+"See <a href=\"%(u_intro_maintainers)s\">our introductory page for "
+"maintainers</a> and learn how to use %(name)s and get your packages into "
+"Debian. Furthermore see <a href=\"%(u_sponsors)s\">our introductory page on "
+"sponsorship</a> to learn how to get in touch with a sponsor."
+msgstr ""
+"Allez voir <a href=\"%(u_intro_maintainers)s\">notre page d'introduction "
+"pour les mainteneurs</a> et apprenez comment utiliser %(name)s et envoyer "
+"vos paquets dans Debian. De plus, allez voir <a href=\"%(u_sponsors)s"
+"\">notre page d'introduction sur le parrainage</a> pour apprendre comment "
+"prendre contact avec un parrain."
+
+#: base/templates/index.html:47
+msgid ""
+"If you are curious about <em>Debexpo</em>, the software which is running "
+"this site, you can <a href=\"https://wiki.debian.org/Debexpo\">read more "
+"about Debexpo on the Debian Wiki</a>."
+msgstr ""
+"Si vous être curieux à propose de <em>Debexpo</em>, le logiciel qui fait "
+"tourner ce site, vous pouvez  <a href=\"https://wiki.debian.org/Debexpo\">en "
+"apprendre d'avantage sur Debexpo sur le Wiki Debian</a>."
+
+#: base/templates/index.html:54
+msgid "Recently uploaded packages"
+msgstr "Paquets envoyés récemment"
