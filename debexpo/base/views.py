@@ -40,3 +40,9 @@ def contact(request):
     return render(request, 'contact.html', {
         'settings': settings
     })
+
+
+def intro_reviewers(request):
+    return render(request, 'reviewers.html', {
+        'settings': settings
+    })
