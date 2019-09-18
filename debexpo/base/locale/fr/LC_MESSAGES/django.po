@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-18 21:14+0200\n"
+"POT-Creation-Date: 2019-09-18 23:11+0200\n"
 "PO-Revision-Date: 2019-09-18 16:40+0200\n"
 "Last-Translator: Baptiste BEAUPLAT <lyknode@cilg.org>\n"
 "Language-Team: French <>\n"
@@ -206,6 +206,322 @@ msgstr ""
 #: templates/index.html:54
 msgid "Recently uploaded packages"
 msgstr "Paquets envoyés récemment"
+
+#: templates/qa.html:5
+msgid "Questions &amp; Answers"
+msgstr "Foire aux Questions"
+
+#: templates/qa.html:7
+#, python-format
+msgid ""
+"%(site_name)s is a rather complex service. Things can go wrong on your side "
+"or on this server. Before contacting the support please see if your question "
+"is answered here:"
+msgstr ""
+"%(site_name)s est un service plutôt complexe. Des choses peuvent mal se "
+"passer de votre côté ou sur ce serveur. Avant de contacter le support, merci "
+"de vérifier si votre question n'a pas de réponse ici:"
+
+#: templates/qa.html:13
+msgid "Getting started"
+msgstr "Bien commencer"
+
+#: templates/qa.html:14
+msgid "How do I build a package?"
+msgstr "Comment puis-je construire un paquet ?"
+
+#: templates/qa.html:17
+msgid ""
+"If you want to learn how to create a proper Debian package you can find some "
+"interesting documentation to start with:"
+msgstr ""
+"Si vous souhaitez apprendre à créer un vrai paquet Debian, vous pourrez "
+"trouver une documentation intéressante pour commencer:"
+
+#: templates/qa.html:26
+msgid "The Debian Policy Manual"
+msgstr "La charte Debian"
+
+#: templates/qa.html:30
+msgid ""
+"A must read resource to learn about technical specification and technical "
+"requirements of Debian packages."
+msgstr ""
+"Une ressource incontournable pour apprendre les spécifications techniques et "
+"les pre-requis techniques des paquets Debian."
+
+#: templates/qa.html:37
+msgid "New Maintainer's Guide"
+msgstr "Le Guide du Nouveau Mainteneur"
+
+#: templates/qa.html:41
+msgid "A must read resource to learn basics of Debian source packages"
+msgstr ""
+"Une ressource incontournable pour apprendre les bases des paquets sources "
+"Debian"
+
+#: templates/qa.html:47
+msgid "Lucas Nussbaum's packaging tutorial"
+msgstr "Le tutoriel de création de paquets de Lucas Nussbaum"
+
+#: templates/qa.html:51
+msgid "A quick introduction to Debian packaging"
+msgstr "Une introduction succinte à l'empaquetage Debian"
+
+#: templates/qa.html:55
+msgid "Developer's Reference"
+msgstr "Référence du Développeur"
+
+#: templates/qa.html:59
+msgid ""
+"A comprehensive manual describing typical workflows and best practices "
+"related to Debian packages"
+msgstr ""
+"Un manuel complet décrivant les processus abituels ainsi que les bonnes "
+"pratiques pour les paquets Debian"
+
+#: templates/qa.html:66
+msgid "Debian Mentors FAQ"
+msgstr "F.A.Q. de Debian Mentors"
+
+#: templates/qa.html:67
+msgid "(Debian Wiki)"
+msgstr "(Wiki Debian)"
+
+#: templates/qa.html:70
+msgid ""
+"Another valuable resource to learn about common terms and workflows related "
+"to Debian"
+msgstr ""
+"Une autre ressource importante pour apprendre le vocabulaire et les "
+"processus attachés à Debian"
+
+#: templates/qa.html:77
+msgid "What is the Debian policy?"
+msgstr "Qu'est-ce que la charte Debian ?"
+
+#: templates/qa.html:80
+msgid ""
+"Every package must comply with the <a href=\"https://www.debian.org/doc/"
+"debian-policy/ch-scope.html\">Debian policy</a> before it can enter the "
+"Debian distribution. This is a document which describes the structure and "
+"contents of the Debian archive and several design issues of the operating "
+"system, as well as technical requirements that each package must satisfy to "
+"be included in the distribution."
+msgstr ""
+"Tous les paquets doivent être comforme à <a href=\"https://www.debian.org/"
+"doc/debian-policy/ch-scope.html\">Charte Debian</a> avant qu'ils puissent "
+"entrer dans la distribution Debian. C'est un document qui décrit la "
+"structure et le contenu de l'archive Debian, plusieurs problématiques "
+"d'architecture du système d'exploitation ainsi que les pré-requis techniques "
+"que chaque paquets soit satisfaire pour l'inclusion dans la distribution."
+
+#: templates/qa.html:92
+msgid ""
+"The policy is not a tutorial. Its a technical manual which specifies "
+"normative requirements of packages. Read it to learn package specifications. "
+"If you don't know how to package something for Debian, please read "
+"additionally the <a href=\"https://www.debian.org/doc/manuals/maint-guide/"
+"\">New Maintainer's Guide</a>."
+msgstr ""
+"La Charte n'est pas un tutoriel. C'est un manuel technique qui spéficie les "
+"pré-requis normatif des paquets. Lisez-le pour apprendre les spécifications "
+"des paquets. Si vous ne savez pas comment empaqueter quelque chose pour "
+"Debian, merci de lire également le <a href=\"https://www.debian.org/doc/"
+"manuals/maint-guide/\">Guide du nouveau Mainteneur</a>."
+
+#: templates/qa.html:102
+msgid "Is my package technically okay?"
+msgstr "Est-ce que mon paquest est techniquement correct ?"
+
+#: templates/qa.html:105
+#, python-format
+msgid ""
+"When you upload your package to %(site_name)s it will automatically be "
+"checked for common mistakes. You will get an information email after the "
+"upload. Either your package contains bugs and will be rejected, or the "
+"package is clean except for some minor technical issues.  You will get hints "
+"about how to fix the package. If the email tells you that your package is "
+"fine then a sponsor will still do further checks. Don't worry too much. If "
+"your package is accepted by mentors.debian.net then let the sponsor help you "
+"with the rest."
+msgstr ""
+"Quand vous envoyez votre paquet sur %(site_name)s, il sera automatiquement "
+"vérifié pour des erreurs communes. Vous reçeverez un courriel d'information "
+"après l'envoi. Soit votre paquet contient des bugs et il sera rejeté, soit "
+"il est propre a l'exception de quelques problématiques minueurs. Vous aurez "
+"des indications sur comment corriger votre paquet. Si le courriel vous "
+"indique que le paquet est correct alors, un parrain fera les vérifications "
+"additionnelles. Ne soyez pas inquiet, si votre paquet est accepté par "
+"mentors.debian.net, alors laissez le parrain vous aider avec le reste."
+
+#: templates/qa.html:117
+msgid "What is Lintian?"
+msgstr "Qu'est-ce que Lintian ?"
+
+#: templates/qa.html:120
+msgid ""
+"Lintian is a Debian package checker (and available as <a href=\"https://"
+"packages.debian.org/lintian\">Debian package</a> so you can run it "
+"yourself). It can be used to check binary and source packages for compliance "
+"with the Debian policy and for other common packaging errors."
+msgstr ""
+"Lintian est un vérification de paquet Debian (et disponible en tant que <a "
+"href=\"https://packages.debian.org/lintian\">paquet Debian</a> pour que vous "
+"puissiez le lancez vous-même). Il peut être utilisé pour vérifier les "
+"paquets binaires et sources sur leurs comformités avec la charte Debian and "
+"d'autres erreurs d'empaquetage."
+
+#: templates/qa.html:129
+msgid ""
+"Packaging for Debian is rather complex because one has to consider hundreds "
+"of guidelines to make the package \"policy compliant\". Lintian tries to "
+"address this issue by providing an automated static analysis framework. You "
+"can learn more about Lintian in the <a href=\"https://lintian.debian.org/"
+"manual/index.html\">Lintian User's Manual</a>."
+msgstr ""
+"L'empaquetage pour Debian est plutôt complexe car l'on se doit de passer en "
+"revue des centaines de recommandations afin de rendre le paquet \"comforme à "
+"la charte\". Lintian essaye de répondre à cette problématique en fournissant "
+"un framework d'analyse statique automatisé. Vous pouvez en apprendre plus "
+"sur Lintian dans le <a href=\"https://lintian.debian.org/manual/index.html"
+"\">Manuel de l'utilisateur Lintian</a>."
+
+#: templates/qa.html:139
+msgid "Your Account"
+msgstr "Votre compte"
+
+#: templates/qa.html:141
+msgid "Why do I not receive a confirmation email?"
+msgstr "Pourquoi je n'ai pas reçu de courriel de confirmation ?"
+
+#: templates/qa.html:144
+#, python-format
+msgid ""
+"First make sure that you signed the package with the proper PGP key. Next "
+"check where you uploaded your package. By default the dput and dupload tools "
+"upload to Debian's official FTP master server. That server will silently "
+"drop your upload. If the problem persist please send an email to <strong> "
+"Site email</strong>: <a href=\"mailto: %(email)s\">%(email)s</a> if you "
+"require assistance."
+msgstr ""
+"Premièrement, vérifiez que vous avez signé le paquet avec la bonne clef PGP. "
+"Puis, vérifiez l'emplacement où vous avez envoyer votre paquet. Par défaut, "
+"les outils dput et dupload envoient vers le serveur FTP maitre de Debian. Ce "
+"serveur supprimera silencieuxement votre envoi. Si le problème persiste, "
+"merci d'envoyer un mail à <strong>Courriel du site</strong>: <a href="
+"\"mailto: %(email)s\">%(email)s</a> si vous avez besoin d'assitance."
+
+#: templates/qa.html:154
+msgid "My binary packages do not show up"
+msgstr "Mon paquet binaire ne se trouve nul part"
+
+#: templates/qa.html:157
+#, python-format
+msgid ""
+"The current policy on %(site_name)s is to deliberately throw away the binary "
+"packages. This is done for two main reasons. First, it saves a lot of disk "
+"space. And second, in the past Debian users downloaded the packages and used "
+"them carelessly to get brand-new versions. This led to a lot of support "
+"questions. So we decided to just keep the source packages."
+msgstr ""
+"La politique actuelle de %(site_name)s est de supprimer délibérément le "
+"paquet binaire. Ceci est fait pour deux raisons. Premièrement, cela permet "
+"d'economiser beaucoup d'espace disque. Et deuxièment, par le passé, des "
+"utilisateurs de Debian téléchargaient les paquets et les utilisaient sans "
+"faire attention afin d'optenir les toutes dernière versions. Cela à "
+"entrainer beaucoup de question de support. Nous avons donc pris la décision "
+"de garder uniquement les paquets sources."
+
+#: templates/qa.html:167
+msgid "How long will it take until my upload is available to sponsors?"
+msgstr ""
+"Combien de temps faut il avant que mon envoi ne soit disponible pour les "
+"parrains ?"
+
+#: templates/qa.html:173
+msgid ""
+"If you upload via HTTP, which is what we recommend, then it will take "
+"between 0 and 2 minutes."
+msgstr ""
+"Si vous avez envoyé via HTTP, ce qui est ce que nous recommandons, cela "
+"devrai alors prendre entre 0 et 2 minutes."
+
+#: templates/qa.html:180
+msgid ""
+"If you upload via FTP, which you must do if a package is too large for the "
+"HTTP uploader, then there can be up to a 30 minute delay before your package "
+"gets processed."
+msgstr ""
+"Si vous avez envoyé via FTP, ce que vous devez faire si votre paquet est "
+"trop gros pour l'envoyeur HTTP, alors cela peut prendre jusqu'à 30 minutes "
+"avant que le paquet soit traité."
+
+#: templates/qa.html:188
+msgid ""
+"During those 0-2 minutes, the server does quality assurance and other checks "
+"on your package. You will receive an email when it is ready."
+msgstr ""
+"Pendant ces 0-2 minutes, le serveur procède à de l'assurance qualité et "
+"autres vérifications sur votre paquet. Vous reçeverez un courriel quand "
+"celui ci sera prêt."
+
+#: templates/qa.html:194
+msgid "Information for sponsors"
+msgstr "Information pour les parrains"
+
+#: templates/qa.html:196
+msgid "What is a sponsor?"
+msgstr "Qu'est-ce qu'un parrain ?"
+
+#: templates/qa.html:199
+msgid ""
+"Someone who uploads the package and is responsible for the package in the "
+"archive. The sponsor is responsible for the quality of the package and "
+"checks the work of the package maintainer to improve his skills."
+msgstr ""
+"Quelqu'un qui envoi le paquet et qui est responsable du paquet dans "
+"l'archive. Le parrain est responsable pour la qualité du paquet et vérifie "
+"le travail du mainteneur du paquet dans le but d'améliorer ces complétances."
+
+#: templates/qa.html:206
+msgid "Why should I sponsor uploads"
+msgstr "Pourquoi devrais-je parrainer des envois"
+
+#: templates/qa.html:209
+msgid ""
+"Thanks for your interest. There are a lot of sponsorees waiting for a "
+"Developer to help them with their packages, and if you want to help with the "
+"New Maintainer process this is a good step to get involved."
+msgstr ""
+"Merci pour votre intéret. Il y a beaucoup de mainteneurs en attente d'un "
+"Développeur pour les aider avec leurs paquets, et si vous souhaitez aider "
+"avec le processus de nouveau mainteneurs, c'est un bonne étape pour "
+"s'inverstir."
+
+#: templates/qa.html:216
+msgid "What to do for sponsoring?"
+msgstr "Que faire pour parrainer ?"
+
+#: templates/qa.html:219
+msgid ""
+"Look for packages that you would like to sponsor on this website. Once you "
+"have found some you should download, build and test them. Please notify your "
+"sponsoree of every problem that you find in order to give him a chance to "
+"fix them. We believe that it is of uttermost importance to stay in contact "
+"with your sponsorees to keep them interested in working on Debian. Moreover, "
+"they will also learn how to maintain packages within a team and will learn "
+"skills that are crucial for Debian Developers more easily."
+msgstr ""
+"Cherchez les paquets que vous voudriez parrainer sur ce site. Une fois que "
+"vous en avez trouvé, vous devez le télécharger, le construire et le tester. "
+"Merci d'informer votre parrainé de toutes les problèmatiques que vous "
+"relevez afin de leur donner une change de les corriger. Nous pensons qu'il "
+"est de la plus haute importance de rester en contact avec vos parrainés pour "
+"qu'ils restent motivé pour travailler pour Debian. De plus, ils apprendront "
+"également comment maintenir des paquets en faisant parti d'une équipe et ils "
+"acquireront les complétences curiales pour les Développeur Debian plus "
+"facilement."
 
 #: templates/reviewers.html:6
 msgid "Package reviews"
