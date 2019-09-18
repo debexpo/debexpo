@@ -34,3 +34,9 @@ def index(request):
     return render(request, 'index.html', {
         'settings': settings
     })
+
+
+def contact(request):
+    return render(request, 'contact.html', {
+        'settings': settings
+    })
