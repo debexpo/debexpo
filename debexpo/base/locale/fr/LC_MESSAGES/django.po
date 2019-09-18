@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-17 17:38+0200\n"
-"PO-Revision-Date: 2019-09-17 17:33+0200\n"
+"POT-Creation-Date: 2019-09-18 15:27+0200\n"
+"PO-Revision-Date: 2019-09-18 14:48+0200\n"
 "Last-Translator: Baptiste BEAUPLAT <lyknode@cilg.org>\n"
-"Language-Team: French <>\n"
+"Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,76 +19,130 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 19.08.1\n"
 
-#: base/templates/base.html:50
+#: templates/base.html:50
 msgid "Start page"
 msgstr "Page d'accueil"
 
-#: base/templates/base.html:56
+#: templates/base.html:56
 msgid "Package list"
 msgstr "Liste des paquets"
 
-#: base/templates/base.html:62
+#: templates/base.html:62
 msgid "Maintainer"
 msgstr "Mainteneur"
 
-#: base/templates/base.html:68
+#: templates/base.html:68
 msgid "Reviews"
 msgstr "Revues"
 
-#: base/templates/base.html:74
+#: templates/base.html:74
 msgid "Sponsors"
 msgstr "Parrains"
 
-#: base/templates/base.html:80
+#: templates/base.html:80
 msgid "Q &amp; A"
 msgstr "F.A.Q."
 
-#: base/templates/base.html:86 base/templates/base.html:138
+#: templates/base.html:86 templates/base.html:139
 msgid "Contact"
 msgstr "Contact"
 
-#: base/templates/base.html:97
+#: templates/base.html:98
 msgid "My account"
 msgstr "Mon compte"
 
-#: base/templates/base.html:100
+#: templates/base.html:101
 msgid "My packages"
 msgstr "Mes paquets"
 
-#: base/templates/base.html:104
+#: templates/base.html:105
 msgid "Sign me up"
 msgstr "Inscription"
 
-#: base/templates/base.html:107
+#: templates/base.html:108
 msgid "Login"
 msgstr "Connexion"
 
-#: base/templates/base.html:122
+#: templates/base.html:123
 msgid "Hosting and hardware provided by"
 msgstr "Hébergement et matériel mis à disposition par "
 
-#: base/templates/base.html:127
+#: templates/base.html:128
 msgid "Source code and bugs"
 msgstr "Code source et bugs"
 
-#: base/templates/base.html:130
+#: templates/base.html:131
 msgid "Version"
 msgstr "Version"
 
-#: base/templates/base.html:143
+#: templates/base.html:144
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: base/templates/base.html:148
+#: templates/base.html:149
 msgid "RSS"
 msgstr "RSS"
 
-#: base/templates/index.html:8
+#: templates/contact.html:7
+msgid "Site contact"
+msgstr "Contact du site"
+
+#: templates/contact.html:10
+#, python-format
+msgid ""
+"You can get in direct contact with the debexpo team. In case of technical "
+"problems please check the <a href=\"%(u_qa)s\">Q &amp; A</a> section and the "
+"<a href=\"https://wiki.debian.org/Debexpo\">Debian wiki</a> first. "
+"<strong>Please do not use this contact address for sponsor requests or "
+"packaging questions</strong>, write to the <a href=\"https://lists.debian."
+"org/debian-mentors/\">debian-mentors mailing list</a> instead or <a href="
+"\"%(u_rfs)s\">file a RFS bug</a> respectively."
+msgstr ""
+"Vous pouvez rentrer en contact directement avec l'équipe debexpo. En cas de "
+"problèmes techniques, merci consulter la section <a href=\"%(u_qa)s\">F.A.Q."
+"</a> et le <a href=\"https://wiki.debian.org/Debexpo\">wiki Debian</a> "
+"préalablement. <strong>Merci de ne pas utiliser cette adresse pour vos "
+"recherche de parrain ou des questions sur les paquets</strong>, à la place, "
+"écrivez à  <a href=\"https://lists.debian.org/debian-mentors/\">la liste de "
+"diffusion debian-mentors</a> ou <a href=\"%(u_rfs)s\">remplissez un bug RFS</"
+"a>."
+
+#: templates/contact.html:22
+msgid "Site email"
+msgstr "Courriel du site"
+
+#: templates/contact.html:27
+msgid ""
+"Currently Baptiste BEAUPLAT (<em>lyknode</em>), Mattia Rizzolo (<em>mattia</"
+"em>, IRC: <em>mapreri</em>) and Paul Wise (<em>pabs</em>) are maintaining "
+"this service."
+msgstr ""
+"Présentement, Baptiste BEAUPLAT (<em>lyknode</em>), Mattia Rizzolo "
+"(<em>mattia</em>, IRC: <em>mapreri</em>) and Paul Wise (<em>pabs</em>) "
+"maintiennent ce service."
+
+#: templates/contact.html:34
+msgid "Development"
+msgstr "Développement"
+
+#: templates/contact.html:37
+#, python-format
+msgid ""
+"We are always looking for new contributors. If you want to contribute or "
+"improve %(site_name)s, come to <tt>#debexpo</tt> on <a href=\"irc://irc."
+"debian.org/debexpo\">irc.debian.org</a> and chat with us."
+msgstr ""
+"Nous sommes toujours à la recherche de nouveau contributeurs. Si vous "
+"souhaitez contribuer ou améliorer %(site_name)s, rendez-vous sur "
+"<tt>#debexpo</tt> sur <a href=\"irc://irc.debian.org/debexpo\">irc.debian."
+"org</a> pour discuter avec nous."
+
+#: templates/index.html:8
 #, python-format
 msgid "Welcome to %(name)s"
 msgstr "Bienvenue sur %(name)s"
 
-#: base/templates/index.html:14
+#: templates/index.html:14
 msgid ""
 "Only approved members of the Debian project (Debian Developers) are granted "
 "the permission to upload software packages into the Debian distribution. "
@@ -112,7 +166,7 @@ msgstr ""
 "techniquement correct et aidera le mainteneur à améliorer le paquets si "
 "nécessaire. Ainsi, le parrain est aussi appelé un mentor."
 
-#: base/templates/index.html:29
+#: templates/index.html:29
 msgid ""
 "Note, not only Debian Developer are allowed to review packages. Everyone is "
 "encouraged to review packages! We appreciate your efforts as well."
@@ -121,11 +175,11 @@ msgstr ""
 "les revue de paquets. Tout le monde est encouragé à le faire ! Nous "
 "apprécions également vos efforts."
 
-#: base/templates/index.html:35
+#: templates/index.html:35
 msgid "Getting your package into Debian"
 msgstr "Envoyez vos paquets dans Debian"
 
-#: base/templates/index.html:38
+#: templates/index.html:38
 #, python-format
 msgid ""
 "See <a href=\"%(u_intro_maintainers)s\">our introductory page for "
@@ -139,7 +193,7 @@ msgstr ""
 "\">notre page d'introduction sur le parrainage</a> pour apprendre comment "
 "prendre contact avec un parrain."
 
-#: base/templates/index.html:47
+#: templates/index.html:47
 msgid ""
 "If you are curious about <em>Debexpo</em>, the software which is running "
 "this site, you can <a href=\"https://wiki.debian.org/Debexpo\">read more "
@@ -149,6 +203,6 @@ msgstr ""
 "tourner ce site, vous pouvez  <a href=\"https://wiki.debian.org/Debexpo\">en "
 "apprendre d'avantage sur Debexpo sur le Wiki Debian</a>."
 
-#: base/templates/index.html:54
+#: templates/index.html:54
 msgid "Recently uploaded packages"
 msgstr "Paquets envoyés récemment"
