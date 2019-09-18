@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-18 15:27+0200\n"
-"PO-Revision-Date: 2019-09-18 14:48+0200\n"
+"POT-Creation-Date: 2019-09-18 21:14+0200\n"
+"PO-Revision-Date: 2019-09-18 16:40+0200\n"
 "Last-Translator: Baptiste BEAUPLAT <lyknode@cilg.org>\n"
-"Language-Team: French <kde-i18n-doc@kde.org>\n"
+"Language-Team: French <>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -206,3 +206,162 @@ msgstr ""
 #: templates/index.html:54
 msgid "Recently uploaded packages"
 msgstr "Paquets envoyés récemment"
+
+#: templates/reviewers.html:6
+msgid "Package reviews"
+msgstr "Revues de paquets"
+
+#: templates/reviewers.html:9
+msgid ""
+"You can help to review packages. That is possible even if you are not a "
+"Debian developer (<i>yet</i>). No reason to be shy, it is ok if you do not "
+"know everything or you are not entirely sure if your suggestions are "
+"correct. Any help is appreciated. Interested in diving in? It is easy:"
+msgstr ""
+"Vous pouvez aider pour la revue de paquets. C'est possible même si vous "
+"n'êtes pas (<i>déjà</i>) un Développeur Debian. Ne soyez pas timide, vous "
+"n'avez pas besoin de connaître tout ou d'être entièrement sûr si vos "
+"suggestions sont correctes. Toute aide est appréciée. Intéressé(e) pour vous "
+"plonger dedans ? Rien de plus simple :"
+
+#: templates/reviewers.html:17
+msgid "Why should I review packages? I can not upload them!"
+msgstr ""
+"Pourquoi devrai-je faire de la revue de paquets ? Je ne peux pas les "
+"envoyer !"
+
+#: templates/reviewers.html:20
+msgid ""
+"Glad you ask! There are many reasons why you should review packages even if "
+"you can't actually upload them."
+msgstr ""
+"Content que vous demandiez ! Il existe plein de raison sur pourquoi vous "
+"devriez faire de la revue de paquets même si, dans les faits, vous en pouvez "
+"pas les envoyer."
+
+#: templates/reviewers.html:28
+msgid ""
+"The person you are reviewing will appreciate it. Chances are, you find "
+"problems in a package the person was not aware of yet. So they can learn "
+"from you."
+msgstr ""
+"La personne dont vous faite la revue vous en sera reconnaissante. Il y a de "
+"bonne chance que vous trouviez des problèmes dans le paquets dont la "
+"personne n'avais pas connaissance. Elle pourra donc apprendre de vous."
+
+#: templates/reviewers.html:35
+msgid ""
+"Eventually the package you are reviewing will be in a very good shape and "
+"you happen to learn something yourself. Moreover, you will also learn about "
+"best practices and workflows other people are using. Even if the package "
+"does not meet Debian's quality standards you can learn how <i>not to do</i> "
+"things."
+msgstr ""
+"Éventuellement, le paquet dont vous faite la revue sera de très bonne "
+"qualité et vous pourrez alors apprendre de celui-ci. De plus, vous "
+"découvrirez les processus et les bonnes pratiques que les autres utilisent. "
+"Même dans le cas où le paquet ne satisfait pas les standards de qualité de "
+"Debian, vous pourrez apprendre comment <i>ne pas faire</i> les choses."
+
+#: templates/reviewers.html:44
+msgid ""
+"People who <i>can</i> upload may decide based on your review whether the "
+"package in question is a suitable candidate or not."
+msgstr ""
+"Les personnes qui <i>peuvent</i> faire des envois, pourrons baser leur "
+"décision sur votre revue, si le paquet en question est un candidat sérieux "
+"ou non."
+
+#: templates/reviewers.html:51
+msgid "How can I review packages?"
+msgstr "Comment puis-je faire de la revue de paquets ?"
+
+#: templates/reviewers.html:54
+msgid ""
+"Pick a source package and start. There is no single correct way to review "
+"packages, but chances are you may want to have a look on the following "
+"things:"
+msgstr ""
+"Choisissez un paquet source et lancez-vous. Il n'existe pas une seul manière "
+"de faire de la revue de paquet, mais il y a des changes que vous voudrez "
+"regarder les points suivants :"
+
+#: templates/reviewers.html:63
+msgid ""
+"Verify Lintian outputs: Did Lintian miss something, are fixes semantically "
+"correct?"
+msgstr ""
+"Vérification de la sortie de Lintian : Est-ce que Lintian à manquer quelque "
+"chose, les corrections sont elles sémantiquement correctes ?"
+
+#: templates/reviewers.html:69
+msgid ""
+"Does the package satisfy <a href=\"https://www.debian.org/doc/manuals/"
+"developers-reference/best-pkging-practices.html\"> Debian's best practices</"
+"a> for packages?"
+msgstr ""
+"Est-ce que le paquet respecte <a href=\"https://www.debian.org/doc/manuals/"
+"developers-reference/best-pkging-practices.html\">les bonnes pratiques "
+"Debian</a> pour les paquets ?"
+
+#: templates/reviewers.html:76
+msgid ""
+"Does the package correctly declare dependencies as defined in the policy?"
+msgstr ""
+"Est-ce que le paquet déclare correctement ses dépendances, comme spécifié "
+"dans la charte ?"
+
+#: templates/reviewers.html:82
+msgid ""
+"Does the package meet the <a href=\"https://www.debian.org/social_contract"
+"\">DFSG</a>? If yes, is the copyright file up to date and correct?"
+msgstr ""
+"Est-ce que le paquet satisfait la <a href=\"https://www.debian.org/"
+"social_contract\">DFSG</a> ? Si oui, est-ce que le fichier copyright est "
+"correct et à jour ?"
+
+#: templates/reviewers.html:89
+msgid ""
+"Do the maintainer scripts supplied with the package look robust, idempotent "
+"and useful?"
+msgstr ""
+"Est-ce que les scripts mainteneurs fourni avec le paquet semblent robustes, "
+"idempotents et utiles ?"
+
+#: templates/reviewers.html:95
+msgid "Is there a watch file? If yes, does it work?"
+msgstr "Est-ce qu'il y a un fichier watch ? Si oui, est-il fonctionnel ?"
+
+#: templates/reviewers.html:100
+msgid "Can you build the package in a clean build chroot?"
+msgstr "Pouvez-vous construire le paquet dans un chroot propre ?"
+
+#: templates/reviewers.html:105
+msgid ""
+"Was the upstream tarball modified? If yes, is there a good reason to do so?"
+msgstr ""
+"La tarball upstream a-t-elle été modifié ? Si oui, y a t'il une bonne raison "
+"de le faire ?"
+
+#: templates/reviewers.html:112
+msgid "Established sponsor guidelines"
+msgstr "Recommandation établies des parrainage"
+
+#: templates/reviewers.html:115
+#, python-format
+msgid ""
+"Several Debian Developers published their personal sponsor guidelines. Those "
+"are rules applying for a particular person or a specific packaging team in "
+"case you want to have a package sponsored by them. Typically those rules "
+"extend the Debian policy by custom requirements, or require a particular "
+"workflow from you.  You can have a look at some guidelines from different "
+"people on our <a href=\"%(u_sponsors)s\">sponsors side</a>"
+msgstr ""
+"Plusieurs Développeurs Debian ont publiés leurs recommandations personnelles "
+"de parrainage. Ce sont des règles établies pour une personne particulière ou "
+"pour un équipe spécifique dans le cas où vous voudriez que votre paquet soit "
+"parrainé par eux. Typiquement, ces règles consolide la charte Debian avec "
+"des pré-requis particuliers, ou requière que vous suiviez un processus "
+"particulier. Vous pouvez jeter un coup d'œil à certaine de ces "
+"recommandations de la part de différentes personnes sur notre <a href="
+"\"%(u_sponsors)s\">page des parrains</a>"
