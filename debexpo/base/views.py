@@ -46,3 +46,9 @@ def intro_reviewers(request):
     return render(request, 'reviewers.html', {
         'settings': settings
     })
+
+
+def qa(request):
+    return render(request, 'qa.html', {
+        'settings': settings
+    })
