@@ -37,4 +37,5 @@ class TestBrowsingIndex(TestCase):
         client = Client()
 
         response = client.get('/')
-        self.assertEquals(response.status_code, 404)
+        self.assertEquals(response.status_code, 200)
+        self.assertIn('Welcome to ', str(response.content))
