@@ -35,6 +35,7 @@ Development documentation
     building
     coding_standards
     contributing
+    translation
 
 Indices and tables
 ==================
