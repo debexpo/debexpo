@@ -14,8 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from debexpo.base.views import index
+from debexpo.base.views import index, contact
 
 urlpatterns = [
-    path('', index, name='index')
+    path('', index, name='index'),
+    path('contact', contact, name='contact'),
 ]

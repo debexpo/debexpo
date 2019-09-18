@@ -35,3 +35,5 @@ SITE_TITLE = 'Mentors'
 
 HOSTING_URL = 'https://www.wavecon.de/'
 HOSTING = 'Wavecon'
+
+SUPPORT_EMAIL = 'support@mentors.debian.net'

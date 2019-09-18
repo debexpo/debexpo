@@ -22,3 +22,5 @@ DATABASES = {
         'NAME': path.join(BASE_DIR, 'db.sqlite3'),  # noqa: F405
     }
 }
+
+SUPPORT_EMAIL = 'support@example.org'
