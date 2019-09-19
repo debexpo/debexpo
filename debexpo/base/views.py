@@ -52,3 +52,9 @@ def qa(request):
     return render(request, 'qa.html', {
         'settings': settings
     })
+
+
+def intro_maintainers(request):
+    return render(request, 'intro-maintainers.html', {
+        'settings': settings
+    })
