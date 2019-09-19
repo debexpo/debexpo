@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-18 23:11+0200\n"
-"PO-Revision-Date: 2019-09-18 16:40+0200\n"
+"POT-Creation-Date: 2019-09-19 11:10+0200\n"
+"PO-Revision-Date: 2019-09-19 15:30+0200\n"
 "Last-Translator: Baptiste BEAUPLAT <lyknode@cilg.org>\n"
 "Language-Team: French <>\n"
 "Language: fr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 19.08.1\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: templates/base.html:50
 msgid "Start page"
@@ -65,7 +65,7 @@ msgstr "Connexion"
 
 #: templates/base.html:123
 msgid "Hosting and hardware provided by"
-msgstr "Hébergement et matériel mis à disposition par "
+msgstr "Hébergement et matériel mis à disposition par"
 
 #: templates/base.html:128
 msgid "Source code and bugs"
@@ -207,6 +207,491 @@ msgstr ""
 msgid "Recently uploaded packages"
 msgstr "Paquets envoyés récemment"
 
+#: templates/intro-maintainers.html:10
+msgid "Introduction for maintainers: How will my package get into Debian"
+msgstr ""
+"Introduction pour les mainteneurs : Comment mon paquet sera mis dans Debian"
+
+#: templates/intro-maintainers.html:16
+msgid ""
+"We are glad that you found your way to our web site. Honestly, the whole web "
+"site is just there to get your work into Debian. Your contribution is "
+"appreciated and it would be a pity if you did not find a sponsor to upload "
+"your packages. Read on to see in what ways we will be helping you find a "
+"sponsor."
+msgstr ""
+"Nous sommes heureux que vous ayez trouvé votre chemin vers notre site web. "
+"Honnêtement, le site entier est juste là pour mettre votre travail dans "
+"Debian. Votre contribution est apprécié et cela serait dommage si vous ne "
+"trouviez pas un parrain pour vos paquets. Continuez votre lecture pour voir "
+"comment nous vous aideront à trouver un parrain."
+
+#: templates/intro-maintainers.html:25
+msgid "1. Find a requested package"
+msgstr "1. Trouver un paquet demandé"
+
+#: templates/intro-maintainers.html:28
+#, python-format
+msgid ""
+"Debian is a distribution, not a general purpose repository. Many of us do "
+"not believe <em>every</em> piece of free software necessarily belongs in "
+"Debian. Please do not treat Debian as a platform to advertise your own "
+"software, unless there is some <em>real</em> request for it. That said, "
+"there is no one who ultimately judges about that. Eventually you may get "
+"some feedback on that discussion after filing your WNPP bug (see below) "
+"however you are free to interpret that as a suggestion, not as a final vote. "
+"After all, you need to find a sponsor believing in the benefit of having "
+"your package in Debian. Please have a look at our <a href=\"%(u_sponsor)s"
+"\">sponsors page</a> to learn about personal interests of sponsors."
+msgstr ""
+"Debian est une distribution, pas un dépôt d’intérêt général. Beaucoup "
+"d'entre nous ne pensons pas que <em>tout</em> les logiciels libres "
+"appartienne nécessairement à Debian. Merci de ne pas traiter Debian comme "
+"une plateforme pour faire la publicité de votre propre logiciel, sauf si il "
+"existe une <em>réelle</em> demande pour celui-ci. Ceci étant dit, personne "
+"n'est juge à ce propos. Éventuellement, vous aurez peut être un retour sur "
+"ce sujet après avoir rempli votre bug WNPP (voir ci-dessous). Cependant, "
+"vous êtes libre d'interpréter ceci comme une suggestion et non un vote "
+"final. Après tout, vous aurez besoin de trouver un parrain qui croit dans le "
+"bénéfice d'avoir votre paquet dans Debian. Merci de consulter notre <a href="
+"\"%(u_sponsor)s\">page sur les parrains</a> pour en apprendre plus sur les "
+"centres d'intérêt des parrains."
+
+#: templates/intro-maintainers.html:44
+msgid ""
+"If you want to contribute to Debian, but you do not know which packages to "
+"contribute to, take a look at \"Request for help\" (<em>RFH</em>), \"Request "
+"for adopter\" (<em>RFA</em>), \"Orphaned package\" (<em>O</em>) and "
+"\"Request for package\" (<em>RFP</em>) bugs. See <em>WNPP</em> below."
+msgstr ""
+"Si vous souhaitez contribuer à Debian, mais vous ne savez pas à quels "
+"paquets contribuer, consultez les bugs \"Request for help\" (<em>RFH</em>), "
+"\"Request for adopter\" (<em>RFA</em>), \"Orphaned package\" (<em>O</em>) et "
+"\"Request for package\" (<em>RFP</em>). Voir <em>WNPP</em>, ci-dessous."
+
+#: templates/intro-maintainers.html:52
+msgid "2. File a WNPP bug"
+msgstr "2. Remplissez un bug WNPP"
+
+#: templates/intro-maintainers.html:55
+msgid ""
+"<a href=\"https://www.debian.org/devel/wnpp/\"> Work-Needing and Prospective "
+"Packages</a> (<em>WNPP</em>) is our system of announcing your intent to "
+"markup packages being worked on. In particular it is a bug against the <a "
+"href=\"https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=wnpp\"> WNPP pseudo "
+"package</a> (<a href=\"https://wnpp.debian.net/\">or use a nice frontend</a> "
+"to browse <em>WNPP</em> bugs). If you want to package something not "
+"currently available in Debian, the very first step should be to file an "
+"\"Intent to package\" (<em>ITP</em>) bug against <em>WNPP</em>. You may want "
+"to use the <tt><a href=\"https://packages.debian.org/squeeze/reportbug"
+"\">reportbug</a></tt> tool to achieve that by selecting \"<em>wnpp</em>\" as "
+"package to report a bug to."
+msgstr ""
+"<a href=\"https://www.debian.org/devel/wnpp/\"> Work-Needing and Prospective "
+"Packages</a> (<em>WNPP</em>) est notre système pour déclarer votre intention "
+"de travailler sur un paquet. Concrètement, c'est un bug sur le <a href="
+"\"https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=wnpp\">pseudo-paquet "
+"WNPP</a> (<a href=\"https://wnpp.debian.net/\">ou utilisez une jolie "
+"interface</a> pour parcourir les bugs <em>WNPP</em>). Si vous souhaitez "
+"empaqueter quelque chose qui n'est pas actuellement dans Debian, l'étape "
+"initiale consiste à déclarer un bug \"Intent to package\" (<em>ITP</em>) sur "
+"<em>WNPP</em>. Vous pourriez être intéresser pour utiliser l'outil <tt><a "
+"href=\"https://packages.debian.org/squeeze/reportbug\">reportbug</a></tt> "
+"pour réaliser cette tâche, en sélectionnant \"<em>wnpp</em>\" comme paquet "
+"auquel appartient le bug."
+
+#: templates/intro-maintainers.html:72
+msgid "3. Make the package"
+msgstr "3. Créer le paquet"
+
+#: templates/intro-maintainers.html:75
+msgid ""
+"Debian packages must comply to several normative requirements and "
+"guidelines. We can't give you exhaustive instructions on how to build "
+"packages here. In short, we expect you to provide a <em>source package</em> "
+"complying to the Debian policy at least (see below). Please take a look at "
+"those excellent resources:"
+msgstr ""
+"Les paquets Debian doivent respecter plusieurs pré-requis et ligne "
+"directrices normatifs. Nous ne pouvons pas donner des instructions "
+"exhaustives sur comment construire un paquet ici. En résumé, nous attendons "
+"de vous que vous fournissiez un <em>paquet source</em> respectant, au "
+"minimum, la charte Debian (voir ci-dessous). Merci de consulter ces "
+"excellentes ressources :"
+
+#: templates/intro-maintainers.html:87 templates/qa.html:26
+msgid "The Debian Policy Manual"
+msgstr "La charte Debian"
+
+#: templates/intro-maintainers.html:91
+msgid ""
+"A must-read resource to learn about technical specification and technical "
+"requirements of Debian packages."
+msgstr ""
+"Une ressource incontournable pour apprendre les spécifications techniques et "
+"les pre-requis techniques des paquets Debian."
+
+#: templates/intro-maintainers.html:98 templates/qa.html:37
+msgid "New Maintainer's Guide"
+msgstr "Le Guide du Nouveau Mainteneur"
+
+#: templates/intro-maintainers.html:102
+msgid "A must-read resource to learn basics of Debian source packages"
+msgstr ""
+"Une ressource incontournable pour apprendre les bases des paquets sources "
+"Debian"
+
+#: templates/intro-maintainers.html:108 templates/qa.html:47
+msgid "Lucas Nussbaum's packaging tutorial"
+msgstr "Le tutoriel de création de paquets de Lucas Nussbaum"
+
+#: templates/intro-maintainers.html:112 templates/qa.html:51
+msgid "A quick introduction to Debian packaging"
+msgstr "Une introduction succinte à l'empaquetage Debian"
+
+#: templates/intro-maintainers.html:118 templates/qa.html:55
+msgid "Developer's Reference"
+msgstr "Référence du Développeur"
+
+#: templates/intro-maintainers.html:122 templates/qa.html:59
+msgid ""
+"A comprehensive manual describing typical workflows and best practices "
+"related to Debian packages"
+msgstr ""
+"Un manuel complet décrivant les processus abituels ainsi que les bonnes "
+"pratiques pour les paquets Debian"
+
+#: templates/intro-maintainers.html:129 templates/qa.html:66
+msgid "Debian Mentors FAQ"
+msgstr "F.A.Q. de Debian Mentors"
+
+#: templates/intro-maintainers.html:133 templates/qa.html:70
+msgid ""
+"Another valuable resource to learn about common terms and workflows related "
+"to Debian"
+msgstr ""
+"Une autre ressource importante pour apprendre le vocabulaire et les "
+"processus attachés à Debian"
+
+#: templates/intro-maintainers.html:141
+msgid "4. Publish your package"
+msgstr "4. Publier votre paquet"
+
+#: templates/intro-maintainers.html:144
+#, python-format
+msgid ""
+"This web site is a public package repository of source packages. You can "
+"upload your package to this server (through special tools like '<tt><a href="
+"\"https://packages.debian.org/squeeze/dupload\">dupload</a></tt>' or '<tt><a "
+"href=\"https://packages.debian.org/squeeze/dput\">dput</a></tt>') and after "
+"a few checks it will be stored in our repository. <a href=\"%(u_sponsor)s"
+"\">Interested sponsors</a> can then download the package and upload it to "
+"Debian."
+msgstr ""
+"Ce site web est un dépôt publique de paquet pour les paquets sources. Vous "
+"pouvez envoyer votre paquet sur ce serveur (grâce à des outils spécialisés "
+"comme '<tt><a href=\"https://packages.debian.org/squeeze/dupload\">dupload</"
+"a></tt>' ou '<tt><a href=\"https://packages.debian.org/squeeze/dput\">dput</"
+"a></tt>') et après quelques vérifications, il sera stocké dans notre dépôt. "
+"<a href=\"%(u_sponsor)s\">Des parrains intéressés</a> peuvent alors "
+"télécharger votre paquet et l'envoyer sur Debian."
+
+#: templates/intro-maintainers.html:156
+#, python-format
+msgid "Using %(title)s"
+msgstr "En utilisant %(title)s"
+
+#: templates/intro-maintainers.html:163
+#, python-format
+msgid ""
+"<strong><a href=\"%(u_register)s\">Sign up for an account</a></strong>. "
+"Getting an account on this server is an automatic process and will just take "
+"a moment. We require registration so we have a valid email address where "
+"sponsors can reach you."
+msgstr ""
+"<strong><a href=\"%(u_register)s\">Inscrivez-vous pour obtenir un compte</"
+"a></strong>. Ouvrir un compte sur ce serveur est un processus automatique et "
+"prendra juste un moment. L'inscription est nécessaire afin d'avoir une "
+"adresse de courriel valide où les parrains pourrons vous contacter."
+
+#: templates/intro-maintainers.html:171
+#, python-format
+msgid ""
+"<strong>Upload your package</strong> to <tt>%(name)s</tt>. You do not need "
+"to put your packages into any other web space on the Internet. Everybody "
+"will be able to download your package using either the web browser, the "
+"'<tt>dget</tt>' tools or even through a simple run of <tt>apt-get source ...."
+"</tt>"
+msgstr ""
+"<strong>Envoyez vos paquets</strong> sur <tt>%(name)s</tt>. Vous n'avez pas "
+"besoin d'envoyer vos paquets sur quelconque autre plateforme sur Internet. "
+"Tout le monde sera en mesure de télécharger votre paquet en utilisant soit "
+"un navigateur, soit l'outil '<tt>dget</tt>' ou même grâce à un simple appel "
+"à <tt>apt-get source ...</tt>"
+
+#: templates/intro-maintainers.html:180
+#, python-format
+msgid ""
+"Have a look at your <a href=\"%(u_my)s\">personal package page</a>. Your "
+"uploaded package should <strong>show up there</strong>. From there you can "
+"toggle several settings and retrieve the RFS (request-for-sponsorship) "
+"template"
+msgstr ""
+"Gardez un œil sur votre <a href=\"%(u_my)s\">page de paquets personnels</a>. "
+"Vos paquets envoyés devrait <strong>s'afficher à cette endroit</strong>. À "
+"partir de là, vous pouvez changer plusieurs paramètres ainsi que récupérer "
+"le modèle de RFS (request-for-sponsorship)"
+
+#: templates/intro-maintainers.html:188
+#, python-format
+msgid ""
+"Your package is on display on the main page of %(title)s (if you enable the "
+"\"<i>Needs a Sponsor</i>\" button) so interested sponsors will see it and "
+"hopefully check it out."
+msgstr ""
+"Votre paquet est afficher sur la page principale de %(title)s (si vous avez "
+"activer l'option \"<i>Besoin d'un parrain</i>\") pour que les parrains "
+"intéressés puisse le voir et, avec de la chance, le tester."
+
+#: templates/intro-maintainers.html:195
+msgid ""
+"You will be shown a <strong>RFS (request-for-sponsorship) template</strong> "
+"that you should send out as a bug report filed against the <em>sponsorship-"
+"requests</em> pseudo-package to draw attention to your package."
+msgstr ""
+"Vous aurez accès à un <strong>modèle de RFS (request-for-sponsorship)</"
+"strong> que vous devrez envoyer en tant que rapport de bug sur le pseudo-"
+"paquet <em>sponsorship-requests</em> pour attirer l'attention sur votre "
+"paquet."
+
+#: templates/intro-maintainers.html:205
+#, python-format
+msgid "How to upload packages to <tt>%(name)s</tt>"
+msgstr "Comment envoyer des paquets sur <tt>%(name)s</tt>"
+
+#: templates/intro-maintainers.html:211
+msgid ""
+"You need to use <a href=\"https://packages.debian.org/dput\"><tt>dput</tt></"
+"a> to upload packages. We accept your uploads through <em>HTTPS</em> or "
+"<em>FTP</em>. All packages <strong>must be signed</strong> with the GnuPG "
+"key you configured in your control panel."
+msgstr ""
+"Vous devez utiliser <a href=\"https://packages.debian.org/dput\"><tt>dput</"
+"tt></a> pour envoyer vos paquets. Nous acceptions les envois en <em>HTTPS</"
+"em> ou <em>FTP</em>. Tout les paquets <strong>doivent être signés</strong> "
+"avec la clef GnuPG configuré pour votre compte."
+
+#: templates/intro-maintainers.html:221
+msgid "HTTPS uploads"
+msgstr "Envois HTTPS"
+
+#: templates/intro-maintainers.html:222
+msgid "FTP uploads"
+msgstr "Envois FTP"
+
+#: templates/intro-maintainers.html:227
+msgid ""
+"To use HTTPS put the following content to your <tt>~/.dput.cf</tt> file:"
+msgstr ""
+"Pour utiliser HTTPS, copiez le contenu ci-dessous dans votre fichier <tt>~/."
+"dput.cf</tt>:"
+
+#: templates/intro-maintainers.html:247
+#, python-format
+msgid ""
+"You can use <em>FTP</em> to upload packages to %(title)s. If you prefer that "
+"method make sure you sign your uploads with your GPG key! This is the "
+"corresponding <tt>~/.dput.cf</tt> file:"
+msgstr ""
+"Vous pouvez utiliser le <em>FTP</em> pour envoyer des paquets sur %(title)s. "
+"Si vous préférer cette méthode, verifiez que vous avez signé vos envois avec "
+"votre clef GPG ! Le fichier <tt>~/.dput.cf</tt> correspondant est :"
+
+#: templates/intro-maintainers.html:271
+msgid "Once you have it set up, you can run it from your shell like this:"
+msgstr ""
+"Une fois que vous l'avez configuré, vous pouvez le lancer dans un shell "
+"comme ceci :"
+
+#: templates/intro-maintainers.html:281
+msgid ""
+"If you did everything right, you will get a confirmation mail from our site "
+"and you can start seeking a sponsor for your package."
+msgstr ""
+"Si vous avez tout fait correctement, vous recevrez un courriel de "
+"confirmation de la part de notre site et vous pourrez démarrer la recherche "
+"de parrain pour votre paquet."
+
+#: templates/intro-maintainers.html:287
+msgid "5. Find a sponsor"
+msgstr "5. Trouver un parrain"
+
+#: templates/intro-maintainers.html:290
+#, python-format
+msgid ""
+"Once your package is publicly available on any resource, including but not "
+"limited to %(title)s you may start searching for a sponsor for your package. "
+"If you have already uploaded packages to Debian, you should ask your former "
+"sponsor. A sponsor is any <a href=\"https://wiki.debian.org/DebianDeveloper"
+"\">Debian Developer</a> willing to upload your package to Debian on your "
+"behalf. Have a look to our <a href=\"%(u_sponsor)s\">sponsors page</a> to "
+"learn more on sponsors and how to find one."
+msgstr ""
+"Une fois que votre paquet est disponible publiquement sur quelque ressource, "
+"incluant mais non limité à %(title)s, vous pouvez vous mettre en recherche "
+"d'un parrain pour votre paquet. Si vous avez déjà envoyé des paquets dans "
+"Debian, vous devriez demander à votre parrain précédent. Un parrain est l'un "
+"des <a href=\"https://wiki.debian.org/DebianDeveloper\">Développeur Debian</"
+"a> consentant à envoyer votre paquet dans Debian en tant que vous. Consultez "
+"notre <a href=\"%(u_sponsor)s\">page des parrains</a> pour en apprendre plus "
+"sur les parrains et comment en trouver un."
+
+#: templates/intro-maintainers.html:303
+#, python-format
+msgid ""
+"The main point of the sponsoring process is to review your package to make "
+"sure it meets our technical requirements. Everyone can and should review "
+"other people's packages. Also, a clean package will increase your likelihood "
+"to find a sponsor. Please take a look at our page <a href=\"%(u_reviewers)s"
+"\">about package reviews</a>."
+msgstr ""
+"Le but principale du processus de parrainage est de faire une revue de votre "
+"paquet afin de s'assurer qu'il respecte tous nos pré-requis techniques. "
+"N'importe qui peut, et devrai, faire la revue de paquets d'autres personnes. "
+"De plus, un paquet propre augmentera vos chances de trouver un parrain. "
+"Merci de consulter notre page <a href=\"%(u_reviewers)s\">à propos des "
+"revues de paquets</a>."
+
+#: templates/intro-maintainers.html:312
+msgid "The relation between you and your sponsor"
+msgstr "La relation entre votre parrain et vous"
+
+#: templates/intro-maintainers.html:315
+msgid ""
+"A sponsor is not technically responsible for your package. <strong>You</"
+"strong> will be listed as the official maintainer of the package in Debian. "
+"You will even get the bug reports if people discover problems in your "
+"package. Apart from not being able to upload the package directly into "
+"Debian you are treated as a full member of the community. The Debian project "
+"appreciates the work you do."
+msgstr ""
+"Un parrain n'est pas techniquement responsable de votre paquet. "
+"<strong>Vous</strong> serez listé en tant que mainteneur officiel du paquet "
+"dans Debian. Vous recevrez même les rapports de bug si des gens trouvent des "
+"problèmes dans votre paquet. À l'exception de pouvoir envoyer le paquet "
+"directement dans Debian, vous êtes traité comme un membre à part entière de "
+"la communauté. Le projet Debian vous est reconnaissant du travail que vous "
+"faite."
+
+#: templates/intro-maintainers.html:325
+msgid "What can I do if I don't find a sponsor?"
+msgstr "Que puis-je faire si je ne trouve pas de parrain ?"
+
+#: templates/intro-maintainers.html:328
+msgid ""
+"Do not give up. Sponsoring can take a while. Nonetheless, here are a few "
+"hints:"
+msgstr ""
+"N'abandonnez pas. Le parrainage peut prendre du temps. Malgré tout, voici "
+"quelques indications :"
+
+#: templates/intro-maintainers.html:336
+msgid ""
+"File a follow-up request to your existing <em>sponsorship-requests</em> "
+"pseudo-package."
+msgstr ""
+"Envoyez une demande de suivi sur le bug existant du pseudo-paquet "
+"<em>sponsorship-requests</em>."
+
+#: templates/intro-maintainers.html:342
+#, python-format
+msgid ""
+"Offer your package directly to relevant teams and individual developers. We "
+"made a <a href=\"%(u_sponsor)s\">a list of sponsors</a> , eventually willing "
+"to upload packages for you. <em>Please don't contact every sponsor listed "
+"there. Instead, read their individual requirements and choose the sponsor "
+"which matches you and your package best</em>."
+msgstr ""
+"Offrez votre paquet directement pour les développeurs individuellement et "
+"les équipes appropriées. Nous avons créer une <a href=\"%(u_sponsor)s"
+"\">liste de parrains</a>, éventuellement disposés à envoyer les paquets pour "
+"vous. <em>Merci de ne pas contacter tout les parrains listés ici. À la "
+"place, lisez les pré-requis individuels et choisissez le parrain qui "
+"correspond le mieux, à vous et à votre paquet</em>."
+
+#: templates/intro-maintainers.html:353
+msgid "6. Getting an upload to Debian"
+msgstr "6. Faire un envoi dans Debian"
+
+#: templates/intro-maintainers.html:356
+msgid ""
+"Once you find a sponsor interested in your package, he or she will "
+"<em>sponsor</em> it. That means reviewing, building, and testing it and then "
+"uploading it to Debian. You will get notified by <em>dak</em> - the software "
+"used by Debian to manage its repositories - about the upload. Please note, "
+"if your package was not at all in Debian before, it needs manual approval by "
+"<a href=\"https://ftp-master.debian.org/\">ftpmasters</a> to clear the <a "
+"href=\"https://ftp-master.debian.org/new.html\">NEW queue</a>. They will do "
+"consistency checks, and review your <tt>debian/copyright</tt> file whether "
+"your package matches the <a href=\"https://www.debian.org/"
+"social_contract#guidelines\"> Debian Free Software Guidelines</a>. "
+"ftpmaster's opinion is binding here for both your sponsor and you."
+msgstr ""
+"Une fois que vous aurez trouver un parrain intéressé par votre paquet, il ou "
+"elle le <em>parrainera</em>. Cela veut dire faire la revue, le construire, "
+"le tester, puis l'envoyer dans Debian. Vous serez notifier par <em>dak</em> "
+"- le logiciel utilisé par Debian pour gérer ses dépôts - à propos de "
+"l'envoi. Merci de noter que, si votre paquet n'est pas du tout présent dans "
+"Debian avant, il devra être approuvé manuellement par les <a href=\"https://"
+"ftp-master.debian.org/\">ftpmasters</a> pour quitter la <a href=\"https://"
+"ftp-master.debian.org/new.html\">queue NEW</a>. Ils feront des vérifications "
+"de consistance, la revue de votre fichier <tt>debian/copyright</tt> et si "
+"votre paquet correspond aux <a href=\"https://www.debian.org/"
+"social_contract#guidelines\">Principes du logiciel libre selon Debian</a>. "
+"L’opinion des ftpmaster fait foi pour vous et votre parrain."
+
+#: templates/intro-maintainers.html:372
+msgid "7. Maintaining your package in Debian"
+msgstr "7. Maintenez vos paquets dans Debian"
+
+#: templates/intro-maintainers.html:375
+#, python-format
+msgid ""
+"Please see the corresponding chapter in the <a href=\"https://www.debian.org/"
+"doc/manuals/maint-guide/update\"> New Maintainer's Guide</a> to get the "
+"idea. Whenever you feel like, you should update your package in Debian. The "
+"general procedure is not different from your first upload. Please upload "
+"your updated package to %(name)s and notify your former sponsor about your "
+"change. Alternatively, follow <a href=\"%(u_sponsor)s\">the usual "
+"procedures</a>."
+msgstr ""
+"Merci de consulter le chapitre correspondant dans le <a href=\"https://www."
+"debian.org/doc/manuals/maint-guide/update\">Guide du nouveau Mainteneur</a> "
+"pour en avoir une idée. Quand vous avez le temps, vous devriez mettre à jour "
+"votre paquet dans Debian. La procédure général n'est pas différente de votre "
+"première envoi. Merci d'envoyer votre paquet sur %(name)s et de notifier "
+"votre précédent parrain des changements. Sinon, suivez <a href="
+"\"%(u_sponsor)s\">la procédure habituelle</a>."
+
+#: templates/intro-maintainers.html:387
+msgid ""
+"If your package passes through the sponsoring process for <em>a few</em> "
+"successive uploads without any notable correction by your sponsor, you can "
+"become a <a href=\"https://wiki.debian.org/DebianMaintainer\">Debian "
+"Maintainer</a> which grants you limited upload rights to Debian directly.  "
+"Get in touch with your sponsor to discuss your chances here. You can also <a "
+"href=\"https://www.debian.org/devel/join/\">become a Debian Developer</a> "
+"giving you full membership in the project."
+msgstr ""
+"Si votre paquet passe à travers le processus de parrainage un certain nombre "
+"de fois successivement sans correction notable de votre parrain, vous pouvez "
+"devenir un <a href=\"https://wiki.debian.org/DebianMaintainer\">Mainteneur "
+"Debian</a>, ce que vous accord un accès limité aux envois dans Debian "
+"directement. Consulter votre parrain pour discuter avec lui de vos chances "
+"sur ce sujet. Vous pouvez aussi <a href=\"https://www.debian.org/devel/join/"
+"\">devenir un Développeur Debian</a>, vous donnant un accès complet en tant "
+"que membre du projet."
+
 #: templates/qa.html:5
 msgid "Questions &amp; Answers"
 msgstr "Foire aux Questions"
@@ -238,10 +723,6 @@ msgstr ""
 "Si vous souhaitez apprendre à créer un vrai paquet Debian, vous pourrez "
 "trouver une documentation intéressante pour commencer:"
 
-#: templates/qa.html:26
-msgid "The Debian Policy Manual"
-msgstr "La charte Debian"
-
 #: templates/qa.html:30
 msgid ""
 "A must read resource to learn about technical specification and technical "
@@ -250,51 +731,15 @@ msgstr ""
 "Une ressource incontournable pour apprendre les spécifications techniques et "
 "les pre-requis techniques des paquets Debian."
 
-#: templates/qa.html:37
-msgid "New Maintainer's Guide"
-msgstr "Le Guide du Nouveau Mainteneur"
-
 #: templates/qa.html:41
 msgid "A must read resource to learn basics of Debian source packages"
 msgstr ""
 "Une ressource incontournable pour apprendre les bases des paquets sources "
 "Debian"
 
-#: templates/qa.html:47
-msgid "Lucas Nussbaum's packaging tutorial"
-msgstr "Le tutoriel de création de paquets de Lucas Nussbaum"
-
-#: templates/qa.html:51
-msgid "A quick introduction to Debian packaging"
-msgstr "Une introduction succinte à l'empaquetage Debian"
-
-#: templates/qa.html:55
-msgid "Developer's Reference"
-msgstr "Référence du Développeur"
-
-#: templates/qa.html:59
-msgid ""
-"A comprehensive manual describing typical workflows and best practices "
-"related to Debian packages"
-msgstr ""
-"Un manuel complet décrivant les processus abituels ainsi que les bonnes "
-"pratiques pour les paquets Debian"
-
-#: templates/qa.html:66
-msgid "Debian Mentors FAQ"
-msgstr "F.A.Q. de Debian Mentors"
-
 #: templates/qa.html:67
 msgid "(Debian Wiki)"
 msgstr "(Wiki Debian)"
-
-#: templates/qa.html:70
-msgid ""
-"Another valuable resource to learn about common terms and workflows related "
-"to Debian"
-msgstr ""
-"Une autre ressource importante pour apprendre le vocabulaire et les "
-"processus attachés à Debian"
 
 #: templates/qa.html:77
 msgid "What is the Debian policy?"
