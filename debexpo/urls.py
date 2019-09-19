@@ -14,11 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from debexpo.base.views import index, contact, intro_reviewers, qa
+from debexpo.base.views import index, contact, intro_reviewers, \
+    intro_maintainers, qa
 
 urlpatterns = [
     path('', index, name='index'),
     path('contact', contact, name='contact'),
     path('intro-reviewers', intro_reviewers, name='reviewers'),
-    path('qa', qa, name='qa')
+    path('qa', qa, name='qa'),
+    path('intro-maintainers', intro_maintainers, name='maintainers'),
 ]
