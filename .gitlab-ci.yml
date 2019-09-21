@@ -46,3 +46,20 @@ flake8:
       python3-flake8
   script:
     - python3 -m flake8 debexpo/ tests/
+
+trans:
+  image: debian:unstable-slim
+  allow_failure: true
+  before_script:
+    - apt-get -q update
+    - env DEBIAN_FRONTEND=noninteractive
+      apt-get -q -y install --no-install-recommends
+      gettext
+      python3
+      python3-setuptools
+      python3-django
+  script:
+    - (cd debexpo && python3 ../manage.py makemessages)
+    - find debexpo -name '*.po' -exec
+      msgfmt -c -v --statistics '{}' -o /dev/null ';' |& tee /tmp/trans
+    - grep -q , /tmp/trans && false
