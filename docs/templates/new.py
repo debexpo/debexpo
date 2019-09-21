@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 #   py.template - template for new .py files
 #
 #   This file is part of debexpo
