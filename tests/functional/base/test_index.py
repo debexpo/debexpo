@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 #   test_index.py - Test browsing debexpo index page
 #
 #   This file is part of debexpo
