@@ -77,7 +77,7 @@ setup(
 
     # Requirements
     install_requires=[
-        'django==2.2.5'
+        'django>=1.11.23'
     ],
 
     # Project urls
