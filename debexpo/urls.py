@@ -26,14 +26,14 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from django.urls import path
+from django.conf.urls import url
 from debexpo.base.views import index, contact, intro_reviewers, \
     intro_maintainers, qa
 
 urlpatterns = [
-    path('', index, name='index'),
-    path('contact', contact, name='contact'),
-    path('intro-reviewers', intro_reviewers, name='reviewers'),
-    path('qa', qa, name='qa'),
-    path('intro-maintainers', intro_maintainers, name='maintainers'),
+    url(r'^$', index, name='index'),
+    url(r'^contact$', contact, name='contact'),
+    url(r'^intro-reviewers$', intro_reviewers, name='reviewers'),
+    url(r'^qa$', qa, name='qa'),
+    url(r'^intro-maintainers$', intro_maintainers, name='maintainers'),
 ]
