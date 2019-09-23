@@ -62,4 +62,4 @@ trans:
     - (cd debexpo && python3 ../manage.py makemessages)
     - find debexpo -name '*.po' -exec
       msgfmt -c -v --statistics '{}' -o /dev/null ';' |& tee /tmp/trans
-    - grep -q , /tmp/trans && false
+    - grep -zqv , /tmp/trans
