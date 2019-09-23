@@ -1,0 +1,14 @@
+*.pyc
+*.mo
+docs/.build/
+debexpo.db*
+/data/
+*~
+*.kpf
+build
+dist
+.coverage
+debexpo.egg-info/*
+development-arno.ini
+cover
+/*.gpg

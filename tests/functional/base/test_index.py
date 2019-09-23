@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 #
-#   py.template - template for new .py files
+#   test_index.py - Test browsing debexpo index page
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2019 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -28,6 +28,13 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2019 Jonny Lamb'
-__license__ = 'MIT'
+from django.test import TestCase
+from django.test import Client
+
+
+class TestBrowsingIndex(TestCase):
+    def test_index_page(self):
+        client = Client()
+
+        response = client.get('/')
+        self.assertEquals(response.status_code, 404)

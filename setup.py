@@ -1,52 +1,65 @@
-try:
-    from setuptools import setup, find_packages
-except ImportError:
-    from ez_setup import use_setuptools
-    use_setuptools()
-    from setuptools import setup, find_packages
+"""A setuptools based setup module.
+
+See:
+https://packaging.python.org/guides/distributing-packages-using-setuptools/
+https://github.com/pypa/sampleproject
+"""
+
+import sys
+from setuptools import setup, find_packages
+from os import path
+
+here = path.abspath(path.dirname(__file__))
+sys.path.insert(0, here)
+
+from project import PROJECT, VERSION, AUTHOR
+
+# Get the long description from the README file
+with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
-    name='debexpo',
+    # Project name and version
+    name=PROJECT,
+    version=VERSION,
+
+    # Descriptions
     description='the software running behind mentors.debian.net',
-    author='The Debexpo developers',
-    author_email='support@mentors.debian.net',
+    long_description=long_description,
+
+    # Homepage for mentors
     url='https://mentors.debian.net',
-    install_requires=[
-        "Pylons>=1.0.2",
-        "sphinx",  # for make build
-        "SQLAlchemy>=0.6",
-        "alembic>=1.0.0",
-        "Webhelpers>=0.6.1",
-        "Babel>=0.9.4",
-        "python-debian>=0.1.16",
-        "python-apt",
-        "SOAPpy",                # client
-        "dulwich",
-        "nose>=1.3.7",           # ensure in virtualenv
-        "passlib>=1.7.0",
-        "bcrypt>=3.1.2",
+
+    # Authors
+    author=AUTHOR,
+    author_email='support@mentors.debian.net',
+
+    # Related metadata
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'Topic :: Software Development :: Build Tools',
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 3.7',
+        'Framework :: Django :: 2.2',
     ],
-    packages=find_packages(exclude=['ez_setup']),
-    include_package_data=True,
-    test_suite='nose.collector',
-    package_data={'debexpo': ['i18n/*/LC_MESSAGES/*.mo']},
-    message_extractors={'debexpo': [
-            ('**.py', 'python', None),
-            ('templates/**.mako', 'mako', None),
-            ('public/**', 'ignore', None)]},
-    entry_points="""
-    [paste.app_factory]
-    main = debexpo.config.middleware:make_app
+    keywords='debian mentors packaging',
 
-    [paste.app_install]
-    main = pylons.util:PylonsInstaller
+    # What packages to install
+    packages=find_packages(exclude=['contrib', 'docs', 'tests', 'old']),
+    data_files=[('.', ['project.py'])],
 
-    [console_scripts]
-    debexpo-importer = debexpo.bin.debexpo_importer:main
-    debexpo-worker = debexpo.bin.debexpo_worker
-    debexpo-user-importer = debexpo.bin.user_importer:main
+    # Python version requirements
+    python_requires='>=3.7, <4',
 
-    [nose.plugins]
-    pylons = pylons.test:PylonsPlugin
-    """,
+    # Requirements
+    install_requires=[
+        'django==2.2.5'
+    ],
+
+    # Project urls
+    project_urls={
+        'Bug Reports': 'https://salsa.debian.org/mentors.debian.net-team/debexpo/issues',  # noqa: E501
+        'Source': 'https://salsa.debian.org/mentors.debian.net-team/debexpo',
+    },
 )
