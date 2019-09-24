@@ -1,4 +1,4 @@
-#   test_index.py - Test browsing debexpo index page
+#   test_page.py - Test browsing debexpo index page
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
@@ -30,10 +30,18 @@ from django.test import TestCase
 from django.test import Client
 
 
-class TestBrowsingIndex(TestCase):
-    def test_index_page(self):
+class TestBrowsingPage(TestCase):
+    def test_page_content(self):
         client = Client()
+        pages = (
+            ('/', 'Welcome to '),
+            ('/contact', 'are maintaining this service'),
+            ('/intro-maintainers', 'Getting an upload to Debian'),
+            ('/qa', 'How do I build a package?'),
+            ('/intro-reviewers', 'Package reviews')
+        )
 
-        response = client.get('/')
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('Welcome to ', str(response.content))
+        for url, content in pages:
+            response = client.get(url)
+            self.assertEquals(response.status_code, 200)
+            self.assertIn(content, str(response.content))
