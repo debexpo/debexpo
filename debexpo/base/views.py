@@ -56,6 +56,9 @@ def get_debexpo_version():
     except CalledProcessError:
         log.debug('not a git repository, skip revision detection.')
 
+    if output:
+        output = output.strip()
+
     return output
 
 
