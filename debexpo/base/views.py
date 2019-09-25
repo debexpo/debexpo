@@ -26,11 +26,42 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+import logging
+
+from subprocess import check_output, CalledProcessError
+from os.path import dirname, abspath
+
 from django.shortcuts import render
 from django.conf import settings
 
+log = logging.getLogger(__name__)
+
+
+def get_debexpo_version():
+    """
+    Returns the commit SHA if debexpo runs inside a git repository
+
+    Otherwise, return None
+    """
+    command = 'git'
+    args = ['rev-parse', 'HEAD']
+    output = None
+
+    try:
+        output = check_output([command] + args,
+                              cwd=dirname(abspath(__file__)),
+                              text=True)
+    except FileNotFoundError:
+        log.debug('git not found, skip revision detection.')
+    except CalledProcessError:
+        log.debug('not a git repository, skip revision detection.')
+
+    return output
+
 
 def index(request):
+    settings.VERSION = get_debexpo_version()
+
     return render(request, 'index.html', {
         'settings': settings
     })
