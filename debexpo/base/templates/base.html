@@ -119,7 +119,7 @@
             <p>
                 © 2008-2019 {{ settings.SITE_NAME }}
                 -
-                {% if 'HOSTING' in settings %}
+                {% if settings.HOSTING %}
                 {% trans 'Hosting and hardware provided by' %}
                 <a href="{{ settings.HOSTING_URL }}">{{ settings.HOSTING }}</a>
                 -
@@ -127,12 +127,10 @@
                 <a href="{{ settings.VCS_BROWSER }}">
                     {% trans 'Source code and bugs' %}
                 </a>
-                {% if 'VERSION' in settings %}
+                {% if settings.VERSION %}
                 ({% trans 'Version' %}
-                <a href="{{ settings.VCS_BROWSER + '/tree/' +
-                            settings.VERSION }}">
-                    {{ settings.VERSION|slice:":7" }}
-                </a>)
+                <a href="{{ settings.VCS_BROWSER }}/tree/{{ settings.VERSION }}">
+                    {{ settings.VERSION|slice:":7" }}</a>)
                 {% endif %}
                 -
                 <a href="{{ url_contact }}">
