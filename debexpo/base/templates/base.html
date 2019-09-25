@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% spaceless %}
 {% load static i18n %}
 {% url 'index' as url_index %}
 {% url 'feed' as url_feed %}
@@ -9,7 +10,8 @@
 {% url 'sponsors' as url_sponsors %}
 {% url 'packages' as url_packages %}
 {% url 'logout' as url_logout %}
-<html xmlns="http://www.w3.org/1999/xhtml">
+{% endspaceless %}
+<html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <link rel="stylesheet" type="text/css"
