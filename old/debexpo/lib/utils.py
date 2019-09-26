@@ -39,8 +39,6 @@ __license__ = 'MIT'
 import logging
 import hashlib
 import os
-from subprocess import Popen, PIPE, STDOUT
-from os.path import dirname, abspath
 
 from passlib.hash import bcrypt
 from debexpo.model import meta
@@ -105,26 +103,6 @@ def md5sum(filename):
         File name of the file to md5sum.
     """
     return _checksum(filename, hashlib.md5)
-
-
-def get_debexpo_version():
-    """
-    Returns the commit SHA if debexpo runs inside a git repository
-
-    Otherwise, return None
-    """
-    command = 'git'
-    args = ['rev-parse', 'HEAD']
-    proc = Popen([command] + args,
-                 stdout=PIPE,
-                 stderr=STDOUT,
-                 cwd=dirname(abspath(__file__)))
-    (output, _) = proc.communicate()
-
-    if proc.returncode != 0:
-        return None
-
-    return output
 
 
 def _checksum(filename, hash_function):

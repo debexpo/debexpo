@@ -7,12 +7,25 @@ https://github.com/pypa/sampleproject
 
 import sys
 from setuptools import setup, find_packages
-from os import path
+from setuptools.command.build_py import build_py as build
+from os import path, system
+from glob import glob
 
 here = path.abspath(path.dirname(__file__))
 sys.path.insert(0, here)
 
-from project import PROJECT, VERSION, AUTHOR
+from project import PROJECT, VERSION, AUTHOR  # noqa: E402
+
+
+class GenerateDjangoTranslation(build):
+    def run(self):
+        # Generate translations
+        for source in glob('debexpo/**/*.po', recursive=True):
+            system('msgfmt -c {} -o {}'.format(source,
+                                               source.replace('.po', '.mo')))
+
+        super().run()
+
 
 # Get the long description from the README file
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
@@ -45,16 +58,26 @@ setup(
     ],
     keywords='debian mentors packaging',
 
+    # Hooks for setup
+    cmdclass={
+        'build_py': GenerateDjangoTranslation,
+        'build_ext': GenerateDjangoTranslation,
+    },
+
     # What packages to install
     packages=find_packages(exclude=['contrib', 'docs', 'tests', 'old']),
     data_files=[('.', ['project.py'])],
+    package_data={'': [
+        'debexpo/locale/*/*/*.mo',
+        'debexpo/*/locale/*/*/*.mo'
+    ]},
 
     # Python version requirements
     python_requires='>=3.7, <4',
 
     # Requirements
     install_requires=[
-        'django==2.2.5'
+        'django>=1.11.23'
     ],
 
     # Project urls

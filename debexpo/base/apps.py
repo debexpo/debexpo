@@ -1,9 +1,9 @@
-#   py.template - template for new .py files
+#   apps.py - base app definition
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2019 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -25,3 +25,9 @@
 #   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
+
+from django.apps import AppConfig
+
+
+class BaseConfig(AppConfig):
+    name = 'base'

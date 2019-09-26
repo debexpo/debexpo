@@ -1,0 +1,398 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% url 'sponsors' as 'url_sponsor' %}
+{% url 'reviewers' as 'url_reviewers' %}
+{% url 'my' as 'url_my' %}
+{% url 'register' as 'url_register' %}
+
+{% block content %}
+<h1>
+    {% blocktrans trimmed %}
+    Introduction for maintainers: How will my package get into Debian
+    {% endblocktrans %}
+</h1>
+
+<p>
+    {% blocktrans trimmed %}
+    We are glad that you found your way to our web site. Honestly, the whole web
+    site is just there to get your work into Debian. Your contribution is
+    appreciated and it would be a pity if you did not find a sponsor to upload
+    your packages. Read on to see in what ways we will be helping you find a
+    sponsor.
+    {% endblocktrans %}
+</p>
+
+<h2>{% trans '1. Find a requested package' %}</h2>
+
+<p>
+    {% blocktrans with u_sponsor=url_sponsor trimmed %}
+    Debian is a distribution, not a general purpose repository. Many of us do
+    not believe <em>every</em> piece of free software necessarily belongs in
+    Debian. Please do not treat Debian as a platform to advertise your own
+    software, unless there is some <em>real</em> request for it. That said,
+    there is no one who ultimately judges about that. Eventually you may get
+    some feedback on that discussion after filing your WNPP bug (see below)
+    however you are free to interpret that as a suggestion, not as a final vote.
+    After all, you need to find a sponsor believing in the benefit of having
+    your package in Debian. Please have a look at our
+    <a href="{{ u_sponsor }}">sponsors page</a> to learn about personal
+    interests of sponsors.
+    {% endblocktrans %}
+</p>
+
+<p>
+    {% blocktrans trimmed %}
+    If you want to contribute to Debian, but you do not know which packages to
+    contribute to, take a look at "Request for help" (<em>RFH</em>), "Request
+    for adopter" (<em>RFA</em>), "Orphaned package" (<em>O</em>) and "Request
+    for package" (<em>RFP</em>) bugs. See <em>WNPP</em> below.
+    {% endblocktrans %}
+</p>
+
+<h2>{% trans '2. File a WNPP bug' %}</h2>
+
+<p>
+    {% blocktrans trimmed %}
+    <a href="https://www.debian.org/devel/wnpp/">
+        Work-Needing and Prospective Packages</a> (<em>WNPP</em>) is our system
+    of announcing your intent to markup packages being worked on. In particular
+    it is a bug against the
+    <a href="https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=wnpp">
+        WNPP pseudo package</a>
+    (<a href="https://wnpp.debian.net/">or use a nice frontend</a> to browse
+    <em>WNPP</em> bugs). If you want to package something not currently
+    available in Debian, the very first step should be to file an "Intent to
+    package" (<em>ITP</em>) bug against <em>WNPP</em>. You may want to use the
+    <tt><a href="https://packages.debian.org/squeeze/reportbug">reportbug</a></tt>
+    tool to achieve that by selecting "<em>wnpp</em>" as package to report
+    a bug to.
+    {% endblocktrans %}
+</p>
+
+<h2>{% trans '3. Make the package' %}</h2>
+
+<p>
+    {% blocktrans trimmed %}
+    Debian packages must comply to several normative requirements and
+    guidelines. We can't give you exhaustive instructions on how to build
+    packages here. In short, we expect you to provide a <em>source package</em>
+    complying to the Debian policy at least (see below). Please take a look at
+    those excellent resources:
+    {% endblocktrans %}
+</p>
+
+    <dl>
+        <dt>
+            <a href="https://www.debian.org/doc/debian-policy/">
+                {% trans 'The Debian Policy Manual' %}
+            </a>
+        </dt>
+        <dd>
+            {% blocktrans trimmed %}
+            A must-read resource to learn about technical specification and
+            technical requirements of Debian packages.
+            {% endblocktrans %}
+        </dd>
+        <dt>
+            <a href="https://www.debian.org/doc/manuals/maint-guide/">
+                {% trans "New Maintainer's Guide" %}
+            </a>
+        </dt>
+        <dd>
+            {% blocktrans trimmed %}
+            A must-read resource to learn basics of Debian source packages
+            {% endblocktrans %}
+        </dd>
+        <dt>
+            <a href="https://www.debian.org/doc/manuals/packaging-tutorial/packaging-tutorial">
+                {% trans "Lucas Nussbaum's packaging tutorial" %}
+            </a>
+        </dt>
+        <dd>
+            {% blocktrans trimmed %}
+            A quick introduction to Debian packaging
+            {% endblocktrans %}
+        </dd>
+        <dt>
+            <a href="https://www.debian.org/doc/manuals/developers-reference/">
+                {% trans "Developer's Reference" %}
+        </a>
+        </dt>
+        <dd>
+            {% blocktrans trimmed %}
+            A comprehensive manual describing typical workflows and best
+            practices related to Debian packages
+            {% endblocktrans %}
+        </dd>
+        <dt>
+            <a href="https://wiki.debian.org/DebianMentorsFaq">
+                {% trans 'Debian Mentors FAQ' %}</a>
+            (Debian Wiki)
+        </dt>
+        <dd>
+            {% blocktrans trimmed %}
+            Another valuable resource to learn about common terms and workflows
+            related to Debian
+            {% endblocktrans %}
+        </dd>
+    </dl>
+
+
+<h2>{% trans '4. Publish your package' %}</h2>
+
+<p>
+    {% blocktrans with u_sponsor=url_sponsor trimmed %}
+    This web site is a public package repository of source packages. You can
+    upload your package to this server (through special tools like
+    '<tt><a href="https://packages.debian.org/squeeze/dupload">dupload</a></tt>'
+    or '<tt><a href="https://packages.debian.org/squeeze/dput">dput</a></tt>')
+    and after a few checks it will be stored in our repository.
+    <a href="{{ u_sponsor }}">Interested sponsors</a> can then download the
+    package and upload it to Debian.
+    {% endblocktrans %}
+</p>
+
+<h3>
+    {% blocktrans with title=settings.SITE_TITLE trimmed %}
+    Using {{ title }}
+    {% endblocktrans %}
+</h3>
+
+<ul>
+    <li>
+        {% blocktrans with u_register=url_register trimmed %}
+        <strong><a href="{{ u_register }}">Sign up for an account</a></strong>.
+        Getting an account on this server is an automatic process and will just
+        take a moment. We require registration so we have a valid email address
+        where sponsors can reach you.
+        {% endblocktrans %}
+    </li>
+    <li>
+        {% blocktrans with name=settings.SITE_NAME trimmed %}
+        <strong>Upload your package</strong> to
+        <tt>{{ name }}</tt>. You do not need to put your packages into any other
+        web space on the Internet. Everybody will be able to download your
+        package using either the web browser, the '<tt>dget</tt>' tools or even
+        through a simple run of <tt>apt-get source ....</tt>
+        {% endblocktrans %}
+    </li>
+    <li>
+        {% blocktrans with u_my=url_my trimmed %}
+        Have a look at your
+        <a href="{{ u_my }}">personal package page</a>. Your uploaded package
+        should <strong>show up there</strong>. From there you can toggle several
+        settings and retrieve the RFS (request-for-sponsorship) template
+        {% endblocktrans %}
+    </li>
+    <li>
+        {% blocktrans with title=settings.SITE_TITLE trimmed %}
+        Your package is on display on the main page of {{ title }} (if you
+        enable the "<i>Needs a Sponsor</i>" button) so interested sponsors will
+        see it and hopefully check it out.
+        {% endblocktrans %}
+    </li>
+    <li>
+        {% blocktrans trimmed %}
+        You will be shown a <strong>RFS (request-for-sponsorship)
+        template</strong> that you should send out as a bug report filed against
+        the <em>sponsorship-requests</em> pseudo-package to draw attention to
+        your package.
+        {% endblocktrans %}
+    </li>
+</ul>
+
+<h3>
+    {% blocktrans with name=settings.SITE_NAME trimmed %}
+    How to upload packages to <tt>{{ name }}</tt>
+    {% endblocktrans %}
+</h3>
+
+<p>
+    {% blocktrans trimmed %}
+    You need to use <a href="https://packages.debian.org/dput"><tt>dput</tt></a>
+    to upload packages. We accept your uploads through <em>HTTPS</em> or
+    <em>FTP</em>. All packages <strong>must be signed</strong> with the GnuPG
+    key you configured in your control panel.
+    {% endblocktrans %}
+</p>
+
+<table>
+    <tr>
+        <td width="50%">{% trans 'HTTPS uploads' %}</td>
+        <td width="50%">{% trans 'FTP uploads' %}</td>
+    </tr>
+    <tr>
+        <td>
+            <p>
+                {% blocktrans trimmed %}
+                To use HTTPS put the following content to your
+                <tt>~/.dput.cf</tt> file:
+                {% endblocktrans %}
+            </p>
+
+<pre>
+[mentors]
+fqdn = {{ settings.SITE_NAME }}
+incoming = /upload
+method = https
+allow_unsigned_uploads = 0
+progress_indicator = 2
+# Allow uploads for UNRELEASED packages
+allowed_distributions = .*
+</pre>
+
+        </td>
+        <td>
+            <p>
+                {% blocktrans with title=settings.SITE_TITLE trimmed %}
+                You can use <em>FTP</em> to upload packages to {{ title }}. If
+                you prefer that method make sure you sign your uploads with your
+                GPG key! This is the corresponding <tt>~/.dput.cf</tt> file:
+                {% endblocktrans %}
+            </p>
+
+<pre>
+[mentors-ftp]
+fqdn = {{ settings.SITE_NAME }}
+login = anonymous
+progress_indicator = 2
+passive_ftp = 1
+incoming = /pub/UploadQueue/
+method = ftp
+allow_unsigned_uploads = 0
+# Allow uploads for UNRELEASED packages
+allowed_distributions = .*
+</pre>
+        </td>
+    </tr>
+</table>
+
+<p>
+    {% blocktrans trimmed %}
+    Once you have it set up, you can run it from your shell like this:
+    {% endblocktrans %}
+</p>
+
+<pre>
+$ dput mentors your_sourcepackage_1.0.changes
+</pre>
+
+<p>
+    {% blocktrans trimmed %}
+    If you did everything right, you will get a confirmation mail from our site
+    and you can start seeking a sponsor for your package.
+    {% endblocktrans %}
+</p>
+
+<h2>{% trans '5. Find a sponsor' %}</h2>
+
+<p>
+    {% blocktrans with title=settings.SITE_TITLE u_sponsor=url_sponsor trimmed %}
+    Once your package is publicly available on any resource, including but not
+    limited to {{ title }} you may start searching for a
+    sponsor for your package. If you have already uploaded packages to Debian,
+    you should ask your former sponsor. A sponsor is any
+    <a href="https://wiki.debian.org/DebianDeveloper">Debian Developer</a>
+    willing to upload your package to Debian on your behalf. Have a look to our
+    <a href="{{ u_sponsor }}">sponsors page</a>
+    to learn more on sponsors and how to find one.
+    {% endblocktrans %}
+</p>
+
+<p>
+    {% blocktrans with u_reviewers=url_reviewers trimmed %}
+    The main point of the sponsoring process is to review your package to make
+    sure it meets our technical requirements. Everyone can and should review
+    other people's packages. Also, a clean package will increase your likelihood
+    to find a sponsor. Please take a look at our page
+    <a href="{{ u_reviewers }}">about package reviews</a>.
+    {% endblocktrans %}
+</p>
+
+<h3>{% trans 'The relation between you and your sponsor' %}</h3>
+
+<p>
+    {% blocktrans trimmed %}
+    A sponsor is not technically responsible for your package.
+    <strong>You</strong> will be listed as the official maintainer of the
+    package in Debian. You will even get the bug reports if people discover
+    problems in your package. Apart from not being able to upload the package
+    directly into Debian you are treated as a full member of the community. The
+    Debian project appreciates the work you do.
+    {% endblocktrans %}
+</p>
+
+<h3>{% trans "What can I do if I don't find a sponsor?" %}</h3>
+
+<p>
+    {% blocktrans trimmed %}
+    Do not give up. Sponsoring can take a while. Nonetheless, here are a few
+    hints:
+    {% endblocktrans %}
+</p>
+
+<ul>
+    <li>
+        {% blocktrans trimmed %}
+        File a follow-up request to your existing <em>sponsorship-requests</em>
+        pseudo-package.
+        {% endblocktrans %}
+    </li>
+    <li>
+        {% blocktrans with u_sponsor=url_sponsor trimmed %}
+        Offer your package directly to relevant teams and individual developers.
+        We made a <a href="{{ u_sponsor }}">list of sponsors</a>
+        , eventually willing to upload packages for you. <em>Please don't
+        contact every sponsor listed there. Instead, read their individual
+        requirements and choose the sponsor which matches you and your package
+        best</em>.
+        {% endblocktrans %}
+    </li>
+</ul>
+
+<h2>{% trans '6. Getting an upload to Debian' %}</h2>
+
+<p>
+    {% blocktrans trimmed %}
+    Once you find a sponsor interested in your package, he or she will
+    <em>sponsor</em> it. That means reviewing, building, and testing it and then
+    uploading it to Debian. You will get notified by <em>dak</em> - the software
+    used by Debian to manage its repositories - about the upload. Please note,
+    if your package was not at all in Debian before, it needs manual approval by
+    <a href="https://ftp-master.debian.org/">ftpmasters</a> to clear the
+    <a href="https://ftp-master.debian.org/new.html">NEW queue</a>. They will do
+    consistency checks, and review your <tt>debian/copyright</tt> file whether
+    your package matches the
+    <a href="https://www.debian.org/social_contract#guidelines">
+        Debian Free Software Guidelines</a>.
+    ftpmaster's opinion is binding here for both your sponsor and you.
+    {% endblocktrans %}
+</p>
+
+<h2>{% trans '7. Maintaining your package in Debian' %}</h2>
+
+<p>
+    {% blocktrans with name=settings.SITE_NAME u_sponsor=url_sponsor trimmed %}
+    Please see the corresponding chapter in the
+    <a href="https://www.debian.org/doc/manuals/maint-guide/update">
+        New Maintainer's Guide</a> to get the idea. Whenever you feel like, you
+    should update your package in Debian. The general procedure is not different
+    from your first upload. Please upload your updated package to {{ name }} and
+    notify your former sponsor about your change. Alternatively, follow
+    <a href="{{ u_sponsor }}">the usual procedures</a>.
+    {% endblocktrans %}
+</p>
+
+<p>
+    {% blocktrans trimmed %}
+    If your package passes through the sponsoring process for <em>a few</em>
+    successive uploads without any notable correction by your sponsor, you can
+    become a
+    <a href="https://wiki.debian.org/DebianMaintainer">Debian Maintainer</a>
+    which grants you limited upload rights to Debian directly. Get in touch
+    with your sponsor to discuss your chances here. You can also
+    <a href="https://www.debian.org/devel/join/">become a Debian Developer</a>
+    giving you full membership in the project.
+    {% endblocktrans %}
+</p>
+{% endblock %}

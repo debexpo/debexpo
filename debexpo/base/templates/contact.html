@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% url 'qa' as 'url_qa' %}
+{% url 'rfs-howto' as 'url_rfs' %}
+
+{% block content %}
+<h1>{% trans 'Site contact' %}</h1>
+
+<p>
+    {% blocktrans with u_qa=url_qa u_rfs=url_rfs trimmed %}
+    You can get in direct contact with the debexpo team.
+    In case of technical problems please check the <a href="{{ u_qa }}">Q &amp;
+    A</a> section and the <a href="https://wiki.debian.org/Debexpo">Debian
+    wiki</a> first. <strong>Please do not use this contact address for sponsor
+    requests or packaging questions</strong>, write to the
+    <a href="https://lists.debian.org/debian-mentors/">debian-mentors
+    mailing list</a> instead or <a href="{{ u_rfs }}">file a RFS bug</a>
+    respectively.
+    {% endblocktrans %}
+</p>
+
+<p><strong>{% trans 'Site email' %}</strong>:
+<a href="mailto: {{ settings.SUPPORT_EMAIL }}">{{ settings.SUPPORT_EMAIL }}</a>.
+</p>
+
+<p>
+    {% blocktrans trimmed %}
+    Currently Baptiste BEAUPLAT (<em>lyknode</em>), Mattia Rizzolo
+    (<em>mattia</em>, IRC: <em>mapreri</em>) and Paul Wise (<em>pabs</em>)
+    are maintaining this service.
+    {% endblocktrans %}
+</p>
+
+<h1>{% trans 'Development' %}</h1>
+
+<p>
+    {% blocktrans with site_name=settings.SITE_NAME trimmed %}
+    We are always looking for new contributors. If you want to contribute or
+    improve {{ site_name }}, come to <tt>#debexpo</tt> on
+    <a href="irc://irc.debian.org/debexpo">irc.debian.org</a> and chat with us.
+    {% endblocktrans %}
+</p>
+{% endblock %}

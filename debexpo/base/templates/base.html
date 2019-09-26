@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+{% spaceless %}
+{% load static i18n %}
+{% url 'index' as url_index %}
+{% url 'feed' as url_feed %}
+{% url 'qa' as url_qa %}
+{% url 'contact' as url_contact %}
+{% url 'reviewers' as url_intro_review %}
+{% url 'maintainers' as url_intro_maint %}
+{% url 'sponsors' as url_sponsors %}
+{% url 'packages' as url_packages %}
+{% url 'logout' as url_logout %}
+{% endspaceless %}
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" type="text/css"
+              href="{% static 'css/style.css' %}" />
+        <script src="{% static 'js/jquery-1.7.1.min.js' %}"
+                type="text/javascript"></script>
+        <script src="{% static 'js/debexpo.js' %}" type="text/javascript">
+        </script>
+        <title>{{ settings.SITE_NAME }}</title>
+{% if url_feed %}
+
+    <link rel="alternate" href="{{ url_feed }}" title="RSS Feed"
+          type="application/rss+xml" />
+
+{% endif %}
+
+    </head>
+    <body>
+        <div id="header">
+        <div id="upperheader">
+            <div id="logo">
+                <a href="https://www.debian.org">
+                    <img alt="{{ settings.SITE_NAME }}"
+                         src="{% static settings.LOGO %}"/>
+                </a>
+            </div><!-- end logo -->
+            <p class="section">
+                <a href="{{ url_index }}">{{ settings.SITE_TITLE }}</a>
+            </p>
+            <div id="searchbox">
+                {% trans settings.TAGLINE %}
+            </div><!-- end searchbox -->
+        </div><!-- end upperheader -->
+        <div id="navbar">
+            <ul>
+                <li>
+                    <a href="{{ url_index }}">
+                        {% trans 'Start page' %}
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_packages }}">
+                        {% trans 'Package list' %}
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_intro_maint }}">
+                        {% trans 'Maintainer' %}
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_intro_review }}">
+                        {% trans 'Reviews' %}
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_sponsors }}">
+                        {% trans 'Sponsors' %}
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_qa }}">
+                        {% trans 'Q &amp; A' %}
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_contact }}">
+                        {% trans 'Contact' %}
+                    </a>
+                </li>
+            </ul>
+        </div><!-- end navbar -->
+        <p id="breadcrumbs"></p>
+        </div><!-- end header -->
+        <div id="content">
+            <span class="relatedpages">
+
+            {% if 'user_id' in session %}
+                <a href="{{ url_my }}">
+                    {% trans 'My account' %}
+                </a>
+                <a href="{{ url_packages_my }}">
+                    {% trans 'My packages' %}
+                </a>
+            {% else %}
+                <a href="{{ url_register }}">
+                    {% trans 'Sign me up' %}
+                </a>
+                <a href="{{ url_login }}">
+                    {% trans 'Login' %}
+                </a>
+            {% endif %}
+
+            </span>
+            {% if submenu and submenu.has_menu %}
+            {% include "submenu.mako" %}
+            {% endif %}
+            {% block content %}{% endblock %}
+        </div><!-- end content -->
+        <div id="footer">
+            <p>
+                © 2008-2019 {{ settings.SITE_NAME }}
+                -
+                {% if settings.HOSTING %}
+                {% trans 'Hosting and hardware provided by' %}
+                <a href="{{ settings.HOSTING_URL }}">{{ settings.HOSTING }}</a>
+                -
+                {% endif %}
+                <a href="{{ settings.VCS_BROWSER }}">
+                    {% trans 'Source code and bugs' %}
+                </a>
+                {% if settings.VERSION %}
+                ({% trans 'Version' %}
+                <a href="{{ settings.VCS_BROWSER }}/tree/{{ settings.VERSION }}">
+                    {{ settings.VERSION|slice:":7" }}</a>)
+                {% endif %}
+                -
+                <a href="{{ url_contact }}">
+                    {% trans 'Contact' %}
+                </a>
+                {% if 'user_id' in session %}
+                -
+                <a href="{{ url_logout }}">
+                    {% trans 'Logout' %}
+                </a>
+                {% endif %}
+                {% if url_feed %}
+                <a class="rss_logo" href="{{ url_feed }}">
+                    {% trans 'RSS' %}
+                </a>
+                {% endif %}
+            </p>
+        </div><!-- end footer -->
+    </body>
+</html>
+
