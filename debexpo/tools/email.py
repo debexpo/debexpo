@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-#
-#   email.py — Helper class for sending and receiving email
+#   email.py — Helper class for sending mail
 #
 #   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
@@ -8,6 +6,7 @@
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #   Copyright © 2011 Arno Töll <debian@toell.net>
+#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -31,50 +30,22 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 """
-Holds helper class for sending and receiving email. The latter is achieved to
-fetch mails from an IMAP mailbox
+Holds helper class for sending email.
 """
-
-# You don't like that line?
-# Come over it. Or, alternatively don't call your local modules like Python
-# standard libraries
-from __future__ import absolute_import
-
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, ' \
-    'Copyright © 2010 Jan Dittberner, ' \
-    'Copyright © 2011 Arno Töll'
-__license__ = 'MIT'
 
 import email
 import email.charset
 import email.errors
 import email.header
 import email.mime.text
-
-import logging
-import os
-import smtplib
-from mako.template import Template
-from mako.lookup import TemplateLookup
-
-import pylons
-import debexpo.lib.helpers as h
-from gettext import gettext
-import routes.util
-import nntplib
 import email.parser
+import logging
+import smtplib
+
+from django.conf import settings
+from django.template.loader import render_to_string
 
 log = logging.getLogger(__name__)
-
-
-class FakeC(object):
-    def __init__(self, **kw):
-        for key in kw:
-            value = kw[key]
-            if isinstance(value, str):
-                value = value.decode("utf-8")
-            setattr(self, key, value)
 
 
 class Email(object):
@@ -86,22 +57,19 @@ class Email(object):
             Name of the template to use for the email.
         """
         self.template = template
-        self.server = pylons.config['global_conf']['smtp_server']
-        if 'smtp_port' in pylons.config['global_conf']:
-            self.port = pylons.config['global_conf']['smtp_port']
-        else:
-            self.port = smtplib.SMTP_PORT
+        self.server = settings.SMTP_SERVER
+        self.port = settings.SMTP_PORT
+        self.mbox = settings.TEST_SMTP
+        self.bounce = settings.BOUNCE_EMAIL
         self.auth = None
 
         # Look whether auth is required.
-        if ('smtp_username' in pylons.config['global_conf'] and 'smtp_password'
-                in pylons.config['global_conf']):
-            if (pylons.config['global_conf']['smtp_username'] != '' and
-                    pylons.config['global_conf']['smtp_password'] != ''):
-                self.auth = {
-                    'username': pylons.config['global_conf']['smtp_username'],
-                    'password': pylons.config['global_conf']['smtp_password']
-                }
+        if (all(hasattr(settings, attr) for attr in ('SMTP_USERNAME',
+                                                     'SMTP_PASSWORD'))):
+            self.auth = {
+                'username': settings.SMTP_USERNAME,
+                'password': settings.SMTP_PASSWORD
+            }
 
     def send(self, recipients=None, **kwargs):
         """
@@ -110,36 +78,38 @@ class Email(object):
         ``recipients``
             List of email addresses of recipients.
         """
-        if recipients is None or recipients is []:
+        if not recipients or recipients is []:
             return
 
+        content = self._render_content(recipients, **kwargs)
+        mail = self._render_mail(content)
+
+        if self.mbox:
+            return self._save_as_file(recipients, mail)
+
+        return self._send_as_mail(recipients, mail)  # pragma: no cover
+
+    def _render_content(self, recipients, **kwargs):
         log.debug('Getting mail template: %s' % self.template)
 
         to = ', '.join(recipients)
-        sender = '%s <%s>' % (pylons.config['debexpo.sitename'],
-                              pylons.config['debexpo.email'])
+        sender = '{} <{}>'.format(settings.SITE_NAME,
+                                  settings.SUPPORT_EMAIL)
 
-        c = FakeC(to=to, sender=sender, config=pylons.config, **kwargs)
+        return render_to_string(self.template, {
+            'settings': settings,
+            'to': to,
+            'sender': sender,
+            'args': kwargs
+        })
 
-        template_file = os.path.join(os.path.dirname(os.path.dirname(__file__)),
-                                     'templates/email/%s.mako' % self.template)
-        lookup = TemplateLookup(directories=[os.path.dirname(template_file)])
-        template = Template(
-                filename=template_file, lookup=lookup,
-                module_directory=pylons.config['app_conf']['cache_dir'])
-        # Temporarily set up routes.util.url_for as the URL renderer used for
-        # h.url() in templates
-        pylons.url._push_object(routes.util.url_for)
-
-        rendered_message = template.render_unicode(_=gettext, h=h, c=c) \
-            .encode("utf-8")
-
+    def _render_mail(self, content):
         try:
             # Parse the email message
-            message = email.message_from_string(rendered_message)
-        except email.errors.MessageParseError:
+            message = email.message_from_string(content)
+        except email.errors.MessageParseError:  # pragma: no cover
             # Parsing the message failed, let's send the raw data...
-            message = rendered_message.encode("utf-8")
+            message = content.encode("utf-8")
         else:
             # By default, python base64-encodes all UTF-8 text which is
             # annoying. Force quoted-printable
@@ -147,12 +117,12 @@ class Email(object):
                                       email.charset.QP, 'utf-8')
             # Create a new, MIME-aware message
             new_message = email.mime.text.MIMEText(
-                message.get_payload().decode("utf-8"), "plain", "utf-8")
+                message.get_payload(), "plain", "utf-8")
 
             for key in message.keys():
                 try:
-                    contents = message[key].decode("utf-8").split(u" ")
-                except UnicodeDecodeError:
+                    contents = message[key].split(u" ")
+                except UnicodeDecodeError:  # pragma: no cover
                     # Bad encoding in the header, don't try to do anything
                     # more...
                     header = message[key]
@@ -167,95 +137,67 @@ class Email(object):
             # And get that back as a string to pass onto sendmail
             message = new_message.as_string()
 
-        pylons.url._pop_object()
-
-        if 'debexpo.testsmtp' in pylons.config:
-            self._save_as_file(recipients, message)
-        else:
-            self._send_as_mail(recipients, message)
+        return message
 
     def _save_as_file(self, recipients, message):
-        log.debug('Save email as file to %s' % self.server)
-        with open(pylons.config['debexpo.testsmtp'], 'a') as email:
-            email.write(message)
+        log.debug('Save email as file to {}'.format(self.server))
 
-    def _send_as_mail(self, recipients, message):
-        log.debug('Starting SMTP session to %s:%s' % (self.server, self.port))
-        session = smtplib.SMTP(self.server, self.port)
+        try:
+            with open(self.mbox, 'a') as email:
+                email.write(message)
+        except OSError as e:
+            log.error('Could not write mbox: {}'.format(e))
 
+            return False
+
+        return True
+
+    # This would require a live SMTP to test.
+    def _send_as_mail(self, recipients, message):  # pragma: no cover
+        # Connect
+        log.debug('Starting SMTP session to {}: {}'.format(self.server,
+                                                           self.port))
+        try:
+            session = smtplib.SMTP(self.server, self.port)
+        except smtplib.SMTPException as e:
+            log.error('Could not connect to SMTP: {}'.format(e))
+
+            return False
+
+        # Authenticate
         if self.auth:
-            log.debug('Authentication requested; logging in')
-            session.login(self.auth['user'], self.auth['password'])
+            log.debug('Authentication requested, logging in')
+            try:
+                session.login(self.auth['user'], self.auth['password'])
+            except smtplib.SMTPException as e:
+                log.error('Could not authenticate: {}'.format(e))
+                session.quit()
 
-        log.debug('Sending email to %s' % ', '.join(recipients))
-        result = session.sendmail(pylons.config['debexpo.bounce_email'],
-                                  recipients, message)
+                return False
+
+        # Send
+        log.debug('Sending email to {}'.format(', '.join(recipients)))
+        try:
+            result = session.sendmail(self.bounce,
+                                      recipients, message)
+        except smtplib.SMTPException as e:
+            log.error('Could not send mail: {}'.format(e))
+            session.quit()
+
+            return False
+
+        # Quit
+        session.quit()
 
         if result:
             # Something went wrong.
             for recipient in result.keys():
-                log.critical('Failed sending to %s: %s, %s' %
+                log.critical('Failed sending to {}: {}, {}'.format(
                              (recipient, result[recipient][0],
-                              result[recipient][1]))
-        else:
-            log.debug('Successfully sent')
+                              result[recipient][1])))
 
-    def _check_error(self, msg, err, data=None):
-        if err != 'OK':
-            if (data):
-                log.error("%s failed: %s" % (msg, data))
-            else:
-                log.error("failed: %s" % (msg))
+                return False
 
-    def unread_messages(self, list_name, changed_since):
-        if not self.connection_established():
-            return
+        log.debug('Successfully sent')
 
-        try:
-            (_, count, first, last, _) = self.nntp.group(list_name)
-            log.debug("Fetching messages %s to %s on %s" % (changed_since, last,
-                                                            list_name))
-        except Exception as e:
-            self.established = False
-            log.error("Failed to communicate with NNTP server %s: %s" %
-                      (pylons.config['debexpo.nntp_server'], str(e)))
-            return
-
-        try:
-            (_, messages) = self.nntp.xover(str(changed_since), str(last))
-
-            for (msg_num, _, _, _, msg_id, _, _, _) in messages:
-                (_, _, _, response) = self.nntp.article(msg_id)
-                ep = email.parser.Parser() \
-                    .parsestr(reduce(lambda x, xs: x+"\n"+xs, response))
-                ep['X-Debexpo-Message-ID'] = msg_id
-                ep['X-Debexpo-Message-Number'] = msg_num
-                yield ep
-        except Exception as e:
-            self.established = False
-            log.error("Failed to communicate with NNTP server %s: %s" %
-                      (pylons.config['debexpo.nntp_server'], str(e)))
-            return
-
-    def connect_to_server(self):
-        self.established = False
-        try:
-            self.nntp = nntplib.NNTP(pylons.config['debexpo.nntp_server'])
-        except Exception as e:
-            log.error("Connecting to NNTP server %s failed: %s" %
-                      (pylons.config['debexpo.nntp_server'], str(e)))
-            return
-
-        self.established = True
-
-    def disconnect_from_server(self):
-        self.nntp.quit()
-        self.established = False
-
-    def connection_established(self):
-        if not self.established:
-            self.connect_to_server()
-            if not self.established:
-                log.debug("Connection to NNTP server not established")
-            return self.established
         return True
