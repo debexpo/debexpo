@@ -1,0 +1,5 @@
+{% extends "base.eml" %}{% block content %}To: {{ to }}
+Subject: This is a test mail
+
+This is a test email, {{ to }}.
+{% endblock %}

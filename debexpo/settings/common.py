@@ -58,7 +58,9 @@ ROOT_URLCONF = 'debexpo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            'tests/unit/tools/templates'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
