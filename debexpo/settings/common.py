@@ -107,3 +107,11 @@ SITE_NAME = 'debexpo'
 SITE_TITLE = 'Debexpo'
 TAGLINE = _('Helps you get your packages into Debian')
 VCS_BROWSER = 'https://salsa.debian.org/mentors.debian.net-team/debexpo'
+
+# SMTP and NNTP settings
+SMTP_SERVER = 'localhost'
+SMTP_PORT = 25
+# SMTP_USERNAME = 'foo'
+# SMTP_PASSWORD = 'CHANGEME'
+
+NNTP_SERVER = 'news.gmane.org'
