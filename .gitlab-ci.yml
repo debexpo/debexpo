@@ -19,6 +19,8 @@ before_script:
     libjs-jquery-tablesorter
 
 .test_template: &test
+  variables:
+    DJANGO_SETTINGS_MODULE: 'debexpo.settings.test'
   script:
     - python3 setup.py develop
     - python3 -m coverage run manage.py test -v 2
