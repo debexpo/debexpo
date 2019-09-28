@@ -50,7 +50,7 @@ log = logging.getLogger(__name__)
 class NNTPClient(object):
     def __init__(self):
         self.established = False
-        self.server = settings.DEBEXPO_NNTP_SERVER
+        self.server = settings.NNTP_SERVER
 
     def unread_messages(self, list_name, changed_since):
         if not self.established:
@@ -64,7 +64,6 @@ class NNTPClient(object):
                                                                 last,
                                                                 list_name))
         except Exception as e:
-            self.established = False
             log.error("Failed to communicate with NNTP server {}: {}".format(
                       self.server, e))
             return
@@ -72,31 +71,38 @@ class NNTPClient(object):
         try:
             (_, messages) = self.nntp.xover(str(changed_since), str(last))
 
-            for (msg_num, _, _, _, msg_id, _, _, _) in messages:
-                (_, _, _, response) = self.nntp.article(msg_id)
-                ep = email.parser.Parser() \
-                    .parsestr(reduce(lambda x, xs: x+"\n"+xs, response))
-                ep['X-Debexpo-Message-ID'] = msg_id
+            for (msg_num, overview) in messages:
+                (_, response) = self.nntp.article(overview['message-id'])
+                ep = email.parser.BytesParser() \
+                    .parsebytes(b"\n".join(response.lines))
+                ep['X-Debexpo-Message-ID'] = overview['message-id']
                 ep['X-Debexpo-Message-Number'] = msg_num
                 yield ep
         except Exception as e:
-            self.established = False
             log.error("Failed to communicate with NNTP server {}: {}".format(
                       self.server, e))
             return
 
     def connect_to_server(self):
-        self.established = False
+        if self.established:
+            log.debug('Already connected to NNTP server')
+            return False
+
         try:
             self.nntp = nntplib.NNTP(self.server)
         except Exception as e:
             log.error("Connecting to NNTP server {} failed: {}".format(
                       self.server, e))
-            return
+            return False
 
         self.established = True
+        return True
 
     def disconnect_from_server(self):
+        if not self.established:
+            log.debug('Not connected to NNTP server')
+            return False
+
         try:
             self.nntp.quit()
         except Exception as e:
@@ -104,6 +110,7 @@ class NNTPClient(object):
                       self.server, e))
 
         self.established = False
+        return True
 
     def connection_established(self):
         return self.established
