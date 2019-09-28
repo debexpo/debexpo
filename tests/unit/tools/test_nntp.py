@@ -26,14 +26,17 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+import unittest
 from email.message import Message
 
 from django.conf import settings
 from django.test import TestCase
 
 from debexpo.tools.nntp import NNTPClient
+from tests.tools import test_network
 
 
+@unittest.skipIf(test_network(), 'no network: {}'.format(test_network()))
 class TestNNTP(TestCase):
     def setUp(self):
         self.client = NNTPClient()
