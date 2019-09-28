@@ -17,15 +17,16 @@ before_script:
     libjs-jquery-throttle-debounce
     libjs-jquery-isonscreen
     libjs-jquery-tablesorter
+    git
 
 .test_template: &test
   variables:
     DJANGO_SETTINGS_MODULE: 'debexpo.settings.test'
   script:
     - python3 setup.py develop
-    - python3 -m coverage run manage.py test -v 2
-    - python3 -m coverage report --include='debexpo*'
-    - python3 -m coverage html --include='debexpo*'
+    - python3 -m coverage run manage.py test -v 2 --exclude-tag nntp
+    - python3 -m coverage report --include='debexpo*' --omit '*/nntp.py'
+    - python3 -m coverage html --include='debexpo*' --omit '*/nntp.py'
   artifacts:
     paths:
       - htmlcov/
