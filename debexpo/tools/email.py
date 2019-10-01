@@ -64,8 +64,9 @@ class Email(object):
         self.auth = None
 
         # Look whether auth is required.
-        if (all(hasattr(settings, attr) for attr in ('SMTP_USERNAME',
-                                                     'SMTP_PASSWORD'))):
+        if (all((
+            hasattr(settings, attr) and getattr(settings, attr)
+        ) for attr in ('SMTP_USERNAME', 'SMTP_PASSWORD'))):
             self.auth = {
                 'username': settings.SMTP_USERNAME,
                 'password': settings.SMTP_PASSWORD
