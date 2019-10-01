@@ -80,7 +80,7 @@ class TestNNTP(TestCase):
         message = next(self.client.unread_messages(self.list, '1'))
         self.assertTrue(message)
         self.assertIsInstance(message, Message)
-        self.assertIn(self.payload, message.get_payload(decode=True).decode())
+        self.assertIn(self.payload, message.get_payload())
 
         # Disconnect
         self.assertTrue(self.client.disconnect_from_server())
