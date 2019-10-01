@@ -45,7 +45,7 @@ class TestNNTP(TestCase):
         self.payload = 'kernel-build-2.4.22-2_2.4.22-2woody.2_alpha.deb'
 
     def test_nntp_no_connection(self):
-        self.assertFalse(self.client.connection_established())
+        self.assertFalse(self.client.connected)
         self.assertRaises(StopIteration, next,
                           self.client.unread_messages('list', 1))
 
@@ -54,7 +54,7 @@ class TestNNTP(TestCase):
         self.test_nntp_no_connection()
 
         # Simulate already disconnected server
-        self.client.established = True
+        self.client.connected = True
         self.assertTrue(self.client.disconnect_from_server())
         self.test_nntp_no_connection()
 
@@ -70,11 +70,11 @@ class TestNNTP(TestCase):
     def test_nntp(self):
         # Connect to NNTP server
         self.assertTrue(self.client.connect_to_server())
-        self.assertTrue(self.client.connection_established())
+        self.assertTrue(self.client.connected)
 
         # Can't connect twice
         self.assertFalse(self.client.connect_to_server())
-        self.assertTrue(self.client.connection_established())
+        self.assertTrue(self.client.connected)
 
         # Get message from list
         message = next(self.client.unread_messages(self.list, '1'))
@@ -84,7 +84,7 @@ class TestNNTP(TestCase):
 
         # Disconnect
         self.assertTrue(self.client.disconnect_from_server())
-        self.assertFalse(self.client.connection_established())
+        self.assertFalse(self.client.connected)
 
     def test_nntp_wrong_list(self):
         self.assertTrue(self.client.connect_to_server())

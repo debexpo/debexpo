@@ -49,11 +49,11 @@ log = logging.getLogger(__name__)
 
 class NNTPClient(object):
     def __init__(self):
-        self.established = False
+        self.connected = False
         self.server = settings.NNTP_SERVER
 
     def unread_messages(self, list_name, changed_since):
-        if not self.established:
+        if not self.connected:
             log.warn('Tried to read messages while not connected to NNTP '
                      'server')
             return
@@ -84,7 +84,7 @@ class NNTPClient(object):
             return
 
     def connect_to_server(self):
-        if self.established:
+        if self.connected:
             log.debug('Already connected to NNTP server')
             return False
 
@@ -95,11 +95,11 @@ class NNTPClient(object):
                       self.server, e))
             return False
 
-        self.established = True
+        self.connected = True
         return True
 
     def disconnect_from_server(self):
-        if not self.established:
+        if not self.connected:
             log.debug('Not connected to NNTP server')
             return False
 
@@ -109,8 +109,5 @@ class NNTPClient(object):
             log.error("Disconnecting to NNTP server {} failed: {}".format(
                       self.server, e))
 
-        self.established = False
+        self.connected = False
         return True
-
-    def connection_established(self):
-        return self.established
