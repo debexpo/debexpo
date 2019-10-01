@@ -78,7 +78,7 @@ class Email(object):
         ``recipients``
             List of email addresses of recipients.
         """
-        if not recipients or recipients is []:
+        if not recipients:
             return
 
         content = self._render_content(recipients, **kwargs)
@@ -121,7 +121,7 @@ class Email(object):
 
             for key in message.keys():
                 try:
-                    contents = message[key].split(u" ")
+                    contents = message[key].split(" ")
                 except UnicodeDecodeError:  # pragma: no cover
                     # Bad encoding in the header, don't try to do anything
                     # more...
