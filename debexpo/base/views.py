@@ -47,13 +47,15 @@ def get_debexpo_version():
     args = ['rev-parse', 'HEAD']
     output = None
 
+    # note: testing results depends on wether git is installed or not and if we
+    # currently are in a git reposirtory. Hence, this is tested manually.
     try:
         output = check_output([command] + args,
                               cwd=dirname(abspath(__file__)),
                               text=True)
-    except FileNotFoundError:
+    except FileNotFoundError:  # pragma: no cover
         log.debug('git not found, skip revision detection.')
-    except CalledProcessError:
+    except CalledProcessError:  # pragma: no cover
         log.debug('not a git repository, skip revision detection.')
 
     if output:

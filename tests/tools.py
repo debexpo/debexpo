@@ -1,4 +1,4 @@
-#   develop.py - Django settings for debexpo project in developement mode
+#   tools.py — Tools for tests
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
@@ -26,26 +26,15 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from .common import *  # noqa
-from os import path
+import socket
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'DoNotUseThisKeyInProductionEnvironment'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+def test_network():
+    socket.setdefaulttimeout(2)
 
-ALLOWED_HOSTS = []
+    try:
+        socket.gethostbyname('bugs.debian.org')
+    except socket.error as e:
+        return e
 
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': path.join(BASE_DIR, 'db.sqlite3'),  # noqa: F405
-    }
-}
-
-SUPPORT_EMAIL = 'support@example.org'
-BOUNCE_EMAIL = 'bounce@example.org'
+    return None
