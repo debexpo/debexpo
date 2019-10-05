@@ -29,6 +29,7 @@
 from django.conf.urls import url, include
 from debexpo.base.views import index, contact, intro_reviewers, \
     intro_maintainers, qa
+from debexpo.accounts.views import register
 
 urlpatterns = [
     url(r'^$', index, name='index'),
@@ -37,4 +38,5 @@ urlpatterns = [
     url(r'^qa$', qa, name='qa'),
     url(r'^intro-maintainers$', intro_maintainers, name='maintainers'),
     url('^accounts/', include('django.contrib.auth.urls')),
+    url('^accounts/register', register, name='register'),
 ]

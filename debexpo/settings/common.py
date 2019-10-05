@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debexpo.base'
+    'debexpo.base',
+    'debexpo.accounts',
 ]
 
 MIDDLEWARE = [
