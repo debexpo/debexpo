@@ -1055,3 +1055,18 @@ table.sponsor-guidelines {
     white-space: nowrap;
 }
 
+/* Django table forms */
+#form th {
+    font-weight: normal;
+}
+
+#form ul {
+    list-style: none;
+    padding-left: 0em;
+    margin: 0em;
+}
+
+.errorlist {
+    color: red;
+    font-weight: bold;
+}
