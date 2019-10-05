@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-#
-#   register.py — Register Controller
+#   views.py — accounts views
 #
 #   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
@@ -29,113 +27,99 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-"""
-Holds the RegisterController.
-"""
-
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
-__license__ = 'MIT'
-
 import logging
-from datetime import datetime
 
-from debexpo.lib.base import BaseController, c, config, url, render, request, \
-    abort, validate
-from debexpo.lib import constants
-from debexpo.lib.email import Email
-from debexpo.lib.schemas import RegisterForm
+from django.conf import settings
+from django.shortcuts import render
 
-from debexpo.model import meta
-from debexpo.model.users import User
-
-import debexpo.lib.utils
+from .forms import RegistrationForm
 
 log = logging.getLogger(__name__)
 
 
-class RegisterController(BaseController):
+def _send_activate_email(self, key, recipient):
+    """
+    Sends an activation email to the potential new user.
 
-    def __init__(self):
-        """
-        Class constructor. Sets c.config for the templates.
-        """
-        c.config = config
+    ``key``
+        Activation key that's already stored in the database.
 
-    def _send_activate_email(self, key, recipient):
-        """
-        Sends an activation email to the potential new user.
+    ``recipient``
+        Email address to send to.
+    """
+    log.debug('Sending activation email')
+    email = Email('register_activate')
+    activate_url = 'http://' + config['debexpo.sitename'] + \
+        url.current(action='activate', id=key)
+    email.send([recipient], activate_url=activate_url)
 
-        ``key``
-            Activation key that's already stored in the database.
+def _register_submit(self):
+    """
+    Handles the form submission for a maintainer account registration.
+    """
+    log.debug('Register form validated successfully')
 
-        ``recipient``
-            Email address to send to.
-        """
-        log.debug('Sending activation email')
-        email = Email('register_activate')
-        activate_url = 'http://' + config['debexpo.sitename'] + \
-            url.current(action='activate', id=key)
-        email.send([recipient], activate_url=activate_url)
+    # Activation key.
+    key = debexpo.lib.utils.random_hash()
 
-    @validate(schema=RegisterForm(), form='register')
-    def _register_submit(self):
-        """
-        Handles the form submission for a maintainer account registration.
-        """
-        log.debug('Register form validated successfully')
+    u = User(name=self.form_result['name'],
+             email=self.form_result['email'],
+             password=debexpo.lib.utils.hash_password(
+                 self.form_result['password']),
+             lastlogin=datetime.now(),
+             verification=key)
 
-        # Activation key.
-        key = debexpo.lib.utils.random_hash()
+    if self.form_result['sponsor'] == '1':
+        u.status = constants.USER_STATUS_DEVELOPER
 
-        u = User(name=self.form_result['name'],
-                 email=self.form_result['email'],
-                 password=debexpo.lib.utils.hash_password(
-                     self.form_result['password']),
-                 lastlogin=datetime.now(),
-                 verification=key)
+    meta.session.add(u)
+    meta.session.commit()
 
-        if self.form_result['sponsor'] == '1':
-            u.status = constants.USER_STATUS_DEVELOPER
+    self._send_activate_email(key, self.form_result['email'])
 
-        meta.session.add(u)
+    log.debug('New user saved')
+    return render('/register/activate.mako')
+
+
+def register(request):
+    """
+    Provides the form for a maintainer account registration.
+    """
+    # Has the form been submitted?
+    if request.method == 'POST':
+        log.debug('Maintainer form submitted')
+        form = RegistrationForm(request.POST)
+
+        if form.is_valid():
+            return _register_submit(request)
+    else:
+        form = RegistrationForm()
+
+    log.debug('Maintainer form requested')
+    return render(request, 'register.html', {
+        'settings': settings,
+        'form': form
+    })
+
+
+def activate(request, id):
+    """
+    Upon given a verification ID, activate an account.
+
+    ``id``
+        ID to use to verify the account.
+    """
+    log.debug('Activation request with key = %s' % id)
+
+    user = meta.session.query(User).filter_by(verification=id).first()
+
+    if user is not None:
+        log.debug('Activating user "%s"' % user.name)
+        user.verification = None
         meta.session.commit()
+    else:
+        log.error('Could not find user; redirecting to main page')
+        abort(404, 'Could not find user; redirecting to main page')
 
-        self._send_activate_email(key, self.form_result['email'])
-
-        log.debug('New user saved')
-        return render('/register/activate.mako')
-
-    def register(self):
-        """
-        Provides the form for a maintainer account registration.
-        """
-        # Has the form been submitted?
-        if request.method == 'POST':
-            log.debug('Maintainer form submitted')
-            return self._register_submit()
-        else:
-            log.debug('Maintainer form requested')
-            return render('/register/register.mako')
-
-    def activate(self, id):
-        """
-        Upon given a verification ID, activate an account.
-
-        ``id``
-            ID to use to verify the account.
-        """
-        log.debug('Activation request with key = %s' % id)
-
-        user = meta.session.query(User).filter_by(verification=id).first()
-
-        if user is not None:
-            log.debug('Activating user "%s"' % user.name)
-            user.verification = None
-            meta.session.commit()
-        else:
-            log.error('Could not find user; redirecting to main page')
-            abort(404, 'Could not find user; redirecting to main page')
-
-        c.user = user
-        return render('/register/activated.mako')
+    c.user = user
+    return render('/register/activated.mako')
