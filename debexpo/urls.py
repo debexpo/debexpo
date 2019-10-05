@@ -26,7 +26,7 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from django.conf.urls import url
+from django.conf.urls import url, include
 from debexpo.base.views import index, contact, intro_reviewers, \
     intro_maintainers, qa
 
@@ -36,4 +36,5 @@ urlpatterns = [
     url(r'^intro-reviewers$', intro_reviewers, name='reviewers'),
     url(r'^qa$', qa, name='qa'),
     url(r'^intro-maintainers$', intro_maintainers, name='maintainers'),
+    url('^accounts/', include('django.contrib.auth.urls')),
 ]
