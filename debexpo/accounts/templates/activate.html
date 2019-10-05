@@ -1,9 +1,11 @@
-# -*- coding: utf-8 -*-
+{% extends "base.html" %}{% load i18n %}
 
-<%inherit file="../base.mako"/>
-
-<h1>${ _('Check your email') }</h1>
+{% block content %}<h1>{% trans 'Check your email' %}</h1>
 
 <p>
-  ${ _('An email has been sent to the email address you specified. Check it for instructions on how to activate your account.') }
+    {% blocktrans trimmed %}
+    An email has been sent to the email address you specified. Check it for
+    instructions on how to activate your account.
+    {% endblocktrans %}
 </p>
+{% endblock %}
