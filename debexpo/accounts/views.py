@@ -30,14 +30,21 @@
 import logging
 
 from django.conf import settings
+from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
+from django.urls import reverse
 from django.shortcuts import render
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
 from .forms import RegistrationForm
+
+from debexpo.tools.email import Email
 
 log = logging.getLogger(__name__)
 
 
-def _send_activate_email(self, key, recipient):
+def _send_activate_email(request, uid, token, recipient):
     """
     Sends an activation email to the potential new user.
 
@@ -48,37 +55,34 @@ def _send_activate_email(self, key, recipient):
         Email address to send to.
     """
     log.debug('Sending activation email')
-    email = Email('register_activate')
-    activate_url = 'http://' + config['debexpo.sitename'] + \
-        url.current(action='activate', id=key)
+    email = Email('password-creation.eml')
+    activate_url = request.scheme + '://' + settings.SITE_NAME + \
+        reverse('password_reset_confirm', kwargs={
+            'uidb64': uid, 'token': token
+        })
     email.send([recipient], activate_url=activate_url)
 
-def _register_submit(self):
+
+def _register_submit(request, info):
     """
     Handles the form submission for a maintainer account registration.
     """
     log.debug('Register form validated successfully')
 
-    # Activation key.
-    key = debexpo.lib.utils.random_hash()
+    # Debexpo use the email field as the username
+    user = User.objects.create_user(info.get('email'), info.get('email'))
+    user.first_name = info.get('name')
+    user.save()
 
-    u = User(name=self.form_result['name'],
-             email=self.form_result['email'],
-             password=debexpo.lib.utils.hash_password(
-                 self.form_result['password']),
-             lastlogin=datetime.now(),
-             verification=key)
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    token = default_token_generator.make_token(user)
 
-    if self.form_result['sponsor'] == '1':
-        u.status = constants.USER_STATUS_DEVELOPER
-
-    meta.session.add(u)
-    meta.session.commit()
-
-    self._send_activate_email(key, self.form_result['email'])
+    _send_activate_email(request, uid, token, user.email)
 
     log.debug('New user saved')
-    return render('/register/activate.mako')
+    return render(request, 'activate.html', {
+        'settings': settings
+    })
 
 
 def register(request):
@@ -91,7 +95,7 @@ def register(request):
         form = RegistrationForm(request.POST)
 
         if form.is_valid():
-            return _register_submit(request)
+            return _register_submit(request, form.cleaned_data)
     else:
         form = RegistrationForm()
 
