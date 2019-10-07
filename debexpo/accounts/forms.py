@@ -33,22 +33,8 @@ from django.utils.translation import gettext as _
 class RegistrationForm(forms.Form):
     name = forms.CharField(label=_('Full name'), max_length=150)
     email = forms.EmailField(label=_('E-mail'), max_length=100)
-    password = forms.CharField(label=_('Password'), widget=forms.PasswordInput,
-                               min_length=6)
-    password_confirm = forms.CharField(label=_('Confirm password'),
-                                       widget=forms.PasswordInput,
-                                       min_length=6)
     account_type = forms.ChoiceField(label=_('Account type'),
                                      initial='maintainer',
                                      widget=forms.RadioSelect,
                                      choices=[('maintainer', _('Maintainer')),
                                               ('sponsor', _('Sponsor'))])
-
-    def clean(self):
-        password = self.cleaned_data.get('password')
-        password_confirm = self.cleaned_data.get('password_confirm')
-
-        if password and password_confirm and password != password_confirm:
-            self.add_error('password_confirm', _("Passwords don't match"))
-
-        return self.cleaned_data
