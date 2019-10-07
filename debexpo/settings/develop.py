@@ -49,3 +49,4 @@ DATABASES = {
 
 SUPPORT_EMAIL = 'support@example.org'
 BOUNCE_EMAIL = 'bounce@example.org'
+TEST_SMTP = '/tmp/debexpo.mbox'
