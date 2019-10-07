@@ -38,3 +38,15 @@ class RegistrationForm(forms.Form):
                                      widget=forms.RadioSelect,
                                      choices=[('maintainer', _('Maintainer')),
                                               ('sponsor', _('Sponsor'))])
+
+    def clean(self):
+        email = self.cleaned_data.get('email')
+        account_type = self.cleaned_data.get('account_type')
+
+        if (account_type and email and account_type == 'sponsor' and
+                not email.endswith('@debian.org')):
+            self.add_error('account_type', _("A sponsor account must be "
+                                             "registered with your @debian.org "
+                                             "address"))
+
+        return self.cleaned_data
