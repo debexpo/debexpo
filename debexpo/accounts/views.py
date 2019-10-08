@@ -104,26 +104,3 @@ def register(request):
         'settings': settings,
         'form': form
     })
-
-
-def activate(request, id):
-    """
-    Upon given a verification ID, activate an account.
-
-    ``id``
-        ID to use to verify the account.
-    """
-    log.debug('Activation request with key = %s' % id)
-
-    user = meta.session.query(User).filter_by(verification=id).first()
-
-    if user is not None:
-        log.debug('Activating user "%s"' % user.name)
-        user.verification = None
-        meta.session.commit()
-    else:
-        log.error('Could not find user; redirecting to main page')
-        abort(404, 'Could not find user; redirecting to main page')
-
-    c.user = user
-    return render('/register/activated.mako')
