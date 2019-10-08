@@ -32,7 +32,7 @@ from debexpo.base.views import index, contact, intro_reviewers, \
     intro_maintainers, qa
 from debexpo.accounts.views import register
 from django.contrib.auth.views import PasswordResetConfirmView, \
-    PasswordResetCompleteView, LoginView
+    PasswordResetCompleteView, LoginView, LogoutView
 
 urlpatterns = [
     url(r'^$', index, name='index'),
@@ -58,5 +58,12 @@ urlpatterns = [
             extra_context={'settings': settings}
         ),
         name='login'),
+    url(r'accounts/logout/$',
+        LogoutView.as_view(
+            template_name='logout.html',
+            next_page='/',
+            extra_context={'settings': settings}
+        ),
+        name='logout'),
     url(r'^accounts/register$', register, name='register'),
 ]
