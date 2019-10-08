@@ -42,13 +42,13 @@ urlpatterns = [
     url(r'^intro-maintainers$', intro_maintainers, name='maintainers'),
     url(r'^accounts/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',  # noqa: E501
         PasswordResetConfirmView.as_view(
-            template_name='password_reset_confirm.html',
+            template_name='password-reset-confirm.html',
             extra_context={'settings': settings}
         ),
         name='password_reset_confirm'),
     url(r'^accounts/reset/done/$',
         PasswordResetCompleteView.as_view(
-            template_name='password_reset_complete.html',
+            template_name='password-reset-complete.html',
             extra_context={'settings': settings}
         ),
         name='password_reset_complete'),
