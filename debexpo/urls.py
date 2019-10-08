@@ -26,10 +26,13 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from django.conf.urls import url, include
+from django.conf import settings
+from django.conf.urls import url
 from debexpo.base.views import index, contact, intro_reviewers, \
     intro_maintainers, qa
 from debexpo.accounts.views import register
+from django.contrib.auth.views import PasswordResetConfirmView, \
+    PasswordResetCompleteView
 
 urlpatterns = [
     url(r'^$', index, name='index'),
@@ -37,6 +40,17 @@ urlpatterns = [
     url(r'^intro-reviewers$', intro_reviewers, name='reviewers'),
     url(r'^qa$', qa, name='qa'),
     url(r'^intro-maintainers$', intro_maintainers, name='maintainers'),
-    url('^accounts/', include('django.contrib.auth.urls')),
-    url('^accounts/register', register, name='register'),
+    url(r'^accounts/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',  # noqa: E501
+        PasswordResetConfirmView.as_view(
+            template_name='password_reset_confirm.html',
+            extra_context={'settings': settings}
+        ),
+        name='password_reset_confirm'),
+    url(r'^accounts/reset/done/$',
+        PasswordResetCompleteView.as_view(
+            template_name='password_reset_complete.html',
+            extra_context={'settings': settings}
+        ),
+        name='password_reset_complete'),
+    url(r'^accounts/register$', register, name='register'),
 ]
