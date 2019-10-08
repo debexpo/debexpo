@@ -97,7 +97,7 @@
         <div id="content">
             <span class="relatedpages">
 
-            {% if 'user_id' in session %}
+            {% if user.is_authenticated %}
                 <a href="{{ url_my }}">
                     {% trans 'My account' %}
                 </a>
@@ -140,7 +140,7 @@
                 <a href="{{ url_contact }}">
                     {% trans 'Contact' %}
                 </a>
-                {% if 'user_id' in session %}
+                {% if user.is_authenticated %}
                 -
                 <a href="{{ url_logout }}">
                     {% trans 'Logout' %}
