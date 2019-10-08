@@ -1,45 +1,54 @@
-# -*- coding: utf-8 -*-
-<%inherit file="/base.mako"/>
+{% extends "base.html" %}{% load i18n %}
 
-<h1>${ _('Login') }</h1>
+{% block content %}
+
+<h1>{% trans 'Login' %}</h1>
 
 <fieldset>
-  <legend>${ _('Login') }</legend>
+    <legend>{% trans 'Login' %}</legend>
 
-  <p>${ _('Please login to continue') }</p>
+    <p>{% trans 'Please login to continue' %}</p>
 
-% if c.message:
-  <p><span class="error-message">${ c.message }</span></p>
-% endif
+{% if form.errors %}
+    <p><span class="error-message">{% blocktrans trimmed %}Your username and
+    password didn't match. Please try again.{% endblocktrans %}</span></p>
+{% endif %}
 
-  ${ h.html.tags.form(h.url.current(), method='post') }
+{% if next %}
+{% if user.is_authenticated %}
+    <p>{% blocktrans trimmed %}Your account doesn't have access to this
+    page. To proceed, please login with an account that has
+    access.{% endblocktrans %}</p>
+{% else %}
+    <p>{% trans 'Please login to see this page.' %}</p>
+{% endif %}
+{% endif %}
 
-  <table>
+    <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <table>
     <tr>
-      <td>${ _('E-mail') }:</td>
-      <td>${ h.html.tags.text('email') }</td>
+        <td>{% trans 'E-mail:' %}</td>
+        <td>{{ form.username }}</td>
     </tr>
-
     <tr>
-      <td>${ _('Password') }:</td>
-      <td>${ h.html.tags.password('password') }</td>
+        <td>{{ form.password.label_tag }}</td>
+        <td>{{ form.password }}</td>
     </tr>
+    </table>
+    <input type="submit" value="login">
+    <input type="hidden" name="next" value="{{ next }}">
+    </form>
 
-    <tr>
-      <td>${ h.html.tags.submit('commit', _('Submit')) }</td>
-    </tr>
-  </table>
+{% if scheme == 'http' %}
+    <p>{% trans 'Secure log-in:' %} <a href="{{ secure_url }}">
+        {% trans 'Switch to SSL' %}</a></p>
+{% endif %}
 
-  ${ h.html.tags.end_form() }
+  <p>{% trans 'Did you lose your password?' %}
 
-% if c.request and c.request.scheme == 'http':
-  <p>Secure log-in: <a href="${ h.url.current(protocol='https') }">${ _('Switch to SSL') }</a></p>
-% endif
-
-  <p>${ _('Did you lose your password?')}
-
-  <a href="${ h.url("password_recover/index") }">${ _('Try resetting your password.')}</a></p>
-
- </p>
+  <a href="{{ password_reset }}">
+      {% trans 'Try resetting your password.' %}</a></p>
 
 </fieldset>
+{% endblock %}
