@@ -47,7 +47,7 @@
 
   <p>{% trans 'Did you lose your password?' %}
 
-  <a href="{{ password_reset }}">
+  <a href="{% url 'password_reset' %}">
       {% trans 'Try resetting your password.' %}</a></p>
 
 </fieldset>

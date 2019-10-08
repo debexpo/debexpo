@@ -32,7 +32,8 @@ from debexpo.base.views import index, contact, intro_reviewers, \
     intro_maintainers, qa
 from debexpo.accounts.views import register
 from django.contrib.auth.views import PasswordResetConfirmView, \
-    PasswordResetCompleteView, LoginView, LogoutView
+    PasswordResetCompleteView, PasswordResetView, LoginView, LogoutView, \
+    PasswordResetDoneView
 
 urlpatterns = [
     url(r'^$', index, name='index'),
@@ -65,5 +66,20 @@ urlpatterns = [
             extra_context={'settings': settings}
         ),
         name='logout'),
+    url(r'accounts/password_reset/$',
+        PasswordResetView.as_view(
+            template_name='password-reset-form.html',
+            email_template_name='password-reset.eml',
+            subject_template_name='password-reset-subject.eml',
+            extra_context={'settings': settings},
+            extra_email_context={'settings': settings}
+        ),
+        name='password_reset'),
+    url(r'accounts/password_reset/done/$',
+        PasswordResetDoneView.as_view(
+            template_name='password-reset-done.html',
+            extra_context={'settings': settings}
+        ),
+        name='password_reset_done'),
     url(r'^accounts/register$', register, name='register'),
 ]
