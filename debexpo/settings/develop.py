@@ -55,3 +55,19 @@ DEFAULT_BOUNCE_EMAIL = 'bounce@example.org'
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = '/tmp/debexpo.mbox'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'debexpo': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
