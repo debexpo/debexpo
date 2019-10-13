@@ -30,16 +30,18 @@
 import logging
 
 from django.conf import settings
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.shortcuts import render
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
-from .forms import RegistrationForm
+from .forms import RegistrationForm, AccountForm
 
 from debexpo.tools.email import Email
 
@@ -58,7 +60,7 @@ def _send_activate_email(request, uid, token, recipient):
     """
     log.debug('Sending activation email')
     email = Email('password-creation.eml')
-    activate_url = request.scheme + '://' + get_current_site(request).domain + \
+    activate_url = request.scheme + '://' + request.site.domain + \
         reverse('password_reset_confirm', kwargs={
             'uidb64': uid, 'token': token
         })
@@ -88,6 +90,12 @@ def _register_submit(request, info):
     })
 
 
+def _update_account(request, info):
+    request.user.first_name = info.get('name')
+    request.user.email = info.get('email')
+    request.user.save()
+
+
 def register(request):
     """
     Provides the form for a maintainer account registration.
@@ -95,15 +103,50 @@ def register(request):
     # Has the form been submitted?
     if request.method == 'POST':
         log.debug('Maintainer form submitted')
-        form = RegistrationForm(request.POST)
+        form = RegistrationForm(None, request.POST)
 
         if form.is_valid():
             return _register_submit(request, form.cleaned_data)
     else:
-        form = RegistrationForm()
+        form = RegistrationForm(None)
 
     log.debug('Maintainer form requested')
     return render(request, 'register.html', {
         'settings': settings,
         'form': form
+    })
+
+
+@login_required
+def profile(request):
+    account_initial = {
+        'name': request.user.first_name,
+        'email': request.user.email
+    }
+    account_form = AccountForm(None, initial=account_initial)
+    password_form = PasswordChangeForm(user=request.user)
+
+    if request.method == 'POST':
+        if 'commit_account' in request.POST:
+            account_form = AccountForm(request.user, request.POST)
+
+            if account_form.is_valid():
+                log.debug('Updating user account for '
+                          '{}'.format(request.user.email))
+                _update_account(request, account_form.cleaned_data)
+
+        if 'commit_password' in request.POST:
+            password_form = PasswordChangeForm(user=request.user,
+                                               data=request.POST)
+
+            if password_form.is_valid():
+                log.debug('Changing password for account '
+                          '{}'.format(request.user.email))
+                password_form.save()
+                update_session_auth_hash(request, password_form.user)
+
+    return render(request, 'profile.html', {
+        'settings': settings,
+        'account_form': account_form,
+        'password_form': password_form,
     })

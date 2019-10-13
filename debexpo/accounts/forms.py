@@ -35,9 +35,37 @@ from django.utils.translation import gettext as _
 from debexpo.tools.email import Email
 
 
-class RegistrationForm(forms.Form):
+class AccountForm(forms.Form):
     name = forms.CharField(label=_('Full name'), max_length=150)
     email = forms.EmailField(label=_('E-mail'), max_length=100)
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+    def _validate_uniqueness(self, name, email):
+        if (name and User.objects.filter(first_name=name) and
+                (not self.user or self.user.first_name != name)):
+            self.add_error('name', _('A user with this name is already '
+                                     'registered on the system. If it is you, '
+                                     'use that account!  Otherwise use a '
+                                     'different name to register.'))
+
+        if (email and User.objects.filter(email=email) and
+                (not self.user or self.user.email != email)):
+            self.add_error('email', _('A user with this email address is '
+                                      'already registered on the system'))
+
+    def clean(self):
+        email = self.cleaned_data.get('email')
+        name = self.cleaned_data.get('name')
+
+        self._validate_uniqueness(name, email)
+
+        return self.cleaned_data
+
+
+class RegistrationForm(AccountForm):
     account_type = forms.ChoiceField(label=_('Account type'),
                                      initial='maintainer',
                                      widget=forms.RadioSelect,
@@ -51,24 +79,12 @@ class RegistrationForm(forms.Form):
                                              "registered with your @debian.org "
                                              "address"))
 
-    def _validate_uniqueness(self, name, email):
-        if name and User.objects.filter(first_name=name):
-            self.add_error('name', _('A user with this name is already '
-                                     'registered on the system. If it is you, '
-                                     'use that account!  Otherwise use a '
-                                     'different name to register.'))
-
-        if email and User.objects.filter(email=email):
-            self.add_error('email', _('A user with this email address is '
-                                      'already registered on the system'))
-
     def clean(self):
+        self.cleaned_data = super().clean()
         email = self.cleaned_data.get('email')
-        name = self.cleaned_data.get('name')
         account_type = self.cleaned_data.get('account_type')
 
         self._validate_sponsor_account(account_type, email)
-        self._validate_uniqueness(name, email)
 
         return self.cleaned_data
 

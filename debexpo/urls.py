@@ -30,7 +30,7 @@ from django.conf import settings
 from django.conf.urls import url
 from debexpo.base.views import index, contact, intro_reviewers, \
     intro_maintainers, qa
-from debexpo.accounts.views import register
+from debexpo.accounts.views import register, profile
 from debexpo.accounts.forms import PasswordResetForm
 from django.contrib.auth.views import PasswordResetConfirmView, \
     PasswordResetCompleteView, PasswordResetView, LoginView, LogoutView, \
@@ -81,4 +81,5 @@ urlpatterns = [
         ),
         name='password_reset_done'),
     url(r'^accounts/register$', register, name='register'),
+    url(r'^accounts/profile/$', profile, name='profile'),
 ]
