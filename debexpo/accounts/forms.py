@@ -28,7 +28,11 @@
 
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordResetForm as \
+    DjangoPasswordResetForm
 from django.utils.translation import gettext as _
+
+from debexpo.tools.email import Email
 
 
 class RegistrationForm(forms.Form):
@@ -67,3 +71,10 @@ class RegistrationForm(forms.Form):
         self._validate_uniqueness(name, email)
 
         return self.cleaned_data
+
+
+class PasswordResetForm(DjangoPasswordResetForm):
+    def send_mail(self, subject_template_name, email_template_name,
+                  context, from_email, to_email, html_email_template_name=None):
+        email = Email('password-reset.eml')
+        email.send(_('You requested a password reset'), [to_email], **context)

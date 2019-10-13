@@ -32,7 +32,9 @@ import logging
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
+from django.utils.translation import gettext as _
 from django.shortcuts import render
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
@@ -56,11 +58,12 @@ def _send_activate_email(request, uid, token, recipient):
     """
     log.debug('Sending activation email')
     email = Email('password-creation.eml')
-    activate_url = request.scheme + '://' + settings.SITE_NAME + \
+    activate_url = request.scheme + '://' + get_current_site(request).domain + \
         reverse('password_reset_confirm', kwargs={
             'uidb64': uid, 'token': token
         })
-    email.send([recipient], activate_url=activate_url)
+    email.send(_('Next step: Confirm your email address'), [recipient],
+               activate_url=activate_url)
 
 
 def _register_submit(request, info):
