@@ -47,6 +47,11 @@ DATABASES = {
     }
 }
 
-SUPPORT_EMAIL = 'support@example.org'
-BOUNCE_EMAIL = 'bounce@example.org'
-TEST_SMTP = '/tmp/debexpo.mbox'
+# Email settings
+# https://docs.djangoproject.com/en/2.2/ref/settings/#email
+
+DEFAULT_FROM_EMAIL = 'debexpo <support@example.org>'
+DEFAULT_BOUNCE_EMAIL = 'bounce@example.org'
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = '/tmp/debexpo.mbox'

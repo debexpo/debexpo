@@ -60,5 +60,9 @@ SITE_TITLE = 'Mentors'
 HOSTING_URL = 'https://www.wavecon.de/'
 HOSTING = 'Wavecon'
 
-SUPPORT_EMAIL = 'support@mentors.debian.net'
-BOUNCE_EMAIL = 'bounce@mentors.debian.net'
+
+# Email settings
+# https://docs.djangoproject.com/en/2.2/ref/settings/#email
+
+DEFAULT_FROM_EMAIL = 'mentors.debian.net <support@mentors.debian.net>'
+DEFAULT_BOUNCE_EMAIL = 'bounce@mentors.debian.net'
