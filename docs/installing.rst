@@ -23,7 +23,7 @@ Dependencies needed for both methods
 
 Whatever method you choose, these packages are required::
 
-    sudo apt-get install python3
+    sudo apt-get install python3 iso-codes
 
 Installing on Debian as root
 ----------------------------

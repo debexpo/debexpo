@@ -18,6 +18,7 @@ before_script:
     libjs-jquery-isonscreen
     libjs-jquery-tablesorter
     git
+    iso-codes
 
 .test_template: &test
   variables:
