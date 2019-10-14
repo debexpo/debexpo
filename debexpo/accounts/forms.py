@@ -34,6 +34,8 @@ from django.utils.translation import gettext as _
 
 from debexpo.tools.email import Email
 
+from .models import Profile
+
 
 class AccountForm(forms.Form):
     name = forms.CharField(label=_('Full name'), max_length=150)
@@ -94,3 +96,9 @@ class PasswordResetForm(DjangoPasswordResetForm):
                   context, from_email, to_email, html_email_template_name=None):
         email = Email('password-reset.eml')
         email.send(_('You requested a password reset'), [to_email], **context)
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['country', 'ircnick', 'jabber']

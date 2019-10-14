@@ -34,6 +34,9 @@ from django.utils.translation import gettext_lazy as _
 class Countries(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
