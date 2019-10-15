@@ -30,7 +30,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordResetForm as \
     DjangoPasswordResetForm
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from debexpo.tools.email import Email
 
