@@ -60,7 +60,7 @@ def _send_activate_email(request, uid, token, recipient):
         Email address to send to.
     """
     log.debug('Sending activation email')
-    email = Email('password-creation.eml')
+    email = Email('email-password-creation.html')
     activate_url = request.scheme + '://' + request.site.domain + \
         reverse('password_reset_confirm', kwargs={
             'uidb64': uid, 'token': token

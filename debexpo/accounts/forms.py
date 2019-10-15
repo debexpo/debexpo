@@ -94,7 +94,7 @@ class RegistrationForm(AccountForm):
 class PasswordResetForm(DjangoPasswordResetForm):
     def send_mail(self, subject_template_name, email_template_name,
                   context, from_email, to_email, html_email_template_name=None):
-        email = Email('password-reset.eml')
+        email = Email('email-password-reset.html')
         email.send(_('You requested a password reset'), [to_email], **context)
 
 
