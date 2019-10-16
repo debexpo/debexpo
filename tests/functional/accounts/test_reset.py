@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 #   test_reset - test cases for password reset
 #
 #   This file is part of debexpo
@@ -28,68 +26,97 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-__author__ = 'Baptiste BEAUPLAT'
-__copyright__ = 'Copyright © 2019 Baptiste BEAUPLAT'
-__license__ = 'MIT'
+from django.contrib.auth.models import User
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.contrib.auth.views import INTERNAL_RESET_URL_TOKEN, \
+    INTERNAL_RESET_SESSION_TOKEN
+from django.core import mail
+from django.urls import reverse
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
-
-from debexpo.tests import TestController, url
-from debexpo.model import meta
-from debexpo.model.users import User
-from debexpo.model.password_reset import PasswordReset
+from tests import TestController
 
 
 class TestResetController(TestController):
 
     def setUp(self):
-        self._setup_models()
         self._setup_example_user()
 
     def tearDown(self):
         self._remove_example_user()
 
     def _generate_reset_token(self):
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .one()
+        user = User.objects.get(email='email@example.com')
+        token_generator = PasswordResetTokenGenerator()
+        link = token_generator.make_token(user)
 
-        password_reset_data = PasswordReset.create_for_user(user)
-        meta.session.add(password_reset_data)
-        meta.session.commit()
+        return (
+            urlsafe_base64_encode(force_bytes(user.pk)),
+            link
+        )
 
-        return password_reset_data.temporary_auth_key
-
-    def _assert_reset_password(self, token, result):
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .one()
+    def _assert_reset_password(self, uid, token, result):
+        user = User.objects.get(email='email@example.com')
         old_password = user.password
 
-        response = self.app.get(url(controller='password_recover',
-                                    action='actually_reset_password',
-                                    id=token),
-                                expect_errors=True)
+        session = self.client.session
+        session[INTERNAL_RESET_SESSION_TOKEN] = token
+        session.save()
 
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .one()
+        response = self.client.post(reverse('password_reset_confirm', kwargs={
+            'uidb64': uid,
+            'token': INTERNAL_RESET_URL_TOKEN
+        }), {
+            'new_password1': 'newpass',
+            'new_password2': 'newpass',
+            'commit': 'submit'
+        })
+
+        user = User.objects.get(email='email@example.com')
         cur_password = user.password
 
         if result:
-            self.assertEqual(response.status_int, 200)
+            self.assertEqual(response.status_code, 302)
             self.assertNotEqual(old_password, cur_password)
         else:
-            self.assertEqual(response.status_int, 404)
+            self.assertEqual(response.status_code, 200)
             self.assertEqual(old_password, cur_password)
 
     def test_reset_wrong_key(self):
-        self._assert_reset_password('that_key_should_not_exist', False)
+        self._assert_reset_password('that_key_should_not_exist', 'x-x', False)
 
     def test_reset_password(self):
-        token = self._generate_reset_token()
-        self._assert_reset_password(token, True)
+        (uid, token) = self._generate_reset_token()
+        self._assert_reset_password(uid, token, True)
 
     def test_reset_password_twice(self):
-        token = self._generate_reset_token()
-        self._assert_reset_password(token, True)
-        self._assert_reset_password(token, False)
+        (uid, token) = self._generate_reset_token()
+        self._assert_reset_password(uid, token, True)
+        self._assert_reset_password(uid, token, False)
+
+    def test_resert_request(self):
+        # Request reset form
+        response = self.client.get(reverse('password_reset'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('Password recovery', str(response.content))
+
+        # Request reset on invalid address
+        self._assert_request_reset('unknown@example.com', False)
+
+        # Request reset on valid address
+        self._assert_request_reset('email@example.com', True)
+
+    def _assert_request_reset(self, email, result):
+        response = self.client.post(reverse('password_reset'), {
+            'email': email
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(reverse('password_reset_done'), response.url)
+
+        if result:
+            self.assertEqual(len(mail.outbox), 1)
+            self.assertIn('clicking on the link below', mail.outbox[0].body)
+            self.assertIn('accounts/reset/', mail.outbox[0].body)
+        else:
+            self.assertEqual(len(mail.outbox), 0)

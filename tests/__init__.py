@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
-#
-#   __init__.py — Pylons application test package
+#   __init__.py — Debexpo application test package
 #
 #   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
+#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -30,44 +29,25 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 """
-Pylons application test package.
+Debexpo application test package.
 
 When the test runner finds and executes tests within this directory,
 this file will be loaded to setup the test environment.
-
-It registers the root directory of the project in sys.path and
-pkg_resources, in case the project hasn't been installed with
-setuptools. It also initializes the application via websetup (paster
-setup-app) with the project's test.ini configuration file.
 """
 
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
-__license__ = 'MIT'
-
-import md5
-import tempfile
-from datetime import datetime
-from unittest import TestCase
-
-from paste.script.appinstall import SetupCommand
-from pylons import url
-from routes.util import URLGenerator
-from webtest import TestApp
-
-import pylons.test
-from debexpo.model import meta, import_all_models
-from debexpo.model.users import User
-from debexpo.model.packages import Package
-from debexpo.model.package_versions import PackageVersion
-from debexpo.model.source_packages import SourcePackage
-from debexpo.model.user_upload_key import UserUploadKey
-from debexpo.model.user_countries import UserCountry
-from debexpo.lib.gnupg import GnuPG
+from django.test import TestCase
+# import tempfile
+# from datetime import datetime
+# from unittest import TestCase
+#
+from django.contrib.auth.models import User
+# from debexpo.model.packages import Package
+# from debexpo.model.package_versions import PackageVersion
+# from debexpo.model.source_packages import SourcePackage
+# from debexpo.model.user_upload_key import UserUploadKey
+# from debexpo.lib.gnupg import GnuPG
 
 __all__ = ['environ', 'url', 'TestController']
-
-SetupCommand('setup-app').run([pylons.test.pylonsapp.config['__file__']])
 
 environ = {}
 
@@ -77,7 +57,7 @@ class TestController(TestCase):
     Base class for testing controllers.
     """
 
-    _AUTHDATA = {'email': 'email@example.com',
+    _AUTHDATA = {'username': 'email@example.com',
                  'password': 'password',
                  'commit': 'submit'}
 
@@ -101,51 +81,22 @@ xOwJ1heEnfmgPkuiz7jFCAo=
 
     _GPG_ID = '256E/E871F3DF'
 
-    def __init__(self, *args, **kwargs):
-        wsgiapp = pylons.test.pylonsapp
-        config = wsgiapp.config
-        self.app = TestApp(wsgiapp)
-        url._push_object(URLGenerator(config['routes.map'], environ))
-        TestCase.__init__(self, *args, **kwargs)
-
-    def _setup_models(self):
-        """Create all models in the test database."""
-        # Since we are using a sqlite database in memory (at least that's what
-        # the default in test.ini is), we need to create all the tables
-        # necessary. So let's import all the models and create all the tables.
-        import_all_models()
-        meta.metadata.create_all(bind=meta.engine)
-
-    def _setup_example_countries(self):
-        """Add a few example countries.
-
-        Adds ``United States``, ``Germany``, ``Russia`` and ``United Kingdom``.
-        """
-        for name in ('United States', 'Germany', 'Russia', 'United Kingdom'):
-            meta.session.add(UserCountry(name=name))
-        meta.session.commit()
-
-    def _remove_example_countries(self):
-        """Remove the example countries."""
-        meta.session.query(UserCountry).delete()
-        meta.session.commit()
-
-    def _add_gpg_key(self, key, key_id=None, user=None):
-        gpg_ctl = GnuPG()
-
-        # Add key to keyring
-        temp = tempfile.NamedTemporaryFile(delete=True)
-        temp.write(key)
-        temp.flush()
-        gpg_ctl.add_signature(temp.name)
-        temp.close()
-
-        # Update user in database
-        if user:
-            user.gpg = key
-            user.gpg_id = key_id
-            meta.session.merge(user)
-            meta.session.commit()
+#    def _add_gpg_key(self, key, key_id=None, user=None):
+#        gpg_ctl = GnuPG()
+#
+#        # Add key to keyring
+#        temp = tempfile.NamedTemporaryFile(delete=True)
+#        temp.write(key)
+#        temp.flush()
+#        gpg_ctl.add_signature(temp.name)
+#        temp.close()
+#
+#        # Update user in database
+#        if user:
+#            user.gpg = key
+#            user.gpg_id = key_id
+#            meta.session.merge(user)
+#            meta.session.commit()
 
     def _setup_example_user(self, gpg=False):
         """Add an example user.
@@ -158,20 +109,10 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         classes.
         """
         # Create a test user and save it.
-        user = User(name='Test user', email='email@example.com',
-                    password=md5.new('password').hexdigest(),
-                    lastlogin=datetime.now())
-
-        meta.session.add(user)
-        meta.session.commit()
-
-        if meta.session.query(UserUploadKey).filter_by(
-                upload_key='upload_key').count() == 0:
-            user_upload_key = UserUploadKey(
-                user_id=user.id,
-                upload_key='upload_key')
-            meta.session.add(user_upload_key)
-            meta.session.commit()
+        user = User.objects.create_user('email@example.com',
+                                        'email@example.com', 'password')
+        user.first_name = 'Test user'
+        user.save()
 
         if gpg:
             self._add_gpg_key(self._GPG_KEY, self._GPG_ID, user)
@@ -185,69 +126,67 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         This method must be used in the tearDown method of derived
         test classes that use _setup_example_user.
         """
-        meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .delete()
-        meta.session.commit()
+        user = User.objects.filter(email='email@example.com')
+        user.delete()
 
-    def _setup_example_package(self):
-        """Add an example package.
-
-        The example package with name ``testpackage`` is added to
-        the database.
-
-        This method may be used in the setUp method of derived test
-        classes.
-        """
-        user = meta.session.query(User).filter(
-            User.email == 'email@example.com').one()
-
-        if not user:
-            raise Exception('Example user must be created before the package')
-
-        package = Package(name='testpackage', user=user,
-                          description='a test package')
-        meta.session.add(package)
-
-        package_version = PackageVersion(
-            package=package,
-            version='1.0-1',
-            maintainer='Test User <email@example.com>',
-            section='Admin',
-            distribution='unstable',
-            qa_status=0,
-            component='main',
-            priority='optional',
-            closes='',
-            uploaded=datetime.now())
-        meta.session.add(package_version)
-        meta.session.add(SourcePackage(package_version=package_version))
-        meta.session.commit()
-
-    def _remove_example_package(self):
-        """Remove the example package.
-
-        This method removes the example package created in
-        _setup_example_package.
-
-        This method must be used in the tearDown method of derived
-        test classes that use _setup_example_package.
-        """
-        package = meta.session.query(Package) \
-            .filter(Package.name == 'testpackage') \
-            .first()
-        if not package:
-            return
-
-        package_version = meta.session.query(PackageVersion) \
-            .filter(PackageVersion.package == package) \
-            .first()
-
-        package_source = meta.session.query(SourcePackage) \
-            .filter(SourcePackage.package_version == package_version) \
-            .first()
-
-        meta.session.delete(package_source)
-        meta.session.delete(package_version)
-        meta.session.delete(package)
-        meta.session.commit()
+#    def _setup_example_package(self):
+#        """Add an example package.
+#
+#        The example package with name ``testpackage`` is added to
+#        the database.
+#
+#        This method may be used in the setUp method of derived test
+#        classes.
+#        """
+#        user = meta.session.query(User).filter(
+#            User.email == 'email@example.com').one()
+#
+#        if not user:
+#            raise Exception('Example user must be created before the package')
+#
+#        package = Package(name='testpackage', user=user,
+#                          description='a test package')
+#        meta.session.add(package)
+#
+#        package_version = PackageVersion(
+#            package=package,
+#            version='1.0-1',
+#            maintainer='Test User <email@example.com>',
+#            section='Admin',
+#            distribution='unstable',
+#            qa_status=0,
+#            component='main',
+#            priority='optional',
+#            closes='',
+#            uploaded=datetime.now())
+#        meta.session.add(package_version)
+#        meta.session.add(SourcePackage(package_version=package_version))
+#        meta.session.commit()
+#
+#    def _remove_example_package(self):
+#        """Remove the example package.
+#
+#        This method removes the example package created in
+#        _setup_example_package.
+#
+#        This method must be used in the tearDown method of derived
+#        test classes that use _setup_example_package.
+#        """
+#        package = meta.session.query(Package) \
+#            .filter(Package.name == 'testpackage') \
+#            .first()
+#        if not package:
+#            return
+#
+#        package_version = meta.session.query(PackageVersion) \
+#            .filter(PackageVersion.package == package) \
+#            .first()
+#
+#        package_source = meta.session.query(SourcePackage) \
+#            .filter(SourcePackage.package_version == package_version) \
+#            .first()
+#
+#        meta.session.delete(package_source)
+#        meta.session.delete(package_version)
+#        meta.session.delete(package)
+#        meta.session.commit()

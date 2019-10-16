@@ -1,17 +1,50 @@
-from debexpo.tests import TestController, url
-from debexpo.lib import constants
-from debexpo.model import meta
-from debexpo.model.users import User
-from debexpo.model.user_countries import UserCountry
+#   test_profile.py - Functional tests for the profile page
+#
+#   This file is part of debexpo
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
+#
+#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
+#
+#   Permission is hereby granted, free of charge, to any person
+#   obtaining a copy of this software and associated documentation
+#   files (the "Software"), to deal in the Software without
+#   restriction, including without limitation the rights to use,
+#   copy, modify, merge, publish, distribute, sublicense, and/or sell
+#   copies of the Software, and to permit persons to whom the
+#   Software is furnished to do so, subject to the following
+#   conditions:
+#
+#   The above copyright notice and this permission notice shall be
+#   included in all copies or substantial portions of the Software.
+#
+#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+#   OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+#   HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+#   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+#   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+#   OTHER DEALINGS IN THE SOFTWARE.
 
-import tempfile
-import os
-import shutil
+from tests import TestController
+from django.urls import reverse
+# from debexpo.lib import constants
+# from debexpo.model import meta
+from django.contrib.auth.models import User
+from debexpo.accounts.models import Countries, Profile
+# from debexpo.model.user_countries import UserCountry
+#
+# import tempfile
+# import os
+# import shutil
+#
+# from passlib.hash import bcrypt
+import logging
 
-from passlib.hash import bcrypt
+log = logging.getLogger(__name__)
 
 
-class TestMyController(TestController):
+class TestProfilePage(TestController):
     _GPGKEY_WRONG_EMAIL = """-----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mDMEW9b91RYJKwYBBAHaRw8BAQdAHtUIQWAsmPilu0JDMnLbpPQfT1i3z2IVMoDH
@@ -70,263 +103,258 @@ xOwJ1heEnfmgPkuiz7jFCAo=
 -----END PGP PUBLIC KEY BLOCK-----"""
     _GPG_ID = '256E/E871F3DF'
 
-    def _setup_gpg_env(self):
-        self.homedir = tempfile.mkdtemp()
-        os.environ['GNUPGHOME'] = self.homedir
-
-    def _cleanup_gpg_env(self):
-        os.unsetenv('GNUPGHOME')
-        shutil.rmtree(self.homedir)
-
+#    def _setup_gpg_env(self):
+#        self.homedir = tempfile.mkdtemp()
+#        os.environ['GNUPGHOME'] = self.homedir
+#
+#    def _cleanup_gpg_env(self):
+#        os.unsetenv('GNUPGHOME')
+#        shutil.rmtree(self.homedir)
+#
     def setUp(self):
-        self._setup_gpg_env()
-        self._setup_models()
         self._setup_example_user()
-        self._setup_example_countries()
+#        self._setup_gpg_env()
+#        self._setup_models()
+#        self._setup_example_countries()
 
     def tearDown(self):
         self._remove_example_user()
-        self._remove_example_countries()
-        self._cleanup_gpg_env()
+#        self._remove_example_countries()
+#        self._cleanup_gpg_env()
 
     def test_index(self):
-        response = self.app.get(url(controller='my', action='index'))
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('login')))
-        self.assertEquals(response.session['path_before_login'], url('my'))
-        response = self.app.post(url('login'), self._AUTHDATA)
-        response = self.app.get(url(controller='my', action='index'))
-        self.assertEquals(response.status_int, 200)
-        self.assertTrue('<a href="%s">' % (url('logout')) in response)
+        # Test unauthenticated access to profile page
+        response = self.client.get(reverse('profile'))
+        self.assertEquals(response.status_code, 302)
+        self.assertIn(reverse('login'), response.url)
+        self.assertIn(reverse('profile'), response.url)
+
+        # Test login
+        response = self.client.post(reverse('login'), self._AUTHDATA)
+        response = self.client.get(reverse('index'))
+        self.assertEquals(response.status_code, 200)
+        self.assertIn('<a href="{}">'.format(reverse('logout')),
+                      str(response.content))
 
         # test user with country
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .one()
-        user.country = meta.session.query(UserCountry) \
-            .filter(UserCountry.name == 'Germany') \
-            .one()
-        meta.session.commit()
-        response = self.app.get(url(controller='my', action='index'))
-        self.assertEquals(response.status_int, 200)
-        self.assertTrue('<a href="%s">' % (url('logout')) in response)
+        user = User.objects.get(email='email@example.com')
+        country = Countries.objects.get(name='Germany')
+        Profile.objects.create(user=user, country=country)
+        user.save()
+
+        response = self.client.get(reverse('profile'))
+        self.assertEquals(response.status_code, 200)
+        self.assertIn('selected>Germany', str(response.content))
 
         # test DD user
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .one()
-        user.status = constants.USER_STATUS_DEVELOPER
-        meta.session.commit()
-        response = self.app.get(url(controller='my', action='index'))
-        self.assertEquals(response.status_int, 200)
-        self.assertTrue('<a href="%s">' % (url('logout')) in response)
-
-        # test DM user
-        user = meta.session.query(User).filter(
-            User.email == 'email@example.com').one()
-        user.status = constants.USER_STATUS_MAINTAINER
-        meta.session.commit()
-        response = self.app.get(url(controller='my', action='index'))
-        self.assertEquals(response.status_int, 200)
-        self.assertTrue('<a href="%s">' % (url('logout')) in response)
-
+#        user = meta.session.query(User) \
+#            .filter(User.email == 'email@example.com') \
+#            .one()
+#        user.status = constants.USER_STATUS_DEVELOPER
+#        meta.session.commit()
+#      response = self.client.get(reverse(controller='profile', action='index'))
+#        self.assertEquals(response.status_code, 200)
+#        self.assertTrue('<a href="%s">' % (reverse('logout')) in response)
+#
+#        # test DM user
+#        user = meta.session.query(User).filter(
+#            User.email == 'email@example.com').one()
+#        user.status = constants.USER_STATUS_MAINTAINER
+#        meta.session.commit()
+#      response = self.client.get(reverse(controller='profile', action='index'))
+#        self.assertEquals(response.status_code, 200)
+#        self.assertTrue('<a href="%s">' % (reverse('logout')) in response)
+#
         # test handling of deleted user
         self._remove_example_user()
-        response = self.app.get(url(controller='my', action='index'))
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('login')))
+        response = self.client.get(reverse('profile'))
+        self.assertEquals(response.status_code, 302)
+        self.assertIn(reverse('login'), response.url)
 
-    def test__gpg(self):
-        response = self.app.post(url('my'), {'form': 'gpg'})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('login')))
-        response = self.app.post(url('login'), self._AUTHDATA)
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .one()
-        self.assertEquals(user.gpg, None)
-
-        # upload GPG key
-        response = self.app.post(url('my'), {'form': 'gpg',
-                                             'delete_gpg': 0,
-                                             'commit': 'submit'},
-                                 upload_files=[('gpg', 'mykey.asc',
-                                               self._GPGKEY)])
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('my')))
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .one()
-        self.assertEquals(user.gpg, self._GPGKEY)
-
-        # test whether index page contains GPG delete link
-        response = self.app.get(url(controller='my', action='index'))
-        self.assertEquals(response.status_int, 200)
-        self.assertTrue('<a href="%s">' % (url('logout')) in response)
-        self.assertTrue(self._GPG_ID in response)
-
-        # delete GPG key
-        response = self.app.post(url('my'), {'form': 'gpg',
-                                             'delete_gpg': 1,
-                                             'commit': 'submit',
-                                             'gpg': ''})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('my')))
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .one()
-        self.assertEquals(user.gpg, None)
-
-    def test__gpg_multi_keys(self):
-        response = self.app.post(url('my'), {'form': 'gpg'})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('login')))
-        response = self.app.post(url('login'), self._AUTHDATA)
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .one()
-        self.assertEquals(user.gpg, None)
-
-        # upload GPG key
-        response = self.app.post(url('my'), {'form': 'gpg',
-                                             'delete_gpg': 0,
-                                             'commit': 'submit'},
-                                 upload_files=[('gpg', 'mykey.asc',
-                                               self._GPGKEY_MULTI)])
-        self.assertEquals(response.status_int, 200)
-        self.assertTrue('Multiple keys not supported' in response)
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .one()
-        self.assertEquals(user.gpg, None)
-
-    def test__gpg_wrong_email(self):
-        response = self.app.post(url('my'), {'form': 'gpg'})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('login')))
-        response = self.app.post(url('login'), self._AUTHDATA)
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .one()
-        self.assertEquals(user.gpg, None)
-
-        # upload GPG key
-        response = self.app.post(url('my'), {'form': 'gpg',
-                                             'delete_gpg': 0,
-                                             'commit': 'submit'},
-                                 upload_files=[('gpg', 'mykey.asc',
-                                               self._GPGKEY_WRONG_EMAIL)])
-        self.assertEquals(response.status_int, 200)
-        self.assertTrue('None of your user IDs in key {} does match your'
-                        ' profile mail address'.format(self._GPG_ID_WRONG_EMAIL)
-                        in response)
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .one()
-        self.assertEquals(user.gpg, None)
+#    def test__gpg(self):
+#        response = self.client.post(reverse('profile'), {'form': 'gpg'})
+#        self.assertEquals(response.status_code, 302)
+#        self.assertTrue(response.location.endswith(reverse('login')))
+#        response = self.client.post(reverse('login'), self._AUTHDATA)
+#        user = meta.session.query(User) \
+#            .filter(User.email == 'email@example.com') \
+#            .one()
+#        self.assertEquals(user.gpg, None)
+#
+#        # upload GPG key
+#        response = self.client.post(reverse('profile'), {'form': 'gpg',
+#                                             'delete_gpg': 0,
+#                                             'commit': 'submit'},
+#                                 upload_files=[('gpg', 'mykey.asc',
+#                                               self._GPGKEY)])
+#        self.assertEquals(response.status_code, 302)
+#        self.assertTrue(response.location.endswith(reverse('profile')))
+#        user = meta.session.query(User) \
+#            .filter(User.email == 'email@example.com') \
+#            .one()
+#        self.assertEquals(user.gpg, self._GPGKEY)
+#
+#        # test whether index page contains GPG delete link
+#      response = self.client.get(reverse(controller='profile', action='index'))
+#        self.assertEquals(response.status_code, 200)
+#        self.assertTrue('<a href="%s">' % (reverse('logout')) in response)
+#        self.assertTrue(self._GPG_ID in response)
+#
+#        # delete GPG key
+#        response = self.client.post(reverse('profile'), {'form': 'gpg',
+#                                             'delete_gpg': 1,
+#                                             'commit': 'submit',
+#                                             'gpg': ''})
+#        self.assertEquals(response.status_code, 302)
+#        self.assertTrue(response.location.endswith(reverse('profile')))
+#        user = meta.session.query(User) \
+#            .filter(User.email == 'email@example.com') \
+#            .one()
+#        self.assertEquals(user.gpg, None)
+#
+#    def test__gpg_multi_keys(self):
+#        response = self.client.post(reverse('profile'), {'form': 'gpg'})
+#        self.assertEquals(response.status_code, 302)
+#        self.assertTrue(response.location.endswith(reverse('login')))
+#        response = self.client.post(reverse('login'), self._AUTHDATA)
+#        user = meta.session.query(User) \
+#            .filter(User.email == 'email@example.com') \
+#            .one()
+#        self.assertEquals(user.gpg, None)
+#
+#        # upload GPG key
+#        response = self.client.post(reverse('profile'), {'form': 'gpg',
+#                                             'delete_gpg': 0,
+#                                             'commit': 'submit'},
+#                                 upload_files=[('gpg', 'mykey.asc',
+#                                               self._GPGKEY_MULTI)])
+#        self.assertEquals(response.status_code, 200)
+#        self.assertTrue('Multiple keys not supported' in response)
+#        user = meta.session.query(User) \
+#            .filter(User.email == 'email@example.com') \
+#            .one()
+#        self.assertEquals(user.gpg, None)
+#
+#    def test__gpg_wrong_email(self):
+#        response = self.client.post(reverse('profile'), {'form': 'gpg'})
+#        self.assertEquals(response.status_code, 302)
+#        self.assertTrue(response.location.endswith(reverse('login')))
+#        response = self.client.post(reverse('login'), self._AUTHDATA)
+#        user = meta.session.query(User) \
+#            .filter(User.email == 'email@example.com') \
+#            .one()
+#        self.assertEquals(user.gpg, None)
+#
+#        # upload GPG key
+#        response = self.client.post(reverse('profile'), {'form': 'gpg',
+#                                             'delete_gpg': 0,
+#                                             'commit': 'submit'},
+#                                 upload_files=[('gpg', 'mykey.asc',
+#                                               self._GPGKEY_WRONG_EMAIL)])
+#        self.assertEquals(response.status_code, 200)
+#        self.assertTrue('None of your user IDs in key {} does match your'
+#                       ' profile mail address'.format(self._GPG_ID_WRONG_EMAIL)
+#                        in response)
+#        user = meta.session.query(User) \
+#            .filter(User.email == 'email@example.com') \
+#            .one()
+#        self.assertEquals(user.gpg, None)
 
     def test__details(self):
-        response = self.app.post(url('my'), {'form': 'details'})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('login')))
-        response = self.app.post(url('login'), self._AUTHDATA)
-        response = self.app.post(url('my'), {'form': 'details',
-                                             'name': '',
-                                             'email': 'email2@example.com',
-                                             'commit': 'submit'})
-        self.assertEquals(response.status_int, 200)
-        self.assertEquals(len(response.lxml.xpath(
-            '//input[@id="name" and @class="error"]')), 1)
-        response = self.app.post(url('my'), {'form': 'details',
-                                             'name': 'Test user2',
-                                             'email': 'email2@example.com',
-                                             'commit': 'submit'})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('my')))
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .first()
-        self.assertEquals(user, None)
-        user = meta.session.query(User) \
-            .filter(User.email == 'email2@example.com') \
-            .one()
-        self.assertEquals(user.name, 'Test user2')
-        meta.session.delete(user)
-        meta.session.commit()
+        response = self.client.post(reverse('profile'), {'form': 'details'})
+        self.assertEquals(response.status_code, 302)
+        self.assertIn(reverse('login'), response.url)
+        response = self.client.post(reverse('login'), self._AUTHDATA)
+        response = self.client.post(reverse('profile'), {
+            'name': '',
+            'email': 'email2@example.com',
+            'commit_account': 'submit'
+        })
+        self.assertEquals(response.status_code, 200)
+        self.assertIn('This field is required.', str(response.content))
+        response = self.client.post(reverse('profile'), {
+            'name': 'Test user2',
+            'email': 'email2@example.com',
+            'commit_account': 'submit'
+        })
+        self.assertEquals(response.status_code, 200)
+        self.assertNotIn('errorlist', str(response.content))
+        user = User.objects.filter(email='email@example.com')
+        self.assertFalse(user)
+        user = User.objects.get(email='email2@example.com')
+        self.assertEquals(user.first_name, 'Test user2')
+        user.delete()
 
     def test__password(self):
-        response = self.app.post(url('my'), {'form': 'password'})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('login')))
-
-        # Before first login, password is stored as md5
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .one()
-        self.assertFalse(user.password.startswith('$2'))
+        response = self.client.post(reverse('profile'), {'form': 'password'})
+        self.assertEquals(response.status_code, 302)
+        self.assertIn(reverse('login'), response.url)
 
         # Login
-        response = self.app.post(url('login'), self._AUTHDATA)
-
-        # Password updated with bcrypt
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .one()
-        self.assertTrue(bcrypt.verify('password', user.password))
+        self.client.post(reverse('login'), self._AUTHDATA)
 
         # Test password change
-        response = self.app.post(url('my'), {'form': 'password',
-                                             'password_current': 'password',
-                                             'password_new': 'newpassword',
-                                             'password_confirm': 'newpassword',
-                                             'commit': 'submit'})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('my')))
+        response = self.client.post(reverse('profile'), {
+            'old_password': 'password',
+            'new_password1': 'newpassword',
+            'new_password2': 'newpassword',
+            'commit_password': 'submit'
+        })
+        self.assertEquals(response.status_code, 200)
+        self.assertNotIn('errorlist', str(response.content))
 
-        # Test new password value
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .one()
-        self.assertTrue(bcrypt.verify('newpassword', user.password))
+        # Logout
+        self.client.get(reverse('logout'))
 
-        self.assertEquals(user.name, 'Test user')
+        # Login with new password
+        self.client.post(reverse('login'), {**self._AUTHDATA,
+                                            'password': 'newpassword'})
+        response = self.client.get(reverse('index'))
+        self.assertEquals(response.status_code, 200)
+        self.assertIn('<a href="{}">'.format(reverse('logout')),
+                      str(response.content))
 
     def test__other_details(self):
-        response = self.app.post(url('my'), {'form': 'other_details'})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('login')))
-        response = self.app.post(url('login'), self._AUTHDATA)
-        # test set ircnick
-        response = self.app.post(url('my'), {'form': 'other_details',
-                                             'country': '',
-                                             'ircnick': 'tester',
-                                             'jabber': '',
-                                             'commit': 'submit'})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('my')))
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com') \
-            .one()
-        self.assertEquals(user.ircnick, 'tester')
-        # test DM switch
-        response = self.app.post(url('my'), {'form': 'other_details',
-                                             'country': -1,
-                                             'ircnick': 'tester',
-                                             'jabber': '',
-                                             'status': 1,
-                                             'commit': 'submit'})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('my')))
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com')\
-            .one()
-        self.assertEquals(user.status, constants.USER_STATUS_MAINTAINER)
+        response = self.client.post(reverse('profile'),
+                                    {'form': 'other_details'})
+        self.assertEquals(response.status_code, 302)
+        self.assertIn(reverse('login'), response.url)
+        response = self.client.post(reverse('login'), self._AUTHDATA)
 
-    def test__invalid_form(self):
-        response = self.app.post(url('my'), {'form': 'invalid'})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('login')))
-        response = self.app.post(url('login'), self._AUTHDATA)
-        response = self.app.post(url('my'), {'form': 'invalid'})
-        self.assertEquals(response.status_int, 200)
-        self.assertTrue('<a href="%s">' % url('logout') in response)
+        # test set ircnick
+        response = self.client.post(reverse('profile'), {
+            'form': 'other_details',
+            'country': '',
+            'ircnick': 'tester',
+            'jabber': '',
+            'commit_profile': 'submit'
+        })
+
+        self.assertEquals(response.status_code, 200)
+        self.assertNotIn('errorlist', str(response.content))
+
+        user = User.objects.get(email='email@example.com')
+        self.assertEquals(user.profile.ircnick, 'tester')
+
+#        # test DM switch
+#      response = self.client.post(reverse('profile'), {'form': 'other_details',
+#                                             'country': -1,
+#                                             'ircnick': 'tester',
+#                                             'jabber': '',
+#                                             'status': 1,
+#                                             'commit': 'submit'})
+#        self.assertEquals(response.status_code, 302)
+#        self.assertTrue(response.location.endswith(reverse('profile')))
+#        user = meta.session.query(User) \
+#            .filter(User.email == 'email@example.com')\
+#            .one()
+#        self.assertEquals(user.status, constants.USER_STATUS_MAINTAINER)
+#
+#    def test__invalid_form(self):
+#        response = self.client.post(reverse('profile'), {'form': 'invalid'})
+#        self.assertEquals(response.status_code, 302)
+#        self.assertTrue(response.location.endswith(reverse('login')))
+#        response = self.client.post(reverse('login'), self._AUTHDATA)
+#        response = self.client.post(reverse('profile'), {'form': 'invalid'})
+#        self.assertEquals(response.status_code, 200)
+#        self.assertTrue('<a href="%s">' % reverse('logout') in response)
