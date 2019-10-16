@@ -6,7 +6,8 @@
 
     <form method="post">
         {% csrf_token %}
-        <table id="form">
+        <table width=100% id="form">
+            <tr><td width=21%></td><td width=79%></td></tr>
             {{ account_form }}
         </table>
         <input id="commit_account" name="commit_account" type="submit"
@@ -20,7 +21,8 @@
 
     <form method="post">
         {% csrf_token %}
-        <table id="form">
+        <table width=100% id="form">
+            <tr><td width=21%></td><td width=79%></td></tr>
             <tr>
                 <th>Fingerprint:</th>
                 <td>{{ gpg_fingerprint }}</td>
@@ -44,7 +46,8 @@
 
     <form method="post">
         {% csrf_token %}
-        <table id="form">
+        <table width=100% id="form">
+            <tr><td width=21%></td><td width=79%></td></tr>
             {{ password_form }}
         </table>
         <input id="commit_password" name="commit_password" type="submit"
@@ -57,7 +60,8 @@
 
     <form method="post">
         {% csrf_token %}
-        <table id="form">
+        <table width=100% id="form">
+            <tr><td width=21%></td><td width=79%></td></tr>
             {{ profile_form }}
         </table>
         <input id="commit_profile" name="commit_profile" type="submit"
@@ -71,7 +75,8 @@
 
     <form method="post">
         {% csrf_token %}
-        <table id="form">
+        <table width=100% id="form">
+            <tr><td width=21%></td><td width=79%></td></tr>
             {{ sponsor_form }}
         </table>
         <input id="commit_sponsor" name="commit_sponsor" type="submit"
