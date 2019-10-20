@@ -28,13 +28,16 @@
 
 from django.conf import settings
 from django.conf.urls import url
+from django.contrib.auth.views import PasswordResetConfirmView, \
+    PasswordResetCompleteView, PasswordResetView, LoginView, LogoutView, \
+    PasswordResetDoneView
+from django.http.response import HttpResponsePermanentRedirect
+from django.urls import reverse
+
 from debexpo.base.views import index, contact, intro_reviewers, \
     intro_maintainers, qa
 from debexpo.accounts.views import register, profile
 from debexpo.accounts.forms import PasswordResetForm
-from django.contrib.auth.views import PasswordResetConfirmView, \
-    PasswordResetCompleteView, PasswordResetView, LoginView, LogoutView, \
-    PasswordResetDoneView
 
 urlpatterns = [
     url(r'^$', index, name='index'),
@@ -82,4 +85,8 @@ urlpatterns = [
         name='password_reset_done'),
     url(r'^accounts/register$', register, name='register'),
     url(r'^accounts/profile/$', profile, name='profile'),
+
+    # Redirects
+    url(r'^my/?$', lambda request: HttpResponsePermanentRedirect(
+        reverse('profile')), name='my')
 ]

@@ -136,6 +136,11 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         self.assertIn('<a href="{}">'.format(reverse('logout')),
                       str(response.content))
 
+        # Test /my redirect
+        response = self.client.get(reverse('my'))
+        self.assertEquals(response.status_code, 301)
+        self.assertIn(reverse('profile'), response.url)
+
         # test user with country
         user = User.objects.get(email='email@example.com')
         country = Countries.objects.get(name='Germany')
