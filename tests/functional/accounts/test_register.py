@@ -1,4 +1,4 @@
-#   py.template - template for new .py files
+#   test_register.py - tests for user registration workflow
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
