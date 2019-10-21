@@ -45,7 +45,9 @@ urlpatterns = [
     url(r'^intro-reviewers$', intro_reviewers, name='reviewers'),
     url(r'^qa$', qa, name='qa'),
     url(r'^intro-maintainers$', intro_maintainers, name='maintainers'),
-    url(r'^accounts/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',  # noqa: E501
+    url(r'^accounts/reset/'
+        r'(?P<uidb64>[0-9A-Za-z_\-]+)/'
+        r'(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         PasswordResetConfirmView.as_view(
             template_name='password-reset-confirm.html',
             extra_context={'settings': settings}
