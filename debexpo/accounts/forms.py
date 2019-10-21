@@ -100,4 +100,4 @@ class PasswordResetForm(DjangoPasswordResetForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['country', 'ircnick', 'jabber']
+        fields = ('country', 'ircnick', 'jabber')
