@@ -41,10 +41,10 @@ from debexpo.accounts.forms import PasswordResetForm
 
 urlpatterns = [
     url(r'^$', index, name='index'),
-    url(r'^contact$', contact, name='contact'),
-    url(r'^intro-reviewers$', intro_reviewers, name='reviewers'),
-    url(r'^qa$', qa, name='qa'),
-    url(r'^intro-maintainers$', intro_maintainers, name='maintainers'),
+    url(r'^contact/$', contact, name='contact'),
+    url(r'^intro-reviewers/$', intro_reviewers, name='reviewers'),
+    url(r'^qa/$', qa, name='qa'),
+    url(r'^intro-maintainers/$', intro_maintainers, name='maintainers'),
     url(r'^accounts/reset/'
         r'(?P<uidb64>[0-9A-Za-z_\-]+)/'
         r'(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
@@ -85,10 +85,12 @@ urlpatterns = [
             extra_context={'settings': settings}
         ),
         name='password_reset_done'),
-    url(r'^accounts/register$', register, name='register'),
+    url(r'^accounts/register/$', register, name='register'),
     url(r'^accounts/profile/$', profile, name='profile'),
 
     # Redirects
-    url(r'^my/?$', lambda request: HttpResponsePermanentRedirect(
-        reverse('profile')), name='my')
+    url(r'^my/$', lambda request: HttpResponsePermanentRedirect(
+        reverse('profile')), name='my'),
+    url(r'^accounts/$', lambda request: HttpResponsePermanentRedirect(
+        reverse('profile')), name='accounts')
 ]

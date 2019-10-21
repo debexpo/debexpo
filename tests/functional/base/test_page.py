@@ -35,10 +35,10 @@ class TestBrowsingPage(TestCase):
         client = Client()
         pages = (
             ('/', 'Welcome to '),
-            ('/contact', 'are maintaining this service'),
-            ('/intro-maintainers', 'Getting an upload to Debian'),
-            ('/qa', 'How do I build a package?'),
-            ('/intro-reviewers', 'Package reviews')
+            ('/contact/', 'are maintaining this service'),
+            ('/intro-maintainers/', 'Getting an upload to Debian'),
+            ('/qa/', 'How do I build a package?'),
+            ('/intro-reviewers/', 'Package reviews')
         )
 
         for url, content in pages:
