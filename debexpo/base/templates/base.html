@@ -12,6 +12,7 @@
 {% url 'logout' as url_logout %}
 {% url 'login' as url_login %}
 {% url 'register' as url_register %}
+{% url 'profile' as url_profile %}
 {% endspaceless %}
 <html>
     <head>
@@ -98,7 +99,7 @@
             <span class="relatedpages">
 
             {% if user.is_authenticated %}
-                <a href="{{ url_my }}">
+                <a href="{{ url_profile }}">
                     {% trans 'My account' %}
                 </a>
                 <a href="{{ url_packages_my }}">
