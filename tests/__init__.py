@@ -40,7 +40,7 @@ from django.test import TestCase
 # from datetime import datetime
 # from unittest import TestCase
 #
-from django.contrib.auth.models import User
+from debexpo.accounts.models import User
 # from debexpo.model.packages import Package
 # from debexpo.model.package_versions import PackageVersion
 # from debexpo.model.source_packages import SourcePackage
@@ -110,8 +110,7 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         """
         # Create a test user and save it.
         user = User.objects.create_user('email@example.com',
-                                        'email@example.com', 'password')
-        user.first_name = 'Test user'
+                                        'Test user', 'password')
         user.save()
 
         if gpg:

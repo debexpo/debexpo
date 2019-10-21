@@ -33,7 +33,6 @@ import logging
 from django.conf import settings
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
@@ -43,7 +42,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
 from .forms import RegistrationForm, AccountForm, ProfileForm
-from .models import Profile
+from .models import Profile, User
 
 from debexpo.tools.email import Email
 
@@ -77,8 +76,7 @@ def _register_submit(request, info):
     log.debug('Register form validated successfully')
 
     # Debexpo use the email field as the username
-    user = User.objects.create_user(info.get('email'), info.get('email'))
-    user.first_name = info.get('name')
+    user = User.objects.create_user(info.get('email'), info.get('name'))
     user.save()
 
     uid = urlsafe_base64_encode(force_bytes(user.pk))
@@ -93,7 +91,7 @@ def _register_submit(request, info):
 
 
 def _update_account(request, info):
-    request.user.first_name = info.get('name')
+    request.user.name = info.get('name')
     request.user.email = info.get('email')
     request.user.save()
 
@@ -122,7 +120,7 @@ def register(request):
 @login_required
 def profile(request):
     account_initial = {
-        'name': request.user.first_name,
+        'name': request.user.name,
         'email': request.user.email
     }
     account_form = AccountForm(None, initial=account_initial)

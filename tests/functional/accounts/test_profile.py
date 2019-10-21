@@ -30,8 +30,7 @@ from tests import TestController
 from django.urls import reverse
 # from debexpo.lib import constants
 # from debexpo.model import meta
-from django.contrib.auth.models import User
-from debexpo.accounts.models import Countries, Profile
+from debexpo.accounts.models import Countries, Profile, User
 # from debexpo.model.user_countries import UserCountry
 #
 # import tempfile
@@ -287,7 +286,7 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         user = User.objects.filter(email='email@example.com')
         self.assertFalse(user)
         user = User.objects.get(email='email2@example.com')
-        self.assertEquals(user.first_name, 'Test user2')
+        self.assertEquals(user.name, 'Test user2')
         user.delete()
 
     def test__password(self):

@@ -27,14 +27,13 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 from django import forms
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordResetForm as \
     DjangoPasswordResetForm
 from django.utils.translation import gettext_lazy as _
 
 from debexpo.tools.email import Email
 
-from .models import Profile
+from .models import Profile, User
 
 
 class AccountForm(forms.Form):
@@ -46,8 +45,8 @@ class AccountForm(forms.Form):
         super().__init__(*args, **kwargs)
 
     def _validate_uniqueness(self, name, email):
-        if (name and User.objects.filter(first_name=name) and
-                (not self.user or self.user.first_name != name)):
+        if (name and User.objects.filter(name=name) and
+                (not self.user or self.user.name != name)):
             self.add_error('name', _('A user with this name is already '
                                      'registered on the system. If it is you, '
                                      'use that account!  Otherwise use a '

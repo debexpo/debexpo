@@ -26,7 +26,6 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from django.contrib.auth.models import User
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.auth.views import INTERNAL_RESET_URL_TOKEN, \
     INTERNAL_RESET_SESSION_TOKEN
@@ -34,6 +33,8 @@ from django.core import mail
 from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+
+from debexpo.accounts.models import User
 
 from tests import TestController
 

@@ -26,11 +26,12 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from django.contrib.auth.models import User
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+
+from debexpo.accounts.models import User
 
 from tests import TestController
 
@@ -67,7 +68,7 @@ class TestRegisterController(TestController):
         })
 
         self.assertRaises(User.DoesNotExist, User.objects.get,
-                          first_name='Mr. Me Again')
+                          name='Mr. Me Again')
 
         User.objects.get(email='mr_me@example.com').delete()
 
