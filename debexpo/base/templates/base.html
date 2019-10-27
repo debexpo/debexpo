@@ -10,6 +10,9 @@
 {% url 'sponsors' as url_sponsors %}
 {% url 'packages' as url_packages %}
 {% url 'logout' as url_logout %}
+{% url 'login' as url_login %}
+{% url 'register' as url_register %}
+{% url 'profile' as url_profile %}
 {% endspaceless %}
 <html>
     <head>
@@ -95,8 +98,8 @@
         <div id="content">
             <span class="relatedpages">
 
-            {% if 'user_id' in session %}
-                <a href="{{ url_my }}">
+            {% if user.is_authenticated %}
+                <a href="{{ url_profile }}">
                     {% trans 'My account' %}
                 </a>
                 <a href="{{ url_packages_my }}">
@@ -138,7 +141,7 @@
                 <a href="{{ url_contact }}">
                     {% trans 'Contact' %}
                 </a>
-                {% if 'user_id' in session %}
+                {% if user.is_authenticated %}
                 -
                 <a href="{{ url_logout }}">
                     {% trans 'Logout' %}

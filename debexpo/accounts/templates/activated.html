@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% load i18n %}
+
+{% block content %}{% if user %}
+    <h1>{% trans 'User activated' %}</h1>
+
+    <p>
+      {% trans 'Your account has been activated.' %}
+      {% blocktrans with u_profile=url_profile trimmed %}
+      You can now
+      <a href="{{ u_profile }}">proceed to login</a>.
+      {% endblocktrans %}
+    </p>
+{% else %}
+    <h1>{% trans 'Invalid verification key' %}</h1>
+
+    <p>
+        {% blocktrans trimmed %}
+        The verification key you entered has not been recognised.
+        Please try again.
+        {% endblocktrans %}
+    </p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% load i18n %}
+
+{% block content %}<h1>{% trans 'Sign up for an account' %}</h1>
+
+<fieldset>
+    <legend>{% trans 'Account details' %}</legend>
+
+    <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        <table id="form">
+        {{ form }}
+        </table>
+        <input id="commit" name="commit" type="submit"
+               value="{% trans 'Submit' %}">
+    </form>
+
+</fieldset>{% endblock %}

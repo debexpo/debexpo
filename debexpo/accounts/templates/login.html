@@ -1,0 +1,52 @@
+{% extends "base.html" %}{% load i18n %}
+
+{% block content %}
+
+<h1>{% trans 'Login' %}</h1>
+
+<fieldset>
+    <p>{% trans 'Please login to continue' %}</p>
+
+{% if form.errors %}
+    <p><span class="error-message">{% blocktrans trimmed %}Your username and
+    password didn't match. Please try again.{% endblocktrans %}</span></p>
+{% endif %}
+
+{% if next %}
+{% if user.is_authenticated %}
+    <p>{% blocktrans trimmed %}Your account doesn't have access to this
+    page. To proceed, please login with an account that has
+    access.{% endblocktrans %}</p>
+{% else %}
+    <p>{% trans 'Please login to see this page.' %}</p>
+{% endif %}
+{% endif %}
+
+    <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <table>
+    <tr>
+        <td>{% trans 'E-mail:' %}</td>
+        <td>{{ form.username }}</td>
+    </tr>
+    <tr>
+        <td>{{ form.password.label_tag }}</td>
+        <td>{{ form.password }}</td>
+    </tr>
+    </table>
+    <input type="submit" value="{% trans 'Login' %}">
+    <input type="hidden" name="next" value="{{ next }}">
+    </form>
+
+{% if scheme == 'http' %}
+    <p>{% trans 'Secure log-in:' %} <a href="{{ secure_url }}">
+        {% trans 'Switch to SSL' %}</a></p>
+{% endif %}
+
+  <p>{% trans 'Did you lose your password?' %}
+
+  <a href="{% url 'password_reset' %}">
+      {% trans 'Try resetting your password.' %}</a></p>
+
+</fieldset>
+{% endblock %}

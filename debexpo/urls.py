@@ -26,14 +26,71 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+from django.conf import settings
 from django.conf.urls import url
+from django.contrib.auth.views import PasswordResetConfirmView, \
+    PasswordResetCompleteView, PasswordResetView, LoginView, LogoutView, \
+    PasswordResetDoneView
+from django.http.response import HttpResponsePermanentRedirect
+from django.urls import reverse
+
 from debexpo.base.views import index, contact, intro_reviewers, \
     intro_maintainers, qa
+from debexpo.accounts.views import register, profile
+from debexpo.accounts.forms import PasswordResetForm
 
 urlpatterns = [
     url(r'^$', index, name='index'),
-    url(r'^contact$', contact, name='contact'),
-    url(r'^intro-reviewers$', intro_reviewers, name='reviewers'),
-    url(r'^qa$', qa, name='qa'),
-    url(r'^intro-maintainers$', intro_maintainers, name='maintainers'),
+    url(r'^contact/$', contact, name='contact'),
+    url(r'^intro-reviewers/$', intro_reviewers, name='reviewers'),
+    url(r'^qa/$', qa, name='qa'),
+    url(r'^intro-maintainers/$', intro_maintainers, name='maintainers'),
+    url(r'^accounts/reset/'
+        r'(?P<uidb64>[0-9A-Za-z_\-]+)/'
+        r'(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        PasswordResetConfirmView.as_view(
+            template_name='password-reset-confirm.html',
+            extra_context={'settings': settings}
+        ),
+        name='password_reset_confirm'),
+    url(r'^accounts/reset/done/$',
+        PasswordResetCompleteView.as_view(
+            template_name='password-reset-complete.html',
+            extra_context={'settings': settings}
+        ),
+        name='password_reset_complete'),
+    url(r'accounts/login/$',
+        LoginView.as_view(
+            template_name='login.html',
+            extra_context={'settings': settings}
+        ),
+        name='login'),
+    url(r'accounts/logout/$',
+        LogoutView.as_view(
+            template_name='logout.html',
+            next_page='/',
+            extra_context={'settings': settings}
+        ),
+        name='logout'),
+    url(r'accounts/password_reset/$',
+        PasswordResetView.as_view(
+            form_class=PasswordResetForm,
+            template_name='password-reset-form.html',
+            extra_context={'settings': settings},
+        ),
+        name='password_reset'),
+    url(r'accounts/password_reset/done/$',
+        PasswordResetDoneView.as_view(
+            template_name='password-reset-done.html',
+            extra_context={'settings': settings}
+        ),
+        name='password_reset_done'),
+    url(r'^accounts/register/$', register, name='register'),
+    url(r'^accounts/profile/$', profile, name='profile'),
+
+    # Redirects
+    url(r'^my/$', lambda request: HttpResponsePermanentRedirect(
+        reverse('profile')), name='my'),
+    url(r'^accounts/$', lambda request: HttpResponsePermanentRedirect(
+        reverse('profile')), name='accounts')
 ]
