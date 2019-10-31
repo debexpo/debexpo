@@ -77,7 +77,8 @@ setup(
 
     # Requirements
     install_requires=[
-        'django>=1.11.23'
+        'django>=1.11.23',
+        'bcrypt>=3.1.6',
     ],
 
     # Project urls

@@ -12,6 +12,7 @@ before_script:
     python3-setuptools
     python3-django
     python3-coverage
+    python3-bcrypt
     ca-certificates
     libjs-jquery
     libjs-jquery-throttle-debounce
