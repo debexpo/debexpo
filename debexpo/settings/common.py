@@ -110,6 +110,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Password hashes (read bcrypt and md5, update/create to bcrypt)
+# https://docs.djangoproject.com/en/2.2/topics/auth/passwords/
+
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.UnsaltedMD5PasswordHasher',
+)
+
 # Debexpo common settings
 LOGO = '/img/debexpo-logo.png'
 SITE_NAME = 'debexpo'
