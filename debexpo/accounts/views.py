@@ -78,6 +78,8 @@ def _register_submit(request, info):
     # Debexpo use the email field as the username
     user = User.objects.create_user(info.get('email'), info.get('name'))
     user.save()
+    profile = Profile(user=user, status=info.get('account_type'))
+    profile.save()
 
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     token = default_token_generator.make_token(user)

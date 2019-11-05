@@ -33,7 +33,7 @@ from django.utils.translation import gettext_lazy as _
 
 from debexpo.tools.email import Email
 
-from .models import Profile, User
+from .models import Profile, User, UserStatus
 
 
 class AccountForm(forms.Form):
@@ -68,13 +68,16 @@ class AccountForm(forms.Form):
 
 class RegistrationForm(AccountForm):
     account_type = forms.ChoiceField(label=_('Account type'),
-                                     initial='maintainer',
+                                     initial=UserStatus['contributor'],
                                      widget=forms.RadioSelect,
-                                     choices=[('maintainer', _('Maintainer')),
-                                              ('sponsor', _('Sponsor'))])
+                                     choices=[(UserStatus['contributor'],
+                                               _('Maintainer')),
+                                              (UserStatus['developer'],
+                                               _('Sponsor'))])
 
     def _validate_sponsor_account(self, account_type, email):
-        if (account_type and email and account_type == 'sponsor' and
+        if (account_type and email and account_type ==
+                str(UserStatus['developer']) and
                 not email.endswith('@debian.org')):
             self.add_error('account_type', _("A sponsor account must be "
                                              "registered with your @debian.org "
