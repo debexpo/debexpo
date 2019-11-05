@@ -31,6 +31,13 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
+UserStatus = {
+    'contributor': 1,
+    'maintainer': 2,
+    'developer': 3,
+}
+
+
 class UserManager(BaseUserManager):
     """Define a model manager for User model with no username field."""
 
@@ -107,3 +114,8 @@ class Profile(models.Model):
     ircnick = models.CharField(max_length=100, blank=True,
                                verbose_name=_('IRC Nickname'))
     jabber = models.EmailField(blank=True, verbose_name=_('Jabber address'))
+    status = models.PositiveSmallIntegerField(choices=(
+        (UserStatus['contributor'], _('Contributor')),
+        (UserStatus['maintainer'], _('Debian Maintainer (DM)')),
+        (UserStatus['developer'], _('Debian Developer (DD)')),
+    ), default=UserStatus['contributor'], verbose_name=_('Status'))
