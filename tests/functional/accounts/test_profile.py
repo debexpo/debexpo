@@ -331,7 +331,7 @@ xOwJ1heEnfmgPkuiz7jFCAo=
             'country': '',
             'ircnick': 'tester',
             'jabber': '',
-            'status': UserStatus['contributor'],
+            'status': UserStatus.contributor.value,
             'commit_profile': 'submit'
         })
 
@@ -340,7 +340,7 @@ xOwJ1heEnfmgPkuiz7jFCAo=
 
         user = User.objects.get(email='email@example.com')
         self.assertEquals(user.profile.ircnick, 'tester')
-        self.assertEquals(user.profile.status, UserStatus['contributor'])
+        self.assertEquals(user.profile.status, UserStatus.contributor.value)
 
         # test DM switch
         response = self.client.post(reverse('profile'), {
@@ -348,7 +348,7 @@ xOwJ1heEnfmgPkuiz7jFCAo=
             'country': '',
             'ircnick': 'tester',
             'jabber': '',
-            'status': UserStatus['maintainer'],
+            'status': UserStatus.maintainer.value,
             'commit_profile': 'submit'
         })
 
@@ -356,7 +356,7 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         self.assertNotIn('errorlist', str(response.content))
 
         user = User.objects.get(email='email@example.com')
-        self.assertEquals(user.profile.status, UserStatus['maintainer'])
+        self.assertEquals(user.profile.status, UserStatus.maintainer.value)
 
         # A Maintainer cannot switch to DD
         response = self.client.post(reverse('profile'), {
@@ -364,7 +364,7 @@ xOwJ1heEnfmgPkuiz7jFCAo=
             'country': '',
             'ircnick': 'tester',
             'jabber': '',
-            'status': UserStatus['developer'],
+            'status': UserStatus.developer.value,
             'commit_profile': 'submit'
         })
 
@@ -372,10 +372,10 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         self.assertIn('errorlist', str(response.content))
 
         user = User.objects.get(email='email@example.com')
-        self.assertEquals(user.profile.status, UserStatus['maintainer'])
+        self.assertEquals(user.profile.status, UserStatus.maintainer.value)
 
         # test DD view
-        user.profile.status = UserStatus['developer']
+        user.profile.status = UserStatus.developer.value
         user.profile.save()
 
         response = self.client.get(reverse('profile'))
@@ -389,7 +389,7 @@ xOwJ1heEnfmgPkuiz7jFCAo=
             'country': '',
             'ircnick': 'tester',
             'jabber': '',
-            'status': UserStatus['contributor'],
+            'status': UserStatus.contributor.value,
             'commit_profile': 'submit'
         })
 
@@ -397,10 +397,10 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         self.assertIn('errorlist', str(response.content))
 
         user = User.objects.get(email='email@example.com')
-        self.assertEquals(user.profile.status, UserStatus['developer'])
+        self.assertEquals(user.profile.status, UserStatus.developer.value)
 
         # Reset status
-        user.profile.status = UserStatus['contributor']
+        user.profile.status = UserStatus.contributor.value
         user.profile.save()
 
 #    def test__invalid_form(self):

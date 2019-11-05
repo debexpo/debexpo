@@ -68,16 +68,16 @@ class AccountForm(forms.Form):
 
 class RegistrationForm(AccountForm):
     account_type = forms.ChoiceField(label=_('Account type'),
-                                     initial=UserStatus['contributor'],
+                                     initial=UserStatus.contributor.value,
                                      widget=forms.RadioSelect,
-                                     choices=[(UserStatus['contributor'],
+                                     choices=[(UserStatus.contributor.value,
                                                _('Maintainer')),
-                                              (UserStatus['developer'],
+                                              (UserStatus.developer.value,
                                                _('Sponsor'))])
 
     def _validate_sponsor_account(self, account_type, email):
         if (account_type and email and account_type ==
-                str(UserStatus['developer']) and
+                str(UserStatus.developer.value) and
                 not email.endswith('@debian.org')):
             self.add_error('account_type', _("A sponsor account must be "
                                              "registered with your @debian.org "
@@ -102,15 +102,15 @@ class PasswordResetForm(DjangoPasswordResetForm):
 
 class ProfileForm(forms.ModelForm):
     status = forms.ChoiceField(choices=(
-        (UserStatus['contributor'], _('Contributor')),
-        (UserStatus['maintainer'], _('Debian Maintainer (DM)'))
+        UserStatus.contributor.tuple,
+        UserStatus.maintainer.tuple,
     ))
 
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if user.profile.status == UserStatus['developer']:
+        if user.profile.status == UserStatus.developer.value:
             self.fields['status'].choices = (
-                (UserStatus['developer'], _('Debian Developer (DD)')),
+                UserStatus.developer.tuple,
             )
 
     class Meta:

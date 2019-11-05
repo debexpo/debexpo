@@ -26,16 +26,30 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+from enum import Enum
+
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-UserStatus = {
-    'contributor': 1,
-    'maintainer': 2,
-    'developer': 3,
-}
+class UserStatus(int, Enum):
+    def __new__(cls, value, label):
+        obj = int.__new__(cls, value)
+        obj._value_ = value
+        obj.label = label
+        obj.tuple = (value, label)
+        return obj
+
+    contributor = (1, _('Contributor'))
+    maintainer = (2, _('Debian Maintainer (DM)'))
+    developer = (3, _('Debian Developer (DD)'))
+
+    @classmethod
+    def as_tuple(cls):
+        return (cls.contributor.tuple,
+                cls.maintainer.tuple,
+                cls.developer.tuple,)
 
 
 class UserManager(BaseUserManager):
@@ -114,8 +128,8 @@ class Profile(models.Model):
     ircnick = models.CharField(max_length=100, blank=True,
                                verbose_name=_('IRC Nickname'))
     jabber = models.EmailField(blank=True, verbose_name=_('Jabber address'))
-    status = models.PositiveSmallIntegerField(choices=(
-        (UserStatus['contributor'], _('Contributor')),
-        (UserStatus['maintainer'], _('Debian Maintainer (DM)')),
-        (UserStatus['developer'], _('Debian Developer (DD)')),
-    ), default=UserStatus['contributor'], verbose_name=_('Status'))
+    status = models.PositiveSmallIntegerField(
+        choices=UserStatus.as_tuple(),
+        default=UserStatus.contributor.value,
+        verbose_name=_('Status')
+    )

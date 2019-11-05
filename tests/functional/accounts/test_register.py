@@ -46,11 +46,11 @@ class TestRegisterController(TestController):
             'name': 'Mr. Me',
             'commit': 'submit',
             'email': 'mr_me@example.com',
-            'account_type': UserStatus['contributor']
+            'account_type': UserStatus.contributor.value
         })
 
         user = User.objects.get(email='mr_me@example.com')
-        self.assertEquals(user.profile.status, UserStatus['contributor'])
+        self.assertEquals(user.profile.status, UserStatus.contributor.value)
 
         # delete it
         if actually_delete_it:
@@ -65,7 +65,7 @@ class TestRegisterController(TestController):
             'name': 'Mr. Me Again',
             'commit': 'submit',
             'email': 'mr_me@example.com',
-            'account_type': UserStatus['contributor']
+            'account_type': UserStatus.contributor.value
         })
 
         self.assertRaises(User.DoesNotExist, User.objects.get,
@@ -84,7 +84,7 @@ class TestRegisterController(TestController):
             'name': 'Mr. Me',
             'commit': 'submit',
             'email': 'mr_me_again@example.com',
-            'account_type': UserStatus['contributor']
+            'account_type': UserStatus.contributor.value
         })
 
         self.assertRaises(User.DoesNotExist, User.objects.get,
@@ -97,7 +97,7 @@ class TestRegisterController(TestController):
             'name': 'Mr. Me',
             'commit': 'submit',
             'email': 'mr_me@example.com',
-            'account_type': UserStatus['developer']
+            'account_type': UserStatus.developer.value
         })
 
         self.assertEqual(response.status_code, 200)
@@ -112,12 +112,12 @@ class TestRegisterController(TestController):
             'name': 'Mr. Me Debian',
             'commit': 'submit',
             'email': 'mr_me@debian.org',
-            'account_type': UserStatus['developer']
+            'account_type': UserStatus.developer.value
         })
 
         self.assertEqual(response.status_code, 200)
         user = User.objects.get(email='mr_me@debian.org')
-        self.assertEquals(user.profile.status, UserStatus['developer'])
+        self.assertEquals(user.profile.status, UserStatus.developer.value)
 
         user.delete()
 

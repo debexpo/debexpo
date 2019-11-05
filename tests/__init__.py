@@ -112,7 +112,7 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         user = User.objects.create_user('email@example.com',
                                         'Test user', 'password')
         user.save()
-        profile = Profile(user=user, status=UserStatus['contributor'])
+        profile = Profile(user=user, status=UserStatus.contributor.value)
         profile.save()
 
         if gpg:

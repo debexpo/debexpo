@@ -75,9 +75,7 @@ def _register_submit(request, info):
     """
     log.info('Creating new user {} <{}> as {}'.format(
         info.get('name'), info.get('email'),
-        list(UserStatus.keys())[
-            list(UserStatus.values()).index(int(info.get('account_type')))
-        ]
+        UserStatus(int(info.get('account_type'))).label
     ))
 
     # Debexpo use the email field as the username
