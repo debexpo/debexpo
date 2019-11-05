@@ -117,8 +117,7 @@ class TestRegisterController(TestController):
 
         self.assertEqual(response.status_code, 200)
         user = User.objects.get(email='mr_me@debian.org')
-        # TODO: Comment out when actually implemented
-        # self.assertEquals(user.status, constants.USER_STATUS_DEVELOPER)
+        self.assertEquals(user.profile.status, UserStatus['developer'])
 
         user.delete()
 
