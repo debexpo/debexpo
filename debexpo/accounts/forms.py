@@ -101,6 +101,18 @@ class PasswordResetForm(DjangoPasswordResetForm):
 
 
 class ProfileForm(forms.ModelForm):
+    status = forms.ChoiceField(choices=(
+        (UserStatus['contributor'], _('Contributor')),
+        (UserStatus['maintainer'], _('Debian Maintainer (DM)'))
+    ))
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if user.profile.status == UserStatus['developer']:
+            self.fields['status'].choices = (
+                (UserStatus['developer'], _('Debian Developer (DD)')),
+            )
+
     class Meta:
         model = Profile
-        fields = ('country', 'ircnick', 'jabber')
+        fields = ('country', 'ircnick', 'jabber', 'status')
