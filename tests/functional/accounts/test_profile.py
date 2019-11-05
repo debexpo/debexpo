@@ -30,7 +30,7 @@ from tests import TestController
 from django.urls import reverse
 # from debexpo.lib import constants
 # from debexpo.model import meta
-from debexpo.accounts.models import Countries, Profile, User
+from debexpo.accounts.models import Countries, User, UserStatus
 # from debexpo.model.user_countries import UserCountry
 #
 # import tempfile
@@ -143,8 +143,8 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         # test user with country
         user = User.objects.get(email='email@example.com')
         country = Countries.objects.get(name='Germany')
-        Profile.objects.create(user=user, country=country)
-        user.save()
+        user.profile.country = country
+        user.profile.save()
 
         response = self.client.get(reverse('profile'))
         self.assertEquals(response.status_code, 200)
@@ -331,6 +331,7 @@ xOwJ1heEnfmgPkuiz7jFCAo=
             'country': '',
             'ircnick': 'tester',
             'jabber': '',
+            'status': UserStatus['contributor'],
             'commit_profile': 'submit'
         })
 

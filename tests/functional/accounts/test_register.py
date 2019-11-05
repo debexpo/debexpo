@@ -31,7 +31,7 @@ from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
-from debexpo.accounts.models import User
+from debexpo.accounts.models import User, UserStatus
 
 from tests import TestController
 
@@ -46,10 +46,11 @@ class TestRegisterController(TestController):
             'name': 'Mr. Me',
             'commit': 'submit',
             'email': 'mr_me@example.com',
-            'account_type': 'maintainer'
+            'account_type': UserStatus['contributor']
         })
 
         user = User.objects.get(email='mr_me@example.com')
+        self.assertEquals(user.profile.status, UserStatus['contributor'])
 
         # delete it
         if actually_delete_it:
@@ -64,7 +65,7 @@ class TestRegisterController(TestController):
             'name': 'Mr. Me Again',
             'commit': 'submit',
             'email': 'mr_me@example.com',
-            'account_type': 'maintainer'
+            'account_type': UserStatus['contributor']
         })
 
         self.assertRaises(User.DoesNotExist, User.objects.get,
@@ -83,7 +84,7 @@ class TestRegisterController(TestController):
             'name': 'Mr. Me',
             'commit': 'submit',
             'email': 'mr_me_again@example.com',
-            'account_type': 'maintainer'
+            'account_type': UserStatus['contributor']
         })
 
         self.assertRaises(User.DoesNotExist, User.objects.get,
@@ -96,7 +97,7 @@ class TestRegisterController(TestController):
             'name': 'Mr. Me',
             'commit': 'submit',
             'email': 'mr_me@example.com',
-            'account_type': 'sponsor'
+            'account_type': UserStatus['developer']
         })
 
         self.assertEqual(response.status_code, 200)
@@ -111,7 +112,7 @@ class TestRegisterController(TestController):
             'name': 'Mr. Me Debian',
             'commit': 'submit',
             'email': 'mr_me@debian.org',
-            'account_type': 'sponsor'
+            'account_type': UserStatus['developer']
         })
 
         self.assertEqual(response.status_code, 200)
