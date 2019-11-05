@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-27 17:38+0000\n"
+"POT-Creation-Date: 2019-11-05 13:36+0000\n"
 "PO-Revision-Date: 2019-10-27 18:40+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -43,41 +43,57 @@ msgstr "Un utilisateur avec le même courriel est déjà inscrit sur le système
 msgid "Account type"
 msgstr "Type de compte"
 
-#: accounts/forms.py:73
+#: accounts/forms.py:74
 msgid "Maintainer"
 msgstr "Maintaineur"
 
-#: accounts/forms.py:74
+#: accounts/forms.py:76
 msgid "Sponsor"
 msgstr "Parrain"
 
-#: accounts/forms.py:79
+#: accounts/forms.py:82
 msgid "A sponsor account must be registered with your @debian.org address"
 msgstr "Un compte parrain doit s'inscrire avec votre adresse @debian.org"
 
-#: accounts/forms.py:97
+#: accounts/forms.py:100
 msgid "You requested a password reset"
 msgstr "Vous avez demandé une remise à zéro de mot de passe"
 
-#: accounts/models.py:80
+#: accounts/forms.py:105 accounts/models.py:118
+msgid "Contributor"
+msgstr "Contributeur"
+
+#: accounts/forms.py:106 accounts/models.py:119
+msgid "Debian Maintainer (DM)"
+msgstr "Mainteneur Debian (DM)"
+
+#: accounts/forms.py:113 accounts/models.py:120
+msgid "Debian Developer (DD)"
+msgstr "Développeur Debian (DD)"
+
+#: accounts/models.py:87
 msgid "email address"
 msgstr "Adresse de courriel"
 
-#: accounts/models.py:81
+#: accounts/models.py:88
 msgid "full name"
 msgstr "nom complet"
 
-#: accounts/models.py:105
+#: accounts/models.py:112
 msgid "Country"
 msgstr "Pays"
 
-#: accounts/models.py:108
+#: accounts/models.py:115
 msgid "IRC Nickname"
 msgstr "Pseudo IRC"
 
-#: accounts/models.py:109
+#: accounts/models.py:116
 msgid "Jabber address"
 msgstr "Adresse Jabber"
+
+#: accounts/models.py:121
+msgid "Status"
+msgstr "Statut"
 
 #: accounts/templates/activate.html:3
 msgid "Check your email"
