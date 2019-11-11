@@ -30,7 +30,7 @@ from tests import TestController
 from django.urls import reverse
 # from debexpo.lib import constants
 # from debexpo.model import meta
-from debexpo.accounts.models import Countries, Profile, User
+from debexpo.accounts.models import Countries, User, UserStatus
 # from debexpo.model.user_countries import UserCountry
 #
 # import tempfile
@@ -143,8 +143,8 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         # test user with country
         user = User.objects.get(email='email@example.com')
         country = Countries.objects.get(name='Germany')
-        Profile.objects.create(user=user, country=country)
-        user.save()
+        user.profile.country = country
+        user.profile.save()
 
         response = self.client.get(reverse('profile'))
         self.assertEquals(response.status_code, 200)
@@ -331,6 +331,7 @@ xOwJ1heEnfmgPkuiz7jFCAo=
             'country': '',
             'ircnick': 'tester',
             'jabber': '',
+            'status': UserStatus.contributor.value,
             'commit_profile': 'submit'
         })
 
@@ -339,21 +340,69 @@ xOwJ1heEnfmgPkuiz7jFCAo=
 
         user = User.objects.get(email='email@example.com')
         self.assertEquals(user.profile.ircnick, 'tester')
+        self.assertEquals(user.profile.status, UserStatus.contributor.value)
 
-#        # test DM switch
-#      response = self.client.post(reverse('profile'), {'form': 'other_details',
-#                                             'country': -1,
-#                                             'ircnick': 'tester',
-#                                             'jabber': '',
-#                                             'status': 1,
-#                                             'commit': 'submit'})
-#        self.assertEquals(response.status_code, 302)
-#        self.assertTrue(response.location.endswith(reverse('profile')))
-#        user = meta.session.query(User) \
-#            .filter(User.email == 'email@example.com')\
-#            .one()
-#        self.assertEquals(user.status, constants.USER_STATUS_MAINTAINER)
-#
+        # test DM switch
+        response = self.client.post(reverse('profile'), {
+            'form': 'other_details',
+            'country': '',
+            'ircnick': 'tester',
+            'jabber': '',
+            'status': UserStatus.maintainer.value,
+            'commit_profile': 'submit'
+        })
+
+        self.assertEquals(response.status_code, 200)
+        self.assertNotIn('errorlist', str(response.content))
+
+        user = User.objects.get(email='email@example.com')
+        self.assertEquals(user.profile.status, UserStatus.maintainer.value)
+
+        # A Maintainer cannot switch to DD
+        response = self.client.post(reverse('profile'), {
+            'form': 'other_details',
+            'country': '',
+            'ircnick': 'tester',
+            'jabber': '',
+            'status': UserStatus.developer.value,
+            'commit_profile': 'submit'
+        })
+
+        self.assertEquals(response.status_code, 200)
+        self.assertIn('errorlist', str(response.content))
+
+        user = User.objects.get(email='email@example.com')
+        self.assertEquals(user.profile.status, UserStatus.maintainer.value)
+
+        # test DD view
+        user.profile.status = UserStatus.developer.value
+        user.profile.save()
+
+        response = self.client.get(reverse('profile'))
+        self.assertNotIn('Debian Maintainer (DM)', str(response.content))
+        self.assertNotIn('Contributor', str(response.content))
+        self.assertIn('Debian Developer (DD)', str(response.content))
+
+        # A DD cannot switch to Maintainer
+        response = self.client.post(reverse('profile'), {
+            'form': 'other_details',
+            'country': '',
+            'ircnick': 'tester',
+            'jabber': '',
+            'status': UserStatus.contributor.value,
+            'commit_profile': 'submit'
+        })
+
+        self.assertEquals(response.status_code, 200)
+        self.assertIn('errorlist', str(response.content))
+
+        user = User.objects.get(email='email@example.com')
+        self.assertEquals(user.profile.status, UserStatus.developer.value)
+
+        # Reset status
+        user.profile.status = UserStatus.contributor.value
+        user.profile.save()
+
 #    def test__invalid_form(self):
 #        response = self.client.post(reverse('profile'), {'form': 'invalid'})
 #        self.assertEquals(response.status_code, 302)

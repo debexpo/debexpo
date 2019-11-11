@@ -33,7 +33,7 @@ from django.utils.translation import gettext_lazy as _
 
 from debexpo.tools.email import Email
 
-from .models import Profile, User
+from .models import Profile, User, UserStatus
 
 
 class AccountForm(forms.Form):
@@ -68,13 +68,16 @@ class AccountForm(forms.Form):
 
 class RegistrationForm(AccountForm):
     account_type = forms.ChoiceField(label=_('Account type'),
-                                     initial='maintainer',
+                                     initial=UserStatus.contributor.value,
                                      widget=forms.RadioSelect,
-                                     choices=[('maintainer', _('Maintainer')),
-                                              ('sponsor', _('Sponsor'))])
+                                     choices=[(UserStatus.contributor.value,
+                                               _('Maintainer')),
+                                              (UserStatus.developer.value,
+                                               _('Sponsor'))])
 
     def _validate_sponsor_account(self, account_type, email):
-        if (account_type and email and account_type == 'sponsor' and
+        if (account_type and email and account_type ==
+                str(UserStatus.developer.value) and
                 not email.endswith('@debian.org')):
             self.add_error('account_type', _("A sponsor account must be "
                                              "registered with your @debian.org "
@@ -98,6 +101,18 @@ class PasswordResetForm(DjangoPasswordResetForm):
 
 
 class ProfileForm(forms.ModelForm):
+    status = forms.ChoiceField(choices=(
+        UserStatus.contributor.tuple,
+        UserStatus.maintainer.tuple,
+    ))
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if user.profile.status == UserStatus.developer.value:
+            self.fields['status'].choices = (
+                UserStatus.developer.tuple,
+            )
+
     class Meta:
         model = Profile
-        fields = ('country', 'ircnick', 'jabber')
+        fields = ('country', 'ircnick', 'jabber', 'status')

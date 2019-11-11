@@ -42,7 +42,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
 from .forms import RegistrationForm, AccountForm, ProfileForm
-from .models import Profile, User
+from .models import Profile, User, UserStatus
 
 from debexpo.tools.email import Email
 
@@ -73,11 +73,16 @@ def _register_submit(request, info):
     """
     Handles the form submission for a maintainer account registration.
     """
-    log.debug('Register form validated successfully')
+    log.info('Creating new user {} <{}> as {}'.format(
+        info.get('name'), info.get('email'),
+        UserStatus(int(info.get('account_type'))).label
+    ))
 
     # Debexpo use the email field as the username
     user = User.objects.create_user(info.get('email'), info.get('name'))
     user.save()
+    profile = Profile(user=user, status=info.get('account_type'))
+    profile.save()
 
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     token = default_token_generator.make_token(user)
@@ -125,10 +130,7 @@ def profile(request):
     }
     account_form = AccountForm(None, initial=account_initial)
     password_form = PasswordChangeForm(user=request.user)
-    try:
-        profile_form = ProfileForm(instance=request.user.profile)
-    except Profile.DoesNotExist:
-        profile_form = ProfileForm()
+    profile_form = ProfileForm(request.user, instance=request.user.profile)
 
     if request.method == 'POST':
         if 'commit_account' in request.POST:
@@ -150,11 +152,8 @@ def profile(request):
                 update_session_auth_hash(request, password_form.user)
 
         if 'commit_profile' in request.POST:
-            try:
-                profile_form = ProfileForm(request.POST,
-                                           instance=request.user.profile)
-            except Profile.DoesNotExist:
-                profile_form = ProfileForm(request.POST)
+            profile_form = ProfileForm(request.user, request.POST,
+                                       instance=request.user.profile)
 
             if profile_form.is_valid():
                 profile = profile_form.save(commit=False)

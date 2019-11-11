@@ -40,7 +40,7 @@ from django.test import TestCase
 # from datetime import datetime
 # from unittest import TestCase
 #
-from debexpo.accounts.models import User
+from debexpo.accounts.models import User, Profile, UserStatus
 # from debexpo.model.packages import Package
 # from debexpo.model.package_versions import PackageVersion
 # from debexpo.model.source_packages import SourcePackage
@@ -112,6 +112,8 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         user = User.objects.create_user('email@example.com',
                                         'Test user', 'password')
         user.save()
+        profile = Profile(user=user, status=UserStatus.contributor.value)
+        profile.save()
 
         if gpg:
             self._add_gpg_key(self._GPG_KEY, self._GPG_ID, user)
