@@ -41,6 +41,7 @@ from django.test import TestCase
 # from unittest import TestCase
 #
 from debexpo.accounts.models import User, Profile, UserStatus
+from debexpo.keyring.models import GPGAlgo, Key
 # from debexpo.model.packages import Package
 # from debexpo.model.package_versions import PackageVersion
 # from debexpo.model.source_packages import SourcePackage
@@ -79,24 +80,20 @@ xOwJ1heEnfmgPkuiz7jFCAo=
 =xgUN
 -----END PGP PUBLIC KEY BLOCK-----"""
 
-    _GPG_ID = '256E/E871F3DF'
+    _GPG_FINGERPRINT = '559306EEE1C8C1B2DD1C73B1C434781CE871F3DF'
+    _GPG_TYPE = '22'
+    _GPG_SIZE = 256
+    _GPG_UIDS = [('primary id', 'primary@example.org'),
+                 ('Test user', 'email@example.com')]
 
-#    def _add_gpg_key(self, key, key_id=None, user=None):
-#        gpg_ctl = GnuPG()
-#
-#        # Add key to keyring
-#        temp = tempfile.NamedTemporaryFile(delete=True)
-#        temp.write(key)
-#        temp.flush()
-#        gpg_ctl.add_signature(temp.name)
-#        temp.close()
-#
-#        # Update user in database
-#        if user:
-#            user.gpg = key
-#            user.gpg_id = key_id
-#            meta.session.merge(user)
-#            meta.session.commit()
+    def _add_gpg_key(self, user, data, fingerprint, algo, size):
+        key = Key()
+        key.key = data
+        key.fingerprint = fingerprint
+        key.user = user
+        key.algorithm = GPGAlgo.objects.get(gpg_algorithm_id=algo)
+        key.size = size
+        key.save()
 
     def _setup_example_user(self, gpg=False):
         """Add an example user.
@@ -116,7 +113,8 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         profile.save()
 
         if gpg:
-            self._add_gpg_key(self._GPG_KEY, self._GPG_ID, user)
+            self._add_gpg_key(user, self._GPG_KEY, self._GPG_FINGERPRINT,
+                              self._GPG_TYPE, self._GPG_SIZE)
 
     def _remove_example_user(self):
         """Remove the example user.
