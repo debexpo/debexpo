@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
-#
-#   utils.py — Debexpo utility functions
+#   gnupg.py — Debexpo gnupg functions
 #
 #   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Serafeim Zanikolas <serzan@hellug.gr>
 #               2011 Arno Töll <debian@toell.net>
+#               2019 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -33,16 +32,16 @@
 Wrapper for a subset of GnuPG functionality.
 """
 
-__author__ = 'Serafeim Zanikolas, Arno Töll'
-__copyright__ = 'Copyright © 2008 Serafeim Zanikolas, 2011 Arno Töll'
-__license__ = 'MIT'
-
 import logging
 import os
 import subprocess
 import re
+import tempfile
 
-import pylons
+from django.conf import settings
+from django.utils.translation import gettext_lazy as _
+
+from debexpo.keyring.models import Key
 
 log = logging.getLogger(__name__)
 
@@ -55,18 +54,96 @@ class ExceptionGnuPGMultipleKeys(ExceptionGnuPG):
     pass
 
 
+class ExceptionGnuPGPathNotInitialized(ExceptionGnuPG):
+    pass
+
+
+class ExceptionGnuPGNotSignedFile(ExceptionGnuPG):
+    pass
+
+
+class ExceptionGnuPGNoPubKey(ExceptionGnuPG):
+    def __init__(self, filename, fingerprint):
+        self.filename = filename
+        self.fingerprint = fingerprint
+
+    def __str__(self):
+        return 'Unable to verify file {}. No public key found for key {}' \
+               .format(self.filename, self.fingerprint)
+
+
+class GPGSignedFile(object):
+    def __init__(self, filename):
+        self.filename = filename
+        self.key = None
+
+        fingerprint = self._lookup_fingerprint()
+
+        try:
+            self.key = Key.objects.get(fingerprint=fingerprint)
+        except Key.DoesNotExist:
+            raise ExceptionGnuPGNoPubKey(self.filename, fingerprint)
+
+        self.keyring = VirtualKeyring(self.key.user)
+        self.keyring.verify_sig(self.filename)
+
+    def _lookup_fingerprint(self):
+        gpg = GnuPG()
+
+        try:
+            gpg.verify_sig(self.filename)
+        except ExceptionGnuPGNoPubKey as e:
+            return e.fingerprint
+
+    def get_key(self):
+        return self.key
+
+
+class VirtualKeyring(object):
+    def __init__(self, user=None, key=None):
+        self.gpg = GnuPG()
+
+        if user:
+            key = Key.objects.get(user=user)
+            self.gpg.add_signature(signature=key.key)
+        elif key:
+            self.gpg.add_signature(signature=key)
+        else:
+            raise ValueError('Both user and key cannot be None')
+
+        keys = self.gpg.get_keys_data()
+
+        if (len(keys) > 1):
+            raise ExceptionGnuPGMultipleKeys(_('Multiple keys not supported'))
+
+        self.key = keys[0]
+
+    def get_fingerprint(self):
+        return self.key.fpr
+
+    def get_algo(self):
+        return self.key.get_algo()
+
+    def get_size(self):
+        return int(self.key.get_size())
+
+    def get_uids(self):
+        return self.key.get_all_uid()
+
+    def verify_sig(self, filename):
+        self.gpg.verify_sig(filename)
+
+
 class GnuPG(object):
-
-    GPG_PATH_NOT_INITIALISED = -1
-    INVALID_GNUPG_RUN_INVOCATION = -2
-
     def __init__(self):
         """
         Wrapper for certain GPG operations.
 
         Meant to be instantiated only once.
         """
-        self.gpg_path = pylons.config['debexpo.gpg_path']
+        self.gpg_path = settings.GPG_PATH
+        self.gpg_home = tempfile.TemporaryDirectory()
+
         if self.gpg_path is None:
             log.error('debexpo.gpg_path is not set in configuration file' +
                       ' (or is set to a blank value)')
@@ -76,132 +153,62 @@ class GnuPG(object):
         elif not os.access(self.gpg_path, os.X_OK):
             log.error('debexpo.gpg_path refers to a non-executable file')
             self.gpg_path = None
-        self.default_keyring = pylons.config['debexpo.gpg_keyring']
-        if self.default_keyring is None:
-            log.warning('debexpo.gpg_keyring is not set in configuration file' +
-                        ' (or is set to a blank value)')
 
     def is_unusable(self):
         """Returns true if the gpg binary is not installed or not executable."""
         return self.gpg_path is None
 
-    def extract_key_data(self, key, attribute):
+    def get_keys_data(self, fingerprints=[]):
         """
-        Returns the attribute of a given GPG public key.
-        Attribute can be one of "keyid" or "keystrength"
-        """
-        try:
-            if attribute == "keyid":
-                r = key.split("/")[1]
-            elif attribute == "keystrength":
-                r = int(key.split("/")[0][:-1])
-            elif attribute == "keytype":
-                r = key.split("/")[0][-1:]
-            else:
-                raise AttributeError
-            if not r:
-                raise AttributeError
-            return r
-        except (AttributeError, IndexError):
-            log.error("Failed to extract key data from gpg output: '%s'"
-                      % key)
+        Returns the key object of the given GPG public key.
 
-    def extract_key_id(self, key):
-        """
-        Returns the key id only of a given GPG public key, e.g.:
-
-        1024D/355304E4 -> 355304E4
-
-        ``key``
-            A public key output as given by gpg(1)
-        """
-        return self.extract_key_data(key, "keyid")
-
-    def extract_key_strength(self, key):
-        """
-        Returns the key strength only of a given GPG public key, e.g.:
-
-        1024D/355304E4 -> 1024
-
-        ``key``
-            A public key output as given by gpg(1)
-        """
-        return self.extract_key_data(key, "keystrength")
-
-    def extract_key_type(self, key):
-        """
-        Returns the key strength only of a given GPG public key, e.g.:
-
-        1024D/355304E4 -> D
-
-        ``key``
-            A public key output as given by gpg(1)
-        """
-        return self.extract_key_data(key, "keytype")
-
-    def parse_key_id(self, key, email=None):
-        """
-        Returns the key id of the given GPG public key along with a list of user
-        ids.
-
-        ``key``
-            ASCII armored GPG public key.
-
-         Sample output to be parsed:
-
-        pub  1024D/355304E4 2005-09-13 Serafeim Zanikolas <serzan@hellug.gr>
-        sub  1024g/C082E9B7 2005-09-13 [expires: 2008-09-12]
+        ``fingerprints``
+            fingerprints of keys to get data for.
 
         """
         try:
-            (output, _) = self._run(stdin=key, args=[
-                '--import', '--import-options', 'import-show', '--dry-run'])
-            output = unicode(output, errors='replace')
+            (output, status) = self._run(args=['--list-keys'] + fingerprints)
             keys = KeyData.read_from_gpg(output.splitlines())
 
-            if len(keys) > 1:
-                raise ExceptionGnuPGMultipleKeys
-
-            for key in keys.values():
-                return (key.get_id(), key.get_all_uid())
-        except (AttributeError, IndexError):
+            return list(keys.values())
+        except (AttributeError, IndexError):  # pragma: no cover
             log.error("Failed to extract key id from gpg output: '%s'"
                       % output)
 
-    def verify_sig(self, signed_file, pubring=None):
+    def verify_sig(self, signed_file):
         """
-        Does the same as verify_sig_full() but is meant as compatibility
-        function which returns a boolean only
-
-        """
-        (_, _, status) = self.verify_sig_full(signed_file, pubring)
-        return status == 0
-
-    def verify_sig_full(self, signed_file, pubring=None):
-        """
-        Returns a tuple (file output, return code) if the given GPG-signed file
-        can be verified.
+        Returns the fingerprint that signed the file if the signature is valid.
+        Otherwise, throw a ExceptionGnuPG exception.
 
         ``signed_file``
              path to signed file
-        ``pubring``
-             path to public key ring (when not specified, the default GPG
-             setting will be used (~/.gnupg/pubring.gpg))
         """
         args = ('--verify', signed_file)
-        (out, return_code) = self._run(args=args, pubring=pubring)
-        gpg_addr_pattern = re.compile(r"\"(?P<name>.+?)"
-                                      r"\s*(?:\((?P<comment>.+)\))?"
-                                      r"\s*(?:<(?P<email>.+)>)?\"")
-        user_ids = []
-        for line in out.split("\n"):
-            addr_matcher = gpg_addr_pattern.search(line)
-            if addr_matcher is not None:
-                user_ids.append((addr_matcher.group('name'),
-                                 addr_matcher.group('email')))
-        return (out, user_ids, return_code)
+        (output, status) = self._run(args=args)
 
-    def add_signature(self, signature_file, pubring=None):
+        output = output.splitlines()
+        err_sig_re = re.compile(r'\[GNUPG:\] ERRSIG .* (?P<fingerprint>\w+)$')
+        err_sig = list(filter(None, map(err_sig_re.match, output)))
+        valid_sig_re = re.compile(r'\[GNUPG:\] VALIDSIG .*'
+                                  r' (?P<fingerprint>\w+)$')
+        valid_sig = list(filter(None, map(valid_sig_re.match, output)))
+        no_data_re = re.compile(r'\[GNUPG:\] NODATA')
+        no_data = list(filter(None, map(no_data_re.match,
+                                        output)))
+
+        if err_sig:
+            raise ExceptionGnuPGNoPubKey(signed_file,
+                                         err_sig[0].group('fingerprint'))
+        elif no_data:
+            raise ExceptionGnuPGNotSignedFile('{}: not a GPG signed'
+                                              ' file'.format(signed_file))
+        elif not valid_sig:
+            raise ExceptionGnuPG('Unknown GPG error. Output was:'
+                                 ' {}'.format(output))
+
+        return valid_sig[0].group('fingerprint')
+
+    def add_signature(self, signature_file=None, signature=None):
         """
         Add the signature(s) within the provided file to the supplied keyring
 
@@ -211,28 +218,23 @@ class GnuPG(object):
         ```pubring```
             A file name pointing to a keyring. May be empty.
 
-        Returns a tuple (file output, return code)
+        Returns gpg output
         """
-        args = ('--import-options', 'import-minimal', '--import',
-                signature_file)
-        return self._run(args=args, pubring=pubring)
+        args = ['--import-options', 'import-minimal', '--import']
 
-    def remove_signature(self, keyid, pubring=None):
-        """
-        Remove the signature matching the provided keyid from the supplied
-        keyring
+        if not signature:
+            args.append(signature_file)
+            (output, status) = self._run(args=args)
+        else:
+            (output, status) = self._run(args=args, stdin=signature)
 
-        ```keyid```
-            The GnuPG keyid to be removed
-        ```pubring```
-            A file name pointing to a keyring. May be empty.
+        if status and output and len(output.splitlines()) > 0:
+            raise ExceptionGnuPG(_('Cannot add key:'
+                                 ' {}').format(output.splitlines()[0]))
 
-        Returns a tuple (file output, return code)
-        """
-        args = ('--yes', '--delete-key', keyid)
-        return self._run(args=args, pubring=pubring)
+        return (output, status)
 
-    def _run(self, stdin=None, args=None, pubring=None):
+    def _run(self, stdin=None, args=None):
         """
         Run gpg with the given stdin and arguments and return the output and
         exit status.
@@ -247,94 +249,39 @@ class GnuPG(object):
 
         """
         if self.gpg_path is None:
-            return (None, GnuPG.GPG_PATH_NOT_INITIALISED)
+            raise ExceptionGnuPGPathNotInitialized()
 
-        if pubring is None:
-            pubring = self.default_keyring
+        output = None
+
+        env = os.environ.copy()
+        env['GNUPGHOME'] = self.gpg_home.name
 
         cmd = [
             self.gpg_path,
             '--batch',
-            '--keyring', pubring,
             '--no-auto-check-trustdb',
-            '--no-default-keyring',
             '--no-options',
             '--no-permission-warning',
+            '--status-fd',
+            '1',
             '--no-tty',
             '--quiet',
-            '--secret-keyring', pubring + ".secret",
             '--trust-model', 'always',
             '--with-colons',
             '--with-fingerprint'
             ]
+
         if args is not None:
             cmd.extend(args)
 
-        process = subprocess.Popen(cmd,
-                                   stdin=subprocess.PIPE,
-                                   stderr=subprocess.PIPE,
-                                   stdout=subprocess.PIPE)
-        output = "\n".join(process.communicate(input=stdin))
-        status = process.returncode
-
-        return (output, status)
-
-    def is_signed(self, signed_file):
-        """
-        Returns true if the given file appears to be GPG signed
-
-        ``signed_file``
-            path to a file
-        """
         try:
-            f = open(signed_file, 'r')
-            contents = f.read()
-            f.close()
-        except Exception:
-            log.critical('Could not open %s; continuing' % signed_file)
-            return False
-        if contents.startswith('-----BEGIN PGP SIGNED MESSAGE-----'):
-            return True
-        return False
+            output = subprocess.check_output(cmd, env=env,
+                                             stderr=subprocess.STDOUT,
+                                             input=str(stdin), text=True)
+        except subprocess.CalledProcessError as e:
+            return (e.output, e.returncode)
 
-
-class GPGAlgo(object):
-    """
-    Static data about GPG PubKey Algo. Extracted from GnuPG source.
-
-    Refs:
-      Short names:
-      https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=g10/keyid.c;hb=HEAD#l53
-      Long names:
-      https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=g10/keyid.c;hb=HEAD#l104
-      Ids:
-      https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=common/openpgpdefs.h;hb=HEAD#l157
-    """
-    gpg_algo = {
-        '1': {'short': 'R', 'long': 'rsa', 'with_size': True},
-        '2': {'short': 'r', 'long': 'rsa', 'with_size': True},
-        '3': {'short': 's', 'long': 'rsa', 'with_size': True},
-        '16': {'short': 'g', 'long': 'elg', 'with_size': True},
-        '17': {'short': 'D', 'long': 'dsa', 'with_size': True},
-        '18': {'short': 'e', 'long': 'rsa', 'with_size': True},
-        '19': {'short': 'E', 'long': 'cv25519', 'with_size': False},
-        '20': {'short': 'G', 'long': 'xxx', 'with_size': True},
-        '22': {'short': 'E', 'long': 'ed25519', 'with_size': False},
-    }
-
-    @classmethod
-    def to_short(cls, algo, keysize):
-        if algo not in cls.gpg_algo:
-            return None
-        return '{}{}'.format(keysize, cls.gpg_algo[algo]['short'])
-
-    @classmethod
-    def to_long(cls, algo, keysize):
-        if algo not in cls.gpg_algo:
-            return None
-        algo_str = '{}'.format(cls.gpg_algo[algo]['long'])
-        if cls.gpg_algo[algo]['with_size']:
-            algo_str.append('{}'.format(keysize))
+        return (output, 0)
 
 
 class KeyData(object):
@@ -354,19 +301,15 @@ class KeyData(object):
             self.uids[uidfpr] = res = Uid(self, uid)
         return res
 
+    def get_algo(self):
+        return self.pub[3]
+
+    def get_size(self):
+        return self.pub[2]
+
     def add_sub(self, sub):
         subfpr = tuple(sub[3:6])
         self.subkeys[subfpr] = sub
-
-    def format_short_fpr(self, fpr):
-        return fpr[-8:]
-
-    # Extract an ID of the pub key in its former gpgv1 form:
-    # Ex. 1024D/355304E4
-    def get_id(self):
-        short_id = GPGAlgo.to_short(self.pub[3], self.pub[2])
-        short_fpr = self.format_short_fpr(self.pub[4])
-        return "{}/{}".format(short_id, short_fpr)
 
     def get_all_uid(self):
         user_ids = []
@@ -385,7 +328,6 @@ class KeyData(object):
         pub = None
         sub = None
         cur_key = None
-        cur_uid = None
         for lineno, line in enumerate(lines, start=1):
             if line.startswith("pub:"):
                 # Keep track of this pub record, to correlate with the following
@@ -393,7 +335,6 @@ class KeyData(object):
                 pub = line.split(":")
                 sub = None
                 cur_key = None
-                cur_uid = None
             elif line.startswith("fpr:"):
                 # Correlate fpr with the previous pub record, and start
                 # gathering information for a new key
@@ -401,7 +342,9 @@ class KeyData(object):
                     if sub is not None:
                         # Skip fingerprints for subkeys
                         continue
-                    else:
+                    # Internal parsing of GPG. No tests case covering
+                    # failure for that.
+                    else:  # pragma: no cover
                         raise Exception("gpg:{}: found fpr line with no" +
                                         " previous pub line".format(lineno))
                 fpr = line.split(":")[9]
@@ -409,25 +352,13 @@ class KeyData(object):
                 if cur_key is None:
                     keys[fpr] = cur_key = cls(fpr, pub)
                 pub = None
-                cur_uid = None
             elif line.startswith("uid:"):
-                if cur_key is None:
+                if cur_key is None:  # pragma: no cover
                     raise Exception("gpg:{}: found uid line with no previous" +
                                     " pub+fpr lines".format(lineno))
-                cur_uid = cur_key.get_uid(line.split(":"))
-            elif line.startswith("sig:"):
-                sig = line.split(":")
-                if sig[1] == "%":
-                    log.debug("gpg:%s: Invalid signature: <%s>",
-                              lineno,
-                              line.strip())
-                    continue
-                if cur_uid is None:
-                    raise Exception("gpg:{}: found sig line with no previous" +
-                                    " uid line".format(lineno))
-                cur_uid.add_sig(sig)
+                cur_key.get_uid(line.split(":"))
             elif line.startswith("sub:"):
-                if cur_key is None:
+                if cur_key is None:  # pragma: no cover
                     raise Exception("gpg:{}: found sub line with no previous" +
                                     " pub+fpr lines".format(lineno))
                 sub = line.split(":")
@@ -449,18 +380,11 @@ class Uid(object):
         self.key = key
         self.uid = uid
         self.name = uid[9]
-        self.sigs = {}
-
-    def add_sig(self, sig):
-        # FIXME: missing a full fingerprint, we try to index with as much
-        # identifying data as possible
-        k = tuple(sig[3:6])
-        self.sigs[k] = sig
 
     def split(self):
         mo = self.re_uid.match(self.name)
         if not mo:
-            return None
+            return None  # pragma: no cover
         return {
                 "name": mo.group("name"),
                 "email": mo.group("email"),
