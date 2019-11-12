@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debexpo.base',
     'debexpo.accounts',
+    'debexpo.keyring',
 ]
 
 MIDDLEWARE = [
