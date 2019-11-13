@@ -34,6 +34,8 @@ from django.utils.translation import gettext_lazy as _
 from debexpo.tools.email import Email
 
 from .models import Profile, User, UserStatus
+from debexpo.keyring.models import Key, GPGAlgo
+from debexpo.tools.gnupg import VirtualKeyring, ExceptionGnuPG
 
 
 class AccountForm(forms.Form):
@@ -116,3 +118,46 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('country', 'ircnick', 'jabber', 'status')
+
+
+class GPGForm(forms.ModelForm):
+    def _validate_gpg_key(self, key):
+        if not key:
+            return
+
+        try:
+            keyring = VirtualKeyring(key=key)
+        except (ExceptionGnuPG, ValueError) as e:
+            self.add_error('key', e)
+            return
+
+        algo = keyring.get_algo()
+        try:
+            algo = GPGAlgo.objects.get(gpg_algorithm_id=algo)
+        except GPGAlgo.DoesNotExist:
+            self.add_error('key', _(
+                'Key algorithm not supported. Key must be one of the'
+                ' following: {}'
+            ).format(', '.join(map(str, GPGAlgo.objects.all()))))
+            return
+
+        size = keyring.get_size()
+        min_size = algo.minimal_size_requirement
+        if min_size and size < min_size:
+            self.add_error('key', _('Key size too small. Need at least'
+                                    ' {} bits.').format(min_size))
+            return
+
+        self.keyring = keyring
+
+    def clean(self):
+        self.cleaned_data = super().clean()
+        key = self.cleaned_data.get('key')
+
+        self._validate_gpg_key(key)
+
+        return self.cleaned_data
+
+    class Meta:
+        model = Key
+        fields = ('key',)
