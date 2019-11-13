@@ -31,6 +31,7 @@ from django.urls import reverse
 # from debexpo.lib import constants
 # from debexpo.model import meta
 from debexpo.accounts.models import Countries, User, UserStatus
+from debexpo.keyring.models import Key
 # from debexpo.model.user_countries import UserCountry
 #
 # import tempfile
@@ -80,6 +81,53 @@ GwwACgkQbaTvWsnriSqzewD+JDfQwbYmNVzshxGGHslGO9yx3WShsdQUxZgs4HeD
 qd4BAMRseQ8Lg7Np6xDdqm4m2YaNhQmebe3pnwN81514V20J
 =gMOI
 -----END PGP PUBLIC KEY BLOCK-----"""
+
+    _GPGKEY_CORRUPTED = _GPGKEY_MULTI.replace('kMulGXK3', '')
+
+    _GPGKEY_BAD_ALGO = """-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mQFCBF3L8/kRAwDIdoTIaE2JFjEehtnijhc9jJapRE/JSRbD/PGe5/cclRzNvg35
+vkJrsaaZL2lEbPZij1HMqkDm+IaSJKwK2y/Ue2I1MjjPDCmOLGdnyXOfjCbEPBzL
+A3OCc4yPC+qRdm8AoKkqkrZ7i0rrmcXlXI8vYzKpdQv7AwC7g2HdHNMxVs+8OKGt
+GgZNqnAm2ob5SowWyHpmWRpmotuGkT9XTdj7oCuoYzweM0oH8EJlYuUYBRmvrueR
+bOH3oOaj0jKNqw5gPbcmkNQXyj4qMhl08Q2AO3mgqEu2k2kC/iT5wXd9zeSssa/y
+j2kNHr9jwnBfBxuQWVr5fPQqKB0iSV6j+rxcSw+C14YPwCbRoQoKCEUScNICyGWx
+abL6bR3+gOfOfUaSFF8Qp1bl63yNIkxCA53GrVv6LnCBatD8yrQQQmFkIGFsZ28g
+PGVAZS5lPoh4BBMRAgA4FiEECQEyfGXbNO2t+LV4ZvFIRqdbHm0FAl3L8/kCGwMF
+CwkIBwIGFQoJCAsCBBYCAwECHgECF4AACgkQZvFIRqdbHm3WqACfWrV2orWa5DTn
+s4mu8vYMiKeibHQAnA2YXiEFMRnYkleMh0vfJX+E0U6yuQENBF3L8/kQBADOCauB
+Ut0OZJlujHhe3cunox3RG8XYoefBP85KiV6Pd95YW4F/4nyt8UFalyckblq54h0v
+6sFEB+sp4yjn8P/8sIevJTRkrl6tS5qm/fVORzjRT5QZ4EkIV5rS8gusrI6Tm7Bb
+tBOTocMZZxTR1hN/mASugB1WFtDLoTwBy5WmOwADBQP7BoN4zcUyQFwmCEtAITfs
+XoyL86Nnvtx6SPUgLV6pPXLc9dBQfWEmzKJeenfezr1MmTEKMou2N7l+yiyhShAF
+KLwSdfgrr9l6OpsDRW92NUq7FHtNegahOX1mFJFGRosQjTlchKfrc4BeZJ3mAXl3
+lSBJDv0oJvaCY+2TlZpLSLqIYAQYEQIAIBYhBAkBMnxl2zTtrfi1eGbxSEanWx5t
+BQJdy/P5AhsMAAoJEGbxSEanWx5tU3AAn01eDT24YshCLJD2oBh3E9C0kSbrAJ48
+Bhc0DGRNF2chL7JwIIGcQSU8qA==
+=IzuX
+-----END PGP PUBLIC KEY BLOCK-----"""
+
+    _GPGKEY_TOO_SMALL = """-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mI0EXcv0MAEEAM7cmSykJK0g3//gTe5KOazVqWYJ88jq6nGe/G54/1Ec1G+1DiyM
+tS53YjcK7Ps9GD3ce1cDh43RPCRe2M9rOTEqBuCBvnPsSN+ix2S6v4yHVZZUmGgP
+Aya+TGcnDSTFkp1FM4fDpe8OSV6lo4ivG+rIZuZNyj7Da4zuYL/a0pabABEBAAG0
+EVRvbyBzbWFsbCA8ZkBmLmY+iM4EEwEKADgWIQSio63hNt7Cj/5EiqgKZL3S+hI1
+lgUCXcv0MAIbAwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgAAKCRAKZL3S+hI1lmM/
+A/40BIw7IvbZX1gZWiuwpH0M7LWCPaKfEIndB0JIDXekC7yEMDY5vtqYaNU5glP4
+7pSa2B2HorCe3z77AH5qrh2h06SudgvNFm2anyqM5lN94m43iGb+x5lL4DTL/0Uv
+9xcFBo9Qv24TF2RClLQCj+pzM4XSFGzkbUWiyd8F1kEGNriNBF3L9DABBADHuz35
+m5uzaimBHSzVWdIX9gjNn1fO6mIYZ/e/LwgNd0WjIIs8dHPTHZeFZG7qUJfP0I0t
+SKm6rP7ymbIyR2dlf0dsrzYhc7LcFXh19XMBndNF42wPDDP80rB54CyvDUV2Gsl9
+XyVP9K344FyRwlGt6/tGf7yBqhWxMLUFWE2bswARAQABiLYEGAEKACAWIQSio63h
+Nt7Cj/5EiqgKZL3S+hI1lgUCXcv0MAIbDAAKCRAKZL3S+hI1lujXA/9lrVomxME/
+DJP9w9cYD6YHpXfb7rsP1UUdGwHW/Yyo+AEyZRDBAE1ll9vbgDzToMBzKe/dSsTX
+CcYlB0f1+5BWdumPRcFVZ56G1nXp8LhENIZJ42qCG73l5AnhgZnYoopOxWpjhApb
+om5PZYZ7QbAdCs+jRBbIXLXyIKjdDEfyEw==
+=Bjl+
+-----END PGP PUBLIC KEY BLOCK-----"""
+
+    _GPGKEY_CLEARTEXT = "Not a GPG key"
 
     _GPG_ID_WRONG_EMAIL = '256E/C74F9C11'
 
@@ -150,95 +198,106 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         self.assertEquals(response.status_code, 200)
         self.assertIn('selected>Germany', str(response.content))
 
-        # test DD user
-#        user = meta.session.query(User) \
-#            .filter(User.email == 'email@example.com') \
-#            .one()
-#        user.status = constants.USER_STATUS_DEVELOPER
-#        meta.session.commit()
-#      response = self.client.get(reverse(controller='profile', action='index'))
-#        self.assertEquals(response.status_code, 200)
-#        self.assertTrue('<a href="%s">' % (reverse('logout')) in response)
-#
-#        # test DM user
-#        user = meta.session.query(User).filter(
-#            User.email == 'email@example.com').one()
-#        user.status = constants.USER_STATUS_MAINTAINER
-#        meta.session.commit()
-#      response = self.client.get(reverse(controller='profile', action='index'))
-#        self.assertEquals(response.status_code, 200)
-#        self.assertTrue('<a href="%s">' % (reverse('logout')) in response)
-#
+        # test DD view
+        user.profile.status = UserStatus.developer.value
+        user.profile.save()
+
+        response = self.client.get(reverse('profile'))
+        self.assertNotIn('Debian Maintainer (DM)', str(response.content))
+        self.assertNotIn('Contributor', str(response.content))
+        self.assertIn('Debian Developer (DD)', str(response.content))
+
+        # test DM view
+        user.profile.status = UserStatus.maintainer.value
+        user.profile.save()
+
+        response = self.client.get(reverse('profile'))
+        self.assertIn('Debian Maintainer (DM)', str(response.content))
+        self.assertIn('Contributor', str(response.content))
+        self.assertNotIn('Debian Developer (DD)', str(response.content))
+
         # test handling of deleted user
         self._remove_example_user()
         response = self.client.get(reverse('profile'))
         self.assertEquals(response.status_code, 302)
         self.assertIn(reverse('login'), response.url)
 
-#    def test__gpg(self):
-#        response = self.client.post(reverse('profile'), {'form': 'gpg'})
-#        self.assertEquals(response.status_code, 302)
-#        self.assertTrue(response.location.endswith(reverse('login')))
-#        response = self.client.post(reverse('login'), self._AUTHDATA)
-#        user = meta.session.query(User) \
-#            .filter(User.email == 'email@example.com') \
-#            .one()
-#        self.assertEquals(user.gpg, None)
-#
-#        # upload GPG key
-#        response = self.client.post(reverse('profile'), {'form': 'gpg',
-#                                             'delete_gpg': 0,
-#                                             'commit': 'submit'},
-#                                 upload_files=[('gpg', 'mykey.asc',
-#                                               self._GPGKEY)])
-#        self.assertEquals(response.status_code, 302)
-#        self.assertTrue(response.location.endswith(reverse('profile')))
-#        user = meta.session.query(User) \
-#            .filter(User.email == 'email@example.com') \
-#            .one()
-#        self.assertEquals(user.gpg, self._GPGKEY)
-#
-#        # test whether index page contains GPG delete link
-#      response = self.client.get(reverse(controller='profile', action='index'))
-#        self.assertEquals(response.status_code, 200)
-#        self.assertTrue('<a href="%s">' % (reverse('logout')) in response)
-#        self.assertTrue(self._GPG_ID in response)
-#
-#        # delete GPG key
-#        response = self.client.post(reverse('profile'), {'form': 'gpg',
-#                                             'delete_gpg': 1,
-#                                             'commit': 'submit',
-#                                             'gpg': ''})
-#        self.assertEquals(response.status_code, 302)
-#        self.assertTrue(response.location.endswith(reverse('profile')))
-#        user = meta.session.query(User) \
-#            .filter(User.email == 'email@example.com') \
-#            .one()
-#        self.assertEquals(user.gpg, None)
-#
-#    def test__gpg_multi_keys(self):
-#        response = self.client.post(reverse('profile'), {'form': 'gpg'})
-#        self.assertEquals(response.status_code, 302)
-#        self.assertTrue(response.location.endswith(reverse('login')))
-#        response = self.client.post(reverse('login'), self._AUTHDATA)
-#        user = meta.session.query(User) \
-#            .filter(User.email == 'email@example.com') \
-#            .one()
-#        self.assertEquals(user.gpg, None)
-#
-#        # upload GPG key
-#        response = self.client.post(reverse('profile'), {'form': 'gpg',
-#                                             'delete_gpg': 0,
-#                                             'commit': 'submit'},
-#                                 upload_files=[('gpg', 'mykey.asc',
-#                                               self._GPGKEY_MULTI)])
-#        self.assertEquals(response.status_code, 200)
-#        self.assertTrue('Multiple keys not supported' in response)
-#        user = meta.session.query(User) \
-#            .filter(User.email == 'email@example.com') \
-#            .one()
-#        self.assertEquals(user.gpg, None)
-#
+    def test__gpg(self):
+        # Anonymous access to the form is denined
+        response = self.client.post(reverse('profile'), {'form': 'gpg'})
+        self.assertEquals(response.status_code, 302)
+        self.assertIn(reverse('login'), response.url)
+
+        # Authentication
+        response = self.client.post(reverse('login'), self._AUTHDATA)
+
+        # User has no key yet
+        user = User.objects.get(email='email@example.com')
+        self.assertRaises(Key.DoesNotExist, Key.objects.get, user=user)
+
+        # Post GPG key
+        response = self.client.post(reverse('profile'), {
+            'key': self._GPGKEY,
+            'commit_gpg': 'submit'
+        })
+        self.assertEquals(response.status_code, 200)
+        self.assertNotIn('errorlist', str(response.content))
+
+        self.assertEquals(user.key.key, self._GPGKEY)
+
+        # test whether index page contains GPG delete link
+        response = self.client.get(reverse('profile'))
+        self.assertEquals(response.status_code, 200)
+        self.assertIn('Fingerprint', str(response.content))
+        self.assertIn('Remove', str(response.content))
+        self.assertIn(self._GPGKEY.replace('\n', '\\n'), str(response.content))
+
+        # delete GPG key
+        # The test is run twice here. First time for key deletion, second time
+        # to ensure that debexpo does not crash on deleting a non-existing key.
+        for loop in range(0, 2):
+            response = self.client.post(reverse('profile'), {
+                'key': self._GPGKEY,
+                'delete_gpg': 'submit'
+            })
+            self.assertEquals(response.status_code, 200)
+            self.assertNotIn('Fingerprint', str(response.content))
+            self.assertNotIn('Remove', str(response.content))
+            self.assertNotIn(self._GPGKEY.replace('\n', '\\n'),
+                             str(response.content))
+            self.assertRaises(Key.DoesNotExist, Key.objects.get, user=user)
+
+    def _assert_gpg_post_failed(self, response, message):
+        # User has no key yet
+        user = User.objects.get(email='email@example.com')
+        self.assertRaises(Key.DoesNotExist, Key.objects.get, user=user)
+
+        # Assertions
+        self.assertEquals(response.status_code, 200)
+        self.assertIn('errorlist', str(response.content))
+        self.assertIn(message, str(response.content))
+        self.assertRaises(Key.DoesNotExist, Key.objects.get, user=user)
+
+    def test__gpg_bad_keys(self):
+        # Authentication
+        response = self.client.post(reverse('login'), self._AUTHDATA)
+
+        for key, message in (
+            (self._GPGKEY_MULTI, 'Multiple keys not supported'),
+            (self._GPGKEY_CORRUPTED, 'CRC error'),
+            (self._GPGKEY_BAD_ALGO, 'Key algorithm not supported'),
+            (self._GPGKEY_TOO_SMALL, 'Key size too small'),
+            (self._GPGKEY_CLEARTEXT, 'no valid OpenPGP data'),
+            ('', 'This field is required'),
+        ):
+            # Post GPG key
+            response = self.client.post(reverse('profile'), {
+                'key': key,
+                'commit_gpg': 'submit'
+            })
+
+            self._assert_gpg_post_failed(response, message)
+
 #    def test__gpg_wrong_email(self):
 #        response = self.client.post(reverse('profile'), {'form': 'gpg'})
 #        self.assertEquals(response.status_code, 302)
@@ -374,16 +433,10 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         user = User.objects.get(email='email@example.com')
         self.assertEquals(user.profile.status, UserStatus.maintainer.value)
 
-        # test DD view
+        # A DD cannot switch to Maintainer
         user.profile.status = UserStatus.developer.value
         user.profile.save()
 
-        response = self.client.get(reverse('profile'))
-        self.assertNotIn('Debian Maintainer (DM)', str(response.content))
-        self.assertNotIn('Contributor', str(response.content))
-        self.assertIn('Debian Developer (DD)', str(response.content))
-
-        # A DD cannot switch to Maintainer
         response = self.client.post(reverse('profile'), {
             'form': 'other_details',
             'country': '',
