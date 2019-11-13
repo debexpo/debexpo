@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-17 17:38+0200\n"
-"PO-Revision-Date: 2019-09-17 17:40+0200\n"
+"POT-Creation-Date: 2019-11-13 12:44+0000\n"
+"PO-Revision-Date: 2019-11-13 13:46+0100\n"
 "Last-Translator: Baptiste BEAUPLAT <lyknode@cilg.org>\n"
 "Language-Team: French <>\n"
 "Language: fr\n"
@@ -15,16 +15,52 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 19.08.1\n"
+"X-Generator: Poedit 2.2.4\n"
 
-#: settings/common.py:58
+#: keyring/models.py:36 keyring/models.py:60
+msgid "Type"
+msgstr "Type"
+
+#: keyring/models.py:38
+msgid "GPG Algorithm ID"
+msgstr "ID Algorithme GPG"
+
+#: keyring/models.py:41
+msgid "Minimal size requirment"
+msgstr "Taille minimale requise"
+
+#: keyring/models.py:50
+msgid "OpenGPG key"
+msgstr "Clef OpenGPG"
+
+#: keyring/models.py:51
+msgid "Fingerprint"
+msgstr "Empreinte"
+
+#: keyring/models.py:52
+msgid "Last update on"
+msgstr "Dernière mise à jour le"
+
+#: keyring/models.py:61
+msgid "Size"
+msgstr "Taille"
+
+#: settings/common.py:84
 msgid "English"
 msgstr "Anglais"
 
-#: settings/common.py:59
+#: settings/common.py:85
 msgid "French"
 msgstr "Français"
 
-#: settings/common.py:88
+#: settings/common.py:126
 msgid "Helps you get your packages into Debian"
 msgstr "Vous aide à envoyer vos paquets dans Debian"
+
+#: tools/gnupg.py:117
+msgid "Multiple keys not supported"
+msgstr "Multiples clefs non supporté"
+
+#: tools/gnupg.py:232
+msgid "Cannot add key: {}"
+msgstr "Impossible d'ajouter la clef : {}"
