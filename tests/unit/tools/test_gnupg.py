@@ -36,12 +36,8 @@ import os
 from django.test import TestCase
 from django.conf import settings
 
-from tests import TestController
 from debexpo.tools.gnupg import GnuPG, ExceptionGnuPGNotSignedFile, \
-    ExceptionGnuPG, ExceptionGnuPGNoPubKey, ExceptionGnuPGPathNotInitialized, \
-    GPGSignedFile
-from debexpo.accounts.models import User
-from debexpo.keyring.models import Key
+    ExceptionGnuPG, ExceptionGnuPGNoPubKey, ExceptionGnuPGPathNotInitialized
 
 test_gpg_key = """-----BEGIN PGP PUBLIC KEY BLOCK-----
 
@@ -202,33 +198,3 @@ class TestGnuPGController(TestCase):
         self.assertFalse(gnupg.is_unusable())
         self.assertRaises(ExceptionGnuPG, gnupg.verify_sig,
                           '/noexistent')
-
-
-class TestGPGSignedFileController(TestController):
-    def test_invalid_file(self):
-        self.assertRaises(ExceptionGnuPG, GPGSignedFile, '/noexistent')
-
-    def test_plain_file(self):
-        self.assertRaises(ExceptionGnuPGNotSignedFile, GPGSignedFile,
-                          '/etc/passwd')
-
-    def test_signed_with_unknown_key(self):
-        self.assertRaises(ExceptionGnuPGNoPubKey, GPGSignedFile,
-                          signed_file)
-
-    def test_signed_file(self):
-        # Setup user
-        user = User.objects.create_user('debexpo@example.org',
-                                        'debexpo testing', 'password')
-        user.save()
-
-        # Setup key
-        self._add_gpg_key(user, test_gpg_key, test_gpg_key_fpr,
-                          test_gpg_key_algo, test_gpg_key_size)
-
-        changes = GPGSignedFile(signed_file)
-        self.assertEquals(changes.get_key(), Key.objects.get(user=user))
-        self.assertEquals(str(changes.get_key().algorithm), 'ed25519')
-
-        # Remove user and key
-        user.delete()

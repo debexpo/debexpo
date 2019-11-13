@@ -70,39 +70,6 @@ class ExceptionGnuPGNoPubKey(ExceptionGnuPG):
                .format(self.filename, self.fingerprint)
 
 
-class GPGSignedFile(object):
-
-    def __init__(self, filename):
-        # As debexpo.keyring.models also import this file, Key is imported in
-        # the method scope
-        from debexpo.keyring.models import Key
-
-        self.filename = filename
-        self.key = None
-
-        fingerprint = self._lookup_fingerprint()
-
-        try:
-            self.key = Key.objects.get(fingerprint=fingerprint)
-        except Key.DoesNotExist:
-            raise ExceptionGnuPGNoPubKey(self.filename, fingerprint)
-
-        self.keyring = GnuPG()
-        self.keyring.import_key(self.key.key)
-        self.keyring.verify_sig(self.filename)
-
-    def _lookup_fingerprint(self):
-        gpg = GnuPG()
-
-        try:
-            gpg.verify_sig(self.filename)
-        except ExceptionGnuPGNoPubKey as e:
-            return e.fingerprint
-
-    def get_key(self):
-        return self.key
-
-
 class GnuPG(object):
     def __init__(self):
         """
