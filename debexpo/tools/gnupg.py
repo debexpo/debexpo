@@ -105,9 +105,9 @@ class VirtualKeyring(object):
 
         if user:
             key = Key.objects.get(user=user)
-            self.gpg.add_signature(signature=key.key)
+            self.gpg.import_key(key.key)
         elif key:
-            self.gpg.add_signature(signature=key)
+            self.gpg.import_key(key)
         else:
             raise ValueError('Both user and key cannot be None')
 
@@ -208,25 +208,19 @@ class GnuPG(object):
 
         return valid_sig[0].group('fingerprint')
 
-    def add_signature(self, signature_file=None, signature=None):
+    def import_key(self, data):
         """
         Add the signature(s) within the provided file to the supplied keyring
 
-        ```signature_file```
-            A file name containing valid PGP public key data suitable for
+        ```data```
+            valid PGP public key data suitable for
             keyrings
-        ```pubring```
-            A file name pointing to a keyring. May be empty.
 
         Returns gpg output
         """
         args = ['--import-options', 'import-minimal', '--import']
 
-        if not signature:
-            args.append(signature_file)
-            (output, status) = self._run(args=args)
-        else:
-            (output, status) = self._run(args=args, stdin=signature)
+        (output, status) = self._run(args=args, stdin=data)
 
         if status and output and len(output.splitlines()) > 0:
             raise ExceptionGnuPG(_('Cannot add key:'

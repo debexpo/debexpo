@@ -32,7 +32,6 @@ Test cases for debexpo.tools.gnupg
 """
 
 import os
-from tempfile import NamedTemporaryFile
 
 from django.test import TestCase
 from django.conf import settings
@@ -127,18 +126,18 @@ class TestGnuPGController(TestCase):
         self.assertRaises(ExceptionGnuPGPathNotInitialized, gnupg.verify_sig,
                           signed_file)
         self.assertRaises(ExceptionGnuPGPathNotInitialized, gnupg.get_keys_data)
-        self.assertRaises(ExceptionGnuPGPathNotInitialized, gnupg.add_signature,
-                          signature=test_gpg_key)
+        self.assertRaises(ExceptionGnuPGPathNotInitialized, gnupg.import_key,
+                          test_gpg_key)
 
     def testInvalidGPGKey(self):
         """
         Test adding a wrong key
         """
         gnupg = self._get_gnupg()
-        self.assertRaises(ExceptionGnuPG, gnupg.add_signature,
-                          signature='/etc/passwd')
+        self.assertRaises(ExceptionGnuPG, gnupg.import_key,
+                          '/etc/passwd')
         try:
-            gnupg.add_signature(signature='/etc/passwd')
+            gnupg.import_key('/etc/passwd')
         except ExceptionGnuPG as e:
             self.assertIn('no valid OpenPGP data found', str(e))
 
@@ -147,7 +146,7 @@ class TestGnuPGController(TestCase):
         Test the extraction of key id from a given GPG key.
         """
         gnupg = self._get_gnupg()
-        gnupg.add_signature(signature=test_gpg_key)
+        gnupg.import_key(test_gpg_key)
         self.assertFalse(gnupg.is_unusable())
         keys = gnupg.get_keys_data()
         self.assertEqual(test_gpg_key_fpr,
@@ -161,16 +160,8 @@ class TestGnuPGController(TestCase):
         debexpo/tests/gpg/debian_announcement.gpg.asc.
         """
         gnupg = self._get_gnupg()
-        gnupg.add_signature(signature=test_gpg_key)
+        gnupg.import_key(test_gpg_key)
         self._assertGoodSignature(gnupg)
-
-        with NamedTemporaryFile() as key:
-            key.write(test_gpg_key.encode('utf-8'))
-            key.flush()
-
-            gnupg = self._get_gnupg()
-            gnupg.add_signature(key.name)
-            self._assertGoodSignature(gnupg)
 
     def _assertGoodSignature(self, gnupg):
         self.assertFalse(gnupg.is_unusable())
