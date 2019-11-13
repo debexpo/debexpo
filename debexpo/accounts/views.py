@@ -43,7 +43,7 @@ from django.utils.http import urlsafe_base64_encode
 
 from .forms import RegistrationForm, AccountForm, ProfileForm, GPGForm
 from .models import Profile, User, UserStatus
-from debexpo.keyring.models import Key, GPGAlgo
+from debexpo.keyring.models import Key
 
 from debexpo.tools.email import Email
 
@@ -103,13 +103,8 @@ def _update_account(request, info):
 
 
 def _update_key(request, gpg_form):
-    key = gpg_form.save(commit=False)
+    key = gpg_form.key
     key.user = request.user
-    key.size = gpg_form.keyring.get_size()
-    key.algorithm = GPGAlgo.objects.get(
-        gpg_algorithm_id=gpg_form.keyring.get_algo()
-    )
-    key.fingerprint = gpg_form.keyring.get_fingerprint()
     key.save()
 
 

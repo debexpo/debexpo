@@ -30,6 +30,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from debexpo.accounts.models import User
+from debexpo.tools.gnupg import GnuPG, ExceptionGnuPG, \
+    ExceptionGnuPGMultipleKeys
 
 
 class GPGAlgo(models.Model):
@@ -45,7 +47,55 @@ class GPGAlgo(models.Model):
         return self.name
 
 
+class KeyManager(models.Manager):
+    def _import_key(self, data):
+        gpg = GnuPG()
+
+        gpg.import_key(data)
+        keyring = gpg.get_keys_data()
+
+        if (len(keyring) > 1):
+            raise ExceptionGnuPGMultipleKeys(_('Multiple keys not supported'))
+
+        return keyring[0]
+
+    def _validate_algorithm(self, key):
+        algorithm_id = key.get_algo()
+
+        try:
+            algorithm = GPGAlgo.objects.get(gpg_algorithm_id=algorithm_id)
+        except GPGAlgo.DoesNotExist:
+            raise ExceptionGnuPG(_(
+                'Key algorithm not supported. Key must be one of the'
+                ' following: {}'
+            ).format(', '.join(map(str, GPGAlgo.objects.all()))))
+
+        return algorithm
+
+    def _validate_size(self, key, algorithm):
+        size = int(key.get_size())
+        min_size = algorithm.minimal_size_requirement
+        if min_size and size < min_size:
+            raise ExceptionGnuPG(_('Key size too small. Need at least'
+                                   ' {} bits.').format(min_size))
+
+        return size
+
+    def parse_key_data(self, data):
+        key = self._import_key(data)
+
+        user_key = Key()
+        user_key.algorithm = self._validate_algorithm(key)
+        user_key.size = self._validate_size(key, user_key.algorithm)
+        user_key.fingerprint = key.fpr
+        user_key.key = data
+
+        return user_key
+
+
 class Key(models.Model):
+    objects = KeyManager()
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     key = models.TextField(verbose_name=_('OpenGPG key'))
     fingerprint = models.TextField(max_length=40, verbose_name=_('Fingerprint'))
@@ -53,7 +103,7 @@ class Key(models.Model):
                                         auto_now=True)
 
     # We store here the algorithm and the size to avoid creating a
-    # VirtualKeyring to get those information each time a user loads its
+    # GnuPG to get those information each time a user loads its
     # profile.
     algorithm = models.ForeignKey(GPGAlgo, on_delete=models.SET_NULL,
                                   blank=True, null=True,

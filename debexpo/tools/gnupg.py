@@ -41,8 +41,6 @@ import tempfile
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
-from debexpo.keyring.models import Key
-
 log = logging.getLogger(__name__)
 
 
@@ -73,7 +71,12 @@ class ExceptionGnuPGNoPubKey(ExceptionGnuPG):
 
 
 class GPGSignedFile(object):
+
     def __init__(self, filename):
+        # As debexpo.keyring.models also import this file, Key is imported in
+        # the method scope
+        from debexpo.keyring.models import Key
+
         self.filename = filename
         self.key = None
 
@@ -84,7 +87,8 @@ class GPGSignedFile(object):
         except Key.DoesNotExist:
             raise ExceptionGnuPGNoPubKey(self.filename, fingerprint)
 
-        self.keyring = VirtualKeyring(self.key.user)
+        self.keyring = GnuPG()
+        self.keyring.import_key(self.key.key)
         self.keyring.verify_sig(self.filename)
 
     def _lookup_fingerprint(self):
@@ -97,41 +101,6 @@ class GPGSignedFile(object):
 
     def get_key(self):
         return self.key
-
-
-class VirtualKeyring(object):
-    def __init__(self, user=None, key=None):
-        self.gpg = GnuPG()
-
-        if user:
-            key = Key.objects.get(user=user)
-            self.gpg.import_key(key.key)
-        elif key:
-            self.gpg.import_key(key)
-        else:
-            raise ValueError('Both user and key cannot be None')
-
-        keys = self.gpg.get_keys_data()
-
-        if (len(keys) > 1):
-            raise ExceptionGnuPGMultipleKeys(_('Multiple keys not supported'))
-
-        self.key = keys[0]
-
-    def get_fingerprint(self):
-        return self.key.fpr
-
-    def get_algo(self):
-        return self.key.get_algo()
-
-    def get_size(self):
-        return int(self.key.get_size())
-
-    def get_uids(self):
-        return self.key.get_all_uid()
-
-    def verify_sig(self, filename):
-        self.gpg.verify_sig(filename)
 
 
 class GnuPG(object):
