@@ -39,7 +39,7 @@ from django.conf import settings
 from tests import TestController
 from debexpo.tools.gnupg import GnuPG, ExceptionGnuPGNotSignedFile, \
     ExceptionGnuPG, ExceptionGnuPGNoPubKey, ExceptionGnuPGPathNotInitialized, \
-    GPGSignedFile, VirtualKeyring, ExceptionGnuPGMultipleKeys
+    GPGSignedFile
 from debexpo.accounts.models import User
 from debexpo.keyring.models import Key
 
@@ -232,35 +232,3 @@ class TestGPGSignedFileController(TestController):
 
         # Remove user and key
         user.delete()
-
-
-class TestVirtualKeyring(TestController):
-    def test_keyring_from_standalone_key(self):
-        keyring = VirtualKeyring(key=test_gpg_key)
-
-        self.assertEquals(keyring.get_fingerprint(), test_gpg_key_fpr)
-        self.assertEquals(keyring.get_algo(), test_gpg_key_algo)
-        self.assertEquals(keyring.get_size(), test_gpg_key_size)
-        self.assertIn((test_gpg_key_name, test_gpg_key_email),
-                      keyring.get_uids())
-
-    def test_keyring_from_user(self):
-        self._setup_example_user(gpg=True)
-
-        keyring = VirtualKeyring(
-            user=User.objects.get(email='email@example.com')
-        )
-
-        self.assertEquals(keyring.get_fingerprint(), self._GPG_FINGERPRINT)
-        self.assertEquals(keyring.get_algo(), self._GPG_TYPE)
-        self.assertEquals(keyring.get_size(), self._GPG_SIZE)
-        self.assertEquals(keyring.get_uids(), self._GPG_UIDS)
-
-        self._remove_example_user()
-
-    def test_keyring_from_multi_keys(self):
-        self.assertRaises(ExceptionGnuPGMultipleKeys, VirtualKeyring,
-                          key=test_multi_gpg_key)
-
-    def test_keyring_no_info(self):
-        self.assertRaises(ValueError, VirtualKeyring)
