@@ -94,7 +94,7 @@ class GnuPG():
         """Returns true if the gpg binary is not installed or not executable."""
         return self.gpg_path is None
 
-    def get_keys_data(self, fingerprints=[]):
+    def get_keys_data(self, fingerprints=None):
         """
         Returns the key object of the given GPG public key.
 
@@ -102,6 +102,10 @@ class GnuPG():
             fingerprints of keys to get data for.
 
         """
+
+        if fingerprints is None:
+            fingerprints = []
+
         try:
             (output, status) = self._run(args=['--list-keys'] + fingerprints)
             keys = KeyData.read_from_gpg(output.splitlines())
@@ -114,31 +118,33 @@ class GnuPG():
     def verify_sig(self, signed_file):
         """
         Returns the fingerprint that signed the file if the signature is valid.
-        Otherwise, throw a ExceptionGnuPG exception.
+        Otherwise, throws a ExceptionGnuPG exception.
 
         ``signed_file``
              path to signed file
         """
         args = ('--verify', signed_file)
         (output, status) = self._run(args=args)
-
         output = output.splitlines()
+
         err_sig_re = re.compile(r'\[GNUPG:\] ERRSIG .* (?P<fingerprint>\w+)$')
         err_sig = list(filter(None, map(err_sig_re.match, output)))
-        valid_sig_re = re.compile(r'\[GNUPG:\] VALIDSIG .*'
-                                  r' (?P<fingerprint>\w+)$')
-        valid_sig = list(filter(None, map(valid_sig_re.match, output)))
-        no_data_re = re.compile(r'\[GNUPG:\] NODATA')
-        no_data = list(filter(None, map(no_data_re.match,
-                                        output)))
-
         if err_sig:
             raise ExceptionGnuPGNoPubKey(signed_file,
                                          err_sig[0].group('fingerprint'))
-        elif no_data:
+
+        no_data_re = re.compile(r'\[GNUPG:\] NODATA')
+        no_data = list(filter(None, map(no_data_re.match,
+                                        output)))
+        if no_data:
             raise ExceptionGnuPGNotSignedFile('{}: not a GPG signed'
                                               ' file'.format(signed_file))
-        elif not valid_sig:
+
+        valid_sig_re = re.compile(r'\[GNUPG:\] VALIDSIG .*'
+                                  r' (?P<fingerprint>\w+)$')
+        valid_sig = list(filter(None, map(valid_sig_re.match, output)))
+
+        if not valid_sig:
             raise ExceptionGnuPG('Unknown GPG error. Output was:'
                                  ' {}'.format(output))
 
