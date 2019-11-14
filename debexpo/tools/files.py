@@ -34,9 +34,6 @@ from debexpo.tools.gnupg import GnuPG, ExceptionGnuPGNoPubKey
 class GPGSignedFile():
 
     def __init__(self, filename):
-        # As debexpo.keyring.models also import this file, Key is imported in
-        # the method scope
-
         self.filename = filename
         self.key = None
 
