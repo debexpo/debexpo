@@ -42,7 +42,7 @@ from django.template.loader import render_to_string
 log = logging.getLogger(__name__)
 
 
-class Email(object):
+class Email():
     def __init__(self, template):
         """
         Class constructor. Sets useful class and template attributes.

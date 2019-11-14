@@ -70,7 +70,7 @@ class ExceptionGnuPGNoPubKey(ExceptionGnuPG):
                .format(self.filename, self.fingerprint)
 
 
-class GnuPG(object):
+class GnuPG():
     def __init__(self):
         """
         Wrapper for certain GPG operations.
@@ -214,7 +214,7 @@ class GnuPG(object):
         return (output, 0)
 
 
-class KeyData(object):
+class KeyData():
     """
     Collects data about a key, parsed from gpg --with-colons --fixed-list-mode
     """
@@ -297,7 +297,7 @@ class KeyData(object):
         return keys
 
 
-class Uid(object):
+class Uid():
     """
     Collects data about a key uid, parsed from gpg --with-colons
     --fixed-list-mode
