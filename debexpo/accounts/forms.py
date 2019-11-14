@@ -126,12 +126,9 @@ class GPGForm(forms.ModelForm):
             return
 
         try:
-            key = Key.objects.parse_key_data(key)
+            self.key = Key.objects.parse_key_data(key)
         except (ExceptionGnuPG, ValueError) as e:
             self.add_error('key', e)
-            return
-
-        self.key = key
 
     def clean(self):
         self.cleaned_data = super().clean()
