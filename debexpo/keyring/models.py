@@ -40,7 +40,7 @@ class GPGAlgo(models.Model):
         verbose_name=_('GPG Algorithm ID')
     )
     minimal_size_requirement = models.PositiveSmallIntegerField(
-        verbose_name=_('Minimal size requirment'), blank=True, null=True
+        verbose_name=_('Minimal size requirment'), null=True
     )
 
     def __str__(self):

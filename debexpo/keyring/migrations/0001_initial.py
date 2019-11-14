@@ -66,7 +66,7 @@ class Migration(migrations.Migration):
                     verbose_name='GPG Algorithm ID'
                 )),
                 ('minimal_size_requirement', models.PositiveSmallIntegerField(
-                    blank=True, null=True,
+                    null=True,
                     verbose_name='Minimal size requirment'
                 )),
             ],
