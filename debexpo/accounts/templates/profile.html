@@ -15,7 +15,6 @@
     </form>
 </fieldset>
 <hr />
-{% comment %}
 <fieldset>
   <strong><legend>{% trans 'Change GPG key' %}</legend></strong>
 
@@ -23,10 +22,12 @@
         {% csrf_token %}
         <table width=100% id="form">
             <tr><td width=21%></td><td width=79%></td></tr>
+            {% if gpg_fingerprint %}
             <tr>
-                <th>Fingerprint:</th>
-                <td>{{ gpg_fingerprint }}</td>
+                <th>{% trans 'Fingerprint:' %}</th>
+                <td>{{ gpg_fingerprint|safe }}</td>
             </tr>
+            {% endif %}
             {{ gpg_form }}
             <tr>
                 <td colspan="2">{% blocktrans trimmed %}
@@ -37,10 +38,13 @@
         </table>
         <input id="commit_gpg" name="commit_gpg" type="submit"
                value="{% trans 'Submit' %}">
+        {% if gpg_fingerprint %}
+        <input id="delete_gpg" name="delete_gpg" type="submit"
+               value="{% trans 'Remove' %}">
+        {% endif %}
     </form>
 </fieldset>
 <hr />
-{% endcomment %}
 <fieldset>
   <strong><legend>{% trans 'Change password' %}</legend></strong>
 

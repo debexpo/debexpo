@@ -34,6 +34,8 @@ from django.utils.translation import gettext_lazy as _
 from debexpo.tools.email import Email
 
 from .models import Profile, User, UserStatus
+from debexpo.keyring.models import Key
+from debexpo.tools.gnupg import ExceptionGnuPG
 
 
 class AccountForm(forms.Form):
@@ -116,3 +118,26 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('country', 'ircnick', 'jabber', 'status')
+
+
+class GPGForm(forms.ModelForm):
+    def _validate_gpg_key(self, key):
+        if not key:
+            return
+
+        try:
+            self.key = Key.objects.parse_key_data(key)
+        except (ExceptionGnuPG, ValueError) as e:
+            self.add_error('key', e)
+
+    def clean(self):
+        self.cleaned_data = super().clean()
+        key = self.cleaned_data.get('key')
+
+        self._validate_gpg_key(key)
+
+        return self.cleaned_data
+
+    class Meta:
+        model = Key
+        fields = ('key',)

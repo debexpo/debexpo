@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debexpo.base',
     'debexpo.accounts',
+    'debexpo.keyring',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,6 @@ NNTP_SERVER = 'news.gmane.org'
 
 # Debexpo User model
 AUTH_USER_MODEL = 'accounts.User'
+
+# GPG settings
+GPG_PATH = '/usr/bin/gpg'

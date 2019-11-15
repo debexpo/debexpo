@@ -41,8 +41,9 @@ from django.shortcuts import render
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
-from .forms import RegistrationForm, AccountForm, ProfileForm
+from .forms import RegistrationForm, AccountForm, ProfileForm, GPGForm
 from .models import Profile, User, UserStatus
+from debexpo.keyring.models import Key
 
 from debexpo.tools.email import Email
 
@@ -101,6 +102,24 @@ def _update_account(request, info):
     request.user.save()
 
 
+def _update_key(request, gpg_form):
+    key = gpg_form.key
+    key.user = request.user
+    key.save()
+
+
+def _format_fingerprint(fingerprint):
+    prettify = ''
+    for index in range(0, len(fingerprint)):
+        prettify += fingerprint[index]
+        if not (index + 1) % 4:
+            prettify += '&nbsp;'
+        if not (index + 1) % 20:
+            prettify += '&nbsp;'
+
+    return prettify
+
+
 def register(request):
     """
     Provides the form for a maintainer account registration.
@@ -131,6 +150,12 @@ def profile(request):
     account_form = AccountForm(None, initial=account_initial)
     password_form = PasswordChangeForm(user=request.user)
     profile_form = ProfileForm(request.user, instance=request.user.profile)
+    gpg_fingerprint = None
+    try:
+        gpg_form = GPGForm(instance=request.user.key)
+        gpg_fingerprint = _format_fingerprint(request.user.key.fingerprint)
+    except Key.DoesNotExist:
+        gpg_form = GPGForm()
 
     if request.method == 'POST':
         if 'commit_account' in request.POST:
@@ -160,9 +185,33 @@ def profile(request):
                 profile.user = request.user
                 profile.save()
 
+        if 'commit_gpg' in request.POST:
+            try:
+                gpg_form = GPGForm(request.POST, instance=request.user.key)
+            except Key.DoesNotExist:
+                gpg_form = GPGForm(request.POST)
+
+            if gpg_form.is_valid():
+                _update_key(request, gpg_form)
+                gpg_fingerprint = _format_fingerprint(
+                    request.user.key.fingerprint
+                )
+
+        if 'delete_gpg' in request.POST:
+            try:
+                key = request.user.key
+            except Key.DoesNotExist:
+                pass
+            else:
+                key.delete()
+                gpg_form = GPGForm()
+                gpg_fingerprint = None
+
     return render(request, 'profile.html', {
         'settings': settings,
         'account_form': account_form,
         'password_form': password_form,
-        'profile_form': profile_form
+        'profile_form': profile_form,
+        'gpg_form': gpg_form,
+        'gpg_fingerprint': gpg_fingerprint,
     })

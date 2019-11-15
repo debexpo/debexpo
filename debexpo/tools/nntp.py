@@ -47,7 +47,7 @@ from django.conf import settings
 log = logging.getLogger(__name__)
 
 
-class NNTPClient(object):
+class NNTPClient():
     def __init__(self):
         self.connected = False
         self.server = settings.NNTP_SERVER

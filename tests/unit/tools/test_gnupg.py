@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
-#
-#   utils.py — Debexpo utility functions
+#   test_gnupg.py - Unit testing for GnuPG helpers
 #
 #   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Serafeim Zanikolas <serzan@hellug.gr>
+#               2019 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -29,20 +28,16 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 """
-Test cases for debexpo.lib.gnupg.
+Test cases for debexpo.tools.gnupg
 """
 
-__author__ = 'Serafeim Zanikolas'
-__copyright__ = 'Copyright © 2008 Serafeim Zanikolas'
-__license__ = 'MIT'
-
-from unittest import TestCase
-from nose.tools import raises
 import os
 
-from pylons import config
+from django.test import TestCase
+from django.conf import settings
 
-from debexpo.lib.gnupg import GnuPG, ExceptionGnuPGMultipleKeys
+from debexpo.tools.gnupg import GnuPG, ExceptionGnuPGNotSignedFile, \
+    ExceptionGnuPG, ExceptionGnuPGNoPubKey, ExceptionGnuPGPathNotInitialized
 
 test_gpg_key = """-----BEGIN PGP PUBLIC KEY BLOCK-----
 
@@ -85,16 +80,22 @@ qd4BAMRseQ8Lg7Np6xDdqm4m2YaNhQmebe3pnwN81514V20J
 =gMOI
 -----END PGP PUBLIC KEY BLOCK-----"""
 
-test_gpg_key_id = '256E/1AEA8EBB'
+test_gpg_key_fpr = '86573E2E4947559823EC3F14C7E19A981AEA8EBB'
+test_gpg_key_algo = '22'
+test_gpg_key_size = 256
 test_gpg_key_name = 'debexpo testing'
 test_gpg_key_email = 'debexpo@example.org'
+
+gpg_data_dir = os.path.join(os.path.dirname(__file__), 'gpg')
+signed_file = os.path.join(gpg_data_dir, 'debian_announcement.gpg.asc')
 
 
 class TestGnuPGController(TestCase):
 
     def _get_gnupg(self, gpg_path='/usr/bin/gpg'):
-        config['debexpo.gpg_path'] = gpg_path
-        gnupg = GnuPG()  # instantiate with new debexpo.gpg_path setting
+        settings.GPG_PATH = gpg_path
+        # instantiate with new debexpo.gpg_path setting
+        gnupg = GnuPG()
         return gnupg
 
     def testGnuPGfailure1(self):
@@ -118,32 +119,36 @@ class TestGnuPGController(TestCase):
         gnupg = self._get_gnupg('/etc/passwd')
         self.assertTrue(gnupg.is_unusable())
 
-    @raises(ExceptionGnuPGMultipleKeys)
-    def testParseKeyIDMultipleKey(self):
+        self.assertRaises(ExceptionGnuPGPathNotInitialized, gnupg.verify_sig,
+                          signed_file)
+        self.assertRaises(ExceptionGnuPGPathNotInitialized, gnupg.get_keys_data)
+        self.assertRaises(ExceptionGnuPGPathNotInitialized, gnupg.import_key,
+                          test_gpg_key)
+
+    def testInvalidGPGKey(self):
         """
-        Test limit ParseKey to one key only
+        Test adding a wrong key
         """
         gnupg = self._get_gnupg()
-        self.assertFalse(gnupg.is_unusable())
-        (gpg_key_id, _) = gnupg.parse_key_id(test_multi_gpg_key)
+        self.assertRaises(ExceptionGnuPG, gnupg.import_key,
+                          '/etc/passwd')
+        try:
+            gnupg.import_key('/etc/passwd')
+        except ExceptionGnuPG as e:
+            self.assertIn('no valid OpenPGP data found', str(e))
 
     def testParseKeyID(self):
         """
         Test the extraction of key id from a given GPG key.
         """
         gnupg = self._get_gnupg()
+        gnupg.import_key(test_gpg_key)
         self.assertFalse(gnupg.is_unusable())
-        (gpg_key_id, _) = gnupg.parse_key_id(test_gpg_key)
-        self.assertEqual(gpg_key_id, test_gpg_key_id)
-
-    def testParseKeyIDWithUID(self):
-        """
-        Test the extraction of an uid from a given GPG key.
-        """
-        gnupg = self._get_gnupg()
-        self.assertFalse(gnupg.is_unusable())
-        (_, uids) = gnupg.parse_key_id(test_gpg_key)
-        self.assertTrue((test_gpg_key_name, test_gpg_key_email) in uids)
+        keys = gnupg.get_keys_data()
+        self.assertEqual(test_gpg_key_fpr,
+                         keys[0].fpr)
+        self.assertIn((test_gpg_key_name, test_gpg_key_email),
+                      keys[0].get_all_uid())
 
     def testSignatureVerification(self):
         """
@@ -151,29 +156,30 @@ class TestGnuPGController(TestCase):
         debexpo/tests/gpg/debian_announcement.gpg.asc.
         """
         gnupg = self._get_gnupg()
-        self.assertFalse(gnupg.is_unusable())
-        gpg_data_dir = os.path.join(os.path.dirname(__file__), 'gpg')
-        signed_file = os.path.join(gpg_data_dir, 'debian_announcement.gpg.asc')
-        pubring = os.path.join(gpg_data_dir, 'pubring.gpg')
-        assert os.path.exists(signed_file)
-        assert os.path.exists(pubring)
-        self.assertTrue(gnupg.verify_sig(signed_file, pubring))
+        gnupg.import_key(test_gpg_key)
+        self._assertGoodSignature(gnupg)
 
-    def testSignatureVerificationWithUID(self):
+    def _assertGoodSignature(self, gnupg):
+        self.assertFalse(gnupg.is_unusable())
+        assert os.path.exists(signed_file)
+        self.assertEquals(test_gpg_key_fpr,
+                          gnupg.verify_sig(signed_file))
+
+    def testUnknownSignatureVerification(self):
         """
         Verify the signature in the file
         debexpo/tests/gpg/debian_announcement.gpg.asc.
         """
         gnupg = self._get_gnupg()
         self.assertFalse(gnupg.is_unusable())
-        gpg_data_dir = os.path.join(os.path.dirname(__file__), 'gpg')
-        signed_file = os.path.join(gpg_data_dir, 'debian_announcement.gpg.asc')
-        pubring = os.path.join(gpg_data_dir, 'pubring.gpg')
         assert os.path.exists(signed_file)
-        assert os.path.exists(pubring)
-        (out, uids, status) = gnupg.verify_sig_full(signed_file, pubring)
-        self.assertEquals(status, 0)
-        self.assertTrue((test_gpg_key_name, test_gpg_key_email) in uids)
+        self.assertRaises(ExceptionGnuPGNoPubKey, gnupg.verify_sig,
+                          signed_file)
+        try:
+            gnupg.verify_sig(signed_file)
+        except ExceptionGnuPGNoPubKey as e:
+            self.assertEquals(e.fingerprint, test_gpg_key_fpr)
+            self.assertIn(signed_file, str(e))
 
     def testInvalidSignature(self):
         """
@@ -181,4 +187,14 @@ class TestGnuPGController(TestCase):
         """
         gnupg = self._get_gnupg()
         self.assertFalse(gnupg.is_unusable())
-        self.assertFalse(gnupg.verify_sig('/etc/passwd'))
+        self.assertRaises(ExceptionGnuPGNotSignedFile, gnupg.verify_sig,
+                          '/etc/passwd')
+
+    def testNoFileSignature(self):
+        """
+        Test that verify_sig() fails for an unsigned file.
+        """
+        gnupg = self._get_gnupg()
+        self.assertFalse(gnupg.is_unusable())
+        self.assertRaises(ExceptionGnuPG, gnupg.verify_sig,
+                          '/noexistent')
