@@ -26,9 +26,43 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+from os.path import basename
+import hashlib
 
 from debexpo.keyring.models import Key
 from debexpo.tools.gnupg import GnuPG, ExceptionGnuPGNoPubKey
+
+
+class ExceptionCheckSumedFile(Exception):
+    pass
+
+
+class ExceptionCheckSumedFileNoFile(ExceptionCheckSumedFile):
+    def __init__(self, e):
+        self.message = str(e)
+
+    def __str__(self):
+        return self.message
+
+
+class ExceptionCheckSumedFileNoMethod(ExceptionCheckSumedFile):
+    def __init__(self, filename):
+        self.filename = filename
+
+    def __str__(self):
+        return f'No checksum method available for file {self.filename}.'
+
+
+class ExceptionCheckSumedFileFailedSum(ExceptionCheckSumedFile):
+    def __init__(self, filename, expected, computed):
+        self.filename = filename
+        self.expected = expected
+        self.computed = computed
+
+    def __str__(self):
+        return f'Checksum failed for file {self.filename}.\n\n' \
+                'Expected: {self.expected}\n' \
+                'Computed: {self.computed}'
 
 
 class GPGSignedFile():
@@ -58,3 +92,48 @@ class GPGSignedFile():
 
     def get_key(self):
         return self.key
+
+
+class CheckSumedFile():
+    METHODS = ('sha512', 'sha256')
+
+    def __init__(self, filename):
+        self.filename = filename
+        self.checksums = {}
+
+    def add_checksum(self, method, checksum):
+        self.checksums[method] = checksum
+
+    def validate(self):
+        for method in self.METHODS:
+            checksum = self.checksums.get(method)
+
+            if checksum:
+                hash_function = getattr(hashlib, method)
+                validator = hash_function()
+
+                try:
+                    data = open(self.filename, 'rb')
+                except IOError as e:
+                    raise ExceptionCheckSumedFileNoFile(e)
+                else:
+                    with data:
+                        while True:
+                            chunk = data.read(10240)
+
+                            if not chunk:
+                                break
+
+                            validator.update(chunk)
+
+                if validator.hexdigest() != checksum:
+                    raise ExceptionCheckSumedFileFailedSum(
+                        self.filename, checksum, validator.hexdigest()
+                    )
+                else:
+                    return True
+
+        raise ExceptionCheckSumedFileNoMethod(self.filename)
+
+    def __str__(self):
+        return basename(self.filename)

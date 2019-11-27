@@ -34,7 +34,9 @@ Test cases for debexpo.tools.files
 from tests import TestController
 from debexpo.tools.gnupg import ExceptionGnuPGNotSignedFile, \
     ExceptionGnuPG, ExceptionGnuPGNoPubKey
-from debexpo.tools.files import GPGSignedFile
+from debexpo.tools.files import GPGSignedFile, CheckSumedFile, \
+    ExceptionCheckSumedFileNoFile, ExceptionCheckSumedFileFailedSum, \
+    ExceptionCheckSumedFileNoMethod
 from debexpo.accounts.models import User
 from debexpo.keyring.models import Key
 from tests.unit.tools.test_gnupg import signed_file, test_gpg_key, \
@@ -69,3 +71,43 @@ class TestGPGSignedFileController(TestController):
 
         # Remove user and key
         user.delete()
+
+
+class TestCheckSumedFile(TestController):
+    def test_invalid_file(self):
+        sumed_file = CheckSumedFile('/noexistent')
+        sumed_file.add_checksum('sha256', '0')
+        try:
+            sumed_file.validate()
+        except ExceptionCheckSumedFileNoFile as e:
+            self.assertIn('/noexistent', str(e))
+
+    def test_plain_file(self):
+        sumed_file = CheckSumedFile('/etc/passwd')
+        try:
+            sumed_file.validate()
+        except ExceptionCheckSumedFileNoMethod as e:
+            self.assertIn('/etc/passwd', str(e))
+            self.assertIn('No checksum method available', str(e))
+
+    def test_wrong_sumed_file(self):
+        sumed_file = CheckSumedFile('/etc/passwd')
+        sumed_file.add_checksum('sha256', '0')
+        try:
+            sumed_file.validate()
+        except ExceptionCheckSumedFileFailedSum as e:
+            self.assertIn('/etc/passwd', str(e))
+            self.assertIn('Checksum failed', str(e))
+
+    def test_bad_method_sumed_file(self):
+        sumed_file = CheckSumedFile('/etc/passwd')
+        sumed_file.add_checksum('this_hash_algo_does_not_exists', 0)
+        self.assertRaises(ExceptionCheckSumedFileNoMethod, sumed_file.validate)
+
+    def test_sumed_file(self):
+        sumed_file = CheckSumedFile('/dev/null')
+        sumed_file.add_checksum(
+            'sha256',
+            'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+        )
+        self.assertTrue(sumed_file.validate())
