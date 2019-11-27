@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-#
-#   py.template - template for new .py files
+#   dsc.py - Handle Dsc files
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
@@ -28,46 +26,52 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-__author__ = 'Baptiste BEAUPLAT'
-__copyright__ = 'Copyright © 2019 Baptiste BEAUPLAT'
-__license__ = 'MIT'
+from os.path import dirname, abspath
+from debian import deb822
 
-from debexpo.lib.constants import DPKG_COMPRESSION_ALGO
+from debexpo.accounts.models import User
+from debexpo.tools.files import GPGSignedFile
+from debexpo.tools.debian.control import ControlFiles
 
 
-class Dsc:
+class ExceptionDsc(Exception):
+    pass
 
-    def _extract_name(self, item, suffix):
-        if item.get('name'):
-            for algo in DPKG_COMPRESSION_ALGO:
-                match = 'orig.tar.{}'.format(algo)
 
-                if suffix:
-                    match += '{}'.format(suffix)
+class Dsc(GPGSignedFile):
+    def __init__(self, filename):
+        super().__init__(abspath(filename))
 
-                if item.get('name').endswith(match):
-                    return True
+        self._data = deb822.Dsc(self.filename)
 
-        return False
+        if len(self._data) == 0:
+            raise ExceptionDsc('Dsc file {} could not be parsed'.format(
+                self.filename))
 
-    def __init__(self, dsc):
-        self.dsc = dsc
-        self.name = dsc['Source']
-        self.version = dsc['Version']
-        self.orig = self._get_dsc_item(self._extract_orig)
-        self.orig_asc = self._get_dsc_item(self._extract_orig_asc)
+        self._build_dsc()
 
-    def _get_dsc_item(self, comp_func):
-        if self.dsc and 'Checksums-Sha256' in self.dsc:
-            orig_match = list(item for item in self.dsc['Checksums-Sha256'] if
-                              comp_func(item))
-            if len(orig_match) > 0:
-                return orig_match[0]
+    def _build_dsc(self):
+        self.source = self._data.get('Source')
+        self.version = self._data.get('Version')
+        self.files = ControlFiles(dirname(self.filename), self._data)
 
-        return None
+    def authenticate(self):
+        super().authenticate()
+        self.uploader = User.objects.get(key=self.key)
 
-    def _extract_orig_asc(self, item):
-        return (self._extract_name(item, '.asc'))
-
-    def _extract_orig(self, item):
-        return (self._extract_name(item, None))
+    def validate(self):
+        # Per debian policy:
+        # https://www.debian.org/doc/debian-policy/ch-controlfields.html#debian-source-control-files-dsc
+        for key in [
+            'Format',
+            'Source',
+            'Version',
+            'Maintainer',
+            'Standards-Version',
+            'Checksums-Sha1',
+            'Checksums-Sha256',
+            'Files',
+        ]:
+            if key not in self._data:
+                raise ExceptionDsc('Dsc file invalid. Missing key '
+                                   '{}'.format(key))
