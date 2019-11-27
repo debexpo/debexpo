@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 #   changes.py — .changes file handling class
 #
 #   This file is part of debexpo -
@@ -7,6 +5,7 @@
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
+#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -33,137 +32,75 @@
 Holds *changes* file handling class.
 """
 
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
-__license__ = 'MIT'
-
 from debian import deb822
-from debexpo.lib.utils import parse_section
+from debian.changelog import Changelog
+from os.path import dirname, abspath, basename
 
-import os.path
+from debexpo.accounts.models import User
+from debexpo.tools.files import GPGSignedFile
+from debexpo.tools.debian.control import ControlFiles
 
 
-class Changes(object):
+class ExceptionChanges(Exception):
+    pass
+
+
+class Changes(GPGSignedFile):
     """
     Helper class to parse *changes* files nicely.
     """
 
-    def __init__(self, filename=None, string=None):
+    def __init__(self, filename):
         """
         Object constructor. The object allows the user to specify **either**:
 
         #. a path to a *changes* file to parse
-        #. a string with the *changes* file contents.
 
         ::
 
           a = Changes(filename='/tmp/packagename_version.changes')
-          b = Changes(string='Source: packagename\\nMaintainer: ...')
 
         ``filename``
             Path to *changes* file to parse.
-
-        ``string``
-            *changes* file in a string to parse.
         """
-        if (filename and string) or (not filename and not string):
-            raise TypeError
+        super().__init__(abspath(filename))
 
-        if filename:
-            self._data = deb822.Changes(file(filename))
-            self.basename = os.path.basename(filename)
-            if len(self._data) == 0:
-                raise Exception('Changes file {} could not be parsed'.format(
-                    self.basename))
-        else:
-            self._data = deb822.Changes(string)
-            if len(self._data) == 0:
-                raise Exception('Changes file could not be parsed.')
+        with open(self.filename, 'rb') as fd:
+            self._data = deb822.Changes(fd)
 
+        if len(self._data) == 0:
+            raise ExceptionChanges('Changes file {} could not be parsed'.format(
+                self.filename))
+
+        self._build_changes()
+
+    def owns(self, filename):
+        for item in self.files.files:
+            if filename == str(item):
+                return True
+
+        return False
+
+    def authenticate(self):
+        super().authenticate()
+        self.uploader = User.objects.get(key=self.key)
+
+    def _build_changes(self):
+        self.sources = self._data.get('Source')
+        self.version = self._data.get('Version')
+        self.changes = Changelog(self._data.get('Changes'))
+        self.files = ControlFiles(dirname(self.filename), self._data)
+        self.closes = self._data.get('Closes')
+
+    def validate(self):
         # Per debian policy:
         # https://www.debian.org/doc/debian-policy/ch-controlfields.html#debian-changes-files-changes
         for key in ['Architecture', 'Changes', 'Checksums-Sha1',
                     'Checksums-Sha256', 'Date', 'Distribution', 'Files',
                     'Format', 'Maintainer', 'Source', 'Version']:
             if key not in self._data:
-                raise Exception('Changes file invalid. Missing key '
-                                '{}'.format(key))
+                raise ExceptionChanges('Changes file invalid. Missing key '
+                                       '{}'.format(key))
 
-    def get_filename(self):
-        """
-        Returns the filename from which the changes file was generated from
-        """
-        return self.basename
-
-    def get_files(self):
-        """
-        Returns a list of files in the *changes* file.
-        """
-        return [z['name'] for z in self._data['Files']]
-
-    def __getitem__(self, key):
-        """
-        Returns the value of the rfc822 key specified.
-
-        ``key``
-            Key of data to request.
-        """
-        return self._data[key]
-
-    def __contains__(self, key):
-        """
-        Returns whether the specified RFC822 key exists.
-
-        ``key``
-            Key of data to check for existence.
-        """
-        return key in self._data
-
-    def get(self, key, default=None):
-        """
-        Returns the value of the rfc822 key specified, but defaults
-        to a specific value if not found in the rfc822 file.
-
-        ``key``
-            Key of data to request.
-
-        ``default``
-            Default return value if ``key`` does not exist.
-        """
-        return self._data.get(key, default)
-
-    def get_component(self):
-        """
-        Returns the component of the package.
-        """
-        return parse_section(self._data['Files'][0]['section'])[0]
-
-    def get_priority(self):
-        """
-        Returns the priority of the package.
-        """
-        return parse_section(self._data['Files'][0]['priority'])[1]
-
-    def get_dsc(self):
-        """
-        Returns the name of the .dsc file.
-        """
-        for item in self.get_files():
-            if item.endswith('.dsc'):
-                return item
-
-    def get_diff(self):
-        """
-        Returns the name of the .diff.gz file if there is one, otherwise None.
-        """
-        for item in self.get_files():
-            if item.endswith('.diff.gz') or item.endswith('.debian.tar.gz'):
-                return item
-
-        return None
-
-    def get_pool_path(self):
-        """
-        Returns the path the changes file would be
-        """
-        return self._data.get_pool_path()
+    def __str__(self):
+        return basename(self.filename)
