@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-#
-#   packages.py — Packages controller
+#   views.py — packages views
 #
 #   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
@@ -8,6 +6,7 @@
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #               2011 Arno Töll <debian@toell.net>
+#               2019 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -30,33 +29,28 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-"""
-Holds the PackagesController class.
-"""
-
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
-__license__ = 'MIT'
-
 import logging
 import datetime
 
-import apt_pkg
-from pylons.i18n import get_lang
+from django.conf import settings
+from django.shortcuts import render
+from django.urls import reverse
+from django.utils.translation import gettext as _, get_language
+from django.contrib.syndication.views import Feed
+from django.contrib.auth.decorators import login_required
 
-from debexpo.lib.base import BaseController, _, c, config, url, render, abort, \
-    response, session, request, redirect
-
-from webhelpers import feedgenerator
-
-from debexpo.model import meta
-from debexpo.model.package_versions import PackageVersion
-from debexpo.model.packages import Package
-from debexpo.model.users import User
-from debexpo.lib import constants
-from debexpo.model.user_countries import UserCountry
+from debexpo.packages.models import PackageUpload, Package, SourcePackage, \
+    BinaryPackage
 
 log = logging.getLogger(__name__)
+
+LIST_MODELS = [
+    'distribution',
+    'component',
+    'section',
+    'priority',
+    'architecture',
+]
 
 
 class PackageGroups(object):
@@ -65,214 +59,160 @@ class PackageGroups(object):
     """
     def __init__(self, label, deltamin, deltamax, packages):
         self.label = label
-        # log.debug("label: %s min: %s, max: %s", label, deltamin, deltamax)
         if (deltamin is not None and deltamax is not None):
-            self.packages = [x for x in packages if
-                             x.package_versions[-1].uploaded <= deltamin and
-                             x.package_versions[-1].uploaded > deltamax]
+            self.packages = [
+                x for x in packages if
+                x.packageupload_set.latest('uploaded').uploaded <= deltamin and
+                x.packageupload_set.latest('uploaded').uploaded > deltamax
+            ]
         elif (deltamin is None and deltamax is not None):
-            self.packages = [x for x in packages if
-                             x.package_versions[-1].uploaded > deltamax]
+            self.packages = [
+                x for x in packages if
+                x.packageupload_set.latest('uploaded').uploaded > deltamax
+            ]
         elif (deltamin is not None and deltamax is None):
-            self.packages = [x for x in packages if
-                             x.package_versions[-1].uploaded <= deltamin]
+            self.packages = [
+                x for x in packages if
+                x.packageupload_set.latest('uploaded').uploaded <= deltamin
+            ]
         else:
-            raise("deltaamin == None and deltamax == None")
+            # This is not supposed to happen, since not based on user input
+            raise("deltaamin == None and deltamax == None")  # pragma: no cover
 
 
-class PackagesController(BaseController):
-    def _get_packages(self, package_filter=None, package_version_filter=None):
-        """
-        Returns a list of packages that fit the filters.
+def _get_packages(key=None, value=None):
+    """
+    Returns a list of packages that fit the filters.
 
-        ``package_filter``
-            An SQLAlchemy filter on the package.
+    ``package_filter``
+        An SQLAlchemy filter on the package.
 
-        ``package_version_filter``
-            An SQLAlchemy filter on the package.
-        """
-        # I want to use apt_pkg.CompareVersions later, so init() needs to be
-        # called.
-        apt_pkg.init()
+    ``package_version_filter``
+        An SQLAlchemy filter on the package.
+    """
+    query = Package.objects
+    name = key
 
-        log.debug('Getting package list')
-        query = meta.session.query(Package)
+    # Use name lookup for 'list' models
+    if key in LIST_MODELS:
+        key = '{}__name'.format(key)
 
-        if package_filter is not None:
-            log.debug('Applying package list filter')
-            query = query.filter(package_filter)
+    # Use email lookup for uploader
+    if key == 'uploader':
+        key = 'uploader__email'
 
-        if package_version_filter is not None:
-            log.debug('Applying package version list filter')
-            query = query.filter(Package.id == PackageVersion.package_id)
-            query = query.filter(package_version_filter)
+    if name in [f.name for f in Package._meta.get_fields()]:
+        query = query.filter(**{key: value})
+    elif name in [f.name for f in PackageUpload._meta.get_fields()]:
+        query = query.filter(**{'packageupload__' + key: value})
+    elif name in [f.name for f in SourcePackage._meta.get_fields()]:
+        query = query.filter(**{'packageupload__sourcepackage__' + key: value})
+    elif name in [f.name for f in BinaryPackage._meta.get_fields()]:
+        query = query.filter(**{'packageupload__binarypackage__' + key: value})
+    elif name is not None:
+        query = Package.objects.none()
+        log.warning('Could not apply filter: {}'.format(key))
 
-        return query.all()
+    return set(query.all())
 
-    def _get_user(self, email):
-        return meta.session.query(User).filter_by(email=email).first()
 
-    def _get_timedeltas(self, packages):
-        deltas = []
-        now = datetime.datetime.now()
-        deltas.append(PackageGroups(_("Today"), None, now -
-                                    datetime.timedelta(days=1),
-                                    packages))
-        deltas.append(PackageGroups(_("Yesterday"), now -
-                                    datetime.timedelta(days=1),
-                                    now - datetime.timedelta(days=2),
-                                    packages))
-        deltas.append(PackageGroups(_("Some days ago"), now -
-                                    datetime.timedelta(days=2),
-                                    now - datetime.timedelta(days=7),
-                                    packages))
-        deltas.append(PackageGroups(_("Older packages"), now -
-                                    datetime.timedelta(days=7),
-                                    now - datetime.timedelta(days=30),
-                                    packages))
-        deltas.append(PackageGroups(_("Uploaded long ago"), now -
-                                    datetime.timedelta(days=30),
-                                    None, packages))
-        return deltas
+def _get_timedeltas(packages):
+    deltas = []
+    now = datetime.datetime.now(datetime.timezone.utc)
+    deltas.append(PackageGroups(_("Today"), None, now -
+                                datetime.timedelta(days=1),
+                                packages))
+    deltas.append(PackageGroups(_("Yesterday"), now -
+                                datetime.timedelta(days=1),
+                                now - datetime.timedelta(days=2),
+                                packages))
+    deltas.append(PackageGroups(_("Some days ago"), now -
+                                datetime.timedelta(days=2),
+                                now - datetime.timedelta(days=7),
+                                packages))
+    deltas.append(PackageGroups(_("Older packages"), now -
+                                datetime.timedelta(days=7),
+                                now - datetime.timedelta(days=30),
+                                packages))
+    deltas.append(PackageGroups(_("Uploaded long ago"), now -
+                                datetime.timedelta(days=30),
+                                None, packages))
+    return deltas
 
-    def index(self):
-        """
-        Entry point into the PackagesController.
-        """
-        log.debug('Main package listing requested')
 
-        # List of packages to show in the list.
-        packages = self._get_packages()
+def package(request, name):
+    from django.http import HttpResponse
+    return HttpResponse()
 
-        # Render the page.
-        c.config = config
-        c.packages = packages
-        c.feed_url = url('feed')
-        c.deltas = self._get_timedeltas(packages)
-        return render('/packages/index.mako')
 
-    def feed(self, filter=None, id=None):
-        feed = feedgenerator.Rss201rev2Feed(
-            title=_('%s packages' % config['debexpo.sitename']),
-            link=config['debexpo.server'] + url('packages'),
-            description=_('A feed of packages on %s' %
-                          config['debexpo.sitename']), language=get_lang()[0])
+def packages(request, key=None, value=None):
+    """
+    Entry point into the PackagesController.
+    """
+    # List of packages to show in the list.
+    packages = _get_packages(key, value)
+    feed = request.build_absolute_uri() + 'feed/'
 
-        if filter == 'section':
-            packages = self._get_packages(
-                package_version_filter=(PackageVersion.section == id))
+    if key:
+        title = _('Packages for {} {}').format(key, value)
+    else:
+        title = _('Package list')
 
-        elif filter == 'uploader':
-            user = self._get_user(id)
-            if user is not None:
-                packages = self._get_packages(
-                    package_filter=(Package.user_id == user.id))
-            else:
-                packages = []
+    # Render the page.
+    return render(request, 'packages.html', {
+        'settings': settings,
+        'packages': packages,
+        'deltas': _get_timedeltas(packages),
+        'package_title': title,
+        'feed_url': feed
+    })
 
-        elif filter == 'maintainer':
-            packages = self._get_packages(
-                package_version_filter=(PackageVersion.maintainer == id))
 
+class PackagesFeed(Feed):
+    title = _('%s packages' % settings.SITE_NAME)
+    description = _('A feed of packages on %s' % settings.SITE_NAME)
+    language = get_language()
+
+    def get_object(self, request, key=None, value=None, feed=None):
+        self.request = request
+        return _get_packages(key, value)
+
+    def link(self, packages):
+        return self.request.scheme + '://' + self.request.site.domain + \
+                reverse('packages')
+
+    def items(self, packages):
+        return packages
+
+    def item_title(self, item):
+        return '%s %s' % (
+            item.name, item.packageupload_set.latest('uploaded').version)
+
+    def item_link(self, item):
+        return self.request.scheme + '://' + self.request.site.domain + \
+                reverse('package', kwargs={'name': item.name})
+
+    def item_description(self, item):
+        desc = _('Package {} uploaded by {}.').format(
+            item.name,
+            item.packageupload_set.latest('uploaded').uploader.name)
+        desc += '<br/><br/>'
+
+        if item.needs_sponsor:
+            desc += _('Uploader is currently looking for a sponsor.')
         else:
-            packages = self._get_packages()
+            desc += _('Uploader is currently not looking for a sponsor.')
 
-        for item in packages:
-            desc = _('Package %s uploaded by %s.' % (item.name, item.user.name))
+        binary_package = item.packageupload_set.latest('uploaded') \
+            .binarypackage_set.filter(name=item.name)
 
-            desc += '<br/><br/>'
+        if binary_package:
+            desc += '<br/><br/>' + binary_package.get().description \
+                    .replace('\n', '<br/>')
 
-            if item.needs_sponsor == constants.PACKAGE_NEEDS_SPONSOR_YES:
-                desc += _('Uploader is currently looking for a sponsor.')
-            else:
-                desc += _('Uploader is currently not looking for a sponsor.')
+        return desc
 
-            desc += '<br/><br/>' + item.description.replace('\n', '<br/>')
 
-            feed.add_item(title='%s %s' % (
-                item.name, item.package_versions[-1].version),
-                link=config['debexpo.server'] + url('package',
-                                                    packagename=item.name),
-                description=desc, unique_id=str(item.package_versions[-1].id))
-
-        response.content_type = 'application/rss+xml'
-        response.content_type_params = {'charset': 'utf8'}
-        return feed.writeString('utf-8')
-
-    def section(self, id):
-        """
-        List of packages depending on section.
-        """
-        log.debug('Package listing on section = "%s" requested' % id)
-
-        packages = self._get_packages(
-            package_version_filter=(PackageVersion.section == id))
-
-        c.config = config
-        c.packages = packages
-        c.section = id
-        c.feed_url = url('packages_filter_feed', filter='section', id=id)
-        c.deltas = self._get_timedeltas(packages)
-        return render('/packages/section.mako')
-
-    def uploader(self, id):
-        """
-        List of packages depending on uploader.
-        """
-        log.debug('Package listing on user.email = "%s" requested' % id)
-
-        user = self._get_user(id)
-
-        if user is not None:
-            packages = self._get_packages(
-                package_filter=(Package.user_id == user.id))
-        else:
-            log.warning('Could not find user')
-            abort(404)
-
-        c.countries = {-1: ''}
-        for country in meta.session.query(UserCountry).all():
-            c.countries[country.id] = country.name
-        c.constants = constants
-        c.profile = user
-        c.config = config
-        c.feed_url = url('packages_filter_feed', filter='uploader', id=id)
-        c.deltas = self._get_timedeltas(packages)
-        return render('/packages/uploader.mako')
-
-    def my(self):
-        """
-        List of packages depending on current user logged in.
-        """
-        log.debug('Package listing on current user requested')
-
-        if 'user_id' not in session:
-            log.debug('Requires authentication')
-            session['path_before_login'] = request.path_info
-            session.save()
-            redirect(url('login'))
-
-        details = meta.session.query(User) \
-            .filter_by(id=session['user_id']) \
-            .first()
-        if not details:
-            redirect(url(controller='logout'))
-
-        return self.uploader(details.email)
-
-    def maintainer(self, id):
-        """
-        List of packages depending on the Maintainer email address.
-        """
-        log.debug('Package listing on package_version.maintainer = "%s" '
-                  'requested', id)
-
-        packages = self._get_packages(
-            package_version_filter=(PackageVersion.maintainer == id))
-
-        c.config = config
-        c.packages = packages
-        c.maintainer = id
-        c.feed_url = url('packages_filter_feed', filter='maintainer', id=id)
-        c.deltas = self._get_timedeltas(packages)
-        return render('/packages/maintainer.mako')
+@login_required
+def packages_my(request):
+    return packages(request, 'uploader', request.user.email)
