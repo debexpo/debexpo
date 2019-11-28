@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
-<%inherit file="/base.mako"/>
+{% extends "base.html" %}
 
-<h1>${ _('Package list') }</h1>
-
-<%include file="list.mako" />
+{% block content %}
+<h1>{{ package_title }}</h1>
+{% include "packages-list.html" %}
+{% endblock %}
