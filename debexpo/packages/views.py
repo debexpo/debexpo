@@ -33,7 +33,9 @@ import logging
 import datetime
 
 from django.conf import settings
-from django.shortcuts import render
+from django.http import HttpResponseForbidden, HttpResponseRedirect, \
+    HttpResponseNotAllowed
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils.translation import gettext as _, get_language
 from django.contrib.syndication.views import Feed
@@ -141,8 +143,48 @@ def _get_timedeltas(packages):
 
 
 def package(request, name):
-    from django.http import HttpResponse
-    return HttpResponse()
+    package = get_object_or_404(Package, name=name)
+
+    return render(request, 'package.html', {
+        'settings': settings,
+        'package': package,
+    })
+
+
+@login_required
+def delete_package(request, name):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+
+    package = get_object_or_404(Package, name=name)
+
+    if (request.user not in package.get_uploaders() and not
+            request.user.is_superuser):
+        return HttpResponseForbidden()
+
+    package.delete()
+    log.info('Package deleted: {}'.format(name))
+    # TODO: trigger repository update
+
+    return HttpResponseRedirect(reverse('packages_my'))
+
+
+@login_required
+def sponsor_package(request, name):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+
+    package = get_object_or_404(Package, name=name)
+
+    if request.user not in package.get_uploaders():
+        return HttpResponseForbidden()
+
+    package.needs_sponsor = not package.needs_sponsor
+    package.save()
+    log.info('Toogle needs sponsor for: {} ({})'.format(name,
+                                                        package.needs_sponsor))
+
+    return HttpResponseRedirect(reverse('package', args=[name]))
 
 
 def packages(request, key=None, value=None):
