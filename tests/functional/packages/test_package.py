@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-#
-#   test_package.py - Test the package controller
+#   test_package.py - Test the package views
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
@@ -28,30 +26,16 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-__author__ = 'Baptiste BEAUPLAT'
-__copyright__ = 'Copyright © 2019 Baptiste BEAUPLAT'
-__license__ = 'MIT'
-from debexpo.tests import TestController, url
-from debexpo.lib import constants
-from debexpo.model import meta
-from debexpo.model.users import User
-from debexpo.model.packages import Package
-from debexpo.model.package_comments import PackageComment
-from debexpo.model.package_versions import PackageVersion
-from debexpo.model.package_info import PackageInfo
-from debexpo.model.package_subscriptions import PackageSubscription
-from debexpo.controllers.package import PackageController
-from datetime import datetime
-from os import makedirs
-from os.path import join
-import pylons.test
-import md5
+# from django.core import mail
+from django.urls import reverse
+
+from tests import TestController
+from debexpo.accounts.models import User
+from debexpo.packages.models import Package, PackageUpload, BinaryPackage
 
 
 class TestPackageController(TestController):
-
     def setUp(self):
-        self._setup_models()
         self._setup_example_user()
         self._setup_example_package()
 
@@ -59,322 +43,250 @@ class TestPackageController(TestController):
         self._remove_example_package()
         self._remove_example_user()
 
+    def _test_bad_method(self, action):
+        self.client.post(reverse('login'), self._AUTHDATA)
+
+        response = self.client.get(reverse(
+            action, args=['testpackage']))
+        self.assertEquals(response.status_code, 405)
+
     def _test_no_auth(self, action, redirect_login=True):
-        user = meta.session.query(User).filter(
-            User.email == 'email@example.com').one()
-        response = self.app.get(url(
-            controller='package', action=action, packagename='testpackage',
-            key=user.get_upload_key()))
-        self.assertEquals(response.status_int, 302)
+        response = self.client.post(reverse(
+            action, args=['testpackage']))
+        self.assertEquals(response.status_code, 302)
         if (redirect_login):
-            self.assertTrue(response.location.endswith(url('login')))
+            self.assertTrue(reverse('profile'), response.url)
 
-    def _test_wrong_key(self, action):
-        self.app.post(url('login'), self._AUTHDATA)
-        response = self.app.get(url(
-            controller='package', action=action, packagename='testpackage',
-            key='wrong'), expect_errors=True)
-        self.assertEquals(response.status_int, 402)
+    def _test_not_owned_package(self, action, method='get'):
+        user = User.objects.create_user(name='Another user',
+                                        email='another@example.com',
+                                        password='password')
+        user.save()
 
-    def _test_not_owned_package(self, action):
-        user = User(name='Another user', email='another@example.com',
-                    password=md5.new('password').hexdigest(),
-                    lastlogin=datetime.now())
-        meta.session.add(user)
-        meta.session.commit()
-        self.app.post(url('login'), {'email': 'another@example.com',
-                                     'password': 'password',
-                                     'commit': 'submit'})
-        user = meta.session.query(User).filter(
-            User.email == 'another@example.com').one()
-        response = self.app.get(url(
-            controller='package', action=action, packagename='testpackage',
-            key=user.get_upload_key()), expect_errors=True)
-        self.assertEquals(response.status_int, 403)
-        meta.session.delete(user)
+        self.client.post(reverse('login'), {'username': 'another@example.com',
+                                            'password': 'password',
+                                            'commit': 'submit'})
+
+        response = self.client.post(reverse(action, args=['testpackage']))
+        self.assertEquals(response.status_code, 403)
+        user.delete()
 
     def test_index(self):
-        user = meta.session.query(User).filter(
-            User.email == 'email@example.com').one()
-        response = self.app.get(url(controller='package', action='index'))
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(
-            url(controller='packages', action='index', packagename=None)))
-        response = self.app.get(url(controller='package', action='index',
-                                    packagename='notapackage'))
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(
-            url(controller='packages', action='index', packagename=None)))
-        response = self.app.get(url(controller='package', action='index',
-                                    packagename='testpackage'))
-        self.assertEquals(response.status_int, 200)
-        self.assertEquals(len(response.lxml.xpath(
-            '//a[@href="%s"]' % url(controller='packages',
-                                    action='uploader',
-                                    id='email@example.com'))), 1)
-        response = self.app.post(url('login'), self._AUTHDATA)
-        response = self.app.get(url(controller='package', action='index',
-                                    packagename='testpackage'))
-        self.assertEquals(response.status_int, 200)
-        self.assertEquals(len(response.lxml.xpath(
-            '//a[@href="%s"]' % url(
-                controller='package', action='delete',
-                packagename='testpackage',
-                key=user.get_upload_key()))), 1)
-        self.assertEquals(len(response.lxml.xpath(
-            '//form[@action="%s"]' % url(
-                controller='package', action='comment',
-                packagename='testpackage'))), 1)
+        # No package redirects to package list
+        response = self.client.get(reverse('package_index'))
+        self.assertEquals(response.status_code, 301)
+        self.assertTrue(reverse('packages'), response.url)
 
-    def test_subscribe(self):
-        response = self.app.get(url(controller='package', action='subscribe',
-                                    packagename='testpackage'))
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('login')))
-        self.assertEquals(response.session['path_before_login'], url(
-            controller='package', action='subscribe',
-            packagename='testpackage'))
-        self.app.post(url('login'), self._AUTHDATA)
-        response = self.app.get(url(controller='package', action='subscribe',
-                                    packagename='testpackage'))
-        self.assertEquals(response.status_int, 200)
-        subscribeforms = response.lxml.xpath(
-            '//form[@action="%s" and @method="post"]' % url(
-                controller='package', action='subscribe',
-                packagename='testpackage'))
-        self.assertEquals(len(subscribeforms), 1)
-        options = subscribeforms[0].xpath('*/select[@name="level"]/option')
-        self.assertEquals(len(options), 3)
-        for option in options:
-            self.assertTrue(option.attrib['value'] in [
-                str(item) for item in (
-                    -1, constants.SUBSCRIPTION_LEVEL_UPLOADS,
-                    constants.SUBSCRIPTION_LEVEL_COMMENTS)])
-        response = self.app.post(url(controller='package', action='subscribe',
-                                     packagename='testpackage'))
-        self.assertEquals(response.status_int, 200)
-        self.assertEquals(
-            len(response.lxml.xpath(
-                '//span[@class="error-message"]')), 2)
-        response = self.app.post(url(controller='package',
-                                     action='subscribe',
-                                     packagename='testpackage'),
-                                 {'level': constants.SUBSCRIPTION_LEVEL_UPLOADS,
-                                  'commit': 'submit'})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(
-            url('package', packagename='testpackage')))
-        subs = meta.session.query(PackageSubscription).filter_by(
-            package='testpackage').filter_by(
-            user_id=response.session['user_id']).one()
-        self.assertEquals(subs.level, constants.SUBSCRIPTION_LEVEL_UPLOADS)
-        response = self.app.get(url(controller='package', action='subscribe',
-                                    packagename='testpackage'))
-        self.assertEquals(
-            len(response.lxml.xpath(
-                '//option[@value="%d" and @selected="selected"]' %
-                constants.SUBSCRIPTION_LEVEL_UPLOADS)), 1)
-        response = self.app.post(
-                url(controller='package',
-                    action='subscribe',
-                    packagename='testpackage'),
-                {'level': constants.SUBSCRIPTION_LEVEL_COMMENTS,
-                 'commit': 'submit'})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(
-            url('package', packagename='testpackage')))
-        subs = meta.session.query(PackageSubscription).filter_by(
-            package='testpackage').filter_by(
-            user_id=response.session['user_id']).one()
-        self.assertEquals(subs.level, constants.SUBSCRIPTION_LEVEL_COMMENTS)
-        response = self.app.post(url(controller='package', action='subscribe',
-                                     packagename='testpackage'),
-                                 {'level': -1,
-                                  'commit': 'submit'})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(
-            url('package', packagename='testpackage')))
-        subs = meta.session.query(PackageSubscription).filter_by(
-            package='testpackage').filter_by(
-            user_id=response.session['user_id']).first()
-        self.assertEquals(subs, None)
+        # Wrong package produce 404
+        response = self.client.get(reverse('package', args=['notapackage']))
+        self.assertEquals(response.status_code, 404)
 
-    def test_get_package_from_crontab_wrong_package(self):
-        pkg_controller = PackageController()
-        package = pkg_controller._get_package('nonexistant',
-                                              from_controller=False)
-        self.assertEquals(package, None)
+        # Write package show details
+        # Unauthenticated
+        response = self.client.get(reverse('package', args=['testpackage']))
+        self.assertEquals(response.status_code, 200)
 
-    def test_get_package_from_crontab(self):
-        pkg_controller = PackageController()
-        package = pkg_controller._get_package('testpackage',
-                                              from_controller=False)
-        self.assertEquals(package.name, 'testpackage')
+        self.assertIn(reverse('packages_search',
+                              args=['uploader', 'email@example.com']),
+                      str(response.content))
+
+        # And authenticated
+        response = self.client.post(reverse('login'), self._AUTHDATA)
+        response = self.client.get(reverse('package', args=['testpackage']))
+        self.assertEquals(response.status_code, 200)
+
+        self.assertIn(reverse('delete_package',
+                              args=['testpackage']),
+                      str(response.content))
+#        self.assertIn(reverse('comment_upload',
+#                              args=['testpackage']),
+#                      str(response.content))
+
+        # Without description
+        package = Package.objects.get(name='testpackage')
+        upload = PackageUpload.objects.get(package=package)
+        binary = BinaryPackage.objects.get(upload=upload)
+        binary.delete()
+
+        response = self.client.get(reverse('package', args=['testpackage']))
+        self.assertEquals(response.status_code, 200)
+
+        self.assertNotIn('A short description here',
+                         str(response.content))
+
+#    def test_subscribe(self):
+#        # Not authenticated
+#        response = self.client.get(reverse('subscribe_package',
+#                                           args=['testpackage']))
+#        self.assertEquals(response.status_code, 302)
+#        self.assertTrue(reverse('profile'), response.url)
+#
+#        # Authenticated
+#        # Get subscription page
+#        self.client.post(reverse('login'), self._AUTHDATA)
+#        response = self.client.get(reverse('subscribe_package',
+#                                           args=['testpackage']))
+#
+#        self.assertEquals(response.status_code, 200)
+#        self.assertIn('No subscription', str(response.content))
+#
+#        # Post without the form
+#        response = self.client.post(reverse('subscribe_package',
+#                                            args=['testpackage']))
+#
+#        self.assertEquals(response.status_code, 200)
+#        self.assertIn('errorlist', str(response.content))
+#
+#        # Post to update subscription
+#        response = self.client.post(reverse('subscribe_package',
+#                                            args=['testpackage']), {
+#            'level': constants.SUBSCRIPTION_LEVEL_UPLOADS,
+#            'commit': 'submit'
+#        })
+#
+#        self.assertEquals(response.status_code, 302)
+#        self.assertTrue(reverse('package', args=['testpackage']), response.url)
+#        subs = PackageSubscription.objects.filter(package='testpackage') \
+#            .filter(user=request.user).get()
+#        self.assertEquals(subs.level, constants.SUBSCRIPTION_LEVEL_UPLOADS)
+#
+#        # Get page to check subscription update
+#        response = self.client.get(reverse('subscribe_package',
+#                                           args=['testpackage']))
+#        self.assertIn('No subscription', str(response.content))
+#        self.assertEquals(
+#            'selected>{}'.format(constants.SUBSCRIPTION_LEVEL_UPLOADS),
+#            str(response.content)
+#        )
 
     def test_delete_no_auth(self):
-        self._test_no_auth('delete')
+        self._test_no_auth('delete_package')
 
     def test_delete_not_owned_package(self):
-        self._test_not_owned_package('delete')
+        self._test_not_owned_package('delete_package')
 
-    def test_delete_wrong_key(self):
-        self._test_wrong_key('delete')
+    def test_delete_bad_method(self):
+        self._test_bad_method('delete_package')
 
-    def test_delete_gitstorage_utf8(self):
-        gitdir = join(pylons.test.pylonsapp.config['debexpo.repository'],
-                      'git', 'testpackage', 'source')
-
-        makedirs(gitdir)
-        with open(join(gitdir, 'Bodø'), 'w'):
-            pass
-
-        self.test_delete_successful()
+#    def test_delete_gitstorage_utf8(self):
+#        gitdir = join(pylons.test.pylonsapp.config['debexpo.repository'],
+#                      'git', 'testpackage', 'source')
+#
+#        makedirs(gitdir)
+#        with open(join(gitdir, 'Bodø'), 'w'):
+#            pass
+#
+#        self.test_delete_successful()
 
     def test_delete_successful(self):
-        self.app.post(url('login'), self._AUTHDATA)
-        user = meta.session.query(User).filter(
-            User.email == 'email@example.com').one()
-        response = self.app.get(url(
-            controller='package', action='delete', packagename='testpackage',
-            key=user.get_upload_key()))
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(
-            url(controller='packages', action='my')))
-        package = meta.session.query(Package).filter(
-            Package.name == 'testpackage').first()
-        self.assertEquals(package, None)
+        self.client.post(reverse('login'), self._AUTHDATA)
 
-    def test_comment_show(self):
-        response = self.app.get(
-            url(controller='package', action='comment',
-                packagename='testpackage'))
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(
-            url(controller='package', action='index',
-                packagename='testpackage')))
+        response = self.client.post(reverse(
+            'delete_package', args=['testpackage']))
 
-    def test_comment_no_auth(self):
-        response = self.app.post(
-            url(controller='package', action='comment',
-                packagename='testpackage'),
-            {'package_version': 1,
-             'text': 'This is a test comment',
-             'outcome': constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED,
-             'commit': 'submit'})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(url('login')))
+        self.assertEquals(response.status_code, 302)
+        self.assertTrue(reverse('packages_my'), response.url)
+        self.assertRaises(Package.DoesNotExist, Package.objects.get,
+                          name='testpackage')
 
-    def test_comment(self):
-        self.app.post(url('login'), self._AUTHDATA)
-        response = self.app.post(
-            url(controller='package', action='comment',
-                packagename='testpackage'),
-            {'package_version': 1,
-             'text': 'This is a test comment',
-             'outcome': constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED,
-             'commit': 'submit'})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(
-            url(controller='package', action='index',
-                packagename='testpackage')))
-        comment = meta.session.query(PackageComment).filter_by(
-            package_version_id=1).one()
-        self.assertEquals(comment.text, 'This is a test comment')
-        self.assertEquals(comment.status,
-                          constants.PACKAGE_COMMENT_STATUS_NOT_UPLOADED)
-        meta.session.delete(comment)
+#    def test_comment_no_auth(self):
+#        self._test_no_auth('comment_upload')
+#
+#    def test_comment_bad_method(self):
+#        self._test_bad_method('comment_package')
+#
+#    def test_comment(self):
+#        self.client.post(reverse('login'), self._AUTHDATA)
+#
+#        response = self.app.post(reverse('comment_upload',
+#                                         args=['testpackage', 1]), {
+#            'text': 'This is a test comment',
+#            'outcome': constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED,
+#            'commit': 'submit_comment'
+#        })
+#
+#        self.assertEquals(response.status_code, 302)
+#        self.assertTrue(reverse('package', args=['testpackage']), response.url)
+#
+#        upload = PackageUpload.objects.filter(package__name='testpackage') \
+#                .earliest('uploaded')
+#        comment = PackageComment.objects.first(upload=upload)
+#
+#        self.assertEquals(comment.text, 'This is a test comment')
+#        self.assertEquals(comment.status,
+#                          constants.PACKAGE_COMMENT_STATUS_NOT_UPLOADED)
+#
+#        comment.delete()
 
-    def test_comment_with_subscriber(self):
-        # test with a subscriber
-        pylons.test.pylonsapp.config['debexpo.testsmtp'] = '/tmp/debexpo.msg'
-        self.app.post(url('login'), self._AUTHDATA)
-        user = meta.session.query(User).filter(
-            User.email == 'email@example.com').one()
-        packsub = PackageSubscription(
-            package='testpackage',
-            level=constants.SUBSCRIPTION_LEVEL_COMMENTS)
-        packsub.user = user
-        meta.session.add(packsub)
-        meta.session.commit()
-        response = self.app.post(
-            url(controller='package', action='comment',
-                packagename='testpackage'),
-            {'package_version': 1,
-             'text': 'This is a test comment',
-             'outcome': constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED,
-             'commit': 'submit',
-             'status': 'checked'})
-        self.assertEquals(response.status_int, 302)
-        self.assertTrue(response.location.endswith(
-            url(controller='package', action='index',
-                packagename='testpackage')))
-        comment = meta.session.query(PackageComment).filter_by(
-            package_version_id=1).one()
-        self.assertEquals(comment.text, 'This is a test comment')
-        self.assertEquals(comment.status,
-                          constants.PACKAGE_COMMENT_STATUS_UPLOADED)
-        meta.session.delete(packsub)
-        meta.session.commit()
+#    def test_comment_with_subscriber(self):
+#        # test with a subscriber
+#        self.client.post(reverse('login'), self._AUTHDATA)
+#
+#        user = User.objects.get(email='email@example.com')
+#        packsub = PackageSubscription(
+#            package='testpackage',
+#            level=constants.SUBSCRIPTION_LEVEL_COMMENTS
+#        )
+#        packsub.user = user
+#        packsub.save()
+#
+#        self.test_comment()
+#
+#        self.assertEqual(len(mail.outbox), 1)
+#        self.assertIn('This is a test comment', mail.outbox[0].body)
 
     def test_sponsor_no_auth(self):
-        self._test_no_auth('sponsor')
-
-    def test_sponsor_wrong_key(self):
-        self._test_wrong_key('sponsor')
+        self._test_no_auth('sponsor_package')
 
     def test_sponsor_not_owned_package(self):
-        self._test_not_owned_package('sponsor')
+        self._test_not_owned_package('sponsor_package')
+
+    def test_sponsor_bad_method(self):
+        self._test_bad_method('sponsor_package')
 
     def test_sponsor_toggle(self, toggle=True):
-        self.app.post(url('login'), self._AUTHDATA)
-        user = meta.session.query(User).filter(
-            User.email == 'email@example.com').one()
-        response = self.app.get(url(
-            controller='package', action='sponsor', packagename='testpackage',
-            key=user.get_upload_key()))
-        self.assertEquals(response.status_int, 302)
-        package = meta.session.query(Package).filter(
-            Package.name == 'testpackage').first()
+        self.client.post(reverse('login'), self._AUTHDATA)
+
+        response = self.client.post(reverse(
+            'sponsor_package', args=['testpackage']))
+
+        self.assertEquals(response.status_code, 302)
+
+        package = Package.objects.get(name='testpackage')
+
         if (toggle):
-            self.assertFalse(package.needs_sponsor)
+            self.assertTrue(package.needs_sponsor)
             self.test_sponsor_toggle(toggle=False)
         else:
-            self.assertTrue(package.needs_sponsor)
+            self.assertFalse(package.needs_sponsor)
 
-    def test_package_info_rich_data(self):
-        package = meta.session.query(Package).filter(
-            Package.name == 'testpackage').first()
-        package_version = meta.session.query(PackageVersion).filter(
-            PackageVersion.package == package).first()
-        textmark = 'some lintian output'
-        package_info_data = PackageInfo(
-            package_version_id=package_version.id,
-            from_plugin='LintianPlugin',
-            outcome='Package is lintian clean',
-            rich_data=textmark,
-            severity=constants.PLUGIN_SEVERITY_INFO)
-        meta.session.add(package_info_data)
-        meta.session.commit()
-        response = self.app.get(url(controller='package', action='index',
-                                    packagename='testpackage'))
-        self.assertEquals(response.status_int, 200)
-        self.assertTrue(textmark in response)
+#    def test_package_info(self, data=False):
+#        package = Package.objects.get(name='testpackage')
+#        upload = PackageUpload.objects.filter(package__name='testpackage') \
+#            .latest('uploaded')
+#        textmark = 'some lintian output'
+#
+#        if data:
+#            package_info_data = PackageInfo(
+#                package_version_id=package_version.id,
+#                from_plugin='LintianPlugin',
+#                outcome='Package is lintian clean',
+#                data=textmark,
+#                severity=constants.PLUGIN_SEVERITY_INFO)
+#        else:
+#            package_info_data = PackageInfo(
+#                package_version_id=package_version.id,
+#                from_plugin='LintianPlugin',
+#                outcome='Package is lintian clean',
+#                rich_data=textmark,
+#                severity=constants.PLUGIN_SEVERITY_INFO)
+#
+#        package_info_data.save()
+#
+#        response = self.client.get(reverse('package', args=['testpackage']))
+#
+#        self.assertEquals(response.status_code, 200)
+#        self.assertTrue(textmark in response)
 
-    def test_package_info_data(self):
-        package = meta.session.query(Package).filter(
-            Package.name == 'testpackage').first()
-        package_version = meta.session.query(PackageVersion).filter(
-            PackageVersion.package == package).first()
-        textmark = 'some lintian output'
-        package_info_data = PackageInfo(
-            package_version_id=package_version.id,
-            from_plugin='LintianPlugin',
-            outcome='Package is lintian clean',
-            data=textmark,
-            severity=constants.PLUGIN_SEVERITY_INFO)
-        meta.session.add(package_info_data)
-        meta.session.commit()
-        response = self.app.get(url(controller='package', action='index',
-                                    packagename='testpackage'))
-        self.assertEquals(response.status_int, 200)
-        self.assertTrue(textmark in response)
+#    def test_package_info_data(self):
+#        self.test_package_info(data=True)
