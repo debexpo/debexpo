@@ -2,7 +2,6 @@
 {% spaceless %}
 {% load static i18n %}
 {% url 'index' as url_index %}
-{% url 'feed' as url_feed %}
 {% url 'qa' as url_qa %}
 {% url 'contact' as url_contact %}
 {% url 'reviewers' as url_intro_review %}
@@ -25,11 +24,9 @@
         <script src="{% static 'js/debexpo.js' %}" type="text/javascript">
         </script>
         <title>{{ settings.SITE_NAME }}</title>
-{% if url_feed %}
-
-    <link rel="alternate" href="{{ url_feed }}" title="RSS Feed"
+{% if feed_url %}
+    <link rel="alternate" href="{{ feed_url }}" title="RSS Feed"
           type="application/rss+xml" />
-
 {% endif %}
 
     </head>
@@ -148,8 +145,8 @@
                     {% trans 'Logout' %}
                 </a>
                 {% endif %}
-                {% if url_feed %}
-                <a class="rss_logo" href="{{ url_feed }}">
+                {% if feed_url %}
+                <a class="rss_logo" href="{{ feed_url }}">
                     {% trans 'RSS' %}
                 </a>
                 {% endif %}
