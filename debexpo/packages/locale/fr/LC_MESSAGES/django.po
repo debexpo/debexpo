@@ -1,0 +1,249 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-12-09 12:59+0100\n"
+"PO-Revision-Date: 2019-12-09 13:11+0100\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.2.4\n"
+
+#: packages/models.py:45
+msgid "QA plugins succeeded"
+msgstr "Les plugins QA ont réussi"
+
+#: packages/models.py:46
+msgid "QA plugins failed"
+msgstr "Les plugins QA ont échoué"
+
+#: packages/models.py:55 packages/models.py:62 packages/models.py:70
+#: packages/models.py:77 packages/models.py:84 packages/models.py:91
+#: packages/models.py:99 packages/models.py:207
+msgid "Name"
+msgstr "Nom"
+
+#: packages/models.py:101 packages/templates/packages-list.html:13
+msgid "Needs a sponsor?"
+msgstr "A besoin d'un parrain ?"
+
+#: packages/models.py:102
+msgid "In Debian?"
+msgstr "Dans Debian ?"
+
+#: packages/models.py:164 packages/templates/packages-list.html:11
+msgid "Version"
+msgstr "Version"
+
+#: packages/models.py:167
+msgid "Changes"
+msgstr "Changements"
+
+#: packages/models.py:168
+msgid "Closes bugs"
+msgstr "Ferme les bugs"
+
+#: packages/models.py:171
+msgid "Upload date"
+msgstr "Date d'envoi"
+
+#: packages/models.py:174
+msgid "QA status"
+msgstr "Statut QA"
+
+#: packages/models.py:193
+msgid "Maintainer"
+msgstr "Mainteneur"
+
+#: packages/models.py:198 packages/models.py:214
+msgid "Homepage"
+msgstr "Page d'accueil"
+
+#: packages/models.py:199
+msgid "VCS"
+msgstr "VCS"
+
+#: packages/models.py:208 packages/templates/packages-list.html:10
+msgid "Description"
+msgstr "Description"
+
+#: packages/templates/package.html:4
+#, python-format
+msgid "<h1>Details about package %(name)s</h1>"
+msgstr "<h1>Détails du paquet %(name)s</h1>"
+
+#: packages/templates/package.html:10
+msgid "Name:"
+msgstr "Nom :"
+
+#: packages/templates/package.html:20
+msgid "Uploader:"
+msgstr "Envoyeur :"
+
+#: packages/templates/package.html:35
+msgid "Description:"
+msgstr "Description :"
+
+#: packages/templates/package.html:51
+msgid "Needs a sponsor:"
+msgstr "A besoin d'un parrain :"
+
+#: packages/templates/package.html:54 packages/templates/packages-list.html:30
+msgid "Yes"
+msgstr "Oui"
+
+#: packages/templates/package.html:56 packages/templates/packages-list.html:32
+msgid "No"
+msgstr "Non"
+
+#: packages/templates/package.html:63
+msgid "Change"
+msgstr "Changer"
+
+#: packages/templates/package.html:71
+msgid "Delete package:"
+msgstr "Supprimer le paquet :"
+
+#: packages/templates/package.html:78
+msgid "Admin package deletion"
+msgstr "Suppression du paquet administrateur"
+
+#: packages/templates/package.html:82
+msgid "Delete this package"
+msgstr "Supprimer ce paquet"
+
+#: packages/templates/package.html:91
+msgid "Package uploads"
+msgstr "Envois du paquet"
+
+#: packages/templates/package.html:95
+#, python-format
+msgid "<h2>Upload #%(index)s<h2>"
+msgstr "<h2>Envoi #%(index)s<h2>"
+
+#: packages/templates/package.html:99
+msgid "Information"
+msgstr "Informations"
+
+#: packages/templates/package.html:103
+msgid "Version:"
+msgstr "Version :"
+
+#: packages/templates/package.html:116
+msgid "Uploaded:"
+msgstr "Envoi :"
+
+#: packages/templates/package.html:122
+msgid "Source package:"
+msgstr "Paquet source :"
+
+#: packages/templates/package.html:130
+msgid "Distribution:"
+msgstr "Distribution :"
+
+#: packages/templates/package.html:135
+msgid "Section:"
+msgstr "Section :"
+
+#: packages/templates/package.html:140
+msgid "Priority:"
+msgstr "Priorité :"
+
+#: packages/templates/package.html:147
+msgid "Closes bugs:"
+msgstr "Ferme les bugs :"
+
+#: packages/templates/package.html:158
+msgid "QA information"
+msgstr "Informations QA :"
+
+#: packages/templates/package.html:171
+msgid "Comments"
+msgstr "Commentaires"
+
+#: packages/templates/package.html:180
+msgid "Needs work"
+msgstr "Nécessite des corrections"
+
+#: packages/templates/package.html:182
+msgid "Perfect"
+msgstr "Parfait"
+
+#: packages/templates/package.html:186
+msgid "Package has been uploaded to Debian"
+msgstr "Le paquet a été envoyé dans Debian"
+
+#: packages/templates/package.html:193
+msgid "No comments"
+msgstr "Pas de commentaires"
+
+#: packages/templates/packages-list.html:9
+msgid "Package"
+msgstr "Paquet"
+
+#: packages/templates/packages-list.html:12
+msgid "Uploader"
+msgstr "Envoyeur"
+
+#: packages/templates/packages-list.html:41
+msgid "No packages"
+msgstr "Pas de paquets"
+
+#: packages/views.py:124
+msgid "Today"
+msgstr "Aujourd'hui"
+
+#: packages/views.py:127
+msgid "Yesterday"
+msgstr "Hier"
+
+#: packages/views.py:131
+msgid "Some days ago"
+msgstr "Il y a quelques jours"
+
+#: packages/views.py:135
+msgid "Older packages"
+msgstr "Paquets plus vieux"
+
+#: packages/views.py:139
+msgid "Uploaded long ago"
+msgstr "Envoyé il y a longtemps"
+
+#: packages/views.py:198
+msgid "Packages for {} {}"
+msgstr "Paquets pour {} {}"
+
+#: packages/views.py:200
+msgid "Package list"
+msgstr "Liste des paquets"
+
+#: packages/views.py:212
+#, python-format
+msgid "%s packages"
+msgstr "%s paquets"
+
+#: packages/views.py:213
+#, python-format
+msgid "A feed of packages on %s"
+msgstr "Un flux de paquets sur %s"
+
+#: packages/views.py:236
+msgid "Package {} uploaded by {}."
+msgstr "Paquet {} envoyé par {}."
+
+#: packages/views.py:242
+msgid "Uploader is currently looking for a sponsor."
+msgstr "L'envoyeur est présentement en recherche de parrain."
+
+#: packages/views.py:244
+msgid "Uploader is currently not looking for a sponsor."
+msgstr "L'envoyeur n'est pas présentement en recherche de parrain."
