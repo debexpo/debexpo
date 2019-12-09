@@ -30,9 +30,13 @@ import logging
 
 from subprocess import check_output, CalledProcessError
 from os.path import dirname, abspath
+from datetime import datetime, timedelta, timezone
 
 from django.shortcuts import render
 from django.conf import settings
+
+from debexpo.packages.models import Package
+from debexpo.packages.views import _get_timedeltas
 
 log = logging.getLogger(__name__)
 
@@ -66,9 +70,15 @@ def get_debexpo_version():
 
 def index(request):
     settings.VERSION = get_debexpo_version()
+    max_time = datetime.now(timezone.utc) - timedelta(days=30)
+    packages = set(Package.objects
+                   .filter(packageupload__uploaded__gte=max_time)
+                   .filter(needs_sponsor=True))
 
     return render(request, 'index.html', {
-        'settings': settings
+        'settings': settings,
+        'packages': packages,
+        'deltas': _get_timedeltas(packages),
     })
 
 
