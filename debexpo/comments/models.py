@@ -26,6 +26,69 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from django.db import models
+from enum import Enum
 
-# Create your models here.
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+from debexpo.accounts.models import User
+from debexpo.packages.models import PackageUpload, Package
+
+
+class UploadOutcome(int, Enum):
+    def __new__(cls, value, label):
+        obj = int.__new__(cls, value)
+        obj._value_ = value
+        obj.label = label
+        obj.tuple = (value, label)
+        return obj
+
+    unreviewed = (1, _('Not reviewed'))
+    needs_work = (2, _('Needs work'))
+    ready = (3, _('Ready'))
+
+    @classmethod
+    def as_tuple(cls):
+        return (cls.unreviewed.tuple,
+                cls.needs_work.tuple,
+                cls.ready.tuple,)
+
+
+class PackageSubscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    package = models.CharField(max_length=100, verbose_name=_('Name'))
+
+    on_upload = models.BooleanField(verbose_name=_('Subscribe to uploads'))
+    on_comment = models.BooleanField(verbose_name=_('Subscribe to comments'))
+
+    class Meta:
+        unique_together = ('user', 'package',)
+
+    def get_subscriptions(self):
+        subscriptions = []
+
+        for event in ('upload', 'comment'):
+            if getattr(self, f'on_{event}'):
+                subscriptions.append(event)
+
+        return subscriptions
+
+    def can_delete(self):
+        return not bool(self.get_subscriptions())
+
+    def package_exists(self):
+        return Package.objects.filter(name=self.package).exists()
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    upload = models.ForeignKey(PackageUpload, on_delete=models.CASCADE)
+
+    text = models.TextField(verbose_name=_('Comment'))
+    date = models.DateTimeField(verbose_name=_('Comment date'),
+                                auto_now_add=True)
+
+    outcome = models.PositiveSmallIntegerField(
+        verbose_name=_('Upload outcome'), choices=UploadOutcome.as_tuple()
+    )
+    uploaded = models.BooleanField(verbose_name=_('Uploaded to debian'))
