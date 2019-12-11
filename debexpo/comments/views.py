@@ -26,6 +26,83 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from django.shortcuts import render
+from logging import getLogger
 
-# Create your views here.
+from django.conf import settings
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect, HttpResponseNotAllowed
+from django.urls import reverse
+
+from .forms import SubscriptionForm
+from .models import PackageSubscription
+
+log = getLogger(__name__)
+
+
+@login_required
+def subscriptions(request):
+    if request.method == 'POST':
+        return HttpResponseRedirect(reverse('subscribe_package',
+                                    args=[request.POST.get('package')]))
+
+    return render(request, 'subscriptions.html', {
+        'settings': settings,
+        'subscriptions': PackageSubscription.objects.filter(user=request.user)
+        .all()
+    })
+
+
+@login_required
+def unsubscribe(request, name):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+
+    sub = get_object_or_404(PackageSubscription, user=request.user,
+                            package=name)
+    sub.delete()
+
+    return HttpResponseRedirect(reverse('subscriptions'))
+
+
+@login_required
+def subscribe(request, name):
+    sub = PackageSubscription.objects.filter(user=request.user,
+                                             package=name)
+    instance = None
+
+    if sub.exists():
+        instance = sub.get()
+
+    if request.method == 'POST':
+        form = SubscriptionForm(request.POST, instance=instance)
+        package = request.POST.get('next')
+
+        if form.is_valid():
+            subscription = form.save(commit=False)
+            subscription.user = request.user
+            subscription.package = name
+            subscription.save()
+
+            if subscription.can_delete():
+                log.info(f'Unsubscribe {request.user.email} for package {name}')
+                subscription.delete()
+            else:
+                log.info(f'Updating subscription for {request.user.email} on '
+                         f'{name}: '
+                         f'{", ".join(subscription.get_subscriptions())}')
+
+            if package:
+                return HttpResponseRedirect(reverse('package', args=[package]))
+            else:
+                return HttpResponseRedirect(reverse('subscriptions'))
+    else:
+        form = SubscriptionForm(instance=instance)
+        package = request.GET.get('next')
+
+    return render(request, 'subscribe.html', {
+        'settings': settings,
+        'package': name,
+        'next': package,
+        'form': form,
+    })
