@@ -26,12 +26,13 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-# from django.core import mail
+from django.core import mail
 from django.urls import reverse
 
 from tests import TestController
 from debexpo.accounts.models import User
 from debexpo.packages.models import Package, PackageUpload, BinaryPackage
+from debexpo.comments.models import PackageSubscription, UploadOutcome, Comment
 
 
 class TestPackageController(TestController):
@@ -55,7 +56,7 @@ class TestPackageController(TestController):
             action, args=['testpackage']))
         self.assertEquals(response.status_code, 302)
         if (redirect_login):
-            self.assertTrue(reverse('profile'), response.url)
+            self.assertIn(reverse('login'), response.url)
 
     def _test_not_owned_package(self, action, method='get'):
         user = User.objects.create_user(name='Another user',
@@ -75,7 +76,7 @@ class TestPackageController(TestController):
         # No package redirects to package list
         response = self.client.get(reverse('package_index'))
         self.assertEquals(response.status_code, 301)
-        self.assertTrue(reverse('packages'), response.url)
+        self.assertEquals(reverse('packages'), response.url)
 
         # Wrong package produce 404
         response = self.client.get(reverse('package', args=['notapackage']))
@@ -98,9 +99,9 @@ class TestPackageController(TestController):
         self.assertIn(reverse('delete_package',
                               args=['testpackage']),
                       str(response.content))
-#        self.assertIn(reverse('comment_upload',
-#                              args=['testpackage']),
-#                      str(response.content))
+        self.assertIn(reverse('comment_package',
+                              args=['testpackage']),
+                      str(response.content))
 
         # Without description
         package = Package.objects.get(name='testpackage')
@@ -114,50 +115,45 @@ class TestPackageController(TestController):
         self.assertNotIn('A short description here',
                          str(response.content))
 
-#    def test_subscribe(self):
-#        # Not authenticated
-#        response = self.client.get(reverse('subscribe_package',
-#                                           args=['testpackage']))
-#        self.assertEquals(response.status_code, 302)
-#        self.assertTrue(reverse('profile'), response.url)
-#
-#        # Authenticated
-#        # Get subscription page
-#        self.client.post(reverse('login'), self._AUTHDATA)
-#        response = self.client.get(reverse('subscribe_package',
-#                                           args=['testpackage']))
-#
-#        self.assertEquals(response.status_code, 200)
-#        self.assertIn('No subscription', str(response.content))
-#
-#        # Post without the form
-#        response = self.client.post(reverse('subscribe_package',
-#                                            args=['testpackage']))
-#
-#        self.assertEquals(response.status_code, 200)
-#        self.assertIn('errorlist', str(response.content))
-#
-#        # Post to update subscription
-#        response = self.client.post(reverse('subscribe_package',
-#                                            args=['testpackage']), {
-#            'level': constants.SUBSCRIPTION_LEVEL_UPLOADS,
-#            'commit': 'submit'
-#        })
-#
-#        self.assertEquals(response.status_code, 302)
-#        self.assertTrue(reverse('package', args=['testpackage']), response.url)
-#        subs = PackageSubscription.objects.filter(package='testpackage') \
-#            .filter(user=request.user).get()
-#        self.assertEquals(subs.level, constants.SUBSCRIPTION_LEVEL_UPLOADS)
-#
-#        # Get page to check subscription update
-#        response = self.client.get(reverse('subscribe_package',
-#                                           args=['testpackage']))
-#        self.assertIn('No subscription', str(response.content))
-#        self.assertEquals(
-#            'selected>{}'.format(constants.SUBSCRIPTION_LEVEL_UPLOADS),
-#            str(response.content)
-#        )
+    def test_subscribe(self):
+        # Not authenticated
+        response = self.client.get(reverse('subscribe_package',
+                                           args=['testpackage']))
+        self.assertEquals(response.status_code, 302)
+        self.assertIn(reverse('login'), response.url)
+
+        # Authenticated
+        # Get subscription page
+        self.client.post(reverse('login'), self._AUTHDATA)
+        response = self.client.get(reverse('subscribe_package',
+                                           args=['testpackage']))
+
+        self.assertEquals(response.status_code, 200)
+
+        # Post to update subscription
+        self._subscribe('testpackage', True, False)
+        self._subscribe('testpackage', False, True)
+        self._subscribe('testpackage', False, False)
+
+    def _subscribe(self, package, on_upload, on_comment):
+        response = self.client.post(reverse('subscribe_package',
+                                            args=[package]), {
+            'on_upload': on_upload,
+            'on_comment': on_comment,
+            'next': package,
+            'commit': 'submit'
+        })
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(reverse('package', args=[package]),
+                          response.url)
+        if not (on_upload or on_comment):
+            self.assertRaises(PackageSubscription.DoesNotExist,
+                              PackageSubscription.objects.get, package=package)
+        else:
+            subs = PackageSubscription.objects.get(package=package)
+            self.assertEquals(subs.on_upload, on_upload)
+            self.assertEquals(subs.on_comment, on_comment)
 
     def test_delete_no_auth(self):
         self._test_no_auth('delete_package')
@@ -189,51 +185,59 @@ class TestPackageController(TestController):
         self.assertRaises(Package.DoesNotExist, Package.objects.get,
                           name='testpackage')
 
-#    def test_comment_no_auth(self):
-#        self._test_no_auth('comment_upload')
-#
-#    def test_comment_bad_method(self):
-#        self._test_bad_method('comment_package')
-#
-#    def test_comment(self):
-#        self.client.post(reverse('login'), self._AUTHDATA)
-#
-#        response = self.app.post(reverse('comment_upload',
-#                                         args=['testpackage', 1]), {
-#            'text': 'This is a test comment',
-#            'outcome': constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED,
-#            'commit': 'submit_comment'
-#        })
-#
-#        self.assertEquals(response.status_code, 302)
-#        self.assertTrue(reverse('package', args=['testpackage']), response.url)
-#
-#        upload = PackageUpload.objects.filter(package__name='testpackage') \
-#                .earliest('uploaded')
-#        comment = PackageComment.objects.first(upload=upload)
-#
-#        self.assertEquals(comment.text, 'This is a test comment')
-#        self.assertEquals(comment.status,
-#                          constants.PACKAGE_COMMENT_STATUS_NOT_UPLOADED)
-#
-#        comment.delete()
+    def test_comment_no_auth(self):
+        self._test_no_auth('comment_package')
 
-#    def test_comment_with_subscriber(self):
-#        # test with a subscriber
-#        self.client.post(reverse('login'), self._AUTHDATA)
-#
-#        user = User.objects.get(email='email@example.com')
-#        packsub = PackageSubscription(
-#            package='testpackage',
-#            level=constants.SUBSCRIPTION_LEVEL_COMMENTS
-#        )
-#        packsub.user = user
-#        packsub.save()
-#
-#        self.test_comment()
-#
-#        self.assertEqual(len(mail.outbox), 1)
-#        self.assertIn('This is a test comment', mail.outbox[0].body)
+    def test_comment_bad_method(self):
+        self._test_bad_method('comment_package')
+
+    def test_comment(self):
+        self.client.post(reverse('login'), self._AUTHDATA)
+
+        upload = PackageUpload.objects.filter(package__name='testpackage') \
+            .earliest('uploaded')
+        response = self.client.post(reverse('comment_package',
+                                            args=['testpackage']), {
+            'upload_id': upload.id,
+            'text': 'This is a test comment',
+            'outcome': UploadOutcome.needs_work.value,
+            'commit': 'submit_comment'
+        })
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(reverse('package', args=['testpackage']),
+                          response.url)
+
+        comment = Comment.objects.get(upload=upload)
+
+        self.assertEquals(comment.text, 'This is a test comment')
+        self.assertFalse(comment.uploaded)
+
+        response = self.client.get(reverse('package', args=['testpackage']))
+        self.assertEquals(response.status_code, 200)
+
+        self.assertIn('This is a test comment', str(response.content))
+        self.assertIn('Needs work', str(response.content))
+
+        comment.delete()
+
+    def test_comment_with_subscriber(self):
+        # test with a subscriber
+        self.client.post(reverse('login'), self._AUTHDATA)
+
+        user = User.objects.get(email='email@example.com')
+        packsub = PackageSubscription(
+            package='testpackage',
+            on_comment=True,
+            on_upload=False,
+        )
+        packsub.user = user
+        packsub.save()
+
+        self.test_comment()
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn('This is a test comment', mail.outbox[0].body)
 
     def test_sponsor_no_auth(self):
         self._test_no_auth('sponsor_package')
