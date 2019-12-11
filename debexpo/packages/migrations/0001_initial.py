@@ -79,16 +79,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Architecture',
-            fields=[
-                ('id', models.AutoField(auto_created=True,
-                                        primary_key=True, serialize=False,
-                                        verbose_name='ID')),
-                ('name', models.CharField(max_length=32, verbose_name='Name',
-                                          unique=True)),
-            ],
-        ),
-        migrations.CreateModel(
             name='Component',
             fields=[
                 ('id', models.AutoField(auto_created=True,
@@ -165,11 +155,6 @@ class Migration(migrations.Migration):
                 ('closes', models.TextField(verbose_name='Closes bugs')),
                 ('uploaded', models.DateTimeField(
                     auto_now_add=True, verbose_name='Upload date')),
-                ('qa_status', models.PositiveSmallIntegerField(
-                    choices=[(1, 'QA plugins succeeded'),
-                             (2, 'QA plugins failed')],
-                    verbose_name='QA status'
-                )),
                 ('component', models.ForeignKey(
                     on_delete=django.db.models.deletion.CASCADE,
                     to='packages.Component'
@@ -231,9 +216,6 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(verbose_name='Description')),
                 ('homepage', models.TextField(null=True,
                                               verbose_name='Homepage')),
-                ('architecture', models.ManyToManyField(
-                    to='packages.Architecture'
-                )),
                 ('priority', models.ForeignKey(
                     null=True, on_delete=django.db.models.deletion.SET_NULL,
                     to='packages.Priority'

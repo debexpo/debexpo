@@ -26,29 +26,11 @@
 #   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
-from enum import Enum
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from debexpo.accounts.models import User
-
-
-class QAStatus(int, Enum):
-    def __new__(cls, value, label):
-        obj = int.__new__(cls, value)
-        obj._value_ = value
-        obj.label = label
-        obj.tuple = (value, label)
-        return obj
-
-    succeeded = (1, _('QA plugins succeeded'))
-    failed = (2, _('QA plugins failed'))
-
-    @classmethod
-    def as_tuple(cls):
-        return (cls.succeeded.tuple,
-                cls.failed.tuple,)
 
 
 class Project(models.Model):
@@ -81,13 +63,6 @@ class Section(models.Model):
 
 
 class Priority(models.Model):
-    name = models.CharField(max_length=32, verbose_name=_('Name'), unique=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Architecture(models.Model):
     name = models.CharField(max_length=32, verbose_name=_('Name'), unique=True)
 
     def __str__(self):
@@ -170,9 +145,6 @@ class PackageUpload(models.Model):
     # Some metadata
     uploaded = models.DateTimeField(verbose_name=_('Upload date'),
                                     auto_now_add=True)
-    qa_status = models.PositiveSmallIntegerField(
-            verbose_name=_('QA status'), choices=QAStatus.as_tuple()
-    )
 
     def get_section(self):
         return SourcePackage.objects.get(upload=self).section
@@ -206,7 +178,6 @@ class BinaryPackage(models.Model):
     # Mandatory
     name = models.CharField(max_length=100, verbose_name=_('Name'))
     description = models.TextField(verbose_name=_('Description'))
-    architecture = models.ManyToManyField(Architecture)
 
     # Optional
     section = models.ForeignKey(Section, null=True, on_delete=models.SET_NULL)

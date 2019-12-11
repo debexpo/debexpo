@@ -28,7 +28,7 @@
 
 from tests import TestController
 from debexpo.packages.models import Package, Priority, Project, Distribution, \
-    Section, Architecture, Component, BinaryPackage
+    Section, Component, BinaryPackage
 
 
 class TestPackagesController(TestController):
@@ -47,7 +47,6 @@ class TestPackagesController(TestController):
             (Component.objects.get, 'non-free'),
             (Section.objects.get, 'admin'),
             (Priority.objects.get, 'optional'),
-            (Architecture.objects.get, 'all'),
             (Package.objects.get, 'testpackage'),
         )
 

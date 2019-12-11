@@ -41,8 +41,7 @@ from django.utils.translation import gettext as _, get_language
 from django.contrib.syndication.views import Feed
 from django.contrib.auth.decorators import login_required
 
-from debexpo.packages.models import PackageUpload, Package, SourcePackage, \
-    BinaryPackage
+from debexpo.packages.models import PackageUpload, Package, SourcePackage
 
 log = logging.getLogger(__name__)
 
@@ -51,7 +50,6 @@ LIST_MODELS = [
     'component',
     'section',
     'priority',
-    'architecture',
 ]
 
 
@@ -109,8 +107,6 @@ def _get_packages(key=None, value=None):
         query = query.filter(**{'packageupload__' + key: value})
     elif name in [f.name for f in SourcePackage._meta.get_fields()]:
         query = query.filter(**{'packageupload__sourcepackage__' + key: value})
-    elif name in [f.name for f in BinaryPackage._meta.get_fields()]:
-        query = query.filter(**{'packageupload__binarypackage__' + key: value})
     elif name is not None:
         query = Package.objects.none()
         log.warning('Could not apply filter: {}'.format(key))

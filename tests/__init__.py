@@ -43,7 +43,7 @@ from django.test import TestCase
 from debexpo.accounts.models import User, Profile, UserStatus
 from debexpo.keyring.models import GPGAlgo, Key
 from debexpo.packages.models import Package, PackageUpload, SourcePackage, \
-    Priority, Section, Distribution, Component, QAStatus, Architecture, \
+    Priority, Section, Distribution, Component, \
     BinaryPackage
 
 __all__ = ['environ', 'url', 'TestController']
@@ -145,7 +145,6 @@ xOwJ1heEnfmgPkuiz7jFCAo=
             package=package,
             version='1.0-1',
             distribution=Distribution.objects.get_or_create(name='unstable')[0],
-            qa_status=QAStatus.succeeded.value,
             component=Component.objects.get_or_create(name='main')[0],
             closes='943216')
         package_upload.save()
@@ -166,9 +165,6 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         )
 
         binary.save()
-        binary.architecture.add(
-            Architecture.objects.get_or_create(name='all')[0]
-        )
 
         package = Package(name='anotherpackage', in_debian=True)
         package.save()
@@ -178,7 +174,6 @@ xOwJ1heEnfmgPkuiz7jFCAo=
             package=package,
             version='1.0-1',
             distribution=Distribution.objects.get_or_create(name='buster')[0],
-            qa_status=QAStatus.succeeded.value,
             component=Component.objects.get_or_create(name='non-free')[0],
             closes='')
         package_upload.save()
@@ -198,9 +193,6 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         )
 
         binary.save()
-        binary.architecture.add(
-            Architecture.objects.get_or_create(name='any')[0]
-        )
 
     def _remove_example_package(self):
         """Remove the example package.

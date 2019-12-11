@@ -123,16 +123,6 @@ class TestPackagesController(TestController):
         self.assertNotIn('testpackage', str(response.content))
         self.assertIn('anotherpackage', str(response.content))
 
-    def test_architecture(self):
-        response = self.client.get(reverse('packages_search', kwargs={
-            'key': 'architecture',
-            'value': 'all',
-        }))
-        self.assertEquals(200, response.status_code)
-        self.assertIn('text/html', response['Content-Type'])
-        self.assertIn('testpackage', str(response.content))
-        self.assertNotIn('anotherpackage', str(response.content))
-
     def test_section(self):
         response = self.client.get(reverse('packages_search', kwargs={
             'key': 'section',
