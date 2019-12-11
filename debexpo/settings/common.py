@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'debexpo.accounts',
     'debexpo.keyring',
     'debexpo.packages',
+    'debexpo.comments',
 ]
 
 MIDDLEWARE = [
