@@ -38,13 +38,11 @@
 
     {% if user.is_authenticated %}
     {% if user not in package.get_uploaders %}
-    {% comment %}
     <tr>
         <th>{% trans 'Subscribe:' %}</th>
-        <td><a href="{% url 'package_subscribe' package.name %}"
+        <td><a href="{% url 'subscribe_package' package.name %}?next={{ package.name }}"
                >{% trans 'Edit your subscription' %}</a></td>
     </tr>
-    {% endcomment %}
     {% endif %}
     <tr>
         <th>{% trans 'Needs a sponsor:' %}</th>
