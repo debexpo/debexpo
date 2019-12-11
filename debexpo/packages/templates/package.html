@@ -145,7 +145,7 @@
         <th>{% trans 'Closes bugs:' %}</th>
         <td>
             {% for bug in upload.get_closes %}
-            <a href="https://bugs.debian.org/{{ bug }}">{{ bug }}</a>
+            <a href="https://bugs.debian.org/{{ bug }}">#{{ bug }}</a>
             {% endfor %}
         </td>
     </tr>

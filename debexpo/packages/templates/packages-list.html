@@ -19,7 +19,7 @@
             <a href="{% url 'package' name=pkg.name %}">{{ pkg.name }}</a>
         </td>
         <td class="lines">{{ pkg.get_description }}</td>
-        <td class="lines">{{ pkg.get_formated_versions|linebreaksbr }}</td>
+        <td class="lines">{{ pkg.format_versions|linebreaksbr }}</td>
         <td class="lines">
         {% for uploader in pkg.get_uploaders %}
             <a href="{% url 'packages_search' 'uploader' uploader.email %}">{{ uploader.name }}</a>

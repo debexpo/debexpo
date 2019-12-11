@@ -84,11 +84,11 @@ def _get_packages(key=None, value=None):
     """
     Returns a list of packages that fit the filters.
 
-    ``package_filter``
-        An SQLAlchemy filter on the package.
+    ``key``
+        Any key of a Package, PackageUpload or SourcePackage
 
-    ``package_version_filter``
-        An SQLAlchemy filter on the package.
+    ``value``
+        Corresponding value to filter by
     """
     query = Package.objects
     name = key
@@ -108,8 +108,8 @@ def _get_packages(key=None, value=None):
     elif name in [f.name for f in SourcePackage._meta.get_fields()]:
         query = query.filter(**{'packageupload__sourcepackage__' + key: value})
     elif name is not None:
-        query = Package.objects.none()
-        log.warning('Could not apply filter: {}'.format(key))
+        query = query.none()
+        log.warning('Could not apply filter: %s', key)
 
     return set(query.all())
 
@@ -184,10 +184,7 @@ def sponsor_package(request, name):
 
 
 def packages(request, key=None, value=None):
-    """
-    Entry point into the PackagesController.
-    """
-    # List of packages to show in the list.
+    # List of packages to show in the page.
     packages = _get_packages(key, value)
     feed = request.build_absolute_uri() + 'feed/'
 

@@ -115,7 +115,7 @@ class Package(models.Model):
 
         return versions
 
-    def get_formated_versions(self):
+    def format_versions(self):
         return '\n'.join(['{} ({})'.format(version, distribution) for
                           distribution, version in self.get_versions().items()])
 
