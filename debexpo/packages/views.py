@@ -213,8 +213,7 @@ class PackagesFeed(Feed):
         return _get_packages(key, value)
 
     def link(self, packages):
-        return self.request.scheme + '://' + self.request.site.domain + \
-                reverse('packages')
+        return self.request.build_absolute_uri(reverse('packages'))
 
     def items(self, packages):
         return packages
@@ -224,8 +223,8 @@ class PackagesFeed(Feed):
             item.name, item.packageupload_set.latest('uploaded').version)
 
     def item_link(self, item):
-        return self.request.scheme + '://' + self.request.site.domain + \
-                reverse('package', kwargs={'name': item.name})
+        return self.request.build_absolute_uri(
+                reverse('package', kwargs={'name': item.name}))
 
     def item_description(self, item):
         desc = _('Package {} uploaded by {}.').format(
