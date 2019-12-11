@@ -59,6 +59,8 @@ class PackageGroups(object):
     """
     def __init__(self, label, deltamin, deltamax, packages):
         self.label = label
+        self.packages = []
+
         if (deltamin is not None and deltamax is not None):
             self.packages = [
                 x for x in packages if
@@ -75,9 +77,6 @@ class PackageGroups(object):
                 x for x in packages if
                 x.packageupload_set.latest('uploaded').uploaded <= deltamin
             ]
-        else:
-            # This is not supposed to happen, since not based on user input
-            raise("deltaamin == None and deltamax == None")  # pragma: no cover
 
 
 def _get_packages(key=None, value=None):
