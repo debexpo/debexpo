@@ -1,12 +1,26 @@
-# -*- coding: utf-8 -*-
-<%inherit file="../base.mako"/>
+{% extends "base.html" %}{% load i18n %}
 
-<h1>${ _('Subscribe to package %s') % c.package.name }</h1>
+{% block content %}
+<h1>{% trans 'Subscribe to package ' %}{{ package }}</h1>
 
-${ h.html.tags.form(h.url.current()) }
-<p>${ h.html.tags.select('level', c.current_subscription, c.subscriptions) }
-<br/>
-${ h.html.tags.submit('commit', _('Submit')) }</p>
-${ h.html.tags.end_form() }
+<fieldset>
+    <form method="post">
+        {% csrf_token %}
+        <table id="form">
+        {{ form }}
+        </table>
+        {% if next %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
+        <input type="submit" value="{% trans 'Submit' %}" />
+    </form>
+</fieldset>
 
-<p><a href="${ h.url('package', packagename=c.package.name) }">${ _('Back to package details') }</a>
+{% if next %}
+<p><a href="{% url 'package' next %}"
+      >{% trans 'Back to package details' %}</a>
+{% else %}
+<p><a href="{% url 'subscriptions' %}"
+      >{% trans 'Back to subscription list' %}</a>
+{% endif %}
+{% endblock %}
