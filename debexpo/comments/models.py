@@ -130,3 +130,6 @@ class Comment(models.Model):
             subscription_url=request.build_absolute_uri(
                 reverse('subscriptions')),
         )
+
+    def get_outcome(self):
+        return UploadOutcome(self.outcome)
