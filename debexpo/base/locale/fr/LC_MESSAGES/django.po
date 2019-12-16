@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-13 18:44+0000\n"
-"PO-Revision-Date: 2019-09-21 11:30+0200\n"
+"POT-Creation-Date: 2019-12-16 22:27+0100\n"
+"PO-Revision-Date: 2019-12-16 22:32+0100\n"
 "Last-Translator: Baptiste BEAUPLAT <lyknode@cilg.org>\n"
 "Language-Team: French <>\n"
 "Language: fr\n"
@@ -17,69 +17,73 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.2.4\n"
 
-#: base/templates/base.html:55
+#: base/templates/base.html:54
 msgid "Start page"
 msgstr "Page d'accueil"
 
-#: base/templates/base.html:61
+#: base/templates/base.html:60
 msgid "Package list"
 msgstr "Liste des paquets"
 
-#: base/templates/base.html:67
+#: base/templates/base.html:66
 msgid "Maintainer"
 msgstr "Mainteneur"
 
-#: base/templates/base.html:73
+#: base/templates/base.html:72
 msgid "Reviews"
 msgstr "Revues"
 
-#: base/templates/base.html:79
+#: base/templates/base.html:78
 msgid "Sponsors"
 msgstr "Parrains"
 
-#: base/templates/base.html:85
+#: base/templates/base.html:84
 msgid "Q &amp; A"
 msgstr "F.A.Q."
 
-#: base/templates/base.html:91 base/templates/base.html:142
+#: base/templates/base.html:90 base/templates/base.html:144
 msgid "Contact"
 msgstr "Contact"
 
-#: base/templates/base.html:103
+#: base/templates/base.html:102
 msgid "My account"
 msgstr "Mon compte"
 
-#: base/templates/base.html:106
+#: base/templates/base.html:105
 msgid "My packages"
 msgstr "Mes paquets"
 
-#: base/templates/base.html:110
+#: base/templates/base.html:108
+msgid "My subscriptions"
+msgstr "Mes abonnements"
+
+#: base/templates/base.html:112
 msgid "Sign me up"
 msgstr "Inscription"
 
-#: base/templates/base.html:113
+#: base/templates/base.html:115
 msgid "Login"
 msgstr "Connexion"
 
-#: base/templates/base.html:128
+#: base/templates/base.html:130
 msgid "Hosting and hardware provided by"
 msgstr "Hébergement et matériel mis à disposition par"
 
-#: base/templates/base.html:133
+#: base/templates/base.html:135
 msgid "Source code and bugs"
 msgstr "Code source et bugs"
 
-#: base/templates/base.html:136
+#: base/templates/base.html:138
 msgid "Version"
 msgstr "Version"
 
-#: base/templates/base.html:147
+#: base/templates/base.html:149
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: base/templates/base.html:152
+#: base/templates/base.html:154
 msgid "RSS"
 msgstr "RSS"
 
