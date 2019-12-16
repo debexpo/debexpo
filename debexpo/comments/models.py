@@ -30,9 +30,11 @@ from enum import Enum
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.urls import reverse
 
 from debexpo.accounts.models import User
 from debexpo.packages.models import PackageUpload, Package
+from debexpo.tools.email import Email
 
 
 class UploadOutcome(int, Enum):
@@ -54,12 +56,22 @@ class UploadOutcome(int, Enum):
                 cls.ready.tuple,)
 
 
+class PackageSubscriptionManager(models.Manager):
+    def get_recipients(self, package, event):
+        return PackageSubscription.objects.filter(**{
+            'package': package,
+            f'on_{event}': True,
+        }).values_list('user__email', flat=True)
+
+
 class PackageSubscription(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     package = models.CharField(max_length=100, verbose_name=_('Name'))
 
     on_upload = models.BooleanField(verbose_name=_('Subscribe to uploads'))
     on_comment = models.BooleanField(verbose_name=_('Subscribe to comments'))
+
+    objects = PackageSubscriptionManager()
 
     class Meta:
         unique_together = ('user', 'package',)
@@ -92,3 +104,29 @@ class Comment(models.Model):
         verbose_name=_('Upload outcome'), choices=UploadOutcome.as_tuple()
     )
     uploaded = models.BooleanField(verbose_name=_('Uploaded to debian'))
+
+    def notify(self, request):
+        package = self.upload.package.name
+        uploader = self.upload.uploader.email
+        commenter = self.user.email
+
+        # Get subscription list for our package
+        recipients = set(PackageSubscription.objects.get_recipients(
+            package, 'upload'))
+
+        # Add package uploader
+        recipients -= set([commenter])
+        # Remove commenter
+        recipients.update([uploader])
+
+        # Send notification
+        email = Email('email-comment.html')
+        email.send(
+            _('New comment on package {}').format(package),
+            recipients,
+            comment=self,
+            package_url=request.build_absolute_uri(
+                reverse('package', args=[package])),
+            subscription_url=request.build_absolute_uri(
+                reverse('subscriptions')),
+        )
