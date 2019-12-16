@@ -1,21 +1,12 @@
-# -*- coding: utf-8 -*-
-<%inherit file="/base.mako"/>To: ${ c.to }
-Subject: ${ _('Comment posted on %s' % c.package) }
+{% extends "email-base.html" %}{% load i18n %}{% block content %}{% blocktrans with from=args.comment.user.name package=args.comment.upload.package.name subscription_url=args.subscription_url package_url=args.package_url text=args.comment.text %}
+From: {{ from }}
+Package: {{ package }}
+Url: {{ package_url }}
 
-%if not c.owner:
-${ _('A comment has been posted on a package that you are subscribed to.') }
+---
+{{ text }}
+---
 
-%endif
-${ _('''%s made the following comment about the %s package:''' % (c.user.name, c.package)) }
+You can change your subscription here: {{ subscription_url }}
 
-${ c.comment }
-
-${ _('You can view information on the package by visiting:') }
-
-${ c.config['debexpo.server'] }${ h.url('package', packagename=c.package) }
-
-%if not c.owner:
-${ _('You can change your subscription by visiting your user account settings.') }
-
-%endif
-${ _('Thanks,') }
+Thanks,{% endblocktrans %}{% endblock %}
