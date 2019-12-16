@@ -28,7 +28,13 @@
 
 from django import forms
 
-from .models import PackageSubscription
+from .models import PackageSubscription, Comment
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('text', 'outcome', 'uploaded')
 
 
 class SubscriptionForm(forms.ModelForm):
