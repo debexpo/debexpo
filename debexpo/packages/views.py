@@ -42,6 +42,7 @@ from django.contrib.syndication.views import Feed
 from django.contrib.auth.decorators import login_required
 
 from debexpo.packages.models import PackageUpload, Package, SourcePackage
+from debexpo.comments.forms import CommentForm
 
 log = logging.getLogger(__name__)
 
@@ -139,10 +140,12 @@ def _get_timedeltas(packages):
 
 def package(request, name):
     package = get_object_or_404(Package, name=name)
+    form = CommentForm()
 
     return render(request, 'package.html', {
         'settings': settings,
         'package': package,
+        'comment_form': form,
     })
 
 
