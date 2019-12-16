@@ -34,8 +34,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponseNotAllowed
 from django.urls import reverse
 
-from .forms import SubscriptionForm
+from .forms import SubscriptionForm, CommentForm
 from .models import PackageSubscription
+from debexpo.packages.models import Package, PackageUpload
 
 log = getLogger(__name__)
 
@@ -106,3 +107,23 @@ def subscribe(request, name):
         'next': package,
         'form': form,
     })
+
+
+@login_required
+def comment(request, name):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+
+    upload_id = request.POST.get('upload_id')
+    package = get_object_or_404(Package, name=name)
+    upload = get_object_or_404(PackageUpload, package=package, pk=upload_id)
+
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.user = request.user
+        comment.upload = upload
+        comment.save()
+        comment.notify(request)
+
+    return HttpResponseRedirect(reverse('package', args=[name]))
