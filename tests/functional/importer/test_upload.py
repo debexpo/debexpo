@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
-#
-#   test_upload.py — UploadController test cases
+#   test_upload.py — functional tests for package upload
 #
 #   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
+#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -29,23 +28,21 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-"""
-UploadController test cases.
-"""
-
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
-__license__ = 'MIT'
-
+from logging import getLogger
 import os
+from tempfile import TemporaryDirectory
 
-from debexpo.tests import TestController, url
-import pylons.test
+from django.conf import settings
+from django.urls import reverse
+
+from tests import TestController
+
+log = getLogger(__name__)
 
 
 class TestUploadController(TestController):
 
-    _CHANGES_CONTENT = """
+    _UNSIGNED_CHANGES_CONTENT = """
 Format: 1.8
 Date: Tue, 12 Mar 2019 17:31:31 +0100
 Source: vitetris
@@ -63,171 +60,158 @@ Changes:
  .
    * New upstream version 0.58.0
 Checksums-Sha1:
- aaaa 1261 vitetris_0.58.0-1.dsc
+ 4a756ca07e9487f482465a99e8286abc86ba4dc7 1261 vitetris_0.58.0-1.dsc
 Checksums-Sha256:
- aaaa 1261 vitetris_0.58.0-1.dsc
+ d1b2a59fbea7e20077af9f91b27e95e865061b270be03ff539ab3b73587882e8 1261 vitetris_0.58.0-1.dsc
 Files:
- aaaa 1261 games optional vitetris_0.58.0-1.dsc
+ 98bf7d8c15784f0a3d63204441e1e2aa 1261 games optional vitetris_0.58.0-1.dsc
+"""  # noqa: E501
+    _CHANGES_CONTENT = f"""
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+{_UNSIGNED_CHANGES_CONTENT}-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQRVkwbu4cjBst0cc7HENHgc6HHz3wUCXfjpNAAKCRDENHgc6HHz
+3yJ9AQC0U9bahPO/TH/4ULdsnBd0ECHCG6wJmvBBrrEsfxHjhwD9GlqAs6pTyoYZ
+fC0rs1ly7CQ7ZQN441ZE3csnK69gzwc=
+=1nnA
+-----END PGP SIGNATURE-----
 """
 
-    def __init__(self, *args, **kwargs):
-        """
-        Sets up database with data to provide a database to test.
-        """
-        TestController.__init__(self, *args, **kwargs)
-
     def setUp(self):
-        self._setup_models()
-        self._setup_example_user()
-        self.incoming = pylons.test.pylonsapp.config['debexpo.upload.incoming']
-        if not os.path.isdir(os.path.join(
-                pylons.test.pylonsapp.config['debexpo.upload.incoming'],
-                'pub')):
-            os.makedirs(os.path.join(
-                pylons.test.pylonsapp.config['debexpo.upload.incoming'], 'pub'))
+        self._setup_example_user(gpg=True)
+        self.spool = TemporaryDirectory()
+        self.old_spool = getattr(settings, 'UPLOAD_SPOOL', None)
+        settings.UPLOAD_SPOOL = self.spool.name
 
     def tearDown(self):
         self._remove_example_user()
-        pylons.test.pylonsapp.config['debexpo.upload.incoming'] = self.incoming
+        settings.UPLOAD_SPOOL = self.old_spool
 
     def testGetRequest(self):
         """
         Tests whether requests where method != PUT are rejected with error code
         405.
         """
-        response = self.app.get(url(controller='upload',
-                                    action='index',
-                                    filename='testname.dsc'),
-                                expect_errors=True)
+        response = self.client.get(reverse('upload', args=['testname.dsc']))
 
-        self.assertEqual(response.status_int, 405)
+        self.assertEqual(response.status_code, 405)
 
     def testExtensionNotAllowed(self):
         """
         Tests whether uploads of an unknown file extensions are rejected with
         error code 403.
         """
-        response = self.app.put(url(controller='upload', action='index',
-                                    filename='testname.unknown'),
-                                expect_errors=True)
+        response = self.client.put(reverse('upload', args=['testname.unknown']))
 
-        self.assertEqual(response.status_int, 403)
+        self.assertEqual(response.status_code, 403)
 
     def testSuccessfulUpload(self):
         """
         Tests whether uploads with sane file extensions and authorization are
         successful.
         """
-        response = self.app.put(url(
-            controller='upload', action='index',
-            filename='testfile2.dsc'),
-            params='contents', expect_errors=False)
+        response = self.client.put(reverse('upload', args=['testfile2.dsc']),
+                                   data='contents')
 
-        self.assertEqual(response.status_int, 200)
+        self.assertEqual(response.status_code, 200)
 
-        app_config = pylons.test.pylonsapp.config
         self.assertTrue(
             os.path.isfile(
                 os.path.join(
-                    app_config['debexpo.upload.incoming'],
-                    'pub',
+                    settings.UPLOAD_SPOOL,
+                    'incoming',
                     'testfile2.dsc')))
 
-        self.assertEqual(
-            file(
-                os.path.join(
-                    app_config['debexpo.upload.incoming'],
-                    'pub',
-                    'testfile2.dsc')).read(),
-            'contents')
+        with open(
+            os.path.join(
+                settings.UPLOAD_SPOOL,
+                'incoming',
+                'testfile2.dsc')) as fd:
+            self.assertEqual(fd.read(), 'contents')
 
-        if os.path.isfile(os.path.join(app_config['debexpo.upload.incoming'],
-                                       'pub', 'testfile2.dsc')):
-            os.remove(os.path.join(app_config['debexpo.upload.incoming'],
-                                   'pub', 'testfile2.dsc'))
+        if os.path.isfile(os.path.join(settings.UPLOAD_SPOOL,
+                                       'incoming', 'testfile2.dsc')):
+            os.remove(os.path.join(settings.UPLOAD_SPOOL,
+                                   'incoming', 'testfile2.dsc'))
 
     def testDuplicatedUpload(self):
         """
         Tests whether a re-uploads of the same file failed with error code 403.
         """
-        # First upload allowed
-        response = self.app.put(url(
-            controller='upload', action='index',
-            filename='vitetris_0.58.0-1.dsc'),
-            params='contents', expect_errors=False)
+        # Malicous changes does not break upload
+        response = self.client.put(reverse(
+            'upload',
+            args=['plop.changes']),
+            data='contents')
 
-        self.assertEqual(response.status_int, 200)
+        self.assertEqual(response.status_code, 200)
+
+        # Invalid changes does not break upload
+        response = self.client.put(reverse(
+            'upload',
+            args=['plop.changes']),
+            data=self._UNSIGNED_CHANGES_CONTENT.replace('Source: vitetris\n',
+                                                        ''))
+
+        self.assertEqual(response.status_code, 200)
+
+        # First upload allowed
+        response = self.client.put(reverse(
+            'upload',
+            args=['vitetris_0.58.0-1.dsc']),
+            data='contents')
+
+        self.assertEqual(response.status_code, 200)
+
+        # Second upload allowed
+        response = self.client.put(reverse(
+            'upload',
+            args=['vitetris_0.58.0-1.dsc']),
+            data='contents')
+
+        self.assertEqual(response.status_code, 200)
 
         # Upload a file not referenced allowed
-        response = self.app.put(url(
-            controller='upload', action='index',
-            filename='testfile.changes'),
-            params=self._CHANGES_CONTENT, expect_errors=False)
+        response = self.client.put(reverse(
+            'upload',
+            args=['testfile.changes']),
+            data=self._CHANGES_CONTENT)
 
-        self.assertEqual(response.status_int, 200)
+        self.assertEqual(response.status_code, 200)
 
         # Second upload denined (.changes)
-        response = self.app.put(url(
-            controller='upload', action='index',
-            filename='testfile.changes'),
-            params=self._CHANGES_CONTENT, expect_errors=True)
+        response = self.client.put(reverse(
+            'upload',
+            args=['testfile.changes']),
+            data=self._CHANGES_CONTENT)
 
-        self.assertEqual(response.status_int, 403)
+        self.assertEqual(response.status_code, 403)
 
         # Second upload denined (others)
-        response = self.app.put(url(
-            controller='upload', action='index',
-            filename='vitetris_0.58.0-1.dsc'),
-            params='contents', expect_errors=True)
+        response = self.client.put(reverse(
+            'upload',
+            args=['vitetris_0.58.0-1.dsc']),
+            data='contents')
 
-        self.assertEqual(response.status_int, 403)
+        self.assertEqual(response.status_code, 403)
 
-        app_config = pylons.test.pylonsapp.config
-
-        for filename in (os.path.join(app_config['debexpo.upload.incoming'],
-                                      'pub', 'vitetris_0.58.0-1.dsc'),
-                         os.path.join(app_config['debexpo.upload.incoming'],
-                                      'pub', 'testfile.changes')):
+        for filename in (os.path.join(settings.UPLOAD_SPOOL,
+                                      'incoming', 'vitetris_0.58.0-1.dsc'),
+                         os.path.join(settings.UPLOAD_SPOOL,
+                                      'incoming', 'testfile.changes')):
             if os.path.isfile(filename):
                 os.remove(filename)
-
-    def testUploadWithoutConfig(self):
-        """
-        Tests whether an uploads without debexpo.upload.incoming fails.
-        """
-        pylons.test.pylonsapp.config.pop('debexpo.upload.incoming')
-
-        response = self.app.put(url(
-            controller='upload', action='index',
-            filename='testfile.dsc'),
-            params='contents', expect_errors=True)
-
-        self.assertEqual(response.status_int, 500)
-
-    def testUploadNonexistantQueue(self):
-        """
-        Tests whether an uploads with an nonexistant queue fails.
-        """
-        app_config = pylons.test.pylonsapp.config
-        app_config['debexpo.upload.incoming'] = '/nonexistant'
-
-        response = self.app.put(url(
-            controller='upload', action='index',
-            filename='testfile.dsc'),
-            params='contents', expect_errors=True)
-
-        self.assertEqual(response.status_int, 500)
 
     def testUploadNonwritableQueue(self):
         """
         Tests whether an uploads with an nonwritable queue fails.
         """
-        app_config = pylons.test.pylonsapp.config
-        app_config['debexpo.upload.incoming'] = '/proc/sys'
+        settings.UPLOAD_SPOOL = '/proc/sys'
 
-        response = self.app.put(url(
-            controller='upload', action='index',
-            filename='testfile.dsc'),
-            params='contents', expect_errors=True)
+        response = self.client.put(reverse(
+            'upload',
+            args=['testfile.dsc']),
+            data='contents')
 
-        self.assertEqual(response.status_int, 500)
+        self.assertEqual(response.status_code, 500)
