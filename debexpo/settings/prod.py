@@ -66,3 +66,6 @@ HOSTING = 'Wavecon'
 
 DEFAULT_FROM_EMAIL = 'mentors.debian.net <support@mentors.debian.net>'
 DEFAULT_BOUNCE_EMAIL = 'bounce@mentors.debian.net'
+
+# Spool settings
+UPLOAD_SPOOL = '/var/spool/debexpo/http'
