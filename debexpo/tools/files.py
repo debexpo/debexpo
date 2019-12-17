@@ -66,11 +66,11 @@ class ExceptionCheckSumedFileFailedSum(ExceptionCheckSumedFile):
 
 
 class GPGSignedFile():
-
     def __init__(self, filename):
         self.filename = filename
         self.key = None
 
+    def authenticate(self):
         fingerprint = self._lookup_fingerprint()
 
         try:

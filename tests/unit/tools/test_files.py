@@ -45,15 +45,16 @@ from tests.unit.tools.test_gnupg import signed_file, test_gpg_key, \
 
 class TestGPGSignedFileController(TestController):
     def test_invalid_file(self):
-        self.assertRaises(ExceptionGnuPG, GPGSignedFile, '/noexistent')
+        gpg_file = GPGSignedFile('/noexistent')
+        self.assertRaises(ExceptionGnuPG, gpg_file.authenticate)
 
     def test_plain_file(self):
-        self.assertRaises(ExceptionGnuPGNotSignedFile, GPGSignedFile,
-                          '/etc/passwd')
+        gpg_file = GPGSignedFile('/etc/passwd')
+        self.assertRaises(ExceptionGnuPGNotSignedFile, gpg_file.authenticate)
 
     def test_signed_with_unknown_key(self):
-        self.assertRaises(ExceptionGnuPGNoPubKey, GPGSignedFile,
-                          signed_file)
+        gpg_file = GPGSignedFile(signed_file)
+        self.assertRaises(ExceptionGnuPGNoPubKey, gpg_file.authenticate)
 
     def test_signed_file(self):
         # Setup user
@@ -66,6 +67,7 @@ class TestGPGSignedFileController(TestController):
                           test_gpg_key_algo, test_gpg_key_size)
 
         changes = GPGSignedFile(signed_file)
+        changes.authenticate()
         self.assertEquals(changes.get_key(), Key.objects.get(user=user))
         self.assertEquals(str(changes.get_key().algorithm), 'ed25519')
 
