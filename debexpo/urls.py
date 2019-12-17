@@ -42,6 +42,7 @@ from debexpo.packages.views import package, packages, packages_my, \
     PackagesFeed, sponsor_package, delete_package
 from debexpo.comments.views import subscribe, unsubscribe, subscriptions, \
     comment
+from debexpo.importer.views import upload
 
 urlpatterns = [
     # Base site
@@ -118,6 +119,9 @@ urlpatterns = [
     url(r'^package/(?P<name>.+)/comment/$', comment,
         name='comment_package'),
     url(r'^package/(?P<name>.+)/$', package, name='package'),
+
+    # Upload
+    url(r'^upload/(?P<name>.+)$', upload, name='upload'),
 
     # Redirects
     url(r'^my/$', lambda request: HttpResponsePermanentRedirect(
