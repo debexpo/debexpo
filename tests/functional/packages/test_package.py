@@ -1,0 +1,292 @@
+#   test_package.py - Test the package views
+#
+#   This file is part of debexpo
+#   https://salsa.debian.org/mentors.debian.net-team/debexpo
+#
+#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
+#
+#   Permission is hereby granted, free of charge, to any person
+#   obtaining a copy of this software and associated documentation
+#   files (the "Software"), to deal in the Software without
+#   restriction, including without limitation the rights to use,
+#   copy, modify, merge, publish, distribute, sublicense, and/or sell
+#   copies of the Software, and to permit persons to whom the
+#   Software is furnished to do so, subject to the following
+#   conditions:
+#
+#   The above copyright notice and this permission notice shall be
+#   included in all copies or substantial portions of the Software.
+#
+#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+#   OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+#   HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+#   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+#   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+#   OTHER DEALINGS IN THE SOFTWARE.
+
+# from django.core import mail
+from django.urls import reverse
+
+from tests import TestController
+from debexpo.accounts.models import User
+from debexpo.packages.models import Package, PackageUpload, BinaryPackage
+
+
+class TestPackageController(TestController):
+    def setUp(self):
+        self._setup_example_user()
+        self._setup_example_package()
+
+    def tearDown(self):
+        self._remove_example_package()
+        self._remove_example_user()
+
+    def _test_bad_method(self, action):
+        self.client.post(reverse('login'), self._AUTHDATA)
+
+        response = self.client.get(reverse(
+            action, args=['testpackage']))
+        self.assertEquals(response.status_code, 405)
+
+    def _test_no_auth(self, action, redirect_login=True):
+        response = self.client.post(reverse(
+            action, args=['testpackage']))
+        self.assertEquals(response.status_code, 302)
+        if (redirect_login):
+            self.assertTrue(reverse('profile'), response.url)
+
+    def _test_not_owned_package(self, action, method='get'):
+        user = User.objects.create_user(name='Another user',
+                                        email='another@example.com',
+                                        password='password')
+        user.save()
+
+        self.client.post(reverse('login'), {'username': 'another@example.com',
+                                            'password': 'password',
+                                            'commit': 'submit'})
+
+        response = self.client.post(reverse(action, args=['testpackage']))
+        self.assertEquals(response.status_code, 403)
+        user.delete()
+
+    def test_index(self):
+        # No package redirects to package list
+        response = self.client.get(reverse('package_index'))
+        self.assertEquals(response.status_code, 301)
+        self.assertTrue(reverse('packages'), response.url)
+
+        # Wrong package produce 404
+        response = self.client.get(reverse('package', args=['notapackage']))
+        self.assertEquals(response.status_code, 404)
+
+        # Write package show details
+        # Unauthenticated
+        response = self.client.get(reverse('package', args=['testpackage']))
+        self.assertEquals(response.status_code, 200)
+
+        self.assertIn(reverse('packages_search',
+                              args=['uploader', 'email@example.com']),
+                      str(response.content))
+
+        # And authenticated
+        response = self.client.post(reverse('login'), self._AUTHDATA)
+        response = self.client.get(reverse('package', args=['testpackage']))
+        self.assertEquals(response.status_code, 200)
+
+        self.assertIn(reverse('delete_package',
+                              args=['testpackage']),
+                      str(response.content))
+#        self.assertIn(reverse('comment_upload',
+#                              args=['testpackage']),
+#                      str(response.content))
+
+        # Without description
+        package = Package.objects.get(name='testpackage')
+        upload = PackageUpload.objects.get(package=package)
+        binary = BinaryPackage.objects.get(upload=upload)
+        binary.delete()
+
+        response = self.client.get(reverse('package', args=['testpackage']))
+        self.assertEquals(response.status_code, 200)
+
+        self.assertNotIn('A short description here',
+                         str(response.content))
+
+#    def test_subscribe(self):
+#        # Not authenticated
+#        response = self.client.get(reverse('subscribe_package',
+#                                           args=['testpackage']))
+#        self.assertEquals(response.status_code, 302)
+#        self.assertTrue(reverse('profile'), response.url)
+#
+#        # Authenticated
+#        # Get subscription page
+#        self.client.post(reverse('login'), self._AUTHDATA)
+#        response = self.client.get(reverse('subscribe_package',
+#                                           args=['testpackage']))
+#
+#        self.assertEquals(response.status_code, 200)
+#        self.assertIn('No subscription', str(response.content))
+#
+#        # Post without the form
+#        response = self.client.post(reverse('subscribe_package',
+#                                            args=['testpackage']))
+#
+#        self.assertEquals(response.status_code, 200)
+#        self.assertIn('errorlist', str(response.content))
+#
+#        # Post to update subscription
+#        response = self.client.post(reverse('subscribe_package',
+#                                            args=['testpackage']), {
+#            'level': constants.SUBSCRIPTION_LEVEL_UPLOADS,
+#            'commit': 'submit'
+#        })
+#
+#        self.assertEquals(response.status_code, 302)
+#        self.assertTrue(reverse('package', args=['testpackage']), response.url)
+#        subs = PackageSubscription.objects.filter(package='testpackage') \
+#            .filter(user=request.user).get()
+#        self.assertEquals(subs.level, constants.SUBSCRIPTION_LEVEL_UPLOADS)
+#
+#        # Get page to check subscription update
+#        response = self.client.get(reverse('subscribe_package',
+#                                           args=['testpackage']))
+#        self.assertIn('No subscription', str(response.content))
+#        self.assertEquals(
+#            'selected>{}'.format(constants.SUBSCRIPTION_LEVEL_UPLOADS),
+#            str(response.content)
+#        )
+
+    def test_delete_no_auth(self):
+        self._test_no_auth('delete_package')
+
+    def test_delete_not_owned_package(self):
+        self._test_not_owned_package('delete_package')
+
+    def test_delete_bad_method(self):
+        self._test_bad_method('delete_package')
+
+#    def test_delete_gitstorage_utf8(self):
+#        gitdir = join(pylons.test.pylonsapp.config['debexpo.repository'],
+#                      'git', 'testpackage', 'source')
+#
+#        makedirs(gitdir)
+#        with open(join(gitdir, 'Bodø'), 'w'):
+#            pass
+#
+#        self.test_delete_successful()
+
+    def test_delete_successful(self):
+        self.client.post(reverse('login'), self._AUTHDATA)
+
+        response = self.client.post(reverse(
+            'delete_package', args=['testpackage']))
+
+        self.assertEquals(response.status_code, 302)
+        self.assertTrue(reverse('packages_my'), response.url)
+        self.assertRaises(Package.DoesNotExist, Package.objects.get,
+                          name='testpackage')
+
+#    def test_comment_no_auth(self):
+#        self._test_no_auth('comment_upload')
+#
+#    def test_comment_bad_method(self):
+#        self._test_bad_method('comment_package')
+#
+#    def test_comment(self):
+#        self.client.post(reverse('login'), self._AUTHDATA)
+#
+#        response = self.app.post(reverse('comment_upload',
+#                                         args=['testpackage', 1]), {
+#            'text': 'This is a test comment',
+#            'outcome': constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED,
+#            'commit': 'submit_comment'
+#        })
+#
+#        self.assertEquals(response.status_code, 302)
+#        self.assertTrue(reverse('package', args=['testpackage']), response.url)
+#
+#        upload = PackageUpload.objects.filter(package__name='testpackage') \
+#                .earliest('uploaded')
+#        comment = PackageComment.objects.first(upload=upload)
+#
+#        self.assertEquals(comment.text, 'This is a test comment')
+#        self.assertEquals(comment.status,
+#                          constants.PACKAGE_COMMENT_STATUS_NOT_UPLOADED)
+#
+#        comment.delete()
+
+#    def test_comment_with_subscriber(self):
+#        # test with a subscriber
+#        self.client.post(reverse('login'), self._AUTHDATA)
+#
+#        user = User.objects.get(email='email@example.com')
+#        packsub = PackageSubscription(
+#            package='testpackage',
+#            level=constants.SUBSCRIPTION_LEVEL_COMMENTS
+#        )
+#        packsub.user = user
+#        packsub.save()
+#
+#        self.test_comment()
+#
+#        self.assertEqual(len(mail.outbox), 1)
+#        self.assertIn('This is a test comment', mail.outbox[0].body)
+
+    def test_sponsor_no_auth(self):
+        self._test_no_auth('sponsor_package')
+
+    def test_sponsor_not_owned_package(self):
+        self._test_not_owned_package('sponsor_package')
+
+    def test_sponsor_bad_method(self):
+        self._test_bad_method('sponsor_package')
+
+    def test_sponsor_toggle(self, toggle=True):
+        self.client.post(reverse('login'), self._AUTHDATA)
+
+        response = self.client.post(reverse(
+            'sponsor_package', args=['testpackage']))
+
+        self.assertEquals(response.status_code, 302)
+
+        package = Package.objects.get(name='testpackage')
+
+        if (toggle):
+            self.assertTrue(package.needs_sponsor)
+            self.test_sponsor_toggle(toggle=False)
+        else:
+            self.assertFalse(package.needs_sponsor)
+
+#    def test_package_info(self, data=False):
+#        package = Package.objects.get(name='testpackage')
+#        upload = PackageUpload.objects.filter(package__name='testpackage') \
+#            .latest('uploaded')
+#        textmark = 'some lintian output'
+#
+#        if data:
+#            package_info_data = PackageInfo(
+#                package_version_id=package_version.id,
+#                from_plugin='LintianPlugin',
+#                outcome='Package is lintian clean',
+#                data=textmark,
+#                severity=constants.PLUGIN_SEVERITY_INFO)
+#        else:
+#            package_info_data = PackageInfo(
+#                package_version_id=package_version.id,
+#                from_plugin='LintianPlugin',
+#                outcome='Package is lintian clean',
+#                rich_data=textmark,
+#                severity=constants.PLUGIN_SEVERITY_INFO)
+#
+#        package_info_data.save()
+#
+#        response = self.client.get(reverse('package', args=['testpackage']))
+#
+#        self.assertEquals(response.status_code, 200)
+#        self.assertTrue(textmark in response)
+
+#    def test_package_info_data(self):
+#        self.test_package_info(data=True)

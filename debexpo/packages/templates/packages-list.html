@@ -1,0 +1,42 @@
+{% load i18n %}
+{% if packages %}
+{% for group in deltas %}
+{% if group.packages|length > 0 %}
+<h2>{{ group.label }}</h2>
+
+<table width="100%">
+    <tr>
+        <th width="15%">{% trans 'Package' %}</th>
+        <th width="50%">{% trans 'Description' %}</th>
+        <th width="10%">{% trans 'Version' %}</th>
+        <th width="15%">{% trans 'Uploader' %}</th>
+        <th width="10%">{% trans 'Needs a sponsor?' %}</th>
+    </tr>
+
+    {% for pkg in group.packages %}
+    <tr class="pkg-list">
+        <td class="lines">
+            <a href="{% url 'package' name=pkg.name %}">{{ pkg.name }}</a>
+        </td>
+        <td class="lines">{{ pkg.get_description }}</td>
+        <td class="lines">{{ pkg.format_versions|linebreaksbr }}</td>
+        <td class="lines">
+        {% for uploader in pkg.get_uploaders %}
+            <a href="{% url 'packages_search' 'uploader' uploader.email %}">{{ uploader.name }}</a>
+        {% endfor %}
+        </td>
+        <td class="lines">
+        {% if pkg.needs_sponsor %}
+            {% trans 'Yes' %}
+        {% else %}
+            {% trans 'No' %}
+        {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% endfor %}
+{% else %}
+<strong>{% trans 'No packages' %}</strong>
+{% endif %}

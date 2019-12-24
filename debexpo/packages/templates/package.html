@@ -1,0 +1,210 @@
+{% extends "base.html" %}{% load i18n %}
+
+{% block content %}
+{% blocktrans with name=package.name trimmed %}
+<h1>Details about package {{ name }}</h1>
+{% endblocktrans %}
+
+<table>
+    <tr>
+        <th>{% trans 'Name:' %}</th>
+        <td>{{ package.name }}
+            {% if package.in_debian %}
+            (<a href="https://tracker.debian.org/pkg/{{ package.name }}">PTS</a
+            >)
+            {% endif %}
+        </td>
+    </tr>
+
+    <tr>
+        <th>{% trans 'Uploader:' %}</th>
+        <td>
+            {% for uploader in package.get_uploaders %}
+            <a href="{% url 'packages_search' 'uploader' uploader.email %}"
+               >{{ uploader.name }}</a>
+            &lt;<a href="mailto:{{ uploader.email }}">{{ uploader.email }}</a
+            >&gt;
+
+            (<a href="https://qa.debian.org/developer.php?login={{ uploader.email }}"
+                >Debian QA page</a>)
+            {% endfor %}
+        </td>
+    </tr>
+
+    <tr>
+        <th>{% trans 'Description:' %}</th>
+        <td>{{ package.get_full_description|linebreaksbr }}</td>
+    </tr>
+
+    {% if user.is_authenticated %}
+    {% if user not in package.get_uploaders %}
+    {% comment %}
+    <tr>
+        <th>{% trans 'Subscribe:' %}</th>
+        <td><a href="{% url 'package_subscribe' package.name %}"
+               >{% trans 'Edit your subscription' %}</a></td>
+    </tr>
+    {% endcomment %}
+    {% endif %}
+    <tr>
+        <th>{% trans 'Needs a sponsor:' %}</th>
+        <td>
+            {% if package.needs_sponsor %}
+            {% trans 'Yes' %}
+            {% else %}
+            {% trans 'No' %}
+            {% endif %}
+            {% if user in package.get_uploaders %}
+            <form action="{% url 'sponsor_package' package.name %}"
+                  method="post">
+                {% csrf_token %}
+                <input type="submit" name="commit_sponsor"
+                       value="{% trans 'Change' %}">
+            </form>
+            {% endif %}
+        </td>
+    </tr>
+
+    {% if user in package.get_uploaders or user.is_superuser %}
+    <tr>
+        <th>{% trans 'Delete package:' %}</th>
+        <form action="{% url 'delete_package' package.name %}"
+              method="post">
+            {% csrf_token %}
+            {% if user.is_superuser and user not in package.get_uploaders %}
+            <td>
+                <input type="submit" name="commit_delete"
+                       value="{% trans 'Admin package deletion' %}"></td>
+            {% else %}
+            <td>
+                <input type="submit" name="commit_delete"
+                       value="{% trans 'Delete this package' %}"></td>
+            {% endif %}
+        </form>
+    </tr>
+
+    {% endif %}
+    {% endif %}
+</table>
+
+<h1>{% trans 'Package uploads' %}</h1>
+
+{% for upload in package.packageupload_set.all %}
+
+{% blocktrans with index=forloop.revcounter trimmed %}
+<h2>Upload #{{ index }}<h2>
+{% endblocktrans %}
+
+<h3>{% trans 'Information' %}</h3>
+
+<table>
+    <tr class="pkg-list">
+        <th>{% trans 'Version:' %}</th>
+        <td>{{ upload.version }}
+            {% if user in package.get_uploaders %}
+            {% comment %}
+            (<a href="{% url 'package_rfs' package.name %}"
+                >{% trans 'View RFS template' %}</a>)
+            {% endcomment %}
+            {% endif %}
+        </td>
+    </tr>
+
+    <tr class="pkg-list">
+        <th>{% trans 'Uploaded:' %}</th>
+        <td>{{ upload.uploaded|date:"Y-m-d H:i" }}</td>
+    </tr>
+
+    {% if upload.get_dsc_url %}
+    <tr>
+        <th>{% trans 'Source package:' %}</th>
+        <td>
+            <a href="{{ upload.get_dsc_url }}">{{ upload.get_dsc_url }}</a>
+        </td>
+    </tr>
+    {% endif %}
+
+    <tr class="pkg-list">
+        <th>{% trans 'Distribution:' %}</th>
+        <td>{{ upload.distribution }}</td>
+    </tr>
+
+    <tr class="pkg-list">
+        <th>{% trans 'Section:' %}</th>
+        <td>{{ upload.get_section.name }}</td>
+    </tr>
+
+    <tr class="pkg-list">
+        <th>{% trans 'Priority:' %}</th>
+        <td>{{ upload.get_priority.name }}</td>
+    </tr>
+
+    {% if upload.closes %}
+
+    <tr class="pkg-list">
+        <th>{% trans 'Closes bugs:' %}</th>
+        <td>
+            {% for bug in upload.get_closes %}
+            <a href="https://bugs.debian.org/{{ bug }}">#{{ bug }}</a>
+            {% endfor %}
+        </td>
+    </tr>
+    {% endif %}
+</table>
+
+{% if upload.packageinfo_set.all %}
+<h3 class="qa-toplevel-header">{% trans 'QA information' %}</h3>
+
+<ul class="qa">
+    {% for pkginfo in upload.packageinfo_set.all %}
+    <li class="severity-{{ pkginfo.get_severity|lower }}">
+        <span class="visibility"
+              title="{{ pkginfo.get_severity }}">–</span>
+        {{ pkginfo.render|safe }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<h3>{% trans 'Comments' %}</h3>
+
+{% if upload.comments_set.all %}
+<ol>
+    {% for comment in upload.comments_set.all %}
+    <li>
+        <div>
+            <pre>{{ comment.text }}</pre>
+            {% if comment.outcome == outcome.needs_work.value %}
+            <span style="color: red;">{% trans 'Needs work' %}</span>
+            {% elif comment.outcome == outcome.perfect.value %}
+            <span style="color: green;">{% trans 'Perfect' %}</span>
+            {% endif %}
+            <i>{{ comment.user.name }} at {{ comment.date }}</i>
+            {% if comment.status == status.uploaded.value %}
+            <strong>{% trans 'Package has been uploaded to Debian' %}</strong>
+            {% endif %}
+        </div>
+    </li>
+    {% endfor %}
+</ol>
+{% else %}
+<p><i>{% trans 'No comments' %}</i></p>
+{% endif %}
+
+{% if user.is_authenticated %}
+{% comment %}
+<h4>{% trans 'New comment' %}</h4>
+<fieldset>
+    <form method="post" action="{% url 'package_comment' package.name %}">
+        {% csrf_token %}
+        <table>
+            {{ comment_form }}
+        </table>
+        <input id="commit_comment" name="commit_comment" type="submit"
+               value="{% trans 'Submit' %}">
+    </form>
+</fieldset>
+{% endcomment %}
+{% endif %}
+{% endfor %}
+{% endblock %}

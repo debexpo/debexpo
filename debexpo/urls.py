@@ -38,13 +38,18 @@ from debexpo.base.views import index, contact, intro_reviewers, \
     intro_maintainers, qa
 from debexpo.accounts.views import register, profile
 from debexpo.accounts.forms import PasswordResetForm
+from debexpo.packages.views import package, packages, packages_my, \
+    PackagesFeed, sponsor_package, delete_package
 
 urlpatterns = [
+    # Base site
     url(r'^$', index, name='index'),
     url(r'^contact/$', contact, name='contact'),
     url(r'^intro-reviewers/$', intro_reviewers, name='reviewers'),
     url(r'^qa/$', qa, name='qa'),
     url(r'^intro-maintainers/$', intro_maintainers, name='maintainers'),
+
+    # Accounts
     url(r'^accounts/reset/'
         r'(?P<uidb64>[0-9A-Za-z_\-]+)/'
         r'(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
@@ -88,9 +93,29 @@ urlpatterns = [
     url(r'^accounts/register/$', register, name='register'),
     url(r'^accounts/profile/$', profile, name='profile'),
 
+    # Packages
+    url(r'^packages/(?P<key>[a-z]+)/(?P<value>.+)/(?P<feed>feed)/$',
+        PackagesFeed(),
+        name='packages_search_feed'),
+    url(r'^packages/(?P<key>[a-z]+)/(?P<value>.+)/$', packages,
+        name='packages_search'),
+    url(r'^packages/(?P<feed>feed)/$', PackagesFeed(),
+        name='packages_feed'),
+    url(r'^packages/$', packages,
+        name='packages'),
+
+    url(r'^package/(?P<name>.+)/delete/$', delete_package,
+        name='delete_package'),
+    url(r'^package/(?P<name>.+)/sponsor/$', sponsor_package,
+        name='sponsor_package'),
+    url(r'^package/(?P<name>.+)/$', package, name='package'),
+
     # Redirects
     url(r'^my/$', lambda request: HttpResponsePermanentRedirect(
         reverse('profile')), name='my'),
+    url(r'^package/$', lambda request: HttpResponsePermanentRedirect(
+        reverse('packages')), name='package_index'),
+    url(r'^packages/my/$', packages_my, name='packages_my'),
     url(r'^accounts/$', lambda request: HttpResponsePermanentRedirect(
         reverse('profile')), name='accounts')
 ]

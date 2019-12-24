@@ -42,11 +42,9 @@ from django.test import TestCase
 #
 from debexpo.accounts.models import User, Profile, UserStatus
 from debexpo.keyring.models import GPGAlgo, Key
-# from debexpo.model.packages import Package
-# from debexpo.model.package_versions import PackageVersion
-# from debexpo.model.source_packages import SourcePackage
-# from debexpo.model.user_upload_key import UserUploadKey
-# from debexpo.lib.gnupg import GnuPG
+from debexpo.packages.models import Package, PackageUpload, SourcePackage, \
+    Priority, Section, Distribution, Component, \
+    BinaryPackage
 
 __all__ = ['environ', 'url', 'TestController']
 
@@ -128,64 +126,88 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         user = User.objects.filter(email='email@example.com')
         user.delete()
 
-#    def _setup_example_package(self):
-#        """Add an example package.
-#
-#        The example package with name ``testpackage`` is added to
-#        the database.
-#
-#        This method may be used in the setUp method of derived test
-#        classes.
-#        """
-#        user = meta.session.query(User).filter(
-#            User.email == 'email@example.com').one()
-#
-#        if not user:
-#            raise Exception('Example user must be created before the package')
-#
-#        package = Package(name='testpackage', user=user,
-#                          description='a test package')
-#        meta.session.add(package)
-#
-#        package_version = PackageVersion(
-#            package=package,
-#            version='1.0-1',
-#            maintainer='Test User <email@example.com>',
-#            section='Admin',
-#            distribution='unstable',
-#            qa_status=0,
-#            component='main',
-#            priority='optional',
-#            closes='',
-#            uploaded=datetime.now())
-#        meta.session.add(package_version)
-#        meta.session.add(SourcePackage(package_version=package_version))
-#        meta.session.commit()
-#
-#    def _remove_example_package(self):
-#        """Remove the example package.
-#
-#        This method removes the example package created in
-#        _setup_example_package.
-#
-#        This method must be used in the tearDown method of derived
-#        test classes that use _setup_example_package.
-#        """
-#        package = meta.session.query(Package) \
-#            .filter(Package.name == 'testpackage') \
-#            .first()
-#        if not package:
-#            return
-#
-#        package_version = meta.session.query(PackageVersion) \
-#            .filter(PackageVersion.package == package) \
-#            .first()
-#
-#        package_source = meta.session.query(SourcePackage) \
-#            .filter(SourcePackage.package_version == package_version) \
-#            .first()
-#
-#        meta.session.delete(package_source)
-#        meta.session.delete(package_version)
-#        meta.session.delete(package)
-#        meta.session.commit()
+    def _setup_example_package(self):
+        """Add an example package.
+
+        The example package with name ``testpackage`` is added to
+        the database.
+
+        This method may be used in the setUp method of derived test
+        classes.
+        """
+        user = User.objects.get(email='email@example.com')
+
+        package = Package(name='testpackage')
+        package.save()
+
+        package_upload = PackageUpload(
+            uploader=user,
+            package=package,
+            version='1.0-1',
+            distribution=Distribution.objects.get_or_create(name='unstable')[0],
+            component=Component.objects.get_or_create(name='main')[0],
+            closes='943216')
+        package_upload.save()
+
+        source = SourcePackage(
+            upload=package_upload,
+            maintainer='Test User <email@example.com>',
+            section=Section.objects.get_or_create(name='admin')[0],
+            priority=Priority.objects.get_or_create(name='optional')[0]
+        )
+
+        source.save()
+
+        binary = BinaryPackage(
+            upload=package_upload,
+            name='testpackage',
+            description='A short description here',
+        )
+
+        binary.save()
+
+        package = Package(name='anotherpackage', in_debian=True)
+        package.save()
+
+        package_upload = PackageUpload(
+            uploader=user,
+            package=package,
+            version='1.0-1',
+            distribution=Distribution.objects.get_or_create(name='buster')[0],
+            component=Component.objects.get_or_create(name='non-free')[0],
+            closes='')
+        package_upload.save()
+
+        source = SourcePackage(
+            upload=package_upload,
+            maintainer='Another maintainer <another@example.com>',
+            section=Section.objects.get_or_create(name='utils')[0],
+            priority=Priority.objects.get_or_create(name='standard')[0]
+        )
+        source.save()
+
+        binary = BinaryPackage(
+            upload=package_upload,
+            name='libanotherpackage',
+            description='Another short description here',
+        )
+
+        binary.save()
+
+    def _remove_example_package(self):
+        """Remove the example package.
+
+        This method removes the example package created in
+        _setup_example_package.
+
+        This method must be used in the tearDown method of derived
+        test classes that use _setup_example_package.
+        """
+
+        for name in ('testpackage', 'anotherpackage'):
+            try:
+                package = Package.objects.get(name=name)
+            except Package.DoesNotExist:
+                pass
+            else:
+                package.delete()
