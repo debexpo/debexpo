@@ -1070,3 +1070,8 @@ table.sponsor-guidelines {
     color: red;
     font-weight: bold;
 }
+
+ul.sub-list {
+    padding-left: 0em;
+    margin: 0em;
+}
