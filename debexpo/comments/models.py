@@ -29,7 +29,7 @@
 from enum import Enum
 
 from django.db import models
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _, activate, get_language
 from django.urls import reverse
 
 from debexpo.accounts.models import User
@@ -109,18 +109,19 @@ class Comment(models.Model):
         package = self.upload.package.name
         uploader = self.upload.uploader.email
         commenter = self.user.email
+        lang = get_language()
 
         # Get subscription list for our package
         recipients = set(PackageSubscription.objects.get_recipients(
             package, 'upload'))
 
-        # Add package uploader
-        recipients -= set([commenter])
-        # Remove commenter
-        recipients.update([uploader])
+        # Remove commenter and uploader
+        recipients -= set([commenter, uploader])
 
-        # Send notification
+        # Send notification (always in english as i18n only is available on
+        # requests)
         email = Email('email-comment.html')
+        activate('en')
         email.send(
             _('New comment on package {}').format(package),
             recipients,
@@ -130,6 +131,20 @@ class Comment(models.Model):
             subscription_url=request.build_absolute_uri(
                 reverse('subscriptions')),
         )
+
+        # For the uploader
+        email.send(
+            _('New comment on package {}').format(package),
+            [uploader],
+            comment=self,
+            package_url=request.build_absolute_uri(
+                reverse('package', args=[package])),
+            subscription_url=request.build_absolute_uri(
+                reverse('subscriptions')),
+        )
+
+        # Restore language context
+        activate(lang)
 
     def get_outcome(self):
         return UploadOutcome(self.outcome)

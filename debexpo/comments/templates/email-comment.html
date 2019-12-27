@@ -1,12 +1,12 @@
-{% extends "email-base.html" %}{% load i18n %}{% block content %}{% blocktrans with from=args.comment.user.name package=args.comment.upload.package.name subscription_url=args.subscription_url package_url=args.package_url text=args.comment.text %}
-From: {{ from }}
-Package: {{ package }}
-Url: {{ package_url }}
+{% extends "email-base.html" %}{% block content %}
+From: {{ args.comment.user.name}}
+Package: {{ args.comment.upload.package.name }}
+Url: {{ args.package_url }}
 
 ---
-{{ text }}
+{{ args.comment.text }}
 ---
 
 You can change your subscription here: {{ subscription_url }}
 
-Thanks,{% endblocktrans %}{% endblock %}
+Thanks,{% endblock %}
