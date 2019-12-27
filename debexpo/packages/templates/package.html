@@ -173,9 +173,9 @@
         <div>
             <pre>{{ comment.text }}</pre>
             {% if comment.get_outcome.name == 'needs_work' %}
-            <span style="color: red;">{% trans 'Needs work' %}</span>
+            <span class="outcome-work">{% trans 'Needs work' %}</span>
             {% elif comment.get_outcome.name == 'ready' %}
-            <span style="color: green;">{% trans 'Ready' %}</span>
+            <span class="outcome-ready">{% trans 'Ready' %}</span>
             {% endif %}
             <i>{{ comment.user.name }} at {{ comment.date }}</i>
             {% if comment.uploaded %}

@@ -1075,3 +1075,11 @@ ul.sub-list {
     padding-left: 0em;
     margin: 0em;
 }
+
+.outcome-work {
+    color: red;
+}
+
+.outcome-ready {
+    color: green;
+}
