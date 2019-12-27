@@ -126,6 +126,7 @@ class Comment(models.Model):
             _('New comment on package {}').format(package),
             recipients,
             comment=self,
+            is_uploader=False,
             package_url=request.build_absolute_uri(
                 reverse('package', args=[package])),
             subscription_url=request.build_absolute_uri(
@@ -137,6 +138,7 @@ class Comment(models.Model):
             _('New comment on package {}').format(package),
             [uploader],
             comment=self,
+            is_uploader=True,
             package_url=request.build_absolute_uri(
                 reverse('package', args=[package])),
             subscription_url=request.build_absolute_uri(

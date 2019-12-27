@@ -6,7 +6,7 @@ Url: {{ args.package_url }}
 ---
 {{ args.comment.text }}
 ---
-
-You can change your subscription here: {{ subscription_url }}
-
+{% if is_uploader %}
+You can change your subscription here: {{ args.subscription_url }}
+{% endif %}
 Thanks,{% endblock %}
