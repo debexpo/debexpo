@@ -155,6 +155,10 @@ class PackageUpload(models.Model):
     def get_closes(self):
         return self.closes.split(' ')
 
+    def get_index(self):
+        return PackageUpload.objects.filter(
+            package=self.package, uploaded__lt=self.uploaded).count() + 1
+
 
 class SourcePackage(models.Model):
     # Links a PackageUpload
