@@ -1,4 +1,8 @@
-{% extends "email-base.html" %}{% block content %}
+{% extends "email-base.html" %}{% block content %}{% if not args.is_uploader %}
+A comment has been posted to a package you are subscribed to:
+{% else %}
+A comment has been posted to a package you uploaded:
+{% endif %}
 From: {{ args.comment.user.name}}
 Package: {{ args.comment.upload.package.name }}
 Url: {{ args.package_url }}
@@ -6,7 +10,7 @@ Url: {{ args.package_url }}
 ---
 {{ args.comment.text }}
 ---
-{% if is_uploader %}
+{% if not args.is_uploader %}
 You can change your subscription here: {{ args.subscription_url }}
 {% endif %}
 Thanks,{% endblock %}
