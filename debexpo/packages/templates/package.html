@@ -90,7 +90,7 @@
 {% for upload in package.packageupload_set.all %}
 
 {% blocktrans with index=forloop.revcounter trimmed %}
-<h2>Upload #{{ index }}<h2>
+<h2 id="upload-{{index}}">Upload #{{ index }}<h2>
 {% endblocktrans %}
 
 <h3>{% trans 'Information' %}</h3>
