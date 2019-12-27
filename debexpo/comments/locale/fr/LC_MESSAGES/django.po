@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-16 22:47+0100\n"
+"POT-Creation-Date: 2019-12-27 10:58+0100\n"
 "PO-Revision-Date: 2019-12-16 22:49+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -58,38 +58,9 @@ msgstr "État de l'envoi"
 msgid "Uploaded to debian"
 msgstr "Envoyé sur Debian"
 
-#: comments/models.py:125
+#: comments/models.py:126 comments/models.py:138
 msgid "New comment on package {}"
 msgstr "Nouveau commentaire sur le paquet {}"
-
-#: comments/templates/email-comment.html:1
-#, python-format
-msgid ""
-"\n"
-"From: %(from)s\n"
-"Package: %(package)s\n"
-"Url: %(package_url)s\n"
-"\n"
-"---\n"
-"%(text)s\n"
-"---\n"
-"\n"
-"You can change your subscription here: %(subscription_url)s\n"
-"\n"
-"Thanks,"
-msgstr ""
-"\n"
-"De : %(from)s\n"
-"Paquet : %(package)s\n"
-"Url: %(package_url)s\n"
-"\n"
-"---\n"
-"%(text)s\n"
-"---\n"
-"\n"
-"Vous pouvez modifier votre abonnement ici : %(subscription_url)s\n"
-"\n"
-"Merci,"
 
 #: comments/templates/subscribe.html:4
 msgid "Subscribe to package "
@@ -123,22 +94,49 @@ msgstr "Notification sur"
 msgid "Edit"
 msgstr "Modifier"
 
-#: comments/templates/subscriptions.html:29
+#: comments/templates/subscriptions.html:31
 msgid "Update"
 msgstr "Mettre à jour"
 
-#: comments/templates/subscriptions.html:33
+#: comments/templates/subscriptions.html:37
 msgid "Unsubscribe"
 msgstr "Se désabonner"
 
-#: comments/templates/subscriptions.html:39
+#: comments/templates/subscriptions.html:44
 msgid "Add new subscription"
 msgstr "Ajouter un abonnement"
 
-#: comments/templates/subscriptions.html:45
+#: comments/templates/subscriptions.html:50
 msgid "Package Name:"
 msgstr "Nom du paquet :"
 
-#: comments/templates/subscriptions.html:50
+#: comments/templates/subscriptions.html:55
 msgid "Create subscription"
 msgstr "Créer un abonnement"
+
+#~ msgid ""
+#~ "\n"
+#~ "From: %(from)s\n"
+#~ "Package: %(package)s\n"
+#~ "Url: %(package_url)s\n"
+#~ "\n"
+#~ "---\n"
+#~ "%(text)s\n"
+#~ "---\n"
+#~ "\n"
+#~ "You can change your subscription here: %(subscription_url)s\n"
+#~ "\n"
+#~ "Thanks,"
+#~ msgstr ""
+#~ "\n"
+#~ "De : %(from)s\n"
+#~ "Paquet : %(package)s\n"
+#~ "Url: %(package_url)s\n"
+#~ "\n"
+#~ "---\n"
+#~ "%(text)s\n"
+#~ "---\n"
+#~ "\n"
+#~ "Vous pouvez modifier votre abonnement ici : %(subscription_url)s\n"
+#~ "\n"
+#~ "Merci,"
