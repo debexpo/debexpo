@@ -205,8 +205,9 @@ class TestPackageController(TestController):
         })
 
         self.assertEquals(response.status_code, 302)
-        self.assertEquals(reverse('package', args=['testpackage']),
-                          response.url)
+        self.assertEquals(
+            f"{reverse('package', args=['testpackage'])}#upload-1",
+            response.url)
 
         comment = Comment.objects.get(upload=upload)
 

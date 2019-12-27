@@ -117,6 +117,8 @@ def comment(request, name):
     upload_id = request.POST.get('upload_id')
     package = get_object_or_404(Package, name=name)
     upload = get_object_or_404(PackageUpload, package=package, pk=upload_id)
+    redirect_url = reverse('package', args=[name])
+    index = upload.get_index()
 
     form = CommentForm(request.POST)
     if form.is_valid():
@@ -126,4 +128,4 @@ def comment(request, name):
         comment.save()
         comment.notify(request)
 
-    return HttpResponseRedirect(reverse('package', args=[name]))
+    return HttpResponseRedirect(f"{redirect_url}#upload-{index}")
