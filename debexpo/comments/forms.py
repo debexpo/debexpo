@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
+#   forms.template - form for package subcription
 #
-#   user_upload_key.py — model for upload keys
-#
-#   This file is part of debexpo -
+#   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2011 Asheesh Laroia <paulproteus@debian.org>
+#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -28,34 +26,18 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-"""
-Holds users table model.
-"""
+from django import forms
 
-__author__ = 'Asheesh Laroia'
-__copyright__ = 'Copyright © 2011 Asheesh Laroia'
-__license__ = 'MIT'
-
-import sqlalchemy as sa
-from sqlalchemy import orm
-from sqlalchemy.orm import backref
-
-from debexpo.model import meta, OrmObject
-from debexpo.model.users import User
-
-t_user_upload_key = sa.Table(
-    'user_upload_key', meta.metadata,
-    sa.Column('id', sa.types.Integer, primary_key=True),
-    sa.Column('user_id', sa.types.Integer, sa.ForeignKey('users.id')),
-    sa.Column('upload_key', sa.types.String(200), nullable=False, unique=False),
-    )
+from .models import PackageSubscription, Comment
 
 
-class UserUploadKey(OrmObject):
-    foreign = ['user']
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('text', 'outcome', 'uploaded')
 
 
-orm.mapper(UserUploadKey, t_user_upload_key, properties={
-    'user': orm.relation(
-        User, backref=backref('user_upload_key', cascade='all, delete-orphan'))
-})
+class SubscriptionForm(forms.ModelForm):
+    class Meta:
+        model = PackageSubscription
+        fields = ('on_upload', 'on_comment')

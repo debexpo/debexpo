@@ -27,7 +27,7 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 from .common import *  # noqa
-from os import path
+from os import path, getenv
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'DoNotUseThisKeyInProductionEnvironment'
@@ -68,6 +68,10 @@ LOGGING = {
         'debexpo': {
             'handlers': ['console'],
             'level': 'DEBUG',
+        },
+        'django': {
+            'handlers': ['console'],
+            'level': getenv('DJANGO_LOG_LEVEL', 'INFO'),
         },
     },
 }

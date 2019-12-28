@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
+#   apps.py - app registration for comments
 #
-#   package_subscriptions.py — package_subscriptions table model
-#
-#   This file is part of debexpo -
+#   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -28,36 +26,8 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-"""
-Holds package_subscriptions table model.
-"""
-
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
-__license__ = 'MIT'
-
-import sqlalchemy as sa
-from sqlalchemy import orm
-from sqlalchemy.orm import backref
-
-from debexpo.model import meta, OrmObject
-from debexpo.model.users import User
-
-t_package_subscriptions = sa.Table(
-    'package_subscriptions', meta.metadata,
-    sa.Column('id', sa.types.Integer, primary_key=True),
-    sa.Column('user_id', sa.types.Integer, sa.ForeignKey('users.id')),
-    sa.Column('package', sa.types.String(200), nullable=False),
-    sa.Column('level', sa.types.Integer, nullable=False),
-    )
+from django.apps import AppConfig
 
 
-class PackageSubscription(OrmObject):
-    foreign = ['user']
-
-
-orm.mapper(PackageSubscription, t_package_subscriptions, properties={
-    'user': orm.relation(
-        User,
-        backref=backref('package_subscriptions', cascade='all, delete-orphan'))
-})
+class CommentsConfig(AppConfig):
+    name = 'comments'

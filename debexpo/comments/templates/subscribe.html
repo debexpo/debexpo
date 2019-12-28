@@ -1,0 +1,26 @@
+{% extends "base.html" %}{% load i18n %}
+
+{% block content %}
+<h1>{% trans 'Subscribe to package ' %}{{ package }}</h1>
+
+<fieldset>
+    <form method="post">
+        {% csrf_token %}
+        <table id="form">
+        {{ form }}
+        </table>
+        {% if next %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
+        <input type="submit" value="{% trans 'Submit' %}" />
+    </form>
+</fieldset>
+
+{% if next %}
+<p><a href="{% url 'package' next %}"
+      >{% trans 'Back to package details' %}</a>
+{% else %}
+<p><a href="{% url 'subscriptions' %}"
+      >{% trans 'Back to subscription list' %}</a>
+{% endif %}
+{% endblock %}

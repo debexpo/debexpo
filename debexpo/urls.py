@@ -40,6 +40,8 @@ from debexpo.accounts.views import register, profile
 from debexpo.accounts.forms import PasswordResetForm
 from debexpo.packages.views import package, packages, packages_my, \
     PackagesFeed, sponsor_package, delete_package
+from debexpo.comments.views import subscribe, unsubscribe, subscriptions, \
+    comment
 
 urlpatterns = [
     # Base site
@@ -92,6 +94,7 @@ urlpatterns = [
         name='password_reset_done'),
     url(r'^accounts/register/$', register, name='register'),
     url(r'^accounts/profile/$', profile, name='profile'),
+    url(r'^accounts/subscriptions/$', subscriptions, name='subscriptions'),
 
     # Packages
     url(r'^packages/(?P<key>[a-z]+)/(?P<value>.+)/(?P<feed>feed)/$',
@@ -108,6 +111,12 @@ urlpatterns = [
         name='delete_package'),
     url(r'^package/(?P<name>.+)/sponsor/$', sponsor_package,
         name='sponsor_package'),
+    url(r'^package/(?P<name>.+)/subscribe/$', subscribe,
+        name='subscribe_package'),
+    url(r'^package/(?P<name>.+)/unsubscribe/$', unsubscribe,
+        name='unsubscribe_package'),
+    url(r'^package/(?P<name>.+)/comment/$', comment,
+        name='comment_package'),
     url(r'^package/(?P<name>.+)/$', package, name='package'),
 
     # Redirects

@@ -9,6 +9,7 @@
 {% url 'sponsors' as url_sponsors %}
 {% url 'packages' as url_packages %}
 {% url 'packages_my' as url_packages_my %}
+{% url 'subscriptions' as url_subscriptions_my %}
 {% url 'logout' as url_logout %}
 {% url 'login' as url_login %}
 {% url 'register' as url_register %}
@@ -102,6 +103,9 @@
                 </a>
                 <a href="{{ url_packages_my }}">
                     {% trans 'My packages' %}
+                </a>
+                <a href="{{ url_subscriptions_my }}">
+                    {% trans 'My subscriptions' %}
                 </a>
             {% else %}
                 <a href="{{ url_register }}">

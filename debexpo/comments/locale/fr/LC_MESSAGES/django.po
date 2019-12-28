@@ -1,0 +1,142 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-12-27 10:58+0100\n"
+"PO-Revision-Date: 2019-12-16 22:49+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 2.2.4\n"
+
+#: comments/models.py:48
+msgid "Not reviewed"
+msgstr "Non revue"
+
+#: comments/models.py:49
+msgid "Needs work"
+msgstr "Nécessite des corrections"
+
+#: comments/models.py:50
+msgid "Ready"
+msgstr "Pret"
+
+#: comments/models.py:69
+msgid "Name"
+msgstr "Nom"
+
+#: comments/models.py:71
+msgid "Subscribe to uploads"
+msgstr "S'abonner aux envois"
+
+#: comments/models.py:72
+msgid "Subscribe to comments"
+msgstr "S'abonner aux commentaires"
+
+#: comments/models.py:99
+msgid "Comment"
+msgstr "Commentaires"
+
+#: comments/models.py:100
+msgid "Comment date"
+msgstr "Date du commentaire"
+
+#: comments/models.py:104
+msgid "Upload outcome"
+msgstr "État de l'envoi"
+
+#: comments/models.py:106
+msgid "Uploaded to debian"
+msgstr "Envoyé sur Debian"
+
+#: comments/models.py:126 comments/models.py:138
+msgid "New comment on package {}"
+msgstr "Nouveau commentaire sur le paquet {}"
+
+#: comments/templates/subscribe.html:4
+msgid "Subscribe to package "
+msgstr "S'abonner au paquet "
+
+#: comments/templates/subscribe.html:15
+msgid "Submit"
+msgstr "Valider"
+
+#: comments/templates/subscribe.html:21
+msgid "Back to package details"
+msgstr "Retour aux détails du paquet"
+
+#: comments/templates/subscribe.html:24
+msgid "Back to subscription list"
+msgstr "Retour à la liste des abonnements"
+
+#: comments/templates/subscriptions.html:4
+msgid "My subscription list"
+msgstr "Ma liste d'abonnements"
+
+#: comments/templates/subscriptions.html:8
+msgid "Package"
+msgstr "Paquet"
+
+#: comments/templates/subscriptions.html:9
+msgid "Notification on"
+msgstr "Notification sur"
+
+#: comments/templates/subscriptions.html:10
+msgid "Edit"
+msgstr "Modifier"
+
+#: comments/templates/subscriptions.html:31
+msgid "Update"
+msgstr "Mettre à jour"
+
+#: comments/templates/subscriptions.html:37
+msgid "Unsubscribe"
+msgstr "Se désabonner"
+
+#: comments/templates/subscriptions.html:44
+msgid "Add new subscription"
+msgstr "Ajouter un abonnement"
+
+#: comments/templates/subscriptions.html:50
+msgid "Package Name:"
+msgstr "Nom du paquet :"
+
+#: comments/templates/subscriptions.html:55
+msgid "Create subscription"
+msgstr "Créer un abonnement"
+
+#~ msgid ""
+#~ "\n"
+#~ "From: %(from)s\n"
+#~ "Package: %(package)s\n"
+#~ "Url: %(package_url)s\n"
+#~ "\n"
+#~ "---\n"
+#~ "%(text)s\n"
+#~ "---\n"
+#~ "\n"
+#~ "You can change your subscription here: %(subscription_url)s\n"
+#~ "\n"
+#~ "Thanks,"
+#~ msgstr ""
+#~ "\n"
+#~ "De : %(from)s\n"
+#~ "Paquet : %(package)s\n"
+#~ "Url: %(package_url)s\n"
+#~ "\n"
+#~ "---\n"
+#~ "%(text)s\n"
+#~ "---\n"
+#~ "\n"
+#~ "Vous pouvez modifier votre abonnement ici : %(subscription_url)s\n"
+#~ "\n"
+#~ "Merci,"

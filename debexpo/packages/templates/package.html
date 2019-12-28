@@ -38,13 +38,11 @@
 
     {% if user.is_authenticated %}
     {% if user not in package.get_uploaders %}
-    {% comment %}
     <tr>
         <th>{% trans 'Subscribe:' %}</th>
-        <td><a href="{% url 'package_subscribe' package.name %}"
+        <td><a href="{% url 'subscribe_package' package.name %}?next={{ package.name }}"
                >{% trans 'Edit your subscription' %}</a></td>
     </tr>
-    {% endcomment %}
     {% endif %}
     <tr>
         <th>{% trans 'Needs a sponsor:' %}</th>
@@ -92,7 +90,7 @@
 {% for upload in package.packageupload_set.all %}
 
 {% blocktrans with index=forloop.revcounter trimmed %}
-<h2>Upload #{{ index }}<h2>
+<h2 id="upload-{{index}}">Upload #{{ index }}<h2>
 {% endblocktrans %}
 
 <h3>{% trans 'Information' %}</h3>
@@ -168,19 +166,19 @@
 
 <h3>{% trans 'Comments' %}</h3>
 
-{% if upload.comments_set.all %}
+{% if upload.comment_set.all %}
 <ol>
-    {% for comment in upload.comments_set.all %}
+    {% for comment in upload.comment_set.all %}
     <li>
         <div>
             <pre>{{ comment.text }}</pre>
-            {% if comment.outcome == outcome.needs_work.value %}
-            <span style="color: red;">{% trans 'Needs work' %}</span>
-            {% elif comment.outcome == outcome.perfect.value %}
-            <span style="color: green;">{% trans 'Perfect' %}</span>
+            {% if comment.get_outcome.name == 'needs_work' %}
+            <span class="outcome-work">{% trans 'Needs work' %}</span>
+            {% elif comment.get_outcome.name == 'ready' %}
+            <span class="outcome-ready">{% trans 'Ready' %}</span>
             {% endif %}
             <i>{{ comment.user.name }} at {{ comment.date }}</i>
-            {% if comment.status == status.uploaded.value %}
+            {% if comment.uploaded %}
             <strong>{% trans 'Package has been uploaded to Debian' %}</strong>
             {% endif %}
         </div>
@@ -192,19 +190,18 @@
 {% endif %}
 
 {% if user.is_authenticated %}
-{% comment %}
 <h4>{% trans 'New comment' %}</h4>
 <fieldset>
-    <form method="post" action="{% url 'package_comment' package.name %}">
+    <form method="post" action="{% url 'comment_package' package.name %}">
         {% csrf_token %}
         <table>
             {{ comment_form }}
         </table>
+        <input type="hidden" name="upload_id" value="{{ upload.id }}">
         <input id="commit_comment" name="commit_comment" type="submit"
                value="{% trans 'Submit' %}">
     </form>
 </fieldset>
-{% endcomment %}
 {% endif %}
 {% endfor %}
 {% endblock %}
