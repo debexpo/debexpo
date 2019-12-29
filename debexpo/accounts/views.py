@@ -106,6 +106,7 @@ def _update_key(request, gpg_form):
     key = gpg_form.key
     key.user = request.user
     key.save()
+    key.update_subkeys()
 
 
 def _format_fingerprint(fingerprint):
