@@ -26,12 +26,16 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from django.db import models
+from django.db import models, transaction
+from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
 from debexpo.accounts.models import User
 from debexpo.tools.gnupg import GnuPG, ExceptionGnuPG, \
     ExceptionGnuPGMultipleKeys
+
+import logging
+log = logging.getLogger(__name__)
 
 
 class GPGAlgo(models.Model):
@@ -48,7 +52,7 @@ class GPGAlgo(models.Model):
 
 
 class KeyManager(models.Manager):
-    def _import_key(self, data):
+    def import_key(self, data):
         gpg = GnuPG()
 
         gpg.import_key(data)
@@ -81,8 +85,12 @@ class KeyManager(models.Manager):
 
         return size
 
+    def get_key_by_fingerprint(self, fingerprint):
+        return self.filter(Q(fingerprint=fingerprint) |
+                           Q(subkey__fingerprint=fingerprint)).distinct().get()
+
     def parse_key_data(self, data):
-        key = self._import_key(data)
+        key = self.import_key(data)
 
         user_key = Key()
         user_key.algorithm = self._validate_algorithm(key)
@@ -109,3 +117,22 @@ class Key(models.Model):
                                   blank=True, null=True,
                                   verbose_name=_('Type'))
     size = models.PositiveSmallIntegerField(verbose_name=_('Size'))
+
+    # This method is transactionally atomic in order to perform an 'update' by
+    # actually doing an 'delete' followed by an 'insert' in the same transaction
+    @transaction.atomic
+    def update_subkeys(self):
+        keyring = KeyManager().import_key(self.key)
+
+        SubKey.objects.filter(key=self).delete()
+
+        for fingerprint in keyring.subkeys.keys():
+            subkey = SubKey(key=self, fingerprint=fingerprint)
+            subkey.save()
+            log.info(f'Binding fingerprint {fingerprint} to key '
+                     f'{self.fingerprint}')
+
+
+class SubKey(models.Model):
+    key = models.ForeignKey(Key, on_delete=models.CASCADE)
+    fingerprint = models.TextField(max_length=40, verbose_name=_('Fingerprint'))

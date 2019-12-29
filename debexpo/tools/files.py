@@ -74,7 +74,7 @@ class GPGSignedFile():
         fingerprint = self._lookup_fingerprint()
 
         try:
-            self.key = Key.objects.get(fingerprint=fingerprint)
+            self.key = Key.objects.get_key_by_fingerprint(fingerprint)
         except Key.DoesNotExist:
             raise ExceptionGnuPGNoPubKey(self.filename, fingerprint)
 
