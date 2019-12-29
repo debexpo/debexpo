@@ -98,6 +98,7 @@ Xcgnuh6Rlywt6uiaFIGYnGefYPGXRAA=
         key.algorithm = GPGAlgo.objects.get(gpg_algorithm_id=algo)
         key.size = size
         key.save()
+        key.update_subkeys()
 
     def _setup_example_user(self, gpg=False):
         """Add an example user.
