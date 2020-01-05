@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
-#
 #   source_package.py — Build a source package for testing
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
+#   Copyright © 2019-2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -28,20 +26,15 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-__author__ = 'Baptiste BEAUPLAT'
-__copyright__ = 'Copyright © 2019 Baptiste BEAUPLAT'
-__license__ = 'MIT'
-
-import apt_pkg
 import logging
+from debian.debian_support import BaseVersion
 
 from os import environ, remove
 from os.path import isdir, join, dirname
 from shutil import rmtree, copytree
 from subprocess import Popen, PIPE, STDOUT
-from tempfile import mkdtemp, NamedTemporaryFile
-from pylons import config
-from debexpo.lib.changes import Changes
+from tempfile import mkdtemp
+from debexpo.tools.debian.changes import Changes
 
 log = logging.getLogger(__name__)
 
@@ -83,8 +76,8 @@ BQJb8YGqAhsMAAoJEMQ0eBzocfPf8IcA/RyHF6zgRu2Ds3wH8GgxjCZRW+YxWahX
     def __init__(self, source_dir):
         self.data_dir = join(dirname(__file__), 'sources')
         self.source_dir = join(self.data_dir, source_dir)
-        self.package = self._parse_changelog('Source')
-        self.version = self._parse_changelog('Version')
+        self.package = self._parse_changelog('Source').decode()
+        self.version = self._parse_changelog('Version').decode()
         self.workdir = mkdtemp(prefix='debexpo-source-package')
         self.gpgdir = mkdtemp(prefix='debexpo-source-package-gpg')
         self._import_testing_key()
@@ -126,16 +119,12 @@ BQJb8YGqAhsMAAoJEMQ0eBzocfPf8IcA/RyHF6zgRu2Ds3wH8GgxjCZRW+YxWahX
         return env
 
     def _import_testing_key(self):
-        with NamedTemporaryFile() as key:
-            args = ['--import',
-                    key.name]
-            command = config['debexpo.gpg_path']
+        args = ['--import',
+                join(dirname(__file__), '..', '..', 'keyring', 'secret.gpg')]
+        command = '/usr/bin/gpg'
 
-            key.write(self._GPG_KEY)
-            key.flush()
-
-            self._run_command(command, args, self.source_dir,
-                              self._get_env_with_gpg())
+        self._run_command(command, args, self.source_dir,
+                          self._get_env_with_gpg())
 
     def _build_package(self):
         args = ['--build=source',
@@ -163,10 +152,10 @@ BQJb8YGqAhsMAAoJEMQ0eBzocfPf8IcA/RyHF6zgRu2Ds3wH8GgxjCZRW+YxWahX
         self._run_command(command, args, self.workdir)
 
     def _get_orig_filename(self):
-        apt_pkg.init()
+        version = BaseVersion(self.version)
 
-        return join(self.workdir, self.package + '_' +
-                    apt_pkg.upstream_version(self.version) + '.orig.tar.xz')
+        return join(self.workdir,
+                    f'{self.package}_{version.upstream_version}.orig.tar.xz')
 
     # Remove orig tarball when not referenced by .changes as it will not be
     # uploaded (copied) to the incoming spool.
@@ -176,8 +165,8 @@ BQJb8YGqAhsMAAoJEMQ0eBzocfPf8IcA/RyHF6zgRu2Ds3wH8GgxjCZRW+YxWahX
         changes = Changes(changes_filename)
 
         found = False
-        for referenced in changes['Files']:
-            if '.orig.tar.xz' in referenced['name']:
+        for referenced in changes.files.files:
+            if '.orig.tar.xz' in str(referenced):
                 found = True
 
         if not found:

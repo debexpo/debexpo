@@ -1,7 +1,7 @@
 Source: hello
 Section: utils
 Priority: optional
-Maintainer: Vincent TIME <vtime@example.org>
+Maintainer: nope
 Build-Depends: debhelper (>= 11)
 Standards-Version: 4.1.3
 Homepage: https://example.org

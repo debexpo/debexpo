@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
-#
 #   test_upload.py — UploadController test cases
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2018 Baptiste BEAUPLAT <lyknode@cilg.org>
+#   Copyright © 2018-2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -28,30 +26,22 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-__author__ = 'Baptiste BEAUPLAT'
-__copyright__ = 'Copyright © 2018 Baptiste BEAUPLAT'
-__license__ = 'MIT'
-
-import pylons
 import logging
 import socket
 
-from email import message_from_file
-from glob import glob
-from os import remove, makedirs, walk
-from os.path import isdir, isfile, join, dirname
+from os import walk
+from os.path import isdir, join, dirname
 from shutil import rmtree, copytree
+from tempfile import TemporaryDirectory
 
-from debexpo.importer.importer import Importer
-from debexpo.model import meta
-from debexpo.model.package_versions import PackageVersion
-from debexpo.model.package_info import PackageInfo
-from debexpo.model.packages import Package
-from debexpo.model.package_subscriptions import PackageSubscription
-from debexpo.model.users import User
-from debexpo.tests import TestController, url
-from debexpo.tests.importer.source_package import TestSourcePackage
-from debexpo.lib.constants import SUBSCRIPTION_LEVEL_UPLOADS
+from django.core import mail
+
+from debexpo.importer.models import Importer, Spool
+from debexpo.packages.models import Package, PackageUpload
+from debexpo.accounts.models import User
+from debexpo.comments.models import PackageSubscription
+from tests import TestController
+from tests.functional.importer.source_package import TestSourcePackage
 
 log = logging.getLogger(__name__)
 
@@ -80,103 +70,86 @@ class TestImporterController(TestController):
         self.data_dir = join(dirname(__file__), 'data')
 
     def setUp(self):
-        self._setup_models()
         self._setup_example_user(gpg=True)
-        self._cleanup_mailbox()
         self._create_repo()
-        self.upload_dir = pylons.config['debexpo.upload.incoming']
+        self.spool_dir = TemporaryDirectory(prefix='debexpo-test-spool')
+        self.spool = Spool(self.spool_dir.name)
 
     def tearDown(self):
         self._assert_no_leftover()
         self._remove_subscribers()
         self._remove_example_user()
-        self._cleanup_mailbox()
         self._cleanup_repo()
         self._cleanup_package()
 
     def _remove_subscribers(self):
-        meta.session.query(PackageSubscription).delete()
-        meta.session.commit()
+        PackageSubscription.objects.all().delete()
 
-    def setup_subscribers(self, package, level=SUBSCRIPTION_LEVEL_UPLOADS):
-        user = meta.session.query(User) \
-            .filter(User.email == 'email@example.com').one()
+    def setup_subscribers(self, package, on_upload=True, on_comment=False):
+        user = User.objects.get(email='email@example.com')
 
-        subscription = PackageSubscription(package=package, user_id=user.id,
-                                           level=level)
-        meta.session.add(subscription)
-        meta.session.commit()
-
-    def _cleanup_mailbox(self):
-        """Delete mailbox file"""
-        if 'debexpo.testsmtp' in pylons.config:
-            if isfile(pylons.config['debexpo.testsmtp']):
-                remove(pylons.config['debexpo.testsmtp'])
+        subscription = PackageSubscription(package=package, user=user,
+                                           on_upload=on_upload,
+                                           on_comment=on_comment)
+        subscription.save()
 
     def _create_repo(self):
-        """Delete all files present in repo directory"""
-        if 'debexpo.repository' in pylons.config:
-            if not isdir(pylons.config['debexpo.repository']):
-                makedirs(pylons.config['debexpo.repository'])
+        pass
+        # """Delete all files present in repo directory"""
+        # if 'debexpo.repository' in pylons.config:
+        #     if not isdir(pylons.config['debexpo.repository']):
+        #         makedirs(pylons.config['debexpo.repository'])
 
     def _cleanup_repo(self):
-        """Delete all files present in repo directory"""
-        if 'debexpo.repository' in pylons.config:
-            if isdir(pylons.config['debexpo.repository']):
-                rmtree(pylons.config['debexpo.repository'])
+        pass
+        # """Delete all files present in repo directory"""
+        # if 'debexpo.repository' in pylons.config:
+        #     if isdir(pylons.config['debexpo.repository']):
+        #         rmtree(pylons.config['debexpo.repository'])
+
+    def _cleanup_mailbox(self):
+        mail.outbox = []
 
     def _upload_package(self, package_dir):
         """Copy a directory content to incoming queue"""
-        self.assertTrue('debexpo.upload.incoming' in pylons.config)
-
         # copytree dst dir must not exist
-        if isdir(self.upload_dir):
-            rmtree(self.upload_dir)
-        copytree(package_dir, self.upload_dir)
+        upload_dir = self.spool.get_queue_dir('incoming')
+
+        if isdir(upload_dir):
+            rmtree(upload_dir)
+        copytree(package_dir, upload_dir)
 
     def _get_email(self):
         """Parse an email and format the body."""
-        email = None
-
-        # Load mailbox
-        with open(pylons.config['debexpo.testsmtp'], 'r') as mbox:
-            email = message_from_file(mbox)
-        return email
+        return mail.outbox[0].body
 
     def _cleanup_package(self):
-        packages = meta.session.query(Package).all()
-
-        for package in packages:
-            versions = meta.session.query(PackageVersion).all()
-
-            for version in versions:
-                meta.session.delete(version)
-
-            meta.session.delete(package)
-
-        meta.session.commit()
+        Package.objects.all().delete()
 
     def _assert_no_leftover(self):
-        matches = self._find_all('', self.upload_dir)
+        matches = self._find_all('', str(self.spool))
+        log.error(f'matches for {str(self.spool)} {matches}')
 
         for match in matches:
             log.debug('leftover: {}'.format(match))
 
-        self.assertEquals(len(matches), 0)
+        self.assertFalse(matches)
 
     def _package_in_repo(self, package_name, version):
-        """Check if package is present in repo"""
-        matches = self._find_all(package_name + '_' + version + '.dsc',
-                                 pylons.config['debexpo.repository'])
-        return len(matches)
+        pass
+        # """Check if package is present in repo"""
+        # matches = self._find_file(package_name + '_' + version + '.dsc',
+        #                           pylons.config['debexpo.repository'])
+        # return len(matches)
 
     def _file_in_repo(self, filename):
-        """Check if package is present in repo"""
-        matches = self._find_all(filename,
-                                 pylons.config['debexpo.repository'])
-        return len(matches)
+        pass
+        # """Check if package is present in repo"""
+        # matches = self._find_file(filename,
+        #                           pylons.config['debexpo.repository'])
+        # return len(matches)
 
-    def _find_all(self, name, path):
+    def _find_file(self, name, path):
         """Find a file in a path"""
         result = []
         for root, dirs, files in walk(path):
@@ -184,123 +157,131 @@ class TestImporterController(TestController):
                 result.append(join(root, name))
         return result
 
-    def import_source_package(self, package_dir, skip_gpg=False):
+    def _find_all(self, name, path):
+        """Find a file in a path"""
+        result = []
+        for root, dirs, files in walk(path):
+            for filename in files:
+                if name in filename:
+                    result.append(join(root, filename))
+        return result
+
+    def import_source_package(self, package_dir, skip_gpg=False,
+                              skip_email=False):
         source_package = TestSourcePackage(package_dir)
 
         source_package.build()
-        self._run_importer(source_package.get_package_dir(), skip_gpg=skip_gpg)
+        self._run_importer(source_package.get_package_dir(), skip_gpg=skip_gpg,
+                           skip_email=skip_email)
 
     def import_package(self, package_dir):
         self._run_importer(join(self.data_dir, package_dir))
 
-    def _run_importer(self, package_dir, skip_gpg=False):
+    def _run_importer(self, package_dir, skip_gpg=False, skip_email=False):
         """Run debexpo importer on package_dir/*.changes"""
         # Copy uplod files to incomming queue
         self.assertTrue(isdir(package_dir))
         self._upload_package(package_dir)
 
-        # Get change file
-        matches = glob(join(self.upload_dir, '*.changes'))
-        self.assertTrue(len(matches) == 1)
-        changes = matches[0]
-
         # Run the importer on change file
-        importer = Importer(changes, pylons.config['global_conf']['__file__'],
-                            False, skip_gpg)
-        self._status_importer = importer.main(no_env=True)
+        importer = Importer(str(self.spool), skip_email, skip_gpg)
+        self._status_importer = importer.process_spool()
 
     def assert_importer_failed(self):
         """Assert that the importer has failed"""
-        self.assertFalse(self._status_importer == 0)
+        self.assertFalse(self._status_importer)
 
     def assert_importer_succeeded(self):
         """Assert that the importer has succeeded"""
-        self.assertTrue(self._status_importer == 0)
+        self.assertTrue(self._status_importer)
 
     def assert_no_email(self):
         """Assert that the importer has not generated any email"""
-        # This check only works when a file mailbox is configured
-        self.assertTrue('debexpo.testsmtp' in pylons.config)
-
         # The mailbox file has not been created
-        self.assertFalse(isfile(pylons.config['debexpo.testsmtp']))
+        self.assertFalse(mail.outbox)
 
     def assert_email_with(self, search_text):
         """
         Assert that the imported would have sent a email to the uploader
         containing search_text
         """
-        # This check only works when a file mailbox is configured
-        self.assertTrue('debexpo.testsmtp' in pylons.config)
-
         # The mailbox file has been created
-        self.assertTrue(isfile(pylons.config['debexpo.testsmtp']))
+        self.assertTrue(mail.outbox)
 
         # Get the email and assert that the body contains search_text
         email = self._get_email()
-        self.assertTrue(search_text in email.get_payload(decode=True))
+        self.assertIn(search_text, email)
 
     def assert_package_count(self, package_name, version, count):
         """Assert that a package appears count times in debexpo"""
-        package = meta.session.query(Package) \
-            .filter(Package.name == package_name) \
-            .first()
-        if package:
-            count_in_db = meta.session.query(PackageVersion) \
-                .filter(PackageVersion.package_id == package.id) \
-                .filter(PackageVersion.version == version) \
-                .count()
-        else:
+        try:
+            package = Package.objects.get(name=package_name)
+        except Package.DoesNotExist:
             count_in_db = 0
+        else:
+            count_in_db = PackageUpload.objects \
+                .filter(package=package) \
+                .filter(version=version) \
+                .count()
+
         self.assertTrue(count_in_db == count)
 
     def _lookup_package_info(self, package_name, plugin):
-        package = meta.session.query(Package).filter(Package.name ==
-                                                     package_name).first()
-        package_version = meta.session.query(PackageVersion) \
-            .filter(PackageVersion.package_id == package.id) \
-            .first()
-        package_info = meta.session.query(PackageInfo) \
-            .filter(PackageInfo.package_version_id == package_version.id) \
-            .filter(PackageInfo.from_plugin == plugin).first()
+        pass
+        # package = meta.session.query(Package).filter(Package.name ==
+        #                                              package_name).first()
+        # package_version = meta.session.query(PackageVersion) \
+        #     .filter(PackageVersion.package_id == package.id) \
+        #     .first()
+        # package_info = meta.session.query(PackageInfo) \
+        #     .filter(PackageInfo.package_version_id == package_version.id) \
+        #     .filter(PackageInfo.from_plugin == plugin).first()
 
-        return package_info
+        # return package_info
 
     def assert_package_no_info(self, package_name, plugin):
-        package_info = self._lookup_package_info(package_name, plugin)
-        self.assertFalse(package_info)
+        pass
+        # package_info = self._lookup_package_info(package_name, plugin)
+        # self.assertFalse(package_info)
 
     def assert_package_info(self, package_name, plugin, outcome):
-        package_info = self._lookup_package_info(package_name, plugin)
-        self.assertTrue(package_info)
-        self.assertEquals(outcome, package_info.outcome)
+        pass
+        # package_info = self._lookup_package_info(package_name, plugin)
+        # self.assertTrue(package_info)
+        # self.assertEquals(outcome, package_info.outcome)
 
     def assert_package_severity(self, package_name, plugin, severity):
-        package_info = self._lookup_package_info(package_name, plugin)
-        self.assertTrue(package_info)
-        self.assertTrue(severity == package_info.severity)
+        pass
+        # package_info = self._lookup_package_info(package_name, plugin)
+        # self.assertTrue(package_info)
+        # self.assertTrue(severity == package_info.severity)
 
     def assert_package_data(self, package_name, plugin, data):
-        package_info = self._lookup_package_info(package_name, plugin)
-        self.assertTrue(package_info)
-        self.assertTrue(data in package_info.data)
+        pass
+        # package_info = self._lookup_package_info(package_name, plugin)
+        # self.assertTrue(package_info)
+        # self.assertTrue(data in package_info.data)
 
     def assert_file_in_repo(self, filename):
-        """Assert that a file is present in debexpo repo"""
-        log.debug('Checking file in repo: {}'.format(filename))
-        self.assertTrue(self._file_in_repo(filename) > 0)
+        pass
+        # """Assert that a file is present in debexpo repo"""
+        # log.debug('Checking file in repo: {}'.format(filename))
+        # self.assertTrue(self._file_in_repo(filename) > 0)
 
     def assert_package_in_repo(self, package_name, version):
-        """Assert that a package is present in debexpo repo"""
-        self.assertTrue(self._package_in_repo(package_name, version) > 0)
+        pass
+        # """Assert that a package is present in debexpo repo"""
+        # self.assertTrue(self._package_in_repo(package_name, version) > 0)
 
     def assert_package_not_in_repo(self, package_name, version):
-        """Assert that a package is present in debexpo repo"""
-        self.assertTrue(self._package_in_repo(package_name, version) == 0)
+        pass
+        # """Assert that a package is present in debexpo repo"""
+        # self.assertTrue(self._package_in_repo(package_name, version) == 0)
 
     def assert_rfs_content(self, package, content):
-        response = self.app.get(url(controller='sponsors', action='rfs-howto',
-                                    id=package))
-        self.assertEquals(response.status_int, 200)
-        log.debug('rfs: {}'.format(response))
-        self.assertTrue(content in response)
+        pass
+        # response = self.app.get(url(controller='sponsors', action='rfs-howto',
+        #                             id=package))
+        # self.assertEquals(response.status_int, 200)
+        # log.debug('rfs: {}'.format(response))
+        # self.assertTrue(content in response)
