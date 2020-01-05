@@ -26,7 +26,8 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from os.path import basename
+from os.path import basename, join, isfile
+from os import replace, unlink
 import hashlib
 
 from debexpo.keyring.models import Key
@@ -139,3 +140,15 @@ class CheckSumedFile():
 
     def __str__(self):
         return basename(self.filename)
+
+    def move(self, destdir):
+        if not isfile(self.filename):
+            return
+
+        dest = join(destdir, basename(self.filename))
+        replace(self.filename, dest)
+        self.filename = dest
+
+    def remove(self):
+        if isfile(self.filename):
+            unlink(self.filename)
