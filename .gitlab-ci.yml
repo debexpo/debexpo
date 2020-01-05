@@ -22,6 +22,8 @@ before_script:
     git
     gnupg
     iso-codes
+    dpkg-dev
+    debhelper
 
 .test_template: &test
   variables:
