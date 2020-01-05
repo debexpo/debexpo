@@ -28,8 +28,13 @@
 
 from re import search
 from os.path import join
+from debian.deb822 import Deb822
 
 from debexpo.tools.files import CheckSumedFile
+
+
+class ExceptionControl(Exception):
+    pass
 
 
 def parse_section(section):
@@ -115,3 +120,55 @@ class ControlFiles():
                 return item.filename
 
         return None
+
+
+class Control():
+    def __init__(self, filename):
+        self.source = None
+        self.binaries = []
+        self.control = self.parse_control(filename)
+
+    def parse_control(self, filename):
+        control = None
+
+        try:
+            fd = open(filename, 'r')
+        except IOError as e:
+            raise ExceptionControl(e)
+
+        with fd:
+            for package in Deb822.iter_paragraphs(fd):
+                if not self.source:
+                    self.source = package
+                else:
+                    self.binaries.append(package)
+
+        return control
+
+    def validate(self):
+        if not self.source:
+            raise ExceptionControl('Control file invalid. No source definition '
+                                   'found')
+
+        if not self.binaries:
+            raise ExceptionControl('Control file invalid. No binary definition '
+                                   'found')
+
+        # As per debian policy paragraph 5.2:
+        # https://www.debian.org/doc/debian-policy/ch-controlfields.html#source-package-control-files-debian-control
+        for key in ['Source', 'Maintainer']:
+            if key not in self.source:
+                raise ExceptionControl('Control file invalid. Missing key '
+                                       f'{key} in source definition')
+
+        for binary in self.binaries:
+            for key in ['Package', 'Architecture', 'Description']:
+                if key not in binary:
+                    raise ExceptionControl('Control file invalid. Missing key '
+                                           f'{key} in source definition')
+
+    def get_source_package(self):
+        return self.source
+
+    def get_binary_packages(self):
+        return self.binaries
