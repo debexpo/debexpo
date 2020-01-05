@@ -1,28 +1,25 @@
-# -*- coding: utf-8 -*-
-<%inherit file="/base.mako"/>To: ${ c.to }
-Subject: ${ _('%s uploaded to %s' % (c.package, c.config['debexpo.sitename'])) }
+{% extends "email-base.html" %}{% block content %}Hi.
 
-${ _('Hi.') }
+Your upload of the package '{{ args.upload.package.name }}' to {{ args.settings.SITE_NAME}} was
+successful. Others can now see it. The URL of your package is:
 
-${ _('''Your upload of the package '%s' to %s was
-successful. Others can now see it. The URL of your package is:''' %
-(c.package, c.config['debexpo.sitename'])) }
-${ c.config['debexpo.server'] }${ h.url('package', packagename=c.package) }
+    {{ args.upload.package.get_url }}
 
-${ _('''The respective dsc file can be found at:''') }
-${ c.dsc_url }
+The respective dsc file can be found at:
 
-% if c.config['debexpo.debian_specific'] == 'true':
-${ _('''If you do not yet have a sponsor for your package you may want to go to
-%s
+    {{ args.upload.get_dsc_url }}
+
+If you do not yet have a sponsor for your package you may want to go to:
+
+    {{ args.upload.get_rfs_url }}
+
 and set the "Seeking a sponsor" option to highlight your package on the
-welcome page.''' % c.rfs_url) }
+welcome page.
 
-${ _('''You can also send an RFS (request for sponsorship) to the debian-mentors
+You can also send an RFS (request for sponsorship) to the debian-mentors
 mailing list. Your package page will give your suggestions on how to
-send that mail.''') }
+send that mail.
 
-${ _('''Good luck in finding a sponsor!''') }
-% endif
+Good luck in finding a sponsor!
 
-${ _('Thanks,') }
+Thanks,{% endblock %}

@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
-<%inherit file="/base.mako"/>To: ${ c.to }
-Subject: ${ _('Package %s was rejected') % c.package }
+{% extends "email-base.html" %}{% block content %}Hello,
 
-${ _('''Hello,
+Unfortunately your package "{{ args.error.changes.source }}" was rejected
+because of the following reason:
 
-Unfortunately your package "%s" was rejected because of the following
-reason:''') % c.package }
+{{ args.error.error }}
 
-${ c.message }
+{{ args.error.details }}
 
-${ _('Please try to fix it and re-upload. Thanks,') }
+Please try to fix it and re-upload. Thanks,{% endblock %}

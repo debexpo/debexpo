@@ -1,14 +1,17 @@
-# -*- coding: utf-8 -*-
-<%inherit file="/base.mako"/>To: ${ c.to }
-Subject: ${ _('Failed to import %s') % c.package }
+{% extends "email-base.html" %}{% block content %}Hello,
 
-${ _('''Hello,
-
-There was a failure in importing your package "%s" into
+There was a failure in importing your package "{{ args.error.changes.source }}" into
 the repository. The problem appears to be in the repository software
 and not your package.
 
 Sorry for the inconvenience. The administrator has been notified.
-Please try again soon.''') % c.package }
+Please try again soon.
 
-${ _('Thanks,') }
+The error was:
+
+{{ args.error.error }}
+
+{{ args.error.details }}
+
+
+Thanks,{% endblock %}
