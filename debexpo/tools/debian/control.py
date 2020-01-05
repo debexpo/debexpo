@@ -26,6 +26,7 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+from re import search
 from os.path import join
 
 from debexpo.tools.files import CheckSumedFile
@@ -97,3 +98,20 @@ class ControlFiles():
                     item[method] for item in data[key]
                     if item.get('name') == entry['name']
                 ][0])
+
+    def move(self, destdir):
+        for item in self.files:
+            item.move(destdir)
+
+    def remove(self):
+        for item in self.files:
+            item.remove()
+
+        self.files = None
+
+    def find(self, pattern):
+        for item in self.files:
+            if search(pattern, str(item)):
+                return item.filename
+
+        return None
