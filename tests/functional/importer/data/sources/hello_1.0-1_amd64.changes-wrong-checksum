@@ -1,3 +1,6 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
 Format: 1.8
 Date: Sun, 02 Dec 2018 22:38:11 +0100
 Source: hello
@@ -32,3 +35,10 @@ Files:
  8b4cae66eaf956a2b39b7d3d5482580a 7808 unknown optional hello_1.0-1.debian.tar.xz
  7c45a75ae2228ca27675a98457552edc 4345 unknown optional hello_1.0-1_amd64.buildinfo
  4c3f75043d99b8a9d3d5019b46a3625c 2316 unknown optional hello_1.0-1_amd64.deb
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSzz3sz+AdjONtPqA6HkZKDEXU71wUCXhJilwAKCRCHkZKDEXU7
+1xAQAP4ldJKDvsackSQP0wrzNoxKOIuTuqkLaHo+geqR0hTlfwEAwSz7zftmKV4X
+mRkMpNHk1bZyR8JIvp0z3c3YEHvyUA8=
+=GT+j
+-----END PGP SIGNATURE-----

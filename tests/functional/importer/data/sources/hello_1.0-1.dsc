@@ -1,3 +1,6 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
 Format: 3.0 (quilt)
 Source: hello
 Binary: hello
@@ -18,3 +21,11 @@ Checksums-Sha256:
 Files:
  3789bf498b8c4cf0387383466ec4c227 168 hello_1.0.orig.tar.xz
  8b4cae66eaf956a2b39b7d3d5482580a 7808 hello_1.0-1.debian.tar.xz
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSzz3sz+AdjONtPqA6HkZKDEXU71wUCXhJdpgAKCRCHkZKDEXU7
+1xCkAQCf5t7Bept+t2NVwtdnlbzyOCfnKiEUd5YeJiOf2MDNfgD+O0RKAQuzLCAo
+i47N3SOfHwyqIXszjqJvXHhlCkE7igM=
+=CZwC
+-----END PGP SIGNATURE-----

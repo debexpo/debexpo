@@ -1,16 +1,19 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
 Format: 1.0
 Source: hello
 Binary: hello
 Architecture: amd64 source
 Version: 1.0-1
 Checksums-Md5:
- a77f08151b482ddd66141744fe1e2312 784 hello_1.0-1.dsc
+ 6366cec9dbdcc2d93614420c3e990314 1062 hello_1.0-1.dsc
  4c3f75043d99b8a9d3d5019b46a3625c 2316 hello_1.0-1_amd64.deb
 Checksums-Sha1:
- 12b9785a45d1400abc684af9964fed348b2fcf9d 784 hello_1.0-1.dsc
+ 59b3bcb0638b2378164bbbd27d1c8c743613e2e3 1062 hello_1.0-1.dsc
  4704c98642a0cb7dfd6b9a4cb4c0d61916a1e729 2316 hello_1.0-1_amd64.deb
 Checksums-Sha256:
- 07d9ec16bf2d90983f3ad9b11ce2f9f8adf05a7a62b52b31987dad142c09704e 784 hello_1.0-1.dsc
+ c54fc17fb6c2cb0c8ec9ae7e164c7423696d417025bd972d48af68d4872755ba 1062 hello_1.0-1.dsc
  c98b2da09c2abe6b446c36aa3210adacde8d3566f8e76ea62c15b9aa7bbfd1f5 2316 hello_1.0-1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
@@ -157,3 +160,11 @@ Environment:
  LC_ALL="POSIX"
  LD_LIBRARY_PATH="/usr/lib/libeatmydata"
  SOURCE_DATE_EPOCH="1543786691"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSzz3sz+AdjONtPqA6HkZKDEXU71wUCXhJdpgAKCRCHkZKDEXU7
+1zuZAP9JvtxRcm1IMRfTN/xPglhDO2G+14WTIf4/yD9jzm7z7gD/REe0L9p7eYo5
+lU2pyMX8UMszbT9OPIcfR/GRQk0MQA0=
+=f5IW
+-----END PGP SIGNATURE-----
