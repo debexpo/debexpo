@@ -33,12 +33,14 @@ Holds *changes* file handling class.
 """
 
 from debian import deb822
-from debian.changelog import Changelog
-from os.path import dirname, abspath, basename
+from os.path import dirname, abspath, basename, join
+from os import replace, unlink
 
 from debexpo.accounts.models import User
 from debexpo.tools.files import GPGSignedFile
 from debexpo.tools.debian.control import ControlFiles
+from debexpo.tools.debian.dsc import Dsc
+from debexpo.tools.debian.source import Source
 
 
 class ExceptionChanges(Exception):
@@ -86,11 +88,14 @@ class Changes(GPGSignedFile):
         self.uploader = User.objects.get(key=self.key)
 
     def _build_changes(self):
-        self.sources = self._data.get('Source')
+        self.dsc = None
+        self.uploader = self._data.get('Maintainer')
+        self.source = self._data.get('Source')
         self.version = self._data.get('Version')
-        self.changes = Changelog(self._data.get('Changes'))
+        self.distribution = self._data.get('Distribution')
+        self.changes = self._data.get('Changes')
         self.files = ControlFiles(dirname(self.filename), self._data)
-        self.closes = self._data.get('Closes')
+        self.closes = self._data.get('Closes', '')
 
     def validate(self):
         # Per debian policy:
@@ -104,3 +109,42 @@ class Changes(GPGSignedFile):
 
     def __str__(self):
         return basename(self.filename)
+
+    def move(self, destdir):
+        self.files.move(destdir)
+
+        dest = join(destdir, basename(self.filename))
+        replace(self.filename, dest)
+        self.filename = dest
+
+    def remove(self):
+        self.files.remove()
+        self.files = None
+
+        unlink(self.filename)
+        self.filename = None
+
+        self.cleanup_source()
+
+    def cleanup_source(self):
+        if self.dsc:
+            source = Source(self.dsc)
+            source.remove()
+
+    def parse_dsc(self):
+        filename = self.files.find(r'\.dsc$')
+
+        if not filename:
+            raise ExceptionChanges(
+                'dsc is missing from changes\n'
+                'Make sure you include the full source'
+                ' (if you are using sbuild make sure to use the'
+                ' --source option or the equivalent configuration'
+                ' item; if you are using dpkg-buildpackage directly'
+                ' use the default flags or -S for a source only'
+                ' upload)')
+
+        try:
+            self.dsc = Dsc(filename)
+        except Exception as e:
+            raise ExceptionChanges(e)
