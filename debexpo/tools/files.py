@@ -60,9 +60,9 @@ class ExceptionCheckSumedFileFailedSum(ExceptionCheckSumedFile):
         self.computed = computed
 
     def __str__(self):
-        return f'Checksum failed for file {self.filename}.\n\n' \
-                'Expected: {self.expected}\n' \
-                'Computed: {self.computed}'
+        return f'Checksum failed for file {basename(self.filename)}.\n\n' \
+               f'Expected: {self.expected}\n' \
+               f'Computed: {self.computed}'
 
 
 class GPGSignedFile():
@@ -114,8 +114,10 @@ class CheckSumedFile():
 
                 try:
                     data = open(self.filename, 'rb')
-                except IOError as e:
-                    raise ExceptionCheckSumedFileNoFile(e)
+                except FileNotFoundError:
+                    raise ExceptionCheckSumedFileNoFile(
+                        f'{basename(self.filename)} is missing from '
+                        'upload')
                 else:
                     with data:
                         while True:
