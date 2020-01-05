@@ -27,6 +27,8 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+import json
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -67,6 +69,63 @@ class Priority(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class PackageUploadManager(models.Manager):
+    def create_from_changes(self, changes):
+        upload = PackageUpload()
+
+        upload.package = Package.objects.get_or_create(
+            name=changes.source)[0]
+        upload.uploader = changes.uploader
+
+        upload.version = changes.version
+        upload.distribution = Distribution.objects.get(
+            name=changes.distribution)
+        upload.component = Component.objects.get_or_create(
+            name=changes.files.files[0].component)[0]
+        upload.changes = changes.changes
+        upload.closes = changes.closes
+
+        return upload
+
+
+class PackageManager(models.Manager):
+    def create_from_package(self, upload, package):
+        if isinstance(self.model(), SourcePackage):
+            entry = SourcePackage()
+
+            entry.maintainer = package['maintainer']
+        else:
+            entry = BinaryPackage()
+
+            entry.name = package['package']
+            entry.architecture = package['architecture']
+            entry.description = package['description'].split('\n')[0]
+
+        entry.upload = upload
+        entry.homepage = package.get('homepage')
+
+        if package.get('section'):
+            entry.section = Section.objects.get_or_create(
+                name=package.get('section'))[0]
+
+        if package.get('priority'):
+            entry.priority = Priority.objects.get_or_create(
+                name=package.get('priority'))[0]
+
+        entry.vcs = json.dumps(self._get_vcs_fields(package))
+
+        return entry
+
+    def _get_vcs_fields(self, package):
+        vcs = {}
+
+        for attribute in package:
+            if attribute.lower().startswith('vcs-'):
+                vcs[attribute] = package[attribute]
+
+        return vcs
 
 
 class Package(models.Model):
@@ -130,6 +189,7 @@ class PackageUpload(models.Model):
     class Meta:
         ordering = ['-uploaded']
 
+    objects = PackageUploadManager()
     # Links a package and a user (as uploader)
     package = models.ForeignKey(Package, on_delete=models.CASCADE)
     uploader = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -174,6 +234,8 @@ class SourcePackage(models.Model):
     homepage = models.TextField(null=True, verbose_name=_('Homepage'))
     vcs = models.TextField(null=True, verbose_name=_('VCS'))
 
+    objects = PackageManager()
+
 
 class BinaryPackage(models.Model):
     # Links a PackageUpload
@@ -187,3 +249,5 @@ class BinaryPackage(models.Model):
     section = models.ForeignKey(Section, null=True, on_delete=models.SET_NULL)
     priority = models.ForeignKey(Priority, null=True, on_delete=models.SET_NULL)
     homepage = models.TextField(null=True, verbose_name=_('Homepage'))
+
+    objects = PackageManager()
