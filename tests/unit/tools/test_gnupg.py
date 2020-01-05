@@ -179,7 +179,7 @@ class TestGnuPGController(TestCase):
             gnupg.verify_sig(signed_file)
         except ExceptionGnuPGNoPubKey as e:
             self.assertEquals(e.fingerprint, test_gpg_key_fpr)
-            self.assertIn(signed_file, str(e))
+            self.assertIn(os.path.basename(signed_file), str(e))
 
     def testInvalidSignature(self):
         """
