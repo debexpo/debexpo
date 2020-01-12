@@ -80,6 +80,10 @@ setup(
         'django>=1.11.23',
         'bcrypt>=3.1.6',
         'python-debian>=0.1.35',
+        'celery>=4.2.1',
+        'django-celery-beat>=1.1.1',
+        'redis>=3.2.1',
+        'django-redis>=4.10.0',
     ],
 
     # Project urls

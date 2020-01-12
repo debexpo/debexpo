@@ -24,14 +24,15 @@ Dependencies needed for both methods
 Whatever method you choose, these packages are required::
 
     sudo apt-get install python3 iso-codes gnupg python3-debian dpkg-dev
-    debhelper
+    debhelper redis-server
 
 Installing on Debian as root
 ----------------------------
 
 You need to install the required packages. Using `apt`, you should execute::
 
-    sudo apt-get install python3-django
+    sudo apt-get install python3-django python3-celery
+    python3-django-celery-beat python3-redis python3-django-redis
 
 Installing in a virtualenv
 --------------------------
