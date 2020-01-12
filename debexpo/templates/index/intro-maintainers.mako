@@ -13,7 +13,7 @@
 
 <h2>2. File a WNPP bug</h2>
 
-<p><a href="https://www.debian.org/devel/wnpp/">Work-Needing and Prospective Packages</a> (<em>WNPP</em>) is our system of announcing your intent to markup packages being worked on. In particular it is a bug against the <a href="https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=wnpp">WNPP pseudo package</a> (<a href="https://wnpp.debian.net/">or use a nice frontend</a> to browse <em>WNPP</em> bugs). If you want to package something not currently available in Debian, the very first step should be to file an "Intent to package" (<em>ITP</em>) bug against <em>WNPP</em>. You may want to use the <tt><a href="https://packages.debian.org/squeeze/reportbug">reportbug</a></tt> tool to achieve that by selecting "<em>wnpp</em>" as package to report a bug to.</p>
+<p><a href="https://www.debian.org/devel/wnpp/">Work-Needing and Prospective Packages</a> (<em>WNPP</em>) is our system of announcing your intent to markup packages being worked on. In particular it is a bug against the <a href="https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=wnpp">WNPP pseudo package</a> (<a href="https://wnpp.debian.net/">or use a nice frontend</a> to browse <em>WNPP</em> bugs). If you want to package something not currently available in Debian, the very first step should be to file an "Intent to package" (<em>ITP</em>) bug against <em>WNPP</em>. You may want to use the <tt><a href="https://packages.debian.org/sid/reportbug">reportbug</a></tt> tool to achieve that by selecting "<em>wnpp</em>" as package to report a bug to.</p>
 
 <h2>3. Make the package</h2>
 
@@ -35,7 +35,7 @@
 
 <h2>4. Publish your package</h2>
 
-<p>This web site is a public package repository of source packages. You can upload your package to this server (through special tools like '<tt><a href="https://packages.debian.org/squeeze/dupload">dupload</a></tt>' or '<tt><a href="https://packages.debian.org/squeeze/dput">dput</a></tt>') and after a few checks it will be stored in our repository. ${ h.tags.link_to("Interested sponsors", h.url(controller='sponsor', action='index')) } can then download the package and upload it to Debian.</p>
+<p>This web site is a public package repository of source packages. You can upload your package to this server (through special tools like '<tt><a href="https://packages.debian.org/sid/dupload">dupload</a></tt>' or '<tt><a href="https://packages.debian.org/sid/dput">dput</a></tt>') and after a few checks it will be stored in our repository. ${ h.tags.link_to("Interested sponsors", h.url(controller='sponsor', action='index')) } can then download the package and upload it to Debian.</p>
 
 <h3>Using ${ c.config['debexpo.sitetitle'] }</h3>
 
