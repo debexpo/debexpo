@@ -1,8 +1,10 @@
-#   prod.py - Django settings for debexpo project in production environment
+#   views.py - upload view
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
+#   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
@@ -26,46 +28,39 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from .common import *  # noqa
-from os import path
+from logging import getLogger
 
-try:
-    with open(path.join(path.dirname(path.abspath(__file__)),
-                        'secretkey')) as f:
-        secret_key = f.read().strip()
-except IOError as e:
-    raise Exception('Could not read secret key: {}'.format(e))
+from django.conf import settings
+from django.http import HttpResponseNotAllowed, HttpResponseForbidden, \
+    HttpResponse, HttpResponseServerError
+from django.views.decorators.csrf import csrf_exempt
 
-if len(secret_key) < 64:
-    raise Exception('Secret key too weak. Must be at least 64 char.')
+from debexpo.importer.models import Spool, ExceptionSpoolUploadDenied, \
+    ExceptionSpool
 
-SECRET_KEY = secret_key
-DEBUG = False
-ALLOWED_HOSTS = ['mentors.debian.net']
-
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': path.join(BASE_DIR, 'db.sqlite3'),  # noqa: F405
-    }
-}
-
-# Debexpo settings
-SITE_NAME = 'mentors.debian.net'
-SITE_TITLE = 'Mentors'
-
-HOSTING_URL = 'https://www.wavecon.de/'
-HOSTING = 'Wavecon'
+log = getLogger(__name__)
 
 
-# Email settings
-# https://docs.djangoproject.com/en/2.2/ref/settings/#email
+@csrf_exempt
+def upload(request, name):
+    if request.method != 'PUT':
+        return HttpResponseNotAllowed(['PUT'])
 
-DEFAULT_FROM_EMAIL = 'mentors.debian.net <support@mentors.debian.net>'
-DEFAULT_BOUNCE_EMAIL = 'bounce@mentors.debian.net'
+    try:
+        spool = Spool(settings.UPLOAD_SPOOL)
+        fd = spool.upload(name)
+    except ExceptionSpoolUploadDenied as e:
+        return HttpResponseForbidden(e)
+    except ExceptionSpool as e:
+        return HttpResponseServerError(e)
 
-# Spool settings
-UPLOAD_SPOOL = '/var/spool/debexpo/http'
+    while True:
+        chunk = request.read(4 * 1024 * 1024)
+
+        if not chunk:
+            break
+
+        fd.write(chunk)
+
+    log.info(f'New upload: {fd.name}')
+    return HttpResponse()

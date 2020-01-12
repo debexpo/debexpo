@@ -75,3 +75,6 @@ LOGGING = {
         },
     },
 }
+
+# Spool settings
+UPLOAD_SPOOL = '/tmp/debexpo/spool'

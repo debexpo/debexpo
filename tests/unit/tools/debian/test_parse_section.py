@@ -1,6 +1,6 @@
-#   prod.py - Django settings for debexpo project in production environment
+#   test_parse_section.py - Unit testing for parse_section
 #
-#   This file is part of debexpo
+#   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
@@ -26,46 +26,21 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from .common import *  # noqa
-from os import path
-
-try:
-    with open(path.join(path.dirname(path.abspath(__file__)),
-                        'secretkey')) as f:
-        secret_key = f.read().strip()
-except IOError as e:
-    raise Exception('Could not read secret key: {}'.format(e))
-
-if len(secret_key) < 64:
-    raise Exception('Secret key too weak. Must be at least 64 char.')
-
-SECRET_KEY = secret_key
-DEBUG = False
-ALLOWED_HOSTS = ['mentors.debian.net']
-
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': path.join(BASE_DIR, 'db.sqlite3'),  # noqa: F405
-    }
-}
-
-# Debexpo settings
-SITE_NAME = 'mentors.debian.net'
-SITE_TITLE = 'Mentors'
-
-HOSTING_URL = 'https://www.wavecon.de/'
-HOSTING = 'Wavecon'
+from tests import TestController
+from debexpo.tools.debian.control import parse_section
 
 
-# Email settings
-# https://docs.djangoproject.com/en/2.2/ref/settings/#email
+class TestParseSection(TestController):
+    def test_parse_section_empty_string(self):
+        self.assertEquals(['main', ''], parse_section(''))
 
-DEFAULT_FROM_EMAIL = 'mentors.debian.net <support@mentors.debian.net>'
-DEFAULT_BOUNCE_EMAIL = 'bounce@mentors.debian.net'
+    def test_parse_section(self):
+        self.assertEquals(['main', 'games'], parse_section('games'))
 
-# Spool settings
-UPLOAD_SPOOL = '/var/spool/debexpo/http'
+    def test_parse_section_with_component(self):
+        self.assertEquals(['non-free', 'games'],
+                          parse_section('non-free/games'))
+
+    def test_parse_section_with_slash(self):
+        self.assertEquals(['main', 'games_subsection'],
+                          parse_section('games/subsection'))

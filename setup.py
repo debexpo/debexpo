@@ -79,6 +79,7 @@ setup(
     install_requires=[
         'django>=1.11.23',
         'bcrypt>=3.1.6',
+        'python-debian>=0.1.35',
     ],
 
     # Project urls
