@@ -74,8 +74,14 @@ qs+ItQAUoeqZM3jh0HvLwUESxm6FtCltwyGlqwW4OARb8YGqEgorBgEEAZdVAQUB
 AQdANrk3qq/eP1TEWfFZqhR0vcz7YB9c5+OnvMV+xO4W3nQDAQgHiHgEGBYIACAW
 IQRVkwbu4cjBst0cc7HENHgc6HHz3wUCW/GBqgIbDAAKCRDENHgc6HHz3/CHAP0c
 hxes4Ebtg7N8B/BoMYwmUVvmMVmoV+ef/vqYvfm6sgEA6fKzMSXllw57UJ90Unyn
-xOwJ1heEnfmgPkuiz7jFCAo=
-=xgUN
+xOwJ1heEnfmgPkuiz7jFCAq4MwReCQ2QFgkrBgEEAdpHDwEBB0A+v2Y8n88j+WwI
+Q3hChPR7xa49prRSyKRnGBD/AXhJfYjvBBgWCgAgFiEEVZMG7uHIwbLdHHOxxDR4
+HOhx898FAl4JDZACGwIAgQkQxDR4HOhx8992IAQZFgoAHRYhBLPPezP4B2M420+o
+DoeRkoMRdTvXBQJeCQ2QAAoJEIeRkoMRdTvX0AcA/i8tjP8ihM2nJHRXwBnrh/iH
+v0eSEi3sH+j0fwy9OBLJAP9ne01k9LkCXplS8ys+0u0e4545IIbiw8D4ToupD25q
+CiIIAP4hwNooM6bAlg2HDYTUxJl4LA0qlJS66qnXv94Q8p4VngD/Y5O0AJw06BCw
+Xcgnuh6Rlywt6uiaFIGYnGefYPGXRAA=
+=26Kz
 -----END PGP PUBLIC KEY BLOCK-----"""
 
     _GPG_FINGERPRINT = '559306EEE1C8C1B2DD1C73B1C434781CE871F3DF'
@@ -92,6 +98,7 @@ xOwJ1heEnfmgPkuiz7jFCAo=
         key.algorithm = GPGAlgo.objects.get(gpg_algorithm_id=algo)
         key.size = size
         key.save()
+        key.update_subkeys()
 
     def _setup_example_user(self, gpg=False):
         """Add an example user.

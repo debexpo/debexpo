@@ -77,6 +77,17 @@ fC0rs1ly7CQ7ZQN441ZE3csnK69gzwc=
 =1nnA
 -----END PGP SIGNATURE-----
 """
+    _CHANGES_CONTENT_SUBKEY = f"""
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+{_UNSIGNED_CHANGES_CONTENT}-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSzz3sz+AdjONtPqA6HkZKDEXU71wUCXgkR1wAKCRCHkZKDEXU7
+19RiAQDcC+i0jXdCo2+dY1QTtBY3072BhBD3uq5dT9XPaqYvOAEA8Pk7FdZReoLw
+C7NQGzfRMFLSPxIHVzhHvJUo6vNZ+AA=
+=FCEl
+-----END PGP SIGNATURE-----
+"""
 
     def setUp(self):
         self._setup_example_user(gpg=True)
@@ -135,10 +146,11 @@ fC0rs1ly7CQ7ZQN441ZE3csnK69gzwc=
             os.remove(os.path.join(settings.UPLOAD_SPOOL,
                                    'incoming', 'testfile2.dsc'))
 
-    def testDuplicatedUpload(self):
+    def testDuplicatedUpload(self, with_subkey=False):
         """
         Tests whether a re-uploads of the same file failed with error code 403.
         """
+
         # Malicous changes does not break upload
         response = self.client.put(reverse(
             'upload',
@@ -172,11 +184,16 @@ fC0rs1ly7CQ7ZQN441ZE3csnK69gzwc=
 
         self.assertEqual(response.status_code, 200)
 
+        if with_subkey:
+            data = self._CHANGES_CONTENT_SUBKEY
+        else:
+            data = self._CHANGES_CONTENT
+
         # Upload a file not referenced allowed
         response = self.client.put(reverse(
             'upload',
             args=['testfile.changes']),
-            data=self._CHANGES_CONTENT)
+            data=data)
 
         self.assertEqual(response.status_code, 200)
 
@@ -184,7 +201,7 @@ fC0rs1ly7CQ7ZQN441ZE3csnK69gzwc=
         response = self.client.put(reverse(
             'upload',
             args=['testfile.changes']),
-            data=self._CHANGES_CONTENT)
+            data=data)
 
         self.assertEqual(response.status_code, 403)
 
@@ -202,6 +219,9 @@ fC0rs1ly7CQ7ZQN441ZE3csnK69gzwc=
                                       'incoming', 'testfile.changes')):
             if os.path.isfile(filename):
                 os.remove(filename)
+
+        if not with_subkey:
+            self.testDuplicatedUpload(True)
 
     def testUploadNonwritableQueue(self):
         """

@@ -243,8 +243,7 @@ class KeyData():
     def get_size(self):
         return self.pub[2]
 
-    def add_sub(self, sub):
-        subfpr = tuple(sub[3:6])
+    def add_sub(self, sub, subfpr):
         self.subkeys[subfpr] = sub
 
     def get_all_uid(self):
@@ -264,6 +263,8 @@ class KeyData():
         pub = None
         sub = None
         cur_key = None
+        pub_fpr = None
+
         for lineno, line in enumerate(lines, start=1):
             if line.startswith("pub:"):
                 # Keep track of this pub record, to correlate with the following
@@ -271,34 +272,40 @@ class KeyData():
                 pub = line.split(":")
                 sub = None
                 cur_key = None
+                pub_fpr = None
+
             elif line.startswith("fpr:"):
+                fpr = line.split(":")[9]
+                cur_key = keys.get(pub_fpr, None)
+
                 # Correlate fpr with the previous pub record, and start
                 # gathering information for a new key
-                if pub is None:
-                    if sub is not None:
-                        # Skip fingerprints for subkeys
-                        continue
-                    # Internal parsing of GPG. No tests case covering
-                    # failure for that.
-                    else:  # pragma: no cover
-                        raise Exception("gpg:{}: found fpr line with no" +
-                                        " previous pub line".format(lineno))
-                fpr = line.split(":")[9]
-                cur_key = keys.get(fpr, None)
-                if cur_key is None:
-                    keys[fpr] = cur_key = cls(fpr, pub)
-                pub = None
+                if pub:
+                    if cur_key is None:
+                        keys[fpr] = cur_key = cls(fpr, pub)
+                    pub_fpr = fpr
+                    pub = None
+
+                elif sub and cur_key:
+                    cur_key.add_sub(sub, fpr)
+                    sub = None
+
+                # Internal parsing of GPG. No tests case covering
+                # failure for that.
+                else:  # pragma: no cover
+                    raise Exception("gpg:{}: found fpr line with no" +
+                                    " previous pub line".format(lineno))
             elif line.startswith("uid:"):
                 if cur_key is None:  # pragma: no cover
                     raise Exception("gpg:{}: found uid line with no previous" +
                                     " pub+fpr lines".format(lineno))
                 cur_key.get_uid(line.split(":"))
+
             elif line.startswith("sub:"):
                 if cur_key is None:  # pragma: no cover
                     raise Exception("gpg:{}: found sub line with no previous" +
                                     " pub+fpr lines".format(lineno))
                 sub = line.split(":")
-                cur_key.add_sub(sub)
 
         return keys
 
