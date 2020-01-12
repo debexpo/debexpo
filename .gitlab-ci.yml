@@ -15,10 +15,6 @@ before_script:
     paths:
       - cover/
 
-unstable:
-  <<: *test
-  image: debian:unstable
-
 buster-bpo:
   <<: *test
   #image: debian:buster-backports
