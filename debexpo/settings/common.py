@@ -146,7 +146,7 @@ SMTP_PORT = 25
 # SMTP_USERNAME = 'foo'
 # SMTP_PASSWORD = 'CHANGEME'
 
-NNTP_SERVER = 'news.gmane.org'
+NNTP_SERVER = 'news.gmane.io'
 
 # Debexpo User model
 AUTH_USER_MODEL = 'accounts.User'
