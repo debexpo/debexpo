@@ -1,12 +1,10 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-#
-#   debexpo-importer — executable script to import new packages
+#   importer — django management command to import new packages
 #
 #   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person obtaining a
 #   copy of this software and associated documentation files (the "Software"),
@@ -26,44 +24,36 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 #   DEALINGS IN THE SOFTWARE.
 
-""" Executable script to import new packages. """
+from django.core.management.base import BaseCommand, CommandError
 
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
-__license__ = 'MIT'
-
-import logging
-import sys
-from optparse import OptionParser
-from debexpo.importer.importer import Importer
+from debexpo.importer.models import Importer
+from debexpo.tools.debian.changes import Changes
 
 
-def main():
-    parser = OptionParser(
-        usage="%prog -c FILE -i FILE [--skip-email] [--skip-gpg-check]")
-    parser.add_option('-c', '--changes', dest='changes',
-                      help='Path to changes file to import',
-                      metavar='FILE', default=None)
-    parser.add_option('-i', '--ini', dest='ini',
-                      help='Path to application ini file',
-                      metavar='FILE', default=None)
-    parser.add_option('--skip-email', dest='skip_email',
-                      action="store_true", help="Skip sending emails")
-    parser.add_option('--skip-gpg-check', dest='skip_gpg',
-                      action="store_true", help="Skip the GPG signedness check")
+class Command(BaseCommand):
+    help = 'Import new package to debexpo'
 
-    (options, args) = parser.parse_args()
+    def add_arguments(self, parser):
+        parser.add_argument('changes', nargs='+', help='changes file to import')
 
-    if not options.changes or not options.ini:
-        parser.print_help()
-        sys.exit(0)
+    def handle(self, *args, **options):
+        importer = Importer()
 
-    logging.debug('Importer started with arguments: %s' % sys.argv[1:])
-    i = Importer(options.changes, options.ini, options.skip_email,
-                 options.skip_gpg)
+        for filename in options['changes']:
+            changes = None
+            error = None
 
-    sys.exit(i.main())
+            try:
+                changes = Changes(filename)
+                importer.process_upload(changes)
+            except Exception as e:
+                error = e
 
+            if changes:
+                changes.cleanup_source()
 
-if __name__ == '__main__':
-    main()
+            if error:
+                raise CommandError(error)
+
+            self.stdout.write(self.style.SUCCESS(f'Package {changes.source} '
+                                                 'imported successfuly'))
