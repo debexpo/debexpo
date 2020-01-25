@@ -30,7 +30,9 @@ from debian.changelog import ChangelogParseError, Changelog as DebianChangelog
 
 
 class ExceptionChangelog(Exception):
-    pass
+    def __str__(self):
+        message = super().__str__()
+        return f'Failed to parse debian/changelog: {message}'
 
 
 class Changelog():

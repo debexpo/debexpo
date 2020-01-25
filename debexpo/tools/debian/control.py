@@ -34,7 +34,9 @@ from debexpo.tools.files import CheckSumedFile
 
 
 class ExceptionControl(Exception):
-    pass
+    def __str__(self):
+        message = super().__str__()
+        return f'Failed to parse debian/control: {message}'
 
 
 def parse_section(section):
@@ -147,24 +149,22 @@ class Control():
 
     def validate(self):
         if not self.source:
-            raise ExceptionControl('Control file invalid. No source definition '
-                                   'found')
+            raise ExceptionControl('No source definition found')
 
         if not self.binaries:
-            raise ExceptionControl('Control file invalid. No binary definition '
-                                   'found')
+            raise ExceptionControl('No binary definition found')
 
         # As per debian policy paragraph 5.2:
         # https://www.debian.org/doc/debian-policy/ch-controlfields.html#source-package-control-files-debian-control
         for key in ['Source', 'Maintainer']:
             if key not in self.source:
-                raise ExceptionControl('Control file invalid. Missing key '
+                raise ExceptionControl('Missing key '
                                        f'{key} in source definition')
 
         for binary in self.binaries:
             for key in ['Package', 'Architecture', 'Description']:
                 if key not in binary:
-                    raise ExceptionControl('Control file invalid. Missing key '
+                    raise ExceptionControl('Missing key '
                                            f'{key} in source definition')
 
     def get_source_package(self):

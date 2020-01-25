@@ -31,7 +31,9 @@ from debian.copyright import Copyright as DebianCopyright, \
 
 
 class ExceptionCopyright(Exception):
-    pass
+    def __str__(self):
+        message = super().__str__()
+        return f'Failed to parse debian/copyright: {message}'
 
 
 class Copyright():
