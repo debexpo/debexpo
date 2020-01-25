@@ -44,7 +44,7 @@ DISTRIBUTIONS = (
     ('testing', 'Debian'),
     ('testing-proposed-updates', 'Debian'),
     ('testing-security', 'Debian'),
-    ('unreleased', None),
+    ('UNRELEASED', None),
     ('unstable', 'Debian'),
     ('wheezy', 'Debian'),
     ('wheezy-backports', 'Debian Backports'),
