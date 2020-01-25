@@ -46,8 +46,8 @@ class Copyright():
 
         try:
             fd = open(filename, 'r')
-        except IOError as e:
-            raise ExceptionCopyright(e)
+        except IOError:
+            return copyright
 
         with fd:
             try:
