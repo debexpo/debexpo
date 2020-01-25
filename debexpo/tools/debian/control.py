@@ -139,11 +139,14 @@ class Control():
             raise ExceptionControl(e)
 
         with fd:
-            for package in Deb822.iter_paragraphs(fd):
-                if not self.source:
-                    self.source = package
-                else:
-                    self.binaries.append(package)
+            try:
+                for package in Deb822.iter_paragraphs(fd):
+                    if not self.source:
+                        self.source = package
+                    else:
+                        self.binaries.append(package)
+            except ValueError as e:
+                raise ExceptionControl(e)
 
         return control
 

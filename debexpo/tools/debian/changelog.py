@@ -58,7 +58,7 @@ class Changelog():
         with fd:
             try:
                 changelog = DebianChangelog(fd, strict=True)
-            except ChangelogParseError as e:
+            except (ChangelogParseError, ValueError) as e:
                 raise ExceptionChangelog(e)
 
         return changelog

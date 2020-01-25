@@ -206,6 +206,18 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_count('hello', '1.0-1', 0)
         self.assert_package_not_in_repo('hello', '1.0-1')
 
+    def _import_package_bad_encoding_source(self, filename):
+        self.import_source_package(f'hello-bad-encoding-{filename}')
+        self.assert_importer_failed()
+        self.assert_email_with("'utf-8' codec can't decode byte")
+        self.assert_package_count('hello', '1.0-1', 0)
+        self.assert_package_not_in_repo('hello', '1.0-1')
+
+    def test_import_package_bad_encoding(self):
+        for filename in ('control', 'copyright', 'changelog',):
+            self._import_package_bad_encoding_source(filename)
+            self._cleanup_mailbox()
+
     def test_import_package_ioerror_control(self):
         self.import_package('ioerror-control')
         self.assert_importer_failed()
