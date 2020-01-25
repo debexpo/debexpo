@@ -52,7 +52,7 @@ class Copyright():
         with fd:
             try:
                 copyright = DebianCopyright(fd)
-            except MachineReadableFormatError as e:
+            except (MachineReadableFormatError, ValueError) as e:
                 raise ExceptionCopyright(e)
             except NotMachineReadableError:
                 pass
@@ -60,8 +60,11 @@ class Copyright():
         return copyright
 
     def _build_copyright(self):
-        self.licenses = self._get_licenses()
-        self.author = self._get_author()
+        try:
+            self.licenses = self._get_licenses()
+            self.author = self._get_author()
+        except MachineReadableFormatError as e:
+            raise ExceptionCopyright(e)
 
     def validate(self):
         # Validated by the _parse_copyright method

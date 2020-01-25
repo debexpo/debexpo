@@ -199,6 +199,13 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_count('hello', '1.0-1', 0)
         self.assert_package_not_in_repo('hello', '1.0-1')
 
+    def test_import_package_invalid2_copyright(self):
+        self.import_source_package('hello-license-invalid2')
+        self.assert_importer_failed()
+        self.assert_email_with('continued line must begin with " "')
+        self.assert_package_count('hello', '1.0-1', 0)
+        self.assert_package_not_in_repo('hello', '1.0-1')
+
     def test_import_package_ioerror_control(self):
         self.import_package('ioerror-control')
         self.assert_importer_failed()

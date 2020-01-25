@@ -1,0 +1,95 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: ADIOS
+Upstream-Contact: ORNL <help@olcf.ornl.gov>
+Source: https://www.olcf.ornl.gov/center-projects/adios/
+
+Files: *
+Copyright: (c) 2008 - 2012.  UT-BATTELLE, LLC. All rights reserved.
+License: BSD
+ ADIOS is freely available under the terms of the BSD license given below.
+ .
+ Produced at the National Center for Computational Sciences in Oak Ridge National Laboratory.
+ . 
+ .
+ Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+ .
+    * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the disclaimer (as noted below) in the documentation and/or other materials provided with the distribution.
+    * Neither the name of the UT-BATTELLE, LLC nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ .
+ .
+ Additional BSD Notice
+ .
+ 1. This notice is required to be provided under our contract with the U.S. Department of Energy (DOE). This work was produced at Oak Ridge National Laboratory under Contract No. DEAC05-00OR22725  with the DOE.
+ .
+ 2. Neither the United States Government nor UT-BATTELLE, LLC nor any of their employees, makes any warranty, express or implied, or assumes any liability or responsibility for the accuracy, completeness, or usefulness of any information, apparatus, product, or process disclosed, or represents that its use would not infringe privately-owned rights.
+ .
+ 3. Also, reference herein to any specific commercial products, process, or services by trade name, trademark, manufacturer or otherwise does not necessarily constitute or imply its endorsement, recommendation, or favoring by the United States Government or UT-BATTELLE, LLC. The views and opinions of authors expressed herein do not necessarily state or reflect those of the United States Government or UT-BATTELLE, LLC, and shall not be used for advertising or product endorsement purposes.
+
+Files: wrappers/numpy/*
+Copyright: (c)  2015 Jong Choi (choij@ornl.gov)
+License: BSD
+
+Files: wrappers/Java/*
+Copyright: (c)  2007-2009 Kitware, Inc.
+License: BSD
+
+Files: toolchain/cray/*
+Copyright: (c) Cray Inc.
+License: Apache
+ The Apache license may be found at /usr/share/common-licenses/Apache-2.0
+
+Files: src/core/qhashtbl.*
+Copyright: (c) 2010-2012 Seungyoung Kim
+License: BSD-2-Clause
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+
+Files: src/mxml/*
+Copyright: 2003-2014 Michael R Sweet
+License: MXML
+			   Mini-XML License
+			  September 18, 2010
+ .
+ .
+ The Mini-XML library and included programs are provided under the 
+ terms of the GNU Library General Public License version 2 (LGPL2)
+ with the following exceptions:
+ .
+ 1. Static linking of applications to the Mini-XML library
+ does not constitute a derivative work and does not require
+ the author to provide source code for the application, use
+ the shared Mini-XML libraries, or link their applications
+ against a user-supplied version of Mini-XML.
+ .
+ If you link the application to a modified version of
+ Mini-XML, then the changes to Mini-XML must be provided
+ under the terms of the LGPL2 in sections 1, 2, and 4.
+ .
+ 2. You do not have to provide a copy of the Mini-XML license
+ with programs that are linked to the Mini-XML library, nor
+ do you have to identify the Mini-XML license in your
+ program or documentation as required by section 6 of the
+ LGPL2.
+ .
+ The LGPL can be found at /usr/share/common-licenses/LGPL-2
