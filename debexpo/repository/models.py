@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 #   repository.py — Class to handle the repository
 #
 #   This file is part of debexpo -
@@ -29,36 +27,58 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-"""
-This module holds the Repository class to handle the repository.
-"""
-
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, Copyright © 2010 Jan Dittberner'
-__license__ = 'MIT'
-
 import bz2
 import gzip
-from debian import deb822, debfile
 import logging
-import os
-from sqlalchemy import select, or_
 from tempfile import NamedTemporaryFile
+from shutil import copy
+from os.path import join, isfile, isdir, abspath
+from os import chmod, replace, makedirs, unlink
 
-from debexpo.lib.utils import get_package_dir
+from django.db import transaction, models
+from django.utils.translation import gettext_lazy as _
 
-
-from debexpo.model import meta
-from debexpo.model.packages import Package
-from debexpo.model.package_files import PackageFile
-from debexpo.model.source_packages import SourcePackage
-from debexpo.model.binary_packages import BinaryPackage
-from debexpo.model.package_versions import PackageVersion
+from debexpo.tools.debian.dsc import Dsc
+from debexpo.tools.cache import enforce_unique_instance
 
 log = logging.getLogger(__name__)
 
 
-class Repository(object):
+class RepositoryFileManager(models.Manager):
+    def create_from_file(self, sumed_file, basedir, changes):
+        repository_file = RepositoryFile()
+        repository_file.path = join(basedir, str(sumed_file))
+        repository_file.size = sumed_file.size
+        repository_file.sha256sum = sumed_file.checksums['sha256']
+        repository_file.package = changes.source
+        repository_file.version = changes.version
+        repository_file.component = changes.component
+        repository_file.distribution = changes.distribution
+
+        return repository_file
+
+
+# This class represents the state of the repository. Is it purposfully not
+# linked to packages objects as removal can be done asynchronously (ie. when
+# db package entry might already be gone).
+class RepositoryFile(models.Model):
+    package = models.CharField(max_length=100, verbose_name=_('Name'))
+    version = models.CharField(max_length=100, verbose_name=_('Version'))
+    component = models.CharField(max_length=32, verbose_name=_('Component'))
+    distribution = models.CharField(max_length=32,
+                                    verbose_name=_('Distribution'))
+
+    path = models.TextField(verbose_name=_('Path'), unique=True)
+    size = models.IntegerField(verbose_name=_('Size'))
+    sha256sum = models.CharField(max_length=64, verbose_name=_('SHA256'))
+
+    objects = RepositoryFileManager()
+
+    def __str__(self):
+        return self.path
+
+
+class Repository():
     """
     Class to handle the repository.
     """
@@ -69,8 +89,12 @@ class Repository(object):
         """
         self.repository = repository
         self.compression = [(gzip.GzipFile, 'gz'), (bz2.BZ2File, 'bz2')]
+        self.pending = set()
 
-    def _dsc_to_sources(self, package_file):
+    def __str__(self):
+        return abspath(self.repository)
+
+    def _dsc_to_sources(self, repository_file):
         """
         Reads the contents of a dsc file and converts it to a Sources file
         entry.
@@ -78,78 +102,47 @@ class Repository(object):
         ``file``
             Filename of the dsc to read.
         """
-        filename = os.path.join(self.repository, package_file.filename)
-        package_version = package_file.source_package.package_version
-        package = package_version.package
+        filename = join(self.repository, repository_file.path)
+        package = repository_file.package
 
-        if not os.path.isfile(filename):
-            log.critical('Cannot find file %s' % filename)
+        if not isfile(filename):
+            log.critical(f'Cannot find file {filename}')
             return ''
 
-        if not package:
-            log.critical('For some reason package is None...')
-            return ''
-
-        # Read the dsc file.
-        dsc = deb822.Dsc(file(filename))
+        # Read the dsc file and get the deb822 form.
+        dsc = Dsc(filename)
+        source = dsc._data
 
         # There are a few differences between a dsc file and a Sources entry,
         # listed and acted upon below:
 
         # Firstly, the "Source" field in the dsc is simply renamed to "Package".
-        dsc['Package'] = dsc.pop('Source')
+        source['Package'] = source.pop('Source')
 
         # There needs to be a "Directory" field to tell the package manager
         # where to download the package from. This is in the format (for the
         # test package in the component "main"):
         #   pool/main/t/test
-        dsc['Directory'] = str('pool/%s/%s' % (package_version.component,
-                                               get_package_dir(package.name)))
+        source['Directory'] = self._get_package_dir(
+            package, repository_file.component)
 
-        # The dsc file, its size, and its md5sum needs to be added to the
-        # "Files" field. This is unsurprisingly not in the original dsc file!
-        dsc['Files'].append({'md5sum': package_file.md5sum, 'size':
-                             str(package_file.size), 'name':
-                             str(package_file.filename.split('/')[-1])})
-        dsc['Checksums-Sha256'].append(
-            {'sha256': package_file.sha256sum,
-             'size': str(package_file.size),
-             'name': str(package_file.filename.split('/')[-1])})
+        # The source file, its size, and its sha256sum needs to be added to the
+        # "Checksums-Sha256" field. This is unsurprisingly not in the original
+        # source file!
+        source['Checksums-Sha256'].append({
+            'sha256': repository_file.sha256sum,
+            'size': str(repository_file.size),
+            'name': repository_file.path.split('/')[-1]
+        })
 
-        # Get a nice rfc822 output of this dsc, now Sources, entry.
-        return dsc.dump()
+        # Files and Checksums-Sha1 are deprecated. Removing them from the Source
+        source.pop('Files')
+        source.pop('Checksums-Sha1')
 
-    def _deb_to_packages(self, package_file):
-        """
-        Reads a binary package and outputs a Packages file entry.
+        # Get a nice rfc822 output of this source, now Sources, entry.
+        return source.dump()
 
-        ``file``
-            Filename of the deb to read.
-        """
-        filename = os.path.join(self.repository, package_file.filename)
-
-        if not os.path.isfile(filename):
-            log.critical('Cannot find file %s' % filename)
-            return ''
-
-        # Read the deb file.
-        try:
-            deb = debfile.DebFile(filename).debcontrol()
-        except debfile.DebError:
-            log.critical('Cannot parse deb file %s' % filename)
-            return ''
-
-        # There are a few additions to a debian/control file to make a Packages
-        # entry, listed and acted upon below:
-        # (the control dictionary cannot handle Unicode - convert it)
-        deb['Filename'] = str(package_file.filename)
-        deb['Size'] = str(package_file.size)
-        deb['MD5sum'] = str(package_file.md5sum)
-        deb['SHA256'] = str(package_file.sha256sum)
-
-        return deb.dump()
-
-    def get_sources_file(self, distribution, component, user_id=None):
+    def get_sources_file(self, distribution, component):
         """
         Does a query to find all packages that fit the criteria of distribution
         and component and returns the contents of a Sources file.
@@ -159,50 +152,21 @@ class Repository(object):
 
         ``component``
             Name of the component to look at.
-
-        ``user_id``
-            Only look at a certain user's packages.
         """
-        log.debug('Getting all sources files for dist = %s, component = %s' %
-                  (distribution, component))
-
-        # Get all PackageFile instances...
-        dscfiles = meta.session.query(PackageFile)
-
-        # ...include only *.dsc files...
-        dscfiles = dscfiles.filter(PackageFile.filename.like('%.dsc'))
-
-        # ...where there is a SourcePackage instance...
-        dscfiles = dscfiles.filter(PackageFile.source_package_id ==
-                                   SourcePackage.id)
-
-        # ...where there is a PackageVersion instance...
-        dscfiles = dscfiles.filter(SourcePackage.package_version_id ==
-                                   PackageVersion.id)
-
-        # ...include only packages in the specified component...
-        dscfiles = dscfiles.filter(PackageVersion.component == component)
-
-        # ...include only package in the specified distribution...
-        dscfiles = dscfiles.filter(PackageVersion.distribution == distribution)
-
-        if user_id is not None:
-            # ...where there is a Package instance...
-            dscfiles = dscfiles.filter(PackageVersion.package_id == Package.id)
-
-            # ...include only packages from this user
-            dscfiles = dscfiles.filter(Package.user_id == user_id)
-
-        # ...and finally create a list of PackageFile instances.
-        dscfiles = dscfiles.all()
+        # Get all RepositoryFile instances...
+        dscfiles = RepositoryFile.objects \
+            .filter(distribution=distribution) \
+            .filter(component=component) \
+            .filter(path__endswith='.dsc') \
+            .all()
 
         entries = []
 
         # Loop through dsc files.
-        for file in dscfiles:
-            packages_entry = self._dsc_to_sources(file)
+        for dsc in dscfiles:
+            packages_entry = self._dsc_to_sources(dsc)
             if not packages_entry.strip():
-                log.warn('Eek, broken packages entry: %s', file)
+                log.warn('Eek, broken packages entry: %s', dsc)
                 continue
             entries.append(packages_entry)
 
@@ -210,219 +174,7 @@ class Repository(object):
         # create the finished Sources file.
         return '\n'.join(entries)
 
-    def get_packages_file(self, distribution, component, arch, user_id=None):
-        """
-        Does a query to find all packages that fit the criteria of distribution,
-        component and architecture and returns the contents of a Packages file.
-
-        ``distribution``
-            Name of the distribution to look at.
-
-        ``component``
-            Name of the component to look at.
-
-        ``arch``
-            Name of the architecture to look at.
-
-        ``user_id``
-            Only look at a certain user's packages.
-        """
-        log.debug('Getting all package files for dist = %s, component = %s, '
-                  'arch = %s' % (distribution, component, arch))
-
-        # Get all PackageFile instances...
-        debfiles = meta.session.query(PackageFile)
-
-        # ...include only *.deb files...
-        debfiles = debfiles.filter(PackageFile.filename.like('%.deb'))
-
-        # ...where there is a BinaryPackage instance...
-        debfiles = debfiles.filter(PackageFile.binary_package_id ==
-                                   BinaryPackage.id)
-
-        # ...where the BinaryPackage has Arch: %(arch)s or Arch: all...
-        debfiles = debfiles.filter(or_(BinaryPackage.arch == arch,
-                                       BinaryPackage.arch == 'all'))
-
-        # ...where there is a PackageVersion instance...
-        debfiles = debfiles.filter(BinaryPackage.package_version_id ==
-                                   PackageVersion.id)
-
-        # ...include only packages in the specified component...
-        debfiles = debfiles.filter(PackageVersion.component == component)
-
-        # ...include only package in the specified distribution...
-        debfiles = debfiles.filter(PackageVersion.distribution == distribution)
-
-        if user_id is not None:
-            # ...where there is a Package instance...
-            debfiles = debfiles.filter(PackageVersion.package_id == Package.id)
-
-            # ...include only packages from this user
-            debfiles = debfiles.filter(Package.user_id == user_id)
-
-        # ...and finally create a list of PackageFile instances.
-        debfiles = debfiles.all()
-
-        entries = []
-
-        # Loop through deb files.
-        for file in debfiles:
-            packages_entry = self._deb_to_packages(file)
-            if not packages_entry.strip():
-                log.warn('Eek, broken packages entry: %s', file)
-                continue
-            entries.append(packages_entry)
-
-        # Each entry is simply joined by a blank newline, so do just that to
-        # create the finished Packages file.
-        return '\n'.join(entries)
-
-    def _get_archs_list(self, list):
-        """
-        Takes a list of directory names and returns an altered list where only
-        items with "binary-" prefix stay. This "binary-" prefix is also removed.
-
-        For example, an input of ['binary-i386', 'binary-amd64', 'foo'] would
-        produce an output of ['i386', 'amd64'].
-
-        ``list``
-            List of directory names to look at.
-        """
-        for item in list:
-            if not item.startswith('binary-'):
-                list.remove(item)
-
-        return [z[7:] for z in list]
-
-    def _append_current_distributions(self, distributions):
-        """
-        Take a look at the current directory layout and add distribution -
-        component entries to the ``distributions`` dict. This is useful as if
-        the contents of the Sources file is empty then the file is deleted. If a
-        package has no longer present but still exists in the current Sources
-        file, this process will remove it.
-        """
-        distsdir = os.path.join(self.repository, 'dists')
-
-        # The first time the repository dists files are generated, the dists
-        # directory isn't present.
-        if not os.path.isdir(distsdir):
-            return distributions
-
-        dists = os.listdir(distsdir)
-
-        # Components are subdirectories in distribution directories.
-        for dist in dists:
-            components = os.listdir(os.path.join(distsdir, dist))
-
-            comps = {}
-
-            # Loop through each component.
-            for component in components:
-                # Get arch list.
-                archs = self._get_archs_list(os.listdir(os.path.join(
-                    distsdir, dist, component)))
-
-                if dist in distributions.keys():
-                    # The distribution already exists in the big dictionary.
-                    # Therefore we need to look at each component to see whether
-                    # it already exists.
-
-                    if component in distributions[dist].keys():
-                        # The component already exists in the big dictionary
-                        # under the current distribution. Therefore we need to
-                        # look at each arch to see whether it already exists.
-
-                        for arch in archs:
-                            if arch not in distributions[dist][component]:
-                                # The arch doesn't already exist. Add it.
-                                distributions[dist][component].append(arch)
-                    else:
-                        # The component doesn't already exist. It can easily be
-                        # added now then.
-                        distributions[dist][component] = archs
-                else:
-                    # The distribution doesn't already exist in the big
-                    # dictionary. Therefore we can use the temporary comps
-                    # dictionary to store { component : [archs] } information.
-                    comps[component] = archs
-
-            # Test whether the comps dictionary has been used. It will only have
-            # been used when the distribution didn't already exist in the big
-            # dictionary.
-            if len(comps) != 0:
-                distributions[dist] = comps
-
-        return distributions
-
-    def _get_dists_comps_archs(self):
-        """
-        Return a dictionary of distribution, components and dists in the
-        distribution::
-
-            { distribution1 : { component1 : [ arch1, arch2, ... ],
-                                component2 : [ arch3, ... ] },
-                                ...
-              distribution2 : ...
-            }
-
-        I'm not particularly happy with the implementation of this. Perhaps one
-        day when I'm much more skilled at SQLAlchemy, I'll take a look at this
-        and see if I can perform all the operations on the db level. That would
-        be nice.
-        """
-        log.debug('Creating dists -> components -> archs dictionary')
-
-        # Get distinct distributions from package_versions.
-        dists = meta.engine.execute(
-            select([PackageVersion.distribution]).distinct())
-
-        distributions = {}
-
-        # Loop through each distribution.
-        for dist in dists.fetchall():
-            distributions[dist[0]] = {}
-
-            components = meta.engine.execute(
-                select([PackageVersion.component],
-                       PackageVersion.distribution == dist[0]).distinct())
-
-            comps = {}
-
-            # Loop through each component within the current distribution.
-            for comp in components.fetchall():
-
-                comps[comp[0]] = []
-
-                # Get all distinct archs...
-                archs_query = select([BinaryPackage.arch]).distinct()
-
-                # ...where an PackageVersion instance exists for it...
-                archs_query = archs_query.where(
-                    BinaryPackage.package_version_id == PackageVersion.id)
-
-                # ...where its distribution is the current one in iteration...
-                archs_query = archs_query.where(PackageVersion.distribution ==
-                                                dist[0])
-
-                # ...where its component is the current one in iteration...
-                archs_query = archs_query.where(PackageVersion.component ==
-                                                comp[0])
-
-                # ...execute that.
-                archs = meta.engine.execute(archs_query)
-
-                # Loop through each arch.
-                for arch in archs.fetchall():
-                    comps[comp[0]].append(arch[0])
-
-            # Add distribution to dictionary.
-            distributions[dist[0]] = comps
-
-        return self._append_current_distributions(distributions)
-
-    def _check_directories(self, dist, component, arch=None):
+    def _check_directories(self, dist, component):
         """
         Checks whether the directories needed for a dists file are present, and
         if not it creates them.
@@ -432,102 +184,110 @@ class Repository(object):
 
         ``component``
             Name of the component within the distribution.
-
-        ``arch``
-            Architecture of the dists file. This defaults to *source*.
         """
-        dir = self.repository
+        path = join(self.repository, 'dists', dist, component, 'source')
 
-        # Default to source, otherwise binary-%(arch)s.
-        if arch is None:
-            arch = 'source'
-        else:
-            arch = 'binary-%s' % arch
+        if not isdir(path):
+            makedirs(path)
 
-        # Check each subdirectory of the dists directory.
-        for dirname in ['dists', dist, component, arch]:
-            dir = os.path.join(dir, dirname)
-
-            if not os.path.isdir(dir):
-                log.debug('Creating directory %s' % dir)
-                os.mkdir(dir)
-
-    def update_sources(self):
+    def update_sources(self, dist, component):
         """
-        Updates all the Sources.{gz,bz2} files for all distributions and
-        components by looking at all source packages.
+        Updates all the Sources.{gz,bz2} files for a given distribution and
+        component by looking at all source packages.
         """
-        log.debug('Updating Sources files')
+        log.debug(f'Updating Sources files for {dist}/{component}')
 
-        # Get distributions and components.
-        dists = self._get_dists_comps_archs()
+        # Make sure all directories are present.
+        self._check_directories(dist, component)
 
-        for dist, components in dists.iteritems():
-            for component in components.keys():
-                # Make sure all directories are present.
-                self._check_directories(dist, component)
+        # Create Sources file content.
+        sources = self.get_sources_file(dist, component)
+        dirname = join(self.repository, 'dists', dist, component, 'source')
+        filename = join(dirname, 'Sources')
 
-                # Create Sources file content.
-                sources = self.get_sources_file(dist, component)
-                dirname = os.path.join(self.repository, 'dists', dist,
-                                       component, 'source')
-                filename = os.path.join(dirname, 'Sources')
-
-                for compress, extension in self.compression:
-                    # Create the Sources files.
-                    log.debug('Creating Sources file: %s' % filename)
-
-                    if type(sources) != str:
-                        sources = sources.encode('utf-8')
-
-                    with NamedTemporaryFile(prefix='Sources', dir=dirname,
-                                            delete=False) as tempfile:
-                        with compress(tempfile.name, 'w') as f:
-                            f.write(sources)
-                            os.chmod(tempfile.name, 0o644)
-                            os.rename(tempfile.name, '%s.%s' % (filename,
-                                                                extension))
-
-    def update_packages(self):
-        """
-        Updates all the Packages.{gz,bz2} files for all distributions and
-        components by looking at all binary packages.
-        """
-        log.debug('Updating Packages files')
-
-        # Get distributions and components.
-        dists = self._get_dists_comps_archs()
-
-        for dist, components in dists.iteritems():
-            for component, archs in components.iteritems():
-                for arch in archs:
-                    # Make sure all directories are present.
-                    self._check_directories(dist, component, arch)
-
-                    # Create Packages file content.
-                    packages = self.get_packages_file(dist, component, arch)
-                    dirname = os.path.join(self.repository, 'dists', dist,
-                                           component, 'binary-%s' % arch)
-                    filename = os.path.join(dirname, 'Packages')
-
-                    for compress, extension in self.compression:
-                        # Create the Packages files.
-                        log.debug('Creating Packages file: %s' % filename)
-
-                        if type(packages) == unicode:
-                            packages = packages.encode('utf-8')
-
-                        with NamedTemporaryFile(prefix='Packages', dir=dirname,
-                                                delete=False) as tempfile:
-                            with compress(tempfile.name, 'w') as f:
-                                f.write(packages)
-                                os.chmod(tempfile.name, 0o644)
-                                os.rename(tempfile.name, '%s.%s' % (filename,
-                                                                    extension))
+        for compress, extension in self.compression:
+            # Create the Sources files.
+            with NamedTemporaryFile(prefix='Sources', dir=dirname,
+                                    delete=False) as tempfile:
+                with compress(tempfile.name, 'w') as f:
+                    f.write(sources.encode())
+                    chmod(tempfile.name, 0o644)
+                    replace(tempfile.name, f'{filename}.{extension}')
 
     def update(self):
         """
-        Updates both Sources and Packages files in the repository.
+        Updates Sources files in the repository for dist/component that have
+        been changed.
         """
-        self.update_sources()
-        self.update_packages()
+        with enforce_unique_instance('repository', blocking=True):
+            for dist, component in self.pending:
+                self.update_sources(dist, component)
+
+    def _get_package_dir(self, package, component):
+        """
+        Returns the directory name where the package with name supplied as the
+        first argument should be installed.
+
+        ``source``
+            Source package name to use to work out directory name.
+        """
+        subpool = None
+
+        if package.startswith('lib'):
+            subpool = package[:4]
+        else:
+            subpool = join(package[0])
+
+        return join('pool', component, subpool, package)
+
+    def _cleanup_previous_entries(self, files_to_install, pool_dir):
+        for sumed_file in files_to_install:
+            # Remove old entry from database
+            try:
+                previous_entry = RepositoryFile.objects.get(path=join(
+                    pool_dir, str(sumed_file)))
+            except RepositoryFile.DoesNotExist:
+                pass
+            else:
+                self.remove(previous_entry.package, previous_entry.version)
+
+    def _install_new_entries(self, files_to_install, pool_dir, changes):
+        dest_dir = join(self.repository, pool_dir)
+
+        for sumed_file in files_to_install:
+            if not isdir(dest_dir):
+                makedirs(dest_dir)
+
+            copy(sumed_file.filename, dest_dir)
+            # And create a new one
+            entry = RepositoryFile.objects.create_from_file(sumed_file,
+                                                            pool_dir,
+                                                            changes)
+            entry.save()
+
+    @transaction.atomic
+    def install(self, changes):
+        pool_dir = self._get_package_dir(changes.source, changes.component)
+        dsc = changes.dsc
+        files_to_install = [changes.files.dsc] + dsc.files.files
+
+        self._cleanup_previous_entries(files_to_install, pool_dir)
+        self._install_new_entries(files_to_install, pool_dir, changes)
+        self.pending.add((changes.distribution, changes.component,))
+
+    @transaction.atomic
+    def remove(self, package, version=None):
+        repository_files = RepositoryFile.objects \
+            .filter(package=package)
+
+        if version:
+            repository_files = repository_files.filter(version=version)
+
+        for repository_file in repository_files:
+            path = join(self.repository, repository_file.path)
+            if isfile(path):
+                unlink(path)
+                self.pending.add((repository_file.distribution,
+                                  repository_file.component,))
+
+        repository_files.delete()
