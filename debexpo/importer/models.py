@@ -47,6 +47,7 @@ from debexpo.tools.debian.changelog import ExceptionChangelog
 from debexpo.tools.files import ExceptionCheckSumedFile
 from debexpo.tools.gnupg import ExceptionGnuPG
 from debexpo.tools.email import Email
+from debexpo.repository.models import Repository
 
 log = getLogger(__name__)
 
@@ -176,7 +177,8 @@ class Importer():
     Class to handle the package that is uploaded and wants to be imported into
     the database.
     """
-    def __init__(self, spool=None, skip_email=False, skip_gpg=False):
+    def __init__(self, spool=None, repository=None, skip_email=False,
+                 skip_gpg=False):
         """
         Object constructor. Sets class fields to sane values.
 
@@ -189,6 +191,10 @@ class Importer():
         """
         self.actually_send_email = not bool(skip_email)
         self.skip_gpg = skip_gpg
+        self.repository = None
+
+        if repository:
+            self.repository = Repository(repository)
 
         if spool:
             self.spool = Spool(spool)
@@ -218,6 +224,9 @@ class Importer():
                 self._accept(upload)
             finally:
                 changes.remove()
+
+        if self.repository:
+            self.repository.update()
 
         return success
 
@@ -400,9 +409,14 @@ class Importer():
 
     def _accept_upload(self, changes, source, plugins):
         # Install source in git tree
-        # Install upload in repository
-        # Install upload in database
+
+        # Install to repository
+        if self.repository:
+            self.repository.install(changes)
+
+        # Create DB entries
         upload = self._create_db_entries(changes, source, plugins)
+
         return upload
 
     def _validate_changes(self, changes):
