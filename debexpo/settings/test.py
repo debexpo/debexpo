@@ -57,3 +57,6 @@ DATABASES = {
 
 DEFAULT_FROM_EMAIL = 'debexpo <support@example.org>'
 DEFAULT_BOUNCE_EMAIL = 'bounce@example.org'
+
+# Repository location
+REPOSITORY = '/tmp/debexpo/repository'
