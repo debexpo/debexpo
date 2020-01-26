@@ -78,3 +78,6 @@ LOGGING = {
 
 # Spool settings
 UPLOAD_SPOOL = '/tmp/debexpo/spool'
+
+# Repository
+REPOSITORY = '/tmp/debexpo/repository'

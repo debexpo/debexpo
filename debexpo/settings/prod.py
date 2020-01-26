@@ -69,3 +69,6 @@ DEFAULT_BOUNCE_EMAIL = 'bounce@mentors.debian.net'
 
 # Spool settings
 UPLOAD_SPOOL = '/var/spool/debexpo/http'
+
+# Repository
+REPOSITORY = '/var/lib/debexpo/repository'
