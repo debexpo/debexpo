@@ -96,6 +96,7 @@ class Changes(GPGSignedFile):
         self.changes = self._data.get('Changes')
         self.files = ControlFiles(dirname(self.filename), self._data)
         self.closes = self._data.get('Closes', '')
+        self.component = self.files.get_component()
 
     def validate(self):
         # Per debian policy:

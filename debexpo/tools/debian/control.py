@@ -70,7 +70,7 @@ class ControlFiles():
     )
 
     def __init__(self, basepath, data):
-        self.debs = []
+        self.dsc = None
         self.files = []
 
         for entry in data.get('Files', []):
@@ -79,6 +79,8 @@ class ControlFiles():
 
                 self._add_checksums(sumed_file, data, entry)
                 self.files.append(sumed_file)
+                if sumed_file.filename.endswith('.dsc'):
+                    self.dsc = sumed_file
 
     def validate(self):
         for sumed_file in self.files:
@@ -106,6 +108,11 @@ class ControlFiles():
                     if item.get('name') == entry['name']
                 ][0])
 
+    def get_component(self):
+        for item in self.files:
+            if item.component:
+                return item.component
+
     def move(self, destdir):
         for item in self.files:
             item.move(destdir)
@@ -115,6 +122,7 @@ class ControlFiles():
             item.remove()
 
         self.files = None
+        self.dsc = None
 
     def find(self, pattern):
         for item in self.files:
