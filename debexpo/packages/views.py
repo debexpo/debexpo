@@ -43,6 +43,7 @@ from django.contrib.auth.decorators import login_required
 
 from debexpo.packages.models import PackageUpload, Package, SourcePackage
 from debexpo.comments.forms import CommentForm
+from debexpo.repository.tasks import remove_from_repository
 
 log = logging.getLogger(__name__)
 
@@ -163,6 +164,8 @@ def delete_package(request, name):
     package.delete()
     log.info('Package deleted: {}'.format(name))
     # TODO: trigger repository update
+
+    remove_from_repository.delay(name)
 
     return HttpResponseRedirect(reverse('packages_my'))
 
