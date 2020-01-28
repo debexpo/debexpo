@@ -36,7 +36,9 @@ def enforce_unique_instance(task, timeout=2*60*60, blocking=False):
     # timeout in seconds, default 2 hours.
     lock = cache.lock(task, timeout=timeout)
 
-    if not lock.acquire(blocking=blocking):
+    # Calling tasks in tests is done synchronisly, without risks of concurrency.
+    # This has to be tested manually
+    if not lock.acquire(blocking=blocking):  # pragma: no cover
         raise Exception(f'Task {task} is already running. Aborting.')
     try:
         yield lock

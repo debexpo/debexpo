@@ -17,6 +17,8 @@ before_script:
     python3-celery
     python3-django-celery-beat
     python3-redis
+    python3-fakeredis
+    python3-lupa
     ca-certificates
     libjs-jquery
     libjs-jquery-throttle-debounce
@@ -74,6 +76,8 @@ trans:
       python3-celery
       python3-django-celery-beat
       python3-redis
+      python3-fakeredis
+      python3-lupa
   script:
     - (cd debexpo && python3 ../manage.py makemessages)
     - find debexpo -name '*.po' -exec
@@ -95,5 +99,7 @@ migrations:
       python3-celery
       python3-django-celery-beat
       python3-redis
+      python3-fakeredis
+      python3-lupa
   script:
     - python3 manage.py makemigrations --check

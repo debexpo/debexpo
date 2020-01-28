@@ -35,6 +35,7 @@ from shutil import rmtree, copytree
 from tempfile import TemporaryDirectory
 
 from django.core import mail
+from django_redis.pool import ConnectionFactory
 
 from debexpo.importer.models import Importer, Spool
 from debexpo.packages.models import Package, PackageUpload
@@ -55,6 +56,11 @@ def test_network():
         return e
 
     return None
+
+
+class FakeConnectionFactory(ConnectionFactory):
+    def get_connection(self, params):
+        return self.redis_client_cls(**self.redis_client_cls_kwargs)
 
 
 class TestImporterController(TestController):
