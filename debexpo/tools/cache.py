@@ -32,8 +32,8 @@ from django.core.cache import cache
 
 
 @contextmanager
-def enforce_unique_instance(task):
-    lock = cache.lock(task)
+def enforce_unique_instance(task, timeout=2*60*60):
+    lock = cache.lock(task, timeout=timeout)
 
     if not lock.acquire(blocking=False):
         raise Exception(f'Task {task} is already running. Aborting.')
