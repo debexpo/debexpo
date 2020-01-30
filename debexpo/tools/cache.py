@@ -33,6 +33,7 @@ from django.core.cache import cache
 
 @contextmanager
 def enforce_unique_instance(task, timeout=2*60*60):
+    # timeout in seconds, default 2 hours.
     lock = cache.lock(task, timeout=timeout)
 
     if not lock.acquire(blocking=False):
