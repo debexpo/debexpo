@@ -1,0 +1,25 @@
+{% extends "email-base.html" %}{% block content %}Hi.
+
+Your upload of the package '{{ args.upload.package.name }}' to {{ args.settings.SITE_NAME}} was
+successful. Others can now see it. The URL of your package is:
+
+    {{ args.upload.package.get_url }}
+
+The respective dsc file can be found at:
+
+    {{ args.upload.get_dsc_url }}
+
+If you do not yet have a sponsor for your package you may want to go to:
+
+    {{ args.upload.get_rfs_url }}
+
+and set the "Seeking a sponsor" option to highlight your package on the
+welcome page.
+
+You can also send an RFS (request for sponsorship) to the debian-mentors
+mailing list. Your package page will give your suggestions on how to
+send that mail.
+
+Good luck in finding a sponsor!
+
+Thanks,{% endblock %}

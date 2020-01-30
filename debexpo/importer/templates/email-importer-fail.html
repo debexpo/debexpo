@@ -1,0 +1,17 @@
+{% extends "email-base.html" %}{% block content %}Hello,
+
+There was a failure in importing your package "{{ args.error.changes.source }}" into
+the repository. The problem appears to be in the repository software
+and not your package.
+
+Sorry for the inconvenience. The administrator has been notified.
+Please try again soon.
+
+The error was:
+
+{{ args.error.error }}
+
+{{ args.error.details }}
+
+
+Thanks,{% endblock %}

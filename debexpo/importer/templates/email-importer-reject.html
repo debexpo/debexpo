@@ -1,0 +1,10 @@
+{% extends "email-base.html" %}{% block content %}Hello,
+
+Unfortunately your package "{{ args.error.changes.source }}" was rejected
+because of the following reason:
+
+{{ args.error.error }}
+
+{{ args.error.details }}
+
+Please try to fix it and re-upload. Thanks,{% endblock %}

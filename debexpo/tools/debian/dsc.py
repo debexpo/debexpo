@@ -26,8 +26,9 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from os.path import dirname, abspath
+from os.path import dirname, abspath, basename
 from debian import deb822
+from debian.debian_support import BaseVersion
 
 from debexpo.accounts.models import User
 from debexpo.tools.files import GPGSignedFile
@@ -42,17 +43,18 @@ class Dsc(GPGSignedFile):
     def __init__(self, filename):
         super().__init__(abspath(filename))
 
-        self._data = deb822.Dsc(self.filename)
+        with open(self.filename, 'rb') as fd:
+            self._data = deb822.Dsc(fd)
 
         if len(self._data) == 0:
-            raise ExceptionDsc('Dsc file {} could not be parsed'.format(
-                self.filename))
+            raise ExceptionDsc('{} could not be parsed'.format(
+                basename(self.filename)))
 
         self._build_dsc()
 
     def _build_dsc(self):
         self.source = self._data.get('Source')
-        self.version = self._data.get('Version')
+        self.version = BaseVersion(self._data.get('Version'))
         self.files = ControlFiles(dirname(self.filename), self._data)
 
     def authenticate(self):
@@ -73,5 +75,8 @@ class Dsc(GPGSignedFile):
             'Files',
         ]:
             if key not in self._data:
-                raise ExceptionDsc('Dsc file invalid. Missing key '
+                raise ExceptionDsc('Missing key '
                                    '{}'.format(key))
+
+    def __str__(self):
+        return basename(self.filename)

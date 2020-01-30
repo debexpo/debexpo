@@ -37,6 +37,7 @@ import os
 import subprocess
 import re
 import tempfile
+from os.path import basename
 
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
@@ -67,7 +68,7 @@ class ExceptionGnuPGNoPubKey(ExceptionGnuPG):
 
     def __str__(self):
         return 'Unable to verify file {}. No public key found for key {}' \
-               .format(self.filename, self.fingerprint)
+               .format(basename(self.filename), self.fingerprint)
 
 
 class GnuPG():
@@ -137,8 +138,8 @@ class GnuPG():
         no_data = list(filter(None, map(no_data_re.match,
                                         output)))
         if no_data:
-            raise ExceptionGnuPGNotSignedFile('{}: not a GPG signed'
-                                              ' file'.format(signed_file))
+            raise ExceptionGnuPGNotSignedFile(
+                f'{os.path.basename(signed_file)}: not a GPG signed file')
 
         valid_sig_re = re.compile(r'\[GNUPG:\] VALIDSIG .*'
                                   r' (?P<fingerprint>\w+)$')

@@ -1,0 +1,45 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Sun, 02 Dec 2018 22:38:11 +0100
+Source: hello
+Binary: hello
+Architecture: source amd64
+Version: 1.0-1
+Distribution: unstable
+Urgency: medium
+Maintainer: Baptiste BEAUPLAT <lyknode@cilg.org>
+Changed-By: Baptiste BEAUPLAT <lyknode@cilg.org>
+Description:
+ hello      - <insert up to 60 chars description>
+Changes:
+ hello (1.0-1) unstable; urgency=medium
+ .
+   * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+Checksums-Sha1:
+ 9eb2de6d0dc9c7aa60d97cf741d686c55e0fc817 1062 hello_1.0-1.dsc
+ be505a70074ab85fed3f68026242651fcde85bf2 168 hello_1.0.orig.tar.xz
+ 5924502ba17dd59458615b85325734e4319de4b3 7856 hello_1.0-1.debian.tar.xz
+ 37636858c06da0d8560074d7bd5e125190fc6056 4626 hello_1.0-1_amd64.buildinfo
+ 4704c98642a0cb7dfd6b9a4cb4c0d61916a1e729 2316 hello_1.0-1_amd64.deb
+Checksums-Sha256:
+ 581783f47c3730f9c9850b545ae4e8f8f465b001beebda09f6671d62032e699f 1062 hello_1.0-1.dsc
+ 622d2165e0ae0aee8b3dac5fbf07f471db2205c4cb60d1c3ce3762a12fbe62bf 168 hello_1.0.orig.tar.xz
+ 3e0c833217acd69698210932ff3cd928aa03843c66f05cf35a51b4a581cf6c58 7856 hello_1.0-1.debian.tar.xz
+ 0eb1d690ee571aed46c10f5eb18b07a4ec5f474a07f7819dc9be0217fe55e0d4 4626 hello_1.0-1_amd64.buildinfo
+ c98b2da09c2abe6b446c36aa3210adacde8d3566f8e76ea62c15b9aa7bbfd1f5 2316 hello_1.0-1_amd64.deb
+Files:
+ e7222cbc8abbf1a4ae80b10abb6160df 1062 unknown optional hello_1.0-1.dsc
+ 3789bf498b8c4cf0387383466ec4c227 168 unknown optional hello_1.0.orig.tar.xz
+ aaf1afc37bf3fbd0f63b8a4f3b2aa871 7856 unknown optional hello_1.0-1.debian.tar.xz
+ 72821f7b6a9e18c12be61ba684a53471 4626 unknown optional hello_1.0-1_amd64.buildinfo
+ 4c3f75043d99b8a9d3d5019b46a3625c 2316 unknown optional hello_1.0-1_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSzz3sz+AdjONtPqA6HkZKDEXU71wUCXiX5VgAKCRCHkZKDEXU7
+11aoAQDfwDhb6b0MaGjLjFY478JfOvUG41BYFsfvNI/NJYPdaQD+Mxaf4OYX78vp
+PfPc7LXMmI4Qy2s7ogVMjN97XgAWzgc=
+=7ip2
+-----END PGP SIGNATURE-----

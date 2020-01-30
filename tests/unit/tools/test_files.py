@@ -82,14 +82,14 @@ class TestCheckSumedFile(TestController):
         try:
             sumed_file.validate()
         except ExceptionCheckSumedFileNoFile as e:
-            self.assertIn('/noexistent', str(e))
+            self.assertIn('noexistent', str(e))
 
     def test_plain_file(self):
         sumed_file = CheckSumedFile('/etc/passwd')
         try:
             sumed_file.validate()
         except ExceptionCheckSumedFileNoMethod as e:
-            self.assertIn('/etc/passwd', str(e))
+            self.assertIn('passwd', str(e))
             self.assertIn('No checksum method available', str(e))
 
     def test_wrong_sumed_file(self):
@@ -98,7 +98,7 @@ class TestCheckSumedFile(TestController):
         try:
             sumed_file.validate()
         except ExceptionCheckSumedFileFailedSum as e:
-            self.assertIn('/etc/passwd', str(e))
+            self.assertIn('passwd', str(e))
             self.assertIn('Checksum failed', str(e))
 
     def test_bad_method_sumed_file(self):

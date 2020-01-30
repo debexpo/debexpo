@@ -25,6 +25,7 @@ Using debexpo
     :maxdepth: 1
 
     uploading
+    worker
 
 Development documentation
 -------------------------

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_beat',
     'debexpo.base',
     'debexpo.accounts',
     'debexpo.keyring',
@@ -94,6 +95,16 @@ LOCALE_PATHS = [
 
 WSGI_APPLICATION = 'debexpo.wsgi.application'
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -135,10 +146,22 @@ SMTP_PORT = 25
 # SMTP_USERNAME = 'foo'
 # SMTP_PASSWORD = 'CHANGEME'
 
-NNTP_SERVER = 'news.gmane.org'
+NNTP_SERVER = 'news.gmane.io'
 
 # Debexpo User model
 AUTH_USER_MODEL = 'accounts.User'
 
 # GPG settings
 GPG_PATH = '/usr/bin/gpg'
+
+# Celery settings
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_BEAT_SCHEDULER = 'django'
+
+# Tasks beats
+TASK_IMPORTER_BEAT = 60 * 15  # Every 15 minutes

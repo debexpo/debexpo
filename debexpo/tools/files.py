@@ -26,7 +26,8 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from os.path import basename
+from os.path import basename, join, isfile
+from os import replace, unlink
 import hashlib
 
 from debexpo.keyring.models import Key
@@ -60,9 +61,9 @@ class ExceptionCheckSumedFileFailedSum(ExceptionCheckSumedFile):
         self.computed = computed
 
     def __str__(self):
-        return f'Checksum failed for file {self.filename}.\n\n' \
-                'Expected: {self.expected}\n' \
-                'Computed: {self.computed}'
+        return f'Checksum failed for file {basename(self.filename)}.\n\n' \
+               f'Expected: {self.expected}\n' \
+               f'Computed: {self.computed}'
 
 
 class GPGSignedFile():
@@ -114,8 +115,10 @@ class CheckSumedFile():
 
                 try:
                     data = open(self.filename, 'rb')
-                except IOError as e:
-                    raise ExceptionCheckSumedFileNoFile(e)
+                except FileNotFoundError:
+                    raise ExceptionCheckSumedFileNoFile(
+                        f'{basename(self.filename)} is missing from '
+                        'upload')
                 else:
                     with data:
                         while True:
@@ -137,3 +140,15 @@ class CheckSumedFile():
 
     def __str__(self):
         return basename(self.filename)
+
+    def move(self, destdir):
+        if not isfile(self.filename):
+            return
+
+        dest = join(destdir, basename(self.filename))
+        replace(self.filename, dest)
+        self.filename = dest
+
+    def remove(self):
+        if isfile(self.filename):
+            unlink(self.filename)
