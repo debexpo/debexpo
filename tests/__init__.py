@@ -35,6 +35,10 @@ When the test runner finds and executes tests within this directory,
 this file will be loaded to setup the test environment.
 """
 
+from os import walk
+from os.path import join
+from logging import getLogger
+
 from django.test import TestCase
 # import tempfile
 # from datetime import datetime
@@ -49,6 +53,8 @@ from debexpo.packages.models import Package, PackageUpload, SourcePackage, \
 __all__ = ['environ', 'url', 'TestController']
 
 environ = {}
+
+log = getLogger(__name__)
 
 
 class TestController(TestCase):
@@ -218,3 +224,20 @@ Xcgnuh6Rlywt6uiaFIGYnGefYPGXRAA=
                 pass
             else:
                 package.delete()
+
+    def _assert_no_leftover(self, path):
+        matches = self._find_all('', path)
+
+        for match in matches:
+            log.error('leftover: {}'.format(match))
+
+        self.assertFalse(matches)
+
+    def _find_all(self, name, path):
+        """Find a file in a path"""
+        result = []
+        for root, dirs, files in walk(path):
+            for filename in files:
+                if name in filename:
+                    result.append(join(root, filename))
+        return result

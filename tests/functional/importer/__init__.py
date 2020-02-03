@@ -83,7 +83,7 @@ class TestImporterController(TestController):
         self.spool = Spool(self.spool_dir.name)
 
     def tearDown(self):
-        self._assert_no_leftover()
+        self._assert_no_leftover(str(self.spool))
         self._remove_subscribers()
         self._remove_example_user()
         self._cleanup_package()
@@ -118,15 +118,6 @@ class TestImporterController(TestController):
     def _cleanup_package(self):
         Package.objects.all().delete()
 
-    def _assert_no_leftover(self):
-        matches = self._find_all('', str(self.spool))
-        log.error(f'matches for {str(self.spool)} {matches}')
-
-        for match in matches:
-            log.debug('leftover: {}'.format(match))
-
-        self.assertFalse(matches)
-
     def _package_in_repo(self, package_name, version):
         """Check if package is present in repo"""
         matches = self._find_file(package_name + '_' + version + '.dsc',
@@ -145,15 +136,6 @@ class TestImporterController(TestController):
         for root, dirs, files in walk(path):
             if name in files:
                 result.append(join(root, name))
-        return result
-
-    def _find_all(self, name, path):
-        """Find a file in a path"""
-        result = []
-        for root, dirs, files in walk(path):
-            for filename in files:
-                if name in filename:
-                    result.append(join(root, filename))
         return result
 
     def import_source_package(self, package_dir, skip_gpg=False,
