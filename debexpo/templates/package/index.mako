@@ -180,7 +180,7 @@
 
   <ol>
 
-  % for comment in package_version.package_comments:
+  % for comment in sorted(package_version.package_comments, key=lambda c: c.time):
 
     <li>
       <div>
