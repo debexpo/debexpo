@@ -165,3 +165,7 @@ CELERY_BEAT_SCHEDULER = 'django'
 
 # Tasks beats
 TASK_IMPORTER_BEAT = 60 * 15  # Every 15 minutes
+TASK_CLEANUPACCOUNTS_BEAT = 60 * 60
+
+# Account registration expiration
+REGISTRATION_EXPIRATION_DAYS = 7
