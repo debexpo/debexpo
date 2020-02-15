@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
-#
-#   py.template - template for new .py files
+#   test_cleanupaccounts.py - functionnal test for CleanAccounts task
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
+#   Copyright © 2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -28,34 +26,31 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-__author__ = 'Baptiste BEAUPLAT'
-__copyright__ = 'Copyright © 2019 Baptiste BEAUPLAT'
-__license__ = 'MIT'
+from datetime import timedelta, datetime, timezone
 
-import pylons
-from datetime import timedelta, datetime
+from django.test import override_settings
+from django.conf import settings
 
-from debexpo.tests.cronjobs import TestCronjob
-from debexpo.model.users import User
-from debexpo.model.password_reset import PasswordReset
+from tests import TestController
+from debexpo.accounts.models import User
+from debexpo.accounts.tasks import CleanupAccounts
 
 
-class TestCronjobCleanupAccounts(TestCronjob):
+class TestCronjobCleanupAccounts(TestController):
     def setUp(self):
-        self._setup_plugin('cleanupaccounts')
-        self.log.debug('Expiration date is {}'.format(
-            self._get_expiration_date()))
+        self.task = CleanupAccounts()
+        self.index = 0
 
         # Create two regular account to make sure it is not removed
-        self._create_accounts(True, token=None)
-        self._create_accounts(False, token=None)
+        self._create_accounts(True, activated=True)
+        self._create_accounts(False, activated=True)
 
     def tearDown(self):
         self._remove_all_users()
 
     # Ask for a cleanup, but no account at all
     def test_cleanup_no_users(self):
-        self._invoke_plugin()
+        self.task.run()
 
         self._assert_account_cleaned_up()
 
@@ -63,7 +58,7 @@ class TestCronjobCleanupAccounts(TestCronjob):
     def test_cleanup_no_expired_accounts(self):
         self._create_accounts(False)
 
-        self._invoke_plugin()
+        self.task.run()
 
         self._assert_account_cleaned_up()
 
@@ -71,91 +66,62 @@ class TestCronjobCleanupAccounts(TestCronjob):
     def test_cleanup_all_expired_accounts(self):
         self._create_accounts(True)
 
-        self._invoke_plugin()
+        self.task.run()
 
         self._assert_account_cleaned_up()
-
-    # Ask for a cleanup, all accounts are expired, with a reference to a
-    # password reset.
-    def test_cleanup_all_expired_accounts_with_reset(self):
-        self._create_accounts(True)
-        self._add_password_reset()
-
-        self._invoke_plugin()
-
-        self._assert_account_cleaned_up()
-        self.assertEquals(self.db.query(PasswordReset).count(), 0)
 
     # Ask for a cleanup, some account are expired
     def test_cleanup_mixed_expired_accounts(self):
         self._create_accounts(True)
         self._create_accounts(False)
 
-        self._invoke_plugin()
+        self.task.run()
 
         self._assert_account_cleaned_up()
 
     # Ask for a cleanup, using a custom expiration date
+    @override_settings(REGISTRATION_EXPIRATION_DAYS=2)
     def test_cleanup_custom_expired_accounts(self):
-        app_config = pylons.test.pylonsapp.config
-        default_config = app_config['token_expiration_days']
-        app_config['token_expiration_days'] = '2'
-
         # Re-setup the plugin
-        self.plugin.setup()
+        self.task = CleanupAccounts()
 
         # Edit expiration date
         self.test_cleanup_mixed_expired_accounts()
         self._assert_account_cleaned_up()
 
-        app_config['token_expiration_days'] = default_config
-
-    def _add_password_reset(self):
-        accounts = self._get_accounts()
-
-        expired = self._get_expired_accounts(accounts)
-        for user in expired:
-            reset = PasswordReset.create_for_user(user)
-            self.db.add(reset)
-
-        self.db.commit()
-
-    def _create_accounts(self, expired, token='token'):
+    def _create_accounts(self, expired, activated=False):
         if expired:
             creation_date = self._get_expiration_date() - timedelta(days=1)
         else:
             creation_date = self._get_expiration_date() + timedelta(days=1)
 
-        if token:
-            self.log.debug('Creating {} account (lastlogin is {})'.format(
-                'an expired' if expired else 'an',
-                creation_date))
-        user = User(name='Test expiration user'.format(expired),
-                    email='test.user@example.org',
-                    password='password',
-                    verification=token,
-                    lastlogin=creation_date)
-        self.db.add(user)
-        self.db.commit()
+        if activated:
+            password = 'password'
+        else:
+            password = '!password'
+
+        self.index += 1
+        user = User(name='Test expiration user',
+                    email=f'test.user{self.index}@example.org',
+                    password=password,
+                    date_joined=creation_date)
+        user.save()
 
     def _get_expiration_date(self):
-        delta = 7
+        delta = settings.REGISTRATION_EXPIRATION_DAYS
 
-        if 'token_expiration_days' in self.config:
-            delta = int(self.config['token_expiration_days'])
-
-        return datetime.now() - timedelta(days=delta)
+        return datetime.now(timezone.utc) - timedelta(days=delta)
 
     def _get_expired_accounts(self, users):
         return users.filter(
-            (User.lastlogin < self._get_expiration_date()) &
-            (User.verification != None)) # NOQA
+            password__startswith='!',
+            date_joined__lt=self._get_expiration_date(),
+            is_active=True)
 
     def _assert_account_cleaned_up(self):
-        # SQLAchemly has to work with !=/== None, so no pep8 here
         users = self._get_accounts()
         users_to_cleanup = self._get_expired_accounts(users)
-        users_activated = users.filter(User.verification == None) # NOQA
+        users_activated = users.exclude(password__startswith='!')
 
         # No more expired accounts
         self.assertEquals(users_to_cleanup.count(), 0)
@@ -163,12 +129,10 @@ class TestCronjobCleanupAccounts(TestCronjob):
         self.assertEquals(users_activated.count(), 2)
 
     def _get_accounts(self):
-        return self.db.query(User) \
-            .filter(User.name == 'Test expiration user')
+        return User.objects
 
     def _remove_all_users(self):
         users = self._get_accounts()
 
         if users.count() > 0:
-            users.delete()
-            self.db.commit()
+            users.all().delete()
