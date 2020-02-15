@@ -93,6 +93,9 @@ class PackageSubscription(models.Model):
 
 
 class Comment(models.Model):
+    class Meta:
+        ordering = ['date']
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     upload = models.ForeignKey(PackageUpload, on_delete=models.CASCADE)
 
