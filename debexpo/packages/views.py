@@ -163,7 +163,6 @@ def delete_package(request, name):
 
     package.delete()
     log.info('Package deleted: {}'.format(name))
-    # TODO: trigger repository update
 
     remove_from_repository.delay(name)
 
