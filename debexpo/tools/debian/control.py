@@ -109,9 +109,8 @@ class ControlFiles():
                 ][0])
 
     def get_component(self):
-        for item in self.files:
-            if item.component:
-                return item.component
+        if self.dsc and self.dsc.component:
+            return self.dsc.component
 
     def move(self, destdir):
         for item in self.files:
