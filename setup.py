@@ -84,9 +84,14 @@ setup(
         'django-celery-beat>=1.1.1',
         'redis>=3.2.1',
         'django-redis>=4.10.0',
-        'fakeredis>=1.0.3',
-        'lupa>=1.6',
     ],
+
+    extras_require={
+        'testing': [
+            'fakeredis>=1.0.3',
+            'lupa>=1.6',
+        ],
+    },
 
     # Project urls
     project_urls={
