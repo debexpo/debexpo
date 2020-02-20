@@ -27,7 +27,7 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-import bz2
+import lzma
 import gzip
 import logging
 from tempfile import NamedTemporaryFile
@@ -88,7 +88,7 @@ class Repository():
         misc variables.
         """
         self.repository = repository
-        self.compression = [(gzip.GzipFile, 'gz'), (bz2.BZ2File, 'bz2')]
+        self.compression = [(gzip.GzipFile, 'gz'), (lzma.LZMAFile, 'xz')]
         self.pending = set()
 
     def __str__(self):
@@ -192,7 +192,7 @@ class Repository():
 
     def update_sources(self, dist, component):
         """
-        Updates all the Sources.{gz,bz2} files for a given distribution and
+        Updates all the Sources.{gz,xz} files for a given distribution and
         component by looking at all source packages.
         """
         log.debug(f'Updating Sources files for {dist}/{component}')

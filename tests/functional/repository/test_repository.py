@@ -32,7 +32,7 @@ from os import replace, unlink
 from shutil import copytree
 from logging import getLogger
 from gzip import GzipFile
-from bz2 import BZ2File
+from lzma import LZMAFile
 from debian.debian_support import PackageFile
 
 from django.urls import reverse
@@ -115,7 +115,7 @@ class TestRepositoryController(TestController):
             if source_file.endswith('.gz'):
                 fh = GzipFile(source_file)
             else:
-                fh = BZ2File(source_file)
+                fh = LZMAFile(source_file)
             sources.append(PackageFile(source_file, fh))
 
         return sources
