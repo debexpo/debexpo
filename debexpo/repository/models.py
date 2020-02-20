@@ -236,7 +236,7 @@ class Repository():
         if package.startswith('lib'):
             subpool = package[:4]
         else:
-            subpool = join(package[0])
+            subpool = package[0]
 
         return join('pool', component, subpool, package)
 
