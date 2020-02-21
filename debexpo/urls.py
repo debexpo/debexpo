@@ -33,6 +33,7 @@ from django.contrib.auth.views import PasswordResetConfirmView, \
     PasswordResetDoneView
 from django.http.response import HttpResponsePermanentRedirect
 from django.urls import reverse
+from django.views.static import serve
 
 from debexpo.base.views import index, contact, intro_reviewers, \
     intro_maintainers, qa
@@ -130,5 +131,10 @@ urlpatterns = [
         reverse('packages')), name='package_index'),
     url(r'^packages/my/$', packages_my, name='packages_my'),
     url(r'^accounts/$', lambda request: HttpResponsePermanentRedirect(
-        reverse('profile')), name='accounts')
+        reverse('profile')), name='accounts'),
+
+    # Repository
+    url(r'^debian/(?P<path>.*)$', serve, {
+        'document_root': settings.REPOSITORY,
+    }, name='debian'),
 ]

@@ -57,3 +57,24 @@ DATABASES = {
 
 DEFAULT_FROM_EMAIL = 'debexpo <support@example.org>'
 DEFAULT_BOUNCE_EMAIL = 'bounce@example.org'
+
+# Repository location
+REPOSITORY = '/tmp/debexpo/repository'
+
+# Use fakeredis for testing
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://localhost:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "REDIS_CLIENT_CLASS": "fakeredis.FakeStrictRedis",
+        }
+    }
+}
+
+DJANGO_REDIS_CONNECTION_FACTORY = "tests.functional.importer." \
+    "FakeConnectionFactory"
+
+# Don't use a worker for testing
+CELERY_TASK_ALWAYS_EAGER = True

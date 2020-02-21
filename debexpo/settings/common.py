@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'debexpo.packages',
     'debexpo.comments',
     'debexpo.importer',
+    'debexpo.repository',
 ]
 
 MIDDLEWARE = [

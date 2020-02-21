@@ -1,4 +1,4 @@
-#   tasks.py - importer tasks
+#   apps.py - repository app
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
@@ -26,17 +26,8 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from celery.decorators import periodic_task
-
-from django.conf import settings
-
-from debexpo.importer.models import Importer
-from debexpo.tools.cache import enforce_unique_instance
+from django.apps import AppConfig
 
 
-@periodic_task(run_every=settings.TASK_IMPORTER_BEAT)
-def importer():
-    with enforce_unique_instance('importer'):
-        importctl = Importer(settings.UPLOAD_SPOOL, settings.REPOSITORY)
-
-        return importctl.process_spool()
+class RepositoryConfig(AppConfig):
+    name = 'repository'

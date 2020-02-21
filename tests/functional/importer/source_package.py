@@ -73,8 +73,12 @@ BQJb8YGqAhsMAAoJEMQ0eBzocfPf8IcA/RyHF6zgRu2Ds3wH8GgxjCZRW+YxWahX
 =zFbo
 -----END PGP PRIVATE KEY BLOCK-----"""
 
-    def __init__(self, source_dir):
-        self.data_dir = join(dirname(__file__), 'sources')
+    def __init__(self, source_dir, data_dir=None):
+        if data_dir:
+            self.data_dir = data_dir
+        else:
+            self.data_dir = join(dirname(__file__), 'sources')
+
         self.source_dir = join(self.data_dir, source_dir)
         self.package = self._parse_changelog('Source').decode()
         self.version = self._parse_changelog('Version').decode()

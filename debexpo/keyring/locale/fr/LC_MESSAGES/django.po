@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-27 10:58+0100\n"
+"POT-Creation-Date: 2020-02-02 18:17+0100\n"
 "PO-Revision-Date: 2019-11-13 19:44+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,44 +18,44 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.2.4\n"
 
-#: keyring/models.py:38 keyring/models.py:110
+#: keyring/models.py:42 keyring/models.py:118
 msgid "Type"
 msgstr "Type"
 
-#: keyring/models.py:40
+#: keyring/models.py:44
 msgid "GPG Algorithm ID"
 msgstr "ID Algorithme GPG"
 
-#: keyring/models.py:43
+#: keyring/models.py:47
 msgid "Minimal size requirment"
 msgstr "Taille minimale requise"
 
-#: keyring/models.py:58
+#: keyring/models.py:62
 msgid "Multiple keys not supported"
 msgstr "Multiples clefs non supporté"
 
-#: keyring/models.py:69
+#: keyring/models.py:73
 msgid "Key algorithm not supported. Key must be one of the following: {}"
 msgstr ""
 "L'algorithme de la clef n'est pas supportée. La clef doit faire partie de "
 "l'une des suivantes : {}"
 
-#: keyring/models.py:79
+#: keyring/models.py:83
 msgid "Key size too small. Need at least {} bits."
 msgstr "Clef trop petite. Nécessite au moins {} bits."
 
-#: keyring/models.py:100
+#: keyring/models.py:108
 msgid "OpenGPG key"
 msgstr "Clef OpenGPG"
 
-#: keyring/models.py:101
+#: keyring/models.py:109 keyring/models.py:138
 msgid "Fingerprint"
 msgstr "Empreinte"
 
-#: keyring/models.py:102
+#: keyring/models.py:110
 msgid "Last update on"
 msgstr "Dernière mise à jour le"
 
-#: keyring/models.py:111
+#: keyring/models.py:119
 msgid "Size"
 msgstr "Taille"

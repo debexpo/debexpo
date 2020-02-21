@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-27 10:58+0100\n"
+"POT-Creation-Date: 2020-02-02 18:17+0100\n"
 "PO-Revision-Date: 2019-12-27 10:59+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,49 +18,49 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.2.4\n"
 
-#: packages/models.py:37 packages/models.py:44 packages/models.py:52
-#: packages/models.py:59 packages/models.py:66 packages/models.py:74
-#: packages/models.py:183
+#: packages/models.py:41 packages/models.py:48 packages/models.py:56
+#: packages/models.py:63 packages/models.py:70 packages/models.py:135
+#: packages/models.py:266
 msgid "Name"
 msgstr "Nom"
 
-#: packages/models.py:76 packages/templates/packages-list.html:13
+#: packages/models.py:137 packages/templates/packages-list.html:13
 msgid "Needs a sponsor?"
 msgstr "A besoin d'un parrain ?"
 
-#: packages/models.py:77
+#: packages/models.py:138
 msgid "In Debian?"
 msgstr "Dans Debian ?"
 
-#: packages/models.py:139 packages/templates/packages-list.html:11
+#: packages/models.py:201 packages/templates/packages-list.html:11
 msgid "Version"
 msgstr "Version"
 
-#: packages/models.py:142
+#: packages/models.py:204
 msgid "Changes"
 msgstr "Changements"
 
-#: packages/models.py:143
+#: packages/models.py:205
 msgid "Closes bugs"
 msgstr "Ferme les bugs"
 
-#: packages/models.py:146
+#: packages/models.py:208
 msgid "Upload date"
 msgstr "Date d'envoi"
 
-#: packages/models.py:169
+#: packages/models.py:250
 msgid "Maintainer"
 msgstr "Mainteneur"
 
-#: packages/models.py:174 packages/models.py:189
+#: packages/models.py:255 packages/models.py:272
 msgid "Homepage"
 msgstr "Page d'accueil"
 
-#: packages/models.py:175
+#: packages/models.py:256
 msgid "VCS"
 msgstr "VCS"
 
-#: packages/models.py:184 packages/templates/packages-list.html:10
+#: packages/models.py:267 packages/templates/packages-list.html:10
 msgid "Description"
 msgstr "Description"
 
@@ -202,53 +202,53 @@ msgstr "Envoyeur"
 msgid "No packages"
 msgstr "Pas de paquets"
 
-#: packages/views.py:120
+#: packages/views.py:121
 msgid "Today"
 msgstr "Aujourd'hui"
 
-#: packages/views.py:123
+#: packages/views.py:124
 msgid "Yesterday"
 msgstr "Hier"
 
-#: packages/views.py:127
+#: packages/views.py:128
 msgid "Some days ago"
 msgstr "Il y a quelques jours"
 
-#: packages/views.py:131
+#: packages/views.py:132
 msgid "Older packages"
 msgstr "Paquets plus vieux"
 
-#: packages/views.py:135
+#: packages/views.py:136
 msgid "Uploaded long ago"
 msgstr "Envoyé il y a longtemps"
 
-#: packages/views.py:194
+#: packages/views.py:197
 msgid "Packages for {} {}"
 msgstr "Paquets pour {} {}"
 
-#: packages/views.py:196
+#: packages/views.py:199
 msgid "Package list"
 msgstr "Liste des paquets"
 
-#: packages/views.py:209
+#: packages/views.py:212
 #, python-format
 msgid "%s packages"
 msgstr "%s paquets"
 
-#: packages/views.py:210
+#: packages/views.py:213
 #, python-format
 msgid "A feed of packages on %s"
 msgstr "Un flux de paquets sur %s"
 
-#: packages/views.py:232
+#: packages/views.py:235
 msgid "Package {} uploaded by {}."
 msgstr "Paquet {} envoyé par {}."
 
-#: packages/views.py:238
+#: packages/views.py:241
 msgid "Uploader is currently looking for a sponsor."
 msgstr "L'envoyeur est présentement en recherche de parrain."
 
-#: packages/views.py:240
+#: packages/views.py:243
 msgid "Uploader is currently not looking for a sponsor."
 msgstr "L'envoyeur n'est pas présentement en recherche de parrain."
 

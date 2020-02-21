@@ -28,11 +28,13 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 import json
+from os.path import join
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from debexpo.accounts.models import User
+from debexpo.repository.models import RepositoryFile
 
 
 class Project(models.Model):
@@ -218,6 +220,25 @@ class PackageUpload(models.Model):
     def get_index(self):
         return PackageUpload.objects.filter(
             package=self.package, uploaded__lt=self.uploaded).count() + 1
+
+    def get_dsc_url(self):
+        try:
+            dsc = RepositoryFile.objects.get(
+                package=self.package.name,
+                version=self.version,
+                distribution=self.distribution.name,
+                path__endswith='.dsc'
+            )
+        except RepositoryFile.DoesNotExist:
+            return
+
+        return join('/', 'debian', str(dsc))
+
+    def get_dsc_name(self):
+        dsc = self.get_dsc_url()
+
+        if dsc:
+            return dsc.split('/')[-1]
 
 
 class SourcePackage(models.Model):

@@ -35,6 +35,7 @@ from shutil import rmtree, copytree
 from tempfile import TemporaryDirectory
 
 from django.core import mail
+from django_redis.pool import ConnectionFactory
 
 from debexpo.importer.models import Importer, Spool
 from debexpo.packages.models import Package, PackageUpload
@@ -57,6 +58,11 @@ def test_network():
     return None
 
 
+class FakeConnectionFactory(ConnectionFactory):
+    def get_connection(self, params):
+        return self.redis_client_cls(**self.redis_client_cls_kwargs)
+
+
 class TestImporterController(TestController):
     """
     Toolbox for importer tests
@@ -71,15 +77,15 @@ class TestImporterController(TestController):
 
     def setUp(self):
         self._setup_example_user(gpg=True)
-        self._create_repo()
         self.spool_dir = TemporaryDirectory(prefix='debexpo-test-spool')
+        self.repository_dir = TemporaryDirectory(prefix='debexpo-test-repo')
+        self.repository = self.repository_dir.name
         self.spool = Spool(self.spool_dir.name)
 
     def tearDown(self):
-        self._assert_no_leftover()
+        self._assert_no_leftover(str(self.spool))
         self._remove_subscribers()
         self._remove_example_user()
-        self._cleanup_repo()
         self._cleanup_package()
 
     def _remove_subscribers(self):
@@ -92,20 +98,6 @@ class TestImporterController(TestController):
                                            on_upload=on_upload,
                                            on_comment=on_comment)
         subscription.save()
-
-    def _create_repo(self):
-        pass
-        # """Delete all files present in repo directory"""
-        # if 'debexpo.repository' in pylons.config:
-        #     if not isdir(pylons.config['debexpo.repository']):
-        #         makedirs(pylons.config['debexpo.repository'])
-
-    def _cleanup_repo(self):
-        pass
-        # """Delete all files present in repo directory"""
-        # if 'debexpo.repository' in pylons.config:
-        #     if isdir(pylons.config['debexpo.repository']):
-        #         rmtree(pylons.config['debexpo.repository'])
 
     def _cleanup_mailbox(self):
         mail.outbox = []
@@ -126,28 +118,17 @@ class TestImporterController(TestController):
     def _cleanup_package(self):
         Package.objects.all().delete()
 
-    def _assert_no_leftover(self):
-        matches = self._find_all('', str(self.spool))
-        log.error(f'matches for {str(self.spool)} {matches}')
-
-        for match in matches:
-            log.debug('leftover: {}'.format(match))
-
-        self.assertFalse(matches)
-
     def _package_in_repo(self, package_name, version):
-        pass
-        # """Check if package is present in repo"""
-        # matches = self._find_file(package_name + '_' + version + '.dsc',
-        #                           pylons.config['debexpo.repository'])
-        # return len(matches)
+        """Check if package is present in repo"""
+        matches = self._find_file(package_name + '_' + version + '.dsc',
+                                  self.repository)
+        return len(matches)
 
     def _file_in_repo(self, filename):
-        pass
-        # """Check if package is present in repo"""
-        # matches = self._find_file(filename,
-        #                           pylons.config['debexpo.repository'])
-        # return len(matches)
+        """Check if package is present in repo"""
+        matches = self._find_file(filename,
+                                  self.repository)
+        return len(matches)
 
     def _find_file(self, name, path):
         """Find a file in a path"""
@@ -155,15 +136,6 @@ class TestImporterController(TestController):
         for root, dirs, files in walk(path):
             if name in files:
                 result.append(join(root, name))
-        return result
-
-    def _find_all(self, name, path):
-        """Find a file in a path"""
-        result = []
-        for root, dirs, files in walk(path):
-            for filename in files:
-                if name in filename:
-                    result.append(join(root, filename))
         return result
 
     def import_source_package(self, package_dir, skip_gpg=False,
@@ -184,7 +156,8 @@ class TestImporterController(TestController):
         self._upload_package(package_dir)
 
         # Run the importer on change file
-        importer = Importer(str(self.spool), skip_email, skip_gpg)
+        importer = Importer(str(self.spool), self.repository,
+                            skip_email, skip_gpg)
         self._status_importer = importer.process_spool()
 
     def assert_importer_failed(self):
@@ -263,20 +236,17 @@ class TestImporterController(TestController):
         # self.assertTrue(data in package_info.data)
 
     def assert_file_in_repo(self, filename):
-        pass
-        # """Assert that a file is present in debexpo repo"""
-        # log.debug('Checking file in repo: {}'.format(filename))
-        # self.assertTrue(self._file_in_repo(filename) > 0)
+        """Assert that a file is present in debexpo repo"""
+        log.debug('Checking file in repo: {}'.format(filename))
+        self.assertTrue(self._file_in_repo(filename) > 0)
 
     def assert_package_in_repo(self, package_name, version):
-        pass
-        # """Assert that a package is present in debexpo repo"""
-        # self.assertTrue(self._package_in_repo(package_name, version) > 0)
+        """Assert that a package is present in debexpo repo"""
+        self.assertTrue(self._package_in_repo(package_name, version) > 0)
 
     def assert_package_not_in_repo(self, package_name, version):
-        pass
-        # """Assert that a package is present in debexpo repo"""
-        # self.assertTrue(self._package_in_repo(package_name, version) == 0)
+        """Assert that a package is present in debexpo repo"""
+        self.assertTrue(self._package_in_repo(package_name, version) == 0)
 
     def assert_rfs_content(self, package, content):
         pass

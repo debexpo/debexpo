@@ -86,6 +86,13 @@ setup(
         'django-redis>=4.10.0',
     ],
 
+    extras_require={
+        'testing': [
+            'fakeredis>=1.0.3',
+            'lupa>=1.6',
+        ],
+    },
+
     # Project urls
     project_urls={
         'Bug Reports': 'https://salsa.debian.org/mentors.debian.net-team/debexpo/issues',  # noqa: E501

@@ -54,7 +54,7 @@ DEFAULT_FROM_EMAIL = 'debexpo <support@example.org>'
 DEFAULT_BOUNCE_EMAIL = 'bounce@example.org'
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = '/tmp/debexpo.mbox'
+EMAIL_FILE_PATH = path.join(BASE_DIR, 'data', 'mbox')  # noqa: F405
 
 LOGGING = {
     'version': 1,
@@ -77,4 +77,7 @@ LOGGING = {
 }
 
 # Spool settings
-UPLOAD_SPOOL = '/tmp/debexpo/spool'
+UPLOAD_SPOOL = path.join(BASE_DIR, 'data', 'spool')  # noqa: F405
+
+# Repository
+REPOSITORY = path.join(BASE_DIR, 'data', 'repository')  # noqa: F405
