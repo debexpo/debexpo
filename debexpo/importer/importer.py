@@ -258,7 +258,7 @@ class Importer(object):
         if use_log:
             log.critical(reason)
         else:
-            print >> sys.stderr, reason
+            print(reason, file=sys.stderr)
 
         self._remove_files()
 
