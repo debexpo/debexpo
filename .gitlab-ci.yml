@@ -24,6 +24,6 @@ flake8:
   image: debian:unstable-slim
   before_script:
     - apt-get -q update
-    - env DEBIAN_FRONTEND=noninteractive apt-get -q -y install --no-install-recommends python-flake8
+    - env DEBIAN_FRONTEND=noninteractive apt-get -q -y install --no-install-recommends flake8
   script:
-    - python -m flake8
+    - flake8
