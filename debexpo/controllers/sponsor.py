@@ -42,6 +42,7 @@ import struct
 import socket
 import json
 import urllib
+from HTMLParser import HTMLParser
 
 from debexpo.lib.base import BaseController, c, config, render, session, \
     redirect, url, abort, request, SubMenu, _
@@ -327,7 +328,8 @@ class SponsorController(BaseController):
         # This is a workaround for Thunderbird and some other clients
         # not handling properly '+' in the mailto body parameter.
         c.mailbody = render('/sponsor/rfs_template.mako')
-        c.mailbody = urllib.quote_plus(c.mailbody.encode('utf-8')) \
+        c.mailbody = urllib.quote_plus(HTMLParser().unescape(
+            unicode(c.mailbody)).encode('utf-8')) \
             .replace('+', '%20')
 
         return render('/sponsor/rfs_howto.mako')
