@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-#
-#   getorigtarball.py — getorigtarball plugin
+#   origin.py - origin tarball for packages
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
@@ -8,7 +6,7 @@
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #   Copyright © 2011 Arno Töll <debian@toell.net>
-#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
+#   Copyright © 2019-2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -31,117 +29,67 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-"""
-Holds the getorigtarball plugin.
-"""
+from os.path import isfile, join
 
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb, ' \
-                'Copyright © 2010 Jan Dittberner, ' \
-                'Copyright © 2011 Arno Töll, ' \
-                'Copyright © 2019 Baptiste BEAUPLAT'
-__license__ = 'MIT'
+from django.conf import settings
 
-import logging
-import pylons
-
-from debexpo.lib import constants
-from debexpo.lib.filesystem import CheckFiles
-from debexpo.lib.official_package import OfficialPackage, OverSized
-from debexpo.plugins import BasePlugin
-from debian import deb822
-from os.path import join, isfile, basename
-from shutil import copy
-
-log = logging.getLogger(__name__)
+import debexpo.repository.models as repository
+from debexpo.tools.clients.ftp_master import ClientFTPMasterAPI
+from debexpo.tools.clients.debian_archive import ClientDebianArchive
 
 
-class GetOrigTarballPlugin(BasePlugin):
-
-    def _get_from_local_repo(self, orig_file):
-        repo = pylons.config['debexpo.repository']
-        filename = join(repo, self.changes.get_pool_path(), orig_file)
-        upstream_sig = '{}.asc'.format(filename)
-
-        log.debug('Orig found in local repo. '
-                  'Copying to {}/{}'.format(self.queue, basename(filename)))
-        copy(filename, self.queue)
-        self.additional_files.append(join(self.queue, basename(filename)))
-
-        if isfile(upstream_sig):
-            log.debug('Orig signature found in local repo. '
-                      'Copying to {}/{}'.format(self.queue,
-                                                basename(upstream_sig)))
-            copy(upstream_sig, self.queue)
-            self.additional_files.append(join(self.queue,
-                                              basename(upstream_sig)))
-
-    def test_orig_tarball(self):
-        """
-        Check whether there is an original tarball referenced by the dsc file,
-        but not actually in the package upload.
-
-        This procedure is skipped to avoid denial of service attacks when a
-        package is larger than the configured size
-        """
-
-        dsc = deb822.Dsc(file(self.changes.get_dsc()))
-        official_package = OfficialPackage(dsc)
-        self.queue = pylons.config['debexpo.upload.incoming']
-        (orig_file, orig_found) = CheckFiles().find_orig_tarball(self.changes)
-        self.additional_files = []
-
-        if orig_found == constants.ORIG_TARBALL_LOCATION_REPOSITORY:
-            # Found tarball in local repository, copying to current directory
-            self._get_from_local_repo(orig_file)
-
-        if official_package.exists():
-            # Check that we use the same orig as debian's one
-            log.debug('Package already in debian, checking against orig')
-            (matched, reason) = official_package.use_same_orig()
-            if not matched:
-                log.debug('{}'.format(reason))
-                return self.failed(outcomes['mismatch-orig-debian'],
-                                   (reason, list(set(self.additional_files))),
-                                   constants.PLUGIN_SEVERITY_ERROR)
-
-            if orig_found == constants.ORIG_TARBALL_LOCATION_NOT_FOUND:
-                # Orig was not uploaded and not found in the local repo.
-                # Download it from Debian archive.
-                log.debug('Downloading orig from debian archive')
-                try:
-                    downloaded = official_package.download_orig()
-                except OverSized as e:
-                    log.debug('Tarball to big to download')
-                    return self.failed(outcomes['tarball-from-debian-too-big'],
-                                       ('File is bigger than download limit: '
-                                        '{} > {}'.format(e.size, e.limit),
-                                        list(set(self.additional_files))),
-                                       constants.PLUGIN_SEVERITY_ERROR)
-
-                if not downloaded:
-                    log.debug('Failed to download from debian archive')
-                    return self.failed('failed-to-download',
-                                       (None,
-                                        list(set(self.additional_files))),
-                                       constants.PLUGIN_SEVERITY_ERROR)
-
-                self.additional_files.extend(downloaded)
-
-        return self.info(outcomes['found-orig'],
-                         (None, list(set(self.additional_files))))
+class ExceptionOrigin(Exception):
+    pass
 
 
-plugin = GetOrigTarballPlugin
+class Origin():
+    def __init__(self, package, version, component, dest_dir):
+        self.package = package
+        self.version = version
+        self.component = component
+        self.dest_dir = dest_dir
+        self.is_new = False
 
-outcomes = {
-    'tarball-taken-from-debian': {'name': 'The original tarball has been'
-                                          ' retrieved from Debian'},
-    'tarball-from-debian-too-big': {'name': 'The original tarball cannot be'
-                                            ' retrieved from Debian: file too'
-                                            ' big (> 100MB)'},
-    'mismatch-orig-debian': {'name': 'Package was not built with orig.tar.gz'
-                                     'file present in the official archives'},
-    'invalid-orig': {'name': 'Could not find a valid orig tarball'},
-    'found-orig': {'name': 'Found origin tarball'},
-}
+    def fetch(self, origin_files):
+        repo = repository.Repository(settings.REPOSITORY)
+        archive = ClientDebianArchive()
+
+        # For the origin tarball and its signature, tries to:
+        #
+        # - Retrieve it from the upload (isfile)
+        # - Retrieve it from the local repository
+        # - Retrieve it from the Debian archive
+        for origin in origin_files:
+            if origin:
+                isfile(join(self.dest_dir, str(origin))) or \
+                    repo.fetch_from_pool(self.package,
+                                         self.component,
+                                         str(origin),
+                                         self.dest_dir) or \
+                    self.is_new or \
+                    archive.fetch_from_pool(self.package,
+                                            self.component,
+                                            str(origin),
+                                            self.dest_dir)
+
+    def validate(self, source_origin_files):
+        client = ClientFTPMasterAPI()
+        archive_origin_files = client.get_origin_files(self.package,
+                                                       self.version)
+
+        if archive_origin_files:
+            for source_file in source_origin_files:
+                self._assert_same_file(source_file, archive_origin_files)
+        else:
+            self.is_new = True
+
+    def _assert_same_file(self, source_file, archive_origin_files):
+        for archive_file in archive_origin_files:
+            if str(archive_file) == str(source_file) and \
+                    archive_file != source_file:
+                raise ExceptionOrigin(
+                    'Source package origin file differs from '
+                    'the official archive:\n\n'
+                    f'Origin file         : {str(source_file)}\n\n'
+                    f'sha256sum in upload : {source_file.checksums["sha256"]}\n'
+                    f'sha256sum in archive: {archive_file.checksums["sha256"]}')
