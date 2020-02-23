@@ -28,6 +28,8 @@
 
 """ Executable script to import new packages. """
 
+from __future__ import print_function
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
