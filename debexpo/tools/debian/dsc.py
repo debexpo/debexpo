@@ -40,7 +40,7 @@ class ExceptionDsc(Exception):
 
 
 class Dsc(GPGSignedFile):
-    def __init__(self, filename):
+    def __init__(self, filename, component):
         super().__init__(abspath(filename))
 
         with open(self.filename, 'rb') as fd:
@@ -50,6 +50,7 @@ class Dsc(GPGSignedFile):
             raise ExceptionDsc('{} could not be parsed'.format(
                 basename(self.filename)))
 
+        self.component = component
         self._build_dsc()
 
     def _build_dsc(self):

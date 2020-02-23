@@ -146,6 +146,6 @@ class Changes(GPGSignedFile):
                 ' upload)')
 
         try:
-            self.dsc = Dsc(filename)
+            self.dsc = Dsc(filename, self.component)
         except Exception as e:
             raise ExceptionChanges(e)

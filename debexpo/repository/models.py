@@ -110,7 +110,7 @@ class Repository():
             return ''
 
         # Read the dsc file and get the deb822 form.
-        dsc = Dsc(filename)
+        dsc = Dsc(filename, repository_file.component)
         source = dsc._data
 
         # There are a few differences between a dsc file and a Sources entry,
