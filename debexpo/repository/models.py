@@ -32,7 +32,7 @@ import gzip
 import logging
 from tempfile import NamedTemporaryFile
 from shutil import copy
-from os.path import join, isfile, isdir, abspath
+from os.path import join, isfile, isdir, abspath, basename
 from os import chmod, replace, makedirs, unlink
 
 from django.db import transaction, models
@@ -223,6 +223,12 @@ class Repository():
             for dist, component in self.pending:
                 self.update_sources(dist, component)
 
+    @staticmethod
+    def get_pool(package):
+        if package.startswith('lib'):
+            return package[:4]
+        return package[0]
+
     def _get_package_dir(self, package, component):
         """
         Returns the directory name where the package with name supplied as the
@@ -231,14 +237,7 @@ class Repository():
         ``source``
             Source package name to use to work out directory name.
         """
-        subpool = None
-
-        if package.startswith('lib'):
-            subpool = package[:4]
-        else:
-            subpool = package[0]
-
-        return join('pool', component, subpool, package)
+        return join('pool', component, Repository.get_pool(package), package)
 
     def _cleanup_previous_entries(self, files_to_install, pool_dir):
         for sumed_file in files_to_install:
@@ -264,6 +263,17 @@ class Repository():
                                                             pool_dir,
                                                             changes)
             entry.save()
+
+    def fetch_from_pool(self, package, component, filename, dest_dir):
+        filename = join(self.repository, 'pool', component,
+                        Repository.get_pool(package), package, filename)
+
+        if isfile(filename):
+            copy(filename, join(dest_dir, basename(filename)))
+
+            return True
+
+        return False
 
     @transaction.atomic
     def install(self, changes):
