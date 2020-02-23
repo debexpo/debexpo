@@ -33,6 +33,7 @@ from debian.debian_support import BaseVersion
 from debexpo.accounts.models import User
 from debexpo.tools.files import GPGSignedFile
 from debexpo.tools.debian.control import ControlFiles
+from debexpo.tools.debian.origin import Origin
 
 
 class ExceptionDsc(Exception):
@@ -57,6 +58,8 @@ class Dsc(GPGSignedFile):
         self.source = self._data.get('Source')
         self.version = BaseVersion(self._data.get('Version'))
         self.files = ControlFiles(dirname(self.filename), self._data)
+        self.origin = Origin(self.source, self.version.upstream_version,
+                             self.component, dirname(self.filename))
 
     def authenticate(self):
         super().authenticate()
@@ -78,6 +81,11 @@ class Dsc(GPGSignedFile):
             if key not in self._data:
                 raise ExceptionDsc('Missing key '
                                    '{}'.format(key))
+
+        self.origin.validate(self.files.get_origin_files())
+
+    def fetch_origin(self):
+        self.origin.fetch(self.files.get_origin_files())
 
     def __str__(self):
         return basename(self.filename)
