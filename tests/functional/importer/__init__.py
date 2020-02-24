@@ -158,9 +158,10 @@ class TestImporterController(TestController):
         self._upload_package(package_dir)
 
         # Run the importer on change file
-        importer = Importer(str(self.spool), self.repository,
-                            skip_email, skip_gpg)
-        self._status_importer = importer.process_spool()
+        with self.settings(REPOSITORY=self.repository):
+            importer = Importer(str(self.spool), self.repository,
+                                skip_email, skip_gpg)
+            self._status_importer = importer.process_spool()
 
     def assert_importer_failed(self):
         """Assert that the importer has failed"""
