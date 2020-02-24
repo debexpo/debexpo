@@ -129,6 +129,8 @@ class Changes(GPGSignedFile):
 
     def cleanup_source(self):
         if self.dsc:
+            self.dsc.files.remove()
+
             source = Source(self.dsc)
             source.remove()
 
