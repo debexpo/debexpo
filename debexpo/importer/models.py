@@ -180,7 +180,7 @@ class Importer():
     Class to handle the package that is uploaded and wants to be imported into
     the database.
     """
-    def __init__(self, spool=None, repository=None, skip_email=False,
+    def __init__(self, spool=None, skip_email=False,
                  skip_gpg=False):
         """
         Object constructor. Sets class fields to sane values.
@@ -194,10 +194,7 @@ class Importer():
         """
         self.actually_send_email = not bool(skip_email)
         self.skip_gpg = skip_gpg
-        self.repository = None
-
-        if repository:
-            self.repository = Repository(repository)
+        self.repository = Repository(settings.REPOSITORY)
 
         if spool:
             self.spool = Spool(spool)

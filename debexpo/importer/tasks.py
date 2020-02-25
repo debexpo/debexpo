@@ -37,6 +37,6 @@ from debexpo.tools.cache import enforce_unique_instance
 @periodic_task(run_every=settings.TASK_IMPORTER_BEAT)
 def importer():
     with enforce_unique_instance('importer'):
-        importctl = Importer(settings.UPLOAD_SPOOL, settings.REPOSITORY)
+        importctl = Importer(settings.UPLOAD_SPOOL)
 
         return importctl.process_spool()

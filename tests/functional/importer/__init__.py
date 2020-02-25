@@ -159,8 +159,7 @@ class TestImporterController(TestController):
 
         # Run the importer on change file
         with self.settings(REPOSITORY=self.repository):
-            importer = Importer(str(self.spool), self.repository,
-                                skip_email, skip_gpg)
+            importer = Importer(str(self.spool), skip_email, skip_gpg)
             self._status_importer = importer.process_spool()
 
     def assert_importer_failed(self):
