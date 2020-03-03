@@ -42,7 +42,7 @@ class ExceptionClient(Exception):
 class ClientHTTP():
     def fetch_resource(self, url):
         try:
-            request = urlopen(url)
+            request = urlopen(url, timeout=30)
         except IOError as e:
             raise ExceptionClient('Failed to connect to network resource.\n'
                                   f'Url was: {url}\n\n{e}')
