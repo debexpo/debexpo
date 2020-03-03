@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
-#
-#   package_info.py — package_info table model
+#   models.py - models for plugins
 #
 #   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#               2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -28,97 +27,66 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-"""
-Holds package_info table model.
-"""
+from enum import Enum
+from json import dumps, loads
+from os.path import abspath, dirname, isfile, join
 
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
-__license__ = 'MIT'
+from django.db import models
+from django.utils.translation import gettext_lazy as _
 
-import json
-import os
+from debexpo.packages.models import PackageUpload
 
-from mako.lookup import TemplateLookup
-from mako.exceptions import TopLevelLookupException
 
-from pylons import config
+class PluginSeverity(int, Enum):
+    def __new__(cls, value, label):
+        obj = int.__new__(cls, value)
+        obj._value_ = value
+        obj.label = label
+        obj.tuple = (value, label)
+        return obj
 
-import sqlalchemy as sa
-from sqlalchemy import orm
-from sqlalchemy.orm import backref
+    info = (1, _('Infomation'))
+    warning = (2, _('Warning'))
+    error = (3, _('Error'))
+    critical = (4, _('Critical'))
+    failed = (5, _('Failed'))
 
-import debexpo.lib
+    @classmethod
+    def as_tuple(cls):
+        return (cls.info.tuple,
+                cls.warning.tuple,
+                cls.error.tuple,
+                cls.critical.tuple,
+                cls.failed.tuple,)
 
-from debexpo.model import meta, OrmObject
-from debexpo.model.package_versions import PackageVersion
 
-# templates are in [...]/templates/plugins
-PLUGINS_TEMPLATE_DIRS = [os.path.join(path, "plugins")
-                         for path in config["pylons.paths"]["templates"]]
+class PluginResults(models.Model):
+    upload = models.ForeignKey(PackageUpload, on_delete=models.CASCADE)
 
-t_package_info = sa.Table(
-    'package_info', meta.metadata,
-    sa.Column('id', sa.types.Integer, primary_key=True),
-    sa.Column('package_version_id', sa.types.Integer,
-              sa.ForeignKey('package_versions.id')),
-    sa.Column('from_plugin', sa.types.String(200), nullable=False),
-    sa.Column('outcome', sa.types.String(200), nullable=False),
-    sa.Column('data', sa.types.Text, nullable=True),
-    sa.Column('severity', sa.types.Integer, nullable=False),
+    plugin = models.TextField(verbose_name=_('Plugin name'))
+    test = models.CharField(max_length=32, verbose_name=_('Test identifier'))
+    outcome = models.TextField(verbose_name=_('Outcome'))
+    json = models.TextField(null=True, verbose_name=_('Data'))
+    severity = models.PositiveSmallIntegerField(
+        verbose_name=_('Severity'), choices=PluginSeverity.as_tuple()
     )
 
+    @property
+    def template(self):
+        template = join(dirname(abspath(__file__)), 'templates',
+                        f'plugin-{self.plugin}.html')
+        if isfile(template):
+            return self.plugin
 
-class PackageInfo(OrmObject):
-    foreign = ['package_version']
+        return 'plugin-default.html'
 
     @property
-    def rich_data(self):
-        try:
-            return json.loads(self.data)
-        except ValueError:
-            return self.data
+    def data(self):
+        return loads(self.json)
 
-    @rich_data.setter
-    def rich_data(self, value):
-        self.data = json.dumps(value)
+    @data.setter
+    def data(self, data):
+        self.json = dumps(data)
 
-    def render(self, render_format):
-        """Render the plugin data to the given format"""
-
-        # Files to try out for plugin data rendering
-        try_files = [
-            "%s/%s.mako" % (self.from_plugin, render_format),
-            "%s/text.mako" % (self.from_plugin),
-            "default/%s.mako" % render_format,
-            "default/text.mako",
-            ]
-
-        lookup = TemplateLookup(
-            directories=PLUGINS_TEMPLATE_DIRS,
-            input_encoding='utf-8',
-            output_encoding='utf-8',
-            default_filters=['escape'],
-            imports=['from webhelpers.html import escape',
-                     'from debexpo.lib.filters import semitrusted']
-            )
-
-        for basefile in try_files:
-            try:
-                template = lookup.get_template(basefile)
-            except TopLevelLookupException:
-                continue
-            else:
-                break
-        else:
-            # No template file found, something weird happened
-            return "%s (!! no template found)" % self.data  # pragma: no cover
-
-        return template.render_unicode(o=self, h=debexpo.lib.helpers)
-
-
-orm.mapper(PackageInfo, t_package_info, properties={
-    'package_version': orm.relation(
-        PackageVersion,
-        backref=backref('package_info', cascade='all, delete-orphan')),
-})
+    def get_severity(self):
+        return PluginSeverity(self.severity).label
