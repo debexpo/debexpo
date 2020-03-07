@@ -43,6 +43,7 @@ __license__ = 'MIT'
 import logging
 import lxml.html
 import urllib2
+from socket import timeout
 
 from debexpo.model import meta
 from debexpo.model.users import User
@@ -60,7 +61,8 @@ class DebianPlugin(BasePlugin):
         try:
             self.qa_page = urllib2.urlopen('https://tracker.debian.org/%s' %
                                            self.changes['Source'])
-        except urllib2.HTTPError:
+        except (urllib2.HTTPError, timeout) as e:
+            log.error('Failed to contact tracker: {}'.format(e))
             return
 
         self.parsed_qa = lxml.html.fromstring(self.qa_page.read())
