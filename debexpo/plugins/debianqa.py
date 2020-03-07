@@ -61,7 +61,7 @@ class DebianPlugin(BasePlugin):
         try:
             self.qa_page = urllib2.urlopen('https://tracker.debian.org/%s' %
                                            self.changes['Source'])
-        except (urllib2.HTTPError, timeout) as e:
+        except (urllib2.URLError, timeout) as e:
             log.error('Failed to contact tracker: {}'.format(e))
             return
 
