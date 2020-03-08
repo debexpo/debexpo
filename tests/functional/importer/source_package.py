@@ -133,7 +133,8 @@ BQJb8YGqAhsMAAoJEMQ0eBzocfPf8IcA/RyHF6zgRu2Ds3wH8GgxjCZRW+YxWahX
     def _build_package(self):
         args = ['--build=source',
                 '--no-check-builddeps',
-                '--sign-key=559306EEE1C8C1B2DD1C73B1C434781CE871F3DF']
+                '--sign-key=559306EEE1C8C1B2DD1C73B1C434781CE871F3DF',
+                '--force-sign']
         command = 'dpkg-buildpackage'
 
         log.debug('Build source package {}-{}'.format(self.package,
