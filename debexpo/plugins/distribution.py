@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
-#
-#   distribution.py — distribution check plugin
+#   distribution.py - distribution check plugin
 #
 #   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2012 Nicolas Dandrimont <nicolas.dandrimont@crans.org>
+#               2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,32 +31,32 @@
 Distribution checks.
 """
 
-__author__ = 'Nicolas Dandrimont'
-__copyright__ = ', '.join([
-        'Copyright © 2012 Nicolas Dandrimont',
-        ])
-__license__ = 'MIT'
-
-from debexpo.lib import constants
-from debexpo.plugins import BasePlugin
+from debexpo.plugins.models import BasePlugin, PluginSeverity
 
 
-class DistributionPlugin(BasePlugin):
+class PluginDistribution(BasePlugin):
+    @property
+    def name(self):
+        return 'distribution'
 
-    def test_distribution(self):
+    def run(self, changes, source):
         """
         Checks whether the package is for the UNRELEASED distribution
         """
+        if changes.distribution.lower() == 'unreleased':
+            self.add_result(
+                'check-unreleased',
+                'Package uploaded for the UNRELEASED distribution',
+                severity=PluginSeverity.error
+            )
 
-        data = {
-            "is-unreleased": False,
-            }
-        distribution = self.changes["Distribution"]
-
-        if distribution.lower() == "unreleased":
-            data["is-unreleased"] = True
-            self.failed("Package uploaded for the UNRELEASED distribution",
-                        data, constants.PLUGIN_SEVERITY_ERROR)
-
-
-plugin = DistributionPlugin
+        if changes.distribution != source.changelog.distribution:
+            self.add_result(
+                'same-distribution-changes-and-changelog',
+                'changes and changelog distribution differs',
+                {
+                    'changes': changes.distribution,
+                    'changelog': source.changelog.distribution,
+                },
+                PluginSeverity.error
+            )
