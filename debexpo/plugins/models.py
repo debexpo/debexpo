@@ -27,14 +27,25 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+from abc import ABCMeta, abstractmethod
+from logging import getLogger
 from enum import Enum
 from json import dumps, loads
 from os.path import abspath, dirname, isfile, join
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.conf import settings
 
 from debexpo.packages.models import PackageUpload
+from debexpo.tools.debian.changes import Changes
+from debexpo.tools.debian.source import Source
+
+log = getLogger(__name__)
+
+
+class ExceptionPlugin(Exception):
+    pass
 
 
 class PluginSeverity(int, Enum):
@@ -90,3 +101,93 @@ class PluginResults(models.Model):
 
     def get_severity(self):
         return PluginSeverity(self.severity).label
+
+
+class PluginManager():
+    def __init__(self):
+        self.plugins = []
+
+        self._load_plugins()
+
+    def _load_plugins(self):
+        for module_name, class_name in settings.IMPORTER_PLUGINS:
+            # Import and instantiate the plugin
+            try:
+                module = __import__(module_name, globals(), locals(),
+                                    [class_name], 0)
+                self.plugins.append(getattr(module, class_name)())
+            except Exception as e:
+                log.warning(f'Failed to load plugin {class_name} from '
+                            f'{module_name}: {e}')
+
+    def run(self, changes, source):
+        for plugin in self.plugins:
+            try:
+                plugin.run(changes, source)
+            except Exception as e:
+                log.warning(f'Plugin {plugin.name} failed: {str(e)}')
+                plugin.add_result(plugin.name, str(e), None,
+                                  PluginSeverity.failed)
+
+    @property
+    def results(self):
+        results = []
+
+        for plugin in self.plugins:
+            results += plugin.results
+
+        return results
+
+
+class BasePlugin(metaclass=ABCMeta):
+    def __init__(self):
+        self.results = []
+
+    @property
+    @abstractmethod
+    def name(self):
+        # We cannot cover abstract methods
+        pass  # pragma: nocover
+
+    @abstractmethod
+    def run(self, changes: Changes, source: Source):
+        # We cannot cover abstract methods
+        pass  # pragma: nocover
+
+    def add_result(self, test, outcome, data=None, severity=None):
+        """
+        Adds a PluginResult for a passed test to the result list.
+
+        ``test``
+            Test identifier,
+
+        ``outcome``
+            Outcome tag of the test.
+
+        ``data``
+            Resulting data from the plugin, like more details about the process.
+
+        ``severity``
+            Severity of the result.
+        """
+        if not severity:
+            severity = PluginSeverity.info
+
+        self.results.append(PluginResults(
+            plugin=self.name,
+            test=test,
+            outcome=outcome,
+            data=data,
+            severity=severity,
+        ))
+
+    def failed(self, reason):
+        """
+        Fail the plugin by raising an ExceptionPlugin
+
+        ``reason``
+            An explainaition to why the plugin failed
+        """
+        self.results = []
+
+        raise ExceptionPlugin(reason)
