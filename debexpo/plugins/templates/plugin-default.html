@@ -1,8 +1,14 @@
 <div class="qa-header">
-${o.from_plugin}: ${str(o.outcome)}
+{{ result.plugin|title }}: {{ result.outcome }}
 </div>
-%if o.rich_data:
+{% if result.data %}
 <div class="qa-content">
-${h.converters.nl2br(str(o.rich_data))}
+<table>
+    {% for key, value in result.data.items %}
+        <tr>
+            <td>{{ key }}:</td><td>{{ value }}</td>
+        </tr>
+    {% endfor %}
+</table>
 </div>
-%endif
+{% endif %}
