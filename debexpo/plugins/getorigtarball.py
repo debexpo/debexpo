@@ -121,7 +121,7 @@ class GetOrigTarballPlugin(BasePlugin):
 
                 if not downloaded:
                     log.debug('Failed to download from debian archive')
-                    return self.failed('failed-to-download',
+                    return self.failed(outcomes['failed-to-download'],
                                        (None,
                                         list(set(self.additional_files))),
                                        constants.PLUGIN_SEVERITY_ERROR)
@@ -144,4 +144,5 @@ outcomes = {
                                      'file present in the official archives'},
     'invalid-orig': {'name': 'Could not find a valid orig tarball'},
     'found-orig': {'name': 'Found origin tarball'},
+    'failed-to-download': {'name': 'Failed to download from debian archive'},
 }

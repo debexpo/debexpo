@@ -48,6 +48,7 @@ import pylons
 import optparse
 import signal
 import datetime
+from socket import setdefaulttimeout
 
 from paste.deploy import appconfig
 from debexpo.config.environment import load_environment
@@ -74,6 +75,9 @@ class Worker(object):
         self.jobs = {}
         self.can_continue = True
         signal.signal(signal.SIGTERM, self._on_sig_term)
+
+        # Set default socket timeout to 30s to avoid hanging indefinitely
+        setdefaulttimeout(30)
 
     def _on_sig_term(self, sig, frame):
         log.info("Received SIGTERM, shutting down worker after current run.")
