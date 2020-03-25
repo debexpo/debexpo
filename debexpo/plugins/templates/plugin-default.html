@@ -1,0 +1,14 @@
+<div class="qa-header">
+{{ result.plugin|title }}: {{ result.outcome }}
+</div>
+{% if result.data %}
+<div class="qa-content">
+<table>
+    {% for key, value in result.data.items %}
+        <tr>
+            <td>{{ key }}:</td><td>{{ value }}</td>
+        </tr>
+    {% endfor %}
+</table>
+</div>
+{% endif %}

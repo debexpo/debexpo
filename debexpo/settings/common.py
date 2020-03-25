@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'debexpo.comments',
     'debexpo.importer',
     'debexpo.repository',
+    'debexpo.plugins',
 ]
 
 MIDDLEWARE = [
@@ -170,3 +171,8 @@ TASK_CLEANUPACCOUNTS_BEAT = 60 * 60
 
 # Account registration expiration
 REGISTRATION_EXPIRATION_DAYS = 7
+
+# Plugins to load
+IMPORTER_PLUGINS = (
+    ('debexpo.plugins.distribution', 'PluginDistribution',),
+)

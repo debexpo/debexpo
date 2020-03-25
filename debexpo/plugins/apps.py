@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
+#   apps.py - app definition for plugins
 #
-#   distribution.py — distribution check plugin
-#
-#   This file is part of debexpo -
+#   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2012 Nicolas Dandrimont <nicolas.dandrimont@crans.org>
+#   Copyright © 2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -28,36 +26,8 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-"""
-Distribution checks.
-"""
-
-__author__ = 'Nicolas Dandrimont'
-__copyright__ = ', '.join([
-        'Copyright © 2012 Nicolas Dandrimont',
-        ])
-__license__ = 'MIT'
-
-from debexpo.lib import constants
-from debexpo.plugins import BasePlugin
+from django.apps import AppConfig
 
 
-class DistributionPlugin(BasePlugin):
-
-    def test_distribution(self):
-        """
-        Checks whether the package is for the UNRELEASED distribution
-        """
-
-        data = {
-            "is-unreleased": False,
-            }
-        distribution = self.changes["Distribution"]
-
-        if distribution.lower() == "unreleased":
-            data["is-unreleased"] = True
-            self.failed("Package uploaded for the UNRELEASED distribution",
-                        data, constants.PLUGIN_SEVERITY_ERROR)
-
-
-plugin = DistributionPlugin
+class PluginsConfig(AppConfig):
+    name = 'plugins'

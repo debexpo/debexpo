@@ -114,13 +114,13 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
     #     self.assert_importer_succeeded()
     #     self.assert_package_count('hello', '1.0-1', 1)
     #     self.assert_package_in_repo('hello', '1.0-1')
-    #     self.assert_package_info('hello', 'buildsystem',
+    #     self.assert_plugin_result('hello', 'buildsystem',
     #                              'Package uses debhelper-compat')
 
     # def test_import_package_watchfile_no_present(self):
     #     self.import_source_package('hello')
     #     self.assert_importer_succeeded()
-    #     self.assert_package_info('hello', 'watchfile',
+    #     self.assert_plugin_result('hello', 'watchfile',
     #                              'Watch file is not present')
     #     self.assert_package_count('hello', '1.0-1', 1)
     #     self.assert_package_in_repo('hello', '1.0-1')
@@ -128,7 +128,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
     # def test_import_package_watchfile_invalid(self):
     #     self.import_source_package('watchfile-invalid')
     #     self.assert_importer_succeeded()
-    #     self.assert_package_info('hello', 'watchfile',
+    #     self.assert_plugin_result('hello', 'watchfile',
     #                              'A watch file is present but doesn\'t work')
     #     self.assert_package_count('hello', '1.0-1', 1)
     #     self.assert_package_in_repo('hello', '1.0-1')
@@ -136,7 +136,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
     # def test_import_package_watchfile_valid(self):
     #     self.import_source_package('watchfile-valid')
     #     self.assert_importer_succeeded()
-    #     self.assert_package_info('hello', 'watchfile',
+    #     self.assert_plugin_result('hello', 'watchfile',
     #                              'Package is not the latest upstream version')
     #     self.assert_package_count('hello', '1.0-1', 1)
     #     self.assert_package_in_repo('hello', '1.0-1')
@@ -324,8 +324,8 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
                                + " was\nsuccessful.")
         self.assert_package_count('hello', '1.0-1', 1)
         self.assert_package_in_repo('hello', '1.0-1')
-        self.assert_package_info('hello', 'debianqa',
-                                 'Package is already in Debian')
+        # self.assert_plugin_result('hello', 'debianqa',
+        #                          'Package is already in Debian')
 
     # def test_import_package_hello_no_repository(self):
     #     repo = pylonsapp.config.pop('debexpo.repository')
@@ -370,7 +370,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
     #                            + " was\nsuccessful.")
     #     self.assert_package_count('this-package-should-not-exist', '1.0-1', 1)
     #     self.assert_package_in_repo('this-package-should-not-exist', '1.0-1')
-    #     self.assert_package_info('this-package-should-not-exist', 'debianqa',
+    #     self.assert_plugin_result('this-package-should-not-exist', 'debianqa',
     #                              'Package is not in Debian')
 
     # def test_import_package_hello_with_subscribers(self):
@@ -416,7 +416,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
                                + " was\nsuccessful.")
         self.assert_package_count('hello', '1.0-1', 1)
         self.assert_package_in_repo('hello', '1.0-1')
-        self.assert_package_data('hello', 'debianqa', '{"latest-upload": "')
+        # self.assert_plugin_data('hello', 'debianqa', '{"latest-upload": "')
 
         self._cleanup_mailbox()
         self.import_source_package('hello')

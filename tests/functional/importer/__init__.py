@@ -35,12 +35,14 @@ from shutil import rmtree, copytree
 from tempfile import TemporaryDirectory
 
 from django.core import mail
+from django.urls import reverse
 from django_redis.pool import ConnectionFactory
 
 from debexpo.importer.models import Importer, Spool
 from debexpo.packages.models import Package, PackageUpload
 from debexpo.accounts.models import User
 from debexpo.comments.models import PackageSubscription
+from debexpo.plugins.models import PluginResults
 from tests import TestController
 from tests.functional.importer.source_package import TestSourcePackage
 
@@ -199,41 +201,51 @@ class TestImporterController(TestController):
 
         self.assertTrue(count_in_db == count)
 
-    def _lookup_package_info(self, package_name, plugin):
-        pass
-        # package = meta.session.query(Package).filter(Package.name ==
-        #                                              package_name).first()
-        # package_version = meta.session.query(PackageVersion) \
-        #     .filter(PackageVersion.package_id == package.id) \
-        #     .first()
-        # package_info = meta.session.query(PackageInfo) \
-        #     .filter(PackageInfo.package_version_id == package_version.id) \
-        #     .filter(PackageInfo.from_plugin == plugin).first()
+    def _lookup_plugin_result(self, package_name, plugin):
+        plugin_result = PluginResults.objects \
+            .filter(upload__package__name=package_name, plugin=plugin) \
+            .all()
 
-        # return package_info
+        return plugin_result
 
-    def assert_package_no_info(self, package_name, plugin):
-        pass
-        # package_info = self._lookup_package_info(package_name, plugin)
-        # self.assertFalse(package_info)
+    def assert_plugin_result_count(self, package_name, plugin, count):
+        plugin_result = self._lookup_plugin_result(package_name, plugin)
+        self.assertEquals(count, len(plugin_result))
 
-    def assert_package_info(self, package_name, plugin, outcome):
-        pass
-        # package_info = self._lookup_package_info(package_name, plugin)
-        # self.assertTrue(package_info)
-        # self.assertEquals(outcome, package_info.outcome)
+    def assert_plugin_result(self, package_name, plugin, outcome):
+        plugin_results = self._lookup_plugin_result(package_name, plugin)
+        self.assertTrue(plugin_results)
 
-    def assert_package_severity(self, package_name, plugin, severity):
-        pass
-        # package_info = self._lookup_package_info(package_name, plugin)
-        # self.assertTrue(package_info)
-        # self.assertTrue(severity == package_info.severity)
+        for result in plugin_results:
+            if result.outcome == outcome:
+                return
 
-    def assert_package_data(self, package_name, plugin, data):
-        pass
-        # package_info = self._lookup_package_info(package_name, plugin)
-        # self.assertTrue(package_info)
-        # self.assertTrue(data in package_info.data)
+        raise Exception(f'Plugin result not found for outcome == {outcome}')
+
+    def assert_plugin_severity(self, package_name, plugin, severity):
+        plugin_results = self._lookup_plugin_result(package_name, plugin)
+        self.assertTrue(plugin_results)
+
+        for result in plugin_results:
+            if result.severity == severity:
+                return
+
+        raise Exception(f'Plugin result not found for severity == {severity}')
+
+    def assert_plugin_template(self, package_name, outcome):
+        response = self.client.get(reverse('package', args=[package_name]))
+
+        self.assertIn(outcome, str(response.content))
+
+    def assert_plugin_data(self, package_name, plugin, data):
+        plugin_results = self._lookup_plugin_result(package_name, plugin)
+        self.assertTrue(plugin_results)
+
+        for result in plugin_results:
+            if data == result.data:
+                return
+
+        raise Exception(f'Plugin result not found for data contains: {data}')
 
     def assert_file_in_repo(self, filename):
         """Assert that a file is present in debexpo repo"""

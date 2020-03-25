@@ -48,6 +48,7 @@ from debexpo.tools.files import ExceptionCheckSumedFile
 from debexpo.tools.gnupg import ExceptionGnuPG
 from debexpo.tools.email import Email
 from debexpo.repository.models import Repository
+from debexpo.plugins.models import PluginManager
 
 log = getLogger(__name__)
 
@@ -332,9 +333,11 @@ class Importer():
                                                                        package)
             binary_package.save()
 
-        return upload
+        for result in plugins.results:
+            result.upload = upload
+            result.save()
 
-        # Add plugins info
+        return upload
 
 #     def _store_source_as_git_repo(self):
 #         # Exit now if gitstorage is not enabled
@@ -396,15 +399,13 @@ class Importer():
         Do several environment sanity checks, move files into the right place,
         and then create the database entries for the imported package.
         """
-        # plugins = Plugins()
-        plugins = None
+        plugins = PluginManager()
 
         self._validate_changes(changes)
         self._validate_dsc(changes)
         source = self._validate_source(changes)
-        # plugins.run('post-upload', changes)
+        plugins.run(changes, source)
         upload = self._accept_upload(changes, source, plugins)
-        # plugins.run('post-accept', changes)
         return upload
 
     def _accept_upload(self, changes, source, plugins):

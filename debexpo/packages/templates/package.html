@@ -150,15 +150,15 @@
     {% endif %}
 </table>
 
-{% if upload.packageinfo_set.all %}
+{% if upload.pluginresults_set.all %}
 <h3 class="qa-toplevel-header">{% trans 'QA information' %}</h3>
 
 <ul class="qa">
-    {% for pkginfo in upload.packageinfo_set.all %}
-    <li class="severity-{{ pkginfo.get_severity|lower }}">
+    {% for result in upload.pluginresults_set.all %}
+    <li class="severity-{{ result.get_severity|lower }}">
         <span class="visibility"
-              title="{{ pkginfo.get_severity }}">–</span>
-        {{ pkginfo.render|safe }}
+              title="{{ result.get_severity }}">–</span>
+        {% include result.template %}
     </li>
     {% endfor %}
 </ul>
