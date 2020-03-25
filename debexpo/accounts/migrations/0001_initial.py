@@ -53,6 +53,7 @@ def create_iso_countries(apps, schema_editor):
     for name in iso_countries():
         country = Countries()
         country.name = name
+        country.full_clean()
         country.save()
 
 

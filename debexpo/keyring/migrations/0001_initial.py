@@ -44,6 +44,7 @@ def create_gpg_algorithms(apps, schema_editor):
         algo.name = name
         algo.gpg_algorithm_id = gpg_algorithm_id
         algo.minimal_size_requirement = size
+        algo.full_clean()
         algo.save()
 
 

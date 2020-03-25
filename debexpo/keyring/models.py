@@ -128,6 +128,7 @@ class Key(models.Model):
 
         for fingerprint in keyring.subkeys.keys():
             subkey = SubKey(key=self, fingerprint=fingerprint)
+            subkey.full_clean()
             subkey.save()
             log.info(f'Binding fingerprint {fingerprint} to key '
                      f'{self.fingerprint}')

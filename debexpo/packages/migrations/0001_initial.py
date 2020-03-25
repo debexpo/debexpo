@@ -66,6 +66,7 @@ def create_distributions(apps, schema_editor):
 
         distribution.name = name
         distribution.project = project
+        distribution.full_clean()
         distribution.save()
 
 
