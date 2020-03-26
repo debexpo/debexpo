@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True,
                                         serialize=False, verbose_name='ID')),
                 ('plugin', models.TextField(verbose_name='Plugin name')),
-                ('test', models.CharField(max_length=32,
+                ('test', models.CharField(max_length=64,
                                           verbose_name='Test identifier')),
                 ('outcome', models.TextField(verbose_name='Outcome')),
                 ('json', models.TextField(null=True, verbose_name='Data')),

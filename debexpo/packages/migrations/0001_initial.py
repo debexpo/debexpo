@@ -153,7 +153,8 @@ class Migration(migrations.Migration):
                 ('version', models.CharField(max_length=100,
                                              verbose_name='Version')),
                 ('changes', models.TextField(verbose_name='Changes')),
-                ('closes', models.TextField(verbose_name='Closes bugs')),
+                ('closes', models.TextField(verbose_name='Closes bugs',
+                                            blank=True)),
                 ('uploaded', models.DateTimeField(
                     auto_now_add=True, verbose_name='Upload date')),
                 ('component', models.ForeignKey(
@@ -191,14 +192,18 @@ class Migration(migrations.Migration):
                 ('maintainer', models.CharField(
                     max_length=120, verbose_name='Maintainer')),
                 ('homepage', models.TextField(null=True,
+                                              blank=True,
                                               verbose_name='Homepage')),
-                ('vcs', models.TextField(null=True, verbose_name='VCS')),
+                ('vcs', models.TextField(null=True, blank=True,
+                                         verbose_name='VCS')),
                 ('priority',
                  models.ForeignKey(null=True,
+                                   blank=True,
                                    on_delete=django.db.models.deletion.SET_NULL,
                                    to='packages.Priority')),
                 ('section',
                  models.ForeignKey(null=True,
+                                   blank=True,
                                    on_delete=django.db.models.deletion.SET_NULL,
                                    to='packages.Section')),
                 ('upload', models.ForeignKey(
@@ -216,15 +221,18 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=100, verbose_name='Name')),
                 ('description', models.TextField(verbose_name='Description')),
                 ('homepage', models.TextField(null=True,
+                                              blank=True,
                                               verbose_name='Homepage')),
-                ('priority', models.ForeignKey(
-                    null=True, on_delete=django.db.models.deletion.SET_NULL,
-                    to='packages.Priority'
-                )),
-                ('section', models.ForeignKey(
-                    null=True, on_delete=django.db.models.deletion.SET_NULL,
-                    to='packages.Section'
-                )),
+                ('priority',
+                 models.ForeignKey(null=True,
+                                   blank=True,
+                                   on_delete=django.db.models.deletion.SET_NULL,
+                                   to='packages.Priority')),
+                ('section',
+                 models.ForeignKey(null=True,
+                                   blank=True,
+                                   on_delete=django.db.models.deletion.SET_NULL,
+                                   to='packages.Section')),
                 ('upload', models.ForeignKey(
                     on_delete=django.db.models.deletion.CASCADE,
                     to='packages.PackageUpload'

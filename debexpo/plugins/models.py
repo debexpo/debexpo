@@ -75,7 +75,7 @@ class PluginResults(models.Model):
     upload = models.ForeignKey(PackageUpload, on_delete=models.CASCADE)
 
     plugin = models.TextField(verbose_name=_('Plugin name'))
-    test = models.CharField(max_length=32, verbose_name=_('Test identifier'))
+    test = models.CharField(max_length=64, verbose_name=_('Test identifier'))
     outcome = models.TextField(verbose_name=_('Outcome'))
     json = models.TextField(null=True, verbose_name=_('Data'))
     severity = models.PositiveSmallIntegerField(
