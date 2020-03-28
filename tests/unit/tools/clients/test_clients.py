@@ -85,11 +85,12 @@ class TestClientsController(TestController):
     def test_client_download_to_big_no_length(self):
         client = ClientHTTP()
 
-        with TestingHTTPServer(38246, InfinityHTTPHandler):
+        with TestingHTTPServer(InfinityHTTPHandler) as httpd:
             filename = NamedTemporaryFile(delete=False).name
 
             try:
-                client.download_to_file('http://localhost:38246/zero', filename)
+                client.download_to_file(f'http://localhost:{httpd.port}/zero',
+                                        filename)
             except ExceptionClientSize as e:
                 self.assertIn('too much data', str(e))
 
