@@ -263,6 +263,7 @@ class Repository():
             entry = RepositoryFile.objects.create_from_file(sumed_file,
                                                             pool_dir,
                                                             changes)
+            entry.full_clean()
             entry.save()
 
     @transaction.atomic

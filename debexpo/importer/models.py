@@ -321,20 +321,24 @@ class Importer():
         """
 
         upload = PackageUpload.objects.create_from_changes(changes)
+        upload.full_clean()
         upload.save()
 
         package = source.control.get_source_package()
         source_package = SourcePackage.objects.create_from_package(upload,
                                                                    package)
+        source_package.full_clean()
         source_package.save()
 
         for package in source.control.get_binary_packages():
             binary_package = BinaryPackage.objects.create_from_package(upload,
                                                                        package)
+            binary_package.full_clean()
             binary_package.save()
 
         for result in plugins.results:
             result.upload = upload
+            result.full_clean()
             result.save()
 
         return upload

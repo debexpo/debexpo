@@ -180,6 +180,7 @@ def sponsor_package(request, name):
         return HttpResponseForbidden()
 
     package.needs_sponsor = not package.needs_sponsor
+    package.full_clean()
     package.save()
     log.info('Toogle needs sponsor for: {} ({})'.format(name,
                                                         package.needs_sponsor))

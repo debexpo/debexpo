@@ -34,7 +34,7 @@ import django.db.models.deletion
 def create_gpg_algorithms(apps, schema_editor):
     gpg_algo = (
         ('rsa', 1, 4096),
-        ('ed25519', 22, None),
+        ('ed25519', 22, 256),
     )
 
     GPGAlgo = apps.get_model('keyring', 'GPGAlgo')
@@ -44,6 +44,7 @@ def create_gpg_algorithms(apps, schema_editor):
         algo.name = name
         algo.gpg_algorithm_id = gpg_algorithm_id
         algo.minimal_size_requirement = size
+        algo.full_clean()
         algo.save()
 
 

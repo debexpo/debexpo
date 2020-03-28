@@ -202,7 +202,7 @@ class PackageUpload(models.Model):
     distribution = models.ForeignKey(Distribution, on_delete=models.CASCADE)
     component = models.ForeignKey(Component, on_delete=models.CASCADE)
     changes = models.TextField(verbose_name=_('Changes'))
-    closes = models.TextField(verbose_name=_('Closes bugs'))
+    closes = models.TextField(blank=True, verbose_name=_('Closes bugs'))
 
     # Some metadata
     uploaded = models.DateTimeField(verbose_name=_('Upload date'),
@@ -250,10 +250,13 @@ class SourcePackage(models.Model):
     maintainer = models.CharField(max_length=120, verbose_name=_('Maintainer'))
 
     # Optional
-    section = models.ForeignKey(Section, null=True, on_delete=models.SET_NULL)
-    priority = models.ForeignKey(Priority, null=True, on_delete=models.SET_NULL)
-    homepage = models.TextField(null=True, verbose_name=_('Homepage'))
-    vcs = models.TextField(null=True, verbose_name=_('VCS'))
+    section = models.ForeignKey(Section, null=True, blank=True,
+                                on_delete=models.SET_NULL)
+    priority = models.ForeignKey(Priority, null=True, blank=True,
+                                 on_delete=models.SET_NULL)
+    homepage = models.TextField(null=True, blank=True,
+                                verbose_name=_('Homepage'))
+    vcs = models.TextField(null=True, blank=True, verbose_name=_('VCS'))
 
     objects = PackageManager()
 
@@ -267,8 +270,11 @@ class BinaryPackage(models.Model):
     description = models.TextField(verbose_name=_('Description'))
 
     # Optional
-    section = models.ForeignKey(Section, null=True, on_delete=models.SET_NULL)
-    priority = models.ForeignKey(Priority, null=True, on_delete=models.SET_NULL)
-    homepage = models.TextField(null=True, verbose_name=_('Homepage'))
+    section = models.ForeignKey(Section, null=True, blank=True,
+                                on_delete=models.SET_NULL)
+    priority = models.ForeignKey(Priority, null=True, blank=True,
+                                 on_delete=models.SET_NULL)
+    homepage = models.TextField(null=True, blank=True,
+                                verbose_name=_('Homepage'))
 
     objects = PackageManager()
