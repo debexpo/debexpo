@@ -32,10 +32,14 @@ from os import unlink
 
 from django.test import tag
 
-from tests import TestController
+from tests import TestController, TestingHTTPServer, InfinityHTTPHandler
 from tests.tools import test_network
 
-from debexpo.tools.clients import ClientHTTP, ExceptionClient, ClientJsonAPI
+from debexpo.tools.clients import ClientHTTP, ExceptionClient, \
+    ExceptionClientSize, ClientJsonAPI
+
+BIG_DOWNLOAD = 'http://deb.debian.org/debian/pool/main/0/0ad-data/' \
+    '0ad-data_0.0.23.1.orig.tar.xz'
 
 
 @tag('network')
@@ -65,6 +69,31 @@ class TestClientsController(TestController):
             self.assertIn('The Universal Operating System', download.read())
 
         unlink(filename)
+
+    def test_client_download_to_big(self):
+        client = ClientHTTP()
+
+        filename = NamedTemporaryFile(delete=False).name
+
+        try:
+            client.download_to_file(BIG_DOWNLOAD, filename)
+        except ExceptionClientSize as e:
+            self.assertIn('too much data', str(e))
+
+        unlink(filename)
+
+    def test_client_download_to_big_no_length(self):
+        client = ClientHTTP()
+
+        with TestingHTTPServer(38246, InfinityHTTPHandler):
+            filename = NamedTemporaryFile(delete=False).name
+
+            try:
+                client.download_to_file('http://localhost:38246/zero', filename)
+            except ExceptionClientSize as e:
+                self.assertIn('too much data', str(e))
+
+            unlink(filename)
 
     def test_client_api_wrong_content(self):
         client = ClientJsonAPI()
