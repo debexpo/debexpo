@@ -39,21 +39,35 @@ class ExceptionClient(Exception):
     pass
 
 
+class ExceptionClientSize(ExceptionClient):
+    def __init__(self, url):
+        self.url = url
+
+    def __str__(self):
+        return f'Cannot fetch resource {self.url}: too much data ' \
+               f'(> {int(settings.LIMIT_SIZE_DOWNLOAD / 1024 / 1024)}MB)'
+
+
 class ClientHTTP():
-    def fetch_resource(self, url):
+    def _connect(self, url):
         try:
             request = urlopen(url, timeout=30)
         except IOError as e:
             raise ExceptionClient('Failed to connect to network resource.\n'
                                   f'Url was: {url}\n\n{e}')
 
-        size = int(request.info().get('Content-Length'))
-        if size > settings.LIMIT_SIZE_DOWNLOAD:
-            raise ExceptionClient('The original tarball cannot be retrieved '
-                                  'from Debian: file too big (> 100MB)')
+        size = request.info().get('Content-Length')
+        if size and int(size) > settings.LIMIT_SIZE_DOWNLOAD:
+            raise ExceptionClientSize(url)
 
+        return request
+
+    def _read(self, url, fd, size=None):
         try:
-            content = request.read()
+            if size:
+                content = fd.read(size)
+            else:
+                content = fd.read()
 
         # Catch network interruption issues.
         # Excluded from testing since recreating those condition are complex
@@ -63,11 +77,25 @@ class ClientHTTP():
 
         return content
 
-    def download_to_file(self, url, filename):
-        content = self.fetch_resource(url)
+    def fetch_resource(self, url):
+        request = self._connect(url)
+        return self._read(url, request)
 
-        tempfile = NamedTemporaryFile(dir=dirname(filename), delete=False)
-        tempfile.write(content)
+    def download_to_file(self, url, filename):
+        request = self._connect(url)
+
+        with NamedTemporaryFile(dir=dirname(filename), delete=False) \
+                as tempfile:
+            while True:
+                chunk = self._read(url, request, 4 * 1024 * 1024)
+
+                if not chunk:
+                    break
+
+                tempfile.write(chunk)
+
+                if tempfile.tell() > settings.LIMIT_SIZE_DOWNLOAD:
+                    raise ExceptionClientSize(url)
 
         replace(tempfile.name, filename)
 

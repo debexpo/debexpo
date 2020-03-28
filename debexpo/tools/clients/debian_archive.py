@@ -31,7 +31,8 @@ from os.path import join
 from django.conf import settings
 
 import debexpo.repository.models as repository
-from debexpo.tools.clients import ClientHTTP
+from debexpo.tools.clients import ClientHTTP, ExceptionClientSize, \
+    ExceptionClient
 
 
 class ClientDebianArchive(ClientHTTP):
@@ -40,4 +41,10 @@ class ClientDebianArchive(ClientHTTP):
         url = f'{settings.DEBIAN_ARCHIVE_URL}/pool/{component}/{pool}/' \
               f'{package}/{filename}'
 
-        self.download_to_file(url, join(dest_dir, filename))
+        try:
+            self.download_to_file(url, join(dest_dir, filename))
+        except ExceptionClientSize:
+            raise ExceptionClient(
+                'The original tarball cannot be retrieved '
+                'from Debian: file too big '
+                f'(> {int(settings.LIMIT_SIZE_DOWNLOAD / 1024 / 1024)}MB)')
