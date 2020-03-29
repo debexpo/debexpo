@@ -49,7 +49,7 @@ class Migration(migrations.Migration):
                 ('outcome', models.TextField(verbose_name='Outcome')),
                 ('json', models.TextField(null=True, verbose_name='Data')),
                 ('severity', models.PositiveSmallIntegerField(
-                    choices=[(1, 'Infomation'),
+                    choices=[(1, 'Information'),
                              (2, 'Warning'),
                              (3, 'Error'),
                              (4, 'Critical'),

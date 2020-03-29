@@ -78,7 +78,7 @@ $(document).ready(function() {
         toggle_qa($(this).siblings(".qa-header"), "fast");
     });
 
-    $(".severity-info .qa-header").each(function() {
+    $(".severity-information .qa-header").each(function() {
         toggle_qa(this);
     });
 
@@ -99,12 +99,12 @@ $(document).ready(function() {
 
     $(".qa-toggle-info").toggle(
         function() {
-            $(this).parent().next(".qa").find(".severity-info .qa-header").each(function() {
+            $(this).parent().next(".qa").find(".severity-information .qa-header").each(function() {
                 expand_qa(this, "fast");
             })
                 },
         function() {
-            $(this).parent().next(".qa").find(".severity-info .qa-header").each(function() {
+            $(this).parent().next(".qa").find(".severity-information .qa-header").each(function() {
                 collapse_qa(this, "fast");
             })
                 }

@@ -56,7 +56,7 @@ class PluginSeverity(int, Enum):
         obj.tuple = (value, label)
         return obj
 
-    info = (1, _('Infomation'))
+    info = (1, _('Information'))
     warning = (2, _('Warning'))
     error = (3, _('Error'))
     critical = (4, _('Critical'))
