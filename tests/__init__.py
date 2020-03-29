@@ -38,6 +38,9 @@ this file will be loaded to setup the test environment.
 from os import walk
 from os.path import join
 from logging import getLogger
+from socketserver import TCPServer
+from http.server import SimpleHTTPRequestHandler, BaseHTTPRequestHandler
+from threading import Thread
 
 from django.test import TestCase
 # import tempfile
@@ -241,3 +244,36 @@ Xcgnuh6Rlywt6uiaFIGYnGefYPGXRAA=
                 if name in filename:
                     result.append(join(root, filename))
         return result
+
+
+class InfinityHTTPHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200, 'OK')
+        self.end_headers()
+        while True:
+            try:
+                self.wfile.write(bytes(''.zfill(4 * 1024 * 1024), 'UTF-8'))
+            except Exception:
+                break
+
+
+class TestingTCPServer(TCPServer):
+    allow_reuse_address = True
+
+
+class TestingHTTPServer():
+    def __init__(self, handler=None):
+        if not handler:
+            handler = SimpleHTTPRequestHandler
+
+        self.httpd = TestingTCPServer(("localhost", 0), handler)
+        _, self.port = self.httpd.server_address
+        self.thread = Thread(target=self.httpd.serve_forever)
+
+    def __enter__(self):
+        self.thread.start()
+
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.httpd.shutdown()

@@ -1,4 +1,4 @@
-#   tasks.py - importer tasks
+#   ftp_master.py - Client for ftp-master API
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
@@ -26,17 +26,27 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from celery.decorators import periodic_task
-
-from django.conf import settings
-
-from debexpo.importer.models import Importer
-from debexpo.tools.cache import enforce_unique_instance
+from debexpo.tools.files import CheckSumedFile
+from debexpo.tools.clients import ClientJsonAPI
+import debexpo.repository.models as repository
 
 
-@periodic_task(run_every=settings.TASK_IMPORTER_BEAT)
-def importer():
-    with enforce_unique_instance('importer'):
-        importctl = Importer(settings.UPLOAD_SPOOL)
+class ClientFTPMasterAPI(ClientJsonAPI):
+    api = 'https://api.ftp-master.debian.org'
 
-        return importctl.process_spool()
+    def get_origin_files(self, name, version):
+        pool = repository.Repository.get_pool(name)
+        route = f'{self.api}/file_in_archive/{pool}/{name}' \
+                f'/{name}_{version}%25.orig%25.tar%25'
+        origin_files = []
+
+        content = self.fetch_json_resource(route)
+
+        for match in content:
+            if 'filename' in match and 'sha256sum' in match:
+                origin = CheckSumedFile(match['filename'])
+                origin.add_checksum('sha256', match['sha256sum'])
+
+                origin_files.append(origin)
+
+        return origin_files

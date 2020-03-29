@@ -1,4 +1,4 @@
-#   tasks.py - importer tasks
+#   debian_archive.py - Debian archive client
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
@@ -26,17 +26,25 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from celery.decorators import periodic_task
+from os.path import join
 
 from django.conf import settings
 
-from debexpo.importer.models import Importer
-from debexpo.tools.cache import enforce_unique_instance
+import debexpo.repository.models as repository
+from debexpo.tools.clients import ClientHTTP, ExceptionClientSize, \
+    ExceptionClient
 
 
-@periodic_task(run_every=settings.TASK_IMPORTER_BEAT)
-def importer():
-    with enforce_unique_instance('importer'):
-        importctl = Importer(settings.UPLOAD_SPOOL)
+class ClientDebianArchive(ClientHTTP):
+    def fetch_from_pool(self, package, component, filename, dest_dir):
+        pool = repository.Repository.get_pool(package)
+        url = f'{settings.DEBIAN_ARCHIVE_URL}/pool/{component}/{pool}/' \
+              f'{package}/{filename}'
 
-        return importctl.process_spool()
+        try:
+            self.download_to_file(url, join(dest_dir, filename))
+        except ExceptionClientSize:
+            raise ExceptionClient(
+                'The original tarball cannot be retrieved '
+                'from Debian: file too big '
+                f'(> {int(settings.LIMIT_SIZE_DOWNLOAD / 1024 / 1024)}MB)')

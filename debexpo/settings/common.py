@@ -176,3 +176,7 @@ REGISTRATION_EXPIRATION_DAYS = 7
 IMPORTER_PLUGINS = (
     ('debexpo.plugins.distribution', 'PluginDistribution',),
 )
+
+# Debian Archive access
+DEBIAN_ARCHIVE_URL = 'https://deb.debian.org/debian'
+LIMIT_SIZE_DOWNLOAD = 100 * 1024 * 1024

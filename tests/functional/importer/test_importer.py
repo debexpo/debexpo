@@ -300,21 +300,21 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_count('hello', '1.0-1', 0)
         self.assert_package_not_in_repo('hello', '1.0-1')
 
-    # def test_import_package_debian_orig_too_big(self):
-    #     self.import_package('debian-orig-too-big')
-    #     self.assert_importer_failed()
-    #     self.assert_email_with('The original tarball cannot be retrieved from'
-    #                            ' Debian: file too big (> 100MB)')
-    #     self.assert_package_count('0ad-data', '0.0.23.1-1.1', 0)
-    #     self.assert_package_not_in_repo('0ad-data', '0.0.23.1-1.1')
+    def test_import_package_debian_orig_too_big(self):
+        self.import_package('debian-orig-too-big')
+        self.assert_importer_failed()
+        self.assert_email_with('The original tarball cannot be retrieved from'
+                               ' Debian: file too big (> 100MB)')
+        self.assert_package_count('0ad-data', '0.0.23.1-1.1', 0)
+        self.assert_package_not_in_repo('0ad-data', '0.0.23.1-1.1')
 
-    # def test_import_package_mismatch_orig_official(self):
-    #     self.import_source_package('mismatch-orig')
-    #     self.assert_importer_failed()
-    #     self.assert_email_with('Orig tarball used in the Dsc does not match'
-    #                            ' orig present in the archive')
-    #     self.assert_package_count('0ad-data', '0.0.23.1-2', 0)
-    #     self.assert_package_not_in_repo('0ad-data', '0.0.23.1-2')
+    def test_import_package_mismatch_orig_official(self):
+        self.import_source_package('mismatch-orig')
+        self.assert_importer_failed()
+        self.assert_email_with('Source package origin file differs from the '
+                               'official archive')
+        self.assert_package_count('0ad-data', '0.0.23.1-2', 0)
+        self.assert_package_not_in_repo('0ad-data', '0.0.23.1-2')
 
     def test_import_package_hello_unicode(self):
         self.import_source_package('unicode-changes')
@@ -345,32 +345,16 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_count('hello', '1.0-2', 0)
         self.assert_package_not_in_repo('hello', '1.0-2')
 
-    # def test_import_package_mismatch_orig_uploaded(self):
-    #     self.import_source_package('hello')
-    #     self.assert_importer_succeeded()
-    #     self.assert_email_with("Your upload of the package 'hello' to "
-    #                            + settings.SITE_NAME
-    #                            + " was\nsuccessful.")
-    #     self.assert_package_count('hello', '1.0-1', 1)
-    #     self.assert_package_in_repo('hello', '1.0-1')
-
-    #     self.import_source_package('hello-mismatch-orig')
-    #     self.assert_importer_failed()
-    #     self.assert_email_with("hello dsc reference hello_1.0.orig.tar.xz, "
-    #                            "but the file differs")
-    #     self.assert_package_count('hello', '1.0-2', 0)
-    #     self.assert_package_not_in_repo('hello', '1.0-2')
-
-    # def test_import_package_not_in_debian(self):
-    #     self.import_source_package('not-in-debian')
-    #     self.assert_importer_succeeded()
-    #     self.assert_email_with("Your upload of the package "
-    #                            "'this-package-should-not-exist' to "
-    #                            + settings.SITE_NAME
-    #                            + " was\nsuccessful.")
-    #     self.assert_package_count('this-package-should-not-exist', '1.0-1', 1)
-    #     self.assert_package_in_repo('this-package-should-not-exist', '1.0-1')
-    #     self.assert_plugin_result('this-package-should-not-exist', 'debianqa',
+    def test_import_package_not_in_debian(self):
+        self.import_source_package('not-in-debian')
+        self.assert_importer_succeeded()
+        self.assert_email_with("Your upload of the package "
+                               "'this-package-should-not-exist' to "
+                               + settings.SITE_NAME
+                               + " was\nsuccessful.")
+        self.assert_package_count('this-package-should-not-exist', '1.0-1', 1)
+        self.assert_package_in_repo('this-package-should-not-exist', '1.0-1')
+    #     self.assert_package_info('this-package-should-not-exist', 'debianqa',
     #                              'Package is not in Debian')
 
     # def test_import_package_hello_with_subscribers(self):
@@ -427,33 +411,33 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_count('hello', '1.0-1', 2)
         self.assert_package_in_repo('hello', '1.0-1')
 
-    # def test_import_package_htop_download_orig(self):
-    #     self.import_package('orig-from-official')
-    #     self.assert_importer_succeeded()
-    #     self.assert_email_with("Your upload of the package 'htop' to "
-    #                            + settings.SITE_NAME
-    #                            + " was\nsuccessful.")
-    #     self.assert_package_count('htop', '2.2.0-1', 1)
-    #     self.assert_package_in_repo('htop', '2.2.0-1')
-    #     for filename in ('htop_2.2.0-1.dsc',
-    #                      'htop_2.2.0-1.debian.tar.xz',
-    #                      'htop_2.2.0.orig.tar.gz',
-    #                      'htop_2.2.0.orig.tar.gz.asc'):
-    #         self.assert_file_in_repo(filename)
+    def test_import_package_htop_download_orig(self):
+        self.import_package('orig-from-official')
+        self.assert_importer_succeeded()
+        self.assert_email_with("Your upload of the package 'htop' to "
+                               + settings.SITE_NAME
+                               + " was\nsuccessful.")
+        self.assert_package_count('htop', '2.2.0-1', 1)
+        self.assert_package_in_repo('htop', '2.2.0-1')
+        for filename in ('htop_2.2.0-1.dsc',
+                         'htop_2.2.0-1.debian.tar.xz',
+                         'htop_2.2.0.orig.tar.gz',
+                         'htop_2.2.0.orig.tar.gz.asc'):
+            self.assert_file_in_repo(filename)
 
-    #     self._cleanup_mailbox()
-    #     self.import_package('orig-from-official')
-    #     self.assert_importer_succeeded()
-    #     self.assert_email_with("Your upload of the package 'htop' to "
-    #                            + settings.SITE_NAME
-    #                            + " was\nsuccessful.")
-    #     self.assert_package_count('htop', '2.2.0-1', 2)
-    #     self.assert_package_in_repo('htop', '2.2.0-1')
-    #     for filename in ('htop_2.2.0-1.dsc',
-    #                      'htop_2.2.0-1.debian.tar.xz',
-    #                      'htop_2.2.0.orig.tar.gz',
-    #                      'htop_2.2.0.orig.tar.gz.asc'):
-    #         self.assert_file_in_repo(filename)
+        self._cleanup_mailbox()
+        self.import_package('orig-from-official')
+        self.assert_importer_succeeded()
+        self.assert_email_with("Your upload of the package 'htop' to "
+                               + settings.SITE_NAME
+                               + " was\nsuccessful.")
+        self.assert_package_count('htop', '2.2.0-1', 2)
+        self.assert_package_in_repo('htop', '2.2.0-1')
+        for filename in ('htop_2.2.0-1.dsc',
+                         'htop_2.2.0-1.debian.tar.xz',
+                         'htop_2.2.0.orig.tar.gz',
+                         'htop_2.2.0.orig.tar.gz.asc'):
+            self.assert_file_in_repo(filename)
 
     # Since we cannot really make the importer fail (it is not supposed to
     # happend), we test that the field method can report an error to admins and

@@ -40,6 +40,8 @@ from debexpo.packages.models import Distribution, PackageUpload, \
 from debexpo.accounts.models import User
 from debexpo.tools.debian.changes import Changes, ExceptionChanges
 from debexpo.tools.debian.dsc import ExceptionDsc
+from debexpo.tools.debian.origin import ExceptionOrigin
+from debexpo.tools.clients import ExceptionClient
 from debexpo.tools.debian.source import Source, ExceptionSource
 from debexpo.tools.debian.control import ExceptionControl
 from debexpo.tools.debian.copyright import ExceptionCopyright
@@ -178,7 +180,7 @@ class Importer():
     Class to handle the package that is uploaded and wants to be imported into
     the database.
     """
-    def __init__(self, spool=None, repository=None, skip_email=False,
+    def __init__(self, spool=None, skip_email=False,
                  skip_gpg=False):
         """
         Object constructor. Sets class fields to sane values.
@@ -192,10 +194,7 @@ class Importer():
         """
         self.actually_send_email = not bool(skip_email)
         self.skip_gpg = skip_gpg
-        self.repository = None
-
-        if repository:
-            self.repository = Repository(repository)
+        self.repository = Repository(settings.REPOSITORY)
 
         if spool:
             self.spool = Spool(spool)
@@ -449,9 +448,10 @@ class Importer():
             dsc.validate()
             if not self.skip_gpg:
                 dsc.authenticate()
-            # dsc.fetch_missing()
+            dsc.fetch_origin()
             dsc.files.validate()
-        except (ExceptionDsc, ExceptionCheckSumedFile, ExceptionGnuPG) as e:
+        except (ExceptionDsc, ExceptionCheckSumedFile, ExceptionGnuPG,
+                ExceptionOrigin, ExceptionClient) as e:
             raise ExceptionImporterRejected(changes, 'Dsc is invalid', e)
 
     def _validate_source(self, changes):

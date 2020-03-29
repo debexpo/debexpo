@@ -130,6 +130,15 @@ class ControlFiles():
 
         return None
 
+    def get_origin_files(self):
+        origin_files = []
+
+        for item in self.files:
+            if search(r'\.orig.*\.tar', str(item)):
+                origin_files.append(item)
+
+        return origin_files
+
 
 class Control():
     def __init__(self, filename):

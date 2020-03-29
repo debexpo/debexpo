@@ -77,7 +77,7 @@ setup(
 
     # Requirements
     install_requires=[
-        'django>=1.11.23',
+        'django>=2.2.10',
         'bcrypt>=3.1.6',
         'python-debian>=0.1.35',
         'celery>=4.2.1',

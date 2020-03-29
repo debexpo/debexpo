@@ -25,7 +25,6 @@
 #   DEALINGS IN THE SOFTWARE.
 
 from django.core.management.base import BaseCommand, CommandError
-from django.conf import settings
 
 from debexpo.importer.models import Importer
 from debexpo.tools.debian.changes import Changes
@@ -38,7 +37,7 @@ class Command(BaseCommand):
         parser.add_argument('changes', nargs='+', help='changes file to import')
 
     def handle(self, *args, **options):
-        importer = Importer(repository=settings.REPOSITORY)
+        importer = Importer()
 
         for filename in options['changes']:
             changes = None

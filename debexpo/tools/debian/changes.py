@@ -129,6 +129,8 @@ class Changes(GPGSignedFile):
 
     def cleanup_source(self):
         if self.dsc:
+            self.dsc.files.remove()
+
             source = Source(self.dsc)
             source.remove()
 
@@ -146,6 +148,6 @@ class Changes(GPGSignedFile):
                 ' upload)')
 
         try:
-            self.dsc = Dsc(filename)
+            self.dsc = Dsc(filename, self.component)
         except Exception as e:
             raise ExceptionChanges(e)
