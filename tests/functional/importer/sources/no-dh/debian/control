@@ -1,0 +1,12 @@
+Source: hello
+Section: utils
+Priority: optional
+Maintainer: Vincent TIME <vtime@example.org>
+Standards-Version: 4.1.3
+Homepage: https://example.org
+
+Package: hello
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Test package for debexpo
+ Unfortunatly, a too short description
