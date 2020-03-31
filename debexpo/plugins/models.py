@@ -93,7 +93,10 @@ class PluginResults(models.Model):
 
     @property
     def data(self):
-        return loads(self.json)
+        if self.json:
+            return loads(self.json)
+
+        return {}
 
     @data.setter
     def data(self, data):
