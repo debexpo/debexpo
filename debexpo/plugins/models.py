@@ -87,7 +87,7 @@ class PluginResults(models.Model):
         template = join(dirname(abspath(__file__)), 'templates',
                         f'plugin-{self.plugin}.html')
         if isfile(template):
-            return self.plugin
+            return f'plugin-{self.plugin}.html'
 
         return 'plugin-default.html'
 
