@@ -29,6 +29,7 @@ before_script:
     iso-codes
     dpkg-dev
     debhelper
+    cdbs
     $ADDITIONAL_PACKAGES
 
 .test_template: &test
