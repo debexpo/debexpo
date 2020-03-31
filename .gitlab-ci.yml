@@ -29,12 +29,12 @@ before_script:
     iso-codes
     dpkg-dev
     debhelper
+    $ADDITIONAL_PACKAGES
 
 .test_template: &test
   variables:
     DJANGO_SETTINGS_MODULE: 'debexpo.settings.test'
-  script: "true"
-  after_script:
+  script:
     - python3 setup.py develop
     - python3 -m coverage run manage.py test -v 2 --exclude-tag nntp
     - python3 -m coverage report --include='debexpo*' --omit '*/nntp.py'
@@ -50,10 +50,9 @@ unstable:
 buster-bpo:
   <<: *test
   image: debian:buster-backports
-  script:
-    - env DEBIAN_FRONTEND=noninteractive
-      apt-get -q -y install --no-install-recommends
-      python3-django/buster-backports
+  variables:
+    ADDITIONAL_PACKAGES: python3-django/buster-backports
+    DJANGO_SETTINGS_MODULE: 'debexpo.settings.test'
 
 flake8:
   image: debian:unstable-slim
