@@ -28,7 +28,8 @@
 
 from tests import TestController
 
-from debexpo.plugins.models import PluginManager, BasePlugin, PluginSeverity
+from debexpo.plugins.models import PluginManager, BasePlugin, PluginSeverity, \
+    PluginResults
 
 
 class PluginBad(BasePlugin):
@@ -92,5 +93,13 @@ class TestPluginManager(TestController):
             self.assertEquals(plugins.results[0].plugin, 'plugin-good')
             self.assertEquals(plugins.results[0].test, 'good-test')
             self.assertEquals(plugins.results[0].outcome, 'passing')
+            self.assertEquals(plugins.results[0].data, None)
             self.assertEquals(plugins.results[0].severity,
                               PluginSeverity.info)
+
+
+class TestPluginResults(TestController):
+    def test_plugin_results_no_json(self):
+        result = PluginResults()
+
+        self.assertEquals(result.data, {})
