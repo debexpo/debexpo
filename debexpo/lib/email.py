@@ -170,14 +170,20 @@ class Email(object):
         pylons.url._pop_object()
 
         if 'debexpo.testsmtp' in pylons.config:
-            self._save_as_file(recipients, message)
+            return self._save_as_file(recipients, message)
         else:
-            self._send_as_mail(recipients, message)
+            try:
+                return self._send_as_mail(recipients, message)
+            except (IOError, smtplib.SMTPException) as e:
+                log.critical('Failed to send email: {}'.format(e))
+                return False
 
     def _save_as_file(self, recipients, message):
         log.debug('Save email as file to %s' % self.server)
         with open(pylons.config['debexpo.testsmtp'], 'a') as email:
             email.write(message)
+
+        return True
 
     def _send_as_mail(self, recipients, message):
         log.debug('Starting SMTP session to %s:%s' % (self.server, self.port))
@@ -197,8 +203,10 @@ class Email(object):
                 log.critical('Failed sending to %s: %s, %s' %
                              (recipient, result[recipient][0],
                               result[recipient][1]))
-        else:
-            log.debug('Successfully sent')
+            return False
+
+        log.debug('Successfully sent')
+        return True
 
     def _check_error(self, msg, err, data=None):
         if err != 'OK':
