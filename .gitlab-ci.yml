@@ -5,7 +5,6 @@ before_script:
     aspcud apt-cudf
   - env DEBIAN_FRONTEND=noninteractive
     apt-get -q -y --solver aspcud
-    -o APT::Solver::Strict-Pinning=0
     -o Debug::pkgProblemResolver=yes
     install --no-install-recommends
     python3
