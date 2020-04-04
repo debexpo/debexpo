@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
-#
-#   watchfile.py — watchfile plugin
+#   watchfile.py - watchfile plugin
 #
 #   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>
+#   Copyright © 2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -29,88 +28,71 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-"""
-Holds the watchfile plugin.
-"""
-
-__author__ = 'Jonny Lamb'
-__copyright__ = ', '.join([
-        'Copyright © 2008 Jonny Lamb',
-        'Copyright © 2012-2018 Nicolas Dandrimont',
-        ])
-__license__ = 'MIT'
-
-import subprocess
-import logging
+from subprocess import check_output, CalledProcessError, STDOUT
 import os
+from re import search, MULTILINE
 
-from debexpo.lib import constants
-from debexpo.plugins import BasePlugin
-
-log = logging.getLogger(__name__)
+from debexpo.plugins.models import BasePlugin, PluginSeverity
 
 
-class WatchFilePlugin(BasePlugin):
+class PluginWatchFile(BasePlugin):
+    @property
+    def name(self):
+        return 'watch-file'
 
-    def _watch_file_present(self):
-        return os.path.isfile(os.path.join('extracted', 'debian', 'watch'))
+    def _watch_file_present(self, source):
+        return os.path.isfile(os.path.join(source.get_source_dir(),
+                                           'debian', 'watch'))
 
-    def _run_uscan(self):
-        if not hasattr(self, 'status') and not hasattr(self, 'output'):
-            call = subprocess.Popen(["uscan", "--verbose", '--report'],
-                                    stdout=subprocess.PIPE,
-                                    cwd='extracted')
-            (self.output, _) = call.communicate()
-            self.status = call.returncode
+    def _run_uscan(self, source):
+        try:
+            self.output = check_output(["uscan", "--verbose", '--report'],
+                                       stderr=STDOUT,
+                                       cwd=source.get_source_dir(),
+                                       text=True)
+        except FileNotFoundError:  # pragma: no cover
+            self.failed('uscan not found')
+        except CalledProcessError as e:
+            self.status = e.returncode
+            self.output = e.output
 
-    def _watch_file_works(self):
-        self._run_uscan()
+    def _watch_file_works(self, source):
+        self._run_uscan(source)
         return 'Newest version' in self.output
 
-    def test_uscan(self):
+    def _extract_upstream_info(self):
+        extract = r'(Newest version.*)\n.*\n(.*)\n'
+        matches = search(extract, self.output, MULTILINE)
+
+        if matches:
+            return '\n'.join([matches[1], matches[2]])
+
+    def run(self, changes, source):
         """
         Run the watch file-related checks in the package
         """
 
-        data = {
-            "watch-file-present": False,
-            }
+        self.status = 0
+        self.output = ''
+        data = {}
 
-        log.debug('Checking if the package contains a watch file')
-
-        if self._watch_file_present():
-            log.debug('Watch file present')
-            data["watch-file-present"] = True
-        else:
-            log.warning('Watch file not present')
-            self.failed('Watch file is not present', data,
-                        constants.PLUGIN_SEVERITY_WARNING)
+        if not self._watch_file_present(source):
+            self.add_result('uscan', 'Watch file is not present', data,
+                            PluginSeverity.warning)
             return
 
-        if self._watch_file_works():
-            log.debug('Watch file works')
-            data["watch-file-works"] = True
-            data["uscan-output"] = self.output
-        else:
-            log.warning('Watch file does not work')
-            data["watch-file-works"] = False
-            data["uscan-output"] = self.output
-            self.failed("A watch file is present but doesn't work", data,
-                        constants.PLUGIN_SEVERITY_WARNING)
+        if not self._watch_file_works(source):
+            data['details'] = self.output
+            self.add_result('uscan',
+                            "A watch file is present but doesn't work", data,
+                            PluginSeverity.warning)
             return
-
-        log.debug('Looking whether there is a new upstream version')
 
         if self.status == 1:
-            log.debug('Package is the latest upstream version')
-            data["latest-upstream"] = True
-            self.passed('Package is the latest upstream version', data,
-                        constants.PLUGIN_SEVERITY_INFO)
+            self.add_result('uscan',
+                            'Package is the latest upstream version', data,
+                            PluginSeverity.info)
         else:
-            log.warning('Package is not the latest upstream version')
-            data["latest-upstream"] = False
-            self.failed('Package is not the latest upstream version', data,
-                        constants.PLUGIN_SEVERITY_WARNING)
-
-
-plugin = WatchFilePlugin
+            data['details'] = self._extract_upstream_info()
+            self.add_result('uscan', 'Newer upstream version available', data,
+                            PluginSeverity.warning)
