@@ -176,6 +176,7 @@ REGISTRATION_EXPIRATION_DAYS = 7
 IMPORTER_PLUGINS = (
     ('debexpo.plugins.distribution', 'PluginDistribution',),
     ('debexpo.plugins.buildsystem', 'PluginBuildSystem',),
+    ('debexpo.plugins.native', 'PluginNative',),
 )
 
 # Debian Archive access
