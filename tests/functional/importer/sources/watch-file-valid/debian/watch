@@ -6,4 +6,4 @@
 version=3
 
 # Current version from GNU site
-http://ftp.gnu.org/gnu/hello/hello-(.*).tar.gz
+http://localhost:36471/hello-(.*).tar.gz

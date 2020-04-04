@@ -109,38 +109,6 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_count('hello', '1.0-1', 0)
         self.assert_package_not_in_repo('hello', '1.0-1')
 
-    # def test_import_package_no_first_debhelper_compat(self):
-    #     self.import_source_package('no-first-debhelper-compat')
-    #     self.assert_importer_succeeded()
-    #     self.assert_package_count('hello', '1.0-1', 1)
-    #     self.assert_package_in_repo('hello', '1.0-1')
-    #     self.assert_plugin_result('hello', 'buildsystem',
-    #                              'Package uses debhelper-compat')
-
-    # def test_import_package_watchfile_no_present(self):
-    #     self.import_source_package('hello')
-    #     self.assert_importer_succeeded()
-    #     self.assert_plugin_result('hello', 'watchfile',
-    #                              'Watch file is not present')
-    #     self.assert_package_count('hello', '1.0-1', 1)
-    #     self.assert_package_in_repo('hello', '1.0-1')
-
-    # def test_import_package_watchfile_invalid(self):
-    #     self.import_source_package('watchfile-invalid')
-    #     self.assert_importer_succeeded()
-    #     self.assert_plugin_result('hello', 'watchfile',
-    #                              'A watch file is present but doesn\'t work')
-    #     self.assert_package_count('hello', '1.0-1', 1)
-    #     self.assert_package_in_repo('hello', '1.0-1')
-
-    # def test_import_package_watchfile_valid(self):
-    #     self.import_source_package('watchfile-valid')
-    #     self.assert_importer_succeeded()
-    #     self.assert_plugin_result('hello', 'watchfile',
-    #                              'Package is not the latest upstream version')
-    #     self.assert_package_count('hello', '1.0-1', 1)
-    #     self.assert_package_in_repo('hello', '1.0-1')
-
     def test_import_package_dsc_corrupted(self):
         self.import_package('corrupted-dsc')
         self.assert_importer_failed()
