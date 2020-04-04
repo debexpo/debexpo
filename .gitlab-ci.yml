@@ -30,6 +30,7 @@ before_script:
     dpkg-dev
     debhelper
     cdbs
+    devscripts
     $ADDITIONAL_PACKAGES
 
 .test_template: &test
