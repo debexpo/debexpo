@@ -264,7 +264,7 @@ class Importer(object):
 
         self._remove_files()
 
-        if self.user is not None:
+        if self.user is not None and self.user.email:
             email = Email('importer_fail_maintainer')
             package = self.changes.get('Source', '')
 
@@ -287,7 +287,7 @@ class Importer(object):
 
         self._remove_files()
 
-        if self.user is not None:
+        if self.user is not None and self.user.email:
             email = Email('importer_reject_maintainer')
             package = self.changes.get('Source', '')
 
