@@ -27,6 +27,9 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 from http.server import BaseHTTPRequestHandler
+from tempfile import TemporaryDirectory
+from os.path import join, dirname
+from shutil import copytree
 
 from tests.functional.importer import TestImporterController
 from tests import TestingHTTPServer
@@ -71,8 +74,11 @@ class TestPluginBuildSystem(TestImporterController):
     def test_watch_file_latest_version(self):
         outcome = 'Package is the latest upstream version'
 
-        with TestingHTTPServer(WatchSameHTTPHandler, 36471):
-            self.import_source_package('watch-file-valid')
+        with TestingHTTPServer(WatchSameHTTPHandler) as httpd:
+            with TemporaryDirectory() as source_dir:
+                port = httpd.port
+                self._create_watch_file(port, source_dir)
+                self.import_source_package('hello', base_dir=source_dir)
 
         self.assert_importer_succeeded()
         self.assert_plugin_result_count('hello', 'watch-file', 1)
@@ -84,7 +90,7 @@ class TestPluginBuildSystem(TestImporterController):
             'watch-file',
             {
                 'local': '1.0', 'upstream': '1.0',
-                'url': 'http://localhost:36471/hello-1.0.tar.gz'
+                'url': f'http://localhost:{port}/hello-1.0.tar.gz'
             }
         )
         self.assert_plugin_template('hello', outcome)
@@ -92,8 +98,11 @@ class TestPluginBuildSystem(TestImporterController):
     def test_watch_file_not_latest_version(self):
         outcome = 'Newer upstream version available'
 
-        with TestingHTTPServer(WatchNewerHTTPHandler, 36471):
-            self.import_source_package('watch-file-valid')
+        with TestingHTTPServer(WatchNewerHTTPHandler) as httpd:
+            with TemporaryDirectory() as source_dir:
+                port = httpd.port
+                self._create_watch_file(port, source_dir)
+                self.import_source_package('hello', base_dir=source_dir)
 
         self.assert_importer_succeeded()
         self.assert_plugin_result_count('hello', 'watch-file', 1)
@@ -105,10 +114,18 @@ class TestPluginBuildSystem(TestImporterController):
             'watch-file',
             {
                 'local': '1.0', 'upstream': '1.1',
-                'url': 'http://localhost:36471/hello-1.1.tar.gz'
+                'url': f'http://localhost:{port}/hello-1.1.tar.gz'
             }
         )
         self.assert_plugin_template('hello', outcome)
+
+    def _create_watch_file(self, port, dest_dir):
+        source_dir = join(dirname(__file__), '..', 'sources', 'hello')
+        copytree(source_dir, join(dest_dir, 'hello'))
+
+        with open(join(dest_dir, 'hello', 'debian', 'watch'), 'w') as watch:
+            watch.write('version=3\n'
+                        f'http://localhost:{port}/hello-(.*).tar.gz\n')
 
 
 class WatchNewerHTTPHandler(BaseHTTPRequestHandler):
