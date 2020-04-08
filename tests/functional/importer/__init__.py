@@ -141,8 +141,8 @@ class TestImporterController(TestController):
         return result
 
     def import_source_package(self, package_dir, skip_gpg=False,
-                              skip_email=False):
-        source_package = TestSourcePackage(package_dir)
+                              skip_email=False, base_dir=None):
+        source_package = TestSourcePackage(package_dir, base_dir)
 
         source_package.build()
         self._run_importer(source_package.get_package_dir(), skip_gpg=skip_gpg,
