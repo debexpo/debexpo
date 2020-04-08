@@ -64,7 +64,7 @@ class TestPluginBuildSystem(TestImporterController):
         self.assert_in_plugin_data(
             'hello',
             'watch-file',
-            {'details': 'Skipping the line: unknownprotocol'}
+            {'warnings': 'Skipping the line: unknownprotocol'}
         )
         self.assert_plugin_template('hello', 'A watch file is present but')
 
@@ -82,7 +82,10 @@ class TestPluginBuildSystem(TestImporterController):
         self.assert_plugin_data(
             'hello',
             'watch-file',
-            {}
+            {
+                'local': '1.0', 'upstream': '1.0',
+                'url': 'http://localhost:36471/hello-1.0.tar.gz'
+            }
         )
         self.assert_plugin_template('hello', outcome)
 
@@ -97,10 +100,13 @@ class TestPluginBuildSystem(TestImporterController):
         self.assert_plugin_result('hello', 'watch-file', outcome)
         self.assert_plugin_severity('hello', 'watch-file',
                                     PluginSeverity.warning)
-        self.assert_in_plugin_data(
+        self.assert_plugin_data(
             'hello',
             'watch-file',
-            {'details': 'http://'}
+            {
+                'local': '1.0', 'upstream': '1.1',
+                'url': 'http://localhost:36471/hello-1.1.tar.gz'
+            }
         )
         self.assert_plugin_template('hello', outcome)
 

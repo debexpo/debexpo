@@ -28,9 +28,9 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from subprocess import check_output, CalledProcessError, STDOUT
+from subprocess import check_output, CalledProcessError
 import os
-from re import search, MULTILINE
+from xml.etree import ElementTree
 
 from debexpo.plugins.models import BasePlugin, PluginSeverity
 
@@ -46,26 +46,48 @@ class PluginWatchFile(BasePlugin):
 
     def _run_uscan(self, source):
         try:
-            self.output = check_output(["uscan", "--verbose", '--report'],
-                                       stderr=STDOUT,
-                                       cwd=source.get_source_dir(),
-                                       text=True)
+            output = check_output(["uscan", "--dehs", '--report'],
+                                  cwd=source.get_source_dir(),
+                                  text=True)
         except FileNotFoundError:  # pragma: no cover
             self.failed('uscan not found')
         except CalledProcessError as e:
             self.status = e.returncode
-            self.output = e.output
+            output = e.output
+
+        return output
+
+    def _parse_xml_uscan(self, output):
+        root = ElementTree.fromstring(output)
+        status = root.findtext('status')
+
+        for key, tag in (('local', 'debian-uversion',),
+                         ('upstream', 'upstream-version',),
+                         ('url', 'upstream-url',),
+                         ('warnings', 'warnings',),
+                         ('errors', 'errors',),):
+            values = root.findall(tag)
+
+            for value in values:
+                if self.data.get(key):
+                    self.data[key] = '\n'.join([self.data[key],
+                                               value.text])
+                else:
+                    self.data[key] = value.text
+
+        return status
 
     def _watch_file_works(self, source):
-        self._run_uscan(source)
-        return 'Newest version' in self.output
+        output = self._run_uscan(source)
 
-    def _extract_upstream_info(self):
-        extract = r'(Newest version.*)\n.*\n(.*)\n'
-        matches = search(extract, self.output, MULTILINE)
+        try:
+            status = self._parse_xml_uscan(output)
+        # This is there is case uscan could not format correctly its xml.
+        # As this is not supposed to happen, is it excluded from testing
+        except ElementTree.ParseError as e:  # pragma: no cover
+            self.failed(f'failed to parse uscan output: {str(e)}')
 
-        if matches:
-            return '\n'.join([matches[1], matches[2]])
+        return status
 
     def run(self, changes, source):
         """
@@ -73,26 +95,23 @@ class PluginWatchFile(BasePlugin):
         """
 
         self.status = 0
-        self.output = ''
-        data = {}
+        self.data = {}
 
         if not self._watch_file_present(source):
-            self.add_result('uscan', 'Watch file is not present', data,
+            self.add_result('uscan', 'Watch file is not present', self.data,
                             PluginSeverity.warning)
             return
 
         if not self._watch_file_works(source):
-            data['details'] = self.output
             self.add_result('uscan',
-                            "A watch file is present but doesn't work", data,
-                            PluginSeverity.warning)
+                            "A watch file is present but doesn't work",
+                            self.data, PluginSeverity.warning)
             return
 
         if self.status == 1:
             self.add_result('uscan',
-                            'Package is the latest upstream version', data,
+                            'Package is the latest upstream version', self.data,
                             PluginSeverity.info)
         else:
-            data['details'] = self._extract_upstream_info()
-            self.add_result('uscan', 'Newer upstream version available', data,
-                            PluginSeverity.warning)
+            self.add_result('uscan', 'Newer upstream version available',
+                            self.data, PluginSeverity.warning)
