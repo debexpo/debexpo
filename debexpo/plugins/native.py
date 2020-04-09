@@ -28,6 +28,8 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+from os.path import join
+
 from debexpo.plugins.models import BasePlugin, PluginSeverity
 
 
@@ -36,17 +38,30 @@ class PluginNative(BasePlugin):
     def name(self):
         return 'native'
 
+    def _get_source_format(self, source):
+        try:
+            with open(join(source.get_source_dir(), 'debian', 'source',
+                           'format')) as source_format_file:
+                source_format = source_format_file.readline()
+        except IOError:
+            source_format = '1.0 (no format file)'
+
+        return source_format.rstrip('\n')
+
     def run(self, changes, source):
         """
         Test to see whether the package is a native package.
         """
         version = changes.dsc.version
+        source_format = self._get_source_format(source)
 
         if not version.debian_revision:
             # Most uploads will not be native, and especially on mentors, a
             # native package is almost probably in error.
             self.add_result('native', 'Package is native',
-                            severity=PluginSeverity.warning)
+                            {'format': source_format},
+                            PluginSeverity.warning)
         else:
             self.add_result('native', 'Package is not native',
-                            severity=PluginSeverity.info)
+                            {'format': source_format},
+                            PluginSeverity.info)

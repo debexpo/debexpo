@@ -43,7 +43,7 @@ class TestPluginNative(TestImporterController):
         self.assert_plugin_data(
             'hello',
             'native',
-            None
+            {'format': '3.0 (native)'}
         )
         self.assert_plugin_template('hello', outcome)
 
@@ -58,6 +58,21 @@ class TestPluginNative(TestImporterController):
         self.assert_plugin_data(
             'hello',
             'native',
-            None
+            {'format': '3.0 (quilt)'}
+        )
+        self.assert_plugin_template('hello', outcome)
+
+    def test_no_format(self):
+        outcome = 'Package is not native'
+        self.import_source_package('no-format')
+        self.assert_importer_succeeded()
+        self.assert_plugin_result_count('hello', 'native', 1)
+        self.assert_plugin_result('hello', 'native', outcome)
+        self.assert_plugin_severity('hello', 'native',
+                                    PluginSeverity.info)
+        self.assert_plugin_data(
+            'hello',
+            'native',
+            {'format': '1.0 (no format file)'}
         )
         self.assert_plugin_template('hello', outcome)
