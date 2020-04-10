@@ -6,7 +6,7 @@
 <table>
     {% for key, value in result.data.items %}
         <tr>
-            <td>{{ key }}:</td><td>{{ value }}</td>
+            <td>{{ key }}:</td><td>{{ value|linebreaksbr }}</td>
         </tr>
     {% endfor %}
 </table>

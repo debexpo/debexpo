@@ -141,8 +141,8 @@ class TestImporterController(TestController):
         return result
 
     def import_source_package(self, package_dir, skip_gpg=False,
-                              skip_email=False):
-        source_package = TestSourcePackage(package_dir)
+                              skip_email=False, base_dir=None):
+        source_package = TestSourcePackage(package_dir, base_dir)
 
         source_package.build()
         self._run_importer(source_package.get_package_dir(), skip_gpg=skip_gpg,
@@ -236,6 +236,17 @@ class TestImporterController(TestController):
         response = self.client.get(reverse('package', args=[package_name]))
 
         self.assertIn(outcome, str(response.content))
+
+    def assert_in_plugin_data(self, package_name, plugin, data):
+        plugin_results = self._lookup_plugin_result(package_name, plugin)
+        self.assertTrue(plugin_results)
+
+        for result in plugin_results:
+            for key, value in data.items():
+                if key not in result.data or not result.data[key] or \
+                        value not in result.data[key]:
+                    raise Exception('Plugin result not found for data '
+                                    f'contains: {data}\ndata: {result.data}')
 
     def assert_plugin_data(self, package_name, plugin, data):
         plugin_results = self._lookup_plugin_result(package_name, plugin)

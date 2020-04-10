@@ -262,11 +262,11 @@ class TestingTCPServer(TCPServer):
 
 
 class TestingHTTPServer():
-    def __init__(self, handler=None):
+    def __init__(self, handler=None, port=0):
         if not handler:
             handler = SimpleHTTPRequestHandler
 
-        self.httpd = TestingTCPServer(("localhost", 0), handler)
+        self.httpd = TestingTCPServer(("localhost", port), handler)
         _, self.port = self.httpd.server_address
         self.thread = Thread(target=self.httpd.serve_forever)
 
