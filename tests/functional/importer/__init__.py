@@ -256,7 +256,8 @@ class TestImporterController(TestController):
             if data == result.data:
                 return
 
-        raise Exception(f'Plugin result not found for data contains: {data}')
+        raise Exception(f'Plugin result not found for data contains: {data}\n'
+                        f'in{result.data}')
 
     def assert_file_in_repo(self, filename):
         """Assert that a file is present in debexpo repo"""

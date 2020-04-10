@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
-#
-#   native.py — native QA plugin
+#   native.py - native QA plugin
 #
 #   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>
+#   Copyright © 2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -29,46 +28,40 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-"""
-Holds the native plugin.
-"""
+from os.path import join
 
-__author__ = 'Jonny Lamb'
-__copyright__ = ", ".join([
-        'Copyright © 2008 Jonny Lamb',
-        'Copyright © 2012 Nicolas Dandrimont',
-        ])
-__license__ = 'MIT'
-
-import logging
-
-from debexpo.lib import constants, filesystem
-from debexpo.plugins import BasePlugin
-
-log = logging.getLogger(__name__)
+from debexpo.plugins.models import BasePlugin, PluginSeverity
 
 
-class NativePlugin(BasePlugin):
+class PluginNative(BasePlugin):
+    @property
+    def name(self):
+        return 'native'
 
-    def test_native(self):
+    def _get_source_format(self, source):
+        try:
+            with open(join(source.get_source_dir(), 'debian', 'source',
+                           'format')) as source_format_file:
+                source_format = source_format_file.readline()
+        except IOError:
+            source_format = '1.0 (no format file)'
+
+        return source_format.rstrip('\n')
+
+    def run(self, changes, source):
         """
         Test to see whether the package is a native package.
         """
-        log.debug('Checking whether the package is native or not')
-        filecheck = filesystem.CheckFiles()
+        version = changes.dsc.version
+        source_format = self._get_source_format(source)
 
-        native = filecheck.is_native_package(self.changes)
-
-        if native:
+        if not version.debian_revision:
             # Most uploads will not be native, and especially on mentors, a
             # native package is almost probably in error.
-            log.warning('Package is native')
-            self.failed('Package is native', {"native": True},
-                        constants.PLUGIN_SEVERITY_WARNING)
+            self.add_result('native', 'Package is native',
+                            {'format': source_format},
+                            PluginSeverity.warning)
         else:
-            log.debug('Package is not native')
-            self.passed('Package is not native', {"native": False},
-                        constants.PLUGIN_SEVERITY_INFO)
-
-
-plugin = NativePlugin
+            self.add_result('native', 'Package is not native',
+                            {'format': source_format},
+                            PluginSeverity.info)
