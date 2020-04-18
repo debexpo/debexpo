@@ -1,50 +1,29 @@
-<%!
-def decode_severity(s):
-    """Decode a lintian severity"""
-    verbose_severity = {
-      'E': 'Error',
-      'W': 'Warning',
-      'P': 'Pedantic',
-      'I': 'Info',
-      'O': 'Override',
-      'X': 'Experimental',
-    }.get(s, '???')
-
-    return '''<span class="lintian-%(s)s" title="%(verbose_severity)s">%(s)s</span>''' % locals()
-
-def tag_to_a(tag):
-    """Return a link to the lintian tag description"""
-    return '<a href="https://lintian.debian.org/tags/%s.html">%s</a>' % (tag, tag)
-
-def severity_key(x):
-    """Key to sort lintian severities"""
-    return "EWIPOX".index(x)
-%>
 <div class="qa-header">
-${o.outcome}
+{{ result.outcome }}
 </div>
-% if o.rich_data:
+{% if result.data %}
 <div class="qa-content">
-%   for package in o.rich_data:
+{% for package, severities in result.data.items %}
 <div class="lintian-pkgname">
-${package}
+{{ package }}
 </div>
 <ul class="lintian-contents">
-%     for severity in sorted(o.rich_data[package], key = severity_key):
-%       for tag in sorted(o.rich_data[package][severity]):
+{% for severity, tags in severities.items %}
+{% for tag, items in tags.items %}
 <li>
-${decode_severity(severity)|n} ${tag_to_a(tag)|n}
-%         if any(o.rich_data[package][severity][tag]):
+<span class="lintian-{{ severity|first }}" title="{{ severity|slice:"2:" }}">{{ severity|first }}</span>
+<a href="https://lintian.debian.org/tags/{{ tag }}.html">{{ tag }}</a>
 <ul>
-%           for data in o.rich_data[package][severity][tag]:
-<li>${" ".join(data)}</li>
-%           endfor
+{% for item in items %}
+{% if item %}
+<li>{{item}}</li>
+{% endif %}
+{% endfor %}
 </ul>
-%         endif
 </li>
-%       endfor
-%     endfor
+{% endfor %}
+{% endfor %}
 </ul>
-%   endfor
+{% endfor %}
 </div>
-% endif
+{% endif %}

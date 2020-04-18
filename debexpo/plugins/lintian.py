@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
-#
-#   lintian.py — lintian plugin
+#   lintian.py - lintian plugin
 #
 #   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>
+#   Copyright © 2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -29,36 +28,37 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-"""
-Holds the lintian plugin.
-"""
-
-__author__ = 'Jonny Lamb'
-__copyright__ = ', '.join([
-        'Copyright © 2008 Jonny Lamb',
-        'Copyright © 2012 Nicolas Dandrimont',
-        ])
-__license__ = 'MIT'
-
+from bisect import insort
+from os.path import dirname
 from collections import defaultdict
-import subprocess
-import logging
+from subprocess import check_output, CalledProcessError
 
-from debexpo.lib import constants
-from debexpo.plugins import BasePlugin
-
-log = logging.getLogger(__name__)
+from debexpo.plugins.models import BasePlugin, PluginSeverity
 
 
-class LintianPlugin(BasePlugin):
+class PluginLintian(BasePlugin):
+    levels = [
+        {'level': 'X', 'name': 'Experimental', 'severity': PluginSeverity.info,
+         'outcome': 'Package has lintian experimental warnings'},
+        {'level': 'P', 'name': 'Pedantic', 'severity': PluginSeverity.info,
+         'outcome': 'Package has lintian pedantic warnings'},
+        {'level': 'O', 'name': 'Override', 'severity': PluginSeverity.info,
+         'outcome': 'Package has overridden lintian tags'},
+        {'level': 'I', 'name': 'Info', 'severity': PluginSeverity.info,
+         'outcome': 'Package has lintian informational warnings'},
+        {'level': 'W', 'name': 'Warning', 'severity': PluginSeverity.warning,
+         'outcome': 'Package has lintian warnings'},
+        {'level': 'E', 'name': 'Error', 'severity': PluginSeverity.error,
+         'outcome': 'Package has lintian errors'},
+    ]
 
-    def test_lintian(self):
-        """
-        Method to run lintian on the package.
-        """
-        log.debug('Running lintian on the package')
+    @property
+    def name(self):
+        return 'lintian'
 
-        output = subprocess.Popen(["lintian",
+    def _run_lintian(self, changes, source):
+        try:
+            output = check_output(["lintian",
                                    "-E",
                                    "-I",
                                    "--pedantic",
@@ -66,60 +66,69 @@ class LintianPlugin(BasePlugin):
                                    # To avoid warnings in the testsuite when
                                    # run as root in CI.
                                    "--allow-root",
-                                   self.changes_file],
-                                  stdout=subprocess.PIPE).communicate()[0]
+                                   str(changes)],
+                                  cwd=dirname(changes.filename),
+                                  text=True)
+        except FileNotFoundError:  # pragma: no cover
+            self.failed('lintian not found')
+        except CalledProcessError as e:
+            if e.returncode == 1:
+                output = e.output
+            else:
+                self.failed(f'lintian failed to run: {e.stderr}')
 
-        items = output.split('\n')
+        return output.split('\n')
+
+    def run(self, changes, source):
+        tags = self._run_lintian(changes, source)
 
         # Yes, three levels of defaultdict and one of list...
         def defaultdict_defaultdict_list():
             def defaultdict_list():
                 return defaultdict(list)
             return defaultdict(defaultdict_list)
+
         lintian_warnings = defaultdict(defaultdict_defaultdict_list)
-
         lintian_severities = set()
-
         override_comments = []
 
-        for item in items:
-            if not item:
+        for tag in tags:
+            if not tag:
                 continue
 
             # lintian output is of the form """SEVERITY: package: lintian_tag
             # [lintian tag arguments]""" or """N: Override comment"""
-            if item.startswith("N: "):
-                override_comments.append(item[3:].strip())
+            if tag.startswith("N: "):
+                override_comments.append(tag[3:].strip())
                 continue
-            severity, package, rest = item.split(': ', 2)
+
+            severity, package, rest = tag.split(': ', 2)
+            name = [level['name'] for level in self.levels
+                    if level['level'] == severity]
             lintian_severities.add(severity)
             lintian_tag_data = rest.split()
             lintian_tag = lintian_tag_data[0]
-            lintian_data = lintian_tag_data[1:]
+            lintian_data = ' '.join(lintian_tag_data[1:])
+
+            if name:
+                severity = f'{severity}-{name[0]}'
+
             if override_comments:
-                lintian_data.append("(override comment: " +
-                                    " ".join(override_comments) + ")")
+                comments = ' '.join(override_comments)
+                lintian_data += f' (override comment: {comments})'
                 override_comments = []
-            lintian_warnings[package][severity][lintian_tag] \
-                .append(lintian_data)
 
-        severity = constants.PLUGIN_SEVERITY_INFO
-        if 'E' in lintian_severities:
-            severity = constants.PLUGIN_SEVERITY_ERROR
-            outcome = 'Package has lintian errors'
-        elif 'W' in lintian_severities:
-            severity = constants.PLUGIN_SEVERITY_WARNING
-            outcome = 'Package has lintian warnings'
-        elif 'I' in lintian_severities:
-            outcome = 'Package has lintian informational warnings'
-        elif 'O' in lintian_severities:
-            outcome = 'Package has overridden lintian tags'
-        elif 'P' in lintian_severities or 'X' in lintian_severities:
-            outcome = 'Package has lintian pedantic/experimental warnings'
-        else:
-            outcome = 'Package is lintian clean'
+            insort(lintian_warnings[package][severity][lintian_tag],
+                   lintian_data)
 
-        self.failed(outcome, lintian_warnings, severity)
+        lintian_warnings = dict(sorted(lintian_warnings.items()))
+        severity = PluginSeverity.info
+        outcome = 'Package is lintian clean'
 
+        for level in self.levels:
+            if level['level'] in lintian_severities:
+                severity = level['severity']
+                outcome = level['outcome']
 
-plugin = LintianPlugin
+        self.add_result('lintian-tags', outcome, lintian_warnings,
+                        severity)
