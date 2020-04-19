@@ -1,23 +1,23 @@
 <div class="qa-header">
-${o.outcome}
+{{ result.outcome }}
 </div>
-%if not o.rich_data["user-is-maintainer"]:
+{% if not result.data.user_is_maintainer %}
 <div class="qa-content">
 <dl>
 <dt>User email</dt>
-<dd><a href="mailto:${o.rich_data["user-email"]}">${o.rich_data["user-email"]}</a></dd>
+<dd><a href="mailto:{{ result.data.user_email }}">{{ result.data.user_email }}</a></dd>
 <dt>"Maintainer" email</dt>
-<dd><a href="mailto:${o.rich_data["maintainer-email"]}">${o.rich_data["maintainer-email"]}</a></dd>
-%if o.rich_data["uploader-emails"]:
+<dd><a href="mailto:{{ result.data.maintainer_email }}">{{ result.data.maintainer_email }}</a></dd>
+{% if result.data.uploader_emails %}
 <dt>"Uploaders" emails</dt>
 <dd>
 <ul>
-%for email in o.rich_data["uploader-emails"]:
-<li><a href="mailto:${email}">${email}</a></li>
-%endfor
+{% for email in result.data.uploader_emails %}
+<li><a href="mailto:{{ email }}">{{ email }}</a></li>
+{% endfor %}
 </ul>
 </dd>
-%endif
+{% endif %}
 </dl>
 </div>
-%endif
+{% endif %}
