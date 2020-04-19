@@ -89,7 +89,8 @@ class Changes(GPGSignedFile):
 
     def _build_changes(self):
         self.dsc = None
-        self.uploader = self._data.get('Maintainer')
+        self.maintainer = self._data.get('Maintainer')
+        self.uploader = self.maintainer
         self.source = self._data.get('Source')
         self.version = self._data.get('Version')
         self.distribution = self._data.get('Distribution')

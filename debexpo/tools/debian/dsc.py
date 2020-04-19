@@ -61,6 +61,7 @@ class Dsc(GPGSignedFile):
         self.origin = Origin(self.source, self.version.upstream_version,
                              self.component, dirname(self.filename))
         self.build_depends = self._data.get('Build-Depends', '')
+        self.uploaders = self._data.get('Uploaders', '')
 
     def authenticate(self):
         super().authenticate()
