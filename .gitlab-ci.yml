@@ -30,6 +30,7 @@ before_script:
     debhelper
     cdbs
     devscripts
+    lintian
     $ADDITIONAL_PACKAGES
 
 .test_template: &test
