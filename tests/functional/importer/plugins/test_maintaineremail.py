@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
-#
-#   test_maintaineremail.py — Plugin MaintainerEmail test cases
+#   test_maintaineremail.py - Plugin MaintainerEmail test cases
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
+#   Copyright © 2019-2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -28,51 +26,70 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-__author__ = 'Baptiste BEAUPLAT'
-__copyright__ = 'Copyright © 2019 Baptiste BEAUPLAT'
-__license__ = 'MIT'
-
-from debexpo.tests.importer import TestImporterController
-from debexpo.lib.constants import PLUGIN_SEVERITY_INFO, PLUGIN_SEVERITY_WARNING
+from tests.functional.importer import TestImporterController
+from debexpo.plugins.models import PluginSeverity
 
 
 class TestPluginMaintainerEmail(TestImporterController):
-    def __init__(self, *args, **kwargs):
-        TestImporterController.__init__(self, *args, **kwargs)
-
     def test_maintaineremail_maintainer(self):
         self.import_source_package('plugin-maintaineremail-maint')
         self.assert_importer_succeeded()
-        self.assert_package_severity('hello', 'maintaineremail',
-                                     PLUGIN_SEVERITY_INFO)
-        self.assert_package_info('hello', 'maintaineremail',
-                                 '"Maintainer" email is the same as the '
-                                 'uploader')
+        self.assert_plugin_severity('hello', 'maintainer-email',
+                                    PluginSeverity.info)
+        self.assert_plugin_result('hello', 'maintainer-email',
+                                  '"Maintainer" email is the same as the '
+                                  'uploader')
+        self.assert_plugin_data(
+            'hello',
+            'maintainer-email',
+            {'user_is_maintainer': True, 'user_email': 'email@example.com',
+                'maintainer_email': 'email@example.com', 'uploader_emails': []}
+        )
 
     def test_maintaineremail_uploader(self):
         self.import_source_package('plugin-maintaineremail-upload')
         self.assert_importer_succeeded()
-        self.assert_package_severity('hello', 'maintaineremail',
-                                     PLUGIN_SEVERITY_INFO)
-        self.assert_package_info('hello', 'maintaineremail',
-                                 'The uploader is in the package\'s "Uploaders"'
-                                 ' field')
+        self.assert_plugin_severity('hello', 'maintainer-email',
+                                    PluginSeverity.info)
+        self.assert_plugin_result('hello', 'maintainer-email',
+                                  'The uploader is in the package\'s '
+                                  '"Uploaders" field')
+        self.assert_plugin_data(
+            'hello',
+            'maintainer-email',
+            {'user_is_maintainer': True, 'user_email': 'email@example.com',
+                'maintainer_email': 'vtime@example.org', 'uploader_emails':
+                ['second@example.com', 'email@example.com']}
+        )
 
     def test_maintaineremail_nmu(self):
         self.import_source_package('hello')
         self.assert_importer_succeeded()
-        self.assert_package_severity('hello', 'maintaineremail',
-                                     PLUGIN_SEVERITY_WARNING)
-        self.assert_package_info('hello', 'maintaineremail',
-                                 'The uploader is not in the package\'s '
-                                 '"Maintainer" or "Uploaders" fields')
+        self.assert_plugin_severity('hello', 'maintainer-email',
+                                    PluginSeverity.warning)
+        self.assert_plugin_result('hello', 'maintainer-email',
+                                  'The uploader is not in the package\'s '
+                                  '"Maintainer" or "Uploaders" fields')
+        self.assert_plugin_data(
+            'hello',
+            'maintainer-email',
+            {'user_is_maintainer': False, 'user_email': 'email@example.com',
+                'maintainer_email': 'vtime@example.org', 'uploader_emails': []}
+        )
 
     def test_maintaineremail_team_upload(self):
         self.import_source_package('plugin-maintaineremail-team')
         self.assert_importer_succeeded()
-        self.assert_package_severity('hello', 'maintaineremail',
-                                     PLUGIN_SEVERITY_INFO)
-        self.assert_package_info('hello', 'maintaineremail',
-                                 'The uploader is not in the package\'s '
-                                 '"Maintainer" or "Uploaders" fields '
-                                 '(Team upload)')
+        self.assert_plugin_severity('hello', 'maintainer-email',
+                                    PluginSeverity.info)
+        self.assert_plugin_result('hello', 'maintainer-email',
+                                  'The uploader is not in the package\'s '
+                                  '"Maintainer" or "Uploaders" fields '
+                                  '(Team upload)')
+        self.assert_plugin_data(
+            'hello',
+            'maintainer-email',
+            {'user_is_maintainer': True, 'user_email': 'email@example.com',
+                'maintainer_email': 'vtime@example.org', 'uploader_emails':
+                ['second@example.com']}
+        )
