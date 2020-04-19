@@ -24,7 +24,7 @@ Dependencies needed for both methods
 Whatever method you choose, these packages are required::
 
     sudo apt-get install python3 iso-codes gnupg dpkg-dev
-    debhelper redis-server devscripts
+    debhelper redis-server devscripts lintian
 
 While developing, you will need additional packages to run the test suite::
 
