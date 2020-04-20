@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
-#
-#   diffclean.py — diffclean plugin
+#   diffclean.py - diffclean plugin
 #
 #   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>
+#   Copyright © 2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -29,64 +28,58 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-"""
-Holds the diffclean plugin.
-"""
-
-__author__ = 'Jonny Lamb'
-__copyright__ = ', '.join([
-        'Copyright © 2008 Jonny Lamb',
-        'Copyright © 2012 Nicolas Dandrimont',
-        ])
-__license__ = 'MIT'
-
-import subprocess
-import logging
-
-from debexpo.lib import constants
-from debexpo.plugins import BasePlugin
-
-log = logging.getLogger(__name__)
+from subprocess import check_output, CalledProcessError
+from os.path import dirname
+from debexpo.plugins.models import BasePlugin, PluginSeverity
 
 
-class DiffCleanPlugin(BasePlugin):
+class PluginDiffClean(BasePlugin):
+    @property
+    def name(self):
+        return 'diff-clean'
 
-    def test_diff_clean(self):
+    def _run_diffstat(self, diff_file):
+        try:
+            output = check_output(["diffstat", "-p1", diff_file],
+                                  cwd=dirname(diff_file),
+                                  text=True)
+        except FileNotFoundError:  # pragma: no cover
+            self.failed('diffstat not found')
+        # Looking at diffstat code, it only exit with a return code different
+        # from 0 either if it fails to allocate memory or if there is a problem
+        # with the options.
+        # Excluded from testing.
+        except CalledProcessError as e:  # pragma: no cover
+            self.failed(f'diffstat failed: {e.stderr}')
+
+        return output
+
+    def run(self, changes, source):
         """
         Check to make sure the diff.gz is clean.
         """
-        log.debug('Checking to make sure the diff.gz is clean')
+        diff_file = changes.files.find(r'\.diff\.gz$')
 
-        difffile = self.changes.get_diff()
-
-        if difffile is None or not difffile.endswith('.diff.gz'):
-            log.warning('Package has no diff.gz file; native or format 3.0 '
-                        'package?')
+        if diff_file is None:
             return
 
-        diffstat = subprocess.Popen(["diffstat", "-p1", difffile],
-                                    stdout=subprocess.PIPE).communicate()[0]
+        diff_stat = self._run_diffstat(diff_file)
 
         data = {
-            "dirty": False,
-            "modified-files": [],
-            }
+            "modified_files": [],
+        }
 
         # Last line is the summary line
-        for item in diffstat.splitlines()[:-1]:
+        for item in diff_stat.splitlines()[:-1]:
             filename, stats = [i.strip() for i in item.split("|")]
             if not filename.startswith('debian/'):
-                data["dirty"] = True
-                data["modified-files"].append((filename, stats))
+                data["modified_files"].append((filename, stats))
 
-        if not data["dirty"]:
-            log.debug('Diff file %s is clean' % difffile)
-            self.passed("The package's .diff.gz does not modify files outside "
-                        "of debian/", data, constants.PLUGIN_SEVERITY_INFO)
+        if not data["modified_files"]:
+            self.add_result('diff-stat',
+                            "The package's .diff.gz does not modify files"
+                            " outside of debian/", data, PluginSeverity.info)
         else:
-            log.error('Diff file %s is not clean' % difffile)
-            self.failed("The package's .diff.gz modifies files outside of "
-                        "debian/", data, constants.PLUGIN_SEVERITY_WARNING)
-
-
-plugin = DiffCleanPlugin
+            self.add_result('diff-stat',
+                            "The package's .diff.gz modifies files outside of "
+                            "debian/", data, PluginSeverity.warning)

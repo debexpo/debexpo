@@ -1,13 +1,13 @@
 <div class="qa-header">
-${str(o.outcome)}
+{{ result.outcome }}
 </div>
-%if o.rich_data["dirty"]:
+{% if result.data.modified_files %}
 <div class="qa-content">
 <table>
-<th><td>Modified file</td><td>diffstat</td></th>
-%for filename, stat in o.rich_data["modified-files"]:
-<tr><td>${filename}</td><td>${stat}</td></tr>
-%endfor
+<tr><th>Modified file</th><th>diffstat</th></tr>
+{% for filename, stat in result.data.modified_files %}
+<tr><td>{{ filename }}</td><td>{{ stat }}</td></tr>
+{% endfor %}
 </table>
 </div>
-%endif
+{% endif %}
