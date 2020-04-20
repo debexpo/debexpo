@@ -39,13 +39,13 @@ from debexpo.plugins.models import BasePlugin, PluginSeverity
 class PluginLintian(BasePlugin):
     levels = [
         {'level': 'X', 'name': 'Experimental', 'severity': PluginSeverity.info,
-         'outcome': 'Package has lintian experimental warnings'},
+         'outcome': 'Package has lintian experimental tags'},
         {'level': 'P', 'name': 'Pedantic', 'severity': PluginSeverity.info,
-         'outcome': 'Package has lintian pedantic warnings'},
+         'outcome': 'Package has lintian pedantic tags'},
         {'level': 'O', 'name': 'Override', 'severity': PluginSeverity.info,
          'outcome': 'Package has overridden lintian tags'},
         {'level': 'I', 'name': 'Info', 'severity': PluginSeverity.info,
-         'outcome': 'Package has lintian informational warnings'},
+         'outcome': 'Package has lintian informational tags'},
         {'level': 'W', 'name': 'Warning', 'severity': PluginSeverity.warning,
          'outcome': 'Package has lintian warnings'},
         {'level': 'E', 'name': 'Error', 'severity': PluginSeverity.error,

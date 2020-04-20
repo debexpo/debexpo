@@ -37,7 +37,7 @@ from debexpo.tools.debian.changes import Changes
 
 class TestPluginLintian(TestImporterController):
     def test_is_lintian_info(self):
-        outcome = 'Package has lintian informational warnings'
+        outcome = 'Package has lintian informational tags'
         self.import_source_package('hello')
         self.assert_importer_succeeded()
         self.assert_plugin_result_count('hello', 'lintian', 1)
