@@ -179,6 +179,7 @@ IMPORTER_PLUGINS = (
     ('debexpo.plugins.watch-file', 'PluginWatchFile',),
     ('debexpo.plugins.native', 'PluginNative',),
     ('debexpo.plugins.maintaineremail', 'PluginMaintainerEmail',),
+    ('debexpo.plugins.lintian', 'PluginLintian',),
 )
 
 # Debian Archive access

@@ -1,0 +1,29 @@
+<div class="qa-header">
+{{ result.outcome }}
+</div>
+{% if result.data %}
+<div class="qa-content">
+{% for package, severities in result.data.items %}
+<div class="lintian-pkgname">
+{{ package }}
+</div>
+<ul class="lintian-contents">
+{% for severity, tags in severities.items %}
+{% for tag, items in tags.items %}
+<li>
+<span class="lintian-{{ severity|first }}" title="{{ severity|slice:"2:" }}">{{ severity|first }}</span>
+<a href="https://lintian.debian.org/tags/{{ tag }}.html">{{ tag }}</a>
+<ul>
+{% for item in items %}
+{% if item %}
+<li>{{item}}</li>
+{% endif %}
+{% endfor %}
+</ul>
+</li>
+{% endfor %}
+{% endfor %}
+</ul>
+{% endfor %}
+</div>
+{% endif %}

@@ -218,7 +218,7 @@ class TestImporterController(TestController):
 
         for result in plugin_results:
             if result.outcome == outcome:
-                return
+                return result.data
 
         raise Exception(f'Plugin result not found for outcome == {outcome}')
 
