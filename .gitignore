@@ -60,4 +60,4 @@ env.bak/
 venv.bak/
 
 # Development database
-data/
+/data/
