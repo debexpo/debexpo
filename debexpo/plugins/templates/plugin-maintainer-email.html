@@ -1,0 +1,23 @@
+<div class="qa-header">
+{{ result.outcome }}
+</div>
+{% if not result.data.user_is_maintainer %}
+<div class="qa-content">
+<dl>
+<dt>User email</dt>
+<dd><a href="mailto:{{ result.data.user_email }}">{{ result.data.user_email }}</a></dd>
+<dt>"Maintainer" email</dt>
+<dd><a href="mailto:{{ result.data.maintainer_email }}">{{ result.data.maintainer_email }}</a></dd>
+{% if result.data.uploader_emails %}
+<dt>"Uploaders" emails</dt>
+<dd>
+<ul>
+{% for email in result.data.uploader_emails %}
+<li><a href="mailto:{{ email }}">{{ email }}</a></li>
+{% endfor %}
+</ul>
+</dd>
+{% endif %}
+</dl>
+</div>
+{% endif %}
