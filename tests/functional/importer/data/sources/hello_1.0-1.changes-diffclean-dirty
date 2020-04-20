@@ -1,0 +1,37 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Sun, 02 Dec 2018 22:38:11 +0100
+Source: hello
+Architecture: source
+Version: 1.0-1
+Distribution: unstable
+Urgency: medium
+Maintainer: Vincent TIME <vtime@example.org>
+Changed-By: Vincent TIME <vtime@example.org>
+Closes: 0
+Changes:
+ hello (1.0-1) unstable; urgency=medium
+ .
+   * Initial release (Closes: #0)
+Checksums-Sha1:
+ 74d88fd6a02caee66bbdad63d4ee8405fd094e4f 1113 hello_1.0-1.dsc
+ 94b130915220145b0076fb4a3e0ad9bd253191b6 113 hello_1.0.orig.tar.gz
+ 5ef5b489c703900de5995e8b8c2138ce888a187c 1249 hello_1.0-1.diff.gz
+Checksums-Sha256:
+ c0ec07b1f26d79a511df69a2d4b21b7730705df6e470a31d396d1c39d9b2bd5e 1113 hello_1.0-1.dsc
+ b1088ac256da25e023965b81c5158ae4b7676fb0571f04deba57ed6064ae170d 113 hello_1.0.orig.tar.gz
+ 4d80d30f14df998993186eafc2ae9a1a20419fb76ed3a53113d6e05e51e75b00 1249 hello_1.0-1.diff.gz
+Files:
+ 7e783a2d9e928bc455bdb1250513e9a4 1113 utils optional hello_1.0-1.dsc
+ 191cc956498214df95ea10f3745ca9c7 113 utils optional hello_1.0.orig.tar.gz
+ 8f9d3c556df58358c8fe0578669a481d 1249 utils optional hello_1.0-1.diff.gz
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSzz3sz+AdjONtPqA6HkZKDEXU71wUCXp39hgAKCRCHkZKDEXU7
+1/IfAQDDxaHcslOR/f3GDca06wJEFY9tBUdUhpF0ol89bY609gEAmo1pqeGbxTp7
+P5vX5UJ0FV3dNyBdKUGHUY1sb63qbQU=
+=P8ac
+-----END PGP SIGNATURE-----
