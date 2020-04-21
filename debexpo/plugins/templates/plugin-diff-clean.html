@@ -1,0 +1,13 @@
+<div class="qa-header">
+{{ result.outcome }}
+</div>
+{% if result.data.modified_files %}
+<div class="qa-content">
+<table>
+<tr><th>Modified file</th><th>diffstat</th></tr>
+{% for filename, stat in result.data.modified_files %}
+<tr><td>{{ filename }}</td><td>{{ stat }}</td></tr>
+{% endfor %}
+</table>
+</div>
+{% endif %}

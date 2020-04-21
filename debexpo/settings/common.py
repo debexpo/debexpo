@@ -180,6 +180,7 @@ IMPORTER_PLUGINS = (
     ('debexpo.plugins.native', 'PluginNative',),
     ('debexpo.plugins.maintaineremail', 'PluginMaintainerEmail',),
     ('debexpo.plugins.lintian', 'PluginLintian',),
+    ('debexpo.plugins.diffclean', 'PluginDiffClean',),
 )
 
 # Debian Archive access
