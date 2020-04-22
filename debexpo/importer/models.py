@@ -318,6 +318,10 @@ class Importer():
         """
         Create entries in the Database for the package upload.
         """
+        bugs = changes.get_bugs()
+
+        for bug in bugs:
+            bug.save()
 
         upload = PackageUpload.objects.create_from_changes(changes)
         upload.full_clean()
@@ -431,6 +435,7 @@ class Importer():
             if not self.skip_gpg:
                 changes.authenticate()
             changes.files.validate()
+            changes.get_bugs()
         except (ExceptionChanges, ExceptionCheckSumedFile, ExceptionGnuPG) as e:
             raise ExceptionImporterRejected(changes, 'Changes is invalid', e)
 
