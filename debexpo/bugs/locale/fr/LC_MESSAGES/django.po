@@ -7,100 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-23 13:56+0200\n"
-"PO-Revision-Date: 2020-04-23 14:07+0200\n"
+"POT-Creation-Date: 2020-04-23 15:00+0200\n"
+"PO-Revision-Date: 2020-04-23 15:02+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"Last-Translator: \n"
-"Language-Team: \n"
 "X-Generator: Poedit 2.3\n"
-
-#: bugs/models.py:51
-msgid "Wishlist"
-msgstr "Wishlist"
-
-#: bugs/models.py:52
-msgid "Minor"
-msgstr "Mineur"
-
-#: bugs/models.py:53
-msgid "Normal"
-msgstr "Normal"
-
-#: bugs/models.py:54
-msgid "Important"
-msgstr "Important"
-
-#: bugs/models.py:55
-msgid "Serious"
-msgstr "Sérieux"
-
-#: bugs/models.py:56
-msgid "Grave"
-msgstr "Grave"
-
-#: bugs/models.py:57
-msgid "Critical"
-msgstr "Critique"
-
-#: bugs/models.py:78
-msgid "Done"
-msgstr "Fait"
-
-#: bugs/models.py:79
-msgid "Fixed"
-msgstr "Corrigé"
-
-#: bugs/models.py:80
-msgid "Forwarded"
-msgstr "Transmit"
-
-#: bugs/models.py:81
-msgid "Open"
-msgstr "Ouvert"
-
-#: bugs/models.py:82
-msgid "Pending"
-msgstr "En cours"
-
-#: bugs/models.py:100
-msgid "Intent To Adopt"
-msgstr "Intent To Adopt"
-
-#: bugs/models.py:101
-msgid "Intent To Package"
-msgstr "Intent To Package"
-
-#: bugs/models.py:102
-msgid "Intent To Salvage"
-msgstr "Intent To Salvage"
-
-#: bugs/models.py:103
-msgid "Orphaned"
-msgstr "Orphaned"
-
-#: bugs/models.py:104
-msgid "Request For Adoption"
-msgstr "Request For Adoption"
-
-#: bugs/models.py:105
-msgid "Request For Help"
-msgstr "Request For Help"
-
-#: bugs/models.py:106
-msgid "Request For Package"
-msgstr "Request For Package"
-
-#: bugs/models.py:107
-msgid "Request For Sponsor"
-msgstr "Request For Sponsor"
-
-#: bugs/models.py:108
-msgid "Bug"
-msgstr "Bogue"
 
 #: bugs/models.py:198
 msgid "Bug number"

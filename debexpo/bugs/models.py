@@ -48,13 +48,13 @@ class BugSeverity(int, Enum):
         obj.tuple = (value, label)
         return obj
 
-    wishlist = (1, _('Wishlist'))
-    minor = (2, _('Minor'))
-    normal = (3, _('Normal'))
-    important = (4, _('Important'))
-    serious = (5, _('Serious'))
-    grave = (6, _('Grave'))
-    critical = (7, _('Critical'))
+    wishlist = (1, 'Wishlist')
+    minor = (2, 'Minor')
+    normal = (3, 'Normal')
+    important = (4, 'Important')
+    serious = (5, 'Serious')
+    grave = (6, 'Grave')
+    critical = (7, 'Critical')
 
     @classmethod
     def as_tuple(cls):
@@ -75,11 +75,11 @@ class BugStatus(int, Enum):
         obj.tuple = (value, label)
         return obj
 
-    done = (1, _('Done'))
-    fixed = (2, _('Fixed'))
-    forwarded = (3, _('Forwarded'))
-    pending = (4, _('Open'))
-    pending_fixed = (5, _('Pending'))
+    done = (1, 'Done')
+    fixed = (2, 'Fixed')
+    forwarded = (3, 'Forwarded')
+    pending = (4, 'Open')
+    pending_fixed = (5, 'Pending')
 
     @classmethod
     def as_tuple(cls):
@@ -97,15 +97,15 @@ class BugType(int, Enum):
         obj.tuple = (value, label)
         return obj
 
-    ITA = (1, _('Intent To Adopt'))
-    ITP = (2, _('Intent To Package'))
-    ITS = (3, _('Intent To Salvage'))
-    O = (4, _('Orphaned'))  # noqa: E741
-    RFA = (5, _('Request For Adoption'))
-    RFH = (6, _('Request For Help'))
-    RFP = (7, _('Request For Package'))
-    RFS = (8, _('Request For Sponsor'))
-    bug = (9, _('Bug'))
+    ITA = (1, 'Intent To Adopt')
+    ITP = (2, 'Intent To Package')
+    ITS = (3, 'Intent To Salvage')
+    O = (4, 'Orphaned')  # noqa: E741
+    RFA = (5, 'Request For Adoption')
+    RFH = (6, 'Request For Help')
+    RFP = (7, 'Request For Package')
+    RFS = (8, 'Request For Sponsor')
+    bug = (9, 'Bug')
 
     @classmethod
     def as_tuple(cls):
