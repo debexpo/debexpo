@@ -131,10 +131,10 @@ class BugManager(models.Manager):
         return BugType.bug
 
     def _guess_package(self, source, subject):
-        if source and source != 'wnpp' and source != 'sponsorship-requests':
+        if source and source not in ('wnpp', 'sponsorship-requests'):
             return source
 
-        matches = search(r'^\w+:\s+([\w-]+)', subject)
+        matches = search(r'^\w+:\s+([a-z0-9][a-z0-9.+-]+)', subject)
 
         if matches:
             return matches[1]
