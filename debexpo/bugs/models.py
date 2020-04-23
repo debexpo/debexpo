@@ -123,10 +123,10 @@ class BugType(int, Enum):
 class BugManager(models.Manager):
     def _guess_bug_type(self, subject):
         type_in_subject = subject.split(':')[0]
-        type = getattr(BugType, type_in_subject, None)
+        bugtype = getattr(BugType, type_in_subject, None)
 
-        if type:
-            return type
+        if bugtype:
+            return bugtype
 
         return BugType.bug
 
@@ -157,7 +157,7 @@ class BugManager(models.Manager):
             return []
 
         for bug in raw_bugs:
-            type = self._guess_bug_type(bug.subject)
+            bugtype = self._guess_bug_type(bug.subject)
             status = getattr(BugStatus, bug.pending.replace('-', '_'), None)
             severity = getattr(BugSeverity, bug.severity, None)
             package = self._guess_package(bug.source, bug.subject)
@@ -168,7 +168,7 @@ class BugManager(models.Manager):
 
             new = Bug(
                     number=bug.bug_num,
-                    type=type,
+                    bugtype=bugtype,
                     status=status,
                     created=created,
                     updated=updated,
@@ -196,8 +196,8 @@ class BugManager(models.Manager):
 class Bug(models.Model):
     number = models.PositiveIntegerField(unique=True,
                                          verbose_name=_('Bug number'))
-    type = models.PositiveIntegerField(choices=BugType.as_tuple(),
-                                       verbose_name=_('Type'))
+    bugtype = models.PositiveIntegerField(choices=BugType.as_tuple(),
+                                          verbose_name=_('Type'))
     status = models.PositiveIntegerField(choices=BugStatus.as_tuple(),
                                          verbose_name=_('Status'))
     severity = models.PositiveIntegerField(choices=BugSeverity.as_tuple(),

@@ -74,7 +74,7 @@ class TestPluginClosedBug(TestImporterController):
 
         self.assertEquals(Bug.objects.get().number, 906521)
         self.assertEquals(Bug.objects.get().severity, BugSeverity.normal)
-        self.assertEquals(Bug.objects.get().type, BugType.bug)
+        self.assertEquals(Bug.objects.get().bugtype, BugType.bug)
         self.assertEquals(Bug.objects.get().subject, 'Hello says `goodbye\'')
 
         # self.assert_package_severity('hello', 'closedbugs',
@@ -118,7 +118,7 @@ class TestPluginClosedBug(TestImporterController):
 
         self.assertEquals(Bug.objects.get().number, 928887)
         self.assertEquals(Bug.objects.get().severity, BugSeverity.serious)
-        self.assertEquals(Bug.objects.get().type, BugType.bug)
+        self.assertEquals(Bug.objects.get().bugtype, BugType.bug)
         self.assertEquals(Bug.objects.get().subject,
                           'hello: version skew: 2.10-1+deb9u1 '
                           '(stretch-security) > 2.10-1 (buster)')
@@ -140,7 +140,7 @@ class TestPluginClosedBug(TestImporterController):
 
         self.assertEquals(Bug.objects.get().number, 934896)
         self.assertEquals(Bug.objects.get().severity, BugSeverity.wishlist)
-        self.assertEquals(Bug.objects.get().type, BugType.ITP)
+        self.assertEquals(Bug.objects.get().bugtype, BugType.ITP)
         self.assertEquals(Bug.objects.get().subject,
                           'ITP: janest-ocaml-compiler-libs -- OCaml compiler'
                           ' libraries repackaged')
@@ -162,7 +162,7 @@ class TestPluginClosedBug(TestImporterController):
 
         self.assertEquals(Bug.objects.get().number, 931405)
         self.assertEquals(Bug.objects.get().severity, BugSeverity.normal)
-        self.assertEquals(Bug.objects.get().type, BugType.ITA)
+        self.assertEquals(Bug.objects.get().bugtype, BugType.ITA)
         self.assertEquals(Bug.objects.get().subject,
                           'ITA: django-sortedm2m')
 

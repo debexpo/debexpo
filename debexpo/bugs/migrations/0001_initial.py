@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
                                         serialize=False, verbose_name='ID')),
                 ('number', models.PositiveIntegerField(
                     unique=True, verbose_name='Bug number')),
-                ('type', models.PositiveIntegerField(
+                ('bugtype', models.PositiveIntegerField(
                     choices=[(1, 'Intent To Adopt'), (2, 'Intent To Package'),
                              (3, 'Intent To Salvage'), (4, 'Orphaned'),
                              (5, 'Request For Adoption'),
