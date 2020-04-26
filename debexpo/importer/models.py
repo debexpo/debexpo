@@ -318,11 +318,6 @@ class Importer():
         """
         Create entries in the Database for the package upload.
         """
-        bugs = changes.get_bugs()
-
-        for bug in bugs:
-            bug.save()
-
         upload = PackageUpload.objects.create_from_changes(changes)
         upload.full_clean()
         upload.save()
