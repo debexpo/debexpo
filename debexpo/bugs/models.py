@@ -130,14 +130,23 @@ class BugManager(models.Manager):
 
         return BugType.bug
 
-    def _guess_package(self, source, subject):
+    def _guess_packages(self, source, subject):
+        packages = []
+
         if source and source not in ('wnpp', 'sponsorship-requests'):
-            return source
+            for name in source.split(', '):
+                package, _ = BugPackage.objects.get_or_create(name=name)
+                packages.append(package)
 
-        matches = search(r'^\w+:\s+([a-z0-9][a-z0-9.+-]+)', subject)
+        else:
+            matches = search(r'^\w+:\s+([a-z0-9][a-z0-9.+-]+)', subject)
 
-        if matches:
-            return matches[1]
+            if matches:
+                name = matches[1]
+                package, _ = BugPackage.objects.get_or_create(name=name)
+                packages.append(package)
+
+        return packages
 
     def _extract_email(self, email):
         extract = getaddresses([email])
@@ -160,7 +169,7 @@ class BugManager(models.Manager):
             bugtype = self._guess_bug_type(bug.subject)
             status = getattr(BugStatus, bug.pending.replace('-', '_'), None)
             severity = getattr(BugSeverity, bug.severity, None)
-            package = self._guess_package(bug.source, bug.subject)
+            packages = self._guess_packages(bug.source, bug.subject)
             submitter = self._extract_email(bug.originator)
             owner = self._extract_email(bug.owner)
             created = bug.date.replace(tzinfo=timezone.utc)
@@ -174,7 +183,6 @@ class BugManager(models.Manager):
                     updated=updated,
                     severity=severity,
                     subject=bug.subject,
-                    package=package,
                     submitter_email=submitter,
                     owner_email=owner,
             )
@@ -188,9 +196,15 @@ class BugManager(models.Manager):
                             f'{bug}\n'
                             f'{str(e)}')
             else:
+                new.save()
+                new.packages.set(packages)
                 bugs.append(new)
 
         return bugs
+
+
+class BugPackage(models.Model):
+    name = models.TextField(unique=True, verbose_name=_('Package name'))
 
 
 class Bug(models.Model):
@@ -205,7 +219,7 @@ class Bug(models.Model):
     created = models.DateTimeField(verbose_name=_('Creation date'))
     updated = models.DateTimeField(verbose_name=_('Last update date'))
     subject = models.TextField(verbose_name=_('Subject'))
-    package = models.TextField(verbose_name=_('Package'))
+    packages = models.ManyToManyField(BugPackage)
     submitter_email = models.TextField(verbose_name=_('Submitter email'))
     owner_email = models.TextField(verbose_name=_('Owner email'), blank=True,
                                    null=True)

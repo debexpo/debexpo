@@ -38,6 +38,15 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='BugPackage',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True,
+                                        serialize=False, verbose_name='ID')),
+                ('name', models.TextField(unique=True,
+                                          verbose_name='Package name')),
+            ],
+        ),
+        migrations.CreateModel(
             name='Bug',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True,
@@ -63,7 +72,7 @@ class Migration(migrations.Migration):
                              (4, 'Important'), (5, 'Serious'), (6, 'Grave'),
                              (7, 'Critical')], verbose_name='Severity')),
                 ('subject', models.TextField(verbose_name='Subject')),
-                ('package', models.TextField(verbose_name='Package')),
+                ('packages', models.ManyToManyField(to='bugs.BugPackage')),
                 ('submitter_email', models.TextField(
                     verbose_name='Submitter email')),
                 ('owner_email', models.TextField(blank=True, null=True,

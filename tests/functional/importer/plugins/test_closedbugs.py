@@ -37,6 +37,12 @@ has_network = test_network()
 
 class TestPluginClosedBug(TestImporterController):
     @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
+    def test_bug_multi_package(self):
+        Bug.objects.fetch_bugs([947936])
+        Bug.objects.get(packages__name='chrony')
+        Bug.objects.get(packages__name='systemd')
+
+    @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_no_bugs(self):
         self.import_source_package('hello-no-bug')
         self.assert_importer_succeeded()
@@ -76,6 +82,7 @@ class TestPluginClosedBug(TestImporterController):
         self.assertEquals(Bug.objects.get().severity, BugSeverity.normal)
         self.assertEquals(Bug.objects.get().bugtype, BugType.bug)
         self.assertEquals(Bug.objects.get().subject, 'Hello says `goodbye\'')
+        Bug.objects.get(packages__name='hello')
 
         # self.assert_package_severity('hello', 'closedbugs',
         #                              PLUGIN_SEVERITY_INFO)
