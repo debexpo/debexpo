@@ -36,6 +36,7 @@ from debian import deb822
 from os.path import dirname, abspath, basename, join
 from os import replace, unlink
 
+from debexpo.bugs.models import Bug
 from debexpo.accounts.models import User
 from debexpo.tools.files import GPGSignedFile
 from debexpo.tools.debian.control import ControlFiles
@@ -89,6 +90,7 @@ class Changes(GPGSignedFile):
 
     def _build_changes(self):
         self.dsc = None
+        self.bugs = None
         self.maintainer = self._data.get('Maintainer')
         self.uploader = self.maintainer
         self.source = self._data.get('Source')
@@ -108,6 +110,17 @@ class Changes(GPGSignedFile):
             if key not in self._data:
                 raise ExceptionChanges('Changes file invalid. Missing key '
                                        '{}'.format(key))
+
+    def get_bugs(self):
+        if self.bugs is not None:
+            return self.bugs
+
+        if self.closes:
+            self.bugs = Bug.objects.fetch_bugs(self.closes.split(' '))
+        else:
+            self.bugs = []
+
+        return self.bugs
 
     def __str__(self):
         return basename(self.filename)
