@@ -32,6 +32,7 @@ from logging import getLogger
 from enum import Enum
 from json import dumps, loads
 from os.path import abspath, dirname, isfile, join
+from traceback import format_exc
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -119,16 +120,16 @@ class PluginManager():
                 module = __import__(module_name, globals(), locals(),
                                     [class_name], 0)
                 self.plugins.append(getattr(module, class_name)())
-            except Exception as e:
+            except Exception:
                 log.warning(f'Failed to load plugin {class_name} from '
-                            f'{module_name}: {e}')
+                            f'{module_name}: {format_exc()}')
 
     def run(self, changes, source):
         for plugin in self.plugins:
             try:
                 plugin.run(changes, source)
             except Exception as e:
-                log.warning(f'Plugin {plugin.name} failed: {str(e)}')
+                log.warning(f'Plugin {plugin.name} failed: {format_exc()}')
                 plugin.add_result(plugin.name, str(e), None,
                                   PluginSeverity.failed)
 
