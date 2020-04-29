@@ -226,3 +226,7 @@ class Bug(models.Model):
                                    null=True)
 
     objects = BugManager()
+
+    def is_rc(self):
+        return self.severity in (BugSeverity.critical, BugSeverity.grave,
+                                 BugSeverity.serious)
