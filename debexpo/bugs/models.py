@@ -209,6 +209,7 @@ class BugPackage(models.Model):
 
 class Bug(models.Model):
     number = models.PositiveIntegerField(unique=True,
+                                         primary_key=True,
                                          verbose_name=_('Bug number'))
     bugtype = models.PositiveIntegerField(choices=BugType.as_tuple(),
                                           verbose_name=_('Type'))

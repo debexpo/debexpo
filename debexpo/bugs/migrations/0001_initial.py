@@ -49,10 +49,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Bug',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True,
-                                        serialize=False, verbose_name='ID')),
                 ('number', models.PositiveIntegerField(
-                    unique=True, verbose_name='Bug number')),
+                    primary_key=True, serialize=False, unique=True,
+                    verbose_name='Bug number')),
                 ('bugtype', models.PositiveIntegerField(
                     choices=[(1, 'Intent To Adopt'), (2, 'Intent To Package'),
                              (3, 'Intent To Salvage'), (4, 'Orphaned'),
