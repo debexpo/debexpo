@@ -187,3 +187,6 @@ IMPORTER_PLUGINS = (
 # Debian Archive access
 DEBIAN_ARCHIVE_URL = 'https://deb.debian.org/debian'
 LIMIT_SIZE_DOWNLOAD = 100 * 1024 * 1024
+
+# Bug plugin settings
+BUGS_REPORT_NOT_OPEN = True

@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
-#
-#   closedbugs.py — closedbugs plugin
+#   closedbugs.py - closedbugs plugin
 #
 #   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #               2011 Arno Töll <debian@toell.net>
+#               2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -29,143 +28,113 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-"""
-Holds the closedbugs plugin.
-"""
-
-__author__ = 'Arno Töll'
-__copyright__ = 'Copyright © 2011 Arno Töll'
-__license__ = 'MIT'
-
 from collections import defaultdict
-import logging
 
-from debexpo.lib import constants
-from debexpo.plugins import BasePlugin
-import SOAPpy
+from django.conf import settings
 
-log = logging.getLogger(__name__)
+from debexpo.bugs.models import BugType, BugSeverity, BugStatus
+from debexpo.plugins.models import BasePlugin, PluginSeverity
 
 
-class ClosedBugsPlugin(BasePlugin):
-    URL = "http://bugs.debian.org/cgi-bin/soap.cgi"
-    NS = "Debbugs/SOAP"
+class PluginClosedBugs(BasePlugin):
+    @property
+    def name(self):
+        return 'closed-bugs'
 
-    def test_closed_bugs(self):
+    def run(self, changes, source):
         """
         Check to make sure the bugs closed belong to the package.
         """
 
-        if 'Closes' not in self.changes:
-            log.debug('Package does not close any bugs')
+        if not changes.closes:
             return
 
-        log.debug('Checking whether the bugs closed in the package belong to '
-                  'the package')
+        bugs = [int(x) for x in changes.closes.split()]
+        data = {
+            'buglist': bugs,
+            'errors': [],
+            'bugs': defaultdict(list),
+            }
+        bugtypes = []
+        has_rc = set()
+        severity = PluginSeverity.info
 
-        bugs = [int(x) for x in self.changes['Closes'].split()]
+        for bug in bugs:
+            bug_info = None
 
-        if bugs:
-            log.debug('Creating SOAP proxy to bugs.debian.org')
-            try:
-                server = SOAPpy.SOAPProxy(self.URL, self.NS,
-                                          simplify_objects=1)
-                bugs_retrieved = server.get_status(*bugs)
-                if 'item' in bugs_retrieved:
-                    bugs_retrieved = bugs_retrieved['item']
-                else:
-                    bugs_retrieved = []
-                # Force argument to be a list, SOAPpy returns a dictionary
-                # instead of a dictionary list if only one bug was found
-                if not isinstance(bugs_retrieved, list):
-                    bugs_retrieved = [bugs_retrieved]
-            except Exception as e:
-                log.critical('An error occurred when creating the SOAP proxy '
-                             'at "%s" (ns: "%s"): %s'
-                             % (self.URL, self.NS, e))
-                return
+            # Try to find bug info
+            for item in changes.get_bugs():
+                if item.number == bug:
+                    bug_info = item
 
-            data = {
-                'buglist': bugs,
-                'raw': {},
-                'errors': [],
-                'bugs': defaultdict(list),
-                }
+            # No bug found, let mark it as an error and skip it
+            if not bug_info:
+                data['errors'].append(f'Bug #{bug} does not exist')
+                severity = PluginSeverity.error
+                continue
 
-            # Index bugs retrieved
-            for bug in bugs_retrieved:
-                if 'key' in bug and 'value' in bug:
-                    data["raw"][int(bug['key'])] = bug['value']
-                else:
-                    continue
+            # Crunch info to display in the template
+            packages = bug_info.packages.values_list('name', flat=True)
+            sources = bug_info.sources.values_list('name', flat=True)
+            info = f'{BugSeverity(bug_info.severity).label}'
 
-            severity = constants.PLUGIN_SEVERITY_INFO
-            bugtype = []
+            if bug_info.bugtype != BugType.bug:
+                bugtypes.append(bug_info.bugtype)
+                info += f', {BugType(bug_info.bugtype)._name_}'
 
-            for bug in bugs:
-                if bug not in data['raw']:
-                    data["errors"].append('Bug #%s does not exist' % bug)
-                    log.debug(data["errors"][-1])
-                    severity = max(severity, constants.PLUGIN_SEVERITY_ERROR)
-                    continue
+            for package in packages:
+                data['bugs'][package].append(
+                    (bug_info.number, bug_info.subject, info))
 
-                name = data["raw"][bug]['package']
-                data["bugs"][name].append((bug, data["raw"][bug]["subject"],
-                                           data["raw"][bug]["severity"]))
-                log.debug('Changes closes #{}: '
-                          '{}'.format(bug, data["raw"][bug]["subject"]))
+            has_rc.add(bug_info.is_rc())
 
-                if not (self.changes["Source"] in
-                        data["raw"][bug]['source'].split(', ') or
-                        name == "wnpp"):
-                    data["errors"].append('Bug #%s does not belong to this '
-                                          'package' % bug)
-                    severity = max(severity, constants.PLUGIN_SEVERITY_ERROR)
+            # QA checks on the bug
+            # 1. The bug belong to the package
+            if not (changes.source in sources):
+                data['errors'].append(f'Bug #{bug} does not belong to this '
+                                      'package')
+                severity = PluginSeverity.error
 
-                rc_severities = ('grave', 'serious', 'critical')
-                if data['raw'][bug]['severity'] in rc_severities:
-                    bugtype.append('RC')
-                if data['raw'][bug]['subject'].startswith('ITS'):
-                    bugtype.append('ITS')
+            # 2. The bug is open
+            if bug_info.status != BugStatus.pending and \
+                    settings.BUGS_REPORT_NOT_OPEN:
+                data['errors'].append(f'Bug #{bug} is not open (status is '
+                                      f'{BugStatus(bug_info.status).label})')
+                severity = PluginSeverity.error
 
-            if severity != constants.PLUGIN_SEVERITY_INFO:
-                outcome = "Package closes bugs in a wrong way"
-            elif "wnpp" in data["bugs"]:
-                if data['bugs']['wnpp'][0][1].startswith('ITP'):
-                    bugtype.append('ITP')
-                elif data['bugs']['wnpp'][0][1].startswith('ITA'):
-                    bugtype.append('ITA')
-                else:
-                    bugtype.append('WNPP')
-                outcome = 'Package closes a {} bug'.format('/'.join(bugtype))
-            else:
-                if 'RC' in bugtype:
-                    outcome = "Package closes a RC bug"
-                else:
-                    outcome = "Package closes bug%s" % \
-                        ("s" if len(bugs) > 1 else "")
+            # 3. The bug is not an RFS, O or RFH
+            if bug_info.bugtype in (BugType.RFS, BugType.O, BugType.RFH):
+                severity = PluginSeverity.error
+                data['errors'].append(
+                    f'Bug #{bug} is a {BugType(bug_info.bugtype)._name_} bug')
 
-            self.failed(outcome, data, severity)
+        if severity != PluginSeverity.info:
+            outcome = 'Package closes bugs in a wrong way'
+
+        # 4. The upload don't closes multiple wnpp bugs
+        elif len(bugtypes) > 1:
+            severity = PluginSeverity.warning
+            outcome = 'Package closes multiple wnpp bugs: ' \
+                      f'{self._format_bug_types(bugtypes)}'
 
         else:
-            log.debug('Package does not close any bugs')
+            bugtypes = self._format_bug_types(set(bugtypes), has_rc)
 
-    def _package_in_descriptions(self, name, list):
-        """
-        Finds out whether a binary package is in a source package by looking at
-        the Description field of the changes file for the binary package name.
+            if bugtypes:
+                outcome = f'Package closes {bugtypes} bug'
 
-        ``name``
-            Name of the binary package.
+            else:
+                outcome = 'Package closes bug'
 
-        ``list``
-            List of Description fields split by '\n'.
-        """
-        for item in list:
-            if item.startswith(name + ' '):
-                return True
+            if len(bugs) > 1:
+                outcome += 's'
 
-        return False
+        self.add_result('bugs', outcome, data, severity)
 
+    def _format_bug_types(self, bugtypes, has_rc=None):
+        bugtypes = [BugType(bugtype)._name_ for bugtype in bugtypes]
 
-plugin = ClosedBugsPlugin
+        if has_rc and True in has_rc:
+            bugtypes.append('RC')
+
+        return ', '.join(bugtypes)

@@ -78,3 +78,6 @@ DJANGO_REDIS_CONNECTION_FACTORY = "tests.functional.importer." \
 
 # Don't use a worker for testing
 CELERY_TASK_ALWAYS_EAGER = True
+
+# Bug plugin settings
+BUGS_REPORT_NOT_OPEN = False

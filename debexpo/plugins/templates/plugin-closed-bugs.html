@@ -1,27 +1,27 @@
 <div class="qa-header">
-${o.outcome}
+{{ result.outcome }}
 </div>
 <div class="qa-content">
-%if o.rich_data["errors"]:
+{% if result.data.errors %}
 Errors:
 <ul class="bugs-errors">
-%  for error in o.rich_data["errors"]:
-  <li>${error}</li>
-%  endfor
+{% for error in result.data.errors %}
+    <li>{{ error }}</li>
+{% endfor %}
 </ul>
-%endif
+{% endif %}
 <ul class="bugs-closed">
-%for package in o.rich_data["bugs"]:
+{% for package, bugs in result.data.bugs.items %}
 <li>
-<a href="https://bugs.debian.org/${package}">${package}</a>:
+<a href="https://bugs.debian.org/{{ package }}">{{ package }}</a>:
 <ul>
-%for bugnum, title, severity in o.rich_data["bugs"][package]:
+{% for number, subject, severity in bugs %}
 <li>
-<a href="https://bugs.debian.org/${bugnum}">#${bugnum}</a> (${severity}): ${title}
+<a href="https://bugs.debian.org/{{ number }}">#{{ number }}</a> ({{ severity }}): {{ subject }}
 </li>
-%endfor
+{% endfor %}
 </ul>
 </li>
-%endfor
+{% endfor %}
 </ul>
 </div>
