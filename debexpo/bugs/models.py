@@ -134,7 +134,7 @@ class BugManager(models.Manager):
         packages = []
 
         if source and source not in ('wnpp', 'sponsorship-requests'):
-            for name in source.split(', '):
+            for name in source.replace(', ', ',').split(','):
                 package, _ = BugPackage.objects.get_or_create(name=name)
                 packages.append(package)
 
@@ -169,7 +169,8 @@ class BugManager(models.Manager):
             bugtype = self._guess_bug_type(bug.subject)
             status = getattr(BugStatus, bug.pending.replace('-', '_'), None)
             severity = getattr(BugSeverity, bug.severity, None)
-            packages = self._guess_packages(bug.source, bug.subject)
+            sources = self._guess_packages(bug.source, bug.subject)
+            packages = self._guess_packages(bug.package, bug.subject)
             submitter = self._extract_email(bug.originator)
             owner = self._extract_email(bug.owner)
             created = bug.date.replace(tzinfo=timezone.utc)
@@ -198,6 +199,7 @@ class BugManager(models.Manager):
             else:
                 new.save()
                 new.packages.set(packages)
+                new.sources.set(sources)
                 bugs.append(new)
 
         return bugs
@@ -220,7 +222,8 @@ class Bug(models.Model):
     created = models.DateTimeField(verbose_name=_('Creation date'))
     updated = models.DateTimeField(verbose_name=_('Last update date'))
     subject = models.TextField(verbose_name=_('Subject'))
-    packages = models.ManyToManyField(BugPackage)
+    packages = models.ManyToManyField(BugPackage, related_name='packages_bug')
+    sources = models.ManyToManyField(BugPackage, related_name='sources_bug')
     submitter_email = models.TextField(verbose_name=_('Submitter email'))
     owner_email = models.TextField(verbose_name=_('Owner email'), blank=True,
                                    null=True)

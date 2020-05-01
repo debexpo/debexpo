@@ -71,7 +71,10 @@ class Migration(migrations.Migration):
                              (4, 'Important'), (5, 'Serious'), (6, 'Grave'),
                              (7, 'Critical')], verbose_name='Severity')),
                 ('subject', models.TextField(verbose_name='Subject')),
-                ('packages', models.ManyToManyField(to='bugs.BugPackage')),
+                ('packages', models.ManyToManyField(related_name='packages_bug',
+                                                    to='bugs.BugPackage')),
+                ('sources', models.ManyToManyField(related_name='sources_bug',
+                                                   to='bugs.BugPackage')),
                 ('submitter_email', models.TextField(
                     verbose_name='Submitter email')),
                 ('owner_email', models.TextField(blank=True, null=True,
