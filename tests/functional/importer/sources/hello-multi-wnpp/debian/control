@@ -1,4 +1,4 @@
-Source: janest-ocaml-compiler-libs
+Source: vnstat
 Section: utils
 Priority: optional
 Maintainer: Vincent TIME <vtime@example.org>
@@ -8,7 +8,7 @@ Homepage: https://example.org
 Vcs-Browser: https://salsa.debian.org/debian/hello
 Vcs-Git: https://salsa.debian.org/debian/hello.git
 
-Package: janest-ocaml-compiler-libs
+Package: vnstat
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Test package for debexpo

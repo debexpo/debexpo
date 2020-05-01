@@ -27,8 +27,8 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 from tests.functional.importer import TestImporterController, test_network
-# from debexpo.lib.constants import PLUGIN_SEVERITY_INFO, PLUGIN_SEVERITY_ERROR
-from debexpo.bugs.models import Bug, BugSeverity, BugType
+from debexpo.bugs.models import Bug, BugSeverity, BugType, BugStatus
+from debexpo.plugins.models import PluginSeverity
 
 import unittest
 
@@ -48,8 +48,48 @@ class TestPluginClosedBug(TestImporterController):
         self.assert_importer_succeeded()
 
         self.assertEquals(list(Bug.objects.all()), [])
+        self.assert_plugin_result_count('hello', 'closed-bugs', 0)
+        # self.assert_rfs_content('hello',
+        #                         'Subject: RFS: hello/1.0-1 -- Test package '
+        #                         'for debexpo')
+        # self.assert_rfs_content('hello',
+        #                         'Severity: normal')
 
-        # self.assert_package_no_info('hello', 'closedbugs')
+    @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
+    def test_closes_not_owned(self):
+        self.import_source_package('hello-no-owned-bug')
+        self.assert_importer_succeeded()
+
+        self.assertEquals(Bug.objects.get().number, 931405)
+        self.assertEquals(list(
+            Bug.objects.get().sources.values_list('name', flat=True)),
+            ['django-sortedm2m'])
+
+        self.assert_plugin_severity('hello', 'closed-bugs',
+                                    PluginSeverity.error)
+        data = self.assert_plugin_result('hello', 'closed-bugs',
+                                         'Package closes bugs in a wrong way')
+        self.assertEquals(data['errors'],
+                          ['Bug #931405 does not belong to this package'])
+        # self.assert_rfs_content('hello',
+        #                         'Subject: RFS: hello/1.0-1 -- Test package '
+        #                         'for debexpo')
+        # self.assert_rfs_content('hello',
+        #                         'Severity: normal')
+
+    @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
+    def test_closes_rfs_bug(self):
+        self.import_source_package('hello-close-rfs')
+        self.assert_importer_succeeded()
+
+        self.assertEquals(Bug.objects.get().number, 815032)
+        self.assertEquals(Bug.objects.get().bugtype, BugType.RFS)
+
+        self.assert_plugin_severity('hello', 'closed-bugs',
+                                    PluginSeverity.error)
+        data = self.assert_plugin_result('hello', 'closed-bugs',
+                                         'Package closes bugs in a wrong way')
+        self.assertEquals(data['errors'], ['Bug #815032 is a RFS bug'])
         # self.assert_rfs_content('hello',
         #                         'Subject: RFS: hello/1.0-1 -- Test package '
         #                         'for debexpo')
@@ -63,10 +103,51 @@ class TestPluginClosedBug(TestImporterController):
 
         self.assertEquals(list(Bug.objects.all()), [])
 
-        # self.assert_package_severity('hello', 'closedbugs',
-        #                              PLUGIN_SEVERITY_ERROR)
-        # self.assert_package_info('hello', 'closedbugs',
-        #                          'Package closes bugs in a wrong way')
+        self.assert_plugin_severity('hello', 'closed-bugs',
+                                    PluginSeverity.error)
+        data = self.assert_plugin_result('hello', 'closed-bugs',
+                                         'Package closes bugs in a wrong way')
+        self.assertEquals(data['errors'], ['Bug #0 does not exist'])
+        # self.assert_rfs_content('hello',
+        #                         'Subject: RFS: hello/1.0-1 -- Test package '
+        #                         'for debexpo')
+        # self.assert_rfs_content('hello',
+        #                         'Severity: normal')
+
+    @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
+    def test_closes_multi_wnpp(self):
+        self.import_source_package('hello-multi-wnpp')
+        self.assert_importer_succeeded()
+
+        self.assertEquals(Bug.objects.get(number=637639).bugtype, BugType.ITA)
+        self.assertEquals(Bug.objects.get(number=874387).bugtype, BugType.ITA)
+
+        self.assert_plugin_severity('vnstat', 'closed-bugs',
+                                    PluginSeverity.warning)
+        self.assert_plugin_result(
+            'vnstat', 'closed-bugs',
+            'Package closes multiple wnpp bugs: ITA, ITA')
+        # self.assert_rfs_content('hello',
+        #                         'Subject: RFS: hello/1.0-1 -- Test package '
+        #                         'for debexpo')
+        # self.assert_rfs_content('hello',
+        #                         'Severity: normal')
+
+    @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
+    def test_closes_closed_bugs(self):
+        with self.settings(BUGS_REPORT_NOT_OPEN=True):
+            self.import_source_package('hello-normal-bug')
+        self.assert_importer_succeeded()
+
+        self.assertEquals(Bug.objects.get().number, 906521)
+        self.assertEquals(Bug.objects.get().status, BugStatus.done)
+
+        self.assert_plugin_severity('hello', 'closed-bugs',
+                                    PluginSeverity.error)
+        data = self.assert_plugin_result('hello', 'closed-bugs',
+                                         'Package closes bugs in a wrong way')
+        self.assertEquals(data['errors'],
+                          ['Bug #906521 is not open (status is Done)'])
         # self.assert_rfs_content('hello',
         #                         'Subject: RFS: hello/1.0-1 -- Test package '
         #                         'for debexpo')
@@ -84,10 +165,10 @@ class TestPluginClosedBug(TestImporterController):
         self.assertEquals(Bug.objects.get().subject, 'Hello says `goodbye\'')
         Bug.objects.get(packages__name='hello')
 
-        # self.assert_package_severity('hello', 'closedbugs',
-        #                              PLUGIN_SEVERITY_INFO)
-        # self.assert_package_info('hello', 'closedbugs',
-        #                          'Package closes bug')
+        self.assert_plugin_severity('hello', 'closed-bugs',
+                                    PluginSeverity.info)
+        self.assert_plugin_result('hello', 'closed-bugs',
+                                  'Package closes bug')
         # self.assert_rfs_content('hello',
         #                         'Subject: RFS: hello/1.0-1 -- Test package '
         #                         'for debexpo')
@@ -105,10 +186,10 @@ class TestPluginClosedBug(TestImporterController):
         self.assertEquals(bugs[1].number, 696855)
         self.assertEquals(bugs[2].number, 719848)
 
-        # self.assert_package_severity('hello', 'closedbugs',
-        #                              PLUGIN_SEVERITY_INFO)
-        # self.assert_package_info('hello', 'closedbugs',
-        #                          'Package closes bugs')
+        self.assert_plugin_severity('hello', 'closed-bugs',
+                                    PluginSeverity.info)
+        self.assert_plugin_result('hello', 'closed-bugs',
+                                  'Package closes bugs')
         # for bug in ('616444', '696855', '719848'):
         #     self.assert_package_data('hello', 'closedbugs',
         #                              bug)
@@ -130,10 +211,10 @@ class TestPluginClosedBug(TestImporterController):
                           'hello: version skew: 2.10-1+deb9u1 '
                           '(stretch-security) > 2.10-1 (buster)')
 
-        # self.assert_package_severity('hello', 'closedbugs',
-        #                              PLUGIN_SEVERITY_INFO)
-        # self.assert_package_info('hello', 'closedbugs',
-        #                          'Package closes a RC bug')
+        self.assert_plugin_severity('hello', 'closed-bugs',
+                                    PluginSeverity.info)
+        self.assert_plugin_result('hello', 'closed-bugs',
+                                  'Package closes RC bug')
         # self.assert_rfs_content('hello',
         #                         'Subject: RFS: hello/1.0-1 [RC] -- Test '
         #                         'package for debexpo')
@@ -152,10 +233,10 @@ class TestPluginClosedBug(TestImporterController):
                           'ITP: janest-ocaml-compiler-libs -- OCaml compiler'
                           ' libraries repackaged')
 
-        # self.assert_package_severity('hello', 'closedbugs',
-        #                              PLUGIN_SEVERITY_INFO)
-        # self.assert_package_info('hello', 'closedbugs',
-        #                          'Package closes a ITP bug')
+        self.assert_plugin_severity('janest-ocaml-compiler-libs', 'closed-bugs',
+                                    PluginSeverity.info)
+        self.assert_plugin_result('janest-ocaml-compiler-libs', 'closed-bugs',
+                                  'Package closes ITP bug')
         # self.assert_rfs_content('hello',
         #                         'Subject: RFS: hello/1.0-1 [ITP] -- Test '
         #                         'package for debexpo')
@@ -173,10 +254,11 @@ class TestPluginClosedBug(TestImporterController):
         self.assertEquals(Bug.objects.get().subject,
                           'ITA: django-sortedm2m')
 
-        # self.assert_package_severity('hello', 'closedbugs',
-        #                              PLUGIN_SEVERITY_INFO)
-        # self.assert_package_info('hello', 'closedbugs',
-        #                          'Package closes a ITA bug')
+        self.assert_plugin_result_count('django-sortedm2m', 'closed-bugs', 1)
+        self.assert_plugin_severity('django-sortedm2m', 'closed-bugs',
+                                    PluginSeverity.info)
+        self.assert_plugin_result('django-sortedm2m', 'closed-bugs',
+                                  'Package closes ITA bug')
         # self.assert_rfs_content('hello',
         #                         'Subject: RFS: hello/1.0-1 [ITA] -- Test '
         #                         'package for debexpo')

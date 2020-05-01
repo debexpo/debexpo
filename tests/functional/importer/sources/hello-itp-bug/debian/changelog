@@ -1,4 +1,4 @@
-hello (1.0-1) unstable; urgency=medium
+janest-ocaml-compiler-libs (1.0-1) unstable; urgency=medium
 
   * Initial release (Closes: #934896)
 
