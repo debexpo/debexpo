@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-#
-#   controlfields.py — controlfields plugin
+#   controlfields.py - controlfields plugin
 #
 #   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
@@ -8,6 +6,7 @@
 #   Copyright © 2008 Jonny Lamb <jonny@debian.org>
 #   Copyright © 2010 Jan Dittberner <jandd@debian.org>
 #   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>
+#   Copyright © 2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -30,79 +29,28 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-"""
-Holds the controlfields plugin.
-"""
-
-__author__ = 'Jonny Lamb'
-__copyright__ = ', '.join([
-        'Copyright © 2008 Jonny Lamb',
-        'Copyright © 2010 Jan Dittberner',
-        'Copyright © 2012 Nicolas Dandrimont',
-        ])
-__license__ = 'MIT'
-
-from debian import deb822
-from os.path import join
-import logging
-
-from debexpo.lib import constants
-from debexpo.plugins import BasePlugin
-
-log = logging.getLogger(__name__)
-
-fields = ['Homepage', 'Vcs-Browser', 'Vcs-Git', 'Vcs-Svn', 'Vcs-Bzr', 'Vcs-Hg']
+from debexpo.plugins.models import BasePlugin, PluginSeverity
 
 
-class ControlFieldsPlugin(BasePlugin):
+class PluginControlFields(BasePlugin):
+    @property
+    def name(self):
+        return 'control-fields'
 
-    def test_control_fields(self):
+    def run(self, changes, source):
         """
         Checks whether additional debian/control fields are present.
         """
-        log.debug('Checking whether additional debian/control fields are '
-                  'present')
+        if 'homepage' not in source.control.source:
+            self.add_result('homepage', 'No Homepage field present',
+                            severity=PluginSeverity.warning)
 
-        try:
-            control = deb822.Dsc(file(join('extracted', 'debian', 'control')))
-        except Exception as e:
-            log.critical('Could not open debian/control file; skipping plugin: '
-                         '{}'.format(str(e)))
-            return
+        vcs = False
 
-        data = {}
-        severity = constants.PLUGIN_SEVERITY_WARNING
-        outcome = "No Homepage field present"
+        for attribute in source.control.source:
+            if attribute.lower().startswith('vcs-'):
+                vcs = True
 
-        for item in fields:
-            if item in control:
-                data[item] = control[item]
-
-        if "Homepage" in data:
-            severity = constants.PLUGIN_SEVERITY_INFO
-            if len(data) > 1:
-                outcome = "Homepage and VCS control fields present"
-            else:
-                outcome = "Homepage control field present"
-
-        # Compute a list of binary packages description.
-        # Only the short description is used.
-        descriptions = []
-        for package in deb822.Dsc.iter_paragraphs(
-                file(join('extracted', 'debian', 'control'))):
-            if all(package.get(i) for i in ('Package', 'Description')):
-                if package['Package'] == control.get('Source'):
-                    data['Short-Description'] = \
-                            package['Description'].split('\n')[0]
-                descriptions.append('{} - {}'.format(package['Package'],
-                                    package['Description'].split('\n')[0]))
-
-        data['Description'] = '\n'.join(descriptions)
-
-        if 'Short-Description' not in data and descriptions:
-            data['Short-Description'] = descriptions[0].split(' - ')[1]
-
-        self.failed(outcome, data, severity)
-
-
-plugin = ControlFieldsPlugin
+        if not vcs:
+            self.add_result('vcs', 'No VCS field present',
+                            severity=PluginSeverity.warning)
