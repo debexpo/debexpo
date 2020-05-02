@@ -129,12 +129,12 @@
 
     <tr class="pkg-list">
         <th>{% trans 'Section:' %}</th>
-        <td>{{ upload.get_section.name }}</td>
+        <td>{{ upload.sourcepackage_set.get.section.name }}</td>
     </tr>
 
     <tr class="pkg-list">
         <th>{% trans 'Priority:' %}</th>
-        <td>{{ upload.get_priority.name }}</td>
+        <td>{{ upload.sourcepackage_set.get.priority.name }}</td>
     </tr>
 
     {% if upload.closes %}
