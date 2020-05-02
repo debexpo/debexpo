@@ -137,6 +137,33 @@
         <td>{{ upload.sourcepackage_set.get.priority.name }}</td>
     </tr>
 
+    {% with homepage=upload.sourcepackage_set.get.homepage %}
+    {% if homepage %}
+    <tr class="pkg-list">
+        <th>{% trans 'Homepage:' %}</th>
+        <td>
+            <a target="_blank" rel="nofollow" href="{{ homepage }}">{{ homepage }}</a>
+        </td>
+    </tr>
+    {% endif %}
+    {% endwith %}
+
+    {% for name, target in upload.sourcepackage_set.get.get_vcs %}
+    {% if name|lower != 'vcs-browser' %}
+    <tr class="pkg-list">
+        <th>{{ name }}:</th>
+        <td>{{ target }}</td>
+    </tr>
+    {% else %}
+    <tr class="pkg-list">
+        <th>{{ name }}:</th>
+        <td>
+            <a target="_blank" rel="nofollow" href="{{ target }}">{{ target }}</a>
+        </td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+
     {% if upload.closes %}
 
     <tr class="pkg-list">

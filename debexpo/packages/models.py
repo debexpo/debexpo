@@ -254,6 +254,14 @@ class SourcePackage(models.Model):
 
     objects = PackageManager()
 
+    def get_vcs(self):
+        if not self.vcs:
+            return []
+
+        vcs = json.loads(self.vcs)
+
+        return vcs.items()
+
 
 class BinaryPackage(models.Model):
     # Links a PackageUpload
