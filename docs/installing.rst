@@ -37,7 +37,7 @@ You need to install the required packages. Using `apt`, you should execute::
 
     sudo apt-get install python3-django python3-debian python3-celery
     python3-bcrypt python3-django-celery-beat python3-redis python3-django-redis
-    python3-fakeredis python3-lupa python3-debianbts
+    python3-fakeredis python3-lupa python3-debianbts python3-lxml
 
 Installing in a virtualenv
 --------------------------
