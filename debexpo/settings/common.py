@@ -182,6 +182,7 @@ IMPORTER_PLUGINS = (
     ('debexpo.plugins.maintaineremail', 'PluginMaintainerEmail',),
     ('debexpo.plugins.lintian', 'PluginLintian',),
     ('debexpo.plugins.diffclean', 'PluginDiffClean',),
+    ('debexpo.plugins.debianqa', 'PluginDebianQA',),
 )
 
 # Debian Archive access
