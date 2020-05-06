@@ -1,26 +1,18 @@
-<%doc>
-    This needs to be re-implemented into something truly recursive. Feel free to do
-    if you find yourself in the need to add 3 layered sub menus
-</%doc>
+{% spaceless %}
+{% load i18n %}
+{% url 'sponsors' as url_sponsors %}
+{% url 'guidelines' as url_guidelines %}
+{% url 'rfs' as url_rfs %}
+{% endspaceless %}
 <div id="second-nav">
-    % if c.submenu.has_label():
-    <p>${ c.submenu.label() }</p>
-    % endif
+
+    <p>{% trans 'About Sponsoring' %}</p>
 
     <ul>
-    % for label,link in c.submenu.entries():
-        <li>${ h.tags.link_to(label, h.url(link)) }</li>
-    % endfor
 
-    % if c.submenu.has_submenu():
-    <li>${ c.submenu.submenulabel() }</li>
-    <ul>
-    % for menus in c.submenu.menus():
-        % for label,link in menus.entries():
-            <li>${ h.tags.link_to(label, h.url(link)) }</li>
-        % endfor
-    % endfor
+        <li><a href="{{ url_sponsors }}">{% trans 'Overview' %}</a></li>
+        <li><a href="{{ url_guidelines }}">{% trans 'Sponsoring Guidelines' %}</a></li>
+        <li><a href="{{ url_rfs }}">{% trans 'Request for Sponsorship' %}</a></li>
+
     </ul>
-    % endif
-    </ul>
-</div> <!-- end second-nav -->
+</div>
