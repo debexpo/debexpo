@@ -104,3 +104,21 @@ def intro_maintainers(request):
     return render(request, 'intro-maintainers.html', {
         'settings': settings
     })
+
+
+def sponsor_overview(request):
+    return render(request, 'sponsor-overview.html', {
+        'settings': settings
+    })
+
+
+def sponsor_guidelines(request):
+    return render(request, 'sponsor-guidelines.html', {
+        'settings': settings
+    })
+
+
+def sponsor_rfs(request, name=None):
+    return render(request, 'sponsor-rfs.html', {
+        'settings': settings
+    })

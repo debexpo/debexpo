@@ -100,10 +100,8 @@
         <th>{% trans 'Version:' %}</th>
         <td>{{ upload.version }}
             {% if user in package.get_uploaders %}
-            {% comment %}
             (<a href="{% url 'package_rfs' package.name %}"
                 >{% trans 'View RFS template' %}</a>)
-            {% endcomment %}
             {% endif %}
         </td>
     </tr>

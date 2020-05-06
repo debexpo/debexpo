@@ -36,7 +36,7 @@ from django.urls import reverse
 from django.views.static import serve
 
 from debexpo.base.views import index, contact, intro_reviewers, \
-    intro_maintainers, qa
+    intro_maintainers, qa, sponsor_overview, sponsor_guidelines, sponsor_rfs
 from debexpo.accounts.views import register, profile
 from debexpo.accounts.forms import PasswordResetForm
 from debexpo.packages.views import package, packages, packages_my, \
@@ -52,6 +52,10 @@ urlpatterns = [
     url(r'^intro-reviewers/$', intro_reviewers, name='reviewers'),
     url(r'^qa/$', qa, name='qa'),
     url(r'^intro-maintainers/$', intro_maintainers, name='maintainers'),
+    url(r'^sponsors/$', sponsor_overview, name='sponsors'),
+    url(r'^sponsors/guidelines/$', sponsor_guidelines, name='guidelines'),
+    url(r'^sponsors/rfs-howto/(?P<name>.+)/$', sponsor_rfs, name='package_rfs'),
+    url(r'^sponsors/rfs-howto/$', sponsor_rfs, name='rfs'),
 
     # Accounts
     url(r'^accounts/reset/'
