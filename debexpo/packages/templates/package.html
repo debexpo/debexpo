@@ -175,6 +175,12 @@
     {% endif %}
 </table>
 
+<h3>{% trans 'Changelog' %}</h3>
+
+<div>
+    <pre>{{ upload.changes }}</pre>
+</div>
+
 {% if upload.pluginresults_set.all %}
 <h3 class="qa-toplevel-header">{% trans 'QA information' %}</h3>
 
