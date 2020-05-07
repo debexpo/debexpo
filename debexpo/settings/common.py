@@ -185,6 +185,7 @@ IMPORTER_PLUGINS = (
     ('debexpo.plugins.closedbugs', 'PluginClosedBugs'),
     ('debexpo.plugins.controlfields', 'PluginControlFields',),
     ('debexpo.plugins.debianqa', 'PluginDebianQA',),
+    ('debexpo.plugins.rfs', 'PluginRFS',),
 )
 
 # Debian Archive access
