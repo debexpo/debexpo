@@ -339,6 +339,11 @@ class Importer():
             result.full_clean()
             result.save()
 
+            if result.plugin == 'debian-qa':
+                upload.package.in_debian = result.data['in_debian']
+                upload.package.full_clean()
+                upload.package.save()
+
         return upload
 
 #     def _store_source_as_git_repo(self):
