@@ -31,12 +31,19 @@ import logging
 from subprocess import check_output, CalledProcessError
 from os.path import dirname, abspath
 from datetime import datetime, timedelta, timezone
+from re import IGNORECASE, search
+from urllib.parse import quote_plus
+from html import unescape
 
 from django.shortcuts import render
 from django.conf import settings
+from django.template.loader import render_to_string
 
-from debexpo.packages.models import Package
+from debexpo.packages.models import Package, PackageUpload
+from debexpo.plugins.models import PluginResults
 from debexpo.packages.views import _get_timedeltas
+from debexpo.bugs.models import Bug, BugSeverity, BugType
+
 
 log = logging.getLogger(__name__)
 
@@ -118,7 +125,84 @@ def sponsor_guidelines(request):
     })
 
 
+def get_rfs_categories(upload):
+    categories = set()
+
+    for number in upload.closes.split(' '):
+        try:
+            bug = Bug.objects.get(number=number)
+        except (Bug.DoesNotExist, ValueError):
+            continue
+        else:
+            if bug.bugtype != BugType.bug:
+                categories.add(BugType(bug.bugtype)._name_)
+
+            if bug.is_rc():
+                categories.add('RC')
+
+    if search(r'\bTeam\b\s*\bUpload*\b', upload.changes, flags=IGNORECASE):
+        categories.add('Team')
+
+    if search(r'\bQA\b\s*\bUpload*\b', upload.changes, flags=IGNORECASE):
+        categories.add('QA')
+
+    if search(r'\bNon\b[\s-]\bMaintainer\b\s*\bUpload*\b', upload.changes,
+              flags=IGNORECASE):
+        categories.add('NMU')
+
+    if categories:
+        return f'[{"] [".join(sorted(categories))}]'
+
+    return ''
+
+
+def get_rfs_severity(upload, categories):
+    if '[RC]' in categories:
+        return BugSeverity.important.label.lower()
+
+    if upload.package.in_debian:
+        return BugSeverity.normal.label.lower()
+
+    return BugSeverity.wishlist.label.lower()
+
+
 def sponsor_rfs(request, name=None):
+    upload = None
+    info = None
+    binaries = None
+    severity = None
+    categories = []
+
+    if name:
+        try:
+            upload = PackageUpload.objects.filter(package__name=name) \
+                .latest('uploaded')
+            info = PluginResults.objects.get(upload=upload, plugin='rfs').data
+        except (PackageUpload.DoesNotExist, PluginResults.DoesNotExist):
+            pass
+        else:
+            binaries = '\n  '.join(
+                upload.package.get_full_description().splitlines())
+            categories = get_rfs_categories(upload)
+            severity = get_rfs_severity(upload, categories)
+
+    rfs_html = render_to_string('rfs.html', {
+        'upload': upload,
+        'info': info,
+        'binaries': binaries,
+        'severity': severity,
+        'categories': categories,
+        'settings': settings,
+    }, request)
+    rfs = unescape(rfs_html)
+    rfs_encoded = quote_plus(rfs).replace('+', '%20')
+
     return render(request, 'sponsor-rfs.html', {
-        'settings': settings
+        'upload': upload,
+        'info': info,
+        'binaries': binaries,
+        'rfs_encoded': rfs_encoded,
+        'severity': severity,
+        'categories': categories,
+        'settings': settings,
     })
