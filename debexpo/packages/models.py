@@ -262,6 +262,11 @@ class SourcePackage(models.Model):
 
         return vcs.items()
 
+    def get_vcs_browser(self):
+        for key, value in self.get_vcs():
+            if key.lower() == 'vcs-browser':
+                return value
+
 
 class BinaryPackage(models.Model):
     # Links a PackageUpload
