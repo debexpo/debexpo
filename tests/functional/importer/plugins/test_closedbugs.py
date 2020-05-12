@@ -49,11 +49,11 @@ class TestPluginClosedBug(TestImporterController):
 
         self.assertEquals(list(Bug.objects.all()), [])
         self.assert_plugin_result_count('hello', 'closed-bugs', 0)
-        # self.assert_rfs_content('hello',
-        #                         'Subject: RFS: hello/1.0-1 -- Test package '
-        #                         'for debexpo')
-        # self.assert_rfs_content('hello',
-        #                         'Severity: normal')
+        self.assert_rfs_content('hello',
+                                'Subject: RFS: hello/1.0-1 -- Test package '
+                                'for debexpo')
+        self.assert_rfs_content('hello',
+                                'Severity: normal')
 
     @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_not_owned(self):
@@ -71,11 +71,11 @@ class TestPluginClosedBug(TestImporterController):
                                          'Package closes bugs in a wrong way')
         self.assertEquals(data['errors'],
                           ['Bug #931405 does not belong to this package'])
-        # self.assert_rfs_content('hello',
-        #                         'Subject: RFS: hello/1.0-1 -- Test package '
-        #                         'for debexpo')
-        # self.assert_rfs_content('hello',
-        #                         'Severity: normal')
+        self.assert_rfs_content('hello',
+                                'Subject: RFS: hello/1.0-1 [ITA] -- Test '
+                                'package for debexpo')
+        self.assert_rfs_content('hello',
+                                'Severity: normal')
 
     @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_rfs_bug(self):
@@ -90,11 +90,11 @@ class TestPluginClosedBug(TestImporterController):
         data = self.assert_plugin_result('hello', 'closed-bugs',
                                          'Package closes bugs in a wrong way')
         self.assertEquals(data['errors'], ['Bug #815032 is a RFS bug'])
-        # self.assert_rfs_content('hello',
-        #                         'Subject: RFS: hello/1.0-1 -- Test package '
-        #                         'for debexpo')
-        # self.assert_rfs_content('hello',
-        #                         'Severity: normal')
+        self.assert_rfs_content('hello',
+                                'Subject: RFS: hello/1.0-1 [RFS] -- Test '
+                                'package for debexpo')
+        self.assert_rfs_content('hello',
+                                'Severity: normal')
 
     @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_invalid_bugs(self):
@@ -108,11 +108,11 @@ class TestPluginClosedBug(TestImporterController):
         data = self.assert_plugin_result('hello', 'closed-bugs',
                                          'Package closes bugs in a wrong way')
         self.assertEquals(data['errors'], ['Bug #0 does not exist'])
-        # self.assert_rfs_content('hello',
-        #                         'Subject: RFS: hello/1.0-1 -- Test package '
-        #                         'for debexpo')
-        # self.assert_rfs_content('hello',
-        #                         'Severity: normal')
+        self.assert_rfs_content('hello',
+                                'Subject: RFS: hello/1.0-1 -- Test package '
+                                'for debexpo')
+        self.assert_rfs_content('hello',
+                                'Severity: normal')
 
     @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_multi_wnpp(self):
@@ -127,11 +127,11 @@ class TestPluginClosedBug(TestImporterController):
         self.assert_plugin_result(
             'vnstat', 'closed-bugs',
             'Package closes multiple wnpp bugs: ITA, ITA')
-        # self.assert_rfs_content('hello',
-        #                         'Subject: RFS: hello/1.0-1 -- Test package '
-        #                         'for debexpo')
-        # self.assert_rfs_content('hello',
-        #                         'Severity: normal')
+        self.assert_rfs_content('vnstat',
+                                'Subject: RFS: vnstat/1.0-1 [ITA] -- Test '
+                                'package for debexpo')
+        self.assert_rfs_content('vnstat',
+                                'Severity: normal')
 
     @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_closed_bugs(self):
@@ -148,11 +148,11 @@ class TestPluginClosedBug(TestImporterController):
                                          'Package closes bugs in a wrong way')
         self.assertEquals(data['errors'],
                           ['Bug #906521 is not open (status is Done)'])
-        # self.assert_rfs_content('hello',
-        #                         'Subject: RFS: hello/1.0-1 -- Test package '
-        #                         'for debexpo')
-        # self.assert_rfs_content('hello',
-        #                         'Severity: normal')
+        self.assert_rfs_content('hello',
+                                'Subject: RFS: hello/1.0-1 -- Test package '
+                                'for debexpo')
+        self.assert_rfs_content('hello',
+                                'Severity: normal')
 
     @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_normal_bug(self):
@@ -169,11 +169,11 @@ class TestPluginClosedBug(TestImporterController):
                                     PluginSeverity.info)
         self.assert_plugin_result('hello', 'closed-bugs',
                                   'Package closes bug')
-        # self.assert_rfs_content('hello',
-        #                         'Subject: RFS: hello/1.0-1 -- Test package '
-        #                         'for debexpo')
-        # self.assert_rfs_content('hello',
-        #                         'Severity: normal')
+        self.assert_rfs_content('hello',
+                                'Subject: RFS: hello/1.0-1 -- Test package '
+                                'for debexpo')
+        self.assert_rfs_content('hello',
+                                'Severity: normal')
 
     @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_multi_bug(self):
@@ -190,14 +190,11 @@ class TestPluginClosedBug(TestImporterController):
                                     PluginSeverity.info)
         self.assert_plugin_result('hello', 'closed-bugs',
                                   'Package closes bugs')
-        # for bug in ('616444', '696855', '719848'):
-        #     self.assert_package_data('hello', 'closedbugs',
-        #                              bug)
-        # self.assert_rfs_content('hello',
-        #                         'Subject: RFS: hello/1.0-1 -- Test package '
-        #                         'for debexpo')
-        # self.assert_rfs_content('hello',
-        #                         'Severity: normal')
+        self.assert_rfs_content('hello',
+                                'Subject: RFS: hello/1.0-1 -- Test package '
+                                'for debexpo')
+        self.assert_rfs_content('hello',
+                                'Severity: normal')
 
     @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_rc_bug(self):
@@ -215,11 +212,11 @@ class TestPluginClosedBug(TestImporterController):
                                     PluginSeverity.info)
         self.assert_plugin_result('hello', 'closed-bugs',
                                   'Package closes RC bug')
-        # self.assert_rfs_content('hello',
-        #                         'Subject: RFS: hello/1.0-1 [RC] -- Test '
-        #                         'package for debexpo')
-        # self.assert_rfs_content('hello',
-        #                         'Severity: important')
+        self.assert_rfs_content('hello',
+                                'Subject: RFS: hello/1.0-1 [RC] -- Test '
+                                'package for debexpo')
+        self.assert_rfs_content('hello',
+                                'Severity: important')
 
     @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_itp_bug(self):
@@ -237,11 +234,9 @@ class TestPluginClosedBug(TestImporterController):
                                     PluginSeverity.info)
         self.assert_plugin_result('janest-ocaml-compiler-libs', 'closed-bugs',
                                   'Package closes ITP bug')
-        # self.assert_rfs_content('hello',
-        #                         'Subject: RFS: hello/1.0-1 [ITP] -- Test '
-        #                         'package for debexpo')
-        # self.assert_rfs_content('hello',
-        #                         'Severity: wishlist')
+        self.assert_rfs_content('janest-ocaml-compiler-libs',
+                                'Subject: RFS: janest-ocaml-compiler-libs/1.0-1'
+                                ' [ITP] -- Test package for debexpo')
 
     @unittest.skipIf(has_network, 'no network: {}'.format(has_network))
     def test_closes_ita_bug(self):
@@ -259,8 +254,8 @@ class TestPluginClosedBug(TestImporterController):
                                     PluginSeverity.info)
         self.assert_plugin_result('django-sortedm2m', 'closed-bugs',
                                   'Package closes ITA bug')
-        # self.assert_rfs_content('hello',
-        #                         'Subject: RFS: hello/1.0-1 [ITA] -- Test '
-        #                         'package for debexpo')
-        # self.assert_rfs_content('hello',
-        #                         'Severity: normal')
+        self.assert_rfs_content('django-sortedm2m',
+                                'Subject: RFS: django-sortedm2m/1.0-1 [ITA] --'
+                                ' Test package for debexpo')
+        self.assert_rfs_content('django-sortedm2m',
+                                'Severity: normal')
