@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
-#
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2012 Baptiste Mouterde <baptiste.mouterde@gmail.com>
+#   Copyright © 2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person obtaining a
 #   copy of this software and associated documentation files (the "Software"),
@@ -23,19 +22,14 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 #   DEALINGS IN THE SOFTWARE.
 
-__author__ = 'Baptiste Mouterde'
-__license__ = 'MIT'
-
 from dulwich.objects import Tree, Commit, parse_timezone
 from dulwich.repo import Repo
 from dulwich.patch import write_tree_diff
 from time import time
 from io import BytesIO
-import logging
 import os
-import pylons
 
-log = logging.getLogger(__name__)
+from django.conf import settings
 
 fileToIgnore = []
 
@@ -44,7 +38,7 @@ class NoOlderContent(Exception):
     pass
 
 
-class GitStorage():
+class GitBackendDulwich():
     def _ignoreFile(self, dirName, fileName):
         """
         used for the copTree stuff
@@ -69,8 +63,7 @@ class GitStorage():
         commit = Commit()
         commit.tree = tree.id
         commit.encoding = "UTF-8"
-        commit.committer = commit.author = ('debexpo <%s>' %
-                                            (pylons.config['debexpo.email']))
+        commit.committer = commit.author = settings.DEFAULT_FROM_EMAIL
         commit.commit_time = commit.author_time = int(time())
         tz = parse_timezone('-0200')[0]
         commit.commit_timezone = commit.author_timezone = tz
@@ -78,20 +71,15 @@ class GitStorage():
         self.repo.object_store.add_object(tree)
         self.repo.object_store.add_object(commit)
         self.repo.refs["HEAD"] = commit.id
-        log.debug('commiting')
         return commit.id
 
     def __init__(self, path):
         # Creating the repository
         if os.path.isdir(path):
-            log.debug("directory exist, taking it as a git repository")
             self.repo = Repo(path)
         else:
-            log.debug("directory doesn't exist, creating")
             os.makedirs(path)
-            log.debug("initiate the repo")
             self.repo = Repo.init(path)
-            log.debug("adding an empty tree to the repository")
             self._commit(Tree())
 
     # Only this function will be used on upload
@@ -103,12 +91,8 @@ class GitStorage():
         ``files``
             a list of file to change
         """
-        if len(files) == 0:
-            log.debug("trying to change nothing will do... nothing")
-        else:
-            log.debug("this will change %i files" % (len(files)))
+        if len(files) != 0:
             self.repo.stage(files)
-            log.debug("stages dones")
             self.repo.do_commit("this is so awesome that nobody will never see "
                                 "it", committer="same here <foo@foo.foo>")
 
