@@ -183,6 +183,8 @@ IMPORTER_PLUGINS = (
     ('debexpo.plugins.lintian', 'PluginLintian',),
     ('debexpo.plugins.diffclean', 'PluginDiffClean',),
     ('debexpo.plugins.closedbugs', 'PluginClosedBugs'),
+    ('debexpo.plugins.controlfields', 'PluginControlFields',),
+    ('debexpo.plugins.debianqa', 'PluginDebianQA',),
 )
 
 # Debian Archive access
@@ -191,3 +193,6 @@ LIMIT_SIZE_DOWNLOAD = 100 * 1024 * 1024
 
 # Bug plugin settings
 BUGS_REPORT_NOT_OPEN = True
+
+# Debian tracker access
+TRACKER_URL = 'https://tracker.debian.org'
