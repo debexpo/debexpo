@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-02 18:17+0100\n"
-"PO-Revision-Date: 2019-12-27 10:59+0100\n"
+"POT-Creation-Date: 2020-05-02 14:48+0200\n"
+"PO-Revision-Date: 2020-05-02 14:48+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 2.3\n"
 
 #: packages/models.py:41 packages/models.py:48 packages/models.py:56
 #: packages/models.py:63 packages/models.py:70 packages/models.py:135
-#: packages/models.py:266
+#: packages/models.py:271
 msgid "Name"
 msgstr "Nom"
 
@@ -48,19 +48,19 @@ msgstr "Ferme les bugs"
 msgid "Upload date"
 msgstr "Date d'envoi"
 
-#: packages/models.py:250
+#: packages/models.py:244
 msgid "Maintainer"
 msgstr "Mainteneur"
 
-#: packages/models.py:255 packages/models.py:272
+#: packages/models.py:252 packages/models.py:280
 msgid "Homepage"
 msgstr "Page d'accueil"
 
-#: packages/models.py:256
+#: packages/models.py:253
 msgid "VCS"
 msgstr "VCS"
 
-#: packages/models.py:267 packages/templates/packages-list.html:10
+#: packages/models.py:272 packages/templates/packages-list.html:10
 msgid "Description"
 msgstr "Description"
 
@@ -155,38 +155,42 @@ msgid "Priority:"
 msgstr "Priorité :"
 
 #: packages/templates/package.html:144
+msgid "Homepage:"
+msgstr "Page d'accueil :"
+
+#: packages/templates/package.html:171
 msgid "Closes bugs:"
 msgstr "Ferme les bugs :"
 
-#: packages/templates/package.html:155
+#: packages/templates/package.html:182
 msgid "QA information"
 msgstr "Informations QA"
 
-#: packages/templates/package.html:168
+#: packages/templates/package.html:195
 msgid "Comments"
 msgstr "Commentaires"
 
-#: packages/templates/package.html:177
+#: packages/templates/package.html:204
 msgid "Needs work"
 msgstr "Nécessite des corrections"
 
-#: packages/templates/package.html:179
+#: packages/templates/package.html:206
 msgid "Ready"
 msgstr "Pret"
 
-#: packages/templates/package.html:183
+#: packages/templates/package.html:210
 msgid "Package has been uploaded to Debian"
 msgstr "Le paquet a été envoyé dans Debian"
 
-#: packages/templates/package.html:190
+#: packages/templates/package.html:217
 msgid "No comments"
 msgstr "Pas de commentaires"
 
-#: packages/templates/package.html:194
+#: packages/templates/package.html:221
 msgid "New comment"
 msgstr "Nouveau commentaire"
 
-#: packages/templates/package.html:203
+#: packages/templates/package.html:230
 msgid "Submit"
 msgstr "Valider"
 

@@ -1,11 +1,12 @@
-# -*- coding: utf-8 -*-
-#
-#   ubuntuversion.py — ubuntuversion plugin
+#   controlfields.py - controlfields plugin
 #
 #   This file is part of debexpo -
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2009 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2008 Jonny Lamb <jonny@debian.org>
+#   Copyright © 2010 Jan Dittberner <jandd@debian.org>
+#   Copyright © 2012 Nicolas Dandrimont <Nicolas.Dandrimont@crans.org>
+#   Copyright © 2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -28,38 +29,28 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-"""
-Holds the ubuntuversion plugin.
-"""
-
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2009 Jonny Lamb'
-__license__ = 'MIT'
-
-import logging
-
-from debexpo.plugins import BasePlugin
-from debexpo.lib import constants
-
-log = logging.getLogger(__name__)
+from debexpo.plugins.models import BasePlugin, PluginSeverity
 
 
-class UbuntuVersionPlugin(BasePlugin):
+class PluginControlFields(BasePlugin):
+    @property
+    def name(self):
+        return 'control-fields'
 
-    def test_ubuntu_version(self):
+    def run(self, changes, source):
         """
-        Checks whether the word "ubuntu" exists in the package name.
+        Checks whether additional debian/control fields are present.
         """
-        log.debug('Checking whether the package version contains the word '
-                  '"ubuntu"')
+        if 'homepage' not in source.control.source:
+            self.add_result('homepage', 'No Homepage field present',
+                            severity=PluginSeverity.warning)
 
-        if 'ubuntu' in self.changes['Version']:
-            log.debug('Package does not have ubuntu in the version')
-            # This isn't even worth setting an outcome.
-        else:
-            log.error('Package has ubuntu in the version')
-            self.failed('The uploaded package has "ubuntu" in the version',
-                        None, constants.PLUGIN_SEVERITY_CRITICAL)
+        vcs = False
 
+        for attribute in source.control.source:
+            if attribute.lower().startswith('vcs-'):
+                vcs = True
 
-plugin = UbuntuVersionPlugin
+        if not vcs:
+            self.add_result('vcs', 'No VCS field present',
+                            severity=PluginSeverity.warning)

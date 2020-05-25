@@ -1,0 +1,22 @@
+<div class="qa-header">
+{{ result.outcome }}
+</div>
+{% if result.data.in_debian %}
+<div class="qa-content debian-qa">
+<ul>
+{% if result.data.nmu %}
+<li>Detected as a non-maintainer upload</li>
+{% endif %}
+{% if result.data.is_debian_maintainer %}
+<li>The package uploader is currently maintaining
+{% else %}
+<li>The package uploader is not currently maintaining
+{% endif %}
+<a href="{{ settings.TRACKER_URL }}/pkg/{{ package.name }}">{{ package.name }} in Debian</a>
+</li>
+{% if result.data.last_upload %}
+<li>Last upload was on the {{ result.data.last_upload }}</li>
+{% endif %}
+</ul>
+</div>
+{% endif %}

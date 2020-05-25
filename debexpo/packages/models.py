@@ -208,12 +208,6 @@ class PackageUpload(models.Model):
     uploaded = models.DateTimeField(verbose_name=_('Upload date'),
                                     auto_now_add=True)
 
-    def get_section(self):
-        return SourcePackage.objects.get(upload=self).section
-
-    def get_priority(self):
-        return SourcePackage.objects.get(upload=self).priority
-
     def get_closes(self):
         return self.closes.split(' ')
 
@@ -259,6 +253,14 @@ class SourcePackage(models.Model):
     vcs = models.TextField(null=True, blank=True, verbose_name=_('VCS'))
 
     objects = PackageManager()
+
+    def get_vcs(self):
+        if not self.vcs:
+            return []
+
+        vcs = json.loads(self.vcs)
+
+        return vcs.items()
 
 
 class BinaryPackage(models.Model):

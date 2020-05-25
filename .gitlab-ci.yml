@@ -19,6 +19,7 @@ before_script:
     python3-fakeredis
     python3-lupa
     python3-debianbts
+    python3-lxml
     ca-certificates
     libjs-jquery
     libjs-jquery-throttle-debounce
@@ -85,6 +86,7 @@ trans:
       python3-fakeredis
       python3-lupa
       python3-debianbts
+      python3-lxml
   script:
     - (cd debexpo && python3 ../manage.py makemessages)
     - find debexpo -name '*.po' -exec
@@ -109,5 +111,6 @@ migrations:
       python3-fakeredis
       python3-lupa
       python3-debianbts
+      python3-lxml
   script:
     - python3 manage.py makemigrations --check
