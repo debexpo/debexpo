@@ -66,6 +66,7 @@ class PluginClosedBugs(BasePlugin):
             for item in changes.get_bugs():
                 if item.number == bug:
                     bug_info = item
+                    break
 
             # No bug found, let mark it as an error and skip it
             if not bug_info:
