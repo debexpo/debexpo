@@ -101,6 +101,14 @@ class Changes(GPGSignedFile):
         self.closes = self._data.get('Closes', '')
         self.component = self.files.get_component()
 
+        self._cleanup_changes()
+
+    def _cleanup_changes(self):
+        if self.changes:
+            lines = self.changes.splitlines()
+            if len(lines) > 1 and not lines[0]:
+                self.changes = '\n'.join(lines[1:])
+
     def validate(self):
         # Per debian policy:
         # https://www.debian.org/doc/debian-policy/ch-controlfields.html#debian-changes-files-changes

@@ -1,0 +1,8 @@
+does-not-exist (1.0-1) unstable; urgency=medium
+
+  * Initial release
+  * QA Upload
+  * Team Upload
+  * Non-maintainer Upload
+
+ -- Vincent TIME <vtime@example.org>  Sun, 02 Dec 2018 22:38:11 +0100

@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
-#
-#   test_license.py — Plugin License test cases
+#   test_rfs.py — Plugin RFS test cases
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
+#   Copyright © 2019-2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -28,23 +26,16 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-__author__ = 'Baptiste BEAUPLAT'
-__copyright__ = 'Copyright © 2019 Baptiste BEAUPLAT'
-__license__ = 'MIT'
-
-from debexpo.tests.importer import TestImporterController
-from debexpo.lib.constants import PLUGIN_SEVERITY_INFO
+from tests.functional.importer import TestImporterController
+from debexpo.plugins.models import PluginSeverity
 
 
 class TestPluginRFSTemplate(TestImporterController):
-    def __init__(self, *args, **kwargs):
-        TestImporterController.__init__(self, *args, **kwargs)
-
     def test_utf8_changelog(self):
         self.import_source_package('hello-utf8-changelog')
         self.assert_importer_succeeded()
-        self.assert_package_severity('hello', 'rfstemplate',
-                                     PLUGIN_SEVERITY_INFO)
+        self.assert_plugin_severity('hello', 'rfs',
+                                    PluginSeverity.info)
         self.assert_rfs_content('hello',
                                 'Subject: RFS: hello/1.0-1 -- Test package for '
                                 'debexpo')
@@ -54,30 +45,36 @@ class TestPluginRFSTemplate(TestImporterController):
     def test_dep5_license(self):
         self.import_source_package('hello')
         self.assert_importer_succeeded()
-        self.assert_package_severity('hello', 'rfstemplate',
-                                     PLUGIN_SEVERITY_INFO)
-        self.assert_package_data('hello', 'rfstemplate',
-                                 '"upstream-license": "MIT"')
-        self.assert_package_data('hello', 'rfstemplate',
-                                 '"upstream-author": "Vincent TIME '
-                                 '<vtime@example.org>"')
+        self.assert_plugin_severity('hello', 'rfs',
+                                    PluginSeverity.info)
+        self.assert_plugin_data('hello', 'rfs', {
+            'licenses': 'MIT',
+            'author': 'Vincent TIME <vtime@example.org>',
+        })
 
     def test_license_no_license(self):
         self.import_source_package('hello-no-license')
         self.assert_importer_succeeded()
-        self.assert_package_data('hello', 'rfstemplate',
-                                 '"upstream-license": "[fill in]"')
+        self.assert_plugin_severity('hello', 'rfs',
+                                    PluginSeverity.error)
+        self.assert_plugin_data('hello', 'rfs', {
+            'author': None, 'licenses': None
+        })
 
     def test_license_freeform_license(self):
         self.import_source_package('hello-freeform-license')
         self.assert_importer_succeeded()
-        self.assert_package_data('hello', 'rfstemplate',
-                                 '"upstream-license": "[fill in]"')
+        self.assert_plugin_severity('hello', 'rfs',
+                                    PluginSeverity.error)
+        self.assert_plugin_data('hello', 'rfs', {
+            'author': None, 'licenses': None
+        })
 
-    def test_changelog(self):
-        self.import_source_package('hello')
+    def test_rfs_categories(self):
+        self.import_source_package('hello-rfs-categories')
         self.assert_importer_succeeded()
-        self.assert_package_severity('hello', 'rfstemplate',
-                                     PLUGIN_SEVERITY_INFO)
-        self.assert_package_data('hello', 'rfstemplate',
-                                 'Initial release')
+        self.assert_rfs_content('does-not-exist',
+                                'Subject: RFS: does-not-exist/1.0-1 '
+                                '[NMU] [QA] [Team] -- Test package for debexpo')
+        self.assert_rfs_content('does-not-exist',
+                                'Severity: wishlist')

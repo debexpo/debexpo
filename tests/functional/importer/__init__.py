@@ -273,9 +273,7 @@ class TestImporterController(TestController):
         self.assertTrue(self._package_in_repo(package_name, version) == 0)
 
     def assert_rfs_content(self, package, content):
-        pass
-        # response = self.app.get(url(controller='sponsors', action='rfs-howto',
-        #                             id=package))
-        # self.assertEquals(response.status_int, 200)
-        # log.debug('rfs: {}'.format(response))
-        # self.assertTrue(content in response)
+        response = self.client.get(reverse('package_rfs', args=[package]))
+
+        self.assertEquals(response.status_code, 200)
+        self.assertIn(content, str(response.content))

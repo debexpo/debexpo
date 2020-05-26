@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-02 14:48+0200\n"
-"PO-Revision-Date: 2020-05-02 14:48+0200\n"
+"POT-Creation-Date: 2020-05-20 09:31+0200\n"
+"PO-Revision-Date: 2020-05-20 09:33+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: packages/models.py:41 packages/models.py:48 packages/models.py:56
 #: packages/models.py:63 packages/models.py:70 packages/models.py:135
-#: packages/models.py:271
+#: packages/models.py:276
 msgid "Name"
 msgstr "Nom"
 
@@ -52,7 +52,7 @@ msgstr "Date d'envoi"
 msgid "Maintainer"
 msgstr "Mainteneur"
 
-#: packages/models.py:252 packages/models.py:280
+#: packages/models.py:252 packages/models.py:285
 msgid "Homepage"
 msgstr "Page d'accueil"
 
@@ -60,7 +60,7 @@ msgstr "Page d'accueil"
 msgid "VCS"
 msgstr "VCS"
 
-#: packages/models.py:272 packages/templates/packages-list.html:10
+#: packages/models.py:277 packages/templates/packages-list.html:10
 msgid "Description"
 msgstr "Description"
 
@@ -134,63 +134,71 @@ msgstr "Informations"
 msgid "Version:"
 msgstr "Version :"
 
-#: packages/templates/package.html:113
+#: packages/templates/package.html:104
+msgid "View RFS template"
+msgstr "Voir le modèle RFS"
+
+#: packages/templates/package.html:110
 msgid "Uploaded:"
 msgstr "Envoi :"
 
-#: packages/templates/package.html:119
+#: packages/templates/package.html:116
 msgid "Source package:"
 msgstr "Paquet source :"
 
-#: packages/templates/package.html:127
+#: packages/templates/package.html:124
 msgid "Distribution:"
 msgstr "Distribution :"
 
-#: packages/templates/package.html:132
+#: packages/templates/package.html:129
 msgid "Section:"
 msgstr "Section :"
 
-#: packages/templates/package.html:137
+#: packages/templates/package.html:134
 msgid "Priority:"
 msgstr "Priorité :"
 
-#: packages/templates/package.html:144
+#: packages/templates/package.html:141
 msgid "Homepage:"
 msgstr "Page d'accueil :"
 
-#: packages/templates/package.html:171
+#: packages/templates/package.html:168
 msgid "Closes bugs:"
 msgstr "Ferme les bugs :"
 
-#: packages/templates/package.html:182
+#: packages/templates/package.html:178
+msgid "Changelog"
+msgstr "Changelog"
+
+#: packages/templates/package.html:185
 msgid "QA information"
 msgstr "Informations QA"
 
-#: packages/templates/package.html:195
+#: packages/templates/package.html:198
 msgid "Comments"
 msgstr "Commentaires"
 
-#: packages/templates/package.html:204
+#: packages/templates/package.html:207
 msgid "Needs work"
 msgstr "Nécessite des corrections"
 
-#: packages/templates/package.html:206
+#: packages/templates/package.html:209
 msgid "Ready"
 msgstr "Pret"
 
-#: packages/templates/package.html:210
+#: packages/templates/package.html:213
 msgid "Package has been uploaded to Debian"
 msgstr "Le paquet a été envoyé dans Debian"
 
-#: packages/templates/package.html:217
+#: packages/templates/package.html:220
 msgid "No comments"
 msgstr "Pas de commentaires"
 
-#: packages/templates/package.html:221
+#: packages/templates/package.html:224
 msgid "New comment"
 msgstr "Nouveau commentaire"
 
-#: packages/templates/package.html:230
+#: packages/templates/package.html:233
 msgid "Submit"
 msgstr "Valider"
 

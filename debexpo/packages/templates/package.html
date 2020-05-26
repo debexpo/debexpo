@@ -100,10 +100,8 @@
         <th>{% trans 'Version:' %}</th>
         <td>{{ upload.version }}
             {% if user in package.get_uploaders %}
-            {% comment %}
             (<a href="{% url 'package_rfs' package.name %}"
                 >{% trans 'View RFS template' %}</a>)
-            {% endcomment %}
             {% endif %}
         </td>
     </tr>
@@ -176,6 +174,12 @@
     </tr>
     {% endif %}
 </table>
+
+<h3>{% trans 'Changelog' %}</h3>
+
+<div>
+    <pre>{{ upload.changes }}</pre>
+</div>
 
 {% if upload.pluginresults_set.all %}
 <h3 class="qa-toplevel-header">{% trans 'QA information' %}</h3>

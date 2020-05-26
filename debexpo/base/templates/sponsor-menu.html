@@ -1,0 +1,18 @@
+{% spaceless %}
+{% load i18n %}
+{% url 'sponsors' as url_sponsors %}
+{% url 'guidelines' as url_guidelines %}
+{% url 'rfs' as url_rfs %}
+{% endspaceless %}
+<div id="second-nav">
+
+    <p>{% trans 'About Sponsoring' %}</p>
+
+    <ul>
+
+        <li><a href="{{ url_sponsors }}">{% trans 'Overview' %}</a></li>
+        <li><a href="{{ url_guidelines }}">{% trans 'Sponsoring Guidelines' %}</a></li>
+        <li><a href="{{ url_rfs }}">{% trans 'Request for Sponsorship' %}</a></li>
+
+    </ul>
+</div>

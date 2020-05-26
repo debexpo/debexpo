@@ -1,0 +1,34 @@
+Package: sponsorship-requests
+Severity: {{ severity|default:"normal [important for RC bugs, wishlist for new packages]" }}
+
+Dear mentors,
+
+I am looking for a sponsor for my package "{{ upload.package.name|default:"hello" }}":
+
+ * Package name    : {{ upload.package.name|default:"hello" }}
+   Version         : {{ upload.version|default:"3.1-4" }}
+   Upstream Author : {{ info.author|default:"[fill in name and email of upstream]" }}
+ * URL             : {{ upload.sourcepackage_set.get.homepage|default:"[fill in URL of upstream's web site]" }}
+ * License         : {{ info.licenses|default:"[fill in]" }}
+ * Vcs             : {{ upload.sourcepackage_set.get.get_vcs_browser|default:"[fill in URL of packaging vcs]" }}
+   Section         : {{ upload.sourcepackage_set.get.section.name|default:"[fill in]" }}
+
+It builds those binary packages:
+
+  {{ binaries|default:"hello - friendly greeter" }}
+
+To access further information about this package, please visit the following URL:
+
+{% if upload %}  {{ request.scheme }}://{{ request.get_host }}{% url 'package' name=upload.package.name %}
+{% else %}  {{ request.scheme }}://{{ request.get_host }}{% url 'package' name='hello' %}
+{% endif %}
+Alternatively, one can download the package with dget using this command:
+
+{% if upload %}  dget -x {{ request.scheme }}://{{ request.get_host }}{{ upload.get_dsc_url }}
+{% else %}  dget -x {{ request.scheme }}://{{ request.get_host }}/debian/pool/main/h/hello/hello_3.1-4.dsc
+{% endif %}
+Changes since the last upload:
+
+{{ upload.changes|default:"[your most recent changelog entry]" }}
+
+Regards,

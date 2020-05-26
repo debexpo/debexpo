@@ -78,7 +78,7 @@ class Copyright():
 
         for paragraph in self.copyright.all_files_paragraphs():
             if paragraph.license and paragraph.license.synopsis:
-                if not paragraph.files == ['debian/*']:
+                if not paragraph.files == ('debian/*',):
                     licenses.update([paragraph.license.synopsis])
 
         return licenses
