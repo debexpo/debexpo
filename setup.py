@@ -86,6 +86,7 @@ setup(
         'django-redis>=4.10.0',
         'python-debianbts>=2.8.2',
         'lxml>=4.3.2',
+        'dulwich>=0.19.11',
     ],
 
     extras_require={
