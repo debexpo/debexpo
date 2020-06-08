@@ -72,10 +72,7 @@ class PluginLintian(BasePlugin):
         except FileNotFoundError:  # pragma: no cover
             self.failed('lintian not found')
         except CalledProcessError as e:
-            if e.returncode == 1:
-                output = e.output
-            else:
-                self.failed(f'lintian failed to run: {e.stderr}')
+            self.failed(f'lintian failed to run: {e.stderr}')
 
         return output.split('\n')
 
