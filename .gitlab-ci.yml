@@ -56,6 +56,7 @@ buster-bpo:
   image: debian:buster-backports
   variables:
     ADDITIONAL_PACKAGES: python3-django/buster-backports
+                         lintian/buster-backports
     DJANGO_SETTINGS_MODULE: 'debexpo.settings.test'
 
 flake8:
