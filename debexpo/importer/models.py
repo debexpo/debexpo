@@ -51,6 +51,7 @@ from debexpo.tools.gnupg import ExceptionGnuPG
 from debexpo.tools.email import Email
 from debexpo.repository.models import Repository
 from debexpo.plugins.models import PluginManager
+from debexpo.tools.gitstorage import GitStorage
 
 log = getLogger(__name__)
 
@@ -195,6 +196,8 @@ class Importer():
         self.actually_send_email = not bool(skip_email)
         self.skip_gpg = skip_gpg
         self.repository = Repository(settings.REPOSITORY)
+        git_storage_path = getattr(settings, 'GIT_STORAGE', None)
+        self.git_storage = GitStorage(git_storage_path)
 
         if spool:
             self.spool = Spool(spool)
@@ -314,11 +317,12 @@ class Importer():
         self.send_email('email-importer-reject.html', error)
 
     @transaction.atomic
-    def _create_db_entries(self, changes, source, plugins):
+    def _create_db_entries(self, changes, source, plugins, ref):
         """
         Create entries in the Database for the package upload.
         """
         upload = PackageUpload.objects.create_from_changes(changes)
+        upload.ref = ref
         upload.full_clean()
         upload.save()
 
@@ -346,37 +350,6 @@ class Importer():
 
         return upload
 
-#     def _store_source_as_git_repo(self):
-#         # Exit now if gitstorage is not enabled
-#         if pylons.config['debexpo.gitstorage.enabled'] != 'true':
-#             return
-#
-#         # Setup some variable used by git storage
-#         destdir = pylons.config['debexpo.repository']
-#         git_storage_repo = os.path.join(destdir, "git",
-#                                         self.changes['Source'])
-#         git_storage_sources = os.path.join(git_storage_repo,
-#                                            self.changes['Source'])
-#
-#         # Initiate the git storage
-#         try:
-#             gs = GitStorage(git_storage_repo)
-#         except NotGitRepository as e:
-#             log.error('{}'.format(e))
-#             gs = None
-#         if os.path.isdir(git_storage_sources):
-#             log.debug("git storage: remove previous sources")
-#             shutil.rmtree(git_storage_sources, True)
-#
-#         # Building sources
-#         log.debug("git storage: extract sources")
-#         if self._extract_source(git_storage_sources):
-#             # Record sources
-#             fileToAdd = self._get_files(git_storage_sources)
-#             fileToAdd = self._clean_path(git_storage_repo, fileToAdd)
-#             if gs:
-#                 gs.change(fileToAdd)
-#
 #     def _overlap_with_other_distrib(self):
 #         name = self.changes['Source']
 #         version = self.changes['Version']
@@ -416,14 +389,18 @@ class Importer():
         return upload
 
     def _accept_upload(self, changes, source, plugins):
+        ref = None
+
         # Install source in git tree
+        if self.git_storage:
+            ref = self.git_storage.install(source)
 
         # Install to repository
         if self.repository:
             self.repository.install(changes)
 
         # Create DB entries
-        upload = self._create_db_entries(changes, source, plugins)
+        upload = self._create_db_entries(changes, source, plugins, ref)
 
         return upload
 
