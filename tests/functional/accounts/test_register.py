@@ -101,8 +101,8 @@ class TestRegisterController(TestController):
         })
 
         self.assertEqual(response.status_code, 200)
-        testtext = '{}'.format('A sponsor account must be registered with your',
-                               ' @debian.org address')
+        testtext = 'A sponsor account must be registered with your' \
+                   ' @debian.org address'
         self.assertIn(testtext, str(response.content))
         self.assertRaises(User.DoesNotExist, User.objects.get,
                           email='mr_me@example.com')

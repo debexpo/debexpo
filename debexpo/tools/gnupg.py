@@ -294,18 +294,18 @@ class KeyData():
                 # Internal parsing of GPG. No tests case covering
                 # failure for that.
                 else:  # pragma: no cover
-                    raise Exception("gpg:{}: found fpr line with no" +
-                                    " previous pub line".format(lineno))
+                    raise Exception(f"gpg:{lineno}: found fpr line with no"
+                                    " previous pub line")
             elif line.startswith("uid:"):
                 if cur_key is None:  # pragma: no cover
-                    raise Exception("gpg:{}: found uid line with no previous" +
-                                    " pub+fpr lines".format(lineno))
+                    raise Exception(f"gpg:{lineno}: found uid line with no "
+                                    "previous pub+fpr lines")
                 cur_key.get_uid(line.split(":"))
 
             elif line.startswith("sub:"):
                 if cur_key is None:  # pragma: no cover
-                    raise Exception("gpg:{}: found sub line with no previous" +
-                                    " pub+fpr lines".format(lineno))
+                    raise Exception(f"gpg:{lineno}: found sub line with no "
+                                    "previous pub+fpr lines")
                 sub = line.split(":")
 
         return keys
