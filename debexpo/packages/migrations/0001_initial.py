@@ -155,6 +155,8 @@ class Migration(migrations.Migration):
                 ('changes', models.TextField(verbose_name='Changes')),
                 ('closes', models.TextField(verbose_name='Closes bugs',
                                             blank=True)),
+                ('ref', models.TextField(verbose_name='Git storage ref',
+                                         blank=True, null=True)),
                 ('uploaded', models.DateTimeField(
                     auto_now_add=True, verbose_name='Upload date')),
                 ('component', models.ForeignKey(

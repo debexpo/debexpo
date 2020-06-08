@@ -203,6 +203,8 @@ class PackageUpload(models.Model):
     component = models.ForeignKey(Component, on_delete=models.CASCADE)
     changes = models.TextField(verbose_name=_('Changes'))
     closes = models.TextField(blank=True, verbose_name=_('Closes bugs'))
+    ref = models.TextField(blank=True, null=True,
+                           verbose_name=_('Git storage ref'))
 
     # Some metadata
     uploaded = models.DateTimeField(verbose_name=_('Upload date'),
