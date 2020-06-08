@@ -81,3 +81,6 @@ UPLOAD_SPOOL = path.join(BASE_DIR, 'data', 'spool')  # noqa: F405
 
 # Repository
 REPOSITORY = path.join(BASE_DIR, 'data', 'repository')  # noqa: F405
+
+# Git storage
+GIT_STORAGE = path.join(BASE_DIR, 'data', 'git')  # noqa: F405

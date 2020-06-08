@@ -72,3 +72,6 @@ UPLOAD_SPOOL = '/var/spool/debexpo/http'
 
 # Repository
 REPOSITORY = '/var/lib/debexpo/repository'
+
+# Git storage (comment to disable)
+GIT_STORAGE = '/var/lib/debexpo/git'
