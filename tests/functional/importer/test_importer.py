@@ -35,6 +35,7 @@ from os.path import join
 
 from django.conf import settings
 from django.core import mail
+from django.test import override_settings
 
 from tests.functional.importer import TestImporterController
 from tests.functional.importer.source_package import TestSourcePackage
@@ -360,7 +361,10 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
     #     self.assert_package_count('hello', '1.0-1', 1)
     #     self.assert_package_in_repo('hello', '1.0-1')
 
+    @override_settings()
     def test_import_package_hello(self):
+        del settings.GIT_STORAGE
+
         self.import_source_package('hello')
         self.assert_importer_succeeded()
         self.assert_email_with("Your upload of the package 'hello' to "
