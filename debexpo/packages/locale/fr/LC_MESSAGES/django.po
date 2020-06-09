@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-20 09:31+0200\n"
-"PO-Revision-Date: 2020-05-20 09:33+0200\n"
+"POT-Creation-Date: 2020-06-09 20:50+0200\n"
+"PO-Revision-Date: 2020-06-09 20:53+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.3.1\n"
 
 #: packages/models.py:41 packages/models.py:48 packages/models.py:56
 #: packages/models.py:63 packages/models.py:70 packages/models.py:135
-#: packages/models.py:276
+#: packages/models.py:278
 msgid "Name"
 msgstr "Nom"
 
@@ -44,23 +44,27 @@ msgstr "Changements"
 msgid "Closes bugs"
 msgstr "Ferme les bugs"
 
-#: packages/models.py:208
+#: packages/models.py:207
+msgid "Git storage ref"
+msgstr "Ref stockage Git"
+
+#: packages/models.py:210
 msgid "Upload date"
 msgstr "Date d'envoi"
 
-#: packages/models.py:244
+#: packages/models.py:246
 msgid "Maintainer"
 msgstr "Mainteneur"
 
-#: packages/models.py:252 packages/models.py:285
+#: packages/models.py:254 packages/models.py:287
 msgid "Homepage"
 msgstr "Page d'accueil"
 
-#: packages/models.py:253
+#: packages/models.py:255
 msgid "VCS"
 msgstr "VCS"
 
-#: packages/models.py:277 packages/templates/packages-list.html:10
+#: packages/models.py:279 packages/templates/packages-list.html:10
 msgid "Description"
 msgstr "Description"
 
