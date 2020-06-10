@@ -45,7 +45,7 @@ class TestGitBackendDulwich(TestCase):
 
     def _git(self, args):
         try:
-            output = check_output(['/usr/bin/git'] + args, stderr=STDOUT,
+            output = check_output(['git'] + args, stderr=STDOUT,
                                   cwd=self.gitdir, text=True)
         except CalledProcessError as e:
             return (e.returncode, e.output)
