@@ -196,8 +196,7 @@ class Importer():
         self.actually_send_email = not bool(skip_email)
         self.skip_gpg = skip_gpg
         self.repository = Repository(settings.REPOSITORY)
-        git_storage_path = getattr(settings, 'GIT_STORAGE', None)
-        self.git_storage = GitStorage(git_storage_path)
+        self.git_storage_path = getattr(settings, 'GIT_STORAGE', None)
 
         if spool:
             self.spool = Spool(spool)
@@ -392,8 +391,10 @@ class Importer():
         git_ref = None
 
         # Install source in git tree
-        if self.git_storage:
-            git_ref = self.git_storage.install(source)
+        if self.git_storage_path:
+            git_storage = GitStorage(self.git_storage_path,
+                                     source.control.source['Source'])
+            git_ref = git_storage.install(source)
 
         # Install to repository
         if self.repository:

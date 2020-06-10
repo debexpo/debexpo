@@ -41,22 +41,17 @@ class NoOlderContent(Exception):
 
 
 class GitStorage():
-    def __init__(self, git_storage_path):
-        self.git_storage_path = git_storage_path
+    def __init__(self, git_storage_path, package):
+        self.repository = join(git_storage_path, package)
+        self.source_dir = join(self.repository, 'sources')
+        self.git = GitBackendDulwich(self.repository)
 
     def install(self, source):
-        if not self.git_storage_path:
-            return
+        self._sync_source(source)
+        changes = self._list_files()
 
-        repository = join(self.git_storage_path,
-                          source.control.source['Source'])
-        git = GitBackendDulwich(repository)
-
-        self._sync_source(source, repository)
-        changes = self._list_files(repository)
-
-        git.stage(changes, True)
-        ref = git.commit()
+        self.git.stage(changes, True)
+        ref = self.git.commit()
 
         return ref
 
@@ -66,25 +61,22 @@ class GitStorage():
     # def diff(self, upload_from, upload_to):
     #     pass
 
-    def _sync_source(self, source, repository):
-        dest = join(repository, 'sources')
-
-        if isdir(dest):
-            rmtree(dest)
+    def _sync_source(self, source):
+        if isdir(self.source_dir):
+            rmtree(self.source_dir)
 
         try:
-            copytree(source.get_source_dir(), dest)
+            copytree(source.get_source_dir(), self.source_dir)
         except IOError:
             pass
 
-    def _list_files(self, repository):
-        dest = join(repository, 'sources')
+    def _list_files(self):
         files = set()
 
-        for (root, _, filenames) in walk(dest):
+        for (root, _, filenames) in walk(self.source_dir):
             for filename in filenames:
                 fpath = join(root, filename)
-                files.add(relpath(fpath, repository))
+                files.add(relpath(fpath, self.repository))
 
         return files
 
