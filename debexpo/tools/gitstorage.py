@@ -117,6 +117,8 @@ class GitBackendDulwich():
             self.repo.stage(list(files))
 
     def commit(self):
+        # According to https://github.com/dulwich/dulwich/issues/609 dulwich now
+        # except bytes types for all of its string arguments.
         ref = self.repo.do_commit(b'this is so awesome that nobody will never '
                                   b'see it',
                                   committer=b'same here <foo@foo.foo>')
