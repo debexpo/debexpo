@@ -317,12 +317,12 @@ class Importer():
         self.send_email('email-importer-reject.html', error)
 
     @transaction.atomic
-    def _create_db_entries(self, changes, source, plugins, ref):
+    def _create_db_entries(self, changes, source, plugins, git_ref):
         """
         Create entries in the Database for the package upload.
         """
         upload = PackageUpload.objects.create_from_changes(changes)
-        upload.ref = ref
+        upload.git_ref = git_ref
         upload.full_clean()
         upload.save()
 
@@ -389,18 +389,18 @@ class Importer():
         return upload
 
     def _accept_upload(self, changes, source, plugins):
-        ref = None
+        git_ref = None
 
         # Install source in git tree
         if self.git_storage:
-            ref = self.git_storage.install(source)
+            git_ref = self.git_storage.install(source)
 
         # Install to repository
         if self.repository:
             self.repository.install(changes)
 
         # Create DB entries
-        upload = self._create_db_entries(changes, source, plugins, ref)
+        upload = self._create_db_entries(changes, source, plugins, git_ref)
 
         return upload
 
