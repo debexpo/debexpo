@@ -61,6 +61,9 @@ DEFAULT_BOUNCE_EMAIL = 'bounce@example.org'
 # Repository location
 REPOSITORY = '/tmp/debexpo/repository'
 
+# Git storage location
+GIT_STORAGE = '/tmp/debexpo/git'
+
 # Use fakeredis for testing
 CACHES = {
     "default": {

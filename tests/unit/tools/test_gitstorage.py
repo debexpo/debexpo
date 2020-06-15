@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
-#
-#   test_gitstorage.py - unit testing for GitStorage class
+#   test_gitstorage.py - unit testing for GitBackendDulwich class
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
+#   Copyright © 2019-2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -28,20 +26,16 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-__author__ = 'Baptiste BEAUPLAT'
-__copyright__ = 'Copyright © 2019 Baptiste BEAUPLAT'
-__license__ = 'MIT'
-
-from debexpo.lib.gitstorage import GitStorage
+from debexpo.tools.gitstorage import GitBackendDulwich
 from os import write, close, open, O_WRONLY
 from os.path import isdir, join
 from shutil import rmtree
-from subprocess import Popen, PIPE, STDOUT
+from subprocess import check_output, STDOUT, CalledProcessError
 from tempfile import mkdtemp, mkstemp
 from unittest import TestCase
 
 
-class TestGitStorage(TestCase):
+class TestGitBackendDulwich(TestCase):
     def setUp(self):
         self.gitdir = mkdtemp()
 
@@ -50,11 +44,13 @@ class TestGitStorage(TestCase):
             rmtree(self.gitdir)
 
     def _git(self, args):
-        proc = Popen(['/usr/bin/git'] + args,
-                     stdout=PIPE, stderr=STDOUT, cwd=self.gitdir)
-        (output, status) = proc.communicate()
+        try:
+            output = check_output(['git'] + args, stderr=STDOUT,
+                                  cwd=self.gitdir, text=True)
+        except CalledProcessError as e:
+            return (e.returncode, e.output)
 
-        return (status, output)
+        return (0, output)
 
     def _write_test_file(self, text, filename=None):
         if filename:
@@ -62,7 +58,7 @@ class TestGitStorage(TestCase):
         else:
             (fd, filename) = mkstemp(dir=self.gitdir)
 
-        write(fd, text)
+        write(fd, text.encode())
         close(fd)
 
         return filename[len(self.gitdir) + 1:]
@@ -84,77 +80,71 @@ class TestGitStorage(TestCase):
         if isdir(self.gitdir):
             rmtree(self.gitdir)
 
-        self.repo = GitStorage(self.gitdir)
+        self.repo = GitBackendDulwich(self.gitdir)
         self.assertTrue(isdir(self.gitdir))
 
-        self.assertEquals(self._git_count(), 1)
+        self.assertEquals(self._git_count(), 0)
 
     def test_init_existing_repo(self):
         self.test_init_new_repo()
 
-        self.repo = GitStorage(self.gitdir)
-        self.assertEquals(self._git_count(), 1)
+        self.repo = GitBackendDulwich(self.gitdir)
+        self.assertEquals(self._git_count(), 0)
 
     def test_adding_new_files(self, text="Hello World!\n"):
         self.test_init_new_repo()
 
         filename = self._write_test_file(text)
-        self.repo.change([filename])
+        self.repo.stage([filename])
+        self.repo.commit()
 
-        self.assertEquals(self._git_count(), 2)
+        self.assertEquals(self._git_count(), 1)
         self.assertTrue(filename in self._git_last_commited_files())
 
     def test_get_all_trees(self):
         self.test_adding_new_files()
 
         trees = self.repo.getAllTrees()
-        self.assertEquals(len(trees), 2)
+        self.assertEquals(len(trees), 1)
 
         (status, output) = self._git(['log', '--format=%T'])
         self.assertFalse(status)
-        self.assertEquals(output.rstrip().split('\n'), trees)
+        self.assertEquals(output.rstrip().split('\n'),
+                          [item.decode() for item in trees])
 
     def test_get_last_tree(self):
         self.test_adding_new_files()
+
+        filename = self._write_test_file("Hello world!\n")
+        self.repo.stage([filename])
+        self.repo.commit()
 
         tree = self.repo.getLastTree()
 
         (status, output) = self._git(['log', '--format=%T', 'HEAD~1..HEAD'])
         self.assertFalse(status)
-        self.assertEquals(output.rstrip(), tree)
-
-    def test_get_older_commits(self):
-        self.test_adding_new_files()
-
-        commits = self.repo.getOlderCommits()
-
-        (status, output) = self._git(['log', '--format=%H', 'HEAD~1'])
-        self.assertFalse(status)
-        self.assertEquals(output.rstrip().split('\n'), commits)
-
-    def test_get_older_file_content(self):
-        self.test_init_new_repo()
-
-        initial_text = "Hello world!\n"
-
-        filename = self._write_test_file(initial_text)
-        self.repo.change([filename])
-
-        self._write_test_file("New version\n", filename)
-        self.repo.change([filename])
-
-        self.assertEquals(self._git_count(), 3)
-        self.assertTrue(filename in self._git_last_commited_files())
-
-        content = self.repo.getOlderFileContent(filename)
-        self.assertEquals(content, initial_text)
+        self.assertEquals(output.rstrip(), tree.decode())
 
     def test_build_tree_diff(self):
-        self.test_get_older_file_content()
+        self.test_init_new_repo()
+
+        filename = self._write_test_file("Hello world!\n")
+        self.repo.stage([filename])
+        self.repo.commit()
 
         changes = self.repo.buildTreeDiff()
-        self.assertTrue('-Hello world!\n+New version\n' in changes)
+        self.assertEquals('', changes.decode())
+
+        self._write_test_file("New version\n", filename)
+        self.repo.stage([filename])
+        self.repo.commit()
+
+        self.assertEquals(self._git_count(), 2)
+        self.assertTrue(filename in self._git_last_commited_files())
+
+        changes = self.repo.buildTreeDiff()
+        self.assertTrue('-Hello world!\n+New version\n' in changes.decode())
 
         history = self.repo.getAllTrees()
         changes = self.repo.buildTreeDiff(history[0], history[1])
-        self.assertTrue('-New version\n-\n+Hello world!\n' in changes)
+        self.assertTrue('-New version\n-\n+Hello world!\n' in changes.decode())
