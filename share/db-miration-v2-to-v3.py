@@ -763,8 +763,10 @@ def update_profile(user, row):
         profile.status = 3
     elif row[8] == 3:
         profile.status = 2
+    elif row[8] == 1:
+        profile.status = 1
     else:
-        profile.status = row[8]
+        raise(f'Unknown status {row[8]} for {user.email}')
 
     profile.full_clean()
     profile.save()
