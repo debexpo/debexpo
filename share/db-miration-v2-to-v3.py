@@ -722,8 +722,8 @@ def update_user(row):
     user.name = row[1]
     user.last_login = row[2].replace(tzinfo=timezone.utc)
     user.date_joined = row[2].replace(tzinfo=timezone.utc)
-    user.is_staff = row[4]
-    user.is_superuser = row[4]
+    user.is_staff = not row[4]
+    user.is_superuser = not row[4]
     user.is_active = True
 
     # md5 passwords
