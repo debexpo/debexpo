@@ -68,7 +68,7 @@ class TestPluginLintian(TestImporterController):
         self.assert_plugin_template('hello', outcome)
         self.assert_plugin_template(
             'hello',
-            'https://lintian.debian.org/tags/wrong-debian-qa-group-name.html'
+            '<span class="lintian-E" title="Error">'
         )
 
     def test_lintian_fail(self):
