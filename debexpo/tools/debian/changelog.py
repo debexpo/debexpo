@@ -52,7 +52,8 @@ class Changelog():
 
         try:
             fd = open(filename, 'r')
-        except IOError as e:
+        # After dpkg 1.20.0, this will be catched by dpkg-source -x
+        except IOError as e:  # pragma: no cover
             raise ExceptionChangelog(e)
 
         with fd:

@@ -131,28 +131,12 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_count('hello', '1.0-1', 0)
         self.assert_package_not_in_repo('hello', '1.0-1')
 
-    def test_import_package_ioerror_changlog(self):
-        self.import_package('ioerror-changelog')
-        self.assert_importer_failed()
-        self.assert_email_with('No such file or directory')
-        self.assert_package_count('hello', '1.0-1', 0)
-        self.assert_package_not_in_repo('hello', '1.0-1')
-
     def test_import_package_corrupted_changlog(self):
         self.import_package('corrupted-changelog')
         self.assert_importer_failed()
         self.assert_email_with('Could not parse changelog')
         self.assert_package_count('hello', '1.0-1', 0)
         self.assert_package_not_in_repo('hello', '1.0-1')
-
-    def test_import_package_ioerror_copyright(self):
-        self.import_package('ioerror-copyright')
-        self.assert_importer_succeeded()
-        self.assert_email_with("Your upload of the package 'hello' to "
-                               + settings.SITE_NAME
-                               + " was\nsuccessful.")
-        self.assert_package_count('hello', '1.0-1', 1)
-        self.assert_package_in_repo('hello', '1.0-1')
 
     def test_import_package_no_dep5_copyright(self):
         self.import_source_package('hello-license-no-dep5')
@@ -188,13 +172,6 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         for filename in ('control', 'copyright', 'changelog',):
             self._import_package_bad_encoding_source(filename)
             self._cleanup_mailbox()
-
-    def test_import_package_ioerror_control(self):
-        self.import_package('ioerror-control')
-        self.assert_importer_failed()
-        self.assert_email_with('No such file or directory')
-        self.assert_package_count('hello', '1.0-1', 0)
-        self.assert_package_not_in_repo('hello', '1.0-1')
 
     def test_import_package_control_no_source(self):
         self.import_package('control-no-source')

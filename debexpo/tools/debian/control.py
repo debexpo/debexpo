@@ -151,7 +151,8 @@ class Control():
 
         try:
             fd = open(filename, 'r')
-        except IOError as e:
+        # After dpkg 1.20.0, this will be catched be dpkg-source -x
+        except IOError as e:  # pragma: no cover
             raise ExceptionControl(e)
 
         with fd:
