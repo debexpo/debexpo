@@ -44,6 +44,8 @@ from django.contrib.auth.decorators import login_required
 from debexpo.packages.models import PackageUpload, Package, SourcePackage
 from debexpo.comments.forms import CommentForm
 from debexpo.repository.tasks import remove_from_repository
+from debexpo.tools.gitstorage import GitStorage
+from debexpo.bugs.models import Bug
 
 log = logging.getLogger(__name__)
 
@@ -164,7 +166,14 @@ def delete_package(request, name):
     package.delete()
     log.info('Package deleted: {}'.format(name))
 
+    git_storage_path = getattr(settings, 'GIT_STORAGE', None)
+
+    if git_storage_path:
+        git_storage = GitStorage(git_storage_path, name)
+        git_storage.remove()
+
     remove_from_repository.delay(name)
+    Bug.objects.remove_bugs(package)
 
     return HttpResponseRedirect(reverse('packages_my'))
 
