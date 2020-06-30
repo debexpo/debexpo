@@ -169,6 +169,7 @@ CELERY_BEAT_SCHEDULER = 'django'
 # Tasks beats
 TASK_IMPORTER_BEAT = 60 * 15  # Every 15 minutes
 TASK_CLEANUPACCOUNTS_BEAT = 60 * 60
+TASK_OLD_UPLOADS_BEAT = 10 * 60
 
 # Account registration expiration
 REGISTRATION_EXPIRATION_DAYS = 7
@@ -197,3 +198,6 @@ BUGS_REPORT_NOT_OPEN = True
 
 # Debian tracker access
 TRACKER_URL = 'https://tracker.debian.org'
+
+# Cleanup package older than NN weeks
+MAX_AGE_UPLOAD_WEEKS = 20
