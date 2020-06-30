@@ -55,8 +55,9 @@ class GitStorage():
 
         return ref
 
-    # def remove(self, source):
-    #     pass
+    def remove(self):
+        if isdir(self.repository):
+            rmtree(self.repository)
 
     # def diff(self, upload_from, upload_to):
     #     pass
