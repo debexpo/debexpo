@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
-#
 #   test_removeolduploads.py - Test the removeolduploads cronjob
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
+#   Copyright © 2019-2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -27,71 +25,27 @@
 #   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
-
-__author__ = 'Baptiste BEAUPLAT'
-__copyright__ = 'Copyright © 2019 Baptiste BEAUPLAT'
-__license__ = 'MIT'
-
-from mako.lookup import TemplateLookup
-from mako.template import Template
-from os.path import join, dirname
-from pylons.test import pylonsapp
-
-import apt_pkg
 import datetime
-import email.parser
 import logging
-import pylons
-import sqlalchemy.orm.exc as orm_exc
 
-from debexpo.controllers.package import PackageController
-from debexpo.controllers.packages import PackagesController
-from debexpo.lib.email import Email
-from debexpo.model.users import User
-from debexpo.model.packages import Package
-from debexpo.model.package_versions import PackageVersion
-from debexpo.tests.cronjobs import TestCronjob
+# from debexpo.lib.email import Email
+from debexpo.accounts.models import User
+from debexpo.packages.models import Package, PackageUpload, Distribution, \
+                                    Component
+from tests import TestController
+from debexpo.packages.tasks import remove_old_uploads
 
 log = logging.getLogger(__name__)
 
 
-class TestCronjobRemoveOldUploads(TestCronjob):
+class TestCronjobRemoveOldUploads(TestController):
     def setUp(self):
-        self.nntp_server = pylonsapp.config['debexpo.nntp_server']
-        pylonsapp.config['debexpo.nntp_server'] = None
-
-        self._setup_plugin('removeolduploads', run_setup=False)
-        self._finish_setup_plugin()
-        self._create_user()
+        self._setup_example_user()
         self.state = []
 
     def tearDown(self):
-        pylonsapp.config['debexpo.nntp_server'] = self.nntp_server
-        self._remove_packages()
-        self._remove_user()
-
-    # This is needed since we do not call the plugin setup (to avoid the NNTP
-    # connection)
-    def _finish_setup_plugin(self):
-        self.plugin.mailer = Email('upload_removed_from_expo')
-        self.plugin.pkg_controller = PackageController()
-        self.plugin.pkgs_controller = PackagesController()
-        apt_pkg.init_system()
-        self.plugin.last_cruft_run = datetime.datetime(year=1970,
-                                                       month=1,
-                                                       day=1)
-
-    def _create_user(self):
-        user = User(name='Test user',
-                    email='test.user@example.org',
-                    password='password',
-                    lastlogin=datetime.datetime.now())
-        self.db.add(user)
-        self.db.commit()
-
-    def _remove_user(self):
-        user = self.db.query(User).one()
-        self.db.delete(user)
+        Package.objects.all().delete()
+        self._remove_example_user()
 
     def _setup_packages(self, include_expired=False):
         packages = [
@@ -114,53 +68,48 @@ class TestCronjobRemoveOldUploads(TestCronjob):
             if not expired:
                 self.state.append((package, version, distrib))
 
-        self.db.commit()
-
     def _create_package(self, name, version_number, distrib, is_expired):
         date = datetime.datetime.now()
-        user = self.db.query(User).one()
+        user = User.objects.first()
 
         try:
-            package = self.db.query(Package).filter_by(name=name).one()
-        except orm_exc.NoResultFound:
-            package = Package(name=name,
-                              user=user)
+            package = Package.objects.get(name=name)
+        except Package.DoesNotExist:
+            package = Package(name=name)
 
         if is_expired:
             date -= datetime.timedelta(days=365)
 
-        version = PackageVersion(package=package,
-                                 version=version_number,
-                                 maintainer='vtime@example.org',
-                                 section='main',
-                                 distribution=distrib,
-                                 qa_status=0,
-                                 component='tools',
-                                 uploaded=date)
+        package.full_clean()
+        package.save()
 
-        self.db.add(version)
+        upload = PackageUpload(
+            package=package,
+            version=version_number,
+            uploader=user,
+            changes='changes',
+            distribution=Distribution.objects.get(name=distrib),
+            component=Component.objects.get_or_create(name='tools')[0])
 
-    def _remove_packages(self):
-        packages = self.db.query(Package)
+        upload.full_clean()
+        upload.save()
 
-        for package in packages:
-            self.db.delete(package)
-
-        self.db.commit()
+        PackageUpload.objects.filter(id=upload.id).update(
+            uploaded=date.replace(tzinfo=datetime.timezone.utc))
 
     def _assert_cronjob_success(self):
-        packages = self.db.query(Package)
+        packages = Package.objects.all()
         count = 0
 
         # Each package exists in state
         for package in packages:
-            for version in package.package_versions:
-                log.debug('validating {}-{}/{}'.format(package.name,
-                                                       version.version,
-                                                       version.distribution))
-                self.assertTrue((package.name,
-                                 version.version,
-                                 version.distribution) in self.state)
+            for upload in package.packageupload_set.all():
+                log.info('validating {}-{}/{}'.format(package.name,
+                                                      upload.version,
+                                                      upload.distribution.name))
+                self.assertIn((package.name,
+                               upload.version,
+                               upload.distribution.name), self.state)
                 count += 1
 
         # Each state exists in package
@@ -175,31 +124,16 @@ class TestCronjobRemoveOldUploads(TestCronjob):
 
         self.state = new_state
 
-    def _build_email(self, package):
-        (name, version, distrib) = package
-        c = {'name': name, 'version': version, 'distrib': distrib}
-        template_file = join(dirname(__file__), 'email/accept.mako')
-        lookup = TemplateLookup(directories=[dirname(template_file)])
-        template = Template(
-            filename=template_file, lookup=lookup,
-            module_directory=pylons.config['app_conf']['cache_dir'])
-
-        return email.message_from_string(template.render_unicode(c=c))
-
     def _invoke_plugin(self, uploaded):
-        for package in uploaded:
-            message = self._build_email(package)
-            self.plugin._process_changes(message)
-
-        self.plugin._remove_old_packages()
+        remove_old_uploads()
 
     def test_remove_uploads_noop_no_packages(self):
         self._invoke_plugin([])
         self._assert_cronjob_success()
 
-    def test_remove_uploads_inexistant_package(self):
-        self._invoke_plugin([('inexistant_package', '1.0.0', 'unstable')])
-        self._assert_cronjob_success()
+    # def test_remove_uploads_inexistant_package(self):
+    #     self._invoke_plugin([('inexistant_package', '1.0.0', 'unstable')])
+    #     self._assert_cronjob_success()
 
     def test_remove_uploads_noop_with_packages(self):
         self._setup_packages()
@@ -211,33 +145,33 @@ class TestCronjobRemoveOldUploads(TestCronjob):
         self._invoke_plugin([])
         self._assert_cronjob_success()
 
-    def test_remove_uploads_keep_other_dists(self):
-        removed_packages = [
-                ('htop', '1.0.0', 'unstable'),
-                ('htop', '0.9.0', 'unstable'),
-            ]
+    # def test_remove_uploads_keep_other_dists(self):
+    #     removed_packages = [
+    #             ('htop', '1.0.0', 'unstable'),
+    #             ('htop', '0.9.0', 'unstable'),
+    #         ]
 
-        self._setup_packages()
-        self._invoke_plugin([('htop', '1.0.0', 'unstable')])
-        self._expect_package_removal(removed_packages)
-        self._assert_cronjob_success()
+    #     self._setup_packages()
+    #     self._invoke_plugin([('htop', '1.0.0', 'unstable')])
+    #     self._expect_package_removal(removed_packages)
+    #     self._assert_cronjob_success()
 
-    def test_remove_uploads_same_version(self):
-        removed_packages = [
-                ('zsh', '1.0.0', 'unstable'),
-            ]
+    # def test_remove_uploads_same_version(self):
+    #     removed_packages = [
+    #             ('zsh', '1.0.0', 'unstable'),
+    #         ]
 
-        self._setup_packages()
-        self._invoke_plugin([('zsh', '1.0.0', 'unstable')])
-        self._expect_package_removal(removed_packages)
-        self._assert_cronjob_success()
+    #     self._setup_packages()
+    #     self._invoke_plugin([('zsh', '1.0.0', 'unstable')])
+    #     self._expect_package_removal(removed_packages)
+    #     self._assert_cronjob_success()
 
-    def test_remove_uploads_keep_newer(self):
-        removed_packages = [
-                ('htop', '0.9.0', 'unstable'),
-            ]
+    # def test_remove_uploads_keep_newer(self):
+    #     removed_packages = [
+    #             ('htop', '0.9.0', 'unstable'),
+    #         ]
 
-        self._setup_packages()
-        self._invoke_plugin([('htop', '0.9.0', 'unstable')])
-        self._expect_package_removal(removed_packages)
-        self._assert_cronjob_success()
+    #     self._setup_packages()
+    #     self._invoke_plugin([('htop', '0.9.0', 'unstable')])
+    #     self._expect_package_removal(removed_packages)
+    #     self._assert_cronjob_success()
