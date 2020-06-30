@@ -360,6 +360,9 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_count('hello', '1.0-1', 2)
         self.assert_package_in_repo('hello', '1.0-1')
 
+        self.remove_package('hello', '1.0-1')
+        self._assert_no_leftover(str(join(self.repository, 'pool')))
+
     def test_import_package_htop_download_orig(self):
         self.import_package('orig-from-official')
         self.assert_importer_succeeded()
@@ -387,6 +390,9 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
                          'htop_2.2.0.orig.tar.gz',
                          'htop_2.2.0.orig.tar.gz.asc'):
             self.assert_file_in_repo(filename)
+
+        self.remove_package('htop', '2.2.0-1')
+        self._assert_no_leftover(str(join(self.repository, 'pool')))
 
     # Since we cannot really make the importer fail (it is not supposed to
     # happend), we test that the field method can report an error to admins and
