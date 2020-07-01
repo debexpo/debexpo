@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
+#   models.py - model definition for nntp
 #
-#   data_store.py - Generic, general purpose data store
-#
-#   This file is part of debexpo -
+#   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2011 Arno Töll <debian@toell.net>
+#   Copyright © 2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -27,45 +25,13 @@
 #   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
-
-"""
-Holds data_store model
-"""
-
-__author__ = 'Arno Töll'
-__copyright__ = 'Copyright © 2011 Arno Töll'
-__license__ = 'MIT'
-
-import sqlalchemy as sa
-from sqlalchemy import orm
-
-from debexpo.model import meta, OrmObject
-
-t_user_countries = sa.Table(
-    'data_store', meta.metadata,
-    sa.Column('namespace', sa.types.String(100), primary_key=True),
-    sa.Column('code', sa.types.String(100), primary_key=True, nullable=False),
-    sa.Column('value', sa.types.String(100), nullable=True)
-    )
+from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
-class DataStore(OrmObject):
-    pass
+class NNTPFeed(models.Model):
+    namespace = models.TextField(verbose_name=_('Namespace'))
+    name = models.TextField(verbose_name=_('List name'))
+    last = models.TextField(verbose_name=_('Last message processed'))
 
-
-orm.mapper(DataStore, t_user_countries)
-
-
-def fill_data_store():
-    import debexpo.model.data.data_store_init
-    import logging
-    for data in debexpo.model.data.data_store_init.DATA_STORE_INIT_OBJECTS:
-        query = meta.session.query(DataStore) \
-            .filter(DataStore.code == data.code) \
-            .filter(DataStore.namespace == data.namespace) \
-            .count()
-        if (query):
-            continue
-        logging.info("Pre-configure value %s.%s" % (data.namespace, data.code))
-        meta.session.add(data)
-    meta.session.commit()
+    unique_together = ('namespace', 'name',)
