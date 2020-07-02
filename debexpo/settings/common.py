@@ -74,7 +74,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            'tests/unit/tools/templates'
+            'tests/unit/tools/templates',
+            'tests/functional/packages/templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
