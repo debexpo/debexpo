@@ -44,21 +44,31 @@ class TestPackageController(TestController):
         self._remove_example_package()
         self._remove_example_user()
 
-    def _test_bad_method(self, action):
+    def _test_bad_method(self, action, args=None):
+        if not args:
+            args = []
+
         self.client.post(reverse('login'), self._AUTHDATA)
 
         response = self.client.get(reverse(
-            action, args=['testpackage']))
+            action, args=['testpackage'] + args))
         self.assertEquals(response.status_code, 405)
 
-    def _test_no_auth(self, action, redirect_login=True):
+    def _test_no_auth(self, action, redirect_login=True, args=None):
+        if not args:
+            args = []
+
         response = self.client.post(reverse(
-            action, args=['testpackage']))
+            action, args=['testpackage'] + args))
         self.assertEquals(response.status_code, 302)
+
         if (redirect_login):
             self.assertIn(reverse('login'), response.url)
 
-    def _test_not_owned_package(self, action, method='get'):
+    def _test_not_owned_package(self, action, method='get', args=None):
+        if not args:
+            args = []
+
         user = User.objects.create_user(name='Another user',
                                         email='another@example.com',
                                         password='password')
@@ -68,7 +78,8 @@ class TestPackageController(TestController):
                                             'password': 'password',
                                             'commit': 'submit'})
 
-        response = self.client.post(reverse(action, args=['testpackage']))
+        response = self.client.post(reverse(action,
+                                            args=['testpackage'] + args))
         self.assertEquals(response.status_code, 403)
         user.delete()
 
@@ -157,12 +168,15 @@ class TestPackageController(TestController):
 
     def test_delete_no_auth(self):
         self._test_no_auth('delete_package')
+        self._test_no_auth('delete_upload', args=['1'])
 
     def test_delete_not_owned_package(self):
         self._test_not_owned_package('delete_package')
+        self._test_not_owned_package('delete_upload', args=['1'])
 
     def test_delete_bad_method(self):
         self._test_bad_method('delete_package')
+        self._test_bad_method('delete_upload', args=['1'])
 
 #    def test_delete_gitstorage_utf8(self):
 #        gitdir = join(pylons.test.pylonsapp.config['debexpo.repository'],
@@ -184,6 +198,28 @@ class TestPackageController(TestController):
         self.assertTrue(reverse('packages_my'), response.url)
         self.assertRaises(Package.DoesNotExist, Package.objects.get,
                           name='testpackage')
+
+    def test_delete_upload_successful(self):
+        self.client.post(reverse('login'), self._AUTHDATA)
+
+        response = self.client.post(reverse(
+            'delete_upload', args=['testpackage', '1']))
+
+        self.assertEquals(response.status_code, 302)
+        self.assertTrue(reverse('packages_my'), response.url)
+        self.assertRaises(Package.DoesNotExist, Package.objects.get,
+                          name='testpackage')
+
+    def test_delete_single_upload_successful(self):
+        self._setup_example_package()
+        self.client.post(reverse('login'), self._AUTHDATA)
+
+        response = self.client.post(reverse(
+            'delete_upload', args=['testpackage', '1']))
+
+        self.assertEquals(response.status_code, 302)
+        self.assertTrue(reverse('package', args=['testpackage']), response.url)
+        Package.objects.get(name='testpackage')
 
     def test_comment_no_auth(self):
         self._test_no_auth('comment_package')
