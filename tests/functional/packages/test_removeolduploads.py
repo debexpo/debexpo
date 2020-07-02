@@ -27,13 +27,15 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 import datetime
 import logging
+from email import message_from_string
 
 # from debexpo.lib.email import Email
 from debexpo.accounts.models import User
 from debexpo.packages.models import Package, PackageUpload, Distribution, \
                                     Component
 from tests import TestController
-from debexpo.packages.tasks import remove_old_uploads
+from debexpo.packages.tasks import remove_old_uploads, remove_uploaded_packages
+from debexpo.tools.email import Email
 
 log = logging.getLogger(__name__)
 
@@ -124,54 +126,100 @@ class TestCronjobRemoveOldUploads(TestController):
 
         self.state = new_state
 
-    def _invoke_plugin(self, uploaded):
-        remove_old_uploads()
+    def remove_upload_accepted(self, uploaded, down=False, garbage=False):
+        remove_uploaded_packages(FakeNNTPClient(uploaded, down, garbage))
 
     def test_remove_uploads_noop_no_packages(self):
-        self._invoke_plugin([])
+        remove_old_uploads()
         self._assert_cronjob_success()
 
-    # def test_remove_uploads_inexistant_package(self):
-    #     self._invoke_plugin([('inexistant_package', '1.0.0', 'unstable')])
-    #     self._assert_cronjob_success()
+    def test_remove_uploads_server_down(self):
+        self.remove_upload_accepted([], True)
+        self._assert_cronjob_success()
+
+    def test_remove_uploads_server_garbage(self):
+        self.remove_upload_accepted([], False, True)
+        self._assert_cronjob_success()
+
+    def test_remove_uploads_inexistant_package(self):
+        self.remove_upload_accepted([('inexistant_package', '1.0.0',
+                                      'unstable')])
+        self._assert_cronjob_success()
 
     def test_remove_uploads_noop_with_packages(self):
         self._setup_packages()
-        self._invoke_plugin([])
+        remove_old_uploads()
         self._assert_cronjob_success()
 
     def test_remove_uploads_expired(self):
         self._setup_packages(include_expired=True)
-        self._invoke_plugin([])
+        remove_old_uploads()
         self._assert_cronjob_success()
 
-    # def test_remove_uploads_keep_other_dists(self):
-    #     removed_packages = [
-    #             ('htop', '1.0.0', 'unstable'),
-    #             ('htop', '0.9.0', 'unstable'),
-    #         ]
+    def test_remove_uploads_keep_other_dists(self):
+        removed_packages = [
+                ('htop', '1.0.0', 'unstable'),
+                ('htop', '0.9.0', 'unstable'),
+            ]
 
-    #     self._setup_packages()
-    #     self._invoke_plugin([('htop', '1.0.0', 'unstable')])
-    #     self._expect_package_removal(removed_packages)
-    #     self._assert_cronjob_success()
+        self._setup_packages()
+        self.remove_upload_accepted([('htop', '1.0.0', 'unstable')])
+        self._expect_package_removal(removed_packages)
+        self._assert_cronjob_success()
 
-    # def test_remove_uploads_same_version(self):
-    #     removed_packages = [
-    #             ('zsh', '1.0.0', 'unstable'),
-    #         ]
+    def test_remove_uploads_same_version(self):
+        removed_packages = [
+                ('zsh', '1.0.0', 'unstable'),
+            ]
 
-    #     self._setup_packages()
-    #     self._invoke_plugin([('zsh', '1.0.0', 'unstable')])
-    #     self._expect_package_removal(removed_packages)
-    #     self._assert_cronjob_success()
+        self._setup_packages()
+        self.remove_upload_accepted([('zsh', '1.0.0', 'unstable')])
+        self._expect_package_removal(removed_packages)
+        self._assert_cronjob_success()
 
-    # def test_remove_uploads_keep_newer(self):
-    #     removed_packages = [
-    #             ('htop', '0.9.0', 'unstable'),
-    #         ]
+    def test_remove_uploads_keep_newer(self):
+        removed_packages = [
+                ('htop', '0.9.0', 'unstable'),
+            ]
 
-    #     self._setup_packages()
-    #     self._invoke_plugin([('htop', '0.9.0', 'unstable')])
-    #     self._expect_package_removal(removed_packages)
-    #     self._assert_cronjob_success()
+        self._setup_packages()
+        self.remove_upload_accepted([('htop', '0.9.0', 'unstable')])
+        self._expect_package_removal(removed_packages)
+        self._assert_cronjob_success()
+
+
+class FakeNNTPClient():
+    def __init__(self, uploads, down=False, garbage=False):
+        self.uploads = uploads
+        self.iter = 0
+        self.down = down
+        self.garbage = garbage
+
+    def connect_to_server(self):
+        return not self.down
+
+    def disconnect_from_server(self):
+        return True
+
+    def unread_messages(self, name, last):
+        self.iter += 1
+
+        if self.iter == 1:
+            if self.garbage:
+                for item in [None,
+                             message_from_string('Subject: test\n\ntest')]:
+                    yield item
+            else:
+                for upload in self.uploads:
+                    yield self._build_nntp_response(upload)
+
+    def _build_nntp_response(self, upload):
+        email = Email('test-upload-accepted.html')
+        body = message_from_string(email._render_content([], **{
+            'name': upload[0],
+            'version': upload[1],
+            'distrib': upload[2],
+        }))
+        body['X-Debexpo-Message-Number'] = 42
+
+        return body
