@@ -28,16 +28,22 @@
 import datetime
 import logging
 from email import message_from_string
+from http.server import BaseHTTPRequestHandler
 
 # from debexpo.lib.email import Email
 from debexpo.accounts.models import User
 from debexpo.packages.models import Package, PackageUpload, Distribution, \
                                     Component
-from tests import TestController
+from tests import TestController, TestingHTTPServer
 from debexpo.packages.tasks import remove_old_uploads, remove_uploaded_packages
 from debexpo.tools.email import Email
 
 log = logging.getLogger(__name__)
+PACKAGE_IN_NEW = '''Source: tmux
+Version: 1.0.0
+Distribution: unstable
+
+Source: Missing-other-fields'''
 
 
 class TestCronjobRemoveOldUploads(TestController):
@@ -127,7 +133,26 @@ class TestCronjobRemoveOldUploads(TestController):
         self.state = new_state
 
     def remove_upload_accepted(self, uploaded, down=False, garbage=False):
-        remove_uploaded_packages(FakeNNTPClient(uploaded, down, garbage))
+        removed_packages = (
+            ('tmux', '1.0.0', 'unstable'),
+            ('tmux', '1.0.0', 'UNRELEASED'),
+        )
+
+        self._expect_package_removal(removed_packages)
+        with TestingHTTPServer(FTPMasterPackageInNewHTTPHandler) as httpd:
+            with self.settings(
+                    FTP_MASTER_NEW_PACKAGES_URL='http://localhost:'
+                                                f'{httpd.port}'):
+                remove_uploaded_packages(FakeNNTPClient(uploaded, down,
+                                                        garbage))
+
+    def test_package_in_new_server_error(self):
+        with TestingHTTPServer(FTPMasterPackageInNewErrorHTTPHandler) as httpd:
+            with self.settings(
+                    FTP_MASTER_NEW_PACKAGES_URL='http://localhost:'
+                                                f'{httpd.port}'):
+                remove_uploaded_packages(FakeNNTPClient([]))
+        self._assert_cronjob_success()
 
     def test_remove_uploads_noop_no_packages(self):
         remove_old_uploads()
@@ -186,6 +211,19 @@ class TestCronjobRemoveOldUploads(TestController):
         self.remove_upload_accepted([('htop', '0.9.0', 'unstable')])
         self._expect_package_removal(removed_packages)
         self._assert_cronjob_success()
+
+
+class FTPMasterPackageInNewHTTPHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200, 'OK')
+        self.end_headers()
+        self.wfile.write(bytes(PACKAGE_IN_NEW, 'UTF-8'))
+
+
+class FTPMasterPackageInNewErrorHTTPHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(500, 'Internal Server Error')
+        self.end_headers()
 
 
 class FakeNNTPClient():
