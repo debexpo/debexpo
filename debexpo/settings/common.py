@@ -201,6 +201,7 @@ BUGS_REPORT_NOT_OPEN = True
 
 # Debian tracker access
 TRACKER_URL = 'https://tracker.debian.org'
+FTP_MASTER_NEW_PACKAGES_URL = 'https://ftp-master.debian.org/new.822'
 
 # Cleanup package older than NN weeks
 MAX_AGE_UPLOAD_WEEKS = 20

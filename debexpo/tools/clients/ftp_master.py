@@ -26,8 +26,12 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+from debian.deb822 import Deb822, Changes
+
+from django.conf import settings
+
 from debexpo.tools.files import CheckSumedFile
-from debexpo.tools.clients import ClientJsonAPI
+from debexpo.tools.clients import ClientJsonAPI, ClientHTTP
 import debexpo.repository.models as repository
 
 
@@ -50,3 +54,14 @@ class ClientFTPMasterAPI(ClientJsonAPI):
                 origin_files.append(origin)
 
         return origin_files
+
+
+class ClientFTPMaster(ClientHTTP):
+    def get_packages_uploaded_to_new(self):
+        packages = []
+        content = self.fetch_resource(settings.FTP_MASTER_NEW_PACKAGES_URL)
+
+        for package in Deb822.iter_paragraphs(content):
+            packages.append(Changes(package))
+
+        return packages
