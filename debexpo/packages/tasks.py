@@ -35,6 +35,7 @@ from debian.debian_support import NativeVersion
 
 from django.conf import settings
 from django.db.models import Max
+from django.db import transaction
 
 from debexpo.packages.models import Package, PackageUpload
 from debexpo.repository.models import Repository
@@ -43,10 +44,13 @@ from debexpo.bugs.models import Bug
 from debexpo.tools.gitstorage import GitStorage
 from debexpo.nntp.models import NNTPFeed
 from debexpo.tools.nntp import NNTPClient
+from debexpo.tools.clients import ExceptionClient
+from debexpo.tools.clients.ftp_master import ClientFTPMaster
 
 log = getLogger(__name__)
 
 
+@transaction.atomic
 def remove_uploads(uploads):
     removals = set()
     repository = Repository(settings.REPOSITORY)
@@ -93,15 +97,11 @@ def remove_old_uploads():
         .filter(latest_upload__lt=expiration_date)
 
     uploads = set()
-    from logging import getLogger
-    log = getLogger(__name__)
 
     for package in packages:
         uploads.update(PackageUpload.objects.filter(
             package__name=package['name'],
             distribution=package['packageupload__distribution']))
-
-    log.debug(f'uploads to remove: {uploads}')
 
     removals = remove_uploads(uploads)
     notify_uploaders(removals, reason='Your package found no sponsor for '
@@ -120,8 +120,51 @@ def notify_uploaders(removals, reason):
 
 @periodic_task(run_every=settings.TASK_ACCEPTED_UPLOADS_BEAT)
 def remove_uploaded_packages(client=None):
-    feeds = NNTPFeed.objects.filter(namespace='remove_uploads')
+    uploads_to_archive = set()
+    uploads_to_new = set()
+
+    uploads_to_archive.update(get_packages_uploaded_to_archive(client))
+    uploads_to_new.update(get_packages_uploaded_to_new())
+
+    removals_from_archive = remove_uploads(uploads_to_archive)
+    removals_from_new = remove_uploads(uploads_to_new)
+
+    mark_packages_as_uploaded(set([removal[0] for removal in
+                                   removals_from_archive]), debian=True)
+    mark_packages_as_uploaded(set([removal[0] for removal in
+                                   removals_from_new]))
+
+    notify_uploaders(removals_from_archive,
+                     reason='Your package was uploaded to the '
+                            'official Debian archive')
+    notify_uploaders(removals_from_new,
+                     reason='Your package was uploaded to the '
+                            'NEW queue')
+
+
+def get_packages_uploaded_to_new():
     uploads = set()
+    ftp_master = ClientFTPMaster()
+
+    try:
+        packages = ftp_master.get_packages_uploaded_to_new()
+    except ExceptionClient as e:
+        log.warning(f'Could not retrive package uploaded to new: {e}')
+        return []
+
+    for changes in packages:
+        try:
+            uploads.update(process_accepted_changes(changes))
+        except Exception as e:
+            log.warning(f'Failed to process package in NEW {changes} '
+                        f'{e}')
+
+    return uploads
+
+
+def get_packages_uploaded_to_archive(client):
+    uploads = set()
+    feeds = NNTPFeed.objects.filter(namespace='remove_uploads')
 
     # We allow the caller to define another NNTPClient, if not fallback to the
     # default one. This is for testing purposes only: easier than setting up a
@@ -130,50 +173,70 @@ def remove_uploaded_packages(client=None):
         client = NNTPClient()
 
     if not client.connect_to_server():
-        return
+        return []
 
     for feed in feeds:
         last = feed.last
 
         for msg in client.unread_messages(feed.name, feed.last):
             try:
-                uploads.update(process_accepted_changes(msg))
+                changes = convert_mail_to_changes(msg)
+                uploads.update(process_accepted_changes(changes))
             except Exception as e:
                 log.warning('Failed to process message after '
                             f'#{last} on '
-                            f'{feed.name}: {str(e)}')
+                            f'{feed.name}: {e}')
             else:
                 last = msg['X-Debexpo-Message-Number']
 
         feed.last = last
 
     client.disconnect_from_server()
-    removals = remove_uploads(uploads)
-    notify_uploaders(removals, reason='Your package was uploaded to the '
-                                      'official Debian archive')
 
     for feed in feeds:
         feed.full_clean()
         feed.save()
 
+    return uploads
 
-def process_accepted_changes(mail):
+
+def mark_packages_as_uploaded(packages, debian=False):
+    for name in packages:
+        try:
+            package = Package.objects.get(name=name)
+        except Package.DoesNotExist:
+            continue
+
+        if debian:
+            package.in_debian = True
+        package.needs_sponsor = False
+        package.full_clean()
+        package.save()
+
+
+def convert_mail_to_changes(mail):
     if not mail or mail.is_multipart():
         return
 
     changes = mail.get_payload(decode=True)
     changes = Changes(changes)
 
-    if 'Source' not in changes \
+    return changes
+
+
+def process_accepted_changes(changes):
+    if not changes or \
+            'Source' not in changes \
             or 'Distribution' not in changes \
             or 'Version' not in changes:
-        raise Exception(f'Missing required keys in changes: {changes}')
+        raise Exception(f'Cannot process accepted upload: {changes}')
 
     uploads = PackageUpload.objects.filter(
         package__name=changes['Source'],
-        distribution__name=changes['Distribution'])
+        distribution__name__in=(changes['Distribution'], 'UNRELEASED',))
 
     return [
         upload for upload in uploads
-        if NativeVersion(upload.version) <= NativeVersion(changes['Version'])
+        if NativeVersion(upload.version) <= NativeVersion(changes['Version']) or
+        upload.distribution.name == 'UNRELEASED'
     ]
