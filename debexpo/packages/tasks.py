@@ -84,6 +84,10 @@ def remove_uploads(uploads):
 
     repository.update()
 
+    for package, distribution, uploader in removals:
+        log.info(f'Removed package {package}, from {distribution}, '
+                 f'uploaded by {uploader}')
+
     return removals
 
 
