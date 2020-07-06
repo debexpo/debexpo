@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'debexpo.repository',
     'debexpo.plugins',
     'debexpo.bugs',
+    'debexpo.nntp',
 ]
 
 MIDDLEWARE = [
@@ -72,9 +73,6 @@ ROOT_URLCONF = 'debexpo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            'tests/unit/tools/templates'
-        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -168,7 +166,9 @@ CELERY_BEAT_SCHEDULER = 'django'
 
 # Tasks beats
 TASK_IMPORTER_BEAT = 60 * 15  # Every 15 minutes
-TASK_CLEANUPACCOUNTS_BEAT = 60 * 60
+TASK_CLEANUPACCOUNTS_BEAT = 60 * 60  # Every hours
+TASK_OLD_UPLOADS_BEAT = 60 * 10  # Every 10 minutes
+TASK_ACCEPTED_UPLOADS_BEAT = 60 * 10  # Every 10 minutes
 
 # Account registration expiration
 REGISTRATION_EXPIRATION_DAYS = 7
@@ -197,3 +197,7 @@ BUGS_REPORT_NOT_OPEN = True
 
 # Debian tracker access
 TRACKER_URL = 'https://tracker.debian.org'
+FTP_MASTER_NEW_PACKAGES_URL = 'https://ftp-master.debian.org/new.822'
+
+# Cleanup package older than NN weeks
+MAX_AGE_UPLOAD_WEEKS = 20

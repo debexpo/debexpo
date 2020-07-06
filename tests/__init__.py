@@ -153,8 +153,7 @@ Xcgnuh6Rlywt6uiaFIGYnGefYPGXRAA=
         """
         user = User.objects.get(email='email@example.com')
 
-        package = Package(name='testpackage')
-        package.save()
+        package = Package.objects.get_or_create(name='testpackage')[0]
 
         package_upload = PackageUpload(
             uploader=user,
@@ -182,8 +181,8 @@ Xcgnuh6Rlywt6uiaFIGYnGefYPGXRAA=
 
         binary.save()
 
-        package = Package(name='anotherpackage', in_debian=True)
-        package.save()
+        package = Package.objects.get_or_create(name='anotherpackage',
+                                                in_debian=True)[0]
 
         package_upload = PackageUpload(
             uploader=user,

@@ -44,6 +44,9 @@ from django.contrib.auth.decorators import login_required
 from debexpo.packages.models import PackageUpload, Package, SourcePackage
 from debexpo.comments.forms import CommentForm
 from debexpo.repository.tasks import remove_from_repository
+from debexpo.tools.gitstorage import GitStorage
+from debexpo.bugs.models import Bug
+from debexpo.packages.tasks import remove_uploads
 
 log = logging.getLogger(__name__)
 
@@ -151,6 +154,28 @@ def package(request, name):
 
 
 @login_required
+def delete_upload(request, name, upload):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+
+    upload = get_object_or_404(PackageUpload, id=upload)
+    package = upload.package.name
+
+    if (request.user != upload.uploader and not
+            request.user.is_superuser):
+        return HttpResponseForbidden()
+
+    remove_uploads([upload])
+
+    try:
+        Package.objects.get(name=package)
+    except Package.DoesNotExist:
+        return HttpResponseRedirect(reverse('packages_my'))
+    else:
+        return HttpResponseRedirect(reverse('package', args=[package]))
+
+
+@login_required
 def delete_package(request, name):
     if request.method != 'POST':
         return HttpResponseNotAllowed(['POST'])
@@ -164,7 +189,14 @@ def delete_package(request, name):
     package.delete()
     log.info('Package deleted: {}'.format(name))
 
+    git_storage_path = getattr(settings, 'GIT_STORAGE', None)
+
+    if git_storage_path:
+        git_storage = GitStorage(git_storage_path, name)
+        git_storage.remove()
+
     remove_from_repository.delay(name)
+    Bug.objects.remove_bugs(package)
 
     return HttpResponseRedirect(reverse('packages_my'))
 

@@ -40,6 +40,7 @@ from django_redis.pool import ConnectionFactory
 
 from debexpo.importer.models import Importer, Spool
 from debexpo.packages.models import Package, PackageUpload
+from debexpo.packages.tasks import remove_uploads
 from debexpo.accounts.models import User
 from debexpo.comments.models import PackageSubscription
 from debexpo.plugins.models import PluginResults
@@ -139,6 +140,13 @@ class TestImporterController(TestController):
             if name in files:
                 result.append(join(root, name))
         return result
+
+    def remove_package(self, package, version):
+        uploads = PackageUpload.objects.filter(package__name=package,
+                                               version=version)
+
+        with self.settings(REPOSITORY=self.repository):
+            remove_uploads(uploads)
 
     def import_source_package(self, package_dir, skip_gpg=False,
                               skip_email=False, base_dir=None):

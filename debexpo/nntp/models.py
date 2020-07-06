@@ -1,4 +1,4 @@
-#   ftp_master.py - Client for ftp-master API
+#   models.py - model definition for nntp
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
@@ -25,43 +25,13 @@
 #   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
-
-from debian.deb822 import Deb822, Changes
-
-from django.conf import settings
-
-from debexpo.tools.files import CheckSumedFile
-from debexpo.tools.clients import ClientJsonAPI, ClientHTTP
-import debexpo.repository.models as repository
+from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
-class ClientFTPMasterAPI(ClientJsonAPI):
-    api = 'https://api.ftp-master.debian.org'
+class NNTPFeed(models.Model):
+    namespace = models.TextField(verbose_name=_('Namespace'))
+    name = models.TextField(verbose_name=_('List name'))
+    last = models.TextField(verbose_name=_('Last message processed'))
 
-    def get_origin_files(self, name, version):
-        pool = repository.Repository.get_pool(name)
-        route = f'{self.api}/file_in_archive/{pool}/{name}' \
-                f'/{name}_{version}%25.orig%25.tar%25'
-        origin_files = []
-
-        content = self.fetch_json_resource(route)
-
-        for match in content:
-            if 'filename' in match and 'sha256sum' in match:
-                origin = CheckSumedFile(match['filename'])
-                origin.add_checksum('sha256', match['sha256sum'])
-
-                origin_files.append(origin)
-
-        return origin_files
-
-
-class ClientFTPMaster(ClientHTTP):
-    def get_packages_uploaded_to_new(self):
-        packages = []
-        content = self.fetch_resource(settings.FTP_MASTER_NEW_PACKAGES_URL)
-
-        for package in Deb822.iter_paragraphs(content):
-            packages.append(Changes(package))
-
-        return packages
+    unique_together = ('namespace', 'name',)

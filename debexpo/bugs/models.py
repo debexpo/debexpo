@@ -130,6 +130,10 @@ class BugManager(models.Manager):
 
         return BugType.bug
 
+    def remove_bugs(self, package):
+        self.get_queryset().filter(sources__name=package, bugtype=BugType.bug) \
+            .delete()
+
     def _guess_packages(self, source, subject):
         packages = []
 

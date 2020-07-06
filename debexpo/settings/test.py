@@ -42,6 +42,12 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
+# Add testing directory templates
+TEMPLATES[0]['DIRS'] = [  # noqa: F405
+    'tests/unit/tools/templates',
+    'tests/functional/packages/templates',
+]
+
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 

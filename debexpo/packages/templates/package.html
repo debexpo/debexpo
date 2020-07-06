@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% load i18n %}
+{% extends "base.html" %}{% load i18n %}{% load static %}
 
 {% block content %}
 {% blocktrans with name=package.name trimmed %}
@@ -71,11 +71,11 @@
             {% csrf_token %}
             {% if user.is_superuser and user not in package.get_uploaders %}
             <td>
-                <input type="submit" name="commit_delete"
+                <input class="confirm" type="submit" name="commit_delete"
                        value="{% trans 'Admin package deletion' %}"></td>
             {% else %}
             <td>
-                <input type="submit" name="commit_delete"
+                <input class="confirm" type="submit" name="commit_delete"
                        value="{% trans 'Delete this package' %}"></td>
             {% endif %}
         </form>
@@ -89,9 +89,30 @@
 
 {% for upload in package.packageupload_set.all %}
 
+<h2 id="upload-{{ forloop.revcounter }}">
 {% blocktrans with index=forloop.revcounter trimmed %}
-<h2 id="upload-{{index}}">Upload #{{ index }}<h2>
+Upload #{{ index }}
 {% endblocktrans %}
+    {% if user in package.get_uploaders or user.is_superuser %}
+        <form class="inline"
+              action="{% url 'delete_upload' package.name upload.id %}"
+              method="post">
+            {% csrf_token %}
+            {% if user.is_superuser and user not in package.get_uploaders %}
+            <img src="{% static "/img/key.png" %}"
+                 alt="{% trans 'Admin flag' %}"/>
+                <input class="confirm" type="image"
+                       src="{% static "/img/trash.png" %}"
+                       alt="{% trans 'Admin upload deletion' %}">
+            {% else %}
+                <input class="confirm" type="image"
+                       src="{% static "/img/trash.png" %}"
+                       alt="{% trans 'Delete this upload' %}">
+            {% endif %}
+        </form>
+
+{% endif %}
+</h2>
 
 <h3>{% trans 'Information' %}</h3>
 

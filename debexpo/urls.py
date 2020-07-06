@@ -40,7 +40,7 @@ from debexpo.base.views import index, contact, intro_reviewers, \
 from debexpo.accounts.views import register, profile
 from debexpo.accounts.forms import PasswordResetForm
 from debexpo.packages.views import package, packages, packages_my, \
-    PackagesFeed, sponsor_package, delete_package
+    PackagesFeed, sponsor_package, delete_package, delete_upload
 from debexpo.comments.views import subscribe, unsubscribe, subscriptions, \
     comment
 from debexpo.importer.views import upload
@@ -113,6 +113,8 @@ urlpatterns = [
     url(r'^packages/$', packages,
         name='packages'),
 
+    url(r'^package/(?P<name>.+)/delete/(?P<upload>[0-9]+)/$', delete_upload,
+        name='delete_upload'),
     url(r'^package/(?P<name>.+)/delete/$', delete_package,
         name='delete_package'),
     url(r'^package/(?P<name>.+)/sponsor/$', sponsor_package,
