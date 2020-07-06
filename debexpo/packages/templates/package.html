@@ -94,7 +94,7 @@
 Upload #{{ index }}
 {% endblocktrans %}
     {% if user in package.get_uploaders or user.is_superuser %}
-        <form id="pageLang"
+        <form class="inline"
               action="{% url 'delete_upload' package.name upload.id %}"
               method="post">
             {% csrf_token %}

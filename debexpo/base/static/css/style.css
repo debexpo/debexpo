@@ -649,6 +649,10 @@ form#pageLang {
     display: inline;
 }
 
+.inline {
+    display: inline;
+}
+
 /* Extras */
 
 input:focus {
