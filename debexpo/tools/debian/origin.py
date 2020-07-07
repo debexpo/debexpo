@@ -30,12 +30,16 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 from os.path import isfile, join
+from logging import getLogger
 
 from django.conf import settings
 
 import debexpo.repository.models as repository
+from debexpo.tools.clients import ExceptionClient
 from debexpo.tools.clients.ftp_master import ClientFTPMasterAPI
 from debexpo.tools.clients.debian_archive import ClientDebianArchive
+
+log = getLogger(__name__)
 
 
 class ExceptionOrigin(Exception):
@@ -78,8 +82,13 @@ class Origin():
 
     def validate(self, source_origin_files):
         client = ClientFTPMasterAPI()
-        archive_origin_files = client.get_origin_files(self.package,
-                                                       self.version)
+        archive_origin_files = []
+
+        try:
+            archive_origin_files = client.get_origin_files(self.package,
+                                                           self.version)
+        except ExceptionClient as e:
+            log.warning(f'Failed to retrive origin info: {e}')
 
         if archive_origin_files:
             for source_file in source_origin_files:
