@@ -99,10 +99,8 @@ Upload #{{ index }}
               method="post">
             {% csrf_token %}
             {% if user.is_superuser and user not in package.get_uploaders %}
-            <img src="{% static "/img/key.png" %}"
-                 alt="{% trans 'Admin flag' %}"/>
                 <input class="confirm" type="image"
-                       src="{% static "/img/trash.png" %}"
+                       src="{% static "/img/admin-trash.png" %}"
                        alt="{% trans 'Admin upload deletion' %}">
             {% else %}
                 <input class="confirm" type="image"
