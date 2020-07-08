@@ -154,7 +154,8 @@ class Spool():
     def get_all_changes(self, queue):
         changes = []
 
-        for name in glob(join(self.queues[queue], '*.changes')):
+        for name in glob(join(self.queues[queue], '**', '*.changes'),
+                         recursive=True):
             try:
                 changes.append(Changes(name))
             except ExceptionChanges as e:
