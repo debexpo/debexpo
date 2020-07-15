@@ -105,10 +105,13 @@ class TestImporterController(TestController):
     def _cleanup_mailbox(self):
         mail.outbox = []
 
-    def _upload_package(self, package_dir):
+    def _upload_package(self, package_dir, sub_dir=None):
         """Copy a directory content to incoming queue"""
         # copytree dst dir must not exist
         upload_dir = self.spool.get_queue_dir('incoming')
+
+        if sub_dir:
+            upload_dir = join(upload_dir, sub_dir)
 
         if isdir(upload_dir):
             rmtree(upload_dir)
@@ -149,21 +152,22 @@ class TestImporterController(TestController):
             remove_uploads(uploads)
 
     def import_source_package(self, package_dir, skip_gpg=False,
-                              skip_email=False, base_dir=None):
+                              skip_email=False, base_dir=None, sub_dir=None):
         source_package = TestSourcePackage(package_dir, base_dir)
 
         source_package.build()
         self._run_importer(source_package.get_package_dir(), skip_gpg=skip_gpg,
-                           skip_email=skip_email)
+                           skip_email=skip_email, sub_dir=sub_dir)
 
     def import_package(self, package_dir):
         self._run_importer(join(self.data_dir, package_dir))
 
-    def _run_importer(self, package_dir, skip_gpg=False, skip_email=False):
+    def _run_importer(self, package_dir, skip_gpg=False, skip_email=False,
+                      sub_dir=None):
         """Run debexpo importer on package_dir/*.changes"""
         # Copy uplod files to incomming queue
         self.assertTrue(isdir(package_dir))
-        self._upload_package(package_dir)
+        self._upload_package(package_dir, sub_dir)
 
         # Run the importer on change file
         with self.settings(REPOSITORY=self.repository):
