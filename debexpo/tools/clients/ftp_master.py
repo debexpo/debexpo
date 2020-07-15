@@ -36,11 +36,10 @@ import debexpo.repository.models as repository
 
 
 class ClientFTPMasterAPI(ClientJsonAPI):
-    api = 'https://api.ftp-master.debian.org'
-
     def get_origin_files(self, name, version):
+        api = settings.FTP_MASTER_API_URL
         pool = repository.Repository.get_pool(name)
-        route = f'{self.api}/file_in_archive/{pool}/{name}' \
+        route = f'{api}/file_in_archive/{pool}/{name}' \
                 f'/{name}_{version}%25.orig%25.tar%25'
         origin_files = []
 
