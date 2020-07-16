@@ -338,6 +338,22 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
     #     self.assert_package_count('hello', '1.0-1', 1)
     #     self.assert_package_in_repo('hello', '1.0-1')
 
+    def test_import_recursive_pool(self):
+        self.import_source_package('hello', sub_dir='sub')
+        self.assert_importer_succeeded()
+        self.assert_package_count('hello', '1.0-1', 1)
+        self.assert_package_in_repo('hello', '1.0-1')
+
+    def test_import_no_network_access(self):
+        with self.settings(DEBIAN_ARCHIVE_URL='http://no-nxdomain',
+                           TRACKER_URL='http://no-nxdomain',
+                           FTP_MASTER_NEW_PACKAGES_URL='http://no-nxdomain',
+                           FTP_MASTER_API_URL='http://no-nxdomain'):
+            self.import_source_package('hello', sub_dir='sub')
+        self.assert_importer_succeeded()
+        self.assert_package_count('hello', '1.0-1', 1)
+        self.assert_package_in_repo('hello', '1.0-1')
+
     @override_settings()
     def test_import_package_hello(self):
         del settings.GIT_STORAGE
