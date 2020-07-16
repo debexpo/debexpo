@@ -36,15 +36,15 @@ master_doc = 'index'
 
 # General substitutions.
 project = 'debexpo'
-copyright = '2008-2019 Debexpo contributors'
+copyright = '2008-2020 Debexpo contributors'
 
 # The default replacements for |version| and |release|, also used in various
 # other places throughout the built documents.
 #
 # The short X.Y version.
-version = '2.2'
+version = '2.3'
 # The full version, including alpha/beta/rc tags.
-release = '2.2'
+release = '2.3'
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
