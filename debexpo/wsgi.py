@@ -27,9 +27,13 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 import os
+import sys
 
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'debexpo.settings.debexpo')
+
+project_root = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
+sys.path.append(project_root)
 
 application = get_wsgi_application()

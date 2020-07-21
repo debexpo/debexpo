@@ -3,7 +3,7 @@
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
+#   Copyright © 2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -27,7 +27,7 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 from .common import *  # noqa
-from os import path
+from os import path, getenv
 
 try:
     with open(path.join(path.dirname(path.abspath(__file__)),
@@ -40,7 +40,6 @@ if len(secret_key) < 64:
     raise Exception('Secret key too weak. Must be at least 64 char.')
 
 SECRET_KEY = secret_key
-DEBUG = False
 ALLOWED_HOSTS = ['mentors.debian.net']
 
 # Database
@@ -48,8 +47,8 @@ ALLOWED_HOSTS = ['mentors.debian.net']
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': path.join(BASE_DIR, 'db.sqlite3'),  # noqa: F405
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'debexpo'
     }
 }
 
@@ -60,6 +59,14 @@ SITE_TITLE = 'Mentors'
 HOSTING_URL = 'https://www.wavecon.de/'
 HOSTING = 'Wavecon'
 
+# Spool settings
+UPLOAD_SPOOL = '/var/spool/debexpo'
+
+# Repository
+REPOSITORY = '/var/lib/debexpo/repository'
+
+# Git storage (comment to disable)
+GIT_STORAGE = '/var/lib/debexpo/git'
 
 # Email settings
 # https://docs.djangoproject.com/en/2.2/ref/settings/#email
@@ -67,11 +74,36 @@ HOSTING = 'Wavecon'
 DEFAULT_FROM_EMAIL = 'mentors.debian.net <support@mentors.debian.net>'
 DEFAULT_BOUNCE_EMAIL = 'bounce@mentors.debian.net'
 
-# Spool settings
-UPLOAD_SPOOL = '/var/spool/debexpo/http'
+# Celery redis connexion
+CELERY_BROKER_URL = 'redis://:CHANGEME@localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://:CHANGEME@localhost:6379'
 
-# Repository
-REPOSITORY = '/var/lib/debexpo/repository'
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://:CHANGEME@127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
 
-# Git storage (comment to disable)
-GIT_STORAGE = '/var/lib/debexpo/git'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'debexpo': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'django': {
+            'handlers': ['console'],
+            'level': getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+    },
+}
