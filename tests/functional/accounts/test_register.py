@@ -26,6 +26,7 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+from django.core import mail
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.urls import reverse
 from django.utils.encoding import force_bytes
@@ -131,7 +132,13 @@ class TestRegisterController(TestController):
         self.assertIn('Invalid reset link', str(response.content))
 
     def test_successful_activation(self):
-        self.test_maintainer_signup(actually_delete_it=False)
+        with self.settings(DEFAULT_BOUNCE_EMAIL='<bounce@example.org>'):
+            self.test_maintainer_signup(actually_delete_it=False)
+
+        # Test bounce address
+        self.assertIn('bounce@example.org',
+                      str(mail.outbox[0].from_email))
+
         user = User.objects.get(email='mr_me@example.com')
         token_generator = PasswordResetTokenGenerator()
         link = token_generator.make_token(user)

@@ -56,7 +56,9 @@ class TestMail(TestCase):
     def _assert_mail_content(self, content):
         self._assert_base_content(content.body)
         self.assertIn('user@example.org', content.to)
-        self.assertIn('debexpo <support@example.org>', content.from_email)
+        self.assertIn('bounce@example.org', content.from_email)
+        self.assertIn('From: debexpo <support@example.org>',
+                      str(content.message()))
 
     def _assert_base_content(self, content):
         self.assertIn('This is a test email, user@example.org', content)
