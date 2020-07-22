@@ -55,6 +55,7 @@ class Email():
     def send(self, subject, recipients=None,
              from_email=None,
              reply_to=None,
+             bounce_to=None,
              headers={}, **kwargs):
         """
         Sends the email.
@@ -65,14 +66,19 @@ class Email():
         if not recipients:
             return
 
-        if not headers.get('Return-Path'):
-            headers['Return-Path'] = getattr(settings, 'DEFAULT_BOUNCE_EMAIL')
+        if not from_email:
+            from_email = getattr(settings, 'DEFAULT_FROM_EMAIL')
+
+        if not bounce_to:
+            bounce_to = getattr(settings, 'DEFAULT_BOUNCE_EMAIL')
+
+        headers['From'] = from_email
 
         body = self._render_content(recipients, **kwargs)
         self.email = EmailMessage(
             subject,
             body,
-            from_email=from_email,
+            from_email=bounce_to,
             to=recipients,
             reply_to=reply_to,
             headers=headers
