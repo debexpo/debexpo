@@ -28,7 +28,8 @@
 
 from tempfile import TemporaryDirectory
 from os.path import join, abspath, dirname, isfile
-from os import replace, unlink
+from stat import S_IMODE
+from os import replace, unlink, stat, chmod
 from shutil import copytree
 from logging import getLogger
 from gzip import GzipFile
@@ -104,6 +105,7 @@ class TestRepositoryController(TestController):
                                          source_package.get_package_dir())[0])
 
         changes.parse_dsc()
+        chmod(changes.dsc.filename, 0o600)
         self.repository.install(changes)
         self.repository.update()
 
@@ -145,6 +147,11 @@ class TestRepositoryController(TestController):
             self.assertIn(join(str(self.repository), entry.path), pool_files)
 
         self.assertEquals(len(db_entires), len(pool_files))
+
+        # Assert files modes
+        for entry in pool_files:
+            info = stat(entry).st_mode
+            self.assertEquals(S_IMODE(info), 0o644)
 
         # Assert Sources entries
         packages_in_sources = set()
