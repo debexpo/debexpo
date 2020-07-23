@@ -56,6 +56,9 @@ DATABASES = {
 SITE_NAME = 'mentors.debian.net'
 SITE_TITLE = 'Mentors'
 
+# Base url used to craft links for non-web tasks (importer)
+SITE_URL = 'https://mentors.debian.net'
+
 HOSTING_URL = 'https://www.wavecon.de/'
 HOSTING = 'Wavecon'
 

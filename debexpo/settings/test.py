@@ -58,6 +58,9 @@ DATABASES = {
     }
 }
 
+# Base url used to craft links for non-web tasks (importer)
+SITE_URL = 'http://localhost:8000'
+
 # Email settings
 # https://docs.djangoproject.com/en/2.2/ref/settings/#email
 
