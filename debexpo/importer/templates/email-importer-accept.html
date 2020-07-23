@@ -3,15 +3,15 @@
 Your upload of the package '{{ args.upload.package.name }}' to {{ args.settings.SITE_NAME}} was
 successful. Others can now see it. The URL of your package is:
 
-    {{ args.upload.package.get_url }}
+    {{ args.settings.SITE_URL }}{% url 'package' args.upload.package.name %}
 
 The respective dsc file can be found at:
 
-    {{ args.upload.get_dsc_url }}
+    {{ args.settings.SITE_URL }}{{ args.upload.get_dsc_url }}
 
 If you do not yet have a sponsor for your package you may want to go to:
 
-    {{ args.upload.get_rfs_url }}
+    {{ args.settings.SITE_URL }}{% url 'package_rfs' args.upload.package.name %}
 
 and set the "Seeking a sponsor" option to highlight your package on the
 welcome page.
