@@ -258,6 +258,7 @@ class Repository():
                 makedirs(dest_dir)
 
             copy(sumed_file.filename, dest_dir)
+            chmod(join(dest_dir, basename(sumed_file.filename)), 0o644)
             # And create a new one
             entry = RepositoryFile.objects.create_from_file(sumed_file,
                                                             pool_dir,
