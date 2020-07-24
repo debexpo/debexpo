@@ -48,7 +48,7 @@ ALLOWED_HOSTS = ['mentors.debian.net']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'debexpo'
+        'NAME': 'debexpo_live'
     }
 }
 
