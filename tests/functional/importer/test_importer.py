@@ -367,6 +367,12 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_in_repo('hello', '1.0-1')
         # self.assert_plugin_data('hello', 'debianqa', '{"latest-upload": "')
 
+        # Test email urls:
+        self.assert_email_with(f'{settings.SITE_URL}/package/hello')
+        self.assert_email_with(f'{settings.SITE_URL}/debian/pool/main/h/hello/'
+                               'hello_1.0-1.dsc')
+        self.assert_email_with(f'{settings.SITE_URL}/sponsors/rfs-howto/hello')
+
         self._cleanup_mailbox()
         self.import_source_package('hello')
         self.assert_importer_succeeded()
