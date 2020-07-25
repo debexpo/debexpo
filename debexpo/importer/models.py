@@ -218,10 +218,8 @@ class Importer():
 
             # Unfortunatly, we cannot really test that since it is not supposed
             # to happen. Note that the _fail() method is covered by the tests.
-            except Exception as e:  # pragma: no cover
+            except Exception:  # pragma: no cover
                 success = False
-                log.error(f'Importing {changes} failed with an unknown error: ')
-                log.exception(e)
                 self._fail(ExceptionImporterRejected(changes, 'Importer failed',
                                                      Exception(format_exc())))
             else:
@@ -301,7 +299,8 @@ class Importer():
         ``error``
             Exception detailing why it failed.
         """
-        log.critical(error)
+        log.critical(f'Importing {error.changes} failed with an unknown error:')
+        log.critical(str(error))
         self.send_email('email-importer-fail.html', error, notify_admins=True)
 
     def _reject(self, error):
