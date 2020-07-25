@@ -147,6 +147,8 @@ class TestCronjobRemoveOldUploads(TestController):
                                                         garbage))
 
     def test_package_in_new_server_error(self):
+        self._setup_packages()
+
         with TestingHTTPServer(FTPMasterPackageInNewErrorHTTPHandler) as httpd:
             with self.settings(
                     FTP_MASTER_NEW_PACKAGES_URL='http://localhost:'
@@ -159,10 +161,12 @@ class TestCronjobRemoveOldUploads(TestController):
         self._assert_cronjob_success()
 
     def test_remove_uploads_server_down(self):
+        self._setup_packages()
         self.remove_upload_accepted([], True)
         self._assert_cronjob_success()
 
     def test_remove_uploads_server_garbage(self):
+        self._setup_packages()
         self.remove_upload_accepted([], False, True)
         self._assert_cronjob_success()
 
