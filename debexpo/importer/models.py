@@ -343,8 +343,8 @@ class Importer():
             result.full_clean()
             result.save()
 
-            if result.plugin == 'debian-qa':
-                upload.package.in_debian = result.data['in_debian']
+            if result.plugin == 'debian-qa' and result.data:
+                upload.package.in_debian = result.data.get('in_debian', False)
                 upload.package.full_clean()
                 upload.package.save()
 
