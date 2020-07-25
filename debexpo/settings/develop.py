@@ -55,6 +55,7 @@ SITE_URL = 'http://localhost:8000'
 
 DEFAULT_FROM_EMAIL = 'debexpo <support@example.org>'
 DEFAULT_BOUNCE_EMAIL = 'bounce@example.org'
+COMMENTS_FROM_EMAIL = 'debexpo <no-reply@example.org>'
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = path.join(BASE_DIR, 'data', 'mbox')  # noqa: F405

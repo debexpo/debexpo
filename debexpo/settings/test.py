@@ -66,6 +66,7 @@ SITE_URL = 'http://localhost:8000'
 
 DEFAULT_FROM_EMAIL = 'debexpo <support@example.org>'
 DEFAULT_BOUNCE_EMAIL = 'bounce@example.org'
+COMMENTS_FROM_EMAIL = 'debexpo <no-reply@example.org>'
 
 # Repository location
 REPOSITORY = '/tmp/debexpo/repository'

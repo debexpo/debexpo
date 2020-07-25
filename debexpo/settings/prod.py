@@ -76,6 +76,7 @@ GIT_STORAGE = '/var/lib/debexpo/git'
 
 DEFAULT_FROM_EMAIL = 'mentors.debian.net <support@mentors.debian.net>'
 DEFAULT_BOUNCE_EMAIL = 'bounce@mentors.debian.net'
+COMMENTS_FROM_EMAIL = 'mentors.debian.net <no-reply@mentors.debian.net>'
 
 # Celery redis connexion
 CELERY_BROKER_URL = 'redis://:CHANGEME@localhost:6379'
