@@ -29,6 +29,7 @@ from logging import getLogger
 from os.path import join, exists, basename
 from os import makedirs, unlink
 from glob import glob
+from traceback import format_exc
 
 from django.db import transaction
 from django.conf import settings
@@ -222,7 +223,7 @@ class Importer():
                 log.error(f'Importing {changes} failed with an unknown error: ')
                 log.exception(e)
                 self._fail(ExceptionImporterRejected(changes, 'Importer failed',
-                                                     e))
+                                                     Exception(format_exc())))
             else:
                 self._accept(upload)
             finally:
