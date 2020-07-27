@@ -149,6 +149,26 @@ class TestPluginDebianQA(TestImporterController):
              'last_upload': '2019-05-13'}
         )
 
+    def test_debianqa_no_last_update(self):
+        outcome = 'Package is already in Debian'
+        package = 'hello'
+        plugin = 'debian-qa'
+
+        with TestingHTTPServer(TrackerNoLastUploadPackage) as httpd:
+            with self.settings(TRACKER_URL=f'http://localhost:{httpd.port}'):
+                self.import_source_package('hello-nmu')
+        self.assert_importer_succeeded()
+
+        self.assert_plugin_result_count(package, plugin, 1)
+        self.assert_plugin_result(package, plugin, outcome)
+        self.assert_plugin_severity(package, plugin, PluginSeverity.info)
+        self.assert_plugin_template(package, outcome)
+        self.assert_plugin_data(
+            package, plugin,
+            {'in_debian': True, 'nmu': True, 'is_debian_maintainer': False,
+             'last_upload': None}
+        )
+
 
 class TrackerUnknownPackage(BaseHTTPRequestHandler):
     response = '<h1>Not Found</h1><p>The requested resource was not found on ' \
@@ -165,6 +185,16 @@ class TrackerNMUPackage(BaseHTTPRequestHandler):
         self.send_response(200, 'OK')
         self.end_headers()
         self.wfile.write(bytes(TEMPLATE_RESPONSE_TRACKER, 'UTF-8'))
+
+
+class TrackerNoLastUploadPackage(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200, 'OK')
+        self.end_headers()
+        self.wfile.write(bytes(
+            TEMPLATE_RESPONSE_TRACKER.replace('Accepted', ''),
+            'UTF-8',
+        ))
 
 
 class TrackerOwnedPackage(BaseHTTPRequestHandler):

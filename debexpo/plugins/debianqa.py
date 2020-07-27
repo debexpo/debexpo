@@ -46,7 +46,8 @@ class PluginDebianQA(BasePlugin):
         """
         if self.package:
             self.outcome = 'Package is already in Debian'
-            self.data['last_upload'] = getattr(self.package, 'last_upload')
+            self.data['last_upload'] = getattr(self.package, 'last_upload',
+                                               None)
         else:
             self.outcome = 'Package is not in Debian'
 

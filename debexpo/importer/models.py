@@ -29,6 +29,7 @@ from logging import getLogger
 from os.path import join, exists, basename
 from os import makedirs, unlink
 from glob import glob
+from traceback import format_exc
 
 from django.db import transaction
 from django.conf import settings
@@ -217,12 +218,10 @@ class Importer():
 
             # Unfortunatly, we cannot really test that since it is not supposed
             # to happen. Note that the _fail() method is covered by the tests.
-            except Exception as e:  # pragma: no cover
+            except Exception:  # pragma: no cover
                 success = False
-                log.error(f'Importing {changes} failed with an unknown error: ')
-                log.exception(e)
                 self._fail(ExceptionImporterRejected(changes, 'Importer failed',
-                                                     e))
+                                                     Exception(format_exc())))
             else:
                 self._accept(upload)
             finally:
@@ -300,7 +299,8 @@ class Importer():
         ``error``
             Exception detailing why it failed.
         """
-        log.critical(error)
+        log.critical(f'Importing {error.changes} failed with an unknown error:')
+        log.critical(str(error))
         self.send_email('email-importer-fail.html', error, notify_admins=True)
 
     def _reject(self, error):
@@ -343,8 +343,8 @@ class Importer():
             result.full_clean()
             result.save()
 
-            if result.plugin == 'debian-qa':
-                upload.package.in_debian = result.data['in_debian']
+            if result.plugin == 'debian-qa' and result.data:
+                upload.package.in_debian = result.data.get('in_debian', False)
                 upload.package.full_clean()
                 upload.package.save()
 
