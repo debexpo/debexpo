@@ -275,6 +275,8 @@ class TestPackageController(TestController):
 
         self.assertEqual(len(mail.outbox), 1)
         self.assertIn('This is a test comment', mail.outbox[0].body)
+        self.assertIn('From: debexpo <no-reply@example.org>',
+                      str(mail.outbox[0].message()))
 
     def test_sponsor_no_auth(self):
         self._test_no_auth('sponsor_package')

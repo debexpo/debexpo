@@ -28,6 +28,7 @@
 
 from enum import Enum
 
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _, activate, get_language
 from django.urls import reverse
@@ -130,6 +131,7 @@ class Comment(models.Model):
             recipients,
             comment=self,
             is_uploader=False,
+            from_email=settings.COMMENTS_FROM_EMAIL,
             package_url=request.build_absolute_uri(
                 reverse('package', args=[package])),
             subscription_url=request.build_absolute_uri(
@@ -142,6 +144,7 @@ class Comment(models.Model):
             [uploader],
             comment=self,
             is_uploader=True,
+            from_email=settings.COMMENTS_FROM_EMAIL,
             package_url=request.build_absolute_uri(
                 reverse('package', args=[package])),
             subscription_url=request.build_absolute_uri(
