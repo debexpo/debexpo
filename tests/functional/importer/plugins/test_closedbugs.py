@@ -60,19 +60,19 @@ class TestPluginClosedBug(TestImporterController):
         self.import_source_package('hello-no-owned-bug')
         self.assert_importer_succeeded()
 
-        self.assertEquals(Bug.objects.get().number, 931405)
+        self.assertEquals(Bug.objects.get().number, 9953)
         self.assertEquals(list(
             Bug.objects.get().sources.values_list('name', flat=True)),
-            ['django-sortedm2m'])
+            ['xloadimage'])
 
         self.assert_plugin_severity('hello', 'closed-bugs',
                                     PluginSeverity.error)
         data = self.assert_plugin_result('hello', 'closed-bugs',
                                          'Package closes bugs in a wrong way')
         self.assertEquals(data['errors'],
-                          ['Bug #931405 does not belong to this package'])
+                          ['Bug #9953 does not belong to this package'])
         self.assert_rfs_content('hello',
-                                'Subject: RFS: hello/1.0-1 [ITA] -- Test '
+                                'Subject: RFS: hello/1.0-1 -- Test '
                                 'package for debexpo')
         self.assert_rfs_content('hello',
                                 'Severity: normal')

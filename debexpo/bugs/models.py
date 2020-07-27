@@ -85,6 +85,7 @@ class BugStatus(int, Enum):
     def as_tuple(cls):
         return (cls.done.tuple,
                 cls.fixed.tuple,
+                cls.forwarded.tuple,
                 cls.pending.tuple,
                 cls.pending_fixed.tuple,)
 
