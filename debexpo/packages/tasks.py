@@ -239,8 +239,11 @@ def process_accepted_changes(changes):
         package__name=changes['Source'],
         distribution__name__in=(changes['Distribution'], 'UNRELEASED',))
 
+    version = max([NativeVersion(version) for version in
+                   changes['Version'].split(' ')])
+
     return [
         upload for upload in uploads
-        if NativeVersion(upload.version) <= NativeVersion(changes['Version']) or
+        if NativeVersion(upload.version) <= NativeVersion(version) or
         upload.distribution.name == 'UNRELEASED'
     ]

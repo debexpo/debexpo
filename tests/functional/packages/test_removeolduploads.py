@@ -132,14 +132,18 @@ class TestCronjobRemoveOldUploads(TestController):
 
         self.state = new_state
 
-    def remove_upload_accepted(self, uploaded, down=False, garbage=False):
+    def remove_upload_accepted(self, uploaded, down=False, garbage=False,
+                               handler=None):
         removed_packages = (
             ('tmux', '1.0.0', 'unstable'),
             ('tmux', '1.0.0', 'UNRELEASED'),
         )
 
+        if not handler:
+            handler = FTPMasterPackageInNewHTTPHandler
+
         self._expect_package_removal(removed_packages)
-        with TestingHTTPServer(FTPMasterPackageInNewHTTPHandler) as httpd:
+        with TestingHTTPServer(handler) as httpd:
             with self.settings(
                     FTP_MASTER_NEW_PACKAGES_URL='http://localhost:'
                                                 f'{httpd.port}'):
@@ -147,6 +151,8 @@ class TestCronjobRemoveOldUploads(TestController):
                                                         garbage))
 
     def test_package_in_new_server_error(self):
+        self._setup_packages()
+
         with TestingHTTPServer(FTPMasterPackageInNewErrorHTTPHandler) as httpd:
             with self.settings(
                     FTP_MASTER_NEW_PACKAGES_URL='http://localhost:'
@@ -154,15 +160,26 @@ class TestCronjobRemoveOldUploads(TestController):
                 remove_uploaded_packages(FakeNNTPClient([]))
         self._assert_cronjob_success()
 
+    def test_package_in_new_double_version(self):
+        self._setup_packages()
+
+        self.remove_upload_accepted(
+            [],
+            handler=FTPMasterPackageInNewDoubleVersionHTTPHandler
+        )
+        self._assert_cronjob_success()
+
     def test_remove_uploads_noop_no_packages(self):
         remove_old_uploads()
         self._assert_cronjob_success()
 
     def test_remove_uploads_server_down(self):
+        self._setup_packages()
         self.remove_upload_accepted([], True)
         self._assert_cronjob_success()
 
     def test_remove_uploads_server_garbage(self):
+        self._setup_packages()
         self.remove_upload_accepted([], False, True)
         self._assert_cronjob_success()
 
@@ -211,6 +228,14 @@ class TestCronjobRemoveOldUploads(TestController):
         self.remove_upload_accepted([('htop', '0.9.0', 'unstable')])
         self._expect_package_removal(removed_packages)
         self._assert_cronjob_success()
+
+
+class FTPMasterPackageInNewDoubleVersionHTTPHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200, 'OK')
+        self.end_headers()
+        self.wfile.write(bytes(PACKAGE_IN_NEW.replace('1.0.0', '0.9.0 1.0.0'),
+                               'UTF-8'))
 
 
 class FTPMasterPackageInNewHTTPHandler(BaseHTTPRequestHandler):
