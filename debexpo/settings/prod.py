@@ -29,6 +29,7 @@
 from .common import *  # noqa
 from os import path, getenv
 
+# Read secretkey from file
 try:
     with open(path.join(path.dirname(path.abspath(__file__)),
                         'secretkey')) as f:
@@ -38,6 +39,14 @@ except IOError as e:
 
 if len(secret_key) < 64:
     raise Exception('Secret key too weak. Must be at least 64 char.')
+
+# Read redis passphrase from file
+try:
+    with open(path.join(path.dirname(path.abspath(__file__)),
+                        'redis-password')) as f:
+        redis_password = f.read().strip()
+except IOError as e:
+    raise Exception('Could not read redis password: {}'.format(e))
 
 SECRET_KEY = secret_key
 ALLOWED_HOSTS = ['mentors.debian.net']
@@ -78,13 +87,13 @@ DEFAULT_FROM_EMAIL = 'mentors.debian.net <support@mentors.debian.net>'
 DEFAULT_BOUNCE_EMAIL = 'bounce@mentors.debian.net'
 
 # Celery redis connexion
-CELERY_BROKER_URL = 'redis://:CHANGEME@localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://:CHANGEME@localhost:6379'
+CELERY_BROKER_URL = f'redis://:{redis_password}@localhost:6379'
+CELERY_RESULT_BACKEND = f'redis://:{redis_password}@localhost:6379'
 
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://:CHANGEME@127.0.0.1:6379/1',
+        'LOCATION': f'redis://:{redis_password}@127.0.0.1:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
