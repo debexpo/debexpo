@@ -32,18 +32,26 @@ from django.contrib.auth.views import PasswordResetConfirmView, \
     PasswordResetCompleteView, PasswordResetView, LoginView, LogoutView, \
     PasswordResetDoneView
 from django.http.response import HttpResponsePermanentRedirect
-from django.urls import reverse
+from django.urls import reverse, include
 from django.views.static import serve
+from rest_framework_extensions.routers import ExtendedDefaultRouter
 
 from debexpo.base.views import index, contact, intro_reviewers, \
     intro_maintainers, qa, sponsor_overview, sponsor_guidelines, sponsor_rfs
 from debexpo.accounts.views import register, profile
 from debexpo.accounts.forms import PasswordResetForm
 from debexpo.packages.views import package, packages, packages_my, \
-    PackagesFeed, sponsor_package, delete_package, delete_upload
+    PackagesFeed, sponsor_package, delete_package, delete_upload, \
+    PackageViewSet, PackageUploadViewSet
 from debexpo.comments.views import subscribe, unsubscribe, subscriptions, \
     comment
 from debexpo.importer.views import upload
+
+api = ExtendedDefaultRouter()
+api.register(r'packages', PackageViewSet) \
+    .register(r'uploads', PackageUploadViewSet,
+              'packages-upload', ['package_id'])
+api.register(r'uploads', PackageUploadViewSet)
 
 urlpatterns = [
     # Base site
@@ -56,6 +64,9 @@ urlpatterns = [
     url(r'^sponsors/guidelines/$', sponsor_guidelines, name='guidelines'),
     url(r'^sponsors/rfs-howto/(?P<name>.+)/$', sponsor_rfs, name='package_rfs'),
     url(r'^sponsors/rfs-howto/$', sponsor_rfs, name='rfs'),
+
+    # Api
+    url(r'^api/', include(api.urls)),
 
     # Accounts
     url(r'^accounts/reset/'
