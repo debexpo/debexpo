@@ -202,3 +202,6 @@ FTP_MASTER_API_URL = 'https://api.ftp-master.debian.org'
 
 # Cleanup package older than NN weeks
 MAX_AGE_UPLOAD_WEEKS = 20
+
+# Cleanup incoming queue
+QUEUE_EXPIRED_TIME = 6 * 60 * 60  # File TTL is 6 hours

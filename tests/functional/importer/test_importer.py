@@ -3,7 +3,7 @@
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2018 Baptiste BEAUPLAT <lyknode@cilg.org>
+#   Copyright © 2018-2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -32,6 +32,8 @@ UploadController test cases.
 
 # from os import makedirs
 from os.path import join
+from os import utime, unlink
+from time import time
 
 from django.conf import settings
 from django.core import mail
@@ -469,3 +471,20 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assertIn('No space left', mail.outbox[0].body)
         self.assertIn(settings.DEFAULT_FROM_EMAIL, mail.outbox[0].to)
         self.assertIn(changes.uploader, mail.outbox[0].to)
+
+    def test_importer_cleanup(self):
+        deb = join(self.spool.get_queue_dir('incoming'), 'file.deb')
+        deb_expired = join(self.spool.get_queue_dir('incoming'), 'old.deb')
+        txt = join(self.spool.get_queue_dir('incoming'), 'file.txt')
+        expired = time() - 6 * 60 * 60 - 1
+
+        for path in (deb, deb_expired, txt,):
+            with open(path, 'w'):
+                pass
+
+        utime(deb_expired, (expired, expired))
+
+        importer = Importer(str(self.spool))
+        importer.process_spool()
+
+        unlink(deb)

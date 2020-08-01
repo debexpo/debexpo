@@ -26,10 +26,11 @@
 
 from logging import getLogger
 
-from os.path import join, exists, basename
-from os import makedirs, unlink
+from os.path import join, exists, basename, isfile
+from os import makedirs, unlink, stat
 from glob import glob
 from traceback import format_exc
+from time import time
 
 from django.db import transaction
 from django.conf import settings
@@ -165,6 +166,15 @@ class Spool():
 
         return changes
 
+    def cleanup(self):
+        for name in glob(join(self.queues['incoming'], '**', '*'),
+                         recursive=True):
+            if isfile(name):
+                if not self._allowed_extention(name):
+                    unlink(name)
+                elif time() - stat(name).st_mtime > settings.QUEUE_EXPIRED_TIME:
+                    unlink(name)
+
     def changes_to_process(self):
         for changes in self.get_all_changes('incoming'):
             changes.move(self.queues['processing'])
@@ -229,6 +239,8 @@ class Importer():
 
         if self.repository:
             self.repository.update()
+
+        self.spool.cleanup()
 
         return success
 
