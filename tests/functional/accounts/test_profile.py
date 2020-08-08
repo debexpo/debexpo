@@ -3,7 +3,7 @@
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2019 Baptiste BEAUPLAT <lyknode@cilg.org>
+#   Copyright © 2019-2020 Baptiste BEAUPLAT <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -26,7 +26,7 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from tests import TestController
+from tests import TransactionTestController
 from django.urls import reverse
 # from debexpo.lib import constants
 # from debexpo.model import meta
@@ -44,7 +44,7 @@ import logging
 log = logging.getLogger(__name__)
 
 
-class TestProfilePage(TestController):
+class TestProfilePage(TransactionTestController):
     _GPGKEY_WRONG_EMAIL = """-----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mDMEW9b91RYJKwYBBAHaRw8BAQdAHtUIQWAsmPilu0JDMnLbpPQfT1i3z2IVMoDH
@@ -150,6 +150,30 @@ xOwJ1heEnfmgPkuiz7jFCAo=
 -----END PGP PUBLIC KEY BLOCK-----"""
     _GPG_ID = '256E/E871F3DF'
 
+    _GPGKEY_2 = """-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mDMEW/GBqhYJKwYBBAHaRw8BAQdA+6hBA4PcdcPwgMsKGQXrqwbJemLBgS1PkKZg
+RFlKdKi0IHByaW1hcnkgaWQgPHByaW1hcnlAZXhhbXBsZS5vcmc+iJAEExYIADgC
+GwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQRVkwbu4cjBst0cc7HENHgc6HHz
+3wUCXyxWUwAKCRDENHgc6HHz3zxDAQCB9zEqs0mWmriFqhXtRSwjhLhbprWxpAqk
+WTat6AU6XgD+MDVYYgKEHeLuKqJ1MiR+x53f5ypxtA5eHJZdbs5OEA+0HVRlc3Qg
+dXNlciA8ZW1haWxAZXhhbXBsZS5jb20+iJMEExYIADsCGwMFCwkIBwIGFQoJCAsC
+BBYCAwECHgECF4AWIQRVkwbu4cjBst0cc7HENHgc6HHz3wUCXyxWUwIZAQAKCRDE
+NHgc6HHz30lxAP9Zvb7ssZ0bg94u2y1G3zbh8+5svSmGp3HThxMooIHvcwEA8jB3
+s5fVTZBIXagHBxACGSG5EhxlA8KlmaOSDGvl9w+4OARb8YGqEgorBgEEAZdVAQUB
+AQdANrk3qq/eP1TEWfFZqhR0vcz7YB9c5+OnvMV+xO4W3nQDAQgHiHgEGBYIACAW
+IQRVkwbu4cjBst0cc7HENHgc6HHz3wUCW/GBqgIbDAAKCRDENHgc6HHz3/CHAP0c
+hxes4Ebtg7N8B/BoMYwmUVvmMVmoV+ef/vqYvfm6sgEA6fKzMSXllw57UJ90Unyn
+xOwJ1heEnfmgPkuiz7jFCAq4MwReCQ2QFgkrBgEEAdpHDwEBB0A+v2Y8n88j+WwI
+Q3hChPR7xa49prRSyKRnGBD/AXhJfYjvBBgWCgAgFiEEVZMG7uHIwbLdHHOxxDR4
+HOhx898FAl4JDZACGwIAgQkQxDR4HOhx8992IAQZFgoAHRYhBLPPezP4B2M420+o
+DoeRkoMRdTvXBQJeCQ2QAAoJEIeRkoMRdTvX0AcA/i8tjP8ihM2nJHRXwBnrh/iH
+v0eSEi3sH+j0fwy9OBLJAP9ne01k9LkCXplS8ys+0u0e4545IIbiw8D4ToupD25q
+CiIIAP4hwNooM6bAlg2HDYTUxJl4LA0qlJS66qnXv94Q8p4VngD/Y5O0AJw06BCw
+Xcgnuh6Rlywt6uiaFIGYnGefYPGXRAA=
+=kRLH
+-----END PGP PUBLIC KEY BLOCK-----"""
+
 #    def _setup_gpg_env(self):
 #        self.homedir = tempfile.mkdtemp()
 #        os.environ['GNUPGHOME'] = self.homedir
@@ -245,12 +269,35 @@ xOwJ1heEnfmgPkuiz7jFCAo=
 
         self.assertEquals(user.key.key, self._GPGKEY)
 
+        # Update it
+        response = self.client.post(reverse('profile'), {
+            'key': self._GPGKEY_2,
+            'commit_gpg': 'submit'
+        })
+        self.assertEquals(response.status_code, 200)
+        self.assertNotIn('errorlist', str(response.content))
+
+        user = User.objects.get(email='email@example.com')
+        self.assertEquals(user.key.key, self._GPGKEY_2)
+
+        # Update it with bad key
+        response = self.client.post(reverse('profile'), {
+            'key': self._GPGKEY_BAD_ALGO,
+            'commit_gpg': 'submit'
+        })
+        self.assertEquals(response.status_code, 200)
+        self.assertIn('errorlist', str(response.content))
+
+        user = User.objects.get(email='email@example.com')
+        self.assertEquals(user.key.key, self._GPGKEY_2)
+
         # test whether index page contains GPG delete link
         response = self.client.get(reverse('profile'))
         self.assertEquals(response.status_code, 200)
         self.assertIn('Fingerprint', str(response.content))
         self.assertIn('Remove', str(response.content))
-        self.assertIn(self._GPGKEY.replace('\n', '\\n'), str(response.content))
+        self.assertIn(self._GPGKEY_2.replace('\n', '\\n'),
+                      str(response.content))
 
         # delete GPG key
         # The test is run twice here. First time for key deletion, second time
