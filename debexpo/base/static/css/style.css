@@ -657,8 +657,12 @@ form#pageLang {
 
 input:focus {
     background-color:#FFFFCB;
-    
 }
+
+input[type=submit] {
+    margin-top: 1em;
+}
+
 .hidecss {
     display: none;
 }
