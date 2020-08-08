@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-02 18:17+0100\n"
+"POT-Creation-Date: 2020-08-08 15:22+0000\n"
 "PO-Revision-Date: 2019-11-13 13:45+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -144,6 +144,13 @@ msgstr ""
 "dans votre navigateur :"
 
 #: accounts/templates/email-password-creation.html:8
+#, python-format
+msgid ""
+"If you didn't create an account on %(site_name)s,\n"
+"you can safely ignore this email."
+msgstr ""
+
+#: accounts/templates/email-password-creation.html:11
 #: accounts/templates/email-password-reset.html:8
 msgid "Thanks,"
 msgstr "Merci,"

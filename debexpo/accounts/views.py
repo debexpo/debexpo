@@ -67,7 +67,7 @@ def _send_activate_email(request, uid, token, recipient):
             'uidb64': uid, 'token': token
         })
     email.send(_('Next step: Confirm your email address'), [recipient],
-               activate_url=activate_url)
+               activate_url=activate_url, settings=settings)
 
 
 def _register_submit(request, info):
