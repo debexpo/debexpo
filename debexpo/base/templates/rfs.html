@@ -27,8 +27,9 @@ Alternatively, one can download the package with dget using this command:
 {% if upload %}  dget -x {{ request.scheme }}://{{ request.get_host }}{{ upload.get_dsc_url }}
 {% else %}  dget -x {{ request.scheme }}://{{ request.get_host }}/debian/pool/main/h/hello/hello_3.1-4.dsc
 {% endif %}
-Changes since the last upload:
-
+{% if upload and not upload.package.in_debian %}Changes for the initial release:
+{% else %}Changes since the last upload:
+{% endif %}
 {{ upload.changes|default:"[your most recent changelog entry]" }}
 
 Regards,
