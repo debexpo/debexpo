@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-02 18:17+0100\n"
-"PO-Revision-Date: 2019-11-13 13:45+0100\n"
+"POT-Creation-Date: 2020-08-08 15:22+0000\n"
+"PO-Revision-Date: 2020-08-08 17:25+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 2.3.1\n"
 
 #: accounts/forms.py:42
 msgid "Full name"
@@ -144,6 +144,15 @@ msgstr ""
 "dans votre navigateur :"
 
 #: accounts/templates/email-password-creation.html:8
+#, python-format
+msgid ""
+"If you didn't create an account on %(site_name)s,\n"
+"you can safely ignore this email."
+msgstr ""
+"Si vous n'avez pas créé de compte sur %(site_name)s,\n"
+"vous pouvez ignorer ce courriel."
+
+#: accounts/templates/email-password-creation.html:11
 #: accounts/templates/email-password-reset.html:8
 msgid "Thanks,"
 msgstr "Merci,"
