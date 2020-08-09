@@ -35,6 +35,9 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('text', 'outcome', 'uploaded')
+        widgets = {
+            'text': forms.Textarea(attrs={'rows': 8, 'cols': 80}),
+        }
 
 
 class SubscriptionForm(forms.ModelForm):

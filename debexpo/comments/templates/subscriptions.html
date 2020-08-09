@@ -3,44 +3,48 @@
 {% block content %}
 <h1>{% trans 'My subscription list' %}</h1>
 
-<table>
-    <tr>
-        <th>{% trans 'Package' %}</th>
-        <th>{% trans 'Notification on' %}</th>
-        <th>{% trans 'Edit' %}</th>
-    </tr>
+{% if subscriptions %}
+    <table>
+        <tr>
+            <th>{% trans 'Package' %}</th>
+            <th>{% trans 'Notification on' %}</th>
+            <th>{% trans 'Edit' %}</th>
+        </tr>
 
-    {% for subscription in subscriptions %}
-    <tr class="pkg-list">
-        {% if subscription.package_exists %}
-        <td><a href="{% url 'package' subscription.package %}">{{ subscription.package }}</a></td>
-        {% else %}
-        <td>{{ subscription.package }}</td>
-        {% endif %}
-        <td>
-            <ul class="sub-list">
-                {% for trigger in subscription.get_subscriptions %}
-                <li>{{ trigger }}</li>
-                {% endfor %}
-            </ul>
-        </td>
-        <td>
-            <table><tr><td>
-            <form action="{% url 'subscribe_package' subscription.package %}"
-                  method="GET">
-                <input type="submit" value="{% trans 'Update' %}">
-            </form>
-            </td><td>
-            <form action="{% url 'unsubscribe_package' subscription.package %}"
-                  method="POST">
-                {% csrf_token %}
-                <input type="submit" value="{% trans 'Unsubscribe' %}">
-            </form>
-            </td></tr></table>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+        {% for subscription in subscriptions %}
+        <tr class="pkg-list">
+            {% if subscription.package_exists %}
+            <td><a href="{% url 'package' subscription.package %}">{{ subscription.package }}</a></td>
+            {% else %}
+            <td>{{ subscription.package }}</td>
+            {% endif %}
+            <td>
+                <ul class="sub-list">
+                    {% for trigger in subscription.get_subscriptions %}
+                    <li>{{ trigger }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>
+                <table><tr><td>
+                <form action="{% url 'subscribe_package' subscription.package %}"
+                      method="GET">
+                    <input type="submit" value="{% trans 'Update' %}">
+                </form>
+                </td><td>
+                <form action="{% url 'unsubscribe_package' subscription.package %}"
+                      method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="{% trans 'Unsubscribe' %}">
+                </form>
+                </td></tr></table>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+<strong>{% trans 'No subscriptions' %}</strong>
+{% endif %}
 <h2>{% trans 'Add new subscription' %}</h2>
 <form method="POST">
     <fieldset>

@@ -141,3 +141,6 @@ class GPGForm(forms.ModelForm):
     class Meta:
         model = Key
         fields = ('key',)
+        widgets = {
+            'key': forms.Textarea(attrs={'rows': 12, 'cols': 66}),
+        }
