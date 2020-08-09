@@ -103,8 +103,14 @@ def _update_account(request, info):
 
 
 def _update_key(request, gpg_form):
-    key = gpg_form.key
+    data = gpg_form.key
+    key = gpg_form.save(commit=False)
+
     key.user = request.user
+    key.size = data.size
+    key.fingerprint = data.fingerprint
+    key.algorithm = data.algorithm
+
     key.save()
     key.update_subkeys()
 

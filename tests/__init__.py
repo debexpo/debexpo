@@ -42,7 +42,7 @@ from socketserver import TCPServer
 from http.server import SimpleHTTPRequestHandler, BaseHTTPRequestHandler
 from threading import Thread
 
-from django.test import TestCase
+from django.test import TransactionTestCase, TestCase
 # import tempfile
 # from datetime import datetime
 # from unittest import TestCase
@@ -60,7 +60,7 @@ environ = {}
 log = getLogger(__name__)
 
 
-class TestController(TestCase):
+class DefaultTestController():
     """
     Base class for testing controllers.
     """
@@ -276,3 +276,12 @@ class TestingHTTPServer():
 
     def __exit__(self, type, value, traceback):
         self.httpd.shutdown()
+
+
+class TransactionTestController(DefaultTestController,
+                                TransactionTestCase):
+    serialized_rollback = True
+
+
+class TestController(DefaultTestController, TestCase):
+    pass
