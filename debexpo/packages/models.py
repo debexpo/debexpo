@@ -211,7 +211,7 @@ class PackageUpload(models.Model):
                                     auto_now_add=True)
 
     def get_closes(self):
-        return self.closes.split(' ')
+        return self.closes.split()
 
     def get_index(self):
         return PackageUpload.objects.filter(
