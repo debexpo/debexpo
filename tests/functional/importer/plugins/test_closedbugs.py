@@ -147,7 +147,7 @@ class TestPluginClosedBug(TestImporterController):
         data = self.assert_plugin_result('hello', 'closed-bugs',
                                          'Package closes bugs in a wrong way')
         self.assertEquals(data['errors'],
-                          ['Bug #906521 is not open (status is Done)'])
+                          ['Bug #906521 is closed'])
         self.assert_rfs_content('hello',
                                 'Subject: RFS: hello/1.0-1 -- Test package '
                                 'for debexpo')
