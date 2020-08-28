@@ -97,10 +97,9 @@ class PluginClosedBugs(BasePlugin):
                 severity = PluginSeverity.error
 
             # 2. The bug is open
-            if bug_info.status != BugStatus.pending and \
+            if bug_info.status == BugStatus.done and \
                     settings.BUGS_REPORT_NOT_OPEN:
-                data['errors'].append(f'Bug #{bug} is not open (status is '
-                                      f'{BugStatus(bug_info.status).label})')
+                data['errors'].append(f'Bug #{bug} is closed')
                 severity = PluginSeverity.error
 
             # 3. The bug is not an RFS, O or RFH

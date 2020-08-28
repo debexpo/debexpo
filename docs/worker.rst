@@ -21,20 +21,20 @@ Run the worker
 
 To run the worker, execute celery::
 
-    celery worker --app debexpo --beat
+    celery --app debexpo worker --beat
 
 List tasks
 ----------
 
 To get a list of tasks currently registered in the worker, run::
 
-    celery inspect --app debexpo registered
+    celery --app debexpo inspect registered
 
 Run a task on demand
 --------------------
 
 You may need sometime to run a task immediately. To do so, run::
 
-    celery call --app debexpo debexpo.importer.tasks.importer
+    celery --app debexpo call debexpo.importer.tasks.importer
 
 Replace the last argument by the name of your task.
