@@ -21,6 +21,10 @@ before_script:
     python3-debianbts
     python3-lxml
     python3-dulwich
+    python3-djangorestframework
+    python3-djangorestframework-extensions
+    python3-django-filters
+    python3-django-redis
     ca-certificates
     libjs-jquery
     libjs-jquery-throttle-debounce
@@ -58,6 +62,7 @@ buster-bpo:
   variables:
     ADDITIONAL_PACKAGES: python3-django/buster-backports
                          lintian/buster-backports
+                         python3-django-filters/buster-backports
     DJANGO_SETTINGS_MODULE: 'debexpo.settings.test'
 
 flake8:
@@ -90,6 +95,10 @@ trans:
       python3-debianbts
       python3-lxml
       python3-dulwich
+      python3-djangorestframework
+      python3-djangorestframework-extensions
+      python3-django-filters
+      python3-django-redis
   script:
     - (cd debexpo && python3 ../manage.py makemessages)
     - find debexpo -name '*.po' -exec
@@ -116,5 +125,9 @@ migrations:
       python3-debianbts
       python3-lxml
       python3-dulwich
+      python3-djangorestframework
+      python3-djangorestframework-extensions
+      python3-django-filters
+      python3-django-redis
   script:
     - python3 manage.py makemigrations --check
