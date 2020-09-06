@@ -127,6 +127,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = path.join(BASE_DIR, 'static')
 
 # Password hashes (read bcrypt and md5, update/create to bcrypt)
 # https://docs.djangoproject.com/en/2.2/topics/auth/passwords/

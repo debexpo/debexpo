@@ -61,3 +61,6 @@ venv.bak/
 
 # Development database
 /data/
+
+# Generated static files
+/static/
