@@ -40,8 +40,12 @@ from django.urls import reverse
 from django.utils.translation import gettext as _, get_language
 from django.contrib.syndication.views import Feed
 from django.contrib.auth.decorators import login_required
+from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework_extensions.mixins import NestedViewSetMixin
 
 from debexpo.packages.models import PackageUpload, Package, SourcePackage
+from debexpo.packages.serializers import PackageSerializer, \
+    PackageUploadSerializer
 from debexpo.comments.forms import CommentForm
 from debexpo.repository.tasks import remove_from_repository
 from debexpo.tools.gitstorage import GitStorage
@@ -287,3 +291,18 @@ class PackagesFeed(Feed):
 @login_required
 def packages_my(request):
     return packages(request, 'uploader', request.user.email)
+
+
+class PackageViewSet(NestedViewSetMixin, ReadOnlyModelViewSet):
+    queryset = Package.objects.all()
+    serializer_class = PackageSerializer
+    filterset_fields = set(serializer_class.Meta.fields) \
+        .difference(('uploaders', 'versions', 'id',))
+
+
+class PackageUploadViewSet(NestedViewSetMixin, ReadOnlyModelViewSet):
+    queryset = PackageUpload.objects.all()
+    serializer_class = PackageUploadSerializer
+    filterset_fields = set(serializer_class.Meta.fields) \
+        .difference(('id', 'distribution', 'component', 'closes', 'uploader',
+                     'package'))

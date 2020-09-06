@@ -87,6 +87,9 @@ setup(
         'python-debianbts>=2.8.2',
         'lxml>=4.3.2',
         'dulwich>=0.19.11',
+        'djangorestframework>=3.9.0',
+        'django-filter>=2.1.0',
+        'drf-extensions>=0.4.0',
     ],
 
     extras_require={

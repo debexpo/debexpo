@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'debexpo.plugins',
     'debexpo.bugs',
     'debexpo.nntp',
+    'rest_framework',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -205,3 +207,24 @@ MAX_AGE_UPLOAD_WEEKS = 20
 
 # Cleanup incoming queue
 QUEUE_EXPIRED_TIME = 6 * 60 * 60  # File TTL is 6 hours
+
+# API settings
+REST_FRAMEWORK = {
+    # Filtering
+    'DEFAULT_FILTER_BACKENDS':
+        ('django_filters.rest_framework.DjangoFilterBackend',),
+
+    # Versioning
+    'DEFAULT_VERSIONING_CLASS':
+        'rest_framework.versioning.AcceptHeaderVersioning',
+    'DEFAULT_VERSION': '1',
+    'ALLOWED_VERSIONS': ('1',),
+
+    # Rate Limiting
+    'DEFAULT_THROTTLE_CLASSES': (
+            'rest_framework.throttling.AnonRateThrottle',
+        ),
+    'DEFAULT_THROTTLE_RATES': {
+            'anon': '200/day',  # Approximatively 2 request every 15 minutes
+        },
+}
