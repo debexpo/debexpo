@@ -77,25 +77,25 @@ setup(
 
     # Requirements
     install_requires=[
-        'django>=2.2.10',
-        'bcrypt>=3.1.6',
-        'python-debian>=0.1.35',
-        'celery>=4.2.1',
-        'django-celery-beat>=1.1.1',
-        'redis>=3.2.1',
-        'django-redis>=4.10.0',
-        'python-debianbts>=2.8.2',
-        'lxml>=4.3.2',
-        'dulwich>=0.19.11',
-        'djangorestframework>=3.9.0',
-        'django-filter>=2.1.0',
-        'drf-extensions>=0.4.0',
+        'django >= 2.2.10, < 3',
+        'bcrypt >= 3.1.6, < 4',
+        'python-debian >= 0.1.35, < 1',
+        'celery >= 4.2.1, < 5',
+        'django-celery-beat >= 1.1.1, < 2',
+        'redis >= 3.2.1, < 4',
+        'django-redis >= 4.10.0, < 5',
+        'python-debianbts >= 2.8.2, < 4',
+        'lxml >= 4.3.2, < 5',
+        'dulwich >= 0.19.11, < 1',
+        'djangorestframework >= 3.9.0, < 4',
+        'django-filter >= 2.1.0, < 3',
+        'drf-extensions >= 0.4.0, < 1',
     ],
 
     extras_require={
         'testing': [
-            'fakeredis>=1.0.3',
-            'lupa>=1.6',
+            'fakeredis >= 1.0.3, < 2',
+            'lupa >= 1.6, < 2',
         ],
     },
 
