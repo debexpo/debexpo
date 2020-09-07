@@ -92,6 +92,10 @@ Setting up the application
 Execute the following commands to setup the application::
 
     python manage.py migrate
+    python manage.py collectstatic --no-input --clear
+
+Those commands must be run each time changes are made to the database model or
+static files.
 
 Running debexpo
 ---------------
