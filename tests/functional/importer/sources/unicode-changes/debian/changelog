@@ -3,4 +3,4 @@ hello (1.0-1) unstable; urgency=medium
   * Initial release (Closes: #0)
   * Testing unicode string in changelog: φ
 
- -- Baptiste BEAUPLAT <lyknode@cilg.org>  Sun, 02 Dec 2018 22:38:11 +0100
+ -- Baptiste Beauplat <lyknode@cilg.org>  Sun, 02 Dec 2018 22:38:11 +0100

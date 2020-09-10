@@ -1,7 +1,7 @@
 #   rfs.py - collect information for RFS template plugin
 #
 #   Copyright © 2016 Hayashi Kentaro <kenhys@gmail.com>
-#   Copyright © 2020 Baptiste BEAUPLAT <lyknode@cilg.org>
+#   Copyright © 2020 Baptiste Beauplat <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
