@@ -50,6 +50,12 @@ from debexpo.tools.clients.ftp_master import ClientFTPMaster
 log = getLogger(__name__)
 
 
+def remove_user_uploads(user):
+    uploads = PackageUpload.objects.filter(uploader=user)
+
+    remove_uploads(uploads)
+
+
 @transaction.atomic
 def remove_uploads(uploads):
     removals = set()
