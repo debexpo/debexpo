@@ -1,16 +1,16 @@
 # French translation for debexpo.
 # Copyright 2019 - Debexpo authors
 # This file is distributed under the same license as the debexpo package.
-# Baptiste BEAUPLAT <lyknode@cilg.org>.
+# Baptiste Beauplat <lyknode@cilg.org>.
 #
-# Baptiste BEAUPLAT <lyknode@cilg.org>, 2019.
+# Baptiste Beauplat <lyknode@cilg.org>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: debexpo 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-20 09:31+0200\n"
 "PO-Revision-Date: 2020-05-20 12:01+0200\n"
-"Last-Translator: Baptiste BEAUPLAT <lyknode@cilg.org>\n"
+"Last-Translator: Baptiste Beauplat <lyknode@cilg.org>\n"
 "Language-Team: French <>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -117,11 +117,11 @@ msgstr "Courriel du site"
 
 #: base/templates/contact.html:27
 msgid ""
-"Currently Baptiste BEAUPLAT (<em>lyknode</em>), Mattia Rizzolo (<em>mattia</"
+"Currently Baptiste Beauplat (<em>lyknode</em>), Mattia Rizzolo (<em>mattia</"
 "em>, IRC: <em>mapreri</em>) and Paul Wise (<em>pabs</em>) are maintaining "
 "this service."
 msgstr ""
-"Présentement, Baptiste BEAUPLAT (<em>lyknode</em>), Mattia Rizzolo "
+"Présentement, Baptiste Beauplat (<em>lyknode</em>), Mattia Rizzolo "
 "(<em>mattia</em>, IRC: <em>mapreri</em>) and Paul Wise (<em>pabs</em>) "
 "maintiennent ce service."
 

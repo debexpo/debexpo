@@ -4,7 +4,7 @@
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2008 Serafeim Zanikolas <serzan@hellug.gr>
-#               2019 Baptiste BEAUPLAT <lyknode@cilg.org>
+#               2019 Baptiste Beauplat <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation

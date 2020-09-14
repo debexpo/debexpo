@@ -4,7 +4,7 @@
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2012 Nicolas Dandrimont <nicolas.dandrimont@crans.org>
-#               2020 Baptiste BEAUPLAT <lyknode@cilg.org>
+#               2020 Baptiste Beauplat <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation

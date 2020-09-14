@@ -4,7 +4,7 @@
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
 #   Copyright © 2011 Arno Töll <debian@toell.net>
-#   Copyright © 2020 Baptiste BEAUPLAT <lyknode@cilg.org>
+#   Copyright © 2020 Baptiste Beauplat <lyknode@cilg.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -48,6 +48,12 @@ from debexpo.tools.clients import ExceptionClient
 from debexpo.tools.clients.ftp_master import ClientFTPMaster
 
 log = getLogger(__name__)
+
+
+def remove_user_uploads(user):
+    uploads = PackageUpload.objects.filter(uploader=user)
+
+    remove_uploads(uploads)
 
 
 @transaction.atomic

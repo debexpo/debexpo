@@ -1,7 +1,7 @@
 Source: hello
 Section: unknown
 Priority: optional
-Maintainer: Baptiste BEAUPLAT <lyknode@cilg.org>
+Maintainer: Baptiste Beauplat <lyknode@cilg.org>
 Build-Depends: debhelper (>= 11)
 Standards-Version: 4.1.3
 Homepage: <insert the upstream URL, if relevant>

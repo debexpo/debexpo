@@ -1,4 +1,4 @@
-#   cache.py - cache function for redis
+#   users.py - commands to manage users
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
@@ -26,21 +26,28 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from contextlib import contextmanager
+from django.core.management.base import BaseCommand, CommandError
 
-from django.core.cache import cache
+from debexpo.accounts.models import User
+from debexpo.packages.tasks import remove_user_uploads
 
 
-@contextmanager
-def enforce_unique_instance(task, timeout=2*60*60, blocking=False):
-    # timeout in seconds, default 2 hours.
-    lock = cache.lock(task, timeout=timeout)
+class Command(BaseCommand):
+    help = 'Delete a user from debexpo'
 
-    # Calling tasks in tests is done synchronisly, without risks of concurrency.
-    # This has to be tested manually
-    if not lock.acquire(blocking=blocking):  # pragma: no cover
-        raise Exception(f'Task {task} is already running. Aborting.')
-    try:
-        yield lock
-    finally:
-        lock.release()
+    def add_arguments(self, parser):
+        parser.add_argument('email', nargs='+',
+                            help='Email of the user to delete')
+
+    def handle(self, *args, **kwargs):
+        for email in kwargs['email']:
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                raise CommandError(f'{email}: no such user')
+
+            if user.is_superuser:
+                raise CommandError(f'{email}: is admin, demote before deleting')
+
+            remove_user_uploads(user)
+            user.delete()
