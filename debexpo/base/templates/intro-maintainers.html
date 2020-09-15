@@ -22,7 +22,18 @@
     {% endblocktrans %}
 </p>
 
-<h2>{% trans '1. Find a requested package' %}</h2>
+<h2>{% trans '1. Identify a package' %}</h2>
+
+<h3>{% trans 'Propose a package: File a WNPP bug' %}</h3>
+
+<p>
+    {% blocktrans trimmed %}
+    If you want to package something not currently
+    available in Debian, the very first step should be to file an "Intent to
+    package" (<em>ITP</em>) bug on <a href="https://www.debian.org/devel/wnpp/">
+        Work-Needing and Prospective Packages</a>.
+    {% endblocktrans %}
+</p>
 
 <p>
     {% blocktrans with u_sponsor=url_sponsor trimmed %}
@@ -40,6 +51,8 @@
     {% endblocktrans %}
 </p>
 
+<h3>{% trans 'Find a package looking for maintainers' %}</h3>
+
 <p>
     {% blocktrans trimmed %}
     If you want to contribute to Debian, but you do not know which packages to
@@ -48,8 +61,6 @@
     for package" (<em>RFP</em>) bugs. See <em>WNPP</em> below.
     {% endblocktrans %}
 </p>
-
-<h2>{% trans '2. File a WNPP bug' %}</h2>
 
 <p>
     {% blocktrans trimmed %}
@@ -60,16 +71,14 @@
     <a href="https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=wnpp">
         WNPP pseudo package</a>
     (<a href="https://wnpp.debian.net/">or use a nice frontend</a> to browse
-    <em>WNPP</em> bugs). If you want to package something not currently
-    available in Debian, the very first step should be to file an "Intent to
-    package" (<em>ITP</em>) bug against <em>WNPP</em>. You may want to use the
+    <em>WNPP</em> bugs). You may want to use the
     <tt><a href="https://packages.debian.org/sid/reportbug">reportbug</a></tt>
     tool to achieve that by selecting "<em>wnpp</em>" as package to report
     a bug to.
     {% endblocktrans %}
 </p>
 
-<h2>{% trans '3. Make the package' %}</h2>
+<h2>{% trans '2. Make the package' %}</h2>
 
 <p>
     {% blocktrans trimmed %}
@@ -138,7 +147,7 @@
     </dl>
 
 
-<h2>{% trans '4. Publish your package' %}</h2>
+<h2>{% trans '3. Publish your package' %}</h2>
 
 <p>
     {% blocktrans with u_sponsor=url_sponsor trimmed %}
@@ -284,7 +293,7 @@ $ dput mentors your_sourcepackage_1.0.changes
     {% endblocktrans %}
 </p>
 
-<h2>{% trans '5. Find a sponsor' %}</h2>
+<h2>{% trans '4. Find a sponsor' %}</h2>
 
 <p>
     {% blocktrans with title=settings.SITE_TITLE u_sponsor=url_sponsor trimmed %}
@@ -350,7 +359,7 @@ $ dput mentors your_sourcepackage_1.0.changes
     </li>
 </ul>
 
-<h2>{% trans '6. Getting an upload to Debian' %}</h2>
+<h2>{% trans '5. Getting an upload to Debian' %}</h2>
 
 <p>
     {% blocktrans trimmed %}
@@ -369,7 +378,7 @@ $ dput mentors your_sourcepackage_1.0.changes
     {% endblocktrans %}
 </p>
 
-<h2>{% trans '7. Maintaining your package in Debian' %}</h2>
+<h2>{% trans '6. Maintaining your package in Debian' %}</h2>
 
 <p>
     {% blocktrans with name=settings.SITE_NAME u_sponsor=url_sponsor trimmed %}
