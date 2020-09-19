@@ -120,3 +120,6 @@ LOGGING = {
         },
     },
 }
+
+# Enable spam detection
+REGISTRATION_SPAM_DETECTION = True
