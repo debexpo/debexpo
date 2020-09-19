@@ -31,6 +31,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from django.test import override_settings
 
 from debexpo.accounts.models import User, UserStatus
 
@@ -152,3 +153,35 @@ class TestRegisterController(TestController):
             'token': 'set-password',
         }), str(response.url))
         user.delete()
+
+    @override_settings(REGISTRATION_SPAM_DETECTION=True)
+    def test_spam_detection(self):
+        # Direct POST
+        self.client.post(reverse('register'), INFO_CONTRIBUTOR)
+
+        self.assertRaises(User.DoesNotExist, User.objects.get,
+                          email=INFO_CONTRIBUTOR['email'])
+
+        # Too fast POST
+        self.client.get(reverse('register'))
+        self.client.post(reverse('register'), INFO_CONTRIBUTOR)
+
+        self.assertRaises(User.DoesNotExist, User.objects.get,
+                          email=INFO_CONTRIBUTOR['email'])
+
+        # Normal POST
+        with self.settings(REGISTRATION_MIN_ELAPSED=0):
+            self.client.get(reverse('register'))
+            self.client.post(reverse('register'), INFO_CONTRIBUTOR)
+
+        user = User.objects.get(email=INFO_CONTRIBUTOR['email'])
+        user.delete()
+
+        # Per day limit reached
+        with self.settings(REGISTRATION_MIN_ELAPSED=0,
+                           REGISTRATION_PER_IP=3):
+            self.client.get(reverse('register'))
+            self.client.post(reverse('register'), INFO_CONTRIBUTOR)
+
+        self.assertRaises(User.DoesNotExist, User.objects.get,
+                          email=INFO_CONTRIBUTOR['email'])
