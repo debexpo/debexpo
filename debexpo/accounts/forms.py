@@ -26,10 +26,16 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+from datetime import timedelta, datetime
+from hashlib import sha256
+
 from django import forms
 from django.contrib.auth.forms import PasswordResetForm as \
     DjangoPasswordResetForm
 from django.utils.translation import gettext_lazy as _
+from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.core.cache import cache
 
 from debexpo.tools.email import Email
 
@@ -44,6 +50,9 @@ class AccountForm(forms.Form):
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
+        self.elapsed = kwargs.pop('elapsed', None)
+        self.ip = kwargs.pop('ip', None)
+
         super().__init__(*args, **kwargs)
 
     def _validate_uniqueness(self, name, email):
@@ -85,11 +94,28 @@ class RegistrationForm(AccountForm):
                                              "registered with your @debian.org "
                                              "address"))
 
+    def _detect_spammer(self):
+        if not settings.REGISTRATION_SPAM_DETECTION:
+            return
+
+        ip = sha256(self.ip.encode()).hexdigest()
+        key = f'registration_ip_{ip}'
+
+        cache.add(key, 0, settings.REGISTRATION_CACHE_TIMEOUT)
+        count = cache.incr(key)
+
+        if not self.elapsed or datetime.fromisoformat(self.elapsed) > \
+                (datetime.now() -
+                 timedelta(seconds=settings.REGISTRATION_MIN_ELAPSED)) or \
+                count > settings.REGISTRATION_PER_IP:
+            raise ValidationError(_('Spam detected'))
+
     def clean(self):
         self.cleaned_data = super().clean()
         email = self.cleaned_data.get('email')
         account_type = self.cleaned_data.get('account_type')
 
+        self._detect_spammer()
         self._validate_sponsor_account(account_type, email)
 
         return self.cleaned_data
