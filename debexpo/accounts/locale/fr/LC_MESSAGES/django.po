@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-08 15:22+0000\n"
-"PO-Revision-Date: 2020-08-08 17:25+0200\n"
+"POT-Creation-Date: 2020-09-19 14:03+0000\n"
+"PO-Revision-Date: 2020-09-19 16:04+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -16,17 +16,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.3.1\n"
+"X-Generator: Poedit 2.4.1\n"
 
-#: accounts/forms.py:42
+#: accounts/forms.py:48
 msgid "Full name"
 msgstr "Nom complet"
 
-#: accounts/forms.py:43
+#: accounts/forms.py:49
 msgid "E-mail"
 msgstr "Courriel"
 
-#: accounts/forms.py:52
+#: accounts/forms.py:61
 msgid ""
 "A user with this name is already registered on the system. If it is you, use "
 "that account!  Otherwise use a different name to register."
@@ -35,27 +35,31 @@ msgstr ""
 "s'agit de vous, utilisez ce compte ! Sinon, utilisez un nom différent pour "
 "vous inscrire."
 
-#: accounts/forms.py:59
+#: accounts/forms.py:68
 msgid "A user with this email address is already registered on the system"
 msgstr "Un utilisateur avec le même courriel est déjà inscrit sur le système"
 
-#: accounts/forms.py:72
+#: accounts/forms.py:81
 msgid "Account type"
 msgstr "Type de compte"
 
-#: accounts/forms.py:76
+#: accounts/forms.py:85
 msgid "Maintainer"
 msgstr "Maintaineur"
 
-#: accounts/forms.py:78
+#: accounts/forms.py:87
 msgid "Sponsor"
 msgstr "Parrain"
 
-#: accounts/forms.py:84
+#: accounts/forms.py:93
 msgid "A sponsor account must be registered with your @debian.org address"
 msgstr "Un compte parrain doit s'inscrire avec votre adresse @debian.org"
 
-#: accounts/forms.py:102
+#: accounts/forms.py:111
+msgid "Spam detected"
+msgstr "Spam détecté"
+
+#: accounts/forms.py:128
 msgid "You requested a password reset"
 msgstr "Vous avez demandé une remise à zéro de mot de passe"
 
@@ -331,7 +335,7 @@ msgstr "Inscrivez un compte"
 msgid "Account details"
 msgstr "Détail du compte"
 
-#: accounts/views.py:69
+#: accounts/views.py:70
 msgid "Next step: Confirm your email address"
 msgstr "Prochaine étape : Confirmer votre courriel"
 

@@ -29,6 +29,7 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 import logging
+from datetime import datetime
 
 from django.conf import settings
 from django.contrib.auth import update_session_auth_hash
@@ -134,12 +135,15 @@ def register(request):
     # Has the form been submitted?
     if request.method == 'POST':
         log.debug('Maintainer form submitted')
-        form = RegistrationForm(None, request.POST)
+        form = RegistrationForm(None, request.POST,
+                                elapsed=request.session.get('timestamp', None),
+                                ip=request.META['REMOTE_ADDR'])
 
         if form.is_valid():
             return _register_submit(request, form.cleaned_data)
     else:
         form = RegistrationForm(None)
+        request.session['timestamp'] = str(datetime.now())
 
     log.debug('Maintainer form requested')
     return render(request, 'register.html', {

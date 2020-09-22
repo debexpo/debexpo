@@ -31,24 +31,35 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from django.test import override_settings
 
 from debexpo.accounts.models import User, UserStatus
 
 from tests import TestController
 
 
+INFO_CONTRIBUTOR = {
+    'name': 'Mr. Me',
+    'commit': 'submit',
+    'email': 'mr_me@example.com',
+    'account_type': UserStatus.contributor.value
+}
+
+INFO_DD = {
+    'name': 'Mr. Me Debian',
+    'commit': 'submit',
+    'email': 'mr_me@debian.org',
+    'account_type': UserStatus.developer.value
+}
+
+
 class TestRegisterController(TestController):
 
     def test_maintainer_signup(self, actually_delete_it=True):
         self.assertRaises(User.DoesNotExist, User.objects.get,
-                          email='mr_me@example.com')
+                          email=INFO_CONTRIBUTOR['email'])
 
-        self.client.post(reverse('register'), {
-            'name': 'Mr. Me',
-            'commit': 'submit',
-            'email': 'mr_me@example.com',
-            'account_type': UserStatus.contributor.value
-        })
+        self.client.post(reverse('register'), INFO_CONTRIBUTOR)
 
         user = User.objects.get(email='mr_me@example.com')
         self.assertEquals(user.profile.status, UserStatus.contributor.value)
@@ -62,12 +73,10 @@ class TestRegisterController(TestController):
     def test_maintainer_signup_with_duplicate_email(self):
         self.test_maintainer_signup(actually_delete_it=False)
 
-        self.client.post(reverse('register'), {
-            'name': 'Mr. Me Again',
-            'commit': 'submit',
-            'email': 'mr_me@example.com',
-            'account_type': UserStatus.contributor.value
-        })
+        INFO = INFO_CONTRIBUTOR.copy()
+        INFO['name'] = 'Mr. Me Again'
+
+        self.client.post(reverse('register'), INFO)
 
         self.assertRaises(User.DoesNotExist, User.objects.get,
                           name='Mr. Me Again')
@@ -81,43 +90,34 @@ class TestRegisterController(TestController):
 
         self.test_maintainer_signup(actually_delete_it=False)
 
-        self.client.post(reverse('register'), {
-            'name': 'Mr. Me',
-            'commit': 'submit',
-            'email': 'mr_me_again@example.com',
-            'account_type': UserStatus.contributor.value
-        })
+        INFO = INFO_CONTRIBUTOR.copy()
+        INFO['email'] = 'mr_me_again@example.com'
+
+        self.client.post(reverse('register'), INFO)
 
         self.assertRaises(User.DoesNotExist, User.objects.get,
-                          email='mr_me_again@example.com')
+                          email=INFO['email'])
 
-        User.objects.get(email='mr_me@example.com').delete()
+        User.objects.get(email=INFO_CONTRIBUTOR['email']).delete()
 
     def test_sponsor_signup_wrong_email(self):
-        response = self.client.post(reverse('register'), {
-            'name': 'Mr. Me',
-            'commit': 'submit',
-            'email': 'mr_me@example.com',
-            'account_type': UserStatus.developer.value
-        })
+        INFO = INFO_CONTRIBUTOR.copy()
+        INFO['account_type'] = UserStatus.developer.value
+
+        response = self.client.post(reverse('register'), INFO)
 
         self.assertEqual(response.status_code, 200)
         testtext = 'A sponsor account must be registered with your' \
                    ' @debian.org address'
         self.assertIn(testtext, str(response.content))
         self.assertRaises(User.DoesNotExist, User.objects.get,
-                          email='mr_me@example.com')
+                          email=INFO['email'])
 
     def test_sponsor_signup(self):
-        response = self.client.post(reverse('register'), {
-            'name': 'Mr. Me Debian',
-            'commit': 'submit',
-            'email': 'mr_me@debian.org',
-            'account_type': UserStatus.developer.value
-        })
+        response = self.client.post(reverse('register'), INFO_DD)
 
         self.assertEqual(response.status_code, 200)
-        user = User.objects.get(email='mr_me@debian.org')
+        user = User.objects.get(email=INFO_DD['email'])
         self.assertEquals(user.profile.status, UserStatus.developer.value)
 
         user.delete()
@@ -153,3 +153,35 @@ class TestRegisterController(TestController):
             'token': 'set-password',
         }), str(response.url))
         user.delete()
+
+    @override_settings(REGISTRATION_SPAM_DETECTION=True)
+    def test_spam_detection(self):
+        # Direct POST
+        self.client.post(reverse('register'), INFO_CONTRIBUTOR)
+
+        self.assertRaises(User.DoesNotExist, User.objects.get,
+                          email=INFO_CONTRIBUTOR['email'])
+
+        # Too fast POST
+        self.client.get(reverse('register'))
+        self.client.post(reverse('register'), INFO_CONTRIBUTOR)
+
+        self.assertRaises(User.DoesNotExist, User.objects.get,
+                          email=INFO_CONTRIBUTOR['email'])
+
+        # Normal POST
+        with self.settings(REGISTRATION_MIN_ELAPSED=0):
+            self.client.get(reverse('register'))
+            self.client.post(reverse('register'), INFO_CONTRIBUTOR)
+
+        user = User.objects.get(email=INFO_CONTRIBUTOR['email'])
+        user.delete()
+
+        # Per day limit reached
+        with self.settings(REGISTRATION_MIN_ELAPSED=0,
+                           REGISTRATION_PER_IP=3):
+            self.client.get(reverse('register'))
+            self.client.post(reverse('register'), INFO_CONTRIBUTOR)
+
+        self.assertRaises(User.DoesNotExist, User.objects.get,
+                          email=INFO_CONTRIBUTOR['email'])

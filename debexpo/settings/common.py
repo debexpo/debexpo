@@ -229,3 +229,15 @@ REST_FRAMEWORK = {
             'anon': '200/day',  # Approximatively 2 request every 15 minutes
         },
 }
+
+# Spam detection
+REGISTRATION_SPAM_DETECTION = False
+
+# Time between GET and POST of the registration form
+REGISTRATION_MIN_ELAPSED = 3
+
+# How any time an IP can register an account (currently per day)
+REGISTRATION_PER_IP = 5
+
+# Forget the IP after 1 day (set to 0 to disable spam detection)
+REGISTRATION_CACHE_TIMEOUT = 1 * 24 * 3600
