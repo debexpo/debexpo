@@ -286,7 +286,8 @@ class Importer():
         if upload:
             recipients.append(upload.uploader.email)
             subject = f'{upload.package.name}_{upload.version}: ACCEPTED ' \
-                      f'into {upload.distribution.name}'
+                      f'on {settings.SITE_NAME.split(".")[0]} ' \
+                      f'({upload.distribution.name})'
 
         if notify_admins:
             recipients.append(settings.DEFAULT_FROM_EMAIL)
