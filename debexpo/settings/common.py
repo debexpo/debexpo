@@ -241,3 +241,7 @@ REGISTRATION_PER_IP = 5
 
 # Forget the IP after 1 day (set to 0 to disable spam detection)
 REGISTRATION_CACHE_TIMEOUT = 1 * 24 * 3600
+
+# Timeout for processes (10 minutes by default, 30 minutes for lintian)
+SUBPROCESS_TIMEOUT = 10 * 60
+SUBPROCESS_TIMEOUT_LINTIAN = 30 * 60

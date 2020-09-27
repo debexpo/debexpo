@@ -28,7 +28,7 @@
 
 import logging
 
-from subprocess import check_output, CalledProcessError
+from subprocess import CalledProcessError, TimeoutExpired
 from os.path import dirname, abspath
 from datetime import datetime, timedelta, timezone
 from re import IGNORECASE, search
@@ -43,6 +43,7 @@ from debexpo.packages.models import Package, PackageUpload
 from debexpo.plugins.models import PluginResults
 from debexpo.packages.views import _get_timedeltas
 from debexpo.bugs.models import Bug, BugSeverity, BugType
+from debexpo.tools.proc import debexpo_exec
 
 
 log = logging.getLogger(__name__)
@@ -61,13 +62,15 @@ def get_debexpo_version():
     # note: testing results depends on wether git is installed or not and if we
     # currently are in a git reposirtory. Hence, this is tested manually.
     try:
-        output = check_output([command] + args,
+        output = debexpo_exec(command, args,
                               cwd=dirname(abspath(__file__)),
                               text=True)
     except FileNotFoundError:  # pragma: no cover
         log.debug('git not found, skip revision detection.')
     except CalledProcessError:  # pragma: no cover
         log.debug('not a git repository, skip revision detection.')
+    except TimeoutExpired:  # pragma: no cover
+        log.warning('Fail to run git: timeout.')
 
     if output:
         output = output.strip()

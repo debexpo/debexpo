@@ -27,7 +27,7 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 from logging import getLogger
-from subprocess import check_output, CalledProcessError, STDOUT
+from subprocess import TimeoutExpired, CalledProcessError, STDOUT
 from os.path import join, dirname
 from tempfile import TemporaryDirectory
 
@@ -36,6 +36,7 @@ from django.conf import settings
 from debexpo.tools.debian.changelog import Changelog, ExceptionChangelog
 from debexpo.tools.debian.copyright import Copyright, ExceptionCopyright
 from debexpo.tools.debian.control import Control, ExceptionControl
+from debexpo.tools.proc import debexpo_exec
 
 log = getLogger(__name__)
 
@@ -54,17 +55,20 @@ class Source():
         args = ['-x', str(self.dsc), self.source_dir]
 
         try:
-            check_output(['dpkg-source'] + args,
+            debexpo_exec('dpkg-source', args,
                          stderr=STDOUT,
                          cwd=dirname(self.dsc.filename),
                          text=True)
         except FileNotFoundError:  # pragma: no cover
             log.error('dpkg-source not found')
-            raise ExceptionSource(f'Internal error. Please contact debexpo '
+            raise ExceptionSource('Internal error. Please contact debexpo '
                                   f'administrators at {settings.SUPPORT_EMAIL}')
         except CalledProcessError as e:
-            raise ExceptionSource(f'Could not extract source package from '
+            raise ExceptionSource('Could not extract source package from '
                                   f'{str(self.dsc)}: {e.output}')
+        except TimeoutExpired:
+            raise ExceptionSource('Could not extract source package from '
+                                  f'{str(self.dsc)}: extraction took too long')
 
     def get_source_dir(self):
         return self.source_dir
