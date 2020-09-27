@@ -87,7 +87,10 @@ class KeyManager(models.Manager):
 
     def get_key_by_fingerprint(self, fingerprint):
         return self.filter(Q(fingerprint=fingerprint) |
-                           Q(subkey__fingerprint=fingerprint)).distinct().get()
+                           Q(subkey__fingerprint=fingerprint) |
+                           Q(fingerprint__endswith=fingerprint) |
+                           Q(subkey__fingerprint__endswith=fingerprint)) \
+                                .distinct().get()
 
     def parse_key_data(self, data):
         key = self.import_key(data)

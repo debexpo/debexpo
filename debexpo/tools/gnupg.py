@@ -62,13 +62,17 @@ class ExceptionGnuPGNotSignedFile(ExceptionGnuPG):
 
 
 class ExceptionGnuPGNoPubKey(ExceptionGnuPG):
-    def __init__(self, filename, fingerprint):
+    def __init__(self, filename, fingerprint, long_id):
         self.filename = filename
         self.fingerprint = fingerprint
+        self.long_id = long_id
 
     def __str__(self):
+        if self.fingerprint:
+            return 'Unable to verify file {}. No public key found for key {}' \
+                   .format(basename(self.filename), self.fingerprint)
         return 'Unable to verify file {}. No public key found for key {}' \
-               .format(basename(self.filename), self.fingerprint)
+               .format(basename(self.filename), self.long_id)
 
 
 class GnuPG():
@@ -128,11 +132,18 @@ class GnuPG():
         (output, status) = self._run(args=args)
         output = output.splitlines()
 
-        err_sig_re = re.compile(r'\[GNUPG:\] ERRSIG .* (?P<fingerprint>\w+)$')
+        err_sig_re = re.compile(r'\[GNUPG:\] ERRSIG (?P<long_id>\w+)'
+                                r' .* (?P<fingerprint>[\w-]+)$')
         err_sig = list(filter(None, map(err_sig_re.match, output)))
+
         if err_sig:
-            raise ExceptionGnuPGNoPubKey(signed_file,
-                                         err_sig[0].group('fingerprint'))
+            fingerprint = err_sig[0].group('fingerprint')
+            long_id = err_sig[0].group('long_id')
+
+            if fingerprint == '-':
+                fingerprint = None
+
+            raise ExceptionGnuPGNoPubKey(signed_file, fingerprint, long_id)
 
         no_data_re = re.compile(r'\[GNUPG:\] NODATA')
         no_data = list(filter(None, map(no_data_re.match,
