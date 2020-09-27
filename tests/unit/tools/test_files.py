@@ -40,7 +40,8 @@ from debexpo.tools.files import GPGSignedFile, CheckSumedFile, \
 from debexpo.accounts.models import User
 from debexpo.keyring.models import Key
 from tests.unit.tools.test_gnupg import signed_file, test_gpg_key, \
-        test_gpg_key_fpr, test_gpg_key_algo, test_gpg_key_size
+    test_gpg_key_fpr, test_gpg_key_algo, test_gpg_key_size, signed_file_v1, \
+    test_gpg1_key, test_gpg1_key_fpr, test_gpg1_key_algo, test_gpg1_key_size
 
 
 class TestGPGSignedFileController(TestController):
@@ -56,20 +57,26 @@ class TestGPGSignedFileController(TestController):
         gpg_file = GPGSignedFile(signed_file)
         self.assertRaises(ExceptionGnuPGNoPubKey, gpg_file.authenticate)
 
-    def test_signed_file(self):
+    def test_signed_file_gpg1(self):
+        self.test_signed_file(test_gpg1_key, test_gpg1_key_fpr,
+                              test_gpg1_key_algo, test_gpg1_key_size,
+                              'rsa', signed_file_v1)
+
+    def test_signed_file(self, key=test_gpg_key, fpr=test_gpg_key_fpr,
+                         algo=test_gpg_key_algo, size=test_gpg_key_size,
+                         algo_str='ed25519', filename=signed_file):
         # Setup user
         user = User.objects.create_user('debexpo@example.org',
                                         'debexpo testing', 'password')
         user.save()
 
         # Setup key
-        self._add_gpg_key(user, test_gpg_key, test_gpg_key_fpr,
-                          test_gpg_key_algo, test_gpg_key_size)
+        self._add_gpg_key(user, key, fpr, algo, size)
 
-        changes = GPGSignedFile(signed_file)
+        changes = GPGSignedFile(filename)
         changes.authenticate()
         self.assertEquals(changes.get_key(), Key.objects.get(user=user))
-        self.assertEquals(str(changes.get_key().algorithm), 'ed25519')
+        self.assertEquals(str(changes.get_key().algorithm), algo_str)
 
         # Remove user and key
         user.delete()

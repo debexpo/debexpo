@@ -57,6 +57,37 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
 =BMLr
 -----END PGP PUBLIC KEY BLOCK-----"""
 
+test_gpg1_key = """-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mQENBF9wZAUBCADV/3jD2YSQi3jOr2UBArlyYCdmb84Bvn4y/N/A6r7pUY6oMpXn
+kh1lW3xHh7X1cilFBAKO35MqYVQFjo1K6zDj5GffcYehY4faiShzgmS16NhqlO1u
+AF7kx50hTY+TVPucSpfFQ+qtyebsRFtcca/ORr3DB6Q9ssCZhhvgqhABWZqLR27D
+pu2sYtsD+46BURsgO9vZFqX0EfcCi7oWlFvYSVLukGkGXa+CZ/PjNjegJASy+5KF
+/g/7HibzDmv3SKBj1SVtK/EP8vnBMUNT4rIbxNbM8gk7eXIv15qRjxSfPm64I4BO
+MBQgacTwe4ayZNI8Ys3zg/uHtSgO0oO/nsQ9ABEBAAG0N1Rlc3QgdXNlciAoRGVi
+ZXhwbyBSU0EgdGVzdGluZyBrZXkpIDxlbWFpbEBleGFtcGxlLmNvbT6JATgEEwEI
+ACIFAl9wZAUCGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEMaeepjW8Avu
+37MIAID6Iqxi7kUlcmENCa5CQMC46dBULwvGxzLHhWM7zvMBbhH5k0Ltlifm2Rgu
+2Lca+6uP7tPWQcU9eyTKXNs6oK5b4iElMlsqb6hmAtQyt9gddlfe+koLbBkXbgDP
+PfKvWUPqGFU/tB4jxs/Y6OUmg32YOx7wlgZIDfUqT4z+0SL0TLaVXJ9BUVBV6J1+
+iOzrayHKbc3Kn8l22FIAld1q5cdFLNos6o8QIj0W9LdpzEVCK8o9RmIV2HF7aJNr
+5DM1MnMNIecpE21pPMi3fx03q6bzuh+tbjAgUvXbWTh/Bt6sOVjsCuESMzYgwEk8
+F/eh+mOGX5tkhuN006s6udIV+zu5AQ0EX3BkBQEIAN7Bbh/M+OsV7uuGTTg1hCdf
+cUwY8qRWx/rblZxKHWkbA/lTUlL4+pGiwx6znY4acJPHkyyr8ZX8Afv+SvAEy9Yz
+Dj9TBVmivJiFLOkY3FodaJvQ6IZCCkwasto6nl09w2unsZ1q3DFGtlnTwYctQCXI
+w1lZHWOnfP2pOEdn8mepYtCSAvjPB+yCMlYMk0K23eeK8AM3rT1yGc33E4S3QcVG
+Fd3B/6mjWoW5JV2PM/KQPs/CBzAh3puGbglsx16M8bPn4C/ynM+B2fKeGkvmR4m7
+7kAwPkFTTqAINqCaqhM6FH4Mv4hwxa+nspatvN7iUtXGtxLnjv3fha50cID0cncA
+EQEAAYkBHwQYAQgACQUCX3BkBQIbDAAKCRDGnnqY1vAL7npqB/9KbCAikx0LFePY
+qbLyWuHnRKqXPPGCZ6WW+HzCWFKTO/rNwmaM6/Ek8OQ+FvcZSmQ49LB2VI77XKb2
+R/D4jZ2vQU8YVwIyoS5LDqi3fZ9Ix3lOSBH1hs8SmIHrhkZ/wDmAAtGP6GlnQJ01
+QJJRkjQKkfYGWqVRfpPCUKuPvKuXEbz3IHPLxS3GTI5JCnQeKfcbUSRDgCqIIv3L
+6a5C6sT8lmTsZSTFOlMYl0Oe3S9tzWGaD3dAZCfP2+UWkW6kOQL05QS7cWS4S0FB
+gp/b/eohwscTGmmnQv0b1Z0+dAJ6zKR0K3JERZC4TfNgEqayIIJflEe71/VZ6FFz
+q7UsaGGA
+=IhOh
+-----END PGP PUBLIC KEY BLOCK-----"""
+
 test_multi_gpg_key = """-----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mDMEXLTbcxYJKwYBBAHaRw8BAQdAoh3VCQpeRnjWSsGxL8TmOE6AOc5W/3BGt+TH
@@ -86,8 +117,13 @@ test_gpg_key_size = 256
 test_gpg_key_name = 'debexpo testing'
 test_gpg_key_email = 'debexpo@example.org'
 
+test_gpg1_key_fpr = 'C9E825DBFFBF0E33EC5DD04CC69E7A98D6F00BEE'
+test_gpg1_key_algo = '1'
+test_gpg1_key_size = 2048
+
 gpg_data_dir = os.path.join(os.path.dirname(__file__), 'gpg')
 signed_file = os.path.join(gpg_data_dir, 'debian_announcement.gpg.asc')
+signed_file_v1 = os.path.join(gpg_data_dir, 'debian_announcement.gpg1.asc')
 
 
 class TestGnuPGController(TestCase):
@@ -165,21 +201,28 @@ class TestGnuPGController(TestCase):
         self.assertEquals(test_gpg_key_fpr,
                           gnupg.verify_sig(signed_file))
 
-    def testUnknownSignatureVerification(self):
+    def testUnknownSignatureVerificationGPG1(self):
+        self.testUnknownSignatureVerification(signed_file_v1, None,
+                                              test_gpg1_key_fpr[-16:])
+
+    def testUnknownSignatureVerification(self, filename=signed_file,
+                                         fpr=test_gpg_key_fpr,
+                                         long_id=test_gpg_key_fpr[-16:]):
         """
         Verify the signature in the file
         debexpo/tests/gpg/debian_announcement.gpg.asc.
         """
         gnupg = self._get_gnupg()
         self.assertFalse(gnupg.is_unusable())
-        assert os.path.exists(signed_file)
+        assert os.path.exists(filename)
         self.assertRaises(ExceptionGnuPGNoPubKey, gnupg.verify_sig,
-                          signed_file)
+                          filename)
         try:
-            gnupg.verify_sig(signed_file)
+            gnupg.verify_sig(filename)
         except ExceptionGnuPGNoPubKey as e:
-            self.assertEquals(e.fingerprint, test_gpg_key_fpr)
-            self.assertIn(os.path.basename(signed_file), str(e))
+            self.assertEquals(e.fingerprint, fpr)
+            self.assertEquals(e.long_id, long_id)
+            self.assertIn(os.path.basename(filename), str(e))
 
     def testInvalidSignature(self):
         """
