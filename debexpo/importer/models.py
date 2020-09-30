@@ -44,7 +44,7 @@ from debexpo.tools.debian.changes import Changes, ExceptionChanges
 from debexpo.tools.debian.dsc import ExceptionDsc
 from debexpo.tools.debian.origin import ExceptionOrigin
 from debexpo.tools.clients import ExceptionClient
-from debexpo.tools.debian.source import Source, ExceptionSource
+from debexpo.tools.debian.source import ExceptionSource
 from debexpo.tools.debian.control import ExceptionControl
 from debexpo.tools.debian.copyright import ExceptionCopyright
 from debexpo.tools.debian.changelog import ExceptionChangelog
@@ -453,7 +453,7 @@ class Importer():
 
     def _validate_source(self, changes):
         # Instanciate the source package
-        source = Source(changes.dsc)
+        source = changes.get_source()
 
         # Extract
         try:

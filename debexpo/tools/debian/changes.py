@@ -91,6 +91,7 @@ class Changes(GPGSignedFile):
     def _build_changes(self):
         self.dsc = None
         self.bugs = None
+        self.source_package = None
         self.maintainer = self._data.get('Maintainer')
         self.uploader = self.maintainer
         self.source = self._data.get('Source')
@@ -149,12 +150,18 @@ class Changes(GPGSignedFile):
 
         self.cleanup_source()
 
+    def get_source(self):
+        if not self.source_package:
+            self.source_package = Source(self.dsc)
+
+        return self.source_package
+
     def cleanup_source(self):
         if self.dsc:
             self.dsc.files.remove()
 
-            source = Source(self.dsc)
-            source.remove()
+        if self.source_package:
+            self.source_package.remove()
 
     def parse_dsc(self):
         filename = self.files.find(r'\.dsc$')
