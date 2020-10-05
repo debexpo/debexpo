@@ -72,12 +72,17 @@ class GPGSignedFile():
         self.key = None
 
     def authenticate(self):
-        fingerprint = self._lookup_fingerprint()
+        lookup = self._lookup_fingerprint()
 
         try:
-            self.key = Key.objects.get_key_by_fingerprint(fingerprint)
+            if lookup.fingerprint:
+                search = lookup.fingerprint
+            else:
+                search = lookup.long_id
+
+            self.key = Key.objects.get_key_by_fingerprint(search)
         except Key.DoesNotExist:
-            raise ExceptionGnuPGNoPubKey(self.filename, fingerprint)
+            raise lookup
 
         self.keyring = GnuPG()
         self.keyring.import_key(self.key.key)
@@ -89,7 +94,7 @@ class GPGSignedFile():
         try:
             gpg.verify_sig(self.filename)
         except ExceptionGnuPGNoPubKey as e:
-            return e.fingerprint
+            return e
 
     def get_key(self):
         return self.key
