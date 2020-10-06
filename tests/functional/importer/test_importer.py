@@ -293,6 +293,15 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_count('hello', '1.0-2', 0)
         self.assert_package_not_in_repo('hello', '1.0-2')
 
+    def test_import_package_extract_timeout(self):
+        with self.settings(SUBPROCESS_TIMEOUT_DPKG_SOURCE=0):
+            self.import_source_package('not-in-debian')
+        self.assert_importer_failed()
+        self.assert_email_with("extraction took too long")
+        self.assert_package_count('this-package-should-not-exist', '1.0-1', 0)
+        self.assert_package_not_in_repo('this-package-should-not-exist',
+                                        '1.0-1')
+
     def test_import_package_not_in_debian(self):
         self.import_source_package('not-in-debian')
         self.assert_importer_succeeded()

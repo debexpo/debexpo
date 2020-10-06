@@ -127,6 +127,14 @@ class TestPluginBuildSystem(TestImporterController):
             watch.write('version=3\n'
                         f'http://localhost:{port}/hello-(.*).tar.gz\n')
 
+    def test_watch_file_timeout(self):
+        with self.settings(SUBPROCESS_TIMEOUT_USCAN=0):
+            self.import_source_package('watch-file-invalid')
+        self.assert_importer_succeeded()
+        self.assert_plugin_result('hello', 'watch-file', 'uscan: timeout')
+        self.assert_plugin_severity('hello', 'watch-file',
+                                    PluginSeverity.failed)
+
 
 class WatchNewerHTTPHandler(BaseHTTPRequestHandler):
     def do_GET(self):

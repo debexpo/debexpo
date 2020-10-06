@@ -241,3 +241,13 @@ class TestGnuPGController(TestCase):
         self.assertFalse(gnupg.is_unusable())
         self.assertRaises(ExceptionGnuPG, gnupg.verify_sig,
                           '/noexistent')
+
+    def testGnuPGTimeout(self):
+        """
+        Test that a timeout raises an exception
+        """
+        gnupg = self._get_gnupg()
+        self.assertFalse(gnupg.is_unusable())
+        with self.settings(SUBPROCESS_TIMEOUT_GPG=0):
+            self.assertRaises(ExceptionGnuPG, gnupg.verify_sig,
+                              signed_file)

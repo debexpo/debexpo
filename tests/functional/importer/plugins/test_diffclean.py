@@ -63,3 +63,11 @@ class TestPluginDiffClean(TestImporterController):
             {'modified_files': [['Makefile', '3 +++']]}
         )
         self.assert_plugin_template('hello', 'diff.gz modifies files')
+
+    def test_diffclean_timeout(self):
+        with self.settings(SUBPROCESS_TIMEOUT_DIFFSTAT=0):
+            self.import_package('diffclean-clean')
+        self.assert_importer_succeeded()
+        self.assert_plugin_result('hello', 'diff-clean', 'diffstat: timeout')
+        self.assert_plugin_severity('hello', 'diff-clean',
+                                    PluginSeverity.failed)
