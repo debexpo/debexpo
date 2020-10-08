@@ -31,9 +31,10 @@
 from bisect import insort
 from os.path import dirname
 from collections import defaultdict
-from subprocess import check_output, CalledProcessError
+from subprocess import CalledProcessError, TimeoutExpired
 
 from debexpo.plugins.models import BasePlugin, PluginSeverity
+from debexpo.tools.proc import debexpo_exec
 
 
 class PluginLintian(BasePlugin):
@@ -58,8 +59,8 @@ class PluginLintian(BasePlugin):
 
     def _run_lintian(self, changes, source):
         try:
-            output = check_output(["lintian",
-                                   "-E",
+            output = debexpo_exec("lintian",
+                                  ["-E",
                                    "-I",
                                    "--pedantic",
                                    "--show-overrides",
@@ -71,6 +72,8 @@ class PluginLintian(BasePlugin):
                                   text=True)
         except FileNotFoundError:  # pragma: no cover
             self.failed('lintian not found')
+        except TimeoutExpired:
+            self.failed('lintian took too much time to run')
         except CalledProcessError as e:
             self.failed(f'lintian failed to run: {e.stderr}')
 

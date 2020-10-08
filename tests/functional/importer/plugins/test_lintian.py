@@ -76,3 +76,14 @@ class TestPluginLintian(TestImporterController):
         changes = Changes(join(dirname(__file__), '..', 'data', 'no-orig',
                                'hello_1.0-1.dsc'))
         self.assertRaises(ExceptionPlugin, plugin.run, changes, None)
+
+    def test_lintian_timeout(self):
+        plugin = PluginLintian()
+        changes = Changes(join(dirname(__file__), '..', 'data', 'no-orig',
+                               'hello_1.0-1.dsc'))
+        with self.settings(SUBPROCESS_TIMEOUT_LINTIAN=0):
+            with self.assertRaises(ExceptionPlugin) as e:
+                plugin.run(changes, None)
+
+            self.assertEqual(str(e.exception),
+                             'lintian took too much time to run')

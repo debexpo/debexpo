@@ -28,9 +28,11 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from subprocess import check_output, CalledProcessError
+from subprocess import TimeoutExpired, CalledProcessError
 from os.path import dirname
+
 from debexpo.plugins.models import BasePlugin, PluginSeverity
+from debexpo.tools.proc import debexpo_exec
 
 
 class PluginDiffClean(BasePlugin):
@@ -40,7 +42,7 @@ class PluginDiffClean(BasePlugin):
 
     def _run_diffstat(self, diff_file):
         try:
-            output = check_output(["diffstat", "-p1", diff_file],
+            output = debexpo_exec("diffstat", ["-p1", diff_file],
                                   cwd=dirname(diff_file),
                                   text=True)
         except FileNotFoundError:  # pragma: no cover
@@ -51,6 +53,8 @@ class PluginDiffClean(BasePlugin):
         # Excluded from testing.
         except CalledProcessError as e:  # pragma: no cover
             self.failed(f'diffstat failed: {e.stderr}')
+        except TimeoutExpired:
+            self.failed('diffstat: timeout')
 
         return output
 

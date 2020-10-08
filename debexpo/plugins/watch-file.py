@@ -28,11 +28,12 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from subprocess import check_output, CalledProcessError
+from subprocess import TimeoutExpired, CalledProcessError
 import os
 from xml.etree import ElementTree
 
 from debexpo.plugins.models import BasePlugin, PluginSeverity
+from debexpo.tools.proc import debexpo_exec
 
 
 class PluginWatchFile(BasePlugin):
@@ -46,7 +47,7 @@ class PluginWatchFile(BasePlugin):
 
     def _run_uscan(self, source):
         try:
-            output = check_output(["uscan", "--dehs", '--report'],
+            output = debexpo_exec("uscan", ["--dehs", '--report'],
                                   cwd=source.get_source_dir(),
                                   text=True)
         except FileNotFoundError:  # pragma: no cover
@@ -54,6 +55,8 @@ class PluginWatchFile(BasePlugin):
         except CalledProcessError as e:
             self.status = e.returncode
             output = e.output
+        except TimeoutExpired:
+            self.failed('uscan: timeout')
 
         return output
 

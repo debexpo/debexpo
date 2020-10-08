@@ -41,6 +41,7 @@ from os.path import basename
 
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+from debexpo.tools.proc import debexpo_exec
 
 log = logging.getLogger(__name__)
 
@@ -205,7 +206,6 @@ class GnuPG():
         env['GNUPGHOME'] = self.gpg_home.name
 
         cmd = [
-            self.gpg_path,
             '--batch',
             '--no-auto-check-trustdb',
             '--no-options',
@@ -223,11 +223,14 @@ class GnuPG():
             cmd.extend(args)
 
         try:
-            output = subprocess.check_output(cmd, env=env,
-                                             stderr=subprocess.STDOUT,
-                                             input=str(stdin), text=True)
+            output = debexpo_exec(self.gpg_path, cmd, env=env,
+                                  stderr=subprocess.STDOUT,
+                                  input=str(stdin), text=True)
         except subprocess.CalledProcessError as e:
             return (e.output, e.returncode)
+        except subprocess.TimeoutExpired:
+            log.warning('gpg: timeout')
+            return ('gpg: timeout', -1)
 
         return (output, 0)
 
