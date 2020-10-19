@@ -83,6 +83,7 @@ GIT_STORAGE = '/var/lib/debexpo/git'
 # Email settings
 # https://docs.djangoproject.com/en/2.2/ref/settings/#email
 
+SUPPORT_EMAIL = 'support@mentors.debian.net'
 DEFAULT_FROM_EMAIL = 'mentors.debian.net <support@mentors.debian.net>'
 DEFAULT_BOUNCE_EMAIL = 'bounce@mentors.debian.net'
 COMMENTS_FROM_EMAIL = 'mentors.debian.net <no-reply@mentors.debian.net>'

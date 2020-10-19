@@ -53,6 +53,7 @@ SITE_URL = 'http://localhost:8000'
 # Email settings
 # https://docs.djangoproject.com/en/2.2/ref/settings/#email
 
+SUPPORT_EMAIL = 'support@example.org'
 DEFAULT_FROM_EMAIL = 'debexpo <support@example.org>'
 DEFAULT_BOUNCE_EMAIL = 'bounce@example.org'
 COMMENTS_FROM_EMAIL = 'debexpo <no-reply@example.org>'
