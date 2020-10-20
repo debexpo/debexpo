@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% url 'intro-maint' as 'url_intro_maintainers' %}
-{% url 'sponsors' as 'url_sponsors' %}
 
 {% block content %}
 <h1>
@@ -35,7 +33,7 @@
 <h2>{% trans 'Getting your package into Debian' %}</h2>
 
 <p>
-    {% blocktrans with u_intro_maintainers=url_intro_maintainers u_sponsors=url_sponsors name=settings.SITE_NAME trimmed %}
+    {% blocktrans with u_intro_maintainers=url_intro_maint u_sponsors=url_sponsors name=settings.SITE_NAME trimmed %}
     See <a href="{{ u_intro_maintainers }}">our introductory page for
     maintainers</a> and learn how to use {{ name }} and get your packages
     into Debian. Furthermore see <a href="{{ u_sponsors }}">our introductory

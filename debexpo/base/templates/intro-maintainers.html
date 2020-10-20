@@ -1,9 +1,5 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% url 'sponsors' as 'url_sponsor' %}
-{% url 'reviewers' as 'url_reviewers' %}
-{% url 'my' as 'url_my' %}
-{% url 'register' as 'url_register' %}
 
 {% block content %}
 <h1>
@@ -35,7 +31,7 @@
 </p>
 
 <p>
-    {% blocktrans with u_sponsor=url_sponsor trimmed %}
+    {% blocktrans with u_sponsor=url_sponsors trimmed %}
     Debian is a distribution, not a general purpose repository. Many of us do
     not believe <em>every</em> piece of free software necessarily belongs in
     Debian. Please do not treat Debian as a platform to advertise your own
@@ -149,7 +145,7 @@
 <h2>{% trans '3. Publish your package' %}</h2>
 
 <p>
-    {% blocktrans with u_sponsor=url_sponsor trimmed %}
+    {% blocktrans with u_sponsor=url_sponsors trimmed %}
     This web site is a public package repository of source packages. You can
     upload your package to this server (through special tools like
     '<tt><a href="https://packages.debian.org/sid/dupload">dupload</a></tt>'
@@ -185,7 +181,7 @@
         {% endblocktrans %}
     </li>
     <li>
-        {% blocktrans with u_my=url_my trimmed %}
+        {% blocktrans with u_my=url_profile trimmed %}
         Have a look at your
         <a href="{{ u_my }}">personal package page</a>. Your uploaded package
         should <strong>show up there</strong>. From there you can toggle several
@@ -295,7 +291,7 @@ $ dput mentors your_sourcepackage_1.0.changes
 <h2>{% trans '4. Find a sponsor' %}</h2>
 
 <p>
-    {% blocktrans with title=settings.SITE_TITLE u_sponsor=url_sponsor trimmed %}
+    {% blocktrans with title=settings.SITE_TITLE u_sponsor=url_sponsors trimmed %}
     Once your package is publicly available on any resource, including but not
     limited to {{ title }} you may start searching for a
     sponsor for your package. If you have already uploaded packages to Debian,
@@ -308,7 +304,7 @@ $ dput mentors your_sourcepackage_1.0.changes
 </p>
 
 <p>
-    {% blocktrans with u_reviewers=url_reviewers trimmed %}
+    {% blocktrans with u_reviewers=url_intro_review trimmed %}
     The main point of the sponsoring process is to review your package to make
     sure it meets our technical requirements. Everyone can and should review
     other people's packages. Also, a clean package will increase your likelihood
@@ -347,7 +343,7 @@ $ dput mentors your_sourcepackage_1.0.changes
         {% endblocktrans %}
     </li>
     <li>
-        {% blocktrans with u_sponsor=url_sponsor trimmed %}
+        {% blocktrans with u_sponsor=url_sponsors trimmed %}
         Offer your package directly to relevant teams and individual developers.
         We made a <a href="{{ u_sponsor }}">list of sponsors</a>
         , eventually willing to upload packages for you. <em>Please don't
@@ -380,7 +376,7 @@ $ dput mentors your_sourcepackage_1.0.changes
 <h2>{% trans '6. Maintaining your package in Debian' %}</h2>
 
 <p>
-    {% blocktrans with name=settings.SITE_NAME u_sponsor=url_sponsor trimmed %}
+    {% blocktrans with name=settings.SITE_NAME u_sponsor=url_sponsors trimmed %}
     Please see the corresponding chapter in the
     <a href="https://www.debian.org/doc/manuals/maint-guide/update">
         New Maintainer's Guide</a> to get the idea. Whenever you feel like, you
