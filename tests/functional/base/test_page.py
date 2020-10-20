@@ -29,23 +29,25 @@
 from django.test import TestCase
 from django.test import Client
 
+PAGES = (
+    ('/', 'Welcome to '),
+    ('/contact/', 'are maintaining this service'),
+    ('/intro-maintainers/', 'Getting an upload to Debian'),
+    ('/qa/', 'How do I build a package?'),
+    ('/intro-reviewers/', 'Package reviews'),
+    ('/sponsors/', 'The sponsoring process'),
+    ('/sponsors/guidelines/', 'Introduction for sponsors'),
+    ('/sponsors/rfs-howto/', 'Subject: RFS: hello/3.1-4'),
+    ('/sponsors/rfs-howto/unknown/', 'Subject: RFS: hello/3.1-4'),
+)
+
 
 class TestBrowsingPage(TestCase):
     def test_page_content(self):
         client = Client()
-        pages = (
-            ('/', 'Welcome to '),
-            ('/contact/', 'are maintaining this service'),
-            ('/intro-maintainers/', 'Getting an upload to Debian'),
-            ('/qa/', 'How do I build a package?'),
-            ('/intro-reviewers/', 'Package reviews'),
-            ('/sponsors/', 'The sponsoring process'),
-            ('/sponsors/guidelines/', 'Introduction for sponsors'),
-            ('/sponsors/rfs-howto/', 'Subject: RFS: hello/3.1-4'),
-            ('/sponsors/rfs-howto/unknown/', 'Subject: RFS: hello/3.1-4'),
-        )
 
-        for url, content in pages:
+        for url, content in PAGES:
             response = client.get(url)
             self.assertEquals(response.status_code, 200)
             self.assertIn(content, str(response.content))
+            self.assertNotIn('<a href="">', str(response.content))
