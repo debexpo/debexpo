@@ -27,7 +27,7 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 from datetime import timedelta, datetime, timezone
-from celery.task import PeriodicTask
+from celery import Task
 from logging import getLogger
 
 from django.conf import settings
@@ -37,9 +37,7 @@ from debexpo.accounts.models import User
 log = getLogger(__name__)
 
 
-class CleanupAccounts(PeriodicTask):
-    run_every = timedelta(minutes=settings.TASK_CLEANUPACCOUNTS_BEAT)
-
+class CleanupAccounts(Task):
     def __init__(self):
         self.expire_in = int(settings.REGISTRATION_EXPIRATION_DAYS)
 

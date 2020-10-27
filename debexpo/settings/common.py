@@ -166,12 +166,24 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_BEAT_SCHEDULER = 'django'
-
-# Tasks beats
-TASK_IMPORTER_BEAT = 60 * 15  # Every 15 minutes
-TASK_CLEANUPACCOUNTS_BEAT = 60 * 60  # Every hours
-TASK_OLD_UPLOADS_BEAT = 60 * 10  # Every 10 minutes
-TASK_ACCEPTED_UPLOADS_BEAT = 60 * 10  # Every 10 minutes
+CELERY_BEAT_SCHEDULE = {
+    'remove-old-uploads': {
+        'task': 'debexpo.packages.tasks.remove_old_uploads',
+        'schedule': 60 * 10,  # Every 10 minutes
+    },
+    'cleanup-accounts': {
+        'task': 'debexpo.accounts.tasks.CleanupAccounts',
+        'schedule': 60 * 60,  # Every hours
+    },
+    'importer': {
+        'task': 'debexpo.importer.tasks.importer',
+        'schedule': 60 * 15,  # Every 15 minutes
+    },
+    'remove-uploaded-packages': {
+        'task': 'debexpo.packages.tasks.remove_uploaded_packages',
+        'schedule': 60 * 10,  # Every 10 minutes
+    },
+}
 
 # Account registration expiration
 REGISTRATION_EXPIRATION_DAYS = 7
