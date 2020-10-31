@@ -48,11 +48,13 @@ class TestMinimalVersion(TestImporterController):
         if not httpd:
             with TestingHTTPServer(MadisonAPI) as httpd:
                 with self.settings(
-                        FTP_MASTER_API_URL=f'http://localhost:{httpd.port}'):
+                        FTP_MASTER_API_URL=f'http://localhost:{httpd.port}',
+                        CHECK_NEWER_UPLOAD=True):
                     self.import_source_package(package)
         else:
             with self.settings(
-                    FTP_MASTER_API_URL=f'http://localhost:{httpd.port}'):
+                    FTP_MASTER_API_URL=f'http://localhost:{httpd.port}',
+                    CHECK_NEWER_UPLOAD=True):
                 self.import_source_package(package)
 
     def test_minimal_version_greater(self):

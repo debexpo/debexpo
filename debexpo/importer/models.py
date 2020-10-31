@@ -426,7 +426,8 @@ class Importer():
             changes.validate()
             if not self.skip_gpg:
                 changes.authenticate()
-            changes.assert_newer()
+            if getattr(settings, 'CHECK_NEWER_UPLOAD', True):
+                changes.assert_newer()
             changes.files.validate()
             changes.get_bugs()
         except (ExceptionChanges, ExceptionCheckSumedFile, ExceptionGnuPG) as e:
