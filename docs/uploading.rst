@@ -20,7 +20,7 @@ Once you have debexpo and dput installed and set up, add an entry like the
 following to your ``~/.dput.cf``::
 
     [debexpo]
-    fqdn = localhost:5000
+    fqdn = localhost:8000
     incoming = /upload
     method = http
     allow_unsigned_uploads = 0
@@ -37,7 +37,7 @@ Now you should execute::
 You will get an output like this::
 
     % dput -f debexpo odccm_0.11.1-17_source.changes
-    Uploading to debexpo (via http to localhost:5000): ...
+    Uploading to debexpo (via http to localhost:8000): ...
 
 At this point your upload will run and you should see the logs flying by
 showing the status of the upload. The `*.changes` file will get uploaded last
