@@ -70,6 +70,15 @@ class PluginMaintainerEmail(BasePlugin):
             outcome += ' (Team upload)'
             severity = PluginSeverity.info
 
+        qa_upload = re.compile(r'\b[Qq][Aa]\b\s*\b[Uu]pload*\b')
+        if qa_upload.search(changes.changes) is not None:
+            if maintainer_email == 'packages@qa.debian.org':
+                outcome = 'Maintainer is Debian QA Team (QA Upload)'
+                severity = PluginSeverity.info
+            else:
+                outcome = 'Maintainer is not Debian QA Team (QA Upload)'
+                severity = PluginSeverity.error
+
         data = {
             'user_is_maintainer': (severity == PluginSeverity.info),
             'user_email': changes.uploader.email,

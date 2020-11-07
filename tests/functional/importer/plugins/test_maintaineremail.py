@@ -93,3 +93,34 @@ class TestPluginMaintainerEmail(TestImporterController):
                 'maintainer_email': 'vtime@example.org', 'uploader_emails':
                 ['second@example.com']}
         )
+
+    def test_maintaineremail_qa_upload(self):
+        self.import_source_package('plugin-maintaineremail-qa')
+        self.assert_importer_succeeded()
+        self.assert_plugin_severity('hello', 'maintainer-email',
+                                    PluginSeverity.info)
+        self.assert_plugin_result('hello', 'maintainer-email',
+                                  'Maintainer is Debian QA Team (QA Upload)')
+        self.assert_plugin_data(
+            'hello',
+            'maintainer-email',
+            {'user_is_maintainer': True, 'user_email': 'email@example.com',
+                'maintainer_email': 'packages@qa.debian.org', 'uploader_emails':
+                []}
+        )
+
+    def test_maintaineremail_qa_upload_bad_maintainer(self):
+        self.import_source_package('plugin-maintaineremail-qa-nok')
+        self.assert_importer_succeeded()
+        self.assert_plugin_severity('hello', 'maintainer-email',
+                                    PluginSeverity.error)
+        self.assert_plugin_result('hello', 'maintainer-email',
+                                  'Maintainer is not Debian QA Team '
+                                  '(QA Upload)')
+        self.assert_plugin_data(
+            'hello',
+            'maintainer-email',
+            {'user_is_maintainer': False, 'user_email': 'email@example.com',
+                'maintainer_email': 'vtime@example.org', 'uploader_emails':
+                ['second@example.com']}
+        )
