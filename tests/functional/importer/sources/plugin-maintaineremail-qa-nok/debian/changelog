@@ -1,0 +1,6 @@
+hello (1.0-1) unstable; urgency=medium
+
+  * QA Upload.
+  * Initial release (Closes: #0)
+
+ -- Vincent TIME <vtime@example.org>  Sun, 02 Dec 2018 22:38:11 +0100
