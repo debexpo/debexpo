@@ -28,6 +28,7 @@
 
 import json
 from urllib.request import urlopen
+from urllib.parse import urlencode
 from tempfile import NamedTemporaryFile
 from os import replace
 from os.path import dirname
@@ -77,7 +78,10 @@ class ClientHTTP():
 
         return content
 
-    def fetch_resource(self, url):
+    def fetch_resource(self, url, params=None):
+        if params:
+            url = f'{url}?{urlencode(params)}'
+
         request = self._connect(url)
         return self._read(url, request)
 
@@ -101,8 +105,8 @@ class ClientHTTP():
 
 
 class ClientJsonAPI(ClientHTTP):
-    def fetch_json_resource(self, url):
-        stream = self.fetch_resource(url)
+    def fetch_json_resource(self, url, params=None):
+        stream = self.fetch_resource(url, params)
 
         try:
             content = json.loads(stream)

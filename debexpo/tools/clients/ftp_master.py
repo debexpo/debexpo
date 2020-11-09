@@ -27,12 +27,15 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 from debian.deb822 import Deb822, Changes
+from logging import getLogger
 
 from django.conf import settings
 
 from debexpo.tools.files import CheckSumedFile
-from debexpo.tools.clients import ClientJsonAPI, ClientHTTP
+from debexpo.tools.clients import ClientJsonAPI, ClientHTTP, ExceptionClient
 import debexpo.repository.models as repository
+
+log = getLogger(__name__)
 
 
 class ClientFTPMasterAPI(ClientJsonAPI):
@@ -53,6 +56,31 @@ class ClientFTPMasterAPI(ClientJsonAPI):
                 origin_files.append(origin)
 
         return origin_files
+
+    def get_existing_versions_for(self, package, distribution):
+        versions = []
+        route = f'{settings.FTP_MASTER_API_URL}/madison'
+        params = {
+            'package': package,
+            's': distribution,
+            'f': 'json'
+        }
+
+        try:
+            content = self.fetch_json_resource(route, params)
+        except ExceptionClient as e:
+            log.warning(f'Failed to query madion for {package}/{distribution}: '
+                        f'{e}')
+            return versions
+
+        if content:
+            for items in content:
+                for package in items.values():
+                    for distrib in package.values():
+                        for version in distrib.keys():
+                            versions.append(version)
+
+        return versions
 
 
 class ClientFTPMaster(ClientHTTP):

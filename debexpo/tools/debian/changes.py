@@ -33,6 +33,7 @@ Holds *changes* file handling class.
 """
 
 from debian import deb822
+from debian.debian_support import NativeVersion
 from os.path import dirname, abspath, basename, join
 from os import replace, unlink
 
@@ -42,6 +43,7 @@ from debexpo.tools.files import GPGSignedFile
 from debexpo.tools.debian.control import ControlFiles
 from debexpo.tools.debian.dsc import Dsc
 from debexpo.tools.debian.source import Source
+from debexpo.tools.clients.ftp_master import ClientFTPMasterAPI
 
 
 class ExceptionChanges(Exception):
@@ -180,3 +182,20 @@ class Changes(GPGSignedFile):
             self.dsc = Dsc(filename, self.component)
         except Exception as e:
             raise ExceptionChanges(e)
+
+    def assert_newer(self):
+        client = ClientFTPMasterAPI()
+        versions = client.get_existing_versions_for(self.source,
+                                                    self.distribution)
+
+        if versions:
+            # There can be multiple version for a single distribution, let's
+            # validate against the maximum version.
+            version = max([NativeVersion(version) for version in versions])
+
+            if NativeVersion(self.version) <= NativeVersion(version):
+                raise ExceptionChanges(
+                    f'{self.source} exists in the official Debian archive with '
+                    f'the version {version}/{self.distribution}. You may not '
+                    'upload a lower or equal version to this one.'
+                )

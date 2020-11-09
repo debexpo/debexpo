@@ -94,3 +94,6 @@ CELERY_TASK_ALWAYS_EAGER = True
 
 # Bug plugin settings
 BUGS_REPORT_NOT_OPEN = False
+
+# Don't enforce newer upload checks on tests by default
+CHECK_NEWER_UPLOAD = False
