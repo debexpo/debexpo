@@ -7,10 +7,11 @@
 <table width="100%">
     <tr>
         <th width="15%">{% trans 'Package' %}</th>
-        <th width="40%">{% trans 'Description' %}</th>
+        <th width="30%">{% trans 'Description' %}</th>
         <th width="20%">{% trans 'Version' %}</th>
         <th width="15%">{% trans 'Uploader' %}</th>
-        <th width="10%">{% trans 'Needs a sponsor?' %}</th>
+        <th width="10%">{% trans 'Needs a sponsor' %}</th>
+        <th width="10%">{% trans 'Already in Debian' %}</th>
     </tr>
 
     {% for pkg in group.packages %}
@@ -27,6 +28,13 @@
         </td>
         <td class="lines">
         {% if pkg.needs_sponsor %}
+            {% trans 'Yes' %}
+        {% else %}
+            {% trans 'No' %}
+        {% endif %}
+        </td>
+        <td class="lines">
+        {% if pkg.in_debian %}
             {% trans 'Yes' %}
         {% else %}
             {% trans 'No' %}
