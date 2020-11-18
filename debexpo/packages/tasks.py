@@ -34,7 +34,7 @@ from debian.deb822 import Changes
 from debian.debian_support import NativeVersion
 
 from django.conf import settings
-from django.db.models import Max
+from django.db.models import Max, Q
 from django.db import transaction
 
 from debexpo.packages.models import Package, PackageUpload
@@ -242,8 +242,14 @@ def process_accepted_changes(changes):
         raise Exception(f'Cannot process accepted upload: {changes}')
 
     uploads = PackageUpload.objects.filter(
-        package__name=changes['Source'],
-        distribution__name__in=(changes['Distribution'], 'UNRELEASED',))
+        Q(
+            package__name=changes['Source'],
+            distribution__name__in=(changes['Distribution'], 'UNRELEASED',)
+        ) | Q(
+            package__name=changes['Source'],
+            version=changes['Version']
+        )
+    )
 
     version = max([NativeVersion(version) for version in
                    changes['Version'].split(' ')])

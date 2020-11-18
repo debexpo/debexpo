@@ -65,6 +65,7 @@ class TestCronjobRemoveOldUploads(TestController):
                 ('tmux', '1.0.0', 'UNRELEASED', False),
                 ('zsh', '1.0.0', 'unstable', False),
                 ('zsh', '1.0.0', 'unstable', False),
+                ('zsh', '1.0.0', 'experimental', False),
                 ('hello', '1.0.0', 'unstable', True),
                 ('hello', '0.9.0', 'unstable', True),
             ]
@@ -212,6 +213,7 @@ class TestCronjobRemoveOldUploads(TestController):
     def test_remove_uploads_same_version(self):
         removed_packages = [
                 ('zsh', '1.0.0', 'unstable'),
+                ('zsh', '1.0.0', 'experimental'),
             ]
 
         self._setup_packages()
