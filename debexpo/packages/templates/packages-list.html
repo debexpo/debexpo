@@ -4,14 +4,14 @@
 {% if group.packages|length > 0 %}
 <h2>{{ group.label }}</h2>
 
-<table width="100%">
+<table class="pkg">
     <tr>
-        <th width="15%">{% trans 'Package' %}</th>
-        <th width="30%">{% trans 'Description' %}</th>
-        <th width="20%">{% trans 'Version' %}</th>
-        <th width="15%">{% trans 'Uploader' %}</th>
-        <th width="10%">{% trans 'Needs a sponsor' %}</th>
-        <th width="10%">{% trans 'Already in Debian' %}</th>
+        <th class="pkg-pkg">{% trans 'Package' %}</th>
+        <th class="pkg-desc">{% trans 'Description' %}</th>
+        <th class="pkg-ver">{% trans 'Version' %}</th>
+        <th class="pkg-up">{% trans 'Uploader' %}</th>
+        <th class="pkg-rfs">{% trans 'Needs a sponsor' %}</th>
+        <th class="pkg-new">{% trans 'Already in Debian' %}</th>
     </tr>
 
     {% for pkg in group.packages %}
@@ -35,7 +35,7 @@
         </td>
         <td class="lines">
         {% if pkg.in_debian %}
-            {% trans 'Yes' %}
+            <a href="https://tracker.debian.org/pkg/{{ pkg.name|urlencode }}">{% trans 'Yes' %}</a>
         {% else %}
             {% trans 'No' %}
         {% endif %}

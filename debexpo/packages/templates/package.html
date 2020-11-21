@@ -10,7 +10,7 @@
         <th>{% trans 'Name:' %}</th>
         <td>{{ package.name }}
             {% if package.in_debian %}
-            (<a href="https://tracker.debian.org/pkg/{{ package.name }}">PTS</a
+            (<a href="https://tracker.debian.org/pkg/{{ package.name|urlencode }}">PTS</a
             >)
             {% endif %}
         </td>
