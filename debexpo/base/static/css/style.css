@@ -1087,3 +1087,31 @@ ul.sub-list {
 .outcome-ready {
     color: green;
 }
+
+table.pkg {
+    width: 100%;
+}
+
+table.pkg th {
+    vertical-align: middle;
+}
+
+th.pkg-pkg {
+    width: 15%;
+}
+
+th.pkg-ver {
+    width: 20%;
+}
+
+th.pkg-up {
+    width: 15%;
+}
+
+th.pkg-rfs {
+    width: 75px;
+}
+
+th.pkg-new {
+    width: 90px;
+}
