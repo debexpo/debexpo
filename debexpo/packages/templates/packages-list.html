@@ -35,7 +35,7 @@
         </td>
         <td class="lines">
         {% if pkg.in_debian %}
-            {% trans 'Yes' %}
+            <a href="https://tracker.debian.org/pkg/{{ pkg.name }}">{% trans 'Yes' %}</a>
         {% else %}
             {% trans 'No' %}
         {% endif %}
