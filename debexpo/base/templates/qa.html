@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block content %}
+{% block content %}{% widthratio settings.TASK_IMPORTER_BEAT 60 1 as beat %}
 <h1>{% trans 'Questions &amp; Answers' %}</h1>
 
 {% blocktrans with site_name=settings.SITE_NAME trimmed %}
@@ -170,24 +170,17 @@ if your question is answered here:
 </h3>
 
 <p>
-    {% blocktrans trimmed %}
-    If you upload via HTTP, which is what we recommend, then it will take
-    between 0 and 2 minutes.
+    {% blocktrans with beat=beat trimmed %}
+    Regardless of the upload method you choose, the importer process runs every
+    {{ beat }} minutes. The process usually takes less than a
+    minute to process a package but it can be longer on bigger packages.
     {% endblocktrans %}
 </p>
 
 <p>
     {% blocktrans trimmed %}
-    If you upload via FTP, which you must do if a package is too large for the
-    HTTP uploader, then there can be up to a 30 minute delay before your package
-    gets processed.
-    {% endblocktrans %}
-</p>
-
-<p>
-    {% blocktrans trimmed %}
-    During those 0-2 minutes, the server does quality assurance and other checks
-    on your package. You will receive an email when it is ready.
+    During the importing process, the server does quality assurance and other
+    checks on your package. You will receive an email when it is ready.
     {% endblocktrans %}
 </p>
 
