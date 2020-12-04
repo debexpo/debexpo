@@ -26,7 +26,7 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from celery.decorators import periodic_task
+from celery.decorators import task
 
 from django.conf import settings
 
@@ -34,7 +34,7 @@ from debexpo.importer.models import Importer
 from debexpo.tools.cache import enforce_unique_instance
 
 
-@periodic_task(run_every=settings.TASK_IMPORTER_BEAT)
+@task
 def importer():
     with enforce_unique_instance('importer'):
         importctl = Importer(settings.UPLOAD_SPOOL)

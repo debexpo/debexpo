@@ -27,7 +27,7 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from celery.decorators import periodic_task
+from celery.decorators import task
 from datetime import timedelta, datetime, timezone
 from logging import getLogger
 from debian.deb822 import Changes
@@ -97,7 +97,7 @@ def remove_uploads(uploads):
     return removals
 
 
-@periodic_task(run_every=settings.TASK_OLD_UPLOADS_BEAT)
+@task
 def remove_old_uploads():
     expiration_date = datetime.now(timezone.utc) - \
         timedelta(weeks=settings.MAX_AGE_UPLOAD_WEEKS)
@@ -128,7 +128,7 @@ def notify_uploaders(removals, reason):
                    reason=reason)
 
 
-@periodic_task(run_every=settings.TASK_ACCEPTED_UPLOADS_BEAT)
+@task
 def remove_uploaded_packages(client=None):
     uploads_to_archive = set()
     uploads_to_new = set()
