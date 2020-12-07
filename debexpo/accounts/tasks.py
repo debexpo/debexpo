@@ -27,7 +27,7 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 from datetime import timedelta, datetime, timezone
-from celery import Task
+from celery import Task, current_app
 from logging import getLogger
 
 from django.conf import settings
@@ -40,6 +40,10 @@ log = getLogger(__name__)
 class CleanupAccounts(Task):
     def __init__(self):
         self.expire_in = int(settings.REGISTRATION_EXPIRATION_DAYS)
+
+    @property
+    def name(self):
+        return f'{__name__}.{__class__.__name__}'
 
     def run(self):
         accounts = self._list_account_expired()
@@ -57,3 +61,6 @@ class CleanupAccounts(Task):
 
     def _get_deadline(self):
         return datetime.now(timezone.utc) - timedelta(days=self.expire_in)
+
+
+current_app.tasks.register(CleanupAccounts())
