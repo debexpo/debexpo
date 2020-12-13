@@ -1,7 +1,7 @@
 {% extends "email-base.html" %}{% block content %}Hi,
 
 Your package {{ args.package }} has been removed from {{ args.distribution }}
-on {{ args.settings.SITE_NAME }} for the following reason:
+on {{ settings.SITE_NAME }} for the following reason:
 
 {{ args.reason }}
 
