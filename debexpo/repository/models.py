@@ -243,8 +243,8 @@ class Repository():
         for sumed_file in files_to_install:
             # Remove old entry from database
             try:
-                previous_entry = RepositoryFile.objects.get(path=join(
-                    pool_dir, str(sumed_file)))
+                previous_entry = RepositoryFile.objects.get(path__endswith=join(
+                    '/', str(sumed_file)))
             except RepositoryFile.DoesNotExist:
                 pass
             else:

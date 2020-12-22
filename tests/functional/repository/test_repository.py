@@ -226,10 +226,15 @@ class TestRepositoryController(TestController):
         self._setup_example_package()
         self._repo_install_package(**self.package)
 
+        # Change the component
+        self.package['component'] = 'non-free'
+        self._repo_install_package(**self.package)
+
         response = self.client.get(reverse('package', args=[package['name']]))
         self.assertEquals(response.status_code, 200)
-        self.assertIn('/debian/pool/main/t/testpackage/testpackage_1.0-1.dsc',
-                      str(response.content))
+        self.assertIn(
+            '/debian/pool/non-free/t/testpackage/testpackage_1.0-1.dsc',
+            str(response.content))
 
         self._remove_example_package()
         self._remove_example_user()
