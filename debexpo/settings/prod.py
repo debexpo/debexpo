@@ -85,7 +85,7 @@ GIT_STORAGE = '/var/lib/debexpo/git'
 
 SUPPORT_EMAIL = 'support@mentors.debian.net'
 DEFAULT_FROM_EMAIL = 'mentors.debian.net <support@mentors.debian.net>'
-DEFAULT_BOUNCE_EMAIL = 'bounce@mentors.debian.net'
+DEFAULT_BOUNCE_EMAIL = 'expo+bounce@mentors.debian.net'
 COMMENTS_FROM_EMAIL = 'mentors.debian.net <no-reply@mentors.debian.net>'
 
 # Celery redis connexion
