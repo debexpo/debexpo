@@ -133,7 +133,7 @@ class Key(models.Model):
             subkey = SubKey(key=self, fingerprint=fingerprint)
             subkey.full_clean()
             subkey.save()
-            log.info(f'Binding fingerprint {fingerprint} to key '
+            log.info(f'Binding subkey fingerprint {fingerprint} to key '
                      f'{self.fingerprint}')
 
 

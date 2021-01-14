@@ -109,3 +109,4 @@ class Command(BaseCommand):
 
         key.save()
         key.update_subkeys()
+        print(f"Bound key {key.fingerprint} to user <{email}>.")
