@@ -107,6 +107,7 @@ class Command(BaseCommand):
         self._remove_previous_key(user)
         key = self._build_new_key(key_manager, user, gpg, force)
 
+        key.full_clean()
         key.save()
         key.update_subkeys()
         print(f"Bound key {key.fingerprint} to user <{email}>.")
