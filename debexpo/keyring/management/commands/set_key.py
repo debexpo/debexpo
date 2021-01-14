@@ -41,7 +41,7 @@ class Command(BaseCommand):
         key = Key()
 
         key.key = data
-        key.fpr = gpg.fpr
+        key.fingerprint = gpg.fpr
         key.user = user
         key.size = int(gpg.get_size())
 
