@@ -95,7 +95,7 @@ class Changes(GPGSignedFile):
         self.bugs = None
         self.source_package = None
         self.maintainer = self._data.get('Maintainer')
-        self.uploader = self.maintainer
+        self.uploader = self._data.get('Changed-By', self.maintainer)
         self.source = self._data.get('Source')
         self.version = self._data.get('Version')
         self.distribution = self._data.get('Distribution')
