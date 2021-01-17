@@ -40,7 +40,6 @@ from django.core import mail
 from django.test import override_settings
 
 from tests.functional.importer import TestImporterController
-from tests.functional.importer.source_package import TestSourcePackage
 
 from debexpo.importer.models import Importer, ExceptionImporterRejected
 
@@ -431,11 +430,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
     # happend), we test that the field method can report an error to admins and
     # optionnaly to uploader if available.
     def test_importer_reject_no_maintainer(self):
-        source_package = TestSourcePackage('hello-bad-changes-email')
-
-        source_package.build()
-        self._upload_package(join(self.data_dir,
-                                  source_package.get_package_dir()))
+        self._upload_package(join(self.data_dir, 'changes-bad-uploader'))
 
         importer = Importer(str(self.spool))
         changes = self.spool.changes_to_process()[0]
@@ -461,10 +456,28 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         changes.remove()
 
         self.assertEquals(len(mail.outbox), 1)
+        self.assertEquals(changes.uploader, None)
         self.assertIn('No space left', mail.outbox[0].body)
         self.assertIn(settings.DEFAULT_FROM_EMAIL, mail.outbox[0].to)
 
-    def test_importer_fail_with_maintainer(self):
+    def test_importer_fail_no_changed_by(self):
+        self._upload_package(join(self.data_dir, 'changes-no-changed-by'))
+
+        importer = Importer(str(self.spool))
+        changes = self.spool.changes_to_process()[0]
+
+        importer._fail(ExceptionImporterRejected(
+            changes, 'Importer failed',
+            IOError('No space left on device'))
+        )
+        changes.remove()
+
+        self.assertEquals(len(mail.outbox), 1)
+        self.assertEquals(changes.uploader, changes.maintainer)
+        self.assertIn('No space left', mail.outbox[0].body)
+        self.assertIn(settings.DEFAULT_FROM_EMAIL, mail.outbox[0].to)
+
+    def test_importer_fail_with_uploader(self):
         self._upload_package(join(self.data_dir, 'not-signed'))
 
         importer = Importer(str(self.spool))
@@ -477,6 +490,8 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         changes.remove()
 
         self.assertEquals(len(mail.outbox), 1)
+        self.assertEquals(changes.uploader, changes._data.get('Changed-By'))
+        self.assertNotEquals(changes.uploader, changes.maintainer)
         self.assertIn('No space left', mail.outbox[0].body)
         self.assertIn(settings.DEFAULT_FROM_EMAIL, mail.outbox[0].to)
         self.assertIn(changes.uploader, mail.outbox[0].to)
