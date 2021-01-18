@@ -109,7 +109,8 @@ class Key(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     key = models.TextField(verbose_name=_('OpenGPG key'))
-    fingerprint = models.TextField(max_length=40, verbose_name=_('Fingerprint'))
+    fingerprint = models.TextField(max_length=40, verbose_name=_('Fingerprint'),
+                                   unique=True)
     last_updated = models.DateTimeField(verbose_name=_('Last update on'),
                                         auto_now=True)
 
@@ -139,4 +140,5 @@ class Key(models.Model):
 
 class SubKey(models.Model):
     key = models.ForeignKey(Key, on_delete=models.CASCADE)
-    fingerprint = models.TextField(max_length=40, verbose_name=_('Fingerprint'))
+    fingerprint = models.TextField(max_length=40, verbose_name=_('Fingerprint'),
+                                   unique=True)
