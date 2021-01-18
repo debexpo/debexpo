@@ -269,6 +269,16 @@ Xcgnuh6Rlywt6uiaFIGYnGefYPGXRAA=
 
         self.assertEquals(user.key.key, self._GPGKEY)
 
+        # Again?
+        response = self.client.post(reverse('profile'), {
+            'key': self._GPGKEY,
+            'commit_gpg': 'submit'
+        })
+        self.assertEquals(response.status_code, 200)
+        self.assertNotIn('errorlist', str(response.content))
+
+        self.assertEquals(user.key.key, self._GPGKEY)
+
         # Update it
         response = self.client.post(reverse('profile'), {
             'key': self._GPGKEY_2,
@@ -344,6 +354,20 @@ Xcgnuh6Rlywt6uiaFIGYnGefYPGXRAA=
             })
 
             self._assert_gpg_post_failed(response, message)
+
+    def test_gpg_already_in_use(self):
+        self._setup_example_user(True, 'another@example.org')
+
+        response = self.client.post(reverse('login'), self._AUTHDATA)
+
+        # Post GPG key
+        response = self.client.post(reverse('profile'), {
+            'key': self._GPGKEY,
+            'commit_gpg': 'submit'
+        })
+
+        self._assert_gpg_post_failed(response, 'GPG Key already in use by '
+                                               'another account')
 
 #    def test__gpg_wrong_email(self):
 #        response = self.client.post(reverse('profile'), {'form': 'gpg'})

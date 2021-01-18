@@ -109,7 +109,7 @@ Xcgnuh6Rlywt6uiaFIGYnGefYPGXRAA=
         key.save()
         key.update_subkeys()
 
-    def _setup_example_user(self, gpg=False):
+    def _setup_example_user(self, gpg=False, email='email@example.com'):
         """Add an example user.
 
         The example user with name ``Test user``, email address
@@ -120,8 +120,7 @@ Xcgnuh6Rlywt6uiaFIGYnGefYPGXRAA=
         classes.
         """
         # Create a test user and save it.
-        user = User.objects.create_user('email@example.com',
-                                        'Test user', 'password')
+        user = User.objects.create_user(email, 'Test user', 'password')
         user.save()
         profile = Profile(user=user, status=UserStatus.contributor.value)
         profile.save()
