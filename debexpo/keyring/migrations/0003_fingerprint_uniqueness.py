@@ -1,4 +1,4 @@
-#   py.template - template for new .py files
+#   0003_fingerprint_uniqueness.py - Migration script for fingerprint uniqueness
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
@@ -25,3 +25,26 @@
 #   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('keyring', '0002_subkey'),
+    ]
+
+    operations = [
+        migrations.AlterField(
+            model_name='key',
+            name='fingerprint',
+            field=models.TextField(max_length=40, unique=True,
+                                   verbose_name='Fingerprint'),
+        ),
+        migrations.AlterField(
+            model_name='subkey',
+            name='fingerprint',
+            field=models.TextField(max_length=40, unique=True,
+                                   verbose_name='Fingerprint'),
+        ),
+    ]

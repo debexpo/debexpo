@@ -147,6 +147,10 @@ class ProfileForm(forms.ModelForm):
 
 
 class GPGForm(forms.ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+
     def _validate_gpg_key(self, key):
         if not key:
             return
@@ -156,11 +160,22 @@ class GPGForm(forms.ModelForm):
         except (ExceptionGnuPG, ValueError) as e:
             self.add_error('key', e)
 
+    def _validate_uniqueness(self):
+        try:
+            Key.objects.exclude(user=self.user) \
+                .get(fingerprint=self.key.fingerprint)
+        except Key.DoesNotExist:
+            pass
+        else:
+            self.add_error('key', 'GPG Key already in use by another account')
+
     def clean(self):
         self.cleaned_data = super().clean()
         key = self.cleaned_data.get('key')
 
         self._validate_gpg_key(key)
+        if hasattr(self, 'key'):
+            self._validate_uniqueness()
 
         return self.cleaned_data
 

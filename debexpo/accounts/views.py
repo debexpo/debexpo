@@ -163,10 +163,10 @@ def profile(request):
     profile_form = ProfileForm(request.user, instance=request.user.profile)
     gpg_fingerprint = None
     try:
-        gpg_form = GPGForm(instance=request.user.key)
+        gpg_form = GPGForm(request.user, instance=request.user.key)
         gpg_fingerprint = _format_fingerprint(request.user.key.fingerprint)
     except Key.DoesNotExist:
-        gpg_form = GPGForm()
+        gpg_form = GPGForm(request.user)
 
     if request.method == 'POST':
         if 'commit_account' in request.POST:
@@ -198,9 +198,10 @@ def profile(request):
 
         if 'commit_gpg' in request.POST:
             try:
-                gpg_form = GPGForm(request.POST, instance=request.user.key)
+                gpg_form = GPGForm(request.user, request.POST,
+                                   instance=request.user.key)
             except Key.DoesNotExist:
-                gpg_form = GPGForm(request.POST)
+                gpg_form = GPGForm(request.user, request.POST)
 
             if gpg_form.is_valid():
                 _update_key(request, gpg_form)
@@ -215,7 +216,7 @@ def profile(request):
                 pass
             else:
                 key.delete()
-                gpg_form = GPGForm()
+                gpg_form = GPGForm(request.user)
                 gpg_fingerprint = None
 
     return render(request, 'profile.html', {
