@@ -57,6 +57,10 @@ unstable:
   <<: *test
   image: debian:unstable
 
+bullseye-bpo:
+  <<: *test
+  image: debian:bullseye-backports
+
 buster-bpo:
   <<: *test
   image: debian:buster-backports
