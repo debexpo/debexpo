@@ -108,6 +108,9 @@
                 <a href="{{ url_subscriptions_my }}">
                     {% trans 'My subscriptions' %}
                 </a>
+                <a href="{{ url_logout }}">
+                    {% trans 'Logout' %}
+                </a>
             {% else %}
                 <a href="{{ url_register }}">
                     {% trans 'Sign me up' %}
@@ -144,12 +147,6 @@
                 <a href="{{ url_contact }}">
                     {% trans 'Contact' %}
                 </a>
-                {% if user.is_authenticated %}
-                -
-                <a href="{{ url_logout }}">
-                    {% trans 'Logout' %}
-                </a>
-                {% endif %}
                 {% if feed_url %}
                 <a class="rss_logo" href="{{ feed_url }}">
                     {% trans 'RSS' %}
