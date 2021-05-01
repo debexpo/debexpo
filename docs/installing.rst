@@ -151,3 +151,15 @@ Using Apache
             Require all granted
         </Files>
     </Directory>
+
+User account management
+-----------------------
+
+Create a new user
+~~~~~~~~~~~~~~~~~
+
+Simply execute::
+
+    python manage.py create_user NAME EMAIL PASSWORD
+
+Then you can login via http://localhost:8000 in your web browser.

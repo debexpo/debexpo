@@ -58,7 +58,7 @@ class TestUser(TestCase):
                           is_superuser=False)
 
     def test_create_superuser(self):
-        user = User.objects.create_superuser('email@example.com', 'test user',
+        user = User.objects.create_superuser('test user', 'email@example.com',
                                              'password')
         self.assertTrue(user.is_staff)
         self.assertTrue(user.is_superuser)
