@@ -188,6 +188,9 @@ CELERY_BEAT_SCHEDULE = {
 # Account registration expiration
 REGISTRATION_EXPIRATION_DAYS = 7
 
+# Email update token expiration (2 days to get at the very least 24h)
+EMAIL_CHANGE_TIMEOUT_DAYS = 2
+
 # Plugins to load
 IMPORTER_PLUGINS = (
     ('debexpo.plugins.distribution', 'PluginDistribution',),
