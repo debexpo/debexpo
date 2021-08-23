@@ -33,12 +33,13 @@ from django.contrib.auth.views import PasswordResetConfirmView, \
     PasswordResetDoneView
 from django.http.response import HttpResponsePermanentRedirect
 from django.urls import reverse, include
+from django.utils.translation import gettext_lazy as _
 from django.views.static import serve
 from rest_framework_extensions.routers import ExtendedDefaultRouter
 
 from debexpo.base.views import index, contact, intro_reviewers, \
     intro_maintainers, qa, sponsor_overview, sponsor_guidelines, sponsor_rfs
-from debexpo.accounts.views import register, profile
+from debexpo.accounts.views import register, profile, EmailChangeConfirmView
 from debexpo.accounts.forms import PasswordResetForm
 from debexpo.packages.views import package, packages, packages_my, \
     PackagesFeed, sponsor_package, delete_package, delete_upload, \
@@ -69,6 +70,22 @@ urlpatterns = [
     url(r'^api/', include(api.urls)),
 
     # Accounts
+    url(r'^accounts/email_change/'
+        r'(?P<uidb64>[0-9A-Za-z_\-]+)/'
+        r'(?P<token>[0-9A-Za-z]+-[0-9A-Za-z]+)/'
+        r'(?P<email>.*)/$',
+        EmailChangeConfirmView.as_view(
+            template_name='change-email-confirm.html',
+            extra_context={'settings': settings}
+        ),
+        name='email_change_confirm'),
+    url(r'^accounts/email_change/done/$',
+        PasswordResetCompleteView.as_view(
+            template_name='change-email-complete.html',
+            title=_('Email change complete'),
+            extra_context={'settings': settings}
+        ),
+        name='email_change_complete'),
     url(r'^accounts/reset/'
         r'(?P<uidb64>[0-9A-Za-z_\-]+)/'
         r'(?P<token>[0-9A-Za-z]+-[0-9A-Za-z]+)/$',
