@@ -1,0 +1,12 @@
+{% extends "email-base.html" %}{% load i18n %}{% block content %}{% blocktrans %}Hello,
+
+Confirm your new email by visiting the following address
+in your web-browser:{% endblocktrans %}
+
+{{ args.activate_url }}
+
+{% blocktrans with site_name=args.settings.SITE_NAME %}If you didn't change your email on your account on {{ site_name }},
+you can safely ignore this email.{% endblocktrans %}
+
+{% trans 'Thanks,' %}
+{% endblock %}
