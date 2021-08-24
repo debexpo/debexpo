@@ -408,14 +408,12 @@ Xcgnuh6Rlywt6uiaFIGYnGefYPGXRAA=
         self.assertIn('This field is required.', str(response.content))
         response = self.client.post(reverse('profile'), {
             'name': 'Test user2',
-            'email': 'email2@example.com',
+            'email': 'email@example.com',
             'commit_account': 'submit'
         })
         self.assertEquals(response.status_code, 200)
         self.assertNotIn('errorlist', str(response.content))
-        user = User.objects.filter(email='email@example.com')
-        self.assertFalse(user)
-        user = User.objects.get(email='email2@example.com')
+        user = User.objects.get(email='email@example.com')
         self.assertEquals(user.name, 'Test user2')
         user.delete()
 
