@@ -46,6 +46,13 @@ log = logging.getLogger(__name__)
 
 class RepositoryFileManager(models.Manager):
     def create_from_file(self, sumed_file, basedir, changes):
+        if RepositoryFile.objects.filter(
+            path__endswith=join(basedir, str(sumed_file)),
+            package=changes.source,
+            version=changes.version
+                ).exists():
+            return None
+
         repository_file = RepositoryFile()
         repository_file.path = join(basedir, str(sumed_file))
         repository_file.size = sumed_file.size
@@ -268,8 +275,9 @@ class Repository():
             entry = RepositoryFile.objects.create_from_file(sumed_file,
                                                             pool_dir,
                                                             changes)
-            entry.full_clean()
-            entry.save()
+            if entry:
+                entry.full_clean()
+                entry.save()
 
     def fetch_from_pool(self, package, component, filename, dest_dir):
         filename = join(self.repository, 'pool', component,
