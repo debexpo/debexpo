@@ -247,13 +247,12 @@ class Repository():
 
     def _cleanup_previous_entries(self, files_to_install, pool_dir):
         for sumed_file in files_to_install:
-            # Remove old entry from database
-            try:
-                previous_entry = RepositoryFile.objects.get(path__endswith=join(
-                    '/', str(sumed_file)))
-            except RepositoryFile.DoesNotExist:
-                pass
-            else:
+            # Remove old entry from database if checksum mismatch
+            previous_entries = RepositoryFile.objects.filter(
+                path__endswith=join('/', str(sumed_file))
+            ).exclude(sha256sum=sumed_file.checksums['sha256']).all()
+
+            for previous_entry in previous_entries:
                 self.remove(previous_entry.package, previous_entry.version)
 
     def _install_new_entries(self, files_to_install, pool_dir, changes):
