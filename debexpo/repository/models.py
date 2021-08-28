@@ -68,11 +68,14 @@ class RepositoryFile(models.Model):
     distribution = models.CharField(max_length=32,
                                     verbose_name=_('Distribution'))
 
-    path = models.TextField(verbose_name=_('Path'), unique=True)
+    path = models.TextField(verbose_name=_('Path'))
     size = models.IntegerField(verbose_name=_('Size'))
     sha256sum = models.CharField(max_length=64, verbose_name=_('SHA256'))
 
     objects = RepositoryFileManager()
+
+    class Meta:
+        unique_together = ('package', 'version', 'path')
 
     def __str__(self):
         return self.path
