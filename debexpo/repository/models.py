@@ -80,6 +80,9 @@ class RepositoryFile(models.Model):
     def __str__(self):
         return self.path
 
+    def is_shared(self):
+        return RepositoryFile.objects.filter(path=self.path).count() > 1
+
 
 class Repository():
     """
@@ -301,8 +304,10 @@ class Repository():
         for repository_file in repository_files:
             path = join(self.repository, repository_file.path)
             if isfile(path):
-                unlink(path)
+                if not repository_file.is_shared():
+                    unlink(path)
+
                 self.pending.add((repository_file.distribution,
                                   repository_file.component,))
 
-        repository_files.delete()
+            repository_file.delete()
