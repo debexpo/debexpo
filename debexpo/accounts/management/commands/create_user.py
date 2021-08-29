@@ -61,11 +61,6 @@ class Command(BaseCommand):
         except ValidationError as e:
             raise CommandError(f'Failed to create a new user: {str(e)}')
 
-        new_profile = None
-        try:
-            new_profile = Profile(user=new_user)
-            new_profile.full_clean()
-        except ValidationError as e:
-            raise CommandError(f'Failed to create a new user profile: {str(e)}')
-        else:
-            new_profile.save()
+        new_profile = Profile(user=new_user)
+
+        new_profile.save()
