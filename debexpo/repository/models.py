@@ -46,6 +46,13 @@ log = logging.getLogger(__name__)
 
 class RepositoryFileManager(models.Manager):
     def create_from_file(self, sumed_file, basedir, changes):
+        if RepositoryFile.objects.filter(
+            path__endswith=join(basedir, str(sumed_file)),
+            package=changes.source,
+            version=changes.version
+                ).exists():
+            return None
+
         repository_file = RepositoryFile()
         repository_file.path = join(basedir, str(sumed_file))
         repository_file.size = sumed_file.size
@@ -68,14 +75,20 @@ class RepositoryFile(models.Model):
     distribution = models.CharField(max_length=32,
                                     verbose_name=_('Distribution'))
 
-    path = models.TextField(verbose_name=_('Path'), unique=True)
+    path = models.TextField(verbose_name=_('Path'))
     size = models.IntegerField(verbose_name=_('Size'))
     sha256sum = models.CharField(max_length=64, verbose_name=_('SHA256'))
 
     objects = RepositoryFileManager()
 
+    class Meta:
+        unique_together = ('package', 'version', 'path')
+
     def __str__(self):
         return self.path
+
+    def is_shared(self):
+        return RepositoryFile.objects.filter(path=self.path).count() > 1
 
 
 class Repository():
@@ -241,13 +254,12 @@ class Repository():
 
     def _cleanup_previous_entries(self, files_to_install, pool_dir):
         for sumed_file in files_to_install:
-            # Remove old entry from database
-            try:
-                previous_entry = RepositoryFile.objects.get(path__endswith=join(
-                    '/', str(sumed_file)))
-            except RepositoryFile.DoesNotExist:
-                pass
-            else:
+            # Remove old entry from database if checksum mismatch
+            previous_entries = RepositoryFile.objects.filter(
+                path__endswith=join('/', str(sumed_file))
+            ).exclude(sha256sum=sumed_file.checksums['sha256']).all()
+
+            for previous_entry in previous_entries:
                 self.remove(previous_entry.package, previous_entry.version)
 
     def _install_new_entries(self, files_to_install, pool_dir, changes):
@@ -263,8 +275,9 @@ class Repository():
             entry = RepositoryFile.objects.create_from_file(sumed_file,
                                                             pool_dir,
                                                             changes)
-            entry.full_clean()
-            entry.save()
+            if entry:
+                entry.full_clean()
+                entry.save()
 
     def fetch_from_pool(self, package, component, filename, dest_dir):
         filename = join(self.repository, 'pool', component,
@@ -298,8 +311,10 @@ class Repository():
         for repository_file in repository_files:
             path = join(self.repository, repository_file.path)
             if isfile(path):
-                unlink(path)
+                if not repository_file.is_shared():
+                    unlink(path)
+
                 self.pending.add((repository_file.distribution,
                                   repository_file.component,))
 
-        repository_files.delete()
+            repository_file.delete()

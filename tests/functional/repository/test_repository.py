@@ -128,7 +128,7 @@ class TestRepositoryController(TestController):
         sources = self._parse_sources()
 
         # Assert DB entries
-        packages_in_db = set()
+        packages_in_db = []
         for entry in db_entires:
             entry_package = {
                 'name': entry.package,
@@ -138,15 +138,18 @@ class TestRepositoryController(TestController):
             }
 
             self.assertIn(entry_package, packages)
-            packages_in_db.add(packages.index(entry_package))
+            packages_in_db.append(entry_package)
 
-        self.assertEquals(len(packages_in_db), len(packages))
+        for package in packages:
+            self.assertIn(package, packages_in_db)
 
         # Assert pool files
         for entry in db_entires:
             self.assertIn(join(str(self.repository), entry.path), pool_files)
 
-        self.assertEquals(len(db_entires), len(pool_files))
+        for pool_file in pool_files:
+            self.assertIn(pool_file, [join(str(self.repository), entry.path) for
+                                      entry in db_entires])
 
         # Assert files modes
         for entry in pool_files:
@@ -174,6 +177,8 @@ class TestRepositoryController(TestController):
 
     def test_repository_install_package(self):
         package = self.package.copy()
+        package_version = self.package.copy()
+        package_distribution = self.package.copy()
 
         # First time import
         self._repo_install_package(**package)
@@ -184,27 +189,30 @@ class TestRepositoryController(TestController):
         self._assert_package_in_repo([package])
 
         # Change the debian revision
-        package['version'] = '1.0-2'
-        self._repo_install_package(**package)
-        self._assert_package_in_repo([package])
+        package_version['version'] = '1.0-2'
+        self._repo_install_package(**package_version)
+        self._assert_package_in_repo([package, package_version])
 
         # Change of distribution
-        package['distribution'] = 'UNRELEASED'
-        self._repo_install_package(**package)
-        self._assert_package_in_repo([package])
+        package_distribution['distribution'] = 'UNRELEASED'
+        self._repo_install_package(**package_distribution)
+        self._assert_package_in_repo([package_version,
+                                      package_distribution])
 
         # Upload another package
         another = self.package.copy()
         another['name'] = 'libhello'
         self._repo_install_package(**another)
-        self._assert_package_in_repo([package, another])
+        self._assert_package_in_repo([package_version,
+                                      package_distribution, another])
 
         # Remove first package
-        self._repo_remove_package(**package)
-        self._assert_package_in_repo([another])
+        self._repo_remove_package(**package_version)
+        self._assert_package_in_repo([package_distribution, another])
 
-        # Remove last package
+        # Remove last packages
         self._repo_remove_package(**another)
+        self._repo_remove_package(**package_distribution)
 
     def test_inconsistent_repository(self):
         self._repo_install_package(**self.package)
