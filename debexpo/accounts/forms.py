@@ -128,6 +128,19 @@ class PasswordResetForm(DjangoPasswordResetForm):
         email.send(_('You requested a password reset'), [to_email], **context)
 
 
+class EmailChangeForm(forms.ModelForm):
+    read_only = True
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+        self.fields['email'].disabled = True
+
+    class Meta:
+        model = User
+        fields = ('email',)
+
+
 class ProfileForm(forms.ModelForm):
     status = forms.ChoiceField(choices=(
         UserStatus.contributor.tuple,

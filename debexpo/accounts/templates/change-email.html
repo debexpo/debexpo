@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% load i18n %}
+
+{% block content %}<h1>{% trans 'Check your email' %}</h1>
+
+<p>
+    {% blocktrans trimmed %}
+    An email has been sent to your new email address. Check it for
+    instructions on how to validate it.
+    {% endblocktrans %}
+</p>
+{% endblock %}

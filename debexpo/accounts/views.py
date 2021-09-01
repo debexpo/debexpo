@@ -35,23 +35,32 @@ from django.conf import settings
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.auth.tokens import default_token_generator
-from django.urls import reverse
+from django.http import HttpResponseRedirect
+from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from django.views.decorators.cache import never_cache
+from django.views.decorators.debug import sensitive_post_parameters
 
-from .forms import RegistrationForm, AccountForm, ProfileForm, GPGForm
+from .forms import RegistrationForm, AccountForm, ProfileForm, GPGForm, \
+    EmailChangeForm
 from .models import Profile, User, UserStatus
 from debexpo.keyring.models import Key
 
 from debexpo.tools.email import Email
+from debexpo.tools.token import email_change_token_generator
 
 log = logging.getLogger(__name__)
+INTERNAL_EMAIL_URL_TOKEN = 'change-email'
+INTERNAL_EMAIL_SESSION_TOKEN = '_change_email_token'
 
 
-def _send_activate_email(request, uid, token, recipient):
+def _send_activate_email(request, uid, token, recipient, new_email=False):
     """
     Sends an activation email to the potential new user.
 
@@ -62,11 +71,20 @@ def _send_activate_email(request, uid, token, recipient):
         Email address to send to.
     """
     log.debug('Sending activation email')
-    email = Email('email-password-creation.html')
-    activate_url = request.scheme + '://' + request.site.domain + \
-        reverse('password_reset_confirm', kwargs={
-            'uidb64': uid, 'token': token
-        })
+
+    if new_email:
+        email = Email('email-change.html')
+        activate_url = request.scheme + '://' + request.site.domain + \
+            reverse('email_change_confirm', kwargs={
+                'uidb64': uid, 'token': token, 'email': recipient,
+            })
+    else:
+        email = Email('email-password-creation.html')
+        activate_url = request.scheme + '://' + request.site.domain + \
+            reverse('password_reset_confirm', kwargs={
+                'uidb64': uid, 'token': token
+            })
+
     email.send(_('Next step: Confirm your email address'), [recipient],
                activate_url=activate_url, settings=settings)
 
@@ -97,9 +115,19 @@ def _register_submit(request, info):
     })
 
 
+def _request_email_change(request, email):
+    uid = urlsafe_base64_encode(force_bytes(request.user.pk))
+    token = email_change_token_generator.make_token(request.user, email)
+
+    _send_activate_email(request, uid, token, email, new_email=True)
+
+    return render(request, 'change-email.html', {
+        'settings': settings
+    })
+
+
 def _update_account(request, info):
     request.user.name = info.get('name')
-    request.user.email = info.get('email')
     request.user.save()
 
 
@@ -177,6 +205,11 @@ def profile(request):
                           '{}'.format(request.user.email))
                 _update_account(request, account_form.cleaned_data)
 
+                email = account_form.cleaned_data.get('email')
+
+                if request.user.email != email:
+                    return _request_email_change(request, email)
+
         if 'commit_password' in request.POST:
             password_form = PasswordChangeForm(user=request.user,
                                                data=request.POST)
@@ -227,3 +260,67 @@ def profile(request):
         'gpg_form': gpg_form,
         'gpg_fingerprint': gpg_fingerprint,
     })
+
+
+class EmailChangeConfirmView(PasswordResetConfirmView):
+    form_class = EmailChangeForm
+    title = _('Change your email')
+    token_generator = email_change_token_generator
+    success_url = reverse_lazy('email_change_complete')
+
+    def get_initial(self):
+        return {'email': self.email}
+
+    @method_decorator(sensitive_post_parameters())
+    @method_decorator(never_cache)
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        assert 'uidb64' in kwargs and 'token' in kwargs and 'email' in kwargs
+
+        self.validlink = False
+        self.user = self.get_user(kwargs['uidb64'])
+
+        if self.user is not None:
+            token = kwargs['token']
+            self.email = kwargs['email']
+
+            if token == INTERNAL_EMAIL_URL_TOKEN:
+                session_token = \
+                    self.request.session.get(INTERNAL_EMAIL_SESSION_TOKEN)
+
+                if self.token_generator.check_token(self.user, session_token,
+                                                    self.email):
+                    self.validlink = True
+                    return super(PasswordResetConfirmView, self) \
+                        .dispatch(*args, **kwargs)
+            else:
+                if self.token_generator.check_token(self.user, token,
+                                                    self.email):
+                    self.request.session[INTERNAL_EMAIL_SESSION_TOKEN] = token
+                    redirect_url = self.request.path.replace(
+                        token,
+                        INTERNAL_EMAIL_URL_TOKEN
+                    )
+
+                    return HttpResponseRedirect(redirect_url)
+
+        return self.render_to_response(self.get_context_data())
+
+    def form_valid(self, form):
+        if self.validlink:
+            self.user.email = self.email
+            self.user.full_clean()
+            self.user.save()
+
+        del self.request.session[INTERNAL_EMAIL_SESSION_TOKEN]
+
+        return super(PasswordResetConfirmView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context.update({
+            'email': self.email
+        })
+
+        return context
