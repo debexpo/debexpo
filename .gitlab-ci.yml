@@ -47,7 +47,7 @@ before_script:
   script:
     - python3 setup.py develop | tee /tmp/deps.txt
     - (! grep Downloading /tmp/deps.txt)
-    - python3 -m coverage run manage.py test -v 2 --exclude-tag nntp
+    - python3 -m coverage run --branch manage.py test -v 2 --exclude-tag nntp
     - python3 -m coverage report --include='debexpo*' --omit '*/nntp.py'
     - python3 -m coverage html --include='debexpo*' --omit '*/nntp.py'
   artifacts:
