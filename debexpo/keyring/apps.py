@@ -30,4 +30,4 @@ from django.apps import AppConfig
 
 
 class KeyringConfig(AppConfig):
-    name = 'keyring'
+    name = 'debexpo.keyring'

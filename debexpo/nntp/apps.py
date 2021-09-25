@@ -29,4 +29,4 @@ from django.apps import AppConfig
 
 
 class NntpConfig(AppConfig):
-    name = 'nntp'
+    name = 'debexpo.nntp'
