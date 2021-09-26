@@ -77,13 +77,13 @@ setup(
 
     # Requirements
     install_requires=[
-        'django >= 2.2.10, < 3',
+        'django >= 2.2.10, < 4',
         'bcrypt >= 3.1.6, < 4',
         'python-debian >= 0.1.35, < 1',
         'celery >= 4.2.1, < 6',
         'django-celery-beat >= 1.1.1, < 3',
         'redis >= 3.2.1, < 4',
-        'django-redis >= 4.10.0, < 5',
+        'django-redis >= 4.10.0, < 6',
         'python-debianbts >= 2.8.2, < 4',
         'lxml >= 4.3.2, < 5',
         'dulwich >= 0.19.11, < 1',
