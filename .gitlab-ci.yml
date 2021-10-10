@@ -65,7 +65,7 @@ bullseye-bpo:
   <<: *test
   image: debian:bullseye-backports
   variables:
-    ADDITIONAL_PACKAGES: lintian/buster-backports
+    ADDITIONAL_PACKAGES: lintian/bullseye-backports
     DJANGO_SETTINGS_MODULE: 'debexpo.settings.test'
 
 flake8:
