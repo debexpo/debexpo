@@ -57,17 +57,15 @@ unstable:
   <<: *test
   image: debian:unstable
 
+bookworm-bpo:
+  <<: *test
+  image: debian:bookworm-backports
+
 bullseye-bpo:
   <<: *test
   image: debian:bullseye-backports
-
-buster-bpo:
-  <<: *test
-  image: debian:buster-backports
   variables:
-    ADDITIONAL_PACKAGES: python3-django/buster-backports
-                         lintian/buster-backports
-                         python3-django-filters/buster-backports
+    ADDITIONAL_PACKAGES: lintian/buster-backports
     DJANGO_SETTINGS_MODULE: 'debexpo.settings.test'
 
 flake8:
