@@ -27,6 +27,7 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 from tests import TransactionTestController
+from locale import getlocale, setlocale, LC_CTYPE
 from django.urls import reverse
 # from debexpo.lib import constants
 # from debexpo.model import meta
@@ -153,25 +154,29 @@ xOwJ1heEnfmgPkuiz7jFCAo=
     _GPGKEY_2 = """-----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mDMEW/GBqhYJKwYBBAHaRw8BAQdA+6hBA4PcdcPwgMsKGQXrqwbJemLBgS1PkKZg
-RFlKdKi0IHByaW1hcnkgaWQgPHByaW1hcnlAZXhhbXBsZS5vcmc+iJAEExYIADgC
-GwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQRVkwbu4cjBst0cc7HENHgc6HHz
-3wUCXyxWUwAKCRDENHgc6HHz3zxDAQCB9zEqs0mWmriFqhXtRSwjhLhbprWxpAqk
-WTat6AU6XgD+MDVYYgKEHeLuKqJ1MiR+x53f5ypxtA5eHJZdbs5OEA+0HVRlc3Qg
-dXNlciA8ZW1haWxAZXhhbXBsZS5jb20+iJMEExYIADsCGwMFCwkIBwIGFQoJCAsC
-BBYCAwECHgECF4AWIQRVkwbu4cjBst0cc7HENHgc6HHz3wUCXyxWUwIZAQAKCRDE
-NHgc6HHz30lxAP9Zvb7ssZ0bg94u2y1G3zbh8+5svSmGp3HThxMooIHvcwEA8jB3
-s5fVTZBIXagHBxACGSG5EhxlA8KlmaOSDGvl9w+4OARb8YGqEgorBgEEAZdVAQUB
-AQdANrk3qq/eP1TEWfFZqhR0vcz7YB9c5+OnvMV+xO4W3nQDAQgHiHgEGBYIACAW
-IQRVkwbu4cjBst0cc7HENHgc6HHz3wUCW/GBqgIbDAAKCRDENHgc6HHz3/CHAP0c
-hxes4Ebtg7N8B/BoMYwmUVvmMVmoV+ef/vqYvfm6sgEA6fKzMSXllw57UJ90Unyn
-xOwJ1heEnfmgPkuiz7jFCAq4MwReCQ2QFgkrBgEEAdpHDwEBB0A+v2Y8n88j+WwI
-Q3hChPR7xa49prRSyKRnGBD/AXhJfYjvBBgWCgAgFiEEVZMG7uHIwbLdHHOxxDR4
-HOhx898FAl4JDZACGwIAgQkQxDR4HOhx8992IAQZFgoAHRYhBLPPezP4B2M420+o
-DoeRkoMRdTvXBQJeCQ2QAAoJEIeRkoMRdTvX0AcA/i8tjP8ihM2nJHRXwBnrh/iH
-v0eSEi3sH+j0fwy9OBLJAP9ne01k9LkCXplS8ys+0u0e4545IIbiw8D4ToupD25q
-CiIIAP4hwNooM6bAlg2HDYTUxJl4LA0qlJS66qnXv94Q8p4VngD/Y5O0AJw06BCw
-Xcgnuh6Rlywt6uiaFIGYnGefYPGXRAA=
-=kRLH
+RFlKdKi0HVRlc3QgdXNlciA8ZW1haWxAZXhhbXBsZS5jb20+iJMEExYIADsCGwMF
+CwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQRVkwbu4cjBst0cc7HENHgc6HHz3wUC
+XyxWUwIZAQAKCRDENHgc6HHz30lxAP9Zvb7ssZ0bg94u2y1G3zbh8+5svSmGp3HT
+hxMooIHvcwEA8jB3s5fVTZBIXagHBxACGSG5EhxlA8KlmaOSDGvl9w+0IHByaW1h
+cnkgaWQgPHByaW1hcnlAZXhhbXBsZS5vcmc+iJAEExYIADgCGwMFCwkIBwIGFQoJ
+CAsCBBYCAwECHgECF4AWIQRVkwbu4cjBst0cc7HENHgc6HHz3wUCXyxWUwAKCRDE
+NHgc6HHz3zxDAQCB9zEqs0mWmriFqhXtRSwjhLhbprWxpAqkWTat6AU6XgD+MDVY
+YgKEHeLuKqJ1MiR+x53f5ypxtA5eHJZdbs5OEA+0IlVURi04IMO8aWQgPHNlY29u
+ZGFyeUBleGFtcGxlLm9yZz6IkAQTFggAOBYhBFWTBu7hyMGy3RxzscQ0eBzocfPf
+BQJhaHZSAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEMQ0eBzocfPfnboA
++wZMsDxIterEz3NJq/8DL9M+zGkw+m+a1i7vIoujsJOQAP9wQwRRDOE16vTjlj5B
+cATF0DFQTkv7Efmh8pveItzzCbg4BFvxgaoSCisGAQQBl1UBBQEBB0A2uTeqr94/
+VMRZ8VmqFHS9zPtgH1zn46e8xX7E7hbedAMBCAeIeAQYFggAIBYhBFWTBu7hyMGy
+3RxzscQ0eBzocfPfBQJb8YGqAhsMAAoJEMQ0eBzocfPf8IcA/RyHF6zgRu2Ds3wH
+8GgxjCZRW+YxWahX55/++pi9+bqyAQDp8rMxJeWXDntQn3RSfKfE7AnWF4Sd+aA+
+S6LPuMUICrgzBF4JDZAWCSsGAQQB2kcPAQEHQD6/ZjyfzyP5bAhDeEKE9HvFrj2m
+tFLIpGcYEP8BeEl9iO8EGBYKACAWIQRVkwbu4cjBst0cc7HENHgc6HHz3wUCXgkN
+kAIbAgCBCRDENHgc6HHz33YgBBkWCgAdFiEEs897M/gHYzjbT6gOh5GSgxF1O9cF
+Al4JDZAACgkQh5GSgxF1O9fQBwD+Ly2M/yKEzackdFfAGeuH+Ie/R5ISLewf6PR/
+DL04EskA/2d7TWT0uQJemVLzKz7S7R7jnjkghuLDwPhOi6kPbmoKIggA/iHA2igz
+psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
+6JoUgZicZ59g8ZdEAA==
+=/JDz
 -----END PGP PUBLIC KEY BLOCK-----"""
 
 #    def _setup_gpg_env(self):
@@ -183,12 +188,14 @@ Xcgnuh6Rlywt6uiaFIGYnGefYPGXRAA=
 #        shutil.rmtree(self.homedir)
 #
     def setUp(self):
+        self.locale = getlocale(LC_CTYPE)
         self._setup_example_user()
 #        self._setup_gpg_env()
 #        self._setup_models()
 #        self._setup_example_countries()
 
     def tearDown(self):
+        setlocale(LC_CTYPE, self.locale)
         self._remove_example_user()
 #        self._remove_example_countries()
 #        self._cleanup_gpg_env()
@@ -245,6 +252,20 @@ Xcgnuh6Rlywt6uiaFIGYnGefYPGXRAA=
         response = self.client.get(reverse('profile'))
         self.assertEquals(response.status_code, 302)
         self.assertIn(reverse('login'), response.url)
+
+    def test_gpg_encoding(self):
+        setlocale(LC_CTYPE, 'C')
+
+        self.client.post(reverse('login'), self._AUTHDATA)
+        response = self.client.post(reverse('profile'), {
+            'key': self._GPGKEY_2,
+            'commit_gpg': 'submit'
+        })
+        self.assertEquals(response.status_code, 200)
+        self.assertNotIn('errorlist', str(response.content))
+
+        user = User.objects.get(email='email@example.com')
+        self.assertEquals(user.key.key, self._GPGKEY_2)
 
     def test__gpg(self):
         # Anonymous access to the form is denined
