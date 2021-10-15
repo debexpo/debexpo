@@ -40,5 +40,6 @@ def debexpo_exec(command, args, **kwargs):
 
     return check_output([command] + args,
                         timeout=timeout,
+                        encoding='utf-8',
                         text=True,
                         **kwargs)
