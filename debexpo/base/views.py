@@ -63,8 +63,7 @@ def get_debexpo_version():
     # currently are in a git reposirtory. Hence, this is tested manually.
     try:
         output = debexpo_exec(command, args,
-                              cwd=dirname(abspath(__file__)),
-                              text=True)
+                              cwd=dirname(abspath(__file__)))
     except FileNotFoundError:  # pragma: no cover
         log.debug('git not found, skip revision detection.')
     except CalledProcessError:  # pragma: no cover

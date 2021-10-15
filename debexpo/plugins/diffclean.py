@@ -43,8 +43,7 @@ class PluginDiffClean(BasePlugin):
     def _run_diffstat(self, diff_file):
         try:
             output = debexpo_exec("diffstat", ["-p1", diff_file],
-                                  cwd=dirname(diff_file),
-                                  text=True)
+                                  cwd=dirname(diff_file))
         except FileNotFoundError:  # pragma: no cover
             self.failed('diffstat not found')
         # Looking at diffstat code, it only exit with a return code different

@@ -48,8 +48,7 @@ class PluginWatchFile(BasePlugin):
     def _run_uscan(self, source):
         try:
             output = debexpo_exec("uscan", ["--dehs", '--report'],
-                                  cwd=source.get_source_dir(),
-                                  text=True)
+                                  cwd=source.get_source_dir())
         except FileNotFoundError:  # pragma: no cover
             self.failed('uscan not found')
         except CalledProcessError as e:

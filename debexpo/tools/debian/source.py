@@ -57,8 +57,7 @@ class Source():
         try:
             debexpo_exec('dpkg-source', args,
                          stderr=STDOUT,
-                         cwd=dirname(self.dsc.filename),
-                         text=True)
+                         cwd=dirname(self.dsc.filename))
         except FileNotFoundError:  # pragma: no cover
             log.error('dpkg-source not found')
             raise ExceptionSource('Internal error. Please contact debexpo '
