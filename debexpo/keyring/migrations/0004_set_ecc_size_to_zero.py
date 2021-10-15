@@ -1,9 +1,9 @@
-#   apps.py - repository app
+#   0004_set_ecc_size_to_zero.py - Set ECC minimum size to zero
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2020 Baptiste Beauplat <lyknode@cilg.org>
+#   Copyright © 2021 Baptiste Beauplat <lyknode@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -26,8 +26,34 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from django.apps import AppConfig
+from django.db import migrations
 
 
-class RepositoryConfig(AppConfig):
-    name = 'debexpo.repository'
+def set_ecc_size_to_zero(apps, schema_editor):
+    set_ecc_size(apps, schema_editor, 0)
+
+
+def revert_set_ecc_size_to_zero(apps, schema_editor):  # pragma: no cover
+    set_ecc_size(apps, schema_editor, 256)
+
+
+def set_ecc_size(apps, schema_editor, size):
+    GPGAlgo = apps.get_model('keyring', 'GPGAlgo')
+
+    algo = GPGAlgo.objects.get(name='ed25519')
+    algo.minimal_size_requirement = size
+    algo.full_clean()
+    algo.save()
+
+
+class Migration(migrations.Migration):
+
+    initial = True
+
+    dependencies = [
+        ('keyring', '0003_fingerprint_uniqueness',),
+    ]
+
+    operations = [
+        migrations.RunPython(set_ecc_size_to_zero, revert_set_ecc_size_to_zero),
+    ]

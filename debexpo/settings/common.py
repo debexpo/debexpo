@@ -260,3 +260,6 @@ REGISTRATION_CACHE_TIMEOUT = 1 * 24 * 3600
 # Timeout for processes (10 minutes by default, 30 minutes for lintian)
 SUBPROCESS_TIMEOUT = 10 * 60
 SUBPROCESS_TIMEOUT_LINTIAN = 30 * 60
+
+# Default settings for models
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

@@ -26,6 +26,7 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+from datetime import date
 
 from django.conf import settings
 from django.utils.crypto import constant_time_compare, salted_hmac
@@ -86,6 +87,13 @@ class EmailChangeTokenGenerator(PasswordResetTokenGenerator):
             email + \
             str(login_timestamp) + \
             str(timestamp)
+
+    def _num_days(self, dt):
+        return (dt - date(2001, 1, 1)).days
+
+    def _today(self):
+        # Used for mocking in tests
+        return date.today()  # pragma: no cover
 
 
 email_change_token_generator = EmailChangeTokenGenerator()

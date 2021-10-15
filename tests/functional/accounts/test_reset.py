@@ -27,8 +27,7 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.contrib.auth.views import INTERNAL_RESET_URL_TOKEN, \
-    INTERNAL_RESET_SESSION_TOKEN
+from django.contrib.auth.views import INTERNAL_RESET_SESSION_TOKEN
 from django.core import mail
 from django.urls import reverse
 from django.utils.encoding import force_bytes
@@ -67,7 +66,7 @@ class TestResetController(TestController):
 
         response = self.client.post(reverse('password_reset_confirm', kwargs={
             'uidb64': uid,
-            'token': INTERNAL_RESET_URL_TOKEN
+            'token': 'set-password'
         }), {
             'new_password1': 'newpass',
             'new_password2': 'newpass',

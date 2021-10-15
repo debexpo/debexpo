@@ -30,4 +30,4 @@ from django.apps import AppConfig
 
 
 class ImporterConfig(AppConfig):
-    name = 'importer'
+    name = 'debexpo.importer'

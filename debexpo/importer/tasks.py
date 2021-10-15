@@ -26,7 +26,7 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from celery.decorators import task
+from celery import shared_task
 
 from django.conf import settings
 
@@ -34,7 +34,7 @@ from debexpo.importer.models import Importer
 from debexpo.tools.cache import enforce_unique_instance
 
 
-@task
+@shared_task
 def importer():
     with enforce_unique_instance('importer'):
         importctl = Importer(settings.UPLOAD_SPOOL)
