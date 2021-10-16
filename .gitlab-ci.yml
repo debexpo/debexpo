@@ -26,6 +26,7 @@ before_script:
     python3-django-filters
     python3-django-redis
     ca-certificates
+    locales-all
     libjs-jquery
     libjs-jquery-throttle-debounce
     libjs-jquery-isonscreen

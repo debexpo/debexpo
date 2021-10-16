@@ -225,7 +225,7 @@ class GnuPG():
         try:
             output = debexpo_exec(self.gpg_path, cmd, env=env,
                                   stderr=subprocess.STDOUT,
-                                  input=str(stdin), text=True)
+                                  input=str(stdin))
         except subprocess.CalledProcessError as e:
             return (e.output, e.returncode)
         except subprocess.TimeoutExpired:

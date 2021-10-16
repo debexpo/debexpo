@@ -38,4 +38,8 @@ def debexpo_exec(command, args, **kwargs):
                       f'{basename(command).replace("-", "_").upper()}',
                       getattr(settings, 'SUBPROCESS_TIMEOUT', None))
 
-    return check_output([command] + args, timeout=timeout, **kwargs)
+    return check_output([command] + args,
+                        timeout=timeout,
+                        encoding='utf-8',
+                        text=True,
+                        **kwargs)

@@ -68,8 +68,7 @@ class PluginLintian(BasePlugin):
                                    # run as root in CI.
                                    "--allow-root",
                                    str(changes)],
-                                  cwd=dirname(changes.filename),
-                                  text=True)
+                                  cwd=dirname(changes.filename))
         except FileNotFoundError:  # pragma: no cover
             self.failed('lintian not found')
         except TimeoutExpired:
