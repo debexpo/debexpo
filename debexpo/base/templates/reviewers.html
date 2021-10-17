@@ -109,6 +109,31 @@
     </li>
 </ul>
 
+<p>
+    {% blocktrans with name=settings.SITE_NAME trimmed %}
+    You might also want to retrieve the maintainer GPG key to verify that all
+    subsequent uploads are signed using the same key. While the key should be
+    publicly available on servers such as <em>keys.openpgp.org</em> or
+    <em>keyserver.ubuntu.com</em>, {{ name }} can also act as a basic keyserver.
+    Note that only key retrieval is implemented. Update or search are not
+    available.
+    {% endblocktrans %}
+</p>
+
+<p>
+    {% blocktrans trimmed %}
+    Given a key id, you can retrieve a key using:
+    {% endblocktrans %}
+</p>
+
+<pre>
+{% if request.scheme == 'https' %}
+gpg --keyserver hkps://{{ request.get_host }} --recv-keys 0x123456789
+{% else %}
+gpg --keyserver hkp://{{ request.get_host }} --recv-keys 0x123456789
+{% endif %}
+</pre>
+
 <h3>{% trans 'Established sponsor guidelines' %}</h3>
 
 <p>
