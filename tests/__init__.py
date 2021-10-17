@@ -129,6 +129,8 @@ Xcgnuh6Rlywt6uiaFIGYnGefYPGXRAA=
             self._add_gpg_key(user, self._GPG_KEY, self._GPG_FINGERPRINT,
                               self._GPG_TYPE, self._GPG_SIZE)
 
+        return user
+
     def _remove_example_user(self):
         """Remove the example user.
 
