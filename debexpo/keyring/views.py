@@ -50,7 +50,12 @@ class HKPSearchView(BaseDetailView):
     def get_object(self, queryset=None):
         key_id = self.request.GET['search'].replace('0x', '')
 
-        return get_object_or_404(Key, fingerprint__endswith=key_id)
+        try:
+            return Key.objects.get(fingerprint__endswith=key_id)
+        except Key.DoesNotExist:
+            pass
+
+        return get_object_or_404(Key, subkey__fingerprint__endswith=key_id)
 
     def render_to_response(self, context, **response_kwargs):
         return HttpResponse(self.object.key + '\n')

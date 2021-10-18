@@ -28,6 +28,8 @@
 
 from django.urls import reverse
 
+from debexpo.keyring.models import SubKey
+
 from tests import TestController
 
 _GPGKEY = """-----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -93,10 +95,12 @@ class TestHKP(TestController):
         self.assertEquals(response.status_code, 200)
         self.assertIn(self._GPG_KEY, response.content.decode())
 
-        # Matches full fingerprint: 200
+        # Matches full fingerprint of a subkey: 200
+        fingerprint = SubKey.objects.filter(
+            key__fingerprint=self._GPG_FINGERPRINT).first().fingerprint
         response = self.client.get(reverse('hkp'), {
             'op': 'get',
-            'search': self._GPG_FINGERPRINT
+            'search': fingerprint
         })
-        self.assertEquals(response.status_code, 200)
         self.assertIn(self._GPG_KEY, response.content.decode())
+        self.assertEquals(response.status_code, 200)
