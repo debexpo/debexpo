@@ -41,6 +41,7 @@ from debexpo.base.views import index, contact, intro_reviewers, \
     intro_maintainers, qa, sponsor_overview, sponsor_guidelines, sponsor_rfs
 from debexpo.accounts.views import register, profile, EmailChangeConfirmView
 from debexpo.accounts.forms import PasswordResetForm
+from debexpo.keyring.views import HKPView
 from debexpo.packages.views import package, packages, packages_my, \
     PackagesFeed, sponsor_package, delete_package, delete_upload, \
     PackageViewSet, PackageUploadViewSet
@@ -166,6 +167,9 @@ urlpatterns = [
     url(r'^packages/my/$', packages_my, name='packages_my'),
     url(r'^accounts/$', lambda request: HttpResponsePermanentRedirect(
         reverse('profile')), name='accounts'),
+
+    # HPK interface
+    url(r'^pks/lookup$', HKPView.as_view(), name='hkp'),
 
     # Repository
     url(r'^debian/(?P<path>.*)$', serve, {
