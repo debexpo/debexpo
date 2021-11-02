@@ -59,13 +59,11 @@ def create_distributions(apps, schema_editor):
     Project = apps.get_model('packages', 'Project')
 
     for name, project in DISTRIBUTIONS:
+        project, _ = Project.objects.get_or_create(name=project)
         distribution = Distribution()
-
-        if project:
-            project, _ = Project.objects.get_or_create(name=project)
-
         distribution.name = name
         distribution.project = project
+
         distribution.full_clean()
         distribution.save()
 
