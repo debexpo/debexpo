@@ -141,25 +141,22 @@ class Package(models.Model):
         return self.name
 
     def get_description(self):
-        if self.packageupload_set.count():
-            upload = self.packageupload_set.latest('uploaded')
+        upload = self.packageupload_set.latest('uploaded')
 
-            if upload.binarypackage_set.count():
-                binary = upload.binarypackage_set.filter(name=self.name)
+        if upload.binarypackage_set.count():
+            binary = upload.binarypackage_set.filter(name=self.name)
 
-                if not binary:
-                    binary = upload.binarypackage_set.last()
-                    return binary.description
-                else:
-                    return binary.get().description
+            if not binary:
+                binary = upload.binarypackage_set.last()
+                return binary.description
+            else:
+                return binary.get().description
 
         return ''
 
     def get_full_description(self):
         description = []
-
-        if self.packageupload_set.count():
-            upload = self.packageupload_set.latest('uploaded')
+        upload = self.packageupload_set.latest('uploaded')
 
         for binary in upload.binarypackage_set.all():
             description.append('{} - {}'.format(binary.name,
