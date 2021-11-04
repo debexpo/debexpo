@@ -30,6 +30,9 @@ import logging
 from email import message_from_string
 from http.server import BaseHTTPRequestHandler
 
+from django.conf import settings
+from django.test import override_settings
+
 # from debexpo.lib.email import Email
 from debexpo.accounts.models import User
 from debexpo.packages.models import Package, PackageUpload, Distribution, \
@@ -194,7 +197,10 @@ class TestCronjobRemoveOldUploads(TestController):
         remove_old_uploads()
         self._assert_cronjob_success()
 
-    def test_remove_uploads_expired(self):
+    @override_settings()
+    def test_remove_uploads_expired_no_gistorage(self):
+        del settings.GIT_STORAGE
+
         self._setup_packages(include_expired=True)
         remove_old_uploads()
         self._assert_cronjob_success()
