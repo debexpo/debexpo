@@ -491,6 +491,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
 
         self.assertEquals(len(mail.outbox), 1)
         self.assertEquals(changes.uploader, changes._data.get('Changed-By'))
+        self.assertEquals(changes.changes, changes._data.get('Changes'))
         self.assertNotEquals(changes.uploader, changes.maintainer)
         self.assertIn('No space left', mail.outbox[0].body)
         self.assertIn(settings.DEFAULT_FROM_EMAIL, mail.outbox[0].to)
