@@ -64,6 +64,7 @@ class TestCronjobRemoveOldUploads(TestController):
                 ('htop', '1.0.0', 'unstable', False),
                 ('htop', '0.9.0', 'unstable', False),
                 ('htop', '0.8.0', 'buster-backports', False),
+                ('tmux', '1.1.0', 'unstable', False),
                 ('tmux', '1.0.0', 'unstable', False),
                 ('tmux', '1.0.0', 'UNRELEASED', False),
                 ('zsh', '1.0.0', 'unstable', False),
