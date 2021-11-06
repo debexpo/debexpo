@@ -26,6 +26,8 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+from os import environ
+
 from django.test import TestCase
 from django.test import Client
 
@@ -43,6 +45,19 @@ PAGES = (
 
 
 class TestBrowsingPage(TestCase):
+    def test_debexpo_no_version(self):
+        client = Client()
+        path = environ['PATH']
+        environ['PATH'] = ''
+
+        try:
+            response = client.get('/')
+        finally:
+            environ['PATH'] = path
+
+        self.assertEquals(response.status_code, 200)
+        self.assertNotIn('Version', str(response.content))
+
     def test_page_content(self):
         client = Client()
 
