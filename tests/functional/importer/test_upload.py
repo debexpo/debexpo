@@ -213,6 +213,14 @@ C7NQGzfRMFLSPxIHVzhHvJUo6vNZ+AA=
 
         self.assertEqual(response.status_code, 403)
 
+        # Next upload allowed
+        response = self.client.put(reverse(
+            'upload',
+            args=['vitetris_0.58.0-2.dsc']),
+            data='contents')
+
+        self.assertEqual(response.status_code, 200)
+
         for filename in (os.path.join(settings.UPLOAD_SPOOL,
                                       'incoming', 'vitetris_0.58.0-1.dsc'),
                          os.path.join(settings.UPLOAD_SPOOL,
