@@ -43,11 +43,12 @@ class PluginMaintainerEmail(BasePlugin):
         """
         Tests whether the maintainer email is the same as the uploader email.
         """
+        if not changes.maintainer:
+            self.failed('No maintainer address found')
+
         uploader_emails = []
         maintainer_emails = email.utils.getaddresses([changes.maintainer])
-
-        if maintainer_emails:
-            maintainer_email = maintainer_emails[0][1]
+        maintainer_email = maintainer_emails[0][1]
 
         if changes.dsc.uploaders:
             for _, uploader_email in \
