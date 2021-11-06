@@ -28,6 +28,8 @@
 
 from django.core import mail
 from django.urls import reverse
+from django.test import override_settings
+from django.conf import settings
 
 from tests import TestController
 from debexpo.accounts.models import User
@@ -199,7 +201,10 @@ class TestPackageController(TestController):
         self.assertRaises(Package.DoesNotExist, Package.objects.get,
                           name='testpackage')
 
-    def test_delete_upload_successful(self):
+    @override_settings()
+    def test_delete_upload_successful_no_gitstorage(self):
+        del settings.GIT_STORAGE
+
         self.client.post(reverse('login'), self._AUTHDATA)
 
         response = self.client.post(reverse(
