@@ -110,7 +110,7 @@ class GnuPG():
         """
 
         try:
-            (output, status) = self._run(args=['--list-keys'])
+            (output, status) = self._run(['--list-keys'])
             keys = KeyData.read_from_gpg(output.splitlines())
 
             return list(keys.values())
@@ -126,8 +126,8 @@ class GnuPG():
         ``signed_file``
              path to signed file
         """
-        args = ('--verify', signed_file)
-        (output, status) = self._run(args=args)
+        args = ['--verify', signed_file]
+        (output, status) = self._run(args)
         output = output.splitlines()
 
         err_sig_re = re.compile(r'\[GNUPG:\] ERRSIG (?P<long_id>\w+)'
@@ -172,7 +172,7 @@ class GnuPG():
         """
         args = ['--import-options', 'import-minimal', '--import']
 
-        (output, status) = self._run(args=args, stdin=data)
+        (output, status) = self._run(args, stdin=data)
 
         if status and output and len(output.splitlines()) > 0:
             raise ExceptionGnuPG(_('Cannot add key:'
@@ -180,7 +180,7 @@ class GnuPG():
 
         return (output, status)
 
-    def _run(self, stdin=None, args=None):
+    def _run(self, args, stdin=None):
         """
         Run gpg with the given stdin and arguments and return the output and
         exit status.
@@ -214,10 +214,7 @@ class GnuPG():
             '--trust-model', 'always',
             '--with-colons',
             '--with-fingerprint'
-            ]
-
-        if args is not None:
-            cmd.extend(args)
+            ] + args
 
         try:
             output = debexpo_exec(self.gpg_path, cmd, env=env,
