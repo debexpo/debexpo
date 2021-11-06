@@ -241,9 +241,7 @@ class KeyData():
 
     def get_uid(self, uid):
         uidfpr = uid[7]
-        res = self.uids.get(uidfpr, None)
-        if res is None:
-            self.uids[uidfpr] = res = Uid(self, uid)
+        self.uids[uidfpr] = res = Uid(self, uid)
         return res
 
     def get_algo(self):
