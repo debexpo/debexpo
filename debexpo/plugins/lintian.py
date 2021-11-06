@@ -38,20 +38,20 @@ from debexpo.tools.proc import debexpo_exec
 
 
 class PluginLintian(BasePlugin):
-    levels = [
-        {'level': 'X', 'name': 'Experimental', 'severity': PluginSeverity.info,
-         'outcome': 'Package has lintian experimental tags'},
-        {'level': 'P', 'name': 'Pedantic', 'severity': PluginSeverity.info,
-         'outcome': 'Package has lintian pedantic tags'},
-        {'level': 'O', 'name': 'Override', 'severity': PluginSeverity.info,
-         'outcome': 'Package has overridden lintian tags'},
-        {'level': 'I', 'name': 'Info', 'severity': PluginSeverity.info,
-         'outcome': 'Package has lintian informational tags'},
-        {'level': 'W', 'name': 'Warning', 'severity': PluginSeverity.warning,
-         'outcome': 'Package has lintian warnings'},
-        {'level': 'E', 'name': 'Error', 'severity': PluginSeverity.error,
-         'outcome': 'Package has lintian errors'},
-    ]
+    levels = {
+        'X': {'name': 'Experimental', 'severity': PluginSeverity.info,
+              'outcome': 'Package has lintian experimental tags'},
+        'P': {'name': 'Pedantic', 'severity': PluginSeverity.info,
+              'outcome': 'Package has lintian pedantic tags'},
+        'O': {'name': 'Override', 'severity': PluginSeverity.info,
+              'outcome': 'Package has overridden lintian tags'},
+        'I': {'name': 'Info', 'severity': PluginSeverity.info,
+              'outcome': 'Package has lintian informational tags'},
+        'W': {'name': 'Warning', 'severity': PluginSeverity.warning,
+              'outcome': 'Package has lintian warnings'},
+        'E': {'name': 'Error', 'severity': PluginSeverity.error,
+              'outcome': 'Package has lintian errors'},
+    }
 
     @property
     def name(self):
@@ -102,15 +102,11 @@ class PluginLintian(BasePlugin):
                 continue
 
             severity, package, rest = tag.split(': ', 2)
-            name = [level['name'] for level in self.levels
-                    if level['level'] == severity]
             lintian_severities.add(severity)
             lintian_tag_data = rest.split()
             lintian_tag = lintian_tag_data[0]
             lintian_data = ' '.join(lintian_tag_data[1:])
-
-            if name:
-                severity = f'{severity}-{name[0]}'
+            severity = f'{severity}-{self.levels[severity]["name"]}'
 
             if override_comments:
                 comments = ' '.join(override_comments)
@@ -124,8 +120,8 @@ class PluginLintian(BasePlugin):
         severity = PluginSeverity.info
         outcome = 'Package is lintian clean'
 
-        for level in self.levels:
-            if level['level'] in lintian_severities:
+        for name, level in self.levels.items():
+            if name in lintian_severities:
                 severity = level['severity']
                 outcome = level['outcome']
 
