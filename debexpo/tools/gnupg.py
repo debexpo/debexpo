@@ -100,7 +100,7 @@ class GnuPG():
         """Returns true if the gpg binary is not installed or not executable."""
         return self.gpg_path is None
 
-    def get_keys_data(self, fingerprints=None):
+    def get_keys_data(self):
         """
         Returns the key object of the given GPG public key.
 
@@ -109,11 +109,8 @@ class GnuPG():
 
         """
 
-        if fingerprints is None:
-            fingerprints = []
-
         try:
-            (output, status) = self._run(args=['--list-keys'] + fingerprints)
+            (output, status) = self._run(args=['--list-keys'])
             keys = KeyData.read_from_gpg(output.splitlines())
 
             return list(keys.values())
