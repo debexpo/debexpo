@@ -237,9 +237,7 @@ class Importer():
             finally:
                 changes.remove()
 
-        if self.repository:
-            self.repository.update()
-
+        self.repository.update()
         self.spool.cleanup()
 
         return success
@@ -411,8 +409,7 @@ class Importer():
             git_ref = git_storage.install(source)
 
         # Install to repository
-        if self.repository:
-            self.repository.install(changes)
+        self.repository.install(changes)
 
         # Create DB entries
         upload = self._create_db_entries(changes, source, plugins, git_ref)
