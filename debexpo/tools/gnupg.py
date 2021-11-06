@@ -290,8 +290,7 @@ class KeyData():
                 # Correlate fpr with the previous pub record, and start
                 # gathering information for a new key
                 if pub:
-                    if cur_key is None:
-                        keys[fpr] = cur_key = cls(fpr, pub)
+                    keys[fpr] = cur_key = cls(fpr, pub)
                     pub_fpr = fpr
                     pub = None
 
