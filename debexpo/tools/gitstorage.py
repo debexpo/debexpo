@@ -56,7 +56,9 @@ class GitStorage():
         return ref
 
     def remove(self):
-        if isdir(self.repository):
+        # Exclude the False branch from coverage since having the repository
+        # removed is unlikely to happen and would be an external action
+        if isdir(self.repository):  # pragma: no branch
             rmtree(self.repository)
 
     # def diff(self, upload_from, upload_to):
@@ -107,7 +109,9 @@ class GitBackendDulwich():
             files.update(set(get_unstaged_changes(self.repo.open_index(),
                                                   'sources')))
 
-        if len(files) != 0:
+        # Exclude the False branch from coverage. In practice, there is always
+        # files present in debian/ with accepted packages
+        if len(files) != 0:  # pragma: no branch
             self.repo.stage(list(files))
 
     def commit(self):
