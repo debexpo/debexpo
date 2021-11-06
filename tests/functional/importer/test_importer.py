@@ -3,7 +3,7 @@
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2018-2020 Baptiste Beauplat <lyknode@cilg.org>
+#   Copyright © 2018-2021 Baptiste Beauplat <lyknode@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -34,6 +34,7 @@ UploadController test cases.
 from os.path import join
 from os import utime, unlink
 from time import time
+from glob import glob
 
 from django.conf import settings
 from django.core import mail
@@ -42,6 +43,7 @@ from django.test import override_settings
 from tests.functional.importer import TestImporterController
 
 from debexpo.importer.models import Importer, ExceptionImporterRejected
+from debexpo.tools.debian.changes import Changes
 
 
 class TestImporter(TestImporterController):
@@ -460,17 +462,17 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assertIn('No space left', mail.outbox[0].body)
         self.assertIn(settings.DEFAULT_FROM_EMAIL, mail.outbox[0].to)
 
-    def test_importer_fail_no_changed_by(self):
-        self._upload_package(join(self.data_dir, 'changes-no-changed-by'))
+    def test_importer_fail_no_changed_by_no_spool(self):
+        filename = glob(join(self.data_dir, 'changes-no-changed-by',
+                             '*.changes'))[0]
 
-        importer = Importer(str(self.spool))
-        changes = self.spool.changes_to_process()[0]
+        importer = Importer()
+        changes = Changes(filename)
 
         importer._fail(ExceptionImporterRejected(
             changes, 'Importer failed',
             IOError('No space left on device'))
         )
-        changes.remove()
 
         self.assertEquals(len(mail.outbox), 1)
         self.assertEquals(changes.uploader, changes.maintainer)
