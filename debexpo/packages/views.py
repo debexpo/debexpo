@@ -81,7 +81,8 @@ class PackageGroups(object):
                 x for x in packages if
                 x.packageupload_set.latest('uploaded').uploaded > deltamax
             ]
-        elif (deltamin is not None and deltamax is None):
+        # Last actual possibility
+        elif (deltamin is not None and deltamax is None):  # pragma: no branch
             self.packages = [
                 x for x in packages if
                 x.packageupload_set.latest('uploaded').uploaded <= deltamin
