@@ -60,25 +60,24 @@ class Origin():
 
         # For the origin tarball and its signature
         for origin in origin_files:
-            if origin:
-                if isfile(join(self.dest_dir, str(origin))):
-                    # Origin file is present in the upload
-                    continue
+            if isfile(join(self.dest_dir, str(origin))):
+                # Origin file is present in the upload
+                continue
 
-                if repo.fetch_from_pool(self.package,
+            if repo.fetch_from_pool(self.package,
+                                    self.component,
+                                    str(origin),
+                                    self.dest_dir):
+                # Origin fetched from the local repository
+                continue
+
+            if not self.is_new:
+                # If the package is already in Debian, retrieve it from the
+                # official archive
+                archive.fetch_from_pool(self.package,
                                         self.component,
                                         str(origin),
-                                        self.dest_dir):
-                    # Origin fetched from the local repository
-                    continue
-
-                if not self.is_new:
-                    # If the package is already in Debian, retrieve it from the
-                    # official archive
-                    archive.fetch_from_pool(self.package,
-                                            self.component,
-                                            str(origin),
-                                            self.dest_dir)
+                                        self.dest_dir)
 
     def validate(self, source_origin_files):
         client = ClientFTPMasterAPI()
