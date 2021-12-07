@@ -63,6 +63,7 @@ class ClientFTPMasterAPI(ClientJsonAPI):
         params = {
             'package': package,
             's': distribution,
+            'a': 'source',
             'f': 'json'
         }
 
