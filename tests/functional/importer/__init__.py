@@ -155,7 +155,7 @@ class TestImporterController(TestController):
                               skip_email=False, base_dir=None, sub_dir=None):
         source_package = TestSourcePackage(package_dir, base_dir)
 
-        source_package.build()
+        source_package.build(not skip_gpg)
         self._run_importer(source_package.get_package_dir(), skip_gpg=skip_gpg,
                            skip_email=skip_email, sub_dir=sub_dir)
 
