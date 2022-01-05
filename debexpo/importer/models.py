@@ -421,8 +421,7 @@ class Importer():
         # match their checksum
         try:
             changes.validate()
-            if not self.skip_gpg:
-                changes.authenticate()
+            changes.authenticate(not self.skip_gpg)
             if getattr(settings, 'CHECK_NEWER_UPLOAD', True):
                 changes.assert_newer()
             changes.files.validate()

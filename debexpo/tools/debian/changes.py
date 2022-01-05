@@ -86,9 +86,17 @@ class Changes(GPGSignedFile):
 
         return False
 
-    def authenticate(self):
-        super().authenticate()
-        self.uploader = User.objects.get(key=self.key)
+    def authenticate(self, gpg=True):
+        if gpg:
+            super().authenticate()
+            self.uploader = User.objects.get(key=self.key)
+        else:
+            user = User.objects.lookup_user_from_address(self.uploader)
+
+            if not user:
+                raise ExceptionChanges(f'No user found for {self.uploader}')
+
+            self.uploader = user
 
     def _build_changes(self):
         self.dsc = None
