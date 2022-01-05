@@ -26,6 +26,7 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+from email.utils import getaddresses
 from enum import Enum
 
 from django.contrib.auth.models import AbstractUser, BaseUserManager
@@ -91,6 +92,28 @@ class UserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
 
         return self._create_user(email, name, password, **extra_fields)
+
+    def lookup_user_from_address(self, address):
+        """
+        Lookup a user using an arbitrary formatted email.
+
+        This method is used by Changes to lookup the user of an unsigned upload,
+        when allowed. The address is extracted from the .chagnes Changed-By
+        field or, if missing, from the Maintainer field.
+
+        The address format (Vincent Time <vtime@example.org>) is decoded using
+        email.utils.getaddresses.
+        """
+        if not address:
+            return
+
+        decoded_address = getaddresses([address])
+        email = decoded_address[0][1]
+
+        try:
+            return self.get(email=email)
+        except User.DoesNotExist:
+            return
 
 
 class User(AbstractUser):
