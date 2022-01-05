@@ -62,3 +62,17 @@ class TestUser(TestCase):
                                              'password')
         self.assertTrue(user.is_staff)
         self.assertTrue(user.is_superuser)
+
+    def test_lookup_user(self):
+        for unknown_email in (None, '', 'unknown@example.org',):
+            self.assertEquals(
+                None,
+                User.objects.lookup_user_from_address(unknown_email)
+            )
+
+        user = User.objects.create_user('email@example.com', 'test user',
+                                        'password')
+        self.assertEquals(
+            User.objects.lookup_user_from_address('User <email@example.com>'),
+            user
+        )
