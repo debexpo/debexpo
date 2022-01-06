@@ -278,6 +278,7 @@ class EmailChangeConfirmView(PasswordResetConfirmView):
         assert 'uidb64' in kwargs and 'token' in kwargs and 'email' in kwargs
 
         self.validlink = False
+        self.email = None
         self.user = self.get_user(kwargs['uidb64'])
 
         if self.user is not None:
