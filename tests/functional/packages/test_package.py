@@ -238,6 +238,22 @@ class TestPackageController(TestController):
     def test_comment_bad_method(self):
         self._test_bad_method('comment_package')
 
+    def test_comment_bad_form(self):
+        self.client.post(reverse('login'), self._AUTHDATA)
+
+        upload = PackageUpload.objects.filter(package__name='testpackage') \
+            .earliest('uploaded')
+        response = self.client.post(reverse('comment_package',
+                                            args=['testpackage']), {
+            'upload_id': upload.id,
+            'text': 'This is a test comment',
+            'outcome': 42,
+            'commit': 'submit_comment'
+        })
+
+        self.assertEquals(response.status_code, 200)
+        self.assertIn('errorlist', str(response.content))
+
     def test_comment(self):
         self.client.post(reverse('login'), self._AUTHDATA)
 
