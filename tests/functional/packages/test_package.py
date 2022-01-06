@@ -202,6 +202,12 @@ class TestPackageController(TestController):
                           name='testpackage')
 
     @override_settings()
+    def test_delete_successful_no_gitstorage(self):
+        del settings.GIT_STORAGE
+
+        self.test_delete_successful()
+
+    @override_settings()
     def test_delete_upload_successful_no_gitstorage(self):
         del settings.GIT_STORAGE
 
