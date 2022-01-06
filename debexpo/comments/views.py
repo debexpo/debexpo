@@ -79,7 +79,12 @@ def subscribe(request, name):
         form = SubscriptionForm(request.POST, instance=instance)
         package = request.POST.get('next')
 
-        if form.is_valid():
+        # The condition here is just for show. The form is composed of two
+        # checkbox which are either absent for False or present with any value
+        # for True. It's not possible for it to be not valid.
+        #
+        # The test is kept here for future needs.
+        if form.is_valid():  # pragma: no branch
             subscription = form.save(commit=False)
             subscription.user = request.user
             subscription.package = name
