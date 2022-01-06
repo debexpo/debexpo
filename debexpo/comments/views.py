@@ -133,4 +133,10 @@ def comment(request, name):
         comment.save()
         comment.notify(request)
 
-    return HttpResponseRedirect(f"{redirect_url}#upload-{index}")
+        return HttpResponseRedirect(f"{redirect_url}#upload-{index}")
+
+    return render(request, 'package.html', {
+        'settings': settings,
+        'package': package,
+        'comment_form': form,
+    })
