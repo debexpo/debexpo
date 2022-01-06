@@ -176,11 +176,23 @@ class TestUpdateEmail(TransactionTestController):
         self._submit_token(token, 'new@example.org',
                            error='address already exists')
 
-    def test_update_email_invalid_taken(self):
+    def test_update_email_invalid_token(self):
+        # On first call
         invalid_data = {
             'uidb64': 'a',
             'token': 'x-x',
             'email': 'a',
+        }
+
+        self._submit_token(None, 'new@example.org',
+                           invalid=True, submit_data=invalid_data)
+
+        # On redirect call
+        user = User.objects.get(email=self._AUTHDATA['username'])
+        invalid_data = {
+            'uidb64': urlsafe_base64_encode(force_bytes(user.pk)),
+            'token': 'change-email',
+            'email': 'another@example.org',
         }
 
         self._submit_token(None, 'new@example.org',
