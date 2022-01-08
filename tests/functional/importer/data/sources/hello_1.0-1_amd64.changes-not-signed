@@ -10,10 +10,7 @@ Maintainer: Baptiste BEAUPLAT <lyknode@cilg.org>
 Changed-By: Another Uploader <another@example.org>
 Description:
  hello      - <insert up to 60 chars description>
-Changes:
- hello (1.0-1) unstable; urgency=medium
- .
-   * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+Changes: Single line changes
 Checksums-Sha1:
  12b9785a45d1400abc684af9964fed348b2fcf9d 784 hello_1.0-1.dsc
  be505a70074ab85fed3f68026242651fcde85bf2 168 hello_1.0.orig.tar.xz

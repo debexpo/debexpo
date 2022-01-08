@@ -130,12 +130,16 @@ BQJb8YGqAhsMAAoJEMQ0eBzocfPf8IcA/RyHF6zgRu2Ds3wH8GgxjCZRW+YxWahX
         self._run_command(command, args, self.source_dir,
                           self._get_env_with_gpg())
 
-    def _build_package(self):
+    def _build_package(self, sign):
         args = ['--build=source',
                 '--no-check-builddeps',
-                '--sign-key=559306EEE1C8C1B2DD1C73B1C434781CE871F3DF',
-                '--force-sign']
+                '--sign-key=559306EEE1C8C1B2DD1C73B1C434781CE871F3DF']
         command = 'dpkg-buildpackage'
+
+        if sign:
+            args.append('--force-sign')
+        else:
+            args.append('--no-sign')
 
         log.debug('Build source package {}-{}'.format(self.package,
                                                       self.version))
@@ -180,14 +184,14 @@ BQJb8YGqAhsMAAoJEMQ0eBzocfPf8IcA/RyHF6zgRu2Ds3wH8GgxjCZRW+YxWahX
     def get_package_dir(self):
         return self.workdir
 
-    def build(self):
+    def build(self, sign=True):
         # Copy sources files into workdir
         copytree(self.source_dir,
                  join(self.workdir, 'sources'))
 
         # Gen orig, build and sign
         self._gen_orig()
-        self._build_package()
+        self._build_package(sign)
 
         # Remove temporary source dir
         if isdir(join(self.workdir, 'sources')):

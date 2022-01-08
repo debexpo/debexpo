@@ -278,6 +278,7 @@ class EmailChangeConfirmView(PasswordResetConfirmView):
         assert 'uidb64' in kwargs and 'token' in kwargs and 'email' in kwargs
 
         self.validlink = False
+        self.email = None
         self.user = self.get_user(kwargs['uidb64'])
 
         if self.user is not None:
@@ -307,10 +308,9 @@ class EmailChangeConfirmView(PasswordResetConfirmView):
         return self.render_to_response(self.get_context_data())
 
     def form_valid(self, form):
-        if self.validlink:
-            self.user.email = self.email
-            self.user.full_clean()
-            self.user.save()
+        self.user.email = self.email
+        self.user.full_clean()
+        self.user.save()
 
         del self.request.session[INTERNAL_EMAIL_SESSION_TOKEN]
 

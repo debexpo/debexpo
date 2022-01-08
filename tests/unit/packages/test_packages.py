@@ -28,7 +28,7 @@
 
 from tests import TestController
 from debexpo.packages.models import Package, Priority, Project, Distribution, \
-    Section, Component, BinaryPackage
+    Section, Component, BinaryPackage, PackageUpload
 
 
 class TestPackagesController(TestController):
@@ -62,3 +62,10 @@ class TestPackagesController(TestController):
         binary.delete()
 
         self.assertEquals('', package.get_description())
+
+    def test_get_dsc_no_files(self):
+        package = Package.objects.get(name='testpackage')
+        upload = PackageUpload.objects.get(package=package)
+
+        self.assertEquals(None, upload.get_dsc_url())
+        self.assertEquals(None, upload.get_dsc_name())

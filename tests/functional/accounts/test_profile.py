@@ -446,6 +446,16 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
         # Login
         self.client.post(reverse('login'), self._AUTHDATA)
 
+        # Test password change, failed
+        response = self.client.post(reverse('profile'), {
+            'old_password': 'not-my-password',
+            'new_password1': 'newpassword',
+            'new_password2': 'newpassword',
+            'commit_password': 'submit'
+        })
+        self.assertEquals(response.status_code, 200)
+        self.assertIn('errorlist', str(response.content))
+
         # Test password change
         response = self.client.post(reverse('profile'), {
             'old_password': 'password',

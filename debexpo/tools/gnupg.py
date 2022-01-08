@@ -100,7 +100,7 @@ class GnuPG():
         """Returns true if the gpg binary is not installed or not executable."""
         return self.gpg_path is None
 
-    def get_keys_data(self, fingerprints=None):
+    def get_keys_data(self):
         """
         Returns the key object of the given GPG public key.
 
@@ -109,11 +109,8 @@ class GnuPG():
 
         """
 
-        if fingerprints is None:
-            fingerprints = []
-
         try:
-            (output, status) = self._run(args=['--list-keys'] + fingerprints)
+            (output, status) = self._run(['--list-keys'])
             keys = KeyData.read_from_gpg(output.splitlines())
 
             return list(keys.values())
@@ -129,8 +126,8 @@ class GnuPG():
         ``signed_file``
              path to signed file
         """
-        args = ('--verify', signed_file)
-        (output, status) = self._run(args=args)
+        args = ['--verify', signed_file]
+        (output, status) = self._run(args)
         output = output.splitlines()
 
         err_sig_re = re.compile(r'\[GNUPG:\] ERRSIG (?P<long_id>\w+)'
@@ -175,7 +172,7 @@ class GnuPG():
         """
         args = ['--import-options', 'import-minimal', '--import']
 
-        (output, status) = self._run(args=args, stdin=data)
+        (output, status) = self._run(args, stdin=data)
 
         if status and output and len(output.splitlines()) > 0:
             raise ExceptionGnuPG(_('Cannot add key:'
@@ -183,7 +180,7 @@ class GnuPG():
 
         return (output, status)
 
-    def _run(self, stdin=None, args=None):
+    def _run(self, args, stdin=None):
         """
         Run gpg with the given stdin and arguments and return the output and
         exit status.
@@ -217,10 +214,7 @@ class GnuPG():
             '--trust-model', 'always',
             '--with-colons',
             '--with-fingerprint'
-            ]
-
-        if args is not None:
-            cmd.extend(args)
+            ] + args
 
         try:
             output = debexpo_exec(self.gpg_path, cmd, env=env,
@@ -247,9 +241,7 @@ class KeyData():
 
     def get_uid(self, uid):
         uidfpr = uid[7]
-        res = self.uids.get(uidfpr, None)
-        if res is None:
-            self.uids[uidfpr] = res = Uid(self, uid)
+        self.uids[uidfpr] = res = Uid(self, uid)
         return res
 
     def get_algo(self):
@@ -296,8 +288,7 @@ class KeyData():
                 # Correlate fpr with the previous pub record, and start
                 # gathering information for a new key
                 if pub:
-                    if cur_key is None:
-                        keys[fpr] = cur_key = cls(fpr, pub)
+                    keys[fpr] = cur_key = cls(fpr, pub)
                     pub_fpr = fpr
                     pub = None
 

@@ -53,12 +53,19 @@ class TestMail(TestCase):
         self.email.send('My subject', [])
         self.assertFalse(hasattr(self.email, 'email'))
 
-    def _assert_mail_content(self, content):
+    def _assert_mail_content(self, content, bounce='bounce@example.org'):
         self._assert_base_content(content.body)
         self.assertIn('user@example.org', content.to)
-        self.assertIn('bounce@example.org', content.from_email)
+        self.assertIn(bounce, content.from_email)
         self.assertIn('From: debexpo <support@example.org>',
                       str(content.message()))
 
     def _assert_base_content(self, content):
         self.assertIn('This is a test email, user@example.org', content)
+
+    def test_bounce(self):
+        bounce = 'another@example.org'
+        self.email.send('My subject', ['user@example.org'],
+                        bounce_to=bounce)
+
+        self._assert_mail_content(mail.outbox[0], bounce=bounce)

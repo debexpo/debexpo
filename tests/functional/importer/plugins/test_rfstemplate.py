@@ -78,3 +78,9 @@ class TestPluginRFSTemplate(TestImporterController):
                                 '[NMU] [QA] [Team] -- Test package for debexpo')
         self.assert_rfs_content('does-not-exist',
                                 'Severity: wishlist')
+
+    def test_no_vcs_browser(self):
+        self.import_source_package('hello-no-vcs-browser')
+        self.assert_importer_succeeded()
+        self.assert_rfs_content('hello',
+                                'Vcs             : [fill in')

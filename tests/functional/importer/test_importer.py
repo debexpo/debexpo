@@ -3,7 +3,7 @@
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo
 #
-#   Copyright © 2018-2020 Baptiste Beauplat <lyknode@cilg.org>
+#   Copyright © 2018-2021 Baptiste Beauplat <lyknode@debian.org>
 #
 #   Permission is hereby granted, free of charge, to any person
 #   obtaining a copy of this software and associated documentation
@@ -34,6 +34,7 @@ UploadController test cases.
 from os.path import join
 from os import utime, unlink
 from time import time
+from glob import glob
 
 from django.conf import settings
 from django.core import mail
@@ -42,6 +43,7 @@ from django.test import override_settings
 from tests.functional.importer import TestImporterController
 
 from debexpo.importer.models import Importer, ExceptionImporterRejected
+from debexpo.tools.debian.changes import Changes
 
 
 class TestImporter(TestImporterController):
@@ -199,6 +201,20 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.import_package('control-missing-key-binary')
         self.assert_importer_failed()
         self.assert_email_with('Missing key Architecture')
+        self.assert_package_count('hello', '1.0-1', 0)
+        self.assert_package_not_in_repo('hello', '1.0-1')
+
+    def test_import_package_not_signed_ok(self):
+        self._setup_example_user(email='vtime@example.org')
+        self.import_source_package('hello', skip_gpg=True)
+        self.assert_importer_succeeded()
+        self.assert_package_count('hello', '1.0-1', 1)
+        self.assert_package_in_repo('hello', '1.0-1')
+
+    def test_import_package_not_signed_ok_no_user(self):
+        self.import_source_package('hello', skip_gpg=True)
+        self.assert_importer_failed()
+        self.assert_email_with('No user found for')
         self.assert_package_count('hello', '1.0-1', 0)
         self.assert_package_not_in_repo('hello', '1.0-1')
 
@@ -460,17 +476,17 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assertIn('No space left', mail.outbox[0].body)
         self.assertIn(settings.DEFAULT_FROM_EMAIL, mail.outbox[0].to)
 
-    def test_importer_fail_no_changed_by(self):
-        self._upload_package(join(self.data_dir, 'changes-no-changed-by'))
+    def test_importer_fail_no_changed_by_no_spool(self):
+        filename = glob(join(self.data_dir, 'changes-no-changed-by',
+                             '*.changes'))[0]
 
-        importer = Importer(str(self.spool))
-        changes = self.spool.changes_to_process()[0]
+        importer = Importer()
+        changes = Changes(filename)
 
         importer._fail(ExceptionImporterRejected(
             changes, 'Importer failed',
             IOError('No space left on device'))
         )
-        changes.remove()
 
         self.assertEquals(len(mail.outbox), 1)
         self.assertEquals(changes.uploader, changes.maintainer)
@@ -491,6 +507,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
 
         self.assertEquals(len(mail.outbox), 1)
         self.assertEquals(changes.uploader, changes._data.get('Changed-By'))
+        self.assertEquals(changes.changes, changes._data.get('Changes'))
         self.assertNotEquals(changes.uploader, changes.maintainer)
         self.assertIn('No space left', mail.outbox[0].body)
         self.assertIn(settings.DEFAULT_FROM_EMAIL, mail.outbox[0].to)

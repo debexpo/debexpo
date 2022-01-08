@@ -86,13 +86,16 @@ class TestUpdateEmail(TransactionTestController):
         return token
 
     def _submit_token(self, token, email, invalid=False, error=None,
-                      redirect=None):
-        user = User.objects.get(email=self._AUTHDATA['username'])
-        submit_data = {
-            'uidb64': urlsafe_base64_encode(force_bytes(user.pk)),
-            'token': token,
-            'email': email,
-        }
+                      redirect=None, submit_data=None):
+
+        if not submit_data:
+            user = User.objects.get(email=self._AUTHDATA['username'])
+            submit_data = {
+                'uidb64': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': token,
+                'email': email,
+            }
+
         submit_url = reverse('email_change_confirm', kwargs=submit_data)
         response = self.client.get(submit_url)
 
@@ -172,6 +175,28 @@ class TestUpdateEmail(TransactionTestController):
         self._change_user_email('another@example.org', 'new@example.org')
         self._submit_token(token, 'new@example.org',
                            error='address already exists')
+
+    def test_update_email_invalid_token(self):
+        # On first call
+        invalid_data = {
+            'uidb64': 'a',
+            'token': 'x-x',
+            'email': 'a',
+        }
+
+        self._submit_token(None, 'new@example.org',
+                           invalid=True, submit_data=invalid_data)
+
+        # On redirect call
+        user = User.objects.get(email=self._AUTHDATA['username'])
+        invalid_data = {
+            'uidb64': urlsafe_base64_encode(force_bytes(user.pk)),
+            'token': 'change-email',
+            'email': 'another@example.org',
+        }
+
+        self._submit_token(None, 'new@example.org',
+                           invalid=True, submit_data=invalid_data)
 
     def test_update_email_mismatch_email(self):
         token = self._get_update_token('new@example.org')

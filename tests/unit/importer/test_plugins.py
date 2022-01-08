@@ -27,9 +27,11 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 from tests import TestController
+from types import SimpleNamespace
 
 from debexpo.plugins.models import PluginManager, BasePlugin, PluginSeverity, \
-    PluginResults
+    PluginResults, ExceptionPlugin
+from debexpo.plugins.maintaineremail import PluginMaintainerEmail
 
 
 class PluginBad(BasePlugin):
@@ -103,3 +105,15 @@ class TestPluginResults(TestController):
         result = PluginResults()
 
         self.assertEquals(result.data, {})
+
+
+class TestPluginMaintainerEmail(TestController):
+    def test_maintainer_email_emtpy(self):
+        changes = SimpleNamespace()
+        changes.maintainer = ''
+
+        plugin = PluginMaintainerEmail()
+        with self.assertRaises(ExceptionPlugin) as e:
+            plugin.run(changes, None)
+
+        self.assertIn('No maintainer address found', str(e.exception))
