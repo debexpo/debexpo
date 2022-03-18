@@ -8,10 +8,10 @@
 
 <p>
     {% blocktrans trimmed %}
-    A <em>RFS</em> is a <em>request for sponsorship</em>. If you have a package
-    to be uploaded to Debian, you should file a bug against the
-    <em>sponsorship-requests</em> pseudo-package containing information about
-    your package.
+    An <em>RFS</em> is a <em>request for sponsorship</em>. If you have a
+    package to be uploaded to Debian, you should file a bug against the
+    <em>sponsorship-requests</em> pseudo-package containing information
+    about your package.
     {% endblocktrans %}
 </p>
 
@@ -19,19 +19,19 @@
 
 <p>
     {% blocktrans trimmed %}
-    In general sponsor requests should be handled through the
+    In general, sponsorship requests should be handled through the
     <a href="https://www.debian.org/Bugs/">Debian Bug Tracking System</a>.
     Please make sure both reports and comments are sent to the bug report
-    (<em>nnn@bugs.debian.org</em>) <strong>only</strong>. A copy is going to be
-    sent to the <em>debian-mentors</em> mailing list automatically by the bug
-    tracker.
+    (<em>nnn@bugs.debian.org</em>) <strong>only</strong>. A copy will be
+    sent to the <em>debian-mentors</em> mailing list automatically by the
+    bug tracker.
     {% endblocktrans %}
 </p>
 
 <p>
     {% blocktrans trimmed %}
     Once a source package has been prepared and made available (for example by
-    uploading it to this site) file a new bug report against the
+    uploading it to this site), file a new bug report against the
     <a href="https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=sponsorship-requests"><em>sponsorship-requests</em></a>
     pseudo-package by using the template below.
     {% endblocktrans %}
@@ -68,7 +68,7 @@
 {% else %}
     <a href="mailto:submit@bugs.debian.org?subject=RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly greeter&body={{ rfs_encoded }}">
 {% endif %}
-{% trans 'Send the filled out template below by mail' %}</a>
+{% trans 'Send the completed template below by email' %}</a>
     {% blocktrans trimmed %}
     to our pseudo-package. If you prefer, you can also use the
     <a href="https://packages.debian.org/search?keywords=reportbug&searchon=names&exact=1&suite=all&section=main">reportbug</a>
@@ -95,78 +95,81 @@ Subject: RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly g
 
 <p>
     {% blocktrans trimmed %}
-    Please indicate in the subject if the package fixes <tt>RC</tt> bugs, is a
-    <tt>QA</tt> or <tt>NMU</tt> upload or a new package or a package you
-    adopted:
+    Please indicate in the subject line if you are adding a new package to
+    Debian (<tt>ITP</tt>), if you are adopting an existing package
+    (<tt>ITA</tt>), or if you are fixing bugs in an existing package (via
+    <tt>NMU</tt> or <tt>QA</tt>). If your upload also fixes Release Critical
+    bugs, please add the <tt>RC</tt> indicator as well.
     {% endblocktrans %}
 </p>
 
 <pre>{% if upload %}
   Subject: RFS: {{ upload.package.name }}/1.0-1 [ITP] -- {{ upload.package.get_description }}
-  Subject: RFS: {{ upload.package.name }}/1.0-3 [QA] -- {{ upload.package.get_description }}
-  Subject: RFS: {{ upload.package.name }}/1.0-1.1 [NMU] [RC] -- {{ upload.package.get_description }}
-  Subject: RFS: {{ upload.package.name }}/1.0-2 [RC] -- {{ upload.package.get_description }}
   Subject: RFS: {{ upload.package.name }}/1.0-2 [ITA] -- {{ upload.package.get_description }}
+  Subject: RFS: {{ upload.package.name }}/1.0-1.1 [NMU] [RC] -- {{ upload.package.get_description }}
+  Subject: RFS: {{ upload.package.name }}/1.0-3 [QA] -- {{ upload.package.get_description }}
+  Subject: RFS: {{ upload.package.name }}/1.0-2 [RC] -- {{ upload.package.get_description }}
 {% else %}
   Subject: RFS: hello/1.0-1 [ITP] -- friendly greeter
-  Subject: RFS: hello/1.0-3 [QA] -- friendly greeter
-  Subject: RFS: hello/1.0-1.1 [NMU] [RC] -- friendly greeter
-  Subject: RFS: hello/1.0-2 [RC] -- friendly greeter
   Subject: RFS: hello/1.0-2 [ITA] -- friendly greeter
+  Subject: RFS: hello/1.0-1.1 [NMU] [RC] -- friendly greeter
+  Subject: RFS: hello/1.0-3 [QA] -- friendly greeter
+  Subject: RFS: hello/1.0-2 [RC] -- friendly greeter
 {% endif %}</pre>
 
 <p>
     {% blocktrans trimmed %}
-    The meaning of this shortcuts is denoted below, in case you are unsure:
+    The meaning of the indicators above is described below:
     {% endblocktrans %}
 </p>
 
 <dl>
-    <dt>ITA</dt>
-        <dd>
-            {% blocktrans trimmed %}
-            <tt>ITA</tt> stands for <em>Intend to adopt</em>. These are packages
-            which were orphaned in the past and you intend to adopt.
-            {% endblocktrans %}
-        </dd>
     <dt>ITP</dt>
         <dd>
             {% blocktrans trimmed %}
             <tt>ITP</tt> stands for <em>Intend to package</em>. These are
-            packages which not exist in Debian yet. Such packages need to go
-            through <tt>NEW</tt>. That is the
-            <a href="https://ftp-master.debian.org/new.html">queue on
-                ftp-master</a> for packages uploaded for the first time, which
-            need to be reviewed first. This includes renames, packages moving
-            between areas, and source-packages that build new binary
-            packages.
+            packages that do not exist in Debian yet. Such packages need to
+            go through the <tt>NEW</tt> queue, where they are reviewed by an
+            <a href="https://ftp-master.debian.org/new.html">FTP Master</a>.
+            Packages that must go through NEW include renamed packages,
+            packages moving between areas, and source packages that build
+            new binary packages.
             {% endblocktrans %}
         </dd>
-    <dt>QA</dt>
+    <dt>ITA</dt>
         <dd>
             {% blocktrans trimmed %}
-            You upload is a <tt>QA</tt> upload. Please refer to the respective
-            section in the
-            <a href="https://www.debian.org/doc/manuals/developers-reference/pkgs.html#nmu-qa-upload">developer's reference</a>
-            to learn about <tt>QA</tt> uploads.
+            <tt>ITA</tt> stands for <em>Intend to adopt</em>. These are
+            packages which were orphaned in the past and which you intend
+            to adopt.
             {% endblocktrans %}
         </dd>
     <dt>NMU</dt>
         <dd>
             {% blocktrans trimmed %}
-            This is short for "Non-Maintainer Upload"; a version of a package
-            that is not uploaded by the official Maintainer of a package, but
-            rather by you. For <tt>NMU</tt>s special rules apply. Please see the
-            <a href="https://www.debian.org/doc/manuals/developers-reference/pkgs.html#nmu">developer's reference</a>
-            again.
+            Your upload is a <em>Non-Maintainer Upload</em>, a version of a
+            package that is not uploaded by the official Maintainer of a
+            package, but rather by you. Special rules apply to these uploads.
+            Please refer to the
+            <a href="https://www.debian.org/doc/manuals/developers-reference/pkgs.html#nmu">Developer's Reference</a>
+            for more information.
+            {% endblocktrans %}
+        </dd>
+    <dt>QA</dt>
+        <dd>
+            {% blocktrans trimmed %}
+            Your upload is a <tt>QA</tt> upload. Please refer to the
+            respective section in the
+            <a href="https://www.debian.org/doc/manuals/developers-reference/pkgs.html#nmu-qa-upload">Developer's Reference</a>
+            to learn about <tt>QA</tt> uploads.
             {% endblocktrans %}
         </dd>
     <dt>RC</dt>
         <dd>
             {% blocktrans trimmed %}
-            This is short for "Release-Critical". That is a class of bugs which
-            are particularly important. Use this indication if your request
-            fixes such <tt>RC</tt>-bugs.
+            This is short for <em>Release-Critical</em>,  a class of bugs that
+            are particularly important. Use this indicator if your request
+            fixes an <tt>RC</tt> bug.
             {% endblocktrans %}
         </dd>
 </dl>
@@ -174,17 +177,17 @@ Subject: RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly g
 <p>
     {% blocktrans trimmed %}
     Please keep track of the bug and respond to comments. If the bug was tagged
-    moreinfo or wontfix and you think you have addressed the issues, please
-    remove the respective tag again.
+    <em>moreinfo</em> or <em>wontfix</em> and you think you have addressed the
+    issues, please remove the respective tag.
     {% endblocktrans %}
 </p>
 
 <p>
     {% blocktrans trimmed %}
-    If you changed the package to address concerns, please send a follow-up to
-    the sponsoring request (To: <em>nnn@bugs.debian.org</em>) that includes the
-    URL to the source package and the last changelog entries similar to the
-    initial request.
+    If you changed the package to address concerns, please send a follow-up
+    email to your sponsorship request bug (nnn@bugs.debian.org) with the URL
+    to the source package and the most recent changelog entries, as you did
+    for the initial request.
     {% endblocktrans %}
 </p>
 
@@ -201,18 +204,19 @@ Subject: RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly g
 
 <p>
     {% blocktrans with url_sponsors=url_sponsors trimmed %}
-    Anybody feeling competent enough is invited to review sponsoring requests.
-    You do not need to be a Debian Developer to do so. We collected hints to
-    review package on a <a href={{ url_sponsors }}>a dedicated page</a>.
+    Anybody feeling competent enough is invited to review sponsorship requests.
+    You do not need to be a Debian Developer to do so. We collect
+    <a href={{ url_sponsors }}>hints for reviewing packages</a>
+    on a dedicated webpage.
     {% endblocktrans %}
 </p>
 
 <p>
     {% blocktrans trimmed %}
-    Please send any comments to <em>nnn@bugs.debian.org</em> (please do not send
-    carbon copies to reviewers or bug submitter - assume they are subscribed to
-    the mailing list unless they explicitly ask you to send them carbon copies).
-    You can use the following tags to indicate progress:
+    Please send any comments to <em>nnn@bugs.debian.org</em>, but do not send
+    carbon copies to reviewers or the bug submitter. Assume they are subscribed
+    to the mailing list unless they explicitly ask you to send them carbon
+    copies. You can use the following tags to indicate progress:
     {% endblocktrans %}
 </p>
 
@@ -220,36 +224,36 @@ Subject: RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly g
  <dt>moreinfo</dt>
     <dd>
         {% blocktrans trimmed %}
-        open questions or changes are required before an upload. The package
-        needs work before it can be uploaded.
+        A reviewer has asked questions that need a response or has requested
+        changes to be made. The package needs work before it can be uploaded.
         {% endblocktrans %}
     </dd>
  <dt>confirmed</dt>
     <dd>
         {% blocktrans trimmed %}
-        somebody did a brief review the package and it looks sane. It can still
-        have (smaller) issues that need to be fixed before an upload.
+        Somebody did a brief review of your package and it looks sane. It can
+        still have (smaller) issues that need to be fixed before an upload.
         {% endblocktrans %}
     </dd>
  <dt>pending</dt>
     <dd>
         {% blocktrans trimmed %}
-        somebody is willing to look after the package until it is uploaded.
+        Somebody is willing to look after the package until it is uploaded.
         {% endblocktrans %}
     <dd>
  <dt>wontfix</dt>
     <dd>
         {% blocktrans trimmed %}
-        large problems or cannot not be uploaded at all.
+        The package has significant problems or cannot not be uploaded at all.
         {% endblocktrans %}
     </dd>
 </dl>
 
 <p>
     {% blocktrans trimmed %}
-    If you intend to take care of the sponsoring request until the package is
-    ready for upload, please consider setting yourself as the owner of the bug
-    and tag the bug pending:
+    If you intend to take care of a sponsorship request until the related
+    package is ready for upload, please consider setting yourself as the
+    owner of the bug and tagging the bug as <em>pending</em>:
     {% endblocktrans %}
 </p>
 
@@ -260,10 +264,10 @@ Subject: RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly g
 
 <p>
     {% blocktrans trimmed %}
-    After you uploaded a package, please close the bug report by sending a mail
-    to <em>nnn-done@bugs.debian.org</em>. Do not close RFS bugs in
-    debian/changelog. It is the sponsor who solves the issue, not the supplier
-    of the package or anyhow related to the package itself.
+    After you upload a package, please close the bug report by sending an
+    email to <em>nnn-done@bugs.debian.org</em>. Do not close RFS bugs in
+    debian/changelog. The sponsor is responsible for solving the bug, not
+    the supplier of the package or anyone related to the package itself.
     {% endblocktrans %}
 </p>
 
@@ -271,11 +275,11 @@ Subject: RFS: hello/3.1-4 [put in ITP, ITA, RC, NMU if applicable] -- friendly g
 
 <p>
     {% blocktrans trimmed %}
-    People are advised to close inactive requests after a longer term of no
-    activity (we consider two weeks for requests tagged wontfix, six weeks for
-    requests tagged moreinfo and six months for others appropriate). The same
-    applies to uploaded packages for which the sponsor forgot to close the RFS
-    bug.
+    Inactive sponsorship requests should be closed after a reasonable period
+    of time. We consider this to be two weeks for requests tagged
+    <em>wontfix</em>, six weeks for requests tagged <em>moreinfo</em> and
+    six months for other tags, as appropriate. The same applies to uploaded
+    packages for which the sponsor forgot to close the RFS bug.
     {% endblocktrans %}
 </p>
 {% endblock %}
