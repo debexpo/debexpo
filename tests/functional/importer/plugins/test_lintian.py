@@ -87,3 +87,12 @@ class TestPluginLintian(TestImporterController):
 
             self.assertEqual(str(e.exception),
                              'lintian took too much time to run')
+
+    def test_lintian_mask(self):
+        outcome = 'Package has lintian informational tags'
+        self.import_source_package('lintian-mask')
+        self.assert_importer_succeeded()
+        self.assert_plugin_result_count('hello', 'lintian', 1)
+        self.assert_plugin_result('hello', 'lintian', outcome)
+        self.assert_plugin_severity('hello', 'lintian',
+                                    PluginSeverity.info)
