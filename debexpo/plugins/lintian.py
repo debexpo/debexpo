@@ -101,6 +101,12 @@ class PluginLintian(BasePlugin):
                 override_comments.append(tag[3:].strip())
                 continue
 
+            # Skip mask severity
+            if tag.startswith("M: "):
+                # Drop associated N:
+                override_comments.pop()
+                continue
+
             severity, package, rest = tag.split(': ', 2)
             lintian_severities.add(severity)
             lintian_tag_data = rest.split()
