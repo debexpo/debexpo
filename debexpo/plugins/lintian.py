@@ -104,7 +104,7 @@ class PluginLintian(BasePlugin):
             # Skip mask severity
             if tag.startswith("M: "):
                 # Drop associated N:
-                override_comments.pop()
+                override_comments = []
                 continue
 
             severity, package, rest = tag.split(': ', 2)
