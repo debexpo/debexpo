@@ -139,7 +139,8 @@ class TestCronjobRemoveOldUploads(TestController):
 
     def remove_upload_accepted(self, uploaded, down=False, garbage=False,
                                handler=None,
-                               template='test-upload-accepted.html'):
+                               template='test-upload-accepted.html',
+                               content_type='text/plain'):
         removed_packages = (
             ('tmux', '1.0.0', 'unstable'),
             ('tmux', '1.0.0', 'UNRELEASED'),
@@ -154,7 +155,8 @@ class TestCronjobRemoveOldUploads(TestController):
                     FTP_MASTER_NEW_PACKAGES_URL='http://localhost:'
                                                 f'{httpd.port}'):
                 remove_uploaded_packages(FakeNNTPClient(uploaded, down,
-                                                        garbage, template))
+                                                        garbage, template,
+                                                        content_type))
 
     def test_package_in_new_server_error(self):
         self._setup_packages()
@@ -191,6 +193,15 @@ class TestCronjobRemoveOldUploads(TestController):
             template='test-upload-accepted-multipart.html'
         )
         self._expect_package_removal(removed_packages)
+        self._assert_cronjob_success()
+
+    def test_remove_uploads_multipart_no_plain(self):
+        self._setup_packages()
+        self.remove_upload_accepted(
+            [('zsh', '1.0.0', 'unstable')],
+            template='test-upload-accepted-multipart.html',
+            content_type='text/html'
+        )
         self._assert_cronjob_success()
 
     def test_remove_uploads_server_down(self):
@@ -277,12 +288,14 @@ class FTPMasterPackageInNewErrorHTTPHandler(BaseHTTPRequestHandler):
 
 class FakeNNTPClient():
     def __init__(self, uploads, down=False, garbage=False,
-                 template='test-upload-accepted.html'):
+                 template='test-upload-accepted.html',
+                 content_type='text/plain'):
         self.uploads = uploads
         self.iter = 0
         self.down = down
         self.garbage = garbage
         self.template = template
+        self.content_type = content_type
 
     def connect_to_server(self):
         return not self.down
@@ -308,6 +321,7 @@ class FakeNNTPClient():
             'name': upload[0],
             'version': upload[1],
             'distrib': upload[2],
+            'content_type': self.content_type,
         }))
         body['X-Debexpo-Message-Number'] = 42
 
