@@ -225,10 +225,14 @@ def mark_packages_as_uploaded(packages, debian=False):
 
 
 def convert_mail_to_changes(mail):
-    if not mail or mail.is_multipart():
+    if not mail:
         return
 
-    changes = mail.get_payload(decode=True)
+    if mail.is_multipart():
+        changes = mail.get_payload()[0].get_payload(decode=True)
+    else:
+        changes = mail.get_payload(decode=True)
+
     changes = Changes(changes)
 
     return changes
