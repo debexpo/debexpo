@@ -1,0 +1,99 @@
+Return-Path: <envelope@ftp-master.debian.org>
+Delivered-To: vtime@example.org
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature";
+ boundary="===============8966746602356696880=="
+Received: from mailly.debian.org ([2001:41b8:202:deb:6564:a62:52c3:4b72])
+    by example.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+    (Exim 4.92)
+    (envelope-from <envelope@ftp-master.debian.org>)
+    id 1hoOZz-0006UP-2t
+    for vtime@example.org; Fri, 19 Jul 2019 08:49:27 +0000
+Received: from fasolo.debian.org ([138.16.160.17])
+    from C=NA,ST=NA,L=Ankh Morpork,O=Debian SMTP,OU=Debian SMTP CA,CN=fasolo.debian.org,EMAIL=hostmaster@fasolo.debian.org (verified)
+    by mailly.debian.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+    (Exim 4.89)
+    (envelope-from <envelope@ftp-master.debian.org>)
+    id 1hoOZy-0005eA-4z; Fri, 19 Jul 2019 08:49:26 +0000
+Received: from dak by fasolo.debian.org with local (Exim 4.89)
+    (envelope-from <envelope@ftp-master.debian.org>)
+    id 1hoOZx-000ABa-1I; Fri, 19 Jul 2019 08:49:25 +0000
+From: Debian FTP Masters <ftpmaster@ftp-master.debian.org>
+To: Vincent TIME <vtime@example.org>
+X-DAK: dak process-upload
+X-Debian: DAK
+X-Debian-Package: {{ args.name }}
+Precedence: bulk
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: {{ args.name }}_{{ args.version }}_source.changes ACCEPTED into {{ args.distrib }}
+Message-Id: <E1hoOZx-000ABa-1I@fasolo.debian.org>
+Date: Fri, 19 Jul 2019 08:49:25 +0000
+Received-SPF: none client-ip=2001:41b8:202:deb:6564:a62:52c3:4b72; envelope-from=envelope@ftp-master.debian.org; helo=mailly.debian.org
+
+--===============8966746602356696880==
+Content-Type: {{ args.content_type }}; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Tue, 16 Jul 2019 23:37:22 +0200
+Source: {{ args.name }}
+Architecture: source
+Version: {{ args.version }}
+Distribution: {{ args.distrib }}
+Urgency: medium
+Maintainer: Vincent TIME <vtime@example.org>
+Changed-By: Vincent TIME <vtime@example.org>
+Changes:
+ {{ args.name }} ({{ args.version }}) {{ args.distrib }}; urgency=medium
+ .
+   * Rebuild, no changes
+Checksums-Sha1:
+ 36a03fa187774adfbe732dff7a3b23784647a783 1818 {{ args.name }}_{{ args.version }}.dsc
+ c2a9b41fa5052c3248ad338ed39d23f7166213df 5548 {{ args.name }}_{{ args.version }}.debian.tar.xz
+ 6e0a0beb343beab28d2e1215fa4c18be2b508ef7 6031 {{ args.name }}_{{ args.version }}_amd64.buildinfo
+Checksums-Sha256:
+ 63e84b7dc83a8a263b1d0093b7d0b69d15282f4c128cf5f90cef666582ec333e 1818 {{ args.name }}_{{ args.version }}.dsc
+ 12ab5db9022e5f470de823656d9706248dcb5793d330e19e3b5178d22d247c91 5548 {{ args.name }}_{{ args.version }}.debian.tar.xz
+ 1173147d14de7d56bc1ecf98d2a3616f3348e3a4c055f684306f37d5b98b3bc0 6031 {{ args.name }}_{{ args.version }}_amd64.buildinfo
+Files:
+ 88619dc01f636b0f180cfc67653b932f 1818 utils optional {{ args.name }}_{{ args.version }}.dsc
+ 4e978439dac618e92c982b75f701ddee 5548 utils optional {{ args.name }}_{{ args.version }}.debian.tar.xz
+ 461ea7fb0137d8b726787561ea1a8966 6031 utils optional {{ args.name }}_{{ args.version }}_amd64.buildinfo
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEYrwugQBKzlHMYFizAAyEYu0C2AIFAmMJCtMACgkQAAyEYu0C
+2AIsjg//bwiKUKThcbcJiPVoJYBiWGaR7BAnDPk15Xoa7P4KnBJ6qT6DPF1FM5SC
+Nftl0FZLlesejv7o4Oyf/6X/ANt+GCSl0bjtlRcokcOjLVmoX56VRpCTgSek08n5
+MdHbtbgw65nY1Aul9dUydwfTAnlE6K7BGavNaBNLhIRfO6fOctoieQrIC0bLvqfu
+KgOYZkvDM9qPTq/ljvWv5ObNNfTPFtbCVmgjf0E5EnzW4wphHL9r4aqaeztKT4Dl
+lh4nfA6e561ciU+A4uIeaGNnp78/pjwG3kP2dXUtvFFnjx5/UqQ8bT5v9ik9BFhV
+FOcnAEzrC3u7TEhDAgYFZh/F/9cxwBeKmFSZaiBf8stCIrY97Pj1m7uWXaFkF4Ps
+ST24RavpudtJZ5eftSJbHvcxf8DxzEKUvDdaLUJUeVqqXTkvxcb52bPfCD2vvG3j
+4hPgYC1icuF6LAARCaKVa7gM2zgf/KiaiU8yMC+MWXxV3Seih52PVkX9vzGZCqoO
+YYpzBDmK+VWS+U6E9kMOfaBUnpVlGlJWl+QfxGevN8qyDJO1W6SueV9e8xQAh5PH
+9V/FNI0QQB5E9Y9FCk9AYxVgmDyY4yc1SYscQIHbQuli8GqD1FyQTEJd5mLXSnQU
+odGquf78Jg83ACe+QXO9mssnsM2GGj+8R22o1GS+DECv9AG1+Kg=3D
+=3DJklP
+-----END PGP SIGNATURE-----
+
+
+--===============8966746602356696880==
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTziqJOuF8J+ZI8pJSb9qggYcy5IQUCYwtZQQAKCRCb9qggYcy5
+IYhAAQCdNT4SI+R6eg1rsd7TOkQxDoqEIj15mGMAvWVl+Ouy/wD/azIIeeTvTO8v
+u1ckopYtCOGw2irNs2qZwj5U5gP+QgA=
+=qngz
+-----END PGP SIGNATURE-----
+
+--===============8966746602356696880==--

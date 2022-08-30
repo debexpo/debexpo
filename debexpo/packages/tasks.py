@@ -225,10 +225,22 @@ def mark_packages_as_uploaded(packages, debian=False):
 
 
 def convert_mail_to_changes(mail):
-    if not mail or mail.is_multipart():
+    changes = None
+
+    if not mail:
         return
 
-    changes = mail.get_payload(decode=True)
+    if mail.is_multipart():
+        for part in mail.get_payload():
+            if part.get_content_type() == 'text/plain':
+                changes = part.get_payload(decode=True)
+                break
+
+        if not changes:
+            raise Exception('Could not find a text/plain multipart')
+    else:
+        changes = mail.get_payload(decode=True)
+
     changes = Changes(changes)
 
     return changes
