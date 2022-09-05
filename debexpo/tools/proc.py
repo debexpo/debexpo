@@ -26,8 +26,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+from os import environ
 from os.path import basename
 from subprocess import check_output
+from tempfile import TemporaryDirectory
 
 from django.conf import settings
 
@@ -38,8 +40,18 @@ def debexpo_exec(command, args, **kwargs):
                       f'{basename(command).replace("-", "_").upper()}',
                       getattr(settings, 'SUBPROCESS_TIMEOUT', None))
 
-    return check_output([command] + args,
-                        timeout=timeout,
-                        encoding='utf-8',
-                        text=True,
-                        **kwargs)
+    with TemporaryDirectory() as tmpdir:
+        if 'env' not in kwargs:
+            kwargs['env'] = environ.copy()
+        else:
+            kwargs['env'] = kwargs['env'].copy()
+
+        kwargs['env']['TMPDIR'] = tmpdir
+
+        output = check_output([command] + args,
+                              timeout=timeout,
+                              encoding='utf-8',
+                              text=True,
+                              **kwargs)
+
+    return output
