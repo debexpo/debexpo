@@ -1,0 +1,119 @@
+# Portuguese translations for mentors.debian.net website (debexpo).
+# This file is distributed under the same license as debexpo.
+# https://salsa.debian.org/mentors.debian.net-team/debexpo
+# Thiago Pezzo (tico) <pezzo@protonmail.com>, 2022.
+# Carlos Henrique Lima Melara <charlesmelara@outlook.com>, 2022.
+msgid ""
+msgstr ""
+"Project-Id-Version: debexpo\n"
+"Report-Msgid-Bugs-To: <debian-l10n-portuguese@lists.debian.org>\n"
+"POT-Creation-Date: 2022-01-21 00:36+0000\n"
+"PO-Revision-Date: 2022-09-11 17:52-0300\n"
+"Last-Translator: Thiago Pezzo (tico) <pezzo@protonmail.com>\n"
+"Language-Team: debian-l10n-portuguese\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+
+#: comments/models.py:49
+msgid "Not reviewed"
+msgstr "Não revisado"
+
+#: comments/models.py:50
+msgid "Needs work"
+msgstr "Requer trabalho"
+
+#: comments/models.py:51
+msgid "Ready"
+msgstr "Pronto"
+
+#: comments/models.py:70
+msgid "Name"
+msgstr "Nome"
+
+#: comments/models.py:72
+msgid "Subscribe to uploads"
+msgstr "Inscreva-se para uploads"
+
+#: comments/models.py:73
+msgid "Subscribe to comments"
+msgstr "Inscreva-se para comentários"
+
+#: comments/models.py:103
+msgid "Comment"
+msgstr "Comentário"
+
+#: comments/models.py:104
+msgid "Comment date"
+msgstr "Data do comentário"
+
+#: comments/models.py:108
+msgid "Upload outcome"
+msgstr "Resultado do upload"
+
+#: comments/models.py:110
+msgid "Uploaded to debian"
+msgstr "Enviado ao debian"
+
+#: comments/models.py:130 comments/models.py:143
+msgid "New comment on package {}"
+msgstr "Novo comentário no pacote {}"
+
+#: comments/templates/subscribe.html:4
+msgid "Subscribe to package "
+msgstr "Inscreva-se no pacote "
+
+#: comments/templates/subscribe.html:15
+msgid "Submit"
+msgstr "Enviar"
+
+#: comments/templates/subscribe.html:21
+msgid "Back to package details"
+msgstr "Voltar para detalhes do pacote"
+
+#: comments/templates/subscribe.html:24
+msgid "Back to subscription list"
+msgstr "Voltar para lista de inscrição"
+
+#: comments/templates/subscriptions.html:4
+msgid "My subscription list"
+msgstr "Minha lista de inscrições"
+
+#: comments/templates/subscriptions.html:9
+msgid "Package"
+msgstr "Pacote"
+
+#: comments/templates/subscriptions.html:10
+msgid "Notification on"
+msgstr "Notificação em"
+
+#: comments/templates/subscriptions.html:11
+msgid "Edit"
+msgstr "Editar"
+
+#: comments/templates/subscriptions.html:32
+msgid "Update"
+msgstr "Atualizar"
+
+#: comments/templates/subscriptions.html:38
+msgid "Unsubscribe"
+msgstr "Cancelar inscrição"
+
+#: comments/templates/subscriptions.html:46
+msgid "No subscriptions"
+msgstr "Sem inscrições"
+
+#: comments/templates/subscriptions.html:48
+msgid "Add new subscription"
+msgstr "Adicionar nova inscrição"
+
+#: comments/templates/subscriptions.html:54
+msgid "Package Name:"
+msgstr "Nome do pacote:"
+
+#: comments/templates/subscriptions.html:59
+msgid "Create subscription"
+msgstr "Criar inscrição"

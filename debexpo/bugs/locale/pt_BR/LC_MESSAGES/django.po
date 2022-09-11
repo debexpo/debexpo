@@ -1,0 +1,59 @@
+# Portuguese translations for mentors.debian.net website (debexpo).
+# This file is distributed under the same license as debexpo.
+# https://salsa.debian.org/mentors.debian.net-team/debexpo
+# Thiago Pezzo (tico) <pezzo@protonmail.com>, 2022.
+# Carlos Henrique Lima Melara <charlesmelara@outlook.com>, 2022.
+msgid ""
+msgstr ""
+"Project-Id-Version: debexpo\n"
+"Report-Msgid-Bugs-To: <debian-l10n-portuguese@lists.debian.org>\n"
+"POT-Creation-Date: 2022-01-21 00:36+0000\n"
+"PO-Revision-Date: 2022-09-11 17:51-0300\n"
+"Last-Translator: Thiago Pezzo (tico) <pezzo@protonmail.com>\n"
+"Language-Team: debian-l10n-portuguese\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+
+#: bugs/models.py:214
+msgid "Package name"
+msgstr "Nome do pacote"
+
+#: bugs/models.py:220
+msgid "Bug number"
+msgstr "Número do bug"
+
+#: bugs/models.py:222
+msgid "Type"
+msgstr "Tipo"
+
+#: bugs/models.py:224
+msgid "Status"
+msgstr "Estado"
+
+#: bugs/models.py:226
+msgid "Severity"
+msgstr "Severidade"
+
+#: bugs/models.py:227
+msgid "Creation date"
+msgstr "Data de criação"
+
+#: bugs/models.py:228
+msgid "Last update date"
+msgstr "Data da última atualização"
+
+#: bugs/models.py:229
+msgid "Subject"
+msgstr "Assunto"
+
+#: bugs/models.py:232
+msgid "Submitter email"
+msgstr "E-mail do(a) remetente"
+
+#: bugs/models.py:233
+msgid "Owner email"
+msgstr "E-mail do(a) responsável"

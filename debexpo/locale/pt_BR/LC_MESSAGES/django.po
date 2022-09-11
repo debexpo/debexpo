@@ -1,0 +1,35 @@
+# Portuguese translations for mentors.debian.net website (debexpo).
+# This file is distributed under the same license as debexpo.
+# https://salsa.debian.org/mentors.debian.net-team/debexpo
+# Thiago Pezzo (tico) <pezzo@protonmail.com>, 2022.
+# Carlos Henrique Lima Melara <charlesmelara@outlook.com>, 2022.
+msgid ""
+msgstr ""
+"Project-Id-Version: debexpo\n"
+"Report-Msgid-Bugs-To: <debian-l10n-portuguese@lists.debian.org>\n"
+"POT-Creation-Date: 2022-01-21 00:36+0000\n"
+"PO-Revision-Date: 2022-09-11 17:53-0300\n"
+"Last-Translator: Thiago Pezzo (tico) <pezzo@protonmail.com>\n"
+"Language-Team: debian-l10n-portuguese\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+
+#: settings/common.py:91
+msgid "English"
+msgstr "Inglês"
+
+#: settings/common.py:144
+msgid "Helps you get your packages into Debian"
+msgstr "Ajuda a enviar seus pacotes para o Debian"
+
+#: tools/gnupg.py:178
+msgid "Cannot add key: {}"
+msgstr "Impossível adicionar chave: {}"
+
+#: urls.py:86
+msgid "Email change complete"
+msgstr "Alteração de e-mail completa"
