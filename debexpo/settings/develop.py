@@ -89,3 +89,6 @@ REPOSITORY = path.join(BASE_DIR, 'data', 'repository')  # noqa: F405
 
 # Git storage
 GIT_STORAGE = path.join(BASE_DIR, 'data', 'git')  # noqa: F405
+
+# Don't enforce newer upload checks on tests by default
+CHECK_NEWER_UPLOAD = False
