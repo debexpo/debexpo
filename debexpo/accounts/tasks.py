@@ -63,4 +63,4 @@ class CleanupAccounts(Task):
         return datetime.now(timezone.utc) - timedelta(days=self.expire_in)
 
 
-current_app.tasks.register(CleanupAccounts())
+current_app.register_task(CleanupAccounts())
