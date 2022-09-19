@@ -49,7 +49,7 @@ class TestPluginRFSTemplate(TestImporterController):
                                     PluginSeverity.info)
         self.assert_plugin_data('hello', 'rfs', {
             'licenses': 'MIT',
-            'author': 'Vincent TIME <vtime@example.org>',
+            'upstream_contact': 'Vincent TIME <vtime@example.org>',
         })
 
     def test_license_no_license(self):
@@ -58,7 +58,7 @@ class TestPluginRFSTemplate(TestImporterController):
         self.assert_plugin_severity('hello', 'rfs',
                                     PluginSeverity.error)
         self.assert_plugin_data('hello', 'rfs', {
-            'author': None, 'licenses': None
+            'upstream_contact': None, 'licenses': None
         })
 
     def test_license_freeform_license(self):
@@ -67,7 +67,7 @@ class TestPluginRFSTemplate(TestImporterController):
         self.assert_plugin_severity('hello', 'rfs',
                                     PluginSeverity.error)
         self.assert_plugin_data('hello', 'rfs', {
-            'author': None, 'licenses': None
+            'upstream_contact': None, 'licenses': None
         })
 
     def test_rfs_categories(self):
@@ -83,4 +83,4 @@ class TestPluginRFSTemplate(TestImporterController):
         self.import_source_package('hello-no-vcs-browser')
         self.assert_importer_succeeded()
         self.assert_rfs_content('hello',
-                                'Vcs             : [fill in')
+                                'Vcs              : [fill in')

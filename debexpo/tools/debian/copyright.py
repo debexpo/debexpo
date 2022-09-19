@@ -63,7 +63,7 @@ class Copyright():
     def _build_copyright(self):
         try:
             self.licenses = self._get_licenses()
-            self.author = self._get_author()
+            self.upstream_contact = self._get_upstream_contact()
         except MachineReadableFormatError as e:
             raise ExceptionCopyright(e)
 
@@ -83,7 +83,7 @@ class Copyright():
 
         return licenses
 
-    def _get_author(self):
+    def _get_upstream_contact(self):
         if self.copyright and self.copyright.header and \
                 self.copyright.header.upstream_contact:
             return self.copyright.header.upstream_contact[0]

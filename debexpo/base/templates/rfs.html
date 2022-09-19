@@ -5,13 +5,13 @@ Dear mentors,
 
 I am looking for a sponsor for my package "{{ upload.package.name|default:"hello" }}":
 
- * Package name    : {{ upload.package.name|default:"hello" }}
-   Version         : {{ upload.version|default:"3.1-4" }}
-   Upstream Author : {{ info.author|default:"[fill in name and email of upstream]" }}
- * URL             : {{ upload.sourcepackage_set.get.homepage|default:"[fill in URL of upstream's web site]" }}
- * License         : {{ info.licenses|default:"[fill in]" }}
- * Vcs             : {{ upload.sourcepackage_set.get.get_vcs_browser|default:"[fill in URL of packaging vcs]" }}
-   Section         : {{ upload.sourcepackage_set.get.section.name|default:"[fill in]" }}
+ * Package name     : {{ upload.package.name|default:"hello" }}
+   Version          : {{ upload.version|default:"3.1-4" }}
+   Upstream contact : {{ info.upstream_contact|default:"[fill in name and email of upstream]" }}
+ * URL              : {{ upload.sourcepackage_set.get.homepage|default:"[fill in URL of upstream's web site]" }}
+ * License          : {{ info.licenses|default:"[fill in]" }}
+ * Vcs              : {{ upload.sourcepackage_set.get.get_vcs_browser|default:"[fill in URL of packaging vcs]" }}
+   Section          : {{ upload.sourcepackage_set.get.section.name|default:"[fill in]" }}
 
 The source builds the following binary packages:
 

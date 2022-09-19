@@ -38,16 +38,16 @@ class PluginRFS(BasePlugin):
 
         This plugin collects:
 
-        - Upstream Author (from debian/copyright)
+        - Upstream Contact (from debian/copyright)
         - License (from debian/copyright)
         """
         outcome = "d/copyright is in DEP5 format"
         severity = PluginSeverity.info
 
-        author = getattr(source.copyright, 'author')
+        upstream_contact = getattr(source.copyright, 'upstream_contact')
         licenses = getattr(source.copyright, 'licenses')
 
-        if not author:
+        if not upstream_contact:
             outcome = "Upstream-Contact missing from d/copyright"
             severity = PluginSeverity.warning
 
@@ -59,7 +59,7 @@ class PluginRFS(BasePlugin):
             licenses = ', '.join(licenses)
 
         data = {
-            'author': author,
+            'upstream_contact': upstream_contact,
             'licenses': licenses,
         }
 
