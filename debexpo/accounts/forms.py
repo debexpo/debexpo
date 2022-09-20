@@ -156,7 +156,7 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ('country', 'ircnick', 'jabber', 'status')
+        fields = ('country', 'ircnick', 'jabber', 'language', 'status')
 
 
 class GPGForm(forms.ModelForm):
