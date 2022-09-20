@@ -12,21 +12,21 @@ Translate text from debexpo
 Add a new language
 ~~~~~~~~~~~~~~~~~~
 
-To add a new language, simply invoke `manage.py makemessages ~l`, followed by
+To add a new language, simply invoke `manage.py makemessages -l`, followed by
 the language code::
 
     pushd debexpo
-    python3 ../manage.py makemessages ~l de
+    python3 ../manage.py makemessages --add-location file -l de
     popd
 
 Update translation sources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To update translation sources from python code, run `manage.py makemessages
-~a`::
+-a`::
 
     pushd debexpo
-    python3 ../manage.py makemessages ~a
+    python3 ../manage.py makemessages --add-location file -a
     popd
 
 Work on translation

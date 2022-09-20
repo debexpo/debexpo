@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-18 19:33+0000\n"
+"POT-Creation-Date: 2022-09-20 19:45+0000\n"
 "PO-Revision-Date: 2020-11-18 20:34+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,270 +18,267 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.4.2\n"
 
-#: models.py:41 models.py:48 models.py:56 models.py:63 models.py:70
-#: models.py:135 models.py:278
+#: packages/models.py
 msgid "Name"
 msgstr "Nom"
 
-#: models.py:137
+#: packages/models.py
 msgid "Needs a sponsor?"
 msgstr "A besoin d'un parrain ?"
 
-#: models.py:138
+#: packages/models.py
 msgid "In Debian?"
 msgstr "Dans Debian ?"
 
-#: models.py:201 templates/packages-list.html:11
+#: packages/models.py packages/templates/packages-list.html
 msgid "Version"
 msgstr "Version"
 
-#: models.py:204
+#: packages/models.py
 msgid "Changes"
 msgstr "Changements"
 
-#: models.py:205
+#: packages/models.py
 msgid "Closes bugs"
 msgstr "Ferme les bugs"
 
-#: models.py:207
+#: packages/models.py
 msgid "Git storage ref"
 msgstr "Ref stockage Git"
 
-#: models.py:210
+#: packages/models.py
 msgid "Upload date"
 msgstr "Date d'envoi"
 
-#: models.py:246
+#: packages/models.py
 msgid "Maintainer"
 msgstr "Mainteneur"
 
-#: models.py:254 models.py:287
+#: packages/models.py
 msgid "Homepage"
 msgstr "Page d'accueil"
 
-#: models.py:255
+#: packages/models.py
 msgid "VCS"
 msgstr "VCS"
 
-#: models.py:279 templates/packages-list.html:10
+#: packages/models.py packages/templates/packages-list.html
 msgid "Description"
 msgstr "Description"
 
-#: templates/package.html:4
+#: packages/templates/package.html
 #, python-format
 msgid "<h1>Details about package %(name)s</h1>"
 msgstr "<h1>Détails du paquet %(name)s</h1>"
 
-#: templates/package.html:10
+#: packages/templates/package.html
 msgid "Name:"
 msgstr "Nom :"
 
-#: templates/package.html:20
+#: packages/templates/package.html
 msgid "Uploader:"
 msgstr "Envoyeur :"
 
-#: templates/package.html:35
+#: packages/templates/package.html
 msgid "Description:"
 msgstr "Description :"
 
-#: templates/package.html:42
+#: packages/templates/package.html
 msgid "Subscribe:"
 msgstr "S'abonner :"
 
-#: templates/package.html:44
+#: packages/templates/package.html
 msgid "Edit your subscription"
 msgstr "Modifier son abonnement"
 
-#: templates/package.html:48
+#: packages/templates/package.html
 msgid "Needs a sponsor:"
 msgstr "A besoin d'un parrain :"
 
-#: templates/package.html:51 templates/packages-list.html:31
-#: templates/packages-list.html:38
+#: packages/templates/package.html packages/templates/packages-list.html
 msgid "Yes"
 msgstr "Oui"
 
-#: templates/package.html:53 templates/packages-list.html:33
-#: templates/packages-list.html:40
+#: packages/templates/package.html packages/templates/packages-list.html
 msgid "No"
 msgstr "Non"
 
-#: templates/package.html:60
+#: packages/templates/package.html
 msgid "Change"
 msgstr "Changer"
 
-#: templates/package.html:68
+#: packages/templates/package.html
 msgid "Delete package:"
 msgstr "Supprimer le paquet :"
 
-#: templates/package.html:75
+#: packages/templates/package.html
 msgid "Admin package deletion"
 msgstr "Suppression du paquet administrateur"
 
-#: templates/package.html:79
+#: packages/templates/package.html
 msgid "Delete this package"
 msgstr "Supprimer ce paquet"
 
-#: templates/package.html:88
+#: packages/templates/package.html
 msgid "Package uploads"
 msgstr "Envois du paquet"
 
-#: templates/package.html:93
+#: packages/templates/package.html
 #, python-format
 msgid "Upload #%(index)s"
 msgstr "Envoi #%(index)s"
 
-#: templates/package.html:104
+#: packages/templates/package.html
 msgid "Admin upload deletion"
 msgstr "Suppression de l'envoi administrateur"
 
-#: templates/package.html:108
+#: packages/templates/package.html
 msgid "Delete this upload"
 msgstr "Supprimer cet envoi"
 
-#: templates/package.html:115
+#: packages/templates/package.html
 msgid "Information"
 msgstr "Informations"
 
-#: templates/package.html:119
+#: packages/templates/package.html
 msgid "Version:"
 msgstr "Version :"
 
-#: templates/package.html:123
+#: packages/templates/package.html
 msgid "View RFS template"
 msgstr "Voir le modèle RFS"
 
-#: templates/package.html:129
+#: packages/templates/package.html
 msgid "Uploaded:"
 msgstr "Envoi :"
 
-#: templates/package.html:135
+#: packages/templates/package.html
 msgid "Source package:"
 msgstr "Paquet source :"
 
-#: templates/package.html:143
+#: packages/templates/package.html
 msgid "Distribution:"
 msgstr "Distribution :"
 
-#: templates/package.html:148
+#: packages/templates/package.html
 msgid "Section:"
 msgstr "Section :"
 
-#: templates/package.html:153
+#: packages/templates/package.html
 msgid "Priority:"
 msgstr "Priorité :"
 
-#: templates/package.html:160
+#: packages/templates/package.html
 msgid "Homepage:"
 msgstr "Page d'accueil :"
 
-#: templates/package.html:187
+#: packages/templates/package.html
 msgid "Closes bugs:"
 msgstr "Ferme les bugs :"
 
-#: templates/package.html:197
+#: packages/templates/package.html
 msgid "Changelog"
 msgstr "Changelog"
 
-#: templates/package.html:204
+#: packages/templates/package.html
 msgid "QA information"
 msgstr "Informations QA"
 
-#: templates/package.html:217
+#: packages/templates/package.html
 msgid "Comments"
 msgstr "Commentaires"
 
-#: templates/package.html:226
+#: packages/templates/package.html
 msgid "Needs work"
 msgstr "Nécessite des corrections"
 
-#: templates/package.html:228
+#: packages/templates/package.html
 msgid "Ready"
 msgstr "Pret"
 
-#: templates/package.html:232
+#: packages/templates/package.html
 msgid "Package has been uploaded to Debian"
 msgstr "Le paquet a été envoyé dans Debian"
 
-#: templates/package.html:239
+#: packages/templates/package.html
 msgid "No comments"
 msgstr "Pas de commentaires"
 
-#: templates/package.html:243
+#: packages/templates/package.html
 msgid "New comment"
 msgstr "Nouveau commentaire"
 
-#: templates/package.html:252
+#: packages/templates/package.html
 msgid "Submit"
 msgstr "Valider"
 
-#: templates/packages-list.html:9
+#: packages/templates/packages-list.html
 msgid "Package"
 msgstr "Paquet"
 
-#: templates/packages-list.html:12
+#: packages/templates/packages-list.html
 msgid "Uploader"
 msgstr "Envoyeur"
 
-#: templates/packages-list.html:13
+#: packages/templates/packages-list.html
 msgid "Needs a sponsor"
 msgstr "A besoin d'un parrain"
 
-#: templates/packages-list.html:14
+#: packages/templates/packages-list.html
 msgid "Already in Debian"
 msgstr "Déjà dans Debian"
 
-#: templates/packages-list.html:49
+#: packages/templates/packages-list.html
 msgid "No packages"
 msgstr "Pas de paquets"
 
-#: views.py:128
+#: packages/views.py
 msgid "Today"
 msgstr "Aujourd'hui"
 
-#: views.py:131
+#: packages/views.py
 msgid "Yesterday"
 msgstr "Hier"
 
-#: views.py:135
+#: packages/views.py
 msgid "Some days ago"
 msgstr "Il y a quelques jours"
 
-#: views.py:139
+#: packages/views.py
 msgid "Older packages"
 msgstr "Paquets plus vieux"
 
-#: views.py:143
+#: packages/views.py
 msgid "Uploaded long ago"
 msgstr "Envoyé il y a longtemps"
 
-#: views.py:233
+#: packages/views.py
 msgid "Packages for {} {}"
 msgstr "Paquets pour {} {}"
 
-#: views.py:235
+#: packages/views.py
 msgid "Package list"
 msgstr "Liste des paquets"
 
-#: views.py:248
+#: packages/views.py
 #, python-format
 msgid "%s packages"
 msgstr "%s paquets"
 
-#: views.py:249
+#: packages/views.py
 #, python-format
 msgid "A feed of packages on %s"
 msgstr "Un flux de paquets sur %s"
 
-#: views.py:271
+#: packages/views.py
 msgid "Package {} uploaded by {}."
 msgstr "Paquet {} envoyé par {}."
 
-#: views.py:277
+#: packages/views.py
 msgid "Uploader is currently looking for a sponsor."
 msgstr "L'envoyeur est présentement en recherche de parrain."
 
-#: views.py:279
+#: packages/views.py
 msgid "Uploader is currently not looking for a sponsor."
 msgstr "L'envoyeur n'est pas présentement en recherche de parrain."
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-26 13:48+0200\n"
+"POT-Creation-Date: 2022-09-20 19:45+0000\n"
 "PO-Revision-Date: 2020-04-26 13:49+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,42 +18,42 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.3\n"
 
-#: bugs/models.py:207
+#: bugs/models.py
 msgid "Package name"
 msgstr "Nom du paquet"
 
-#: bugs/models.py:212
+#: bugs/models.py
 msgid "Bug number"
 msgstr "Numéro du bogue"
 
-#: bugs/models.py:214
+#: bugs/models.py
 msgid "Type"
 msgstr "Type"
 
-#: bugs/models.py:216
+#: bugs/models.py
 msgid "Status"
 msgstr "Statut"
 
-#: bugs/models.py:218
+#: bugs/models.py
 msgid "Severity"
 msgstr "Criticité"
 
-#: bugs/models.py:219
+#: bugs/models.py
 msgid "Creation date"
 msgstr "Date de création"
 
-#: bugs/models.py:220
+#: bugs/models.py
 msgid "Last update date"
 msgstr "Date de dernière modification"
 
-#: bugs/models.py:221
+#: bugs/models.py
 msgid "Subject"
 msgstr "Sujet"
 
-#: bugs/models.py:223
+#: bugs/models.py
 msgid "Submitter email"
 msgstr "Mail du reporteur"
 
-#: bugs/models.py:224
+#: bugs/models.py
 msgid "Owner email"
 msgstr "Mail du propriétaire"
