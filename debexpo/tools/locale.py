@@ -31,12 +31,29 @@ from django.middleware.locale import LocaleMiddleware as DjangoLocaleMiddleware
 
 
 class LocaleMiddleware(DjangoLocaleMiddleware):
+    def _activate_translation(self, request, language):
+        translation.activate(language)
+        request.LANGUAGE_CODE = translation.get_language()
+
     def process_request(self, request):
-        if request.user \
+        if 'quick_language' in request.POST:
+            request.session['language'] = request.POST['quick_language']
+            request.method = 'GET'
+
+        if 'language' in request.POST:
+            if 'language' in request.session:
+                del request.session['language']
+
+            self._activate_translation(request, request.POST['language'])
+
+        elif 'language' in request.session and request.session['language']:
+            self._activate_translation(request, request.session['language'])
+
+        elif request.user \
                 and request.user.is_authenticated \
                 and hasattr(request.user, 'profile') \
                 and request.user.profile.language:
-            translation.activate(request.user.profile.language)
-            request.LANGUAGE_CODE = translation.get_language()
+            self._activate_translation(request, request.user.profile.language)
+
         else:
             super().process_request(request)
