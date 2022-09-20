@@ -1,0 +1,116 @@
+# French translation for debexpo.
+# Copyright 2022 - Debexpo authors
+# This file is distributed under the same license as the debexpo package.
+# Baptiste Beauplat <lyknode@cilg.org>.
+#
+# Baptiste Beauplat <lyknode@cilg.org>, 2022.
+msgid ""
+msgstr ""
+"Project-Id-Version: debexpo 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-09-26 19:04+0000\n"
+"PO-Revision-Date: 2022-09-26 21:04+0200\n"
+"Last-Translator: Baptiste Beauplat <lyknode@cilg.org>\n"
+"Language-Team: French <>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+
+#: importer/models.py
+#, python-brace-format
+msgid "{error}: REJECTED"
+msgstr "{error}: REJETÉ"
+
+#: importer/models.py
+#, python-brace-format
+msgid "{package}_{version}: ACCEPTED on {site} ({distribution})"
+msgstr "{package}_{version}: ACCEPTÉ sur {site} ({distribution})"
+
+#: importer/templates/email-importer-accept.html
+#, python-format
+msgid ""
+"Hi.\n"
+"\n"
+"Your upload of the package '%(name)s' to %(site)s was\n"
+"successful. Others can now see it. The URL of your package is:\n"
+msgstr ""
+"Bonjour.\n"
+"\n"
+"Votre envoie du paquet '%(name)s' sur %(site)s est\n"
+"réussi. Les autres peuvent maintenant le voir. Le lien de votre paquet "
+"est :\n"
+
+#: importer/templates/email-importer-accept.html
+msgid ""
+"\n"
+"The respective dsc file can be found at:\n"
+msgstr ""
+"\n"
+"Le dsc respectif peut être trouvé à :\n"
+
+#: importer/templates/email-importer-accept.html
+msgid ""
+"\n"
+"If you do not yet have a sponsor for your package you may want to go to:\n"
+msgstr ""
+"\n"
+"Si vous n'avez pas déjà de parrain pour votre paquet, vous voudrez peut être "
+"aller sur :\n"
+
+#: importer/templates/email-importer-accept.html
+msgid ""
+"\n"
+"and set the \"Seeking a sponsor\" option to highlight your package on the\n"
+"welcome page.\n"
+"\n"
+"You can also send an RFS (request for sponsorship) to the debian-mentors\n"
+"mailing list. Your package page will give your suggestions on how to\n"
+"send that mail.\n"
+"\n"
+"Good luck in finding a sponsor!\n"
+"\n"
+"Thanks,"
+msgstr ""
+"\n"
+"et cocher l'option \"Recherche un parrain\" pour mettre en valeur\n"
+"votre paquet sur la page d'accueil.\n"
+"\n"
+"Vous pouvez également envoyer une RFS (request for sponsorship) sur\n"
+"la liste de diffusion debian-mentors. Vous trouverez des suggestions\n"
+"sur comment envoyer ce mail sur la page de votre paquet.\n"
+"\n"
+"Bon courage pour trouver un parrain !\n"
+"\n"
+"Merci,"
+
+#: importer/templates/email-importer-reject.html
+#, python-format
+msgid ""
+"Hello,\n"
+"\n"
+"Unfortunately your package \"%(source)s\" was rejected\n"
+"because of the following reason:\n"
+"\n"
+"%(error)s\n"
+"\n"
+"%(details)s\n"
+"\n"
+"Please try to fix it and re-upload. Thanks,"
+msgstr ""
+"Bonjour,\n"
+"\n"
+"Malheureusement, votre paquet \"%(source)s\" a été rejeté\n"
+"à cause de la raison suivante :\n"
+"\n"
+"%(error)s\n"
+"\n"
+"%(details)s\n"
+"\n"
+"Merci de le corriger et de le ré-envoyer,"
+
+#, python-brace-format
+#~ msgid "{upload.package.name}_{upload.version}: ACCEPTED "
+#~ msgstr "{upload.package.name}_{upload.version}: ACCEPTÉ "
