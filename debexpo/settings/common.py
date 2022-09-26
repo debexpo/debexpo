@@ -90,6 +90,7 @@ TEMPLATES = [
 LANGUAGES = [
   ('en', _('English')),
   # ('fr', _('French')),
+  # ('pt-br', _('Portuguese (Brazil)')),
 ]
 
 LOCALE_PATHS = [
