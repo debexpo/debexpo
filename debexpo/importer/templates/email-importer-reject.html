@@ -1,10 +1,10 @@
-{% extends "email-base.html" %}{% block content %}Hello,
+{% extends "email-base.html" %}{% load i18n %}{% block content %}{% blocktrans with source=args.error.changes.source error=args.error.error details=args.error.details %}Hello,
 
-Unfortunately your package "{{ args.error.changes.source }}" was rejected
+Unfortunately your package "{{ source }}" was rejected
 because of the following reason:
 
-{{ args.error.error }}
+{{ error }}
 
-{{ args.error.details }}
+{{ details }}
 
-Please try to fix it and re-upload. Thanks,{% endblock %}
+Please try to fix it and re-upload. Thanks,{% endblocktrans %}{% endblock %}
