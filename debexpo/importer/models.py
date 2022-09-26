@@ -36,6 +36,7 @@ from django.db import transaction
 from django.conf import settings
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 
 from debexpo.packages.models import Distribution, PackageUpload, \
@@ -254,6 +255,10 @@ class Importer():
 
         return True
 
+    def _translate_for(self, user):
+        if hasattr(user, 'profile') and user.profile.language:
+            translation.activate(user.profile.language)
+
     def send_email(self, template, error=None, upload=None,
                    notify_admins=False):
         recipients = []
@@ -275,6 +280,7 @@ class Importer():
 
             if user:
                 if isinstance(user, User):
+                    self._translate_for(user)
                     recipients.append(user.email)
                 else:
                     if self._is_valid_email(user):
@@ -283,6 +289,7 @@ class Importer():
             subject = _('{error}: REJECTED').format(error=str(error.changes))
 
         if upload:
+            self._translate_for(upload.uploader)
             recipients.append(upload.uploader.email)
             subject = _('{package}_{version}: ACCEPTED '
                         'on {site} ({distribution})').format(
@@ -293,11 +300,15 @@ class Importer():
                         )
 
         if notify_admins:
+            translation.activate(settings.LANGUAGE_CODE)
             recipients.append(settings.DEFAULT_FROM_EMAIL)
 
         log.debug(f'Sending importer mail to {", ".join(recipients)}')
-        email.send(subject, recipients,
-                   upload=upload, error=error, settings=settings)
+        try:
+            email.send(subject, recipients,
+                       upload=upload, error=error, settings=settings)
+        finally:
+            translation.activate(settings.LANGUAGE_CODE)
 
     def _accept(self, upload):
         log.info(f'Package {upload.package.name}_{upload.version} accepted '
