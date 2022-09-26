@@ -67,6 +67,7 @@ class PluginLintian(BasePlugin):
                                    # To avoid warnings in the testsuite when
                                    # run as root in CI.
                                    "--allow-root",
+                                   "--fail-on", "none",
                                    str(changes)],
                                   cwd=dirname(changes.filename))
         except FileNotFoundError:  # pragma: no cover
