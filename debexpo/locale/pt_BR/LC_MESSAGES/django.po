@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo\n"
 "Report-Msgid-Bugs-To: <debian-l10n-portuguese@lists.debian.org>\n"
-"POT-Creation-Date: 2022-01-21 00:36+0000\n"
+"POT-Creation-Date: 2022-09-26 20:33+0000\n"
 "PO-Revision-Date: 2022-09-11 17:53-0300\n"
 "Last-Translator: Thiago Pezzo (tico) <pezzo@protonmail.com>\n"
 "Language-Team: debian-l10n-portuguese\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "English"
 msgstr "Inglês"
 
-#: settings/common.py:144
+#: settings/common.py:145
 msgid "Helps you get your packages into Debian"
 msgstr "Ajuda a enviar seus pacotes para o Debian"
 
