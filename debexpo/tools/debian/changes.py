@@ -44,6 +44,7 @@ from debexpo.tools.debian.control import ControlFiles
 from debexpo.tools.debian.dsc import Dsc
 from debexpo.tools.debian.source import Source
 from debexpo.tools.clients.ftp_master import ClientFTPMasterAPI
+from django.utils.translation import gettext_lazy as _
 
 
 class ExceptionChanges(Exception):
@@ -74,8 +75,9 @@ class Changes(GPGSignedFile):
             self._data = deb822.Changes(fd)
 
         if len(self._data) == 0:
-            raise ExceptionChanges('Changes file {} could not be parsed'.format(
-                self.filename))
+            raise ExceptionChanges(
+                _('Changes file {filename} could not be parsed').format(
+                    filename=self.filename))
 
         self._build_changes()
 
@@ -94,7 +96,9 @@ class Changes(GPGSignedFile):
             user = User.objects.lookup_user_from_address(self.uploader)
 
             if not user:
-                raise ExceptionChanges(f'No user found for {self.uploader}')
+                raise ExceptionChanges(
+                    'No user found for {uploader}'.format(
+                        uploader=self.uploader))
 
             self.uploader = user
 
@@ -127,8 +131,8 @@ class Changes(GPGSignedFile):
                     'Checksums-Sha256', 'Date', 'Distribution', 'Files',
                     'Format', 'Maintainer', 'Source', 'Version']:
             if key not in self._data:
-                raise ExceptionChanges('Changes file invalid. Missing key '
-                                       '{}'.format(key))
+                raise ExceptionChanges(_('Changes file invalid. Missing key '
+                                       '{key}').format(key=key))
 
     def get_bugs(self):
         if self.bugs is not None:
@@ -177,14 +181,14 @@ class Changes(GPGSignedFile):
         filename = self.files.find(r'\.dsc$')
 
         if not filename:
-            raise ExceptionChanges(
+            raise ExceptionChanges(_(
                 'dsc is missing from changes\n'
                 'Make sure you include the full source'
                 ' (if you are using sbuild make sure to use the'
                 ' --source option or the equivalent configuration'
                 ' item; if you are using dpkg-buildpackage directly'
                 ' use the default flags or -S for a source only'
-                ' upload)')
+                ' upload)'))
 
         try:
             self.dsc = Dsc(filename, self.component)
@@ -202,8 +206,12 @@ class Changes(GPGSignedFile):
             version = max([NativeVersion(version) for version in versions])
 
             if NativeVersion(self.version) <= NativeVersion(version):
-                raise ExceptionChanges(
-                    f'{self.source} exists in the official Debian archive with '
-                    f'the version {version}/{self.distribution}. You may not '
-                    'upload a lower or equal version to this one.'
-                )
+                raise ExceptionChanges(_(
+                    '{source} exists in the official Debian archive with '
+                    'the version {version}/{distribution}. You may not '
+                    'upload a lower or equal version to this one.'.format(
+                        source=self.source,
+                        version=version,
+                        distribution=self.distribution,
+                    )
+                ))

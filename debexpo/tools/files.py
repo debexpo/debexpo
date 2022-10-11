@@ -30,6 +30,8 @@ from os.path import basename, join, isfile
 from os import replace, unlink
 import hashlib
 
+from django.utils.translation import gettext_lazy as _
+
 from debexpo.keyring.models import Key
 from debexpo.tools.gnupg import GnuPG, ExceptionGnuPGNoPubKey
 
@@ -51,7 +53,8 @@ class ExceptionCheckSumedFileNoMethod(ExceptionCheckSumedFile):
         self.filename = filename
 
     def __str__(self):
-        return f'No checksum method available for file {self.filename}.'
+        return _('No checksum method available for file {filename}.').format(
+                filename=self.filename)
 
 
 class ExceptionCheckSumedFileFailedSum(ExceptionCheckSumedFile):
@@ -61,9 +64,12 @@ class ExceptionCheckSumedFileFailedSum(ExceptionCheckSumedFile):
         self.computed = computed
 
     def __str__(self):
-        return f'Checksum failed for file {basename(self.filename)}.\n\n' \
-               f'Expected: {self.expected}\n' \
-               f'Computed: {self.computed}'
+        return _('Checksum failed for file {filename}.\n\n'
+                 'Expected: {expected}\n'
+                 'Computed: {computed}').format(
+                       filename=basename(self.filename),
+                       expected=self.expected,
+                       computed=self.computed)
 
 
 class GPGSignedFile():
@@ -133,9 +139,9 @@ class CheckSumedFile():
                 try:
                     data = open(self.filename, 'rb')
                 except FileNotFoundError:
-                    raise ExceptionCheckSumedFileNoFile(
-                        f'{basename(self.filename)} is missing from '
-                        'upload')
+                    raise ExceptionCheckSumedFileNoFile(_(
+                        '{filename} is missing from '
+                        'upload').format(filename=basename(self.filename)))
                 else:
                     with data:
                         while True:

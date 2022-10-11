@@ -70,10 +70,14 @@ class ExceptionGnuPGNoPubKey(ExceptionGnuPG):
 
     def __str__(self):
         if self.fingerprint:
-            return 'Unable to verify file {}. No public key found for key {}' \
-                   .format(basename(self.filename), self.fingerprint)
-        return 'Unable to verify file {}. No public key found for key {}' \
-               .format(basename(self.filename), self.long_id)
+            return _('Unable to verify file {filename}.'
+                     ' No public key found for key {fingerprint}').format(
+                        filename=basename(self.filename),
+                        fingerprint=self.fingerprint)
+        return _('Unable to verify file {filename}.'
+                 ' No public key found for key {fingerprint}').format(
+                         filename=basename(self.filename),
+                         fingerprint=self.long_id)
 
 
 class GnuPG():
@@ -148,15 +152,16 @@ class GnuPG():
                                         output)))
         if no_data:
             raise ExceptionGnuPGNotSignedFile(
-                f'{os.path.basename(signed_file)}: not a GPG signed file')
+                _('{filename}: not a GPG signed file').format(
+                    filename=os.path.basename(signed_file)))
 
         valid_sig_re = re.compile(r'\[GNUPG:\] VALIDSIG .*'
                                   r' (?P<fingerprint>\w+)$')
         valid_sig = list(filter(None, map(valid_sig_re.match, output)))
 
         if not valid_sig:
-            raise ExceptionGnuPG('Unknown GPG error. Output was:'
-                                 ' {}'.format(output))
+            raise ExceptionGnuPG(_('Unknown GPG error. Output was:'
+                                 ' {output}').format(output=output))
 
         return valid_sig[0].group('fingerprint')
 
@@ -176,7 +181,7 @@ class GnuPG():
 
         if status and output and len(output.splitlines()) > 0:
             raise ExceptionGnuPG(_('Cannot add key:'
-                                 ' {}').format(output.splitlines()[0]))
+                                 ' {key}').format(key=output.splitlines()[0]))
 
         return (output, status)
 

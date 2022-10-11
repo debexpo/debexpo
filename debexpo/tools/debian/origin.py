@@ -33,6 +33,7 @@ from os.path import isfile, join
 from logging import getLogger
 
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 import debexpo.repository.models as repository
 from debexpo.tools.clients import ExceptionClient
@@ -87,7 +88,7 @@ class Origin():
             archive_origin_files = client.get_origin_files(self.package,
                                                            self.version)
         except ExceptionClient as e:
-            log.warning(f'Failed to retrive origin info: {e}')
+            log.warning(_('Failed to retrive origin info: {e}').format(e=e))
 
         if archive_origin_files:
             for source_file in source_origin_files:
@@ -99,9 +100,13 @@ class Origin():
         for archive_file in archive_origin_files:
             if str(archive_file) == str(source_file) and \
                     archive_file != source_file:
-                raise ExceptionOrigin(
+                raise ExceptionOrigin(_(
                     'Source package origin file differs from '
                     'the official archive:\n\n'
-                    f'Origin file         : {str(source_file)}\n\n'
-                    f'sha256sum in upload : {source_file.checksums["sha256"]}\n'
-                    f'sha256sum in archive: {archive_file.checksums["sha256"]}')
+                    'Origin file         : {origin}\n\n'
+                    'sha256sum in upload : {upload}\n'
+                    'sha256sum in archive: {archive}'
+                    ).format(
+                        origin=str(source_file),
+                        upload=source_file.checksums["sha256"],
+                        archive=archive_file.checksums["sha256"]))
