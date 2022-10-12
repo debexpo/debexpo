@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 19:52+0000\n"
+"POT-Creation-Date: 2022-10-12 16:07+0000\n"
 "PO-Revision-Date: 2022-09-20 21:55+0200\n"
 "Last-Translator: Baptiste Beauplat <lyknode@cilg.org>\n"
 "Language-Team: French <>\n"
@@ -29,42 +29,6 @@ msgstr "Français"
 msgid "Helps you get your packages into Debian"
 msgstr "Vous aide à envoyer vos paquets dans Debian"
 
-#: tools/gnupg.py
-msgid "Cannot add key: {}"
-msgstr "Impossible d'ajouter la clef : {}"
-
 #: urls.py
 msgid "Email change complete"
 msgstr "Changement de courriel terminé"
-
-#~ msgid "Type"
-#~ msgstr "Type"
-
-#~ msgid "GPG Algorithm ID"
-#~ msgstr "ID Algorithme GPG"
-
-#~ msgid "Minimal size requirment"
-#~ msgstr "Taille minimale requise"
-
-#~ msgid "Multiple keys not supported"
-#~ msgstr "Multiples clefs non supporté"
-
-#~ msgid "Key algorithm not supported. Key must be one of the following: {}"
-#~ msgstr ""
-#~ "L'algorithme de la clef n'est pas supportée. La clef doit faire partie de "
-#~ "l'une des suivantes : {}"
-
-#~ msgid "Key size too small. Need at least {} bits."
-#~ msgstr "Clef trop petite. Nécessite au moins {} bits."
-
-#~ msgid "OpenGPG key"
-#~ msgstr "Clef OpenGPG"
-
-#~ msgid "Fingerprint"
-#~ msgstr "Empreinte"
-
-#~ msgid "Last update on"
-#~ msgstr "Dernière mise à jour le"
-
-#~ msgid "Size"
-#~ msgstr "Taille"

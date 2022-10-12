@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-26 19:04+0000\n"
-"PO-Revision-Date: 2022-09-26 21:04+0200\n"
+"POT-Creation-Date: 2022-10-12 16:07+0000\n"
+"PO-Revision-Date: 2022-10-12 18:19+0200\n"
 "Last-Translator: Baptiste Beauplat <lyknode@cilg.org>\n"
 "Language-Team: French <>\n"
 "Language: fr\n"
@@ -28,6 +28,45 @@ msgstr "{error}: REJETÉ"
 #, python-brace-format
 msgid "{package}_{version}: ACCEPTED on {site} ({distribution})"
 msgstr "{package}_{version}: ACCEPTÉ sur {site} ({distribution})"
+
+#: importer/models.py
+msgid "Changes is invalid"
+msgstr "Changes n'est pas valide"
+
+#: importer/models.py
+msgid "Dsc failed to parse"
+msgstr "Échec du traitement du Dsc"
+
+#: importer/models.py
+msgid "Dsc is invalid"
+msgstr "Dsc n'est pas valide"
+
+#: importer/models.py
+msgid "Failed to extract source package"
+msgstr "Échec de l'extraction du paquet source"
+
+#: importer/models.py
+msgid "Source package is invalid"
+msgstr "Paquet source n'est pas valide"
+
+#: importer/models.py
+msgid "Invalid distribution"
+msgstr "Distribution invalide"
+
+#: importer/models.py
+#, python-brace-format
+msgid ""
+"Distribution {distribution} is not supported on mentors\n"
+"\n"
+"List of supported distributions:\n"
+"\n"
+"{allowed}"
+msgstr ""
+"Distribution {distribution} n'est pas supporté sur mentors\n"
+"\n"
+"Liste des distributions supportées :\n"
+"\n"
+"{allowed}"
 
 #: importer/templates/email-importer-accept.html
 #, python-format
