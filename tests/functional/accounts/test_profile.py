@@ -179,6 +179,16 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
 =/JDz
 -----END PGP PUBLIC KEY BLOCK-----"""
 
+    OTHER_DETAIL_FORM = {
+        'form': 'other_details',
+        'country': '',
+        'ircnick': '',
+        'jabber': '',
+        'language': '',
+        'status': UserStatus.contributor.value,
+        'commit_profile': 'submit'
+    }
+
 #    def _setup_gpg_env(self):
 #        self.homedir = tempfile.mkdtemp()
 #        os.environ['GNUPGHOME'] = self.homedir
@@ -477,6 +487,51 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
         self.assertIn('<a href="{}">'.format(reverse('logout')),
                       str(response.content))
 
+    def _set_profile(self, changes):
+        user = User.objects.get(email='email@example.com')
+        backup = {}
+
+        for key, value in changes.items():
+            backup[key] = getattr(user.profile, key)
+            setattr(user.profile, key, value)
+
+        user.profile.save()
+
+        return backup
+
+    def _test_other_details_with(self, changes, expected=None, init=None):
+        if init:
+            backup = self._set_profile(init)
+
+        data = self.OTHER_DETAIL_FORM.copy()
+        data.update(changes)
+
+        response = self.client.post(reverse('profile'), data)
+
+        self.assertEquals(response.status_code, 200)
+
+        if expected:
+            self.assertIn('errorlist', str(response.content))
+        else:
+            expected = data
+            expected.pop('form')
+            expected.pop('commit_profile')
+
+            self.assertNotIn('errorlist', str(response.content))
+
+        user = User.objects.get(email='email@example.com')
+
+        for key, value in expected.items():
+            if not value:
+                self.assertFalse(getattr(user.profile, key))
+            else:
+                self.assertEquals(getattr(user.profile, key), value)
+
+        if init:
+            self._set_profile(backup)
+
+        return response
+
     def test__other_details(self):
         response = self.client.post(reverse('profile'),
                                     {'form': 'other_details'})
@@ -484,77 +539,15 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
         self.assertIn(reverse('login'), response.url)
         response = self.client.post(reverse('login'), self._AUTHDATA)
 
-        # test set ircnick
-        response = self.client.post(reverse('profile'), {
-            'form': 'other_details',
-            'country': '',
-            'ircnick': 'tester',
-            'jabber': '',
-            'status': UserStatus.contributor.value,
-            'commit_profile': 'submit'
-        })
-
-        self.assertEquals(response.status_code, 200)
-        self.assertNotIn('errorlist', str(response.content))
-
-        user = User.objects.get(email='email@example.com')
-        self.assertEquals(user.profile.ircnick, 'tester')
-        self.assertEquals(user.profile.status, UserStatus.contributor.value)
-
-        # test DM switch
-        response = self.client.post(reverse('profile'), {
-            'form': 'other_details',
-            'country': '',
-            'ircnick': 'tester',
-            'jabber': '',
-            'status': UserStatus.maintainer.value,
-            'commit_profile': 'submit'
-        })
-
-        self.assertEquals(response.status_code, 200)
-        self.assertNotIn('errorlist', str(response.content))
-
-        user = User.objects.get(email='email@example.com')
-        self.assertEquals(user.profile.status, UserStatus.maintainer.value)
-
-        # A Maintainer cannot switch to DD
-        response = self.client.post(reverse('profile'), {
-            'form': 'other_details',
-            'country': '',
-            'ircnick': 'tester',
-            'jabber': '',
-            'status': UserStatus.developer.value,
-            'commit_profile': 'submit'
-        })
-
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('errorlist', str(response.content))
-
-        user = User.objects.get(email='email@example.com')
-        self.assertEquals(user.profile.status, UserStatus.maintainer.value)
-
-        # A DD cannot switch to Maintainer
-        user.profile.status = UserStatus.developer.value
-        user.profile.save()
-
-        response = self.client.post(reverse('profile'), {
-            'form': 'other_details',
-            'country': '',
-            'ircnick': 'tester',
-            'jabber': '',
-            'status': UserStatus.contributor.value,
-            'commit_profile': 'submit'
-        })
-
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('errorlist', str(response.content))
-
-        user = User.objects.get(email='email@example.com')
-        self.assertEquals(user.profile.status, UserStatus.developer.value)
-
-        # Reset status
-        user.profile.status = UserStatus.contributor.value
-        user.profile.save()
+        self._test_other_details_with({'ircnick': 'tester'})
+        self._test_other_details_with({'status': UserStatus.maintainer.value})
+        self._test_other_details_with({'status': UserStatus.developer.value},
+                                      {'status': UserStatus.maintainer.value})
+        self._test_other_details_with(
+            {'status': UserStatus.maintainer.value},
+            {'status': UserStatus.developer.value},
+            {'status': UserStatus.developer.value},
+        )
 
 #    def test__invalid_form(self):
 #        response = self.client.post(reverse('profile'), {'form': 'invalid'})
