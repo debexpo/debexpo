@@ -280,11 +280,12 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.assert_package_not_in_repo('0ad-data', '0.0.23.1-2')
 
     def test_import_package_hello_unicode(self):
+        self.change_language('fr')
         self.import_source_package('unicode-changes')
         self.assert_importer_succeeded()
-        self.assert_email_with("Your upload of the package 'hello' to "
+        self.assert_email_with("Votre envoie du paquet 'hello' sur "
                                + settings.SITE_NAME
-                               + " was\nsuccessful.")
+                               + " est\nréussi.")
         self.assert_package_count('hello', '1.0-1', 1)
         self.assert_package_in_repo('hello', '1.0-1')
         # self.assert_plugin_result('hello', 'debianqa',
