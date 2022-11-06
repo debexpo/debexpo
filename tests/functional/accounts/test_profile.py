@@ -549,6 +549,51 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
             {'status': UserStatus.developer.value},
         )
 
+    def test_translation_autodetect(self):
+        response = self.client.get(reverse('index'))
+        self.assertIn('Welcome to ', str(response.content))
+
+        response = self.client.get(reverse('index'), HTTP_ACCEPT_LANGUAGE='fr')
+        self.assertIn('Bienvenue sur ', str(response.content))
+
+    def test_translation_quick_switcher(self):
+        response = self.client.post(reverse('login'), {'quick_language': 'fr'})
+
+        # Check posting a language change does not trigger posting on an
+        # unrelated form.
+        self.assertNotIn('errorlist', str(response.content))
+
+        # Check translation happen directly after posting
+        self.assertIn('Connexion', str(response.content))
+
+        # Check another translated page, auto-detect should not happen.
+        response = self.client.get(reverse('index'), HTTP_ACCEPT_LANGUAGE='en')
+        self.assertIn('Bienvenue sur ', str(response.content))
+
+        # Go back to auto-detect.
+        response = self.client.post(reverse('login'), {'quick_language': ''})
+        self.assertIn('Login', str(response.content))
+
+    def test_language_settings(self):
+        self.client.post(reverse('login'), self._AUTHDATA)
+
+        # Ensure default behavior if no language preference is set
+        self.test_translation_autodetect()
+        self.test_translation_quick_switcher()
+
+        response = self._test_other_details_with({'language': 'en'})
+        self.assertIn('My account', str(response.content))
+
+        # User preference takes over auto-detection but not quick_switcher
+        self.assertRaises(AssertionError, self.test_translation_autodetect)
+        self.test_translation_quick_switcher()
+
+        # Finally, override quick_switcher on setting change
+        self.client.post(reverse('login'), {'quick_language': 'en'})
+        response = self._test_other_details_with({'language': 'fr'})
+        self.assertIn('Mon compte', str(response.content))
+
+
 #    def test__invalid_form(self):
 #        response = self.client.post(reverse('profile'), {'form': 'invalid'})
 #        self.assertEquals(response.status_code, 302)
