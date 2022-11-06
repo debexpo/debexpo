@@ -1152,6 +1152,11 @@ span.relatedpages {
     margin-top: -1.5em;
 }
 
+span.relatedpages select {
+    margin: 0 0 0 1em;
+    text-decoration: none;
+}
+
 span.relatedpages a {
     margin: 0 0 0 1em;
     text-decoration: none;
