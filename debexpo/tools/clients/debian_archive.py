@@ -47,4 +47,8 @@ class ClientDebianArchive(ClientHTTP):
             raise ExceptionClient(
                 'The original tarball cannot be retrieved '
                 'from Debian: file too big '
-                f'(> {int(settings.LIMIT_SIZE_DOWNLOAD / 1024 / 1024)}MB)')
+                f'(> {int(settings.LIMIT_SIZE_DOWNLOAD / 1024 / 1024)}MB)\n'
+                'Please re-upload your package to mentors '
+                'including the orig tarball.\nYou can use '
+                '`dpkg-buildpackage -sa` or the appropriate flag for the\n'
+                'building tool you are using.')

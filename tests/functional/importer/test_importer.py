@@ -267,7 +267,11 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         self.import_package('debian-orig-too-big')
         self.assert_importer_failed()
         self.assert_email_with('The original tarball cannot be retrieved from'
-                               ' Debian: file too big (> 100MB)')
+                               ' Debian: file too big (> 100MB)\n'
+                               'Please re-upload your package to mentors '
+                               'including the orig tarball.\nYou can use '
+                               '`dpkg-buildpackage -sa` or the appropriate '
+                               'flag for the\nbuilding tool you are using.')
         self.assert_package_count('0ad-data', '0.0.23.1-1.1', 0)
         self.assert_package_not_in_repo('0ad-data', '0.0.23.1-1.1')
 
