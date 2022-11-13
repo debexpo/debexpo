@@ -75,7 +75,12 @@ class TestPluginLintian(TestImporterController):
         plugin = PluginLintian()
         changes = Changes(join(dirname(__file__), '..', 'data', 'no-orig',
                                'hello_1.0-1.dsc'))
-        self.assertRaises(ExceptionPlugin, plugin.run, changes, None)
+        with self.assertRaises(ExceptionPlugin) as e:
+            plugin.run(changes, None)
+
+        self.assertIn('lintian failed to run: Non-zero status 25 from '
+                      'dpkg-source',
+                      str(e.exception))
 
     def test_lintian_timeout(self):
         plugin = PluginLintian()
