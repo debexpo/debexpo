@@ -67,6 +67,20 @@ We do ask that any code added/modified is covered by tests before merging.
 
 Don't hesitate to join us on IRC (detail below).
 
+Translating
+~~~~~~~~~~~
+
+Translation for debexpo are managed by the weblate project:
+
+https://hosted.weblate.org/projects/debexpo/
+
+We will pull translation periodically from weblate and synchronize it to debexpo
+main repository.
+
+When a language is at least 95% translated, it will become available on
+mentors.debian.net. If it fall under 75%, it will be removed from available
+languages.
+
 Contact
 -------
 
