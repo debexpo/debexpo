@@ -28,7 +28,7 @@
 
 from os import environ
 from os.path import basename
-from subprocess import check_output
+from subprocess import check_output, PIPE
 from tempfile import TemporaryDirectory
 
 from django.conf import settings
@@ -47,6 +47,9 @@ def debexpo_exec(command, args, **kwargs):
             kwargs['env'] = kwargs['env'].copy()
 
         kwargs['env']['TMPDIR'] = tmpdir
+
+        if 'stderr' not in kwargs:
+            kwargs['stderr'] = PIPE
 
         output = check_output([command] + args,
                               timeout=timeout,
