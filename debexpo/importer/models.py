@@ -36,7 +36,6 @@ from django.db import transaction
 from django.conf import settings
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import format_lazy as _f
 
@@ -57,6 +56,7 @@ from debexpo.tools.email import Email
 from debexpo.repository.models import Repository
 from debexpo.plugins.models import PluginManager
 from debexpo.tools.gitstorage import GitStorage
+from debexpo.tools.locale import translate_for
 
 log = getLogger(__name__)
 
@@ -256,13 +256,10 @@ class Importer():
 
         return True
 
-    def _translate_for(self, user):
-        if hasattr(user, 'profile') and user.profile.language:
-            translation.activate(user.profile.language)
-
     def send_email(self, template, error=None, upload=None,
                    notify_admins=False):
         recipients = []
+        user = None
 
         if not self.actually_send_email:
             log.info(f'Skipping email send: {template} {error}')
@@ -281,17 +278,17 @@ class Importer():
 
             if user:
                 if isinstance(user, User):
-                    self._translate_for(user)
                     recipients.append(user.email)
                 else:
                     if self._is_valid_email(user):
                         recipients.append(user)
+                    user = None
 
             subject = _f(_('{error}: REJECTED'), error=str(error.changes))
 
         if upload:
-            self._translate_for(upload.uploader)
-            recipients.append(upload.uploader.email)
+            user = upload.uploader
+            recipients.append(user.email)
             subject = _f(_('{package}_{version}: ACCEPTED '
                          'on {site} ({distribution})'),
                          package=upload.package.name,
@@ -299,16 +296,15 @@ class Importer():
                          site=settings.SITE_NAME.split(".")[0],
                          distribution=upload.distribution.name)
 
-        if notify_admins:
-            translation.activate(settings.LANGUAGE_CODE)
-            recipients.append(settings.DEFAULT_FROM_EMAIL)
-
         log.debug(f'Sending importer mail to {", ".join(recipients)}')
-        try:
-            email.send(subject, recipients,
+
+        if notify_admins:
+            email.send(subject, recipients + [settings.DEFAULT_FROM_EMAIL],
                        upload=upload, error=error, settings=settings)
-        finally:
-            translation.activate(settings.LANGUAGE_CODE)
+        else:
+            with translate_for(user):
+                email.send(subject, recipients,
+                           upload=upload, error=error, settings=settings)
 
     def _accept(self, upload):
         log.info(f'Package {upload.package.name}_{upload.version} accepted '
