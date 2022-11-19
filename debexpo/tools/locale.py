@@ -57,3 +57,13 @@ class LocaleMiddleware(DjangoLocaleMiddleware):
 
         else:
             super().process_request(request)
+
+
+class translate_for(translation.override):
+    def __init__(self, user):
+        if user and hasattr(user, 'profile') and user.profile.language:
+            language = user.profile.language
+        else:
+            language = None
+
+        super().__init__(language)
