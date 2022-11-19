@@ -38,6 +38,7 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import format_lazy as _f
 
 from debexpo.packages.models import Distribution, PackageUpload, \
     SourcePackage, BinaryPackage
@@ -286,18 +287,17 @@ class Importer():
                     if self._is_valid_email(user):
                         recipients.append(user)
 
-            subject = _('{error}: REJECTED').format(error=str(error.changes))
+            subject = _f(_('{error}: REJECTED'), error=str(error.changes))
 
         if upload:
             self._translate_for(upload.uploader)
             recipients.append(upload.uploader.email)
-            subject = _('{package}_{version}: ACCEPTED '
-                        'on {site} ({distribution})').format(
-                            package=upload.package.name,
-                            version=upload.version,
-                            site=settings.SITE_NAME.split(".")[0],
-                            distribution=upload.distribution.name
-                        )
+            subject = _f(_('{package}_{version}: ACCEPTED '
+                         'on {site} ({distribution})'),
+                         package=upload.package.name,
+                         version=upload.version,
+                         site=settings.SITE_NAME.split(".")[0],
+                         distribution=upload.distribution.name)
 
         if notify_admins:
             translation.activate(settings.LANGUAGE_CODE)
