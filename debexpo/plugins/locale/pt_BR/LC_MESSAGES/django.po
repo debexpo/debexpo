@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo\n"
 "Report-Msgid-Bugs-To: <debian-l10n-portuguese@lists.debian.org>\n"
-"POT-Creation-Date: 2022-09-26 20:33+0000\n"
+"POT-Creation-Date: 2022-11-21 18:51+0000\n"
 "PO-Revision-Date: 2022-09-11 17:54-0300\n"
 "Last-Translator: Thiago Pezzo (tico) <pezzo@protonmail.com>\n"
 "Language-Team: debian-l10n-portuguese\n"
@@ -18,42 +18,42 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.1.1\n"
 
-#: plugins/models.py:60
+#: plugins/models.py
 msgid "Information"
 msgstr "Informação"
 
-#: plugins/models.py:61
+#: plugins/models.py
 msgid "Warning"
 msgstr "Aviso"
 
-#: plugins/models.py:62
+#: plugins/models.py
 msgid "Error"
 msgstr "Erro"
 
-#: plugins/models.py:63
+#: plugins/models.py
 msgid "Critical"
 msgstr "Crítico"
 
-#: plugins/models.py:64
+#: plugins/models.py
 msgid "Failed"
 msgstr "Falhou"
 
-#: plugins/models.py:78
+#: plugins/models.py
 msgid "Plugin name"
 msgstr "Nome da extensão"
 
-#: plugins/models.py:79
+#: plugins/models.py
 msgid "Test identifier"
 msgstr "Identificador do teste"
 
-#: plugins/models.py:80
+#: plugins/models.py
 msgid "Outcome"
 msgstr "Saída"
 
-#: plugins/models.py:81
+#: plugins/models.py
 msgid "Data"
 msgstr "Dados"
 
-#: plugins/models.py:83
+#: plugins/models.py
 msgid "Severity"
 msgstr "Severidade"

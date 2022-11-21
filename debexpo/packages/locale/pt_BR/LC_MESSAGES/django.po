@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo\n"
 "Report-Msgid-Bugs-To: <debian-l10n-portuguese@lists.debian.org>\n"
-"POT-Creation-Date: 2022-09-26 20:33+0000\n"
+"POT-Creation-Date: 2022-11-21 18:51+0000\n"
 "PO-Revision-Date: 2022-09-11 17:54-0300\n"
 "Last-Translator: Thiago Pezzo (tico) <pezzo@protonmail.com>\n"
 "Language-Team: debian-l10n-portuguese\n"
@@ -18,270 +18,266 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.1.1\n"
 
-#: packages/models.py:41 packages/models.py:48 packages/models.py:56
-#: packages/models.py:63 packages/models.py:70 packages/models.py:135
-#: packages/models.py:275
+#: packages/models.py
 msgid "Name"
 msgstr "Nome"
 
-#: packages/models.py:137
+#: packages/models.py
 msgid "Needs a sponsor?"
 msgstr "Precisa de um(a) padrinho/madrinha?"
 
-#: packages/models.py:138
+#: packages/models.py
 msgid "In Debian?"
 msgstr "No Debian?"
 
-#: packages/models.py:198 packages/templates/packages-list.html:11
+#: packages/models.py packages/templates/packages-list.html
 msgid "Version"
 msgstr "Versão"
 
-#: packages/models.py:201
+#: packages/models.py
 msgid "Changes"
 msgstr "Alterações"
 
-#: packages/models.py:202
+#: packages/models.py
 msgid "Closes bugs"
 msgstr "Fecha bugs"
 
-#: packages/models.py:204
+#: packages/models.py
 msgid "Git storage ref"
 msgstr "Ref armazenamento Git"
 
-#: packages/models.py:207
+#: packages/models.py
 msgid "Upload date"
 msgstr "Data de upload"
 
-#: packages/models.py:243
+#: packages/models.py
 msgid "Maintainer"
 msgstr "Mantenedor(a)"
 
-#: packages/models.py:251 packages/models.py:284
+#: packages/models.py
 msgid "Homepage"
 msgstr "Página principal"
 
-#: packages/models.py:252
+#: packages/models.py
 msgid "VCS"
 msgstr "VCS"
 
-#: packages/models.py:276 packages/templates/packages-list.html:10
+#: packages/models.py packages/templates/packages-list.html
 msgid "Description"
 msgstr "Descrição"
 
-#: packages/templates/package.html:4
+#: packages/templates/package.html
 #, python-format
 msgid "<h1>Details about package %(name)s</h1>"
 msgstr "<h1>Detalhes sobre o pacote %(name)s</h1>"
 
-#: packages/templates/package.html:10
+#: packages/templates/package.html
 msgid "Name:"
 msgstr "Nome:"
 
-#: packages/templates/package.html:20
+#: packages/templates/package.html
 msgid "Uploader:"
 msgstr "Uploader:"
 
-#: packages/templates/package.html:35
+#: packages/templates/package.html
 msgid "Description:"
 msgstr "Descrição:"
 
-#: packages/templates/package.html:42
+#: packages/templates/package.html
 msgid "Subscribe:"
 msgstr "Inscrever-se:"
 
-#: packages/templates/package.html:44
+#: packages/templates/package.html
 msgid "Edit your subscription"
 msgstr "Edite sua inscrição"
 
-#: packages/templates/package.html:48
+#: packages/templates/package.html
 msgid "Needs a sponsor:"
 msgstr "Precisa de padrinho/madrinha:"
 
-#: packages/templates/package.html:51 packages/templates/packages-list.html:31
-#: packages/templates/packages-list.html:38
+#: packages/templates/package.html packages/templates/packages-list.html
 msgid "Yes"
 msgstr "Sim"
 
-#: packages/templates/package.html:53 packages/templates/packages-list.html:33
-#: packages/templates/packages-list.html:40
+#: packages/templates/package.html packages/templates/packages-list.html
 msgid "No"
 msgstr "Não"
 
-#: packages/templates/package.html:60
+#: packages/templates/package.html
 msgid "Change"
 msgstr "Alterar"
 
-#: packages/templates/package.html:68
+#: packages/templates/package.html
 msgid "Delete package:"
 msgstr "Remover pacote:"
 
-#: packages/templates/package.html:75
+#: packages/templates/package.html
 msgid "Admin package deletion"
 msgstr "Administrar remoção de pacote"
 
-#: packages/templates/package.html:79
+#: packages/templates/package.html
 msgid "Delete this package"
 msgstr "Remover este pacote"
 
-#: packages/templates/package.html:88
+#: packages/templates/package.html
 msgid "Package uploads"
 msgstr "Uploads do pacote"
 
-#: packages/templates/package.html:93
+#: packages/templates/package.html
 #, python-format
 msgid "Upload #%(index)s"
 msgstr "Upload #%(index)s"
 
-#: packages/templates/package.html:104
+#: packages/templates/package.html
 msgid "Admin upload deletion"
 msgstr "Administrar remoção de upload"
 
-#: packages/templates/package.html:108
+#: packages/templates/package.html
 msgid "Delete this upload"
 msgstr "Remover este upload"
 
-#: packages/templates/package.html:115
+#: packages/templates/package.html
 msgid "Information"
 msgstr "Informação"
 
-#: packages/templates/package.html:119
+#: packages/templates/package.html
 msgid "Version:"
 msgstr "Versão:"
 
-#: packages/templates/package.html:123
+#: packages/templates/package.html
 msgid "View RFS template"
 msgstr "Ver modelo RFS"
 
-#: packages/templates/package.html:129
+#: packages/templates/package.html
 msgid "Uploaded:"
 msgstr "Enviado:"
 
-#: packages/templates/package.html:135
+#: packages/templates/package.html
 msgid "Source package:"
 msgstr "Pacote-fonte:"
 
-#: packages/templates/package.html:143
+#: packages/templates/package.html
 msgid "Distribution:"
 msgstr "Distribuição:"
 
-#: packages/templates/package.html:148
+#: packages/templates/package.html
 msgid "Section:"
 msgstr "Seção:"
 
-#: packages/templates/package.html:153
+#: packages/templates/package.html
 msgid "Priority:"
 msgstr "Prioridade:"
 
-#: packages/templates/package.html:160
+#: packages/templates/package.html
 msgid "Homepage:"
 msgstr "Página principal:"
 
-#: packages/templates/package.html:187
+#: packages/templates/package.html
 msgid "Closes bugs:"
 msgstr "Fecha bugs:"
 
-#: packages/templates/package.html:197
+#: packages/templates/package.html
 msgid "Changelog"
 msgstr "Changelog"
 
-#: packages/templates/package.html:204
+#: packages/templates/package.html
 msgid "QA information"
 msgstr "Informação de QA"
 
-#: packages/templates/package.html:217
+#: packages/templates/package.html
 msgid "Comments"
 msgstr "Comentários"
 
-#: packages/templates/package.html:226
+#: packages/templates/package.html
 msgid "Needs work"
 msgstr "Requer trabalho"
 
-#: packages/templates/package.html:228
+#: packages/templates/package.html
 msgid "Ready"
 msgstr "Pronto"
 
-#: packages/templates/package.html:232
+#: packages/templates/package.html
 msgid "Package has been uploaded to Debian"
 msgstr "Pacote foi enviado ao Debian"
 
-#: packages/templates/package.html:239
+#: packages/templates/package.html
 msgid "No comments"
 msgstr "Sem comentários"
 
-#: packages/templates/package.html:243
+#: packages/templates/package.html
 msgid "New comment"
 msgstr "Novo comentário"
 
-#: packages/templates/package.html:252
+#: packages/templates/package.html
 msgid "Submit"
 msgstr "Enviar"
 
-#: packages/templates/packages-list.html:9
+#: packages/templates/packages-list.html
 msgid "Package"
 msgstr "Pacote"
 
-#: packages/templates/packages-list.html:12
+#: packages/templates/packages-list.html
 msgid "Uploader"
 msgstr "Uploader"
 
-#: packages/templates/packages-list.html:13
+#: packages/templates/packages-list.html
 msgid "Needs a sponsor"
 msgstr "Precisa de padrinho/madrinha"
 
-#: packages/templates/packages-list.html:14
+#: packages/templates/packages-list.html
 msgid "Already in Debian"
 msgstr "Já está no Debian"
 
-#: packages/templates/packages-list.html:49
+#: packages/templates/packages-list.html
 msgid "No packages"
 msgstr "Sem pacotes"
 
-#: packages/views.py:129
+#: packages/views.py
 msgid "Today"
 msgstr "Hoje"
 
-#: packages/views.py:132
+#: packages/views.py
 msgid "Yesterday"
 msgstr "Ontem"
 
-#: packages/views.py:136
+#: packages/views.py
 msgid "Some days ago"
 msgstr "Alguns dias atrás"
 
-#: packages/views.py:140
+#: packages/views.py
 msgid "Older packages"
 msgstr "Pacotes mais antigos"
 
-#: packages/views.py:144
+#: packages/views.py
 msgid "Uploaded long ago"
 msgstr "Enviado muito tempo atrás"
 
-#: packages/views.py:234
+#: packages/views.py
 msgid "Packages for {} {}"
 msgstr "Pacotes para {} {}"
 
-#: packages/views.py:236
+#: packages/views.py
 msgid "Package list"
 msgstr "Lista de pacotes"
 
-#: packages/views.py:249
+#: packages/views.py
 #, python-format
 msgid "%s packages"
 msgstr "%s pacotes"
 
-#: packages/views.py:250
+#: packages/views.py
 #, python-format
 msgid "A feed of packages on %s"
 msgstr "Um feed de pacotes em %s"
 
-#: packages/views.py:272
+#: packages/views.py
 msgid "Package {} uploaded by {}."
 msgstr "Pacote {} enviado por {}."
 
-#: packages/views.py:278
+#: packages/views.py
 msgid "Uploader is currently looking for a sponsor."
 msgstr "Uploader está procurando por padrinho/madrinha neste momento."
 
-#: packages/views.py:280
+#: packages/views.py
 msgid "Uploader is currently not looking for a sponsor."
 msgstr "Uploader não está procurando por padrinho/madrinha neste momento."

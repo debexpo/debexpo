@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo\n"
 "Report-Msgid-Bugs-To: <debian-l10n-portuguese@lists.debian.org>\n"
-"POT-Creation-Date: 2022-09-26 20:33+0000\n"
+"POT-Creation-Date: 2022-11-21 18:51+0000\n"
 "PO-Revision-Date: 2022-09-11 17:54-0300\n"
 "Last-Translator: Thiago Pezzo (tico) <pezzo@protonmail.com>\n"
 "Language-Team: debian-l10n-portuguese\n"
@@ -18,14 +18,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.1.1\n"
 
-#: nntp/models.py:33
+#: nntp/models.py
 msgid "Namespace"
 msgstr "Espaço de nomes"
 
-#: nntp/models.py:34
+#: nntp/models.py
 msgid "List name"
 msgstr "Lista nome"
 
-#: nntp/models.py:35
+#: nntp/models.py
 msgid "Last message processed"
 msgstr "Última mensagem processada"
