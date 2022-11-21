@@ -1,0 +1,287 @@
+# Portuguese translations for mentors.debian.net website (debexpo).
+# This file is distributed under the same license as debexpo.
+# https://salsa.debian.org/mentors.debian.net-team/debexpo
+# Thiago Pezzo (tico) <pezzo@protonmail.com>, 2022.
+# Carlos Henrique Lima Melara <charlesmelara@outlook.com>, 2022.
+msgid ""
+msgstr ""
+"Project-Id-Version: debexpo\n"
+"Report-Msgid-Bugs-To: <debian-l10n-portuguese@lists.debian.org>\n"
+"POT-Creation-Date: 2022-09-26 20:33+0000\n"
+"PO-Revision-Date: 2022-09-11 17:54-0300\n"
+"Last-Translator: Thiago Pezzo (tico) <pezzo@protonmail.com>\n"
+"Language-Team: debian-l10n-portuguese\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+
+#: packages/models.py:41 packages/models.py:48 packages/models.py:56
+#: packages/models.py:63 packages/models.py:70 packages/models.py:135
+#: packages/models.py:275
+msgid "Name"
+msgstr "Nome"
+
+#: packages/models.py:137
+msgid "Needs a sponsor?"
+msgstr "Precisa de um(a) padrinho/madrinha?"
+
+#: packages/models.py:138
+msgid "In Debian?"
+msgstr "No Debian?"
+
+#: packages/models.py:198 packages/templates/packages-list.html:11
+msgid "Version"
+msgstr "Versão"
+
+#: packages/models.py:201
+msgid "Changes"
+msgstr "Alterações"
+
+#: packages/models.py:202
+msgid "Closes bugs"
+msgstr "Fecha bugs"
+
+#: packages/models.py:204
+msgid "Git storage ref"
+msgstr "Ref armazenamento Git"
+
+#: packages/models.py:207
+msgid "Upload date"
+msgstr "Data de upload"
+
+#: packages/models.py:243
+msgid "Maintainer"
+msgstr "Mantenedor(a)"
+
+#: packages/models.py:251 packages/models.py:284
+msgid "Homepage"
+msgstr "Página principal"
+
+#: packages/models.py:252
+msgid "VCS"
+msgstr "VCS"
+
+#: packages/models.py:276 packages/templates/packages-list.html:10
+msgid "Description"
+msgstr "Descrição"
+
+#: packages/templates/package.html:4
+#, python-format
+msgid "<h1>Details about package %(name)s</h1>"
+msgstr "<h1>Detalhes sobre o pacote %(name)s</h1>"
+
+#: packages/templates/package.html:10
+msgid "Name:"
+msgstr "Nome:"
+
+#: packages/templates/package.html:20
+msgid "Uploader:"
+msgstr "Uploader:"
+
+#: packages/templates/package.html:35
+msgid "Description:"
+msgstr "Descrição:"
+
+#: packages/templates/package.html:42
+msgid "Subscribe:"
+msgstr "Inscrever-se:"
+
+#: packages/templates/package.html:44
+msgid "Edit your subscription"
+msgstr "Edite sua inscrição"
+
+#: packages/templates/package.html:48
+msgid "Needs a sponsor:"
+msgstr "Precisa de padrinho/madrinha:"
+
+#: packages/templates/package.html:51 packages/templates/packages-list.html:31
+#: packages/templates/packages-list.html:38
+msgid "Yes"
+msgstr "Sim"
+
+#: packages/templates/package.html:53 packages/templates/packages-list.html:33
+#: packages/templates/packages-list.html:40
+msgid "No"
+msgstr "Não"
+
+#: packages/templates/package.html:60
+msgid "Change"
+msgstr "Alterar"
+
+#: packages/templates/package.html:68
+msgid "Delete package:"
+msgstr "Remover pacote:"
+
+#: packages/templates/package.html:75
+msgid "Admin package deletion"
+msgstr "Administrar remoção de pacote"
+
+#: packages/templates/package.html:79
+msgid "Delete this package"
+msgstr "Remover este pacote"
+
+#: packages/templates/package.html:88
+msgid "Package uploads"
+msgstr "Uploads do pacote"
+
+#: packages/templates/package.html:93
+#, python-format
+msgid "Upload #%(index)s"
+msgstr "Upload #%(index)s"
+
+#: packages/templates/package.html:104
+msgid "Admin upload deletion"
+msgstr "Administrar remoção de upload"
+
+#: packages/templates/package.html:108
+msgid "Delete this upload"
+msgstr "Remover este upload"
+
+#: packages/templates/package.html:115
+msgid "Information"
+msgstr "Informação"
+
+#: packages/templates/package.html:119
+msgid "Version:"
+msgstr "Versão:"
+
+#: packages/templates/package.html:123
+msgid "View RFS template"
+msgstr "Ver modelo RFS"
+
+#: packages/templates/package.html:129
+msgid "Uploaded:"
+msgstr "Enviado:"
+
+#: packages/templates/package.html:135
+msgid "Source package:"
+msgstr "Pacote-fonte:"
+
+#: packages/templates/package.html:143
+msgid "Distribution:"
+msgstr "Distribuição:"
+
+#: packages/templates/package.html:148
+msgid "Section:"
+msgstr "Seção:"
+
+#: packages/templates/package.html:153
+msgid "Priority:"
+msgstr "Prioridade:"
+
+#: packages/templates/package.html:160
+msgid "Homepage:"
+msgstr "Página principal:"
+
+#: packages/templates/package.html:187
+msgid "Closes bugs:"
+msgstr "Fecha bugs:"
+
+#: packages/templates/package.html:197
+msgid "Changelog"
+msgstr "Changelog"
+
+#: packages/templates/package.html:204
+msgid "QA information"
+msgstr "Informação de QA"
+
+#: packages/templates/package.html:217
+msgid "Comments"
+msgstr "Comentários"
+
+#: packages/templates/package.html:226
+msgid "Needs work"
+msgstr "Requer trabalho"
+
+#: packages/templates/package.html:228
+msgid "Ready"
+msgstr "Pronto"
+
+#: packages/templates/package.html:232
+msgid "Package has been uploaded to Debian"
+msgstr "Pacote foi enviado ao Debian"
+
+#: packages/templates/package.html:239
+msgid "No comments"
+msgstr "Sem comentários"
+
+#: packages/templates/package.html:243
+msgid "New comment"
+msgstr "Novo comentário"
+
+#: packages/templates/package.html:252
+msgid "Submit"
+msgstr "Enviar"
+
+#: packages/templates/packages-list.html:9
+msgid "Package"
+msgstr "Pacote"
+
+#: packages/templates/packages-list.html:12
+msgid "Uploader"
+msgstr "Uploader"
+
+#: packages/templates/packages-list.html:13
+msgid "Needs a sponsor"
+msgstr "Precisa de padrinho/madrinha"
+
+#: packages/templates/packages-list.html:14
+msgid "Already in Debian"
+msgstr "Já está no Debian"
+
+#: packages/templates/packages-list.html:49
+msgid "No packages"
+msgstr "Sem pacotes"
+
+#: packages/views.py:129
+msgid "Today"
+msgstr "Hoje"
+
+#: packages/views.py:132
+msgid "Yesterday"
+msgstr "Ontem"
+
+#: packages/views.py:136
+msgid "Some days ago"
+msgstr "Alguns dias atrás"
+
+#: packages/views.py:140
+msgid "Older packages"
+msgstr "Pacotes mais antigos"
+
+#: packages/views.py:144
+msgid "Uploaded long ago"
+msgstr "Enviado muito tempo atrás"
+
+#: packages/views.py:234
+msgid "Packages for {} {}"
+msgstr "Pacotes para {} {}"
+
+#: packages/views.py:236
+msgid "Package list"
+msgstr "Lista de pacotes"
+
+#: packages/views.py:249
+#, python-format
+msgid "%s packages"
+msgstr "%s pacotes"
+
+#: packages/views.py:250
+#, python-format
+msgid "A feed of packages on %s"
+msgstr "Um feed de pacotes em %s"
+
+#: packages/views.py:272
+msgid "Package {} uploaded by {}."
+msgstr "Pacote {} enviado por {}."
+
+#: packages/views.py:278
+msgid "Uploader is currently looking for a sponsor."
+msgstr "Uploader está procurando por padrinho/madrinha neste momento."
+
+#: packages/views.py:280
+msgid "Uploader is currently not looking for a sponsor."
+msgstr "Uploader não está procurando por padrinho/madrinha neste momento."

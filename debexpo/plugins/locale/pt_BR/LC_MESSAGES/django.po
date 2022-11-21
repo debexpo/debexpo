@@ -1,0 +1,59 @@
+# Portuguese translations for mentors.debian.net website (debexpo).
+# This file is distributed under the same license as debexpo.
+# https://salsa.debian.org/mentors.debian.net-team/debexpo
+# Thiago Pezzo (tico) <pezzo@protonmail.com>, 2022.
+# Carlos Henrique Lima Melara <charlesmelara@outlook.com>, 2022.
+msgid ""
+msgstr ""
+"Project-Id-Version: debexpo\n"
+"Report-Msgid-Bugs-To: <debian-l10n-portuguese@lists.debian.org>\n"
+"POT-Creation-Date: 2022-09-26 20:33+0000\n"
+"PO-Revision-Date: 2022-09-11 17:54-0300\n"
+"Last-Translator: Thiago Pezzo (tico) <pezzo@protonmail.com>\n"
+"Language-Team: debian-l10n-portuguese\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+
+#: plugins/models.py:60
+msgid "Information"
+msgstr "Informação"
+
+#: plugins/models.py:61
+msgid "Warning"
+msgstr "Aviso"
+
+#: plugins/models.py:62
+msgid "Error"
+msgstr "Erro"
+
+#: plugins/models.py:63
+msgid "Critical"
+msgstr "Crítico"
+
+#: plugins/models.py:64
+msgid "Failed"
+msgstr "Falhou"
+
+#: plugins/models.py:78
+msgid "Plugin name"
+msgstr "Nome da extensão"
+
+#: plugins/models.py:79
+msgid "Test identifier"
+msgstr "Identificador do teste"
+
+#: plugins/models.py:80
+msgid "Outcome"
+msgstr "Saída"
+
+#: plugins/models.py:81
+msgid "Data"
+msgstr "Dados"
+
+#: plugins/models.py:83
+msgid "Severity"
+msgstr "Severidade"
