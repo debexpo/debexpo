@@ -1,18 +1,18 @@
-{% extends "email-base.html" %}{% block content %}Hi.
+{% extends "email-base.html" %}{% load i18n %}{% block content %}{% blocktrans with name=args.upload.package.name site=args.settings.SITE_NAME %}Hi.
 
-Your upload of the package '{{ args.upload.package.name }}' to {{ args.settings.SITE_NAME}} was
+Your upload of the package '{{ name }}' to {{ site }} was
 successful. Others can now see it. The URL of your package is:
-
+{% endblocktrans %}
     {{ args.settings.SITE_URL }}{% url 'package' args.upload.package.name %}
-
+{% blocktrans %}
 The respective dsc file can be found at:
-
+{% endblocktrans %}
     {{ args.settings.SITE_URL }}{{ args.upload.get_dsc_url }}
-
+{% blocktrans %}
 If you do not yet have a sponsor for your package you may want to go to:
-
+{% endblocktrans %}
     {{ args.settings.SITE_URL }}{% url 'package_rfs' args.upload.package.name %}
-
+{% blocktrans %}
 and set the "Seeking a sponsor" option to highlight your package on the
 welcome page.
 
@@ -22,4 +22,4 @@ send that mail.
 
 Good luck in finding a sponsor!
 
-Thanks,{% endblock %}
+Thanks,{% endblocktrans %}{% endblock %}

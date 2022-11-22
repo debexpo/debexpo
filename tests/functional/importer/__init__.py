@@ -260,6 +260,12 @@ class TestImporterController(TestController):
                     raise Exception('Plugin result not found for data '
                                     f'contains: {data}\ndata: {result.data}')
 
+    def change_language(self, language):
+        user = User.objects.get(email='email@example.com')
+
+        user.profile.language = language
+        user.profile.save()
+
     def assert_plugin_data(self, package_name, plugin, data):
         plugin_results = self._lookup_plugin_result(package_name, plugin)
         self.assertTrue(plugin_results)

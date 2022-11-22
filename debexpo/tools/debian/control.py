@@ -30,13 +30,16 @@ from re import search
 from os.path import join
 from debian.deb822 import Deb822
 
+from django.utils.translation import gettext_lazy as _
+
 from debexpo.tools.files import CheckSumedFile
 
 
 class ExceptionControl(Exception):
     def __str__(self):
         message = super().__str__()
-        return f'Failed to parse debian/control: {message}'
+        return _('Failed to parse debian/control:{message}').format(
+                message=message)
 
 
 def parse_section(section):
@@ -169,23 +172,24 @@ class Control():
 
     def validate(self):
         if not self.source:
-            raise ExceptionControl('No source definition found')
+            raise ExceptionControl(_('No source definition found'))
 
         if not self.binaries:
-            raise ExceptionControl('No binary definition found')
+            raise ExceptionControl(_('No binary definition found'))
 
         # As per debian policy paragraph 5.2:
         # https://www.debian.org/doc/debian-policy/ch-controlfields.html#source-package-control-files-debian-control
         for key in ['Source', 'Maintainer']:
             if key not in self.source:
-                raise ExceptionControl('Missing key '
-                                       f'{key} in source definition')
+                raise ExceptionControl(_(
+                    'Missing key {key} in source definition').format(key=key))
 
         for binary in self.binaries:
             for key in ['Package', 'Architecture', 'Description']:
                 if key not in binary:
-                    raise ExceptionControl('Missing key '
-                                           f'{key} in source definition')
+                    raise ExceptionControl(_(
+                        'Missing key {key} in source definition').format(
+                            key=key))
 
     def get_source_package(self):
         return self.source

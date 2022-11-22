@@ -32,6 +32,7 @@ from os.path import join, dirname
 from tempfile import TemporaryDirectory
 
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 from debexpo.tools.debian.changelog import Changelog, ExceptionChangelog
 from debexpo.tools.debian.copyright import Copyright, ExceptionCopyright
@@ -60,14 +61,17 @@ class Source():
                          cwd=dirname(self.dsc.filename))
         except FileNotFoundError:  # pragma: no cover
             log.error('dpkg-source not found')
-            raise ExceptionSource('Internal error. Please contact debexpo '
-                                  f'administrators at {settings.SUPPORT_EMAIL}')
+            raise ExceptionSource(_(
+                'Internal error. Please contact debexpo administrators at '
+                '{email}').format(email=settings.SUPPORT_EMAIL))
         except CalledProcessError as e:
-            raise ExceptionSource('Could not extract source package from '
-                                  f'{str(self.dsc)}: {e.output}')
+            raise ExceptionSource(_('Could not extract source package from '
+                                  '{dsc}: {e}').format(
+                                      dsc=str(self.dsc), e=e.output))
         except TimeoutExpired:
-            raise ExceptionSource('Could not extract source package from '
-                                  f'{str(self.dsc)}: extraction took too long')
+            raise ExceptionSource(_('Could not extract source package from '
+                                    '{dsc}: extraction took too long').format(
+                                        dsc=str(self.dsc)))
 
     def get_source_dir(self):
         return self.source_dir

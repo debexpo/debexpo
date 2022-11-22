@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo\n"
 "Report-Msgid-Bugs-To: <debian-l10n-portuguese@lists.debian.org>\n"
-"POT-Creation-Date: 2022-09-26 20:33+0000\n"
+"POT-Creation-Date: 2022-11-21 18:51+0000\n"
 "PO-Revision-Date: 2022-09-11 17:54-0300\n"
 "Last-Translator: Thiago Pezzo (tico) <pezzo@protonmail.com>\n"
 "Language-Team: debian-l10n-portuguese\n"
@@ -18,30 +18,30 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.1.1\n"
 
-#: repository/models.py:72
+#: repository/models.py
 msgid "Name"
 msgstr "Nome"
 
-#: repository/models.py:73
+#: repository/models.py
 msgid "Version"
 msgstr "Versão"
 
-#: repository/models.py:74
+#: repository/models.py
 msgid "Component"
 msgstr "Componente"
 
-#: repository/models.py:76
+#: repository/models.py
 msgid "Distribution"
 msgstr "Distribução"
 
-#: repository/models.py:78
+#: repository/models.py
 msgid "Path"
 msgstr "Caminho"
 
-#: repository/models.py:79
+#: repository/models.py
 msgid "Size"
 msgstr "Tamanho"
 
-#: repository/models.py:80
+#: repository/models.py
 msgid "SHA256"
 msgstr "SHA256"

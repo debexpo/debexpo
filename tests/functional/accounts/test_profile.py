@@ -179,6 +179,16 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
 =/JDz
 -----END PGP PUBLIC KEY BLOCK-----"""
 
+    OTHER_DETAIL_FORM = {
+        'form': 'other_details',
+        'country': '',
+        'ircnick': '',
+        'jabber': '',
+        'language': '',
+        'status': UserStatus.contributor.value,
+        'commit_profile': 'submit'
+    }
+
 #    def _setup_gpg_env(self):
 #        self.homedir = tempfile.mkdtemp()
 #        os.environ['GNUPGHOME'] = self.homedir
@@ -477,6 +487,51 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
         self.assertIn('<a href="{}">'.format(reverse('logout')),
                       str(response.content))
 
+    def _set_profile(self, changes):
+        user = User.objects.get(email='email@example.com')
+        backup = {}
+
+        for key, value in changes.items():
+            backup[key] = getattr(user.profile, key)
+            setattr(user.profile, key, value)
+
+        user.profile.save()
+
+        return backup
+
+    def _test_other_details_with(self, changes, expected=None, init=None):
+        if init:
+            backup = self._set_profile(init)
+
+        data = self.OTHER_DETAIL_FORM.copy()
+        data.update(changes)
+
+        response = self.client.post(reverse('profile'), data)
+
+        self.assertEquals(response.status_code, 200)
+
+        if expected:
+            self.assertIn('errorlist', str(response.content))
+        else:
+            expected = data
+            expected.pop('form')
+            expected.pop('commit_profile')
+
+            self.assertNotIn('errorlist', str(response.content))
+
+        user = User.objects.get(email='email@example.com')
+
+        for key, value in expected.items():
+            if not value:
+                self.assertFalse(getattr(user.profile, key))
+            else:
+                self.assertEquals(getattr(user.profile, key), value)
+
+        if init:
+            self._set_profile(backup)
+
+        return response
+
     def test__other_details(self):
         response = self.client.post(reverse('profile'),
                                     {'form': 'other_details'})
@@ -484,77 +539,60 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
         self.assertIn(reverse('login'), response.url)
         response = self.client.post(reverse('login'), self._AUTHDATA)
 
-        # test set ircnick
-        response = self.client.post(reverse('profile'), {
-            'form': 'other_details',
-            'country': '',
-            'ircnick': 'tester',
-            'jabber': '',
-            'status': UserStatus.contributor.value,
-            'commit_profile': 'submit'
-        })
+        self._test_other_details_with({'ircnick': 'tester'})
+        self._test_other_details_with({'status': UserStatus.maintainer.value})
+        self._test_other_details_with({'status': UserStatus.developer.value},
+                                      {'status': UserStatus.maintainer.value})
+        self._test_other_details_with(
+            {'status': UserStatus.maintainer.value},
+            {'status': UserStatus.developer.value},
+            {'status': UserStatus.developer.value},
+        )
 
-        self.assertEquals(response.status_code, 200)
+    def test_translation_autodetect(self):
+        response = self.client.get(reverse('index'))
+        self.assertIn('Welcome to ', str(response.content))
+
+        response = self.client.get(reverse('index'), HTTP_ACCEPT_LANGUAGE='fr')
+        self.assertIn('Bienvenue sur ', str(response.content))
+
+    def test_translation_quick_switcher(self):
+        response = self.client.post(reverse('login'), {'quick_language': 'fr'})
+
+        # Check posting a language change does not trigger posting on an
+        # unrelated form.
         self.assertNotIn('errorlist', str(response.content))
 
-        user = User.objects.get(email='email@example.com')
-        self.assertEquals(user.profile.ircnick, 'tester')
-        self.assertEquals(user.profile.status, UserStatus.contributor.value)
+        # Check translation happen directly after posting
+        self.assertIn('Connexion', str(response.content))
 
-        # test DM switch
-        response = self.client.post(reverse('profile'), {
-            'form': 'other_details',
-            'country': '',
-            'ircnick': 'tester',
-            'jabber': '',
-            'status': UserStatus.maintainer.value,
-            'commit_profile': 'submit'
-        })
+        # Check another translated page, auto-detect should not happen.
+        response = self.client.get(reverse('index'), HTTP_ACCEPT_LANGUAGE='en')
+        self.assertIn('Bienvenue sur ', str(response.content))
 
-        self.assertEquals(response.status_code, 200)
-        self.assertNotIn('errorlist', str(response.content))
+        # Go back to auto-detect.
+        response = self.client.post(reverse('login'), {'quick_language': ''})
+        self.assertIn('Login', str(response.content))
 
-        user = User.objects.get(email='email@example.com')
-        self.assertEquals(user.profile.status, UserStatus.maintainer.value)
+    def test_language_settings(self):
+        self.client.post(reverse('login'), self._AUTHDATA)
 
-        # A Maintainer cannot switch to DD
-        response = self.client.post(reverse('profile'), {
-            'form': 'other_details',
-            'country': '',
-            'ircnick': 'tester',
-            'jabber': '',
-            'status': UserStatus.developer.value,
-            'commit_profile': 'submit'
-        })
+        # Ensure default behavior if no language preference is set
+        self.test_translation_autodetect()
+        self.test_translation_quick_switcher()
 
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('errorlist', str(response.content))
+        response = self._test_other_details_with({'language': 'en'})
+        self.assertIn('My account', str(response.content))
 
-        user = User.objects.get(email='email@example.com')
-        self.assertEquals(user.profile.status, UserStatus.maintainer.value)
+        # User preference takes over auto-detection but not quick_switcher
+        self.assertRaises(AssertionError, self.test_translation_autodetect)
+        self.test_translation_quick_switcher()
 
-        # A DD cannot switch to Maintainer
-        user.profile.status = UserStatus.developer.value
-        user.profile.save()
+        # Finally, override quick_switcher on setting change
+        self.client.post(reverse('login'), {'quick_language': 'en'})
+        response = self._test_other_details_with({'language': 'fr'})
+        self.assertIn('Mon compte', str(response.content))
 
-        response = self.client.post(reverse('profile'), {
-            'form': 'other_details',
-            'country': '',
-            'ircnick': 'tester',
-            'jabber': '',
-            'status': UserStatus.contributor.value,
-            'commit_profile': 'submit'
-        })
-
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('errorlist', str(response.content))
-
-        user = User.objects.get(email='email@example.com')
-        self.assertEquals(user.profile.status, UserStatus.developer.value)
-
-        # Reset status
-        user.profile.status = UserStatus.contributor.value
-        user.profile.save()
 
 #    def test__invalid_form(self):
 #        response = self.client.post(reverse('profile'), {'form': 'invalid'})

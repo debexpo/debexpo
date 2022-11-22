@@ -36,6 +36,8 @@ from django.db import transaction
 from django.conf import settings
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+from django.utils.text import format_lazy as _f
 
 from debexpo.packages.models import Distribution, PackageUpload, \
     SourcePackage, BinaryPackage
@@ -54,6 +56,7 @@ from debexpo.tools.email import Email
 from debexpo.repository.models import Repository
 from debexpo.plugins.models import PluginManager
 from debexpo.tools.gitstorage import GitStorage
+from debexpo.tools.locale import translate_for
 
 log = getLogger(__name__)
 
@@ -256,6 +259,7 @@ class Importer():
     def send_email(self, template, error=None, upload=None,
                    notify_admins=False):
         recipients = []
+        user = None
 
         if not self.actually_send_email:
             log.info(f'Skipping email send: {template} {error}')
@@ -278,21 +282,29 @@ class Importer():
                 else:
                     if self._is_valid_email(user):
                         recipients.append(user)
+                    user = None
 
-            subject = f'{str(error.changes)}: REJECTED'
+            subject = _f(_('{error}: REJECTED'), error=str(error.changes))
 
         if upload:
-            recipients.append(upload.uploader.email)
-            subject = f'{upload.package.name}_{upload.version}: ACCEPTED ' \
-                      f'on {settings.SITE_NAME.split(".")[0]} ' \
-                      f'({upload.distribution.name})'
-
-        if notify_admins:
-            recipients.append(settings.DEFAULT_FROM_EMAIL)
+            user = upload.uploader
+            recipients.append(user.email)
+            subject = _f(_('{package}_{version}: ACCEPTED '
+                         'on {site} ({distribution})'),
+                         package=upload.package.name,
+                         version=upload.version,
+                         site=settings.SITE_NAME.split(".")[0],
+                         distribution=upload.distribution.name)
 
         log.debug(f'Sending importer mail to {", ".join(recipients)}')
-        email.send(subject, recipients,
-                   upload=upload, error=error, settings=settings)
+
+        if notify_admins:
+            email.send(subject, recipients + [settings.DEFAULT_FROM_EMAIL],
+                       upload=upload, error=error, settings=settings)
+        else:
+            with translate_for(user):
+                email.send(subject, recipients,
+                           upload=upload, error=error, settings=settings)
 
     def _accept(self, upload):
         log.info(f'Package {upload.package.name}_{upload.version} accepted '
@@ -427,14 +439,15 @@ class Importer():
             changes.files.validate()
             changes.get_bugs()
         except (ExceptionChanges, ExceptionCheckSumedFile, ExceptionGnuPG) as e:
-            raise ExceptionImporterRejected(changes, 'Changes is invalid', e)
+            raise ExceptionImporterRejected(changes, _('Changes is invalid'), e)
 
     def _validate_dsc(self, changes):
         # Try parsing dsc file
         try:
             changes.parse_dsc()
         except ExceptionChanges as e:
-            raise ExceptionImporterRejected(changes, 'Dsc failed to parse', e)
+            raise ExceptionImporterRejected(changes, _('Dsc failed to parse'),
+                                            e)
 
         # Validate dsc fields, gpg signature and files (including checksuming)
         dsc = changes.dsc
@@ -447,7 +460,7 @@ class Importer():
             dsc.files.validate()
         except (ExceptionDsc, ExceptionCheckSumedFile, ExceptionGnuPG,
                 ExceptionOrigin, ExceptionClient) as e:
-            raise ExceptionImporterRejected(changes, 'Dsc is invalid', e)
+            raise ExceptionImporterRejected(changes, _('Dsc is invalid'), e)
 
     def _validate_source(self, changes):
         # Instanciate the source package
@@ -457,16 +470,16 @@ class Importer():
         try:
             source.extract()
         except ExceptionSource as e:
-            raise ExceptionImporterRejected(changes,
-                                            'Failed to extract source package',
-                                            e)
+            raise ExceptionImporterRejected(
+                changes, _('Failed to extract source package'), e
+            )
 
         # Parse control files (d/changelog, d/copyright and d/control)
         try:
             source.parse_control_files()
         except ExceptionSource as e:
             raise ExceptionImporterRejected(changes,
-                                            'Source package is invalid',
+                                            _('Source package is invalid'),
                                             e)
 
         # And valid them
@@ -476,7 +489,7 @@ class Importer():
             source.control.validate()
         except (ExceptionChangelog, ExceptionCopyright, ExceptionControl) as e:
             raise ExceptionImporterRejected(changes,
-                                            'Source package is invalid',
+                                            _('Source package is invalid'),
                                             e)
 
         # Validate distribution
@@ -486,10 +499,12 @@ class Importer():
         except Distribution.DoesNotExist:
             allowed = "\n".join(list(map(str, Distribution.objects.all())))
             raise ExceptionImporterRejected(
-                changes, 'Invalid distribution',
-                f'Distribution {distribution} is not supported on '
-                f'mentors\n\n'
-                f'List of supported distributions:\n\n'
-                f'{allowed}')
+                changes, _('Invalid distribution'),
+                _('Distribution {distribution} is not supported on '
+                  'mentors\n\n'
+                  'List of supported distributions:\n\n'
+                  '{allowed}').format(
+                      distribution=distribution, allowed=allowed
+                ))
 
         return source

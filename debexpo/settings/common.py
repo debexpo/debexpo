@@ -61,10 +61,10 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'debexpo.tools.locale.LocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.sites.middleware.CurrentSiteMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -89,8 +89,8 @@ TEMPLATES = [
 
 LANGUAGES = [
   ('en', _('English')),
-  # ('fr', _('French')),
-  # ('pt-br', _('Portuguese (Brazil)')),
+  ('fr', _('French')),
+  ('pt-br', _('Portuguese (Brazil)')),
 ]
 
 LOCALE_PATHS = [

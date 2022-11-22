@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo\n"
 "Report-Msgid-Bugs-To: <debian-l10n-portuguese@lists.debian.org>\n"
-"POT-Creation-Date: 2022-09-26 20:33+0000\n"
+"POT-Creation-Date: 2022-11-21 18:51+0000\n"
 "PO-Revision-Date: 2022-09-11 17:51-0300\n"
 "Last-Translator: Thiago Pezzo (tico) <pezzo@protonmail.com>\n"
 "Language-Team: debian-l10n-portuguese\n"
@@ -18,42 +18,42 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.1.1\n"
 
-#: bugs/models.py:214
+#: bugs/models.py
 msgid "Package name"
 msgstr "Nome do pacote"
 
-#: bugs/models.py:220
+#: bugs/models.py
 msgid "Bug number"
 msgstr "Número do bug"
 
-#: bugs/models.py:222
+#: bugs/models.py
 msgid "Type"
 msgstr "Tipo"
 
-#: bugs/models.py:224
+#: bugs/models.py
 msgid "Status"
 msgstr "Estado"
 
-#: bugs/models.py:226
+#: bugs/models.py
 msgid "Severity"
 msgstr "Severidade"
 
-#: bugs/models.py:227
+#: bugs/models.py
 msgid "Creation date"
 msgstr "Data de criação"
 
-#: bugs/models.py:228
+#: bugs/models.py
 msgid "Last update date"
 msgstr "Data da última atualização"
 
-#: bugs/models.py:229
+#: bugs/models.py
 msgid "Subject"
 msgstr "Assunto"
 
-#: bugs/models.py:232
+#: bugs/models.py
 msgid "Submitter email"
 msgstr "E-mail do(a) remetente"
 
-#: bugs/models.py:233
+#: bugs/models.py
 msgid "Owner email"
 msgstr "E-mail do(a) responsável"

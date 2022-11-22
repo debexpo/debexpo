@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-29 16:36+0200\n"
+"POT-Creation-Date: 2022-09-20 19:45+0000\n"
 "PO-Revision-Date: 2020-03-29 16:37+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,42 +18,42 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.3\n"
 
-#: plugins/models.py:59
+#: plugins/models.py
 msgid "Information"
 msgstr "Information"
 
-#: plugins/models.py:60
+#: plugins/models.py
 msgid "Warning"
 msgstr "Alerte"
 
-#: plugins/models.py:61
+#: plugins/models.py
 msgid "Error"
 msgstr "Erreur"
 
-#: plugins/models.py:62
+#: plugins/models.py
 msgid "Critical"
 msgstr "Erreur Critique"
 
-#: plugins/models.py:63
+#: plugins/models.py
 msgid "Failed"
 msgstr "Échec"
 
-#: plugins/models.py:77
+#: plugins/models.py
 msgid "Plugin name"
 msgstr "Nom du plugin"
 
-#: plugins/models.py:78
+#: plugins/models.py
 msgid "Test identifier"
 msgstr "Identificateur de test"
 
-#: plugins/models.py:79
+#: plugins/models.py
 msgid "Outcome"
 msgstr "Résultat"
 
-#: plugins/models.py:80
+#: plugins/models.py
 msgid "Data"
 msgstr "Donnée"
 
-#: plugins/models.py:82
+#: plugins/models.py
 msgid "Severity"
 msgstr "Sévérité"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo\n"
 "Report-Msgid-Bugs-To: <debian-l10n-portuguese@lists.debian.org>\n"
-"POT-Creation-Date: 2022-09-26 20:33+0000\n"
+"POT-Creation-Date: 2022-11-21 18:51+0000\n"
 "PO-Revision-Date: 2022-09-11 17:52-0300\n"
 "Last-Translator: Thiago Pezzo (tico) <pezzo@protonmail.com>\n"
 "Language-Team: debian-l10n-portuguese\n"
@@ -18,43 +18,43 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.1.1\n"
 
-#: keyring/models.py:42 keyring/models.py:122
+#: keyring/models.py
 msgid "Type"
 msgstr "Tipo"
 
-#: keyring/models.py:44
+#: keyring/models.py
 msgid "GPG Algorithm ID"
 msgstr "ID do algoritmo GPG"
 
-#: keyring/models.py:47
+#: keyring/models.py
 msgid "Minimal size requirment"
 msgstr "Exigência de tamanho mínimo"
 
-#: keyring/models.py:62
+#: keyring/models.py
 msgid "Multiple keys not supported"
 msgstr "Chaves múltiplas não suportadas"
 
-#: keyring/models.py:73
+#: keyring/models.py
 msgid "Key algorithm not supported. Key must be one of the following: {}"
 msgstr ""
 "Algoritmo de chave não suportado. A chave deve ser uma das seguintes: {}"
 
-#: keyring/models.py:83
+#: keyring/models.py
 msgid "Key size too small. Need at least {} bits."
 msgstr "Tamanho da chave muito pequeno. Precisa ser ao menos {} bits."
 
-#: keyring/models.py:111
+#: keyring/models.py
 msgid "OpenGPG key"
 msgstr "Chave OpenGPG"
 
-#: keyring/models.py:112 keyring/models.py:143
+#: keyring/models.py
 msgid "Fingerprint"
 msgstr "Impressão digital"
 
-#: keyring/models.py:114
+#: keyring/models.py
 msgid "Last update on"
 msgstr "Última atualização em"
 
-#: keyring/models.py:123
+#: keyring/models.py
 msgid "Size"
 msgstr "Tamanho"

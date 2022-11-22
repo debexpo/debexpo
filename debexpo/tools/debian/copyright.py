@@ -26,6 +26,8 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+from django.utils.translation import gettext_lazy as _
+
 from debian.copyright import Copyright as DebianCopyright, \
     MachineReadableFormatError, NotMachineReadableError
 
@@ -33,7 +35,8 @@ from debian.copyright import Copyright as DebianCopyright, \
 class ExceptionCopyright(Exception):
     def __str__(self):
         message = super().__str__()
-        return f'Failed to parse debian/copyright: {message}'
+        return _('Failed to parse debian/copyright: {message}').format(
+                message=message)
 
 
 class Copyright():

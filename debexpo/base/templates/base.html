@@ -98,27 +98,37 @@
         <div id="content">
             <span class="relatedpages">
 
-            {% if user.is_authenticated %}
-                <a href="{{ url_profile }}">
-                    {% trans 'My account' %}
-                </a>
-                <a href="{{ url_packages_my }}">
-                    {% trans 'My packages' %}
-                </a>
-                <a href="{{ url_subscriptions_my }}">
-                    {% trans 'My subscriptions' %}
-                </a>
-                <a href="{{ url_logout }}">
-                    {% trans 'Logout' %}
-                </a>
-            {% else %}
-                <a href="{{ url_register }}">
-                    {% trans 'Sign me up' %}
-                </a>
-                <a href="{{ url_login }}">
-                    {% trans 'Login' %}
-                </a>
-            {% endif %}
+                <form method="post">
+                    {% csrf_token %}
+                    {% if user.is_authenticated %}
+                    <a href="{{ url_profile }}">
+                        {% trans 'My account' %}
+                    </a>
+                    <a href="{{ url_packages_my }}">
+                        {% trans 'My packages' %}
+                    </a>
+                    <a href="{{ url_subscriptions_my }}">
+                        {% trans 'My subscriptions' %}
+                    </a>
+                    <a href="{{ url_logout }}">
+                        {% trans 'Logout' %}
+                    </a>
+                    {% else %}
+                    <a href="{{ url_register }}">
+                        {% trans 'Sign me up' %}
+                    </a>
+                    <a href="{{ url_login }}">
+                        {% trans 'Login' %}
+                    </a>
+                    {% endif %}
+                    <select onchange="this.form.submit()" id="quick_language",
+                            name="quick_language">
+                            <option value="" {% if not request.session.language %}selected{% endif %}>{% trans 'Auto-detected' %}</option>
+                        {% for code, language in settings.LANGUAGES %}
+                            <option value="{{ code }}" {% if request.session.language and code == request.LANGUAGE_CODE %}selected{% endif %}>{{ language }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
 
             </span>
             {% if submenu and submenu.has_menu %}
@@ -128,7 +138,7 @@
         </div><!-- end content -->
         <div id="footer">
             <p>
-                © 2008-2020 {{ settings.SITE_NAME }}
+                © 2008-2022 {{ settings.SITE_NAME }}
                 -
                 {% if settings.HOSTING %}
                 {% trans 'Hosting and hardware provided by' %}

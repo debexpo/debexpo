@@ -30,6 +30,8 @@ from os.path import dirname, abspath, basename
 from debian import deb822
 from debian.debian_support import BaseVersion
 
+from django.utils.translation import gettext_lazy as _
+
 from debexpo.accounts.models import User
 from debexpo.tools.files import GPGSignedFile
 from debexpo.tools.debian.control import ControlFiles
@@ -48,8 +50,8 @@ class Dsc(GPGSignedFile):
             self._data = deb822.Dsc(fd)
 
         if len(self._data) == 0:
-            raise ExceptionDsc('{} could not be parsed'.format(
-                basename(self.filename)))
+            raise ExceptionDsc(_('{dsc} could not be parsed').format(
+                dsc=basename(self.filename)))
 
         self.component = component
         self._build_dsc()
@@ -81,8 +83,8 @@ class Dsc(GPGSignedFile):
             'Files',
         ]:
             if key not in self._data:
-                raise ExceptionDsc('Missing key '
-                                   '{}'.format(key))
+                raise ExceptionDsc(_('Missing key '
+                                   '{key}').format(key=key))
 
         self.origin.validate(self.files.get_origin_files())
 

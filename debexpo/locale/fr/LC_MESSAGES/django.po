@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-31 16:41+0000\n"
-"PO-Revision-Date: 2021-08-31 18:42+0200\n"
+"POT-Creation-Date: 2022-11-21 18:51+0000\n"
+"PO-Revision-Date: 2022-11-21 20:01+0100\n"
 "Last-Translator: Baptiste Beauplat <lyknode@cilg.org>\n"
 "Language-Team: French <>\n"
 "Language: fr\n"
@@ -15,53 +15,24 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.2\n"
 
-#: settings/common.py:91
+#: settings/common.py
 msgid "English"
 msgstr "Anglais"
 
-#: settings/common.py:144
+#: settings/common.py
+msgid "French"
+msgstr "Français"
+
+#: settings/common.py
+msgid "Portuguese (Brazil)"
+msgstr "Portugais (Brésil)"
+
+#: settings/common.py
 msgid "Helps you get your packages into Debian"
 msgstr "Vous aide à envoyer vos paquets dans Debian"
 
-#: tools/gnupg.py:181
-msgid "Cannot add key: {}"
-msgstr "Impossible d'ajouter la clef : {}"
-
-#: urls.py:85
+#: urls.py
 msgid "Email change complete"
 msgstr "Changement de courriel terminé"
-
-#~ msgid "French"
-#~ msgstr "Français"
-
-#~ msgid "Type"
-#~ msgstr "Type"
-
-#~ msgid "GPG Algorithm ID"
-#~ msgstr "ID Algorithme GPG"
-
-#~ msgid "Minimal size requirment"
-#~ msgstr "Taille minimale requise"
-
-#~ msgid "Multiple keys not supported"
-#~ msgstr "Multiples clefs non supporté"
-
-#~ msgid "Key algorithm not supported. Key must be one of the following: {}"
-#~ msgstr "L'algorithme de la clef n'est pas supportée. La clef doit faire partie de l'une des suivantes : {}"
-
-#~ msgid "Key size too small. Need at least {} bits."
-#~ msgstr "Clef trop petite. Nécessite au moins {} bits."
-
-#~ msgid "OpenGPG key"
-#~ msgstr "Clef OpenGPG"
-
-#~ msgid "Fingerprint"
-#~ msgstr "Empreinte"
-
-#~ msgid "Last update on"
-#~ msgstr "Dernière mise à jour le"
-
-#~ msgid "Size"
-#~ msgstr "Taille"
