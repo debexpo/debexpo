@@ -1,0 +1,387 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"PO-Revision-Date: 2022-11-28 10:48+0000\n"
+"Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
+"Language-Team: Persian <https://hosted.weblate.org/projects/debexpo/accounts/"
+"fa/>\n"
+"Language: fa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.15-dev\n"
+
+#: accounts/forms.py
+msgid "Full name"
+msgstr "نام کامل"
+
+#: accounts/forms.py
+msgid "E-mail"
+msgstr "رایانامه"
+
+#: accounts/forms.py
+msgid ""
+"A user with this name is already registered on the system. If it is you, use "
+"that account!  Otherwise use a different name to register."
+msgstr ""
+"کاربری با این نام از پیش روی سامانه ثبت‌نام کرده. اکر خودتانید، از همان حساب "
+"استفاده کنید!  در غیر این صورت از نامی دیگر برای ثبت‌نام استفاده کنید."
+
+#: accounts/forms.py
+msgid "A user with this email address is already registered on the system"
+msgstr "کاربری با این نشانی رایانامه از پیش روی سامانه ثبت‌نام کرده"
+
+#: accounts/forms.py
+msgid "Account type"
+msgstr "گونهٔ حساب"
+
+#: accounts/forms.py
+msgid "Maintainer"
+msgstr "نگه‌دارنده"
+
+#: accounts/forms.py
+msgid "Sponsor"
+msgstr "حامی"
+
+#: accounts/forms.py
+msgid "A sponsor account must be registered with your @debian.org address"
+msgstr "حساب حامی باید با نشانی ‪@debian.org‬تان ثبت شود"
+
+#: accounts/forms.py
+msgid "Spam detected"
+msgstr "هرزنامه شناسایی شد"
+
+#: accounts/forms.py
+msgid "You requested a password reset"
+msgstr "درخواست بازنشانی گذرواژه دادید"
+
+#: accounts/models.py
+msgid "Contributor"
+msgstr "مشارکت کننده"
+
+#: accounts/models.py
+msgid "Debian Maintainer (DM)"
+msgstr "نگه‌دارندهٔ دبیان (DM)"
+
+#: accounts/models.py
+msgid "Debian Developer (DD)"
+msgstr "توسعه‌دهندهٔ دبیان (DD)"
+
+#: accounts/models.py
+msgid "email address"
+msgstr "نشانی رایانامه"
+
+#: accounts/models.py
+msgid "full name"
+msgstr "نام کامل"
+
+#: accounts/models.py
+msgid "Country"
+msgstr "کشور"
+
+#: accounts/models.py
+msgid "IRC Nickname"
+msgstr "نام مستعار آی‌آرسی"
+
+#: accounts/models.py
+msgid "Jabber address"
+msgstr "نشانی جبِر"
+
+#: accounts/models.py
+msgid "Language"
+msgstr "زبان"
+
+#: accounts/models.py
+msgid "Status"
+msgstr "وضعیت"
+
+#: accounts/templates/activate.html accounts/templates/change-email.html
+msgid "Check your email"
+msgstr "رایانامه‌تان را بررسی کنید"
+
+#: accounts/templates/activate.html
+msgid ""
+"An email has been sent to the email address you specified. Check it for "
+"instructions on how to activate your account."
+msgstr ""
+"رایانامه‌ای به نشانی رایانامه‌ای که مشخّص کرده‌اید فرستاده شده. برای "
+"دستورالعمل‌ها دربارهٔ چگونگی فعّال کردن حسابتان، بررسیش کنید."
+
+#: accounts/templates/activated.html
+msgid "User activated"
+msgstr "کاربر فعّال شد"
+
+#: accounts/templates/activated.html
+msgid "Your account has been activated."
+msgstr "حسابتان فعّال شد."
+
+#: accounts/templates/activated.html
+#, python-format
+msgid "You can now <a href=\"%(u_profile)s\">proceed to login</a>."
+msgstr "اکنون می‌توانید <a href=\"%(u_profile)s\">وارد شوید</a>."
+
+#: accounts/templates/activated.html
+msgid "Invalid verification key"
+msgstr "کلید تأیید نامعتبر"
+
+#: accounts/templates/activated.html
+msgid ""
+"The verification key you entered has not been recognised. Please try again."
+msgstr "کلید صحت‌سنجی‌ای که وارد کرده‌اید شناخته نشد. لطفاً دوباره تلاش کنید."
+
+#: accounts/templates/change-email-complete.html
+msgid "Email changed successfully"
+msgstr "رایانامه با موفّقیت تغییر کرد"
+
+#: accounts/templates/change-email-complete.html
+msgid "Your email has been successfully updated"
+msgstr "رایانامه‌تان با موفّقیت به‌روز شد"
+
+#: accounts/templates/change-email-complete.html
+msgid "Go back to"
+msgstr "بازگشت به"
+
+#: accounts/templates/change-email-complete.html
+msgid "my account"
+msgstr "حسابم"
+
+#: accounts/templates/change-email-confirm.html accounts/views.py
+msgid "Change your email"
+msgstr "تغییر رایانامه‌تان"
+
+#: accounts/templates/change-email-confirm.html
+#: accounts/templates/password-reset-confirm.html
+#: accounts/templates/password-reset-form.html accounts/templates/profile.html
+#: accounts/templates/register.html
+msgid "Submit"
+msgstr "ثبت"
+
+#: accounts/templates/change-email-confirm.html
+#: accounts/templates/password-reset-confirm.html
+msgid "Invalid reset link"
+msgstr "پیوند بازنشانی نامعتبر"
+
+#: accounts/templates/change-email.html
+msgid ""
+"An email has been sent to your new email address. Check it for instructions "
+"on how to validate it."
+msgstr ""
+"رایانامه‌ای به نشانی رایانامهٔ جدیدتان فرستاده شده. برای دستورالعمل‌ها "
+"دربارهٔ چگونگی اعتبارسنجی، بررسیش کنید."
+
+#: accounts/templates/email-change.html
+msgid ""
+"Hello,\n"
+"\n"
+"Confirm your new email by visiting the following address\n"
+"in your web-browser:"
+msgstr ""
+"درود،\n"
+"\n"
+"رایانامهٔ جدیدتان را با سر زدن به نشانی زیر\n"
+"در مرورگر وبتان تأیید کنید:"
+
+#: accounts/templates/email-change.html
+#, python-format
+msgid ""
+"If you didn't change your email on your account on %(site_name)s,\n"
+"you can safely ignore this email."
+msgstr ""
+"اگر رایانامهٔ حسابتان روی %(site_name)s را تغییر نداده‌اید،\n"
+"می‌توانید این رایانامه را نادیده بگیرید."
+
+#: accounts/templates/email-change.html
+#: accounts/templates/email-password-creation.html
+#: accounts/templates/email-password-reset.html
+msgid "Thanks,"
+msgstr "سپاس،"
+
+#: accounts/templates/email-password-creation.html
+msgid ""
+"Hello,\n"
+"\n"
+"Please activate your account by visiting the following address\n"
+"in your web-browser:"
+msgstr ""
+"درود،\n"
+"\n"
+"لطفاً حسابتان را با سر زدن به نشانی زیر\n"
+"در مرورگر وبتان فعّال کنید:"
+
+#: accounts/templates/email-password-creation.html
+#, python-format
+msgid ""
+"If you didn't create an account on %(site_name)s,\n"
+"you can safely ignore this email."
+msgstr ""
+"اگر حسابی روی %(site_name)s نساخته‌اید،\n"
+"می‌توانید این رایانامه را نادیده بگیرید."
+
+#: accounts/templates/email-password-reset.html
+msgid ""
+"Hello,\n"
+"\n"
+"You can reset your password by clicking on the link below. If you did\n"
+"not request a password reset, then you can ignore this."
+msgstr ""
+"درود،\n"
+"\n"
+"می‌توانید گذرواژه‌تان را با زدن روی پیوند زیر بازنشانی کنید.\n"
+"اگر درخواست بازنشانی گذرواژه نداده‌اید، می‌توانید این رایانامه را نادیده "
+"بگیرید."
+
+#: accounts/templates/login.html
+msgid "Login"
+msgstr "ورود"
+
+#: accounts/templates/login.html
+msgid "Please login to continue"
+msgstr "برای ادامه لطفاً وارد شوید"
+
+#: accounts/templates/login.html
+msgid "Your username and password didn't match. Please try again."
+msgstr "نام کاربری و گذرواژه‌تان مطابق نبودند. لطفاً دوباره تلاش کنید."
+
+#: accounts/templates/login.html
+msgid ""
+"Your account doesn't have access to this page. To proceed, please login with "
+"an account that has access."
+msgstr ""
+"حسابتان به این صفحه دسترسی ندارد. برای ادامه لطفاً با حسابی که این دسترسی را "
+"دارد وارد شوید."
+
+#: accounts/templates/login.html
+msgid "Please login to see this page."
+msgstr "برای دیدن این صفحه لطفاً وارد شوید."
+
+#: accounts/templates/login.html
+msgid "E-mail:"
+msgstr "رایانامه:"
+
+#: accounts/templates/login.html
+msgid "Secure log-in:"
+msgstr "ورود امن:"
+
+#: accounts/templates/login.html
+msgid "Switch to SSL"
+msgstr "تغییر به SSL"
+
+#: accounts/templates/login.html
+msgid "Did you lose your password?"
+msgstr "گذرواژه‌تان را گم کردید؟"
+
+#: accounts/templates/login.html
+msgid "Try resetting your password."
+msgstr "بازنشانیش را بیازمایید."
+
+#: accounts/templates/password-reset-complete.html
+msgid "Okay! You have a new password"
+msgstr "قبول! گذرواژه‌ای جدید دارید"
+
+#: accounts/templates/password-reset-complete.html
+msgid "You can use your new password to"
+msgstr "می‌توانید از گذرواژهٔ جدیدتان استفاده کنید برای"
+
+#: accounts/templates/password-reset-complete.html
+msgid "log in"
+msgstr "ورود"
+
+#: accounts/templates/password-reset-confirm.html
+msgid "Reset your password"
+msgstr "بازنشانی گذرواژه‌تان"
+
+#: accounts/templates/password-reset-done.html
+msgid "Password recovery in progress"
+msgstr "بازیابی گذرواژه در حال انجام"
+
+#: accounts/templates/password-reset-done.html
+msgid ""
+"Okay! You should now get an email with a link. Click the\n"
+"link."
+msgstr ""
+"قبول! اکنون باید رایانامه‌ای با یک پیوند بگیرید.\n"
+"روی پیوند بزنید."
+
+#: accounts/templates/password-reset-form.html
+msgid "Password recovery"
+msgstr "بازیابی گذرواژه"
+
+#: accounts/templates/password-reset-form.html
+msgid "If you forgot your password, here is what we can do for you."
+msgstr "اگر گذرواژه‌تان را فراموش کردید، می‌ةوانیم این کار را برایتان بکنیم."
+
+#: accounts/templates/password-reset-form.html
+msgid "You should fill out this form."
+msgstr "باید این فرم را پر کنید."
+
+#: accounts/templates/password-reset-form.html
+msgid "You will get an email with a link. Click the link."
+msgstr "رایانامه‌ای با یک پیوند خواهید گرفت. روی پیوند بزنید."
+
+#: accounts/templates/password-reset-form.html
+msgid "Then the web app will allow you to change your password."
+msgstr "کارهٔ وب خواهد گذاشت که گذرواژه‌تان را عوض کنید."
+
+#: accounts/templates/password-reset-form.html
+msgid "Not super hard. If you're ready, I'm ready."
+msgstr "خیلی سخت نیست. اگرحاضری، حاضرم."
+
+#: accounts/templates/profile.html
+msgid "My account"
+msgstr "حسابم"
+
+#: accounts/templates/profile.html
+msgid "Change details"
+msgstr "تغییر جزییات"
+
+#: accounts/templates/profile.html
+msgid "Change GPG key"
+msgstr "تغییر کلید GPG"
+
+#: accounts/templates/profile.html
+msgid "Fingerprint:"
+msgstr "اثر انگشت:"
+
+#: accounts/templates/profile.html
+msgid ""
+"Please use the output of <tt>gpg --export --export-options export-minimal --"
+"armor <i>keyid</i></tt>"
+msgstr ""
+"لطفاً از خروجی ‪ <tt>gpg --export --export-options export-minimal --armor "
+"<i>keyid</i></tt>‬ استفاده کنید"
+
+#: accounts/templates/profile.html
+msgid "Remove"
+msgstr "برداشتن"
+
+#: accounts/templates/profile.html
+msgid "Change password"
+msgstr "تغییر گذرواژه"
+
+#: accounts/templates/profile.html
+msgid "Change other details"
+msgstr "تغییر دیگر جزییات"
+
+#: accounts/templates/profile.html
+msgid "Public sponsor info"
+msgstr "اطّلاعات حامی عمومی"
+
+#: accounts/templates/register.html
+msgid "Sign up for an account"
+msgstr "ثبت ‌نام برای حساب"
+
+#: accounts/templates/register.html
+msgid "Account details"
+msgstr "جزییات حساب"
+
+#: accounts/views.py
+msgid "Next step: Confirm your email address"
+msgstr "گام بعدی: نشانی رایانامه‌تان را تأیید کنید"
