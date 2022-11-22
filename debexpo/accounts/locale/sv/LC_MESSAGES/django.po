@@ -1,0 +1,362 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"PO-Revision-Date: 2022-12-23 14:56+0000\n"
+"Last-Translator: Luna Jernberg <droidbittin@gmail.com>\n"
+"Language-Team: Swedish <https://hosted.weblate.org/projects/debexpo/accounts/"
+"sv/>\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.15.1-dev\n"
+
+#: accounts/forms.py
+msgid "Full name"
+msgstr "Fullständigt namn"
+
+#: accounts/forms.py
+msgid "E-mail"
+msgstr "E-post"
+
+#: accounts/forms.py
+msgid ""
+"A user with this name is already registered on the system. If it is you, use "
+"that account!  Otherwise use a different name to register."
+msgstr ""
+"En användare med detta namn är redan registrerad i systemet. Om det är du, "
+"använd det kontot! Använd annars ett annat namn för att registrera dig."
+
+#: accounts/forms.py
+msgid "A user with this email address is already registered on the system"
+msgstr "En användare med denna e-postadress är redan registrerad i systemet"
+
+#: accounts/forms.py
+msgid "Account type"
+msgstr "Kontotyp"
+
+#: accounts/forms.py
+msgid "Maintainer"
+msgstr "Underhållare"
+
+#: accounts/forms.py
+msgid "Sponsor"
+msgstr "Sponsor"
+
+#: accounts/forms.py
+msgid "A sponsor account must be registered with your @debian.org address"
+msgstr "Ett sponsorkonto måste registreras med din @debian.org-adress"
+
+#: accounts/forms.py
+msgid "Spam detected"
+msgstr "Spam upptäckt"
+
+#: accounts/forms.py
+msgid "You requested a password reset"
+msgstr "Du begärde en lösenordsåterställning"
+
+#: accounts/models.py
+msgid "Contributor"
+msgstr "Bidragsgivare"
+
+#: accounts/models.py
+msgid "Debian Maintainer (DM)"
+msgstr ""
+
+#: accounts/models.py
+msgid "Debian Developer (DD)"
+msgstr ""
+
+#: accounts/models.py
+msgid "email address"
+msgstr "e-post adress"
+
+#: accounts/models.py
+msgid "full name"
+msgstr "fullständigt namn"
+
+#: accounts/models.py
+msgid "Country"
+msgstr "Land"
+
+#: accounts/models.py
+msgid "IRC Nickname"
+msgstr "IRC smeknamn"
+
+#: accounts/models.py
+msgid "Jabber address"
+msgstr "Jabber address"
+
+#: accounts/models.py
+msgid "Language"
+msgstr "Språk"
+
+#: accounts/models.py
+msgid "Status"
+msgstr "Status"
+
+#: accounts/templates/activate.html accounts/templates/change-email.html
+msgid "Check your email"
+msgstr ""
+
+#: accounts/templates/activate.html
+msgid ""
+"An email has been sent to the email address you specified. Check it for "
+"instructions on how to activate your account."
+msgstr ""
+
+#: accounts/templates/activated.html
+msgid "User activated"
+msgstr "Användare aktiverad"
+
+#: accounts/templates/activated.html
+msgid "Your account has been activated."
+msgstr "Ditt konto har aktiverats."
+
+#: accounts/templates/activated.html
+#, python-format
+msgid "You can now <a href=\"%(u_profile)s\">proceed to login</a>."
+msgstr "Du kan nu <a href=\"%(u_profile)s\">fortsätta att logga in</a>."
+
+#: accounts/templates/activated.html
+msgid "Invalid verification key"
+msgstr "Ogiltig verifieringsnyckel"
+
+#: accounts/templates/activated.html
+msgid ""
+"The verification key you entered has not been recognised. Please try again."
+msgstr ""
+
+#: accounts/templates/change-email-complete.html
+msgid "Email changed successfully"
+msgstr "E-postadressen har ändrats"
+
+#: accounts/templates/change-email-complete.html
+msgid "Your email has been successfully updated"
+msgstr "Din e-post har uppdaterats"
+
+#: accounts/templates/change-email-complete.html
+msgid "Go back to"
+msgstr "Gå tillbaka till"
+
+#: accounts/templates/change-email-complete.html
+msgid "my account"
+msgstr "mitt konto"
+
+#: accounts/templates/change-email-confirm.html accounts/views.py
+msgid "Change your email"
+msgstr "Ändra din e-post"
+
+#: accounts/templates/change-email-confirm.html
+#: accounts/templates/password-reset-confirm.html
+#: accounts/templates/password-reset-form.html accounts/templates/profile.html
+#: accounts/templates/register.html
+msgid "Submit"
+msgstr "Skicka in"
+
+#: accounts/templates/change-email-confirm.html
+#: accounts/templates/password-reset-confirm.html
+msgid "Invalid reset link"
+msgstr "Ogiltig återställningslänk"
+
+#: accounts/templates/change-email.html
+msgid ""
+"An email has been sent to your new email address. Check it for instructions "
+"on how to validate it."
+msgstr ""
+
+#: accounts/templates/email-change.html
+msgid ""
+"Hello,\n"
+"\n"
+"Confirm your new email by visiting the following address\n"
+"in your web-browser:"
+msgstr ""
+
+#: accounts/templates/email-change.html
+#, python-format
+msgid ""
+"If you didn't change your email on your account on %(site_name)s,\n"
+"you can safely ignore this email."
+msgstr ""
+
+#: accounts/templates/email-change.html
+#: accounts/templates/email-password-creation.html
+#: accounts/templates/email-password-reset.html
+msgid "Thanks,"
+msgstr "Tack,"
+
+#: accounts/templates/email-password-creation.html
+msgid ""
+"Hello,\n"
+"\n"
+"Please activate your account by visiting the following address\n"
+"in your web-browser:"
+msgstr ""
+
+#: accounts/templates/email-password-creation.html
+#, python-format
+msgid ""
+"If you didn't create an account on %(site_name)s,\n"
+"you can safely ignore this email."
+msgstr ""
+
+#: accounts/templates/email-password-reset.html
+msgid ""
+"Hello,\n"
+"\n"
+"You can reset your password by clicking on the link below. If you did\n"
+"not request a password reset, then you can ignore this."
+msgstr ""
+
+#: accounts/templates/login.html
+msgid "Login"
+msgstr "Logga in"
+
+#: accounts/templates/login.html
+msgid "Please login to continue"
+msgstr "Var vänlig logga in för att fortsätta"
+
+#: accounts/templates/login.html
+msgid "Your username and password didn't match. Please try again."
+msgstr "Ditt användarnamn och lösenord matchade inte. Var god försök igen."
+
+#: accounts/templates/login.html
+msgid ""
+"Your account doesn't have access to this page. To proceed, please login with "
+"an account that has access."
+msgstr ""
+"Ditt konto har inte åtkomst till den här sidan. För att fortsätta, vänligen "
+"logga in med ett konto som har åtkomst."
+
+#: accounts/templates/login.html
+msgid "Please login to see this page."
+msgstr "Logga in för att se den här sidan."
+
+#: accounts/templates/login.html
+msgid "E-mail:"
+msgstr "E-post:"
+
+#: accounts/templates/login.html
+msgid "Secure log-in:"
+msgstr "Säker inloggning:"
+
+#: accounts/templates/login.html
+msgid "Switch to SSL"
+msgstr "Ändra till SSL"
+
+#: accounts/templates/login.html
+msgid "Did you lose your password?"
+msgstr "Har du tappat bort ditt lösenord?"
+
+#: accounts/templates/login.html
+msgid "Try resetting your password."
+msgstr "Prova att återställa ditt lösenord."
+
+#: accounts/templates/password-reset-complete.html
+msgid "Okay! You have a new password"
+msgstr "Okej! Du har ett nytt lösenord"
+
+#: accounts/templates/password-reset-complete.html
+msgid "You can use your new password to"
+msgstr "Du kan använda ditt nya lösenord för att"
+
+#: accounts/templates/password-reset-complete.html
+msgid "log in"
+msgstr "logga in"
+
+#: accounts/templates/password-reset-confirm.html
+msgid "Reset your password"
+msgstr "Återställ ditt lösenord"
+
+#: accounts/templates/password-reset-done.html
+msgid "Password recovery in progress"
+msgstr "Lösenordsåterställning pågår"
+
+#: accounts/templates/password-reset-done.html
+msgid ""
+"Okay! You should now get an email with a link. Click the\n"
+"link."
+msgstr ""
+
+#: accounts/templates/password-reset-form.html
+msgid "Password recovery"
+msgstr ""
+
+#: accounts/templates/password-reset-form.html
+msgid "If you forgot your password, here is what we can do for you."
+msgstr ""
+
+#: accounts/templates/password-reset-form.html
+msgid "You should fill out this form."
+msgstr ""
+
+#: accounts/templates/password-reset-form.html
+msgid "You will get an email with a link. Click the link."
+msgstr "Du får ett mail med en länk. Klicka på länken."
+
+#: accounts/templates/password-reset-form.html
+msgid "Then the web app will allow you to change your password."
+msgstr ""
+
+#: accounts/templates/password-reset-form.html
+msgid "Not super hard. If you're ready, I'm ready."
+msgstr "Inte supersvårt. Om du är redo så är jag redo."
+
+#: accounts/templates/profile.html
+msgid "My account"
+msgstr "Mitt konto"
+
+#: accounts/templates/profile.html
+msgid "Change details"
+msgstr "Ändra detaljer"
+
+#: accounts/templates/profile.html
+msgid "Change GPG key"
+msgstr "Ändra GPG-nyckel"
+
+#: accounts/templates/profile.html
+msgid "Fingerprint:"
+msgstr "Fingeravtryck:"
+
+#: accounts/templates/profile.html
+msgid ""
+"Please use the output of <tt>gpg --export --export-options export-minimal --"
+"armor <i>keyid</i></tt>"
+msgstr ""
+
+#: accounts/templates/profile.html
+msgid "Remove"
+msgstr "Ta bort"
+
+#: accounts/templates/profile.html
+msgid "Change password"
+msgstr "Ändra lösenord"
+
+#: accounts/templates/profile.html
+msgid "Change other details"
+msgstr "Ändra andra detaljer"
+
+#: accounts/templates/profile.html
+msgid "Public sponsor info"
+msgstr "Publik sponsorinformation"
+
+#: accounts/templates/register.html
+msgid "Sign up for an account"
+msgstr "Registrera dig för ett konto"
+
+#: accounts/templates/register.html
+msgid "Account details"
+msgstr ""
+
+#: accounts/views.py
+msgid "Next step: Confirm your email address"
+msgstr "Nästa steg: Bekräfta din e-postadress"
