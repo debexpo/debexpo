@@ -1,0 +1,282 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-22 20:12+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: packages/models.py
+msgid "Name"
+msgstr ""
+
+#: packages/models.py
+msgid "Needs a sponsor?"
+msgstr ""
+
+#: packages/models.py
+msgid "In Debian?"
+msgstr ""
+
+#: packages/models.py packages/templates/packages-list.html
+msgid "Version"
+msgstr ""
+
+#: packages/models.py
+msgid "Changes"
+msgstr ""
+
+#: packages/models.py
+msgid "Closes bugs"
+msgstr ""
+
+#: packages/models.py
+msgid "Git storage ref"
+msgstr ""
+
+#: packages/models.py
+msgid "Upload date"
+msgstr ""
+
+#: packages/models.py
+msgid "Maintainer"
+msgstr ""
+
+#: packages/models.py
+msgid "Homepage"
+msgstr ""
+
+#: packages/models.py
+msgid "VCS"
+msgstr ""
+
+#: packages/models.py packages/templates/packages-list.html
+msgid "Description"
+msgstr ""
+
+#: packages/templates/package.html
+#, python-format
+msgid "<h1>Details about package %(name)s</h1>"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Name:"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Uploader:"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Description:"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Subscribe:"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Edit your subscription"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Needs a sponsor:"
+msgstr ""
+
+#: packages/templates/package.html packages/templates/packages-list.html
+msgid "Yes"
+msgstr ""
+
+#: packages/templates/package.html packages/templates/packages-list.html
+msgid "No"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Change"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Delete package:"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Admin package deletion"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Delete this package"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Package uploads"
+msgstr ""
+
+#: packages/templates/package.html
+#, python-format
+msgid "Upload #%(index)s"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Admin upload deletion"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Delete this upload"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Information"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Version:"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "View RFS template"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Uploaded:"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Source package:"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Distribution:"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Section:"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Priority:"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Homepage:"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Closes bugs:"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Changelog"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "QA information"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Comments"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Needs work"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Ready"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Package has been uploaded to Debian"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "No comments"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "New comment"
+msgstr ""
+
+#: packages/templates/package.html
+msgid "Submit"
+msgstr ""
+
+#: packages/templates/packages-list.html
+msgid "Package"
+msgstr ""
+
+#: packages/templates/packages-list.html
+msgid "Uploader"
+msgstr ""
+
+#: packages/templates/packages-list.html
+msgid "Needs a sponsor"
+msgstr ""
+
+#: packages/templates/packages-list.html
+msgid "Already in Debian"
+msgstr ""
+
+#: packages/templates/packages-list.html
+msgid "No packages"
+msgstr ""
+
+#: packages/views.py
+msgid "Today"
+msgstr ""
+
+#: packages/views.py
+msgid "Yesterday"
+msgstr ""
+
+#: packages/views.py
+msgid "Some days ago"
+msgstr ""
+
+#: packages/views.py
+msgid "Older packages"
+msgstr ""
+
+#: packages/views.py
+msgid "Uploaded long ago"
+msgstr ""
+
+#: packages/views.py
+msgid "Packages for {} {}"
+msgstr ""
+
+#: packages/views.py
+msgid "Package list"
+msgstr ""
+
+#: packages/views.py
+#, python-format
+msgid "%s packages"
+msgstr ""
+
+#: packages/views.py
+#, python-format
+msgid "A feed of packages on %s"
+msgstr ""
+
+#: packages/views.py
+msgid "Package {} uploaded by {}."
+msgstr ""
+
+#: packages/views.py
+msgid "Uploader is currently looking for a sponsor."
+msgstr ""
+
+#: packages/views.py
+msgid "Uploader is currently not looking for a sponsor."
+msgstr ""
