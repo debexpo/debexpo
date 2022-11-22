@@ -1,0 +1,356 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-22 21:19+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: accounts/forms.py
+msgid "Full name"
+msgstr ""
+
+#: accounts/forms.py
+msgid "E-mail"
+msgstr ""
+
+#: accounts/forms.py
+msgid ""
+"A user with this name is already registered on the system. If it is you, use "
+"that account!  Otherwise use a different name to register."
+msgstr ""
+
+#: accounts/forms.py
+msgid "A user with this email address is already registered on the system"
+msgstr ""
+
+#: accounts/forms.py
+msgid "Account type"
+msgstr ""
+
+#: accounts/forms.py
+msgid "Maintainer"
+msgstr ""
+
+#: accounts/forms.py
+msgid "Sponsor"
+msgstr ""
+
+#: accounts/forms.py
+msgid "A sponsor account must be registered with your @debian.org address"
+msgstr ""
+
+#: accounts/forms.py
+msgid "Spam detected"
+msgstr ""
+
+#: accounts/forms.py
+msgid "You requested a password reset"
+msgstr ""
+
+#: accounts/models.py
+msgid "Contributor"
+msgstr ""
+
+#: accounts/models.py
+msgid "Debian Maintainer (DM)"
+msgstr ""
+
+#: accounts/models.py
+msgid "Debian Developer (DD)"
+msgstr ""
+
+#: accounts/models.py
+msgid "email address"
+msgstr ""
+
+#: accounts/models.py
+msgid "full name"
+msgstr ""
+
+#: accounts/models.py
+msgid "Country"
+msgstr ""
+
+#: accounts/models.py
+msgid "IRC Nickname"
+msgstr ""
+
+#: accounts/models.py
+msgid "Jabber address"
+msgstr ""
+
+#: accounts/models.py
+msgid "Language"
+msgstr ""
+
+#: accounts/models.py
+msgid "Status"
+msgstr ""
+
+#: accounts/templates/activate.html accounts/templates/change-email.html
+msgid "Check your email"
+msgstr ""
+
+#: accounts/templates/activate.html
+msgid ""
+"An email has been sent to the email address you specified. Check it for "
+"instructions on how to activate your account."
+msgstr ""
+
+#: accounts/templates/activated.html
+msgid "User activated"
+msgstr ""
+
+#: accounts/templates/activated.html
+msgid "Your account has been activated."
+msgstr ""
+
+#: accounts/templates/activated.html
+#, python-format
+msgid "You can now <a href=\"%(u_profile)s\">proceed to login</a>."
+msgstr ""
+
+#: accounts/templates/activated.html
+msgid "Invalid verification key"
+msgstr ""
+
+#: accounts/templates/activated.html
+msgid ""
+"The verification key you entered has not been recognised. Please try again."
+msgstr ""
+
+#: accounts/templates/change-email-complete.html
+msgid "Email changed successfully"
+msgstr ""
+
+#: accounts/templates/change-email-complete.html
+msgid "Your email has been successfully updated"
+msgstr ""
+
+#: accounts/templates/change-email-complete.html
+msgid "Go back to"
+msgstr ""
+
+#: accounts/templates/change-email-complete.html
+msgid "my account"
+msgstr ""
+
+#: accounts/templates/change-email-confirm.html accounts/views.py
+msgid "Change your email"
+msgstr ""
+
+#: accounts/templates/change-email-confirm.html
+#: accounts/templates/password-reset-confirm.html
+#: accounts/templates/password-reset-form.html accounts/templates/profile.html
+#: accounts/templates/register.html
+msgid "Submit"
+msgstr ""
+
+#: accounts/templates/change-email-confirm.html
+#: accounts/templates/password-reset-confirm.html
+msgid "Invalid reset link"
+msgstr ""
+
+#: accounts/templates/change-email.html
+msgid ""
+"An email has been sent to your new email address. Check it for instructions "
+"on how to validate it."
+msgstr ""
+
+#: accounts/templates/email-change.html
+msgid ""
+"Hello,\n"
+"\n"
+"Confirm your new email by visiting the following address\n"
+"in your web-browser:"
+msgstr ""
+
+#: accounts/templates/email-change.html
+#, python-format
+msgid ""
+"If you didn't change your email on your account on %(site_name)s,\n"
+"you can safely ignore this email."
+msgstr ""
+
+#: accounts/templates/email-change.html
+#: accounts/templates/email-password-creation.html
+#: accounts/templates/email-password-reset.html
+msgid "Thanks,"
+msgstr ""
+
+#: accounts/templates/email-password-creation.html
+msgid ""
+"Hello,\n"
+"\n"
+"Please activate your account by visiting the following address\n"
+"in your web-browser:"
+msgstr ""
+
+#: accounts/templates/email-password-creation.html
+#, python-format
+msgid ""
+"If you didn't create an account on %(site_name)s,\n"
+"you can safely ignore this email."
+msgstr ""
+
+#: accounts/templates/email-password-reset.html
+msgid ""
+"Hello,\n"
+"\n"
+"You can reset your password by clicking on the link below. If you did\n"
+"not request a password reset, then you can ignore this."
+msgstr ""
+
+#: accounts/templates/login.html
+msgid "Login"
+msgstr ""
+
+#: accounts/templates/login.html
+msgid "Please login to continue"
+msgstr ""
+
+#: accounts/templates/login.html
+msgid "Your username and password didn't match. Please try again."
+msgstr ""
+
+#: accounts/templates/login.html
+msgid ""
+"Your account doesn't have access to this page. To proceed, please login with "
+"an account that has access."
+msgstr ""
+
+#: accounts/templates/login.html
+msgid "Please login to see this page."
+msgstr ""
+
+#: accounts/templates/login.html
+msgid "E-mail:"
+msgstr ""
+
+#: accounts/templates/login.html
+msgid "Secure log-in:"
+msgstr ""
+
+#: accounts/templates/login.html
+msgid "Switch to SSL"
+msgstr ""
+
+#: accounts/templates/login.html
+msgid "Did you lose your password?"
+msgstr ""
+
+#: accounts/templates/login.html
+msgid "Try resetting your password."
+msgstr ""
+
+#: accounts/templates/password-reset-complete.html
+msgid "Okay! You have a new password"
+msgstr ""
+
+#: accounts/templates/password-reset-complete.html
+msgid "You can use your new password to"
+msgstr ""
+
+#: accounts/templates/password-reset-complete.html
+msgid "log in"
+msgstr ""
+
+#: accounts/templates/password-reset-confirm.html
+msgid "Reset your password"
+msgstr ""
+
+#: accounts/templates/password-reset-done.html
+msgid "Password recovery in progress"
+msgstr ""
+
+#: accounts/templates/password-reset-done.html
+msgid ""
+"Okay! You should now get an email with a link. Click the\n"
+"link."
+msgstr ""
+
+#: accounts/templates/password-reset-form.html
+msgid "Password recovery"
+msgstr ""
+
+#: accounts/templates/password-reset-form.html
+msgid "If you forgot your password, here is what we can do for you."
+msgstr ""
+
+#: accounts/templates/password-reset-form.html
+msgid "You should fill out this form."
+msgstr ""
+
+#: accounts/templates/password-reset-form.html
+msgid "You will get an email with a link. Click the link."
+msgstr ""
+
+#: accounts/templates/password-reset-form.html
+msgid "Then the web app will allow you to change your password."
+msgstr ""
+
+#: accounts/templates/password-reset-form.html
+msgid "Not super hard. If you're ready, I'm ready."
+msgstr ""
+
+#: accounts/templates/profile.html
+msgid "My account"
+msgstr ""
+
+#: accounts/templates/profile.html
+msgid "Change details"
+msgstr ""
+
+#: accounts/templates/profile.html
+msgid "Change GPG key"
+msgstr ""
+
+#: accounts/templates/profile.html
+msgid "Fingerprint:"
+msgstr ""
+
+#: accounts/templates/profile.html
+msgid ""
+"Please use the output of <tt>gpg --export --export-options export-minimal --"
+"armor <i>keyid</i></tt>"
+msgstr ""
+
+#: accounts/templates/profile.html
+msgid "Remove"
+msgstr ""
+
+#: accounts/templates/profile.html
+msgid "Change password"
+msgstr ""
+
+#: accounts/templates/profile.html
+msgid "Change other details"
+msgstr ""
+
+#: accounts/templates/profile.html
+msgid "Public sponsor info"
+msgstr ""
+
+#: accounts/templates/register.html
+msgid "Sign up for an account"
+msgstr ""
+
+#: accounts/templates/register.html
+msgid "Account details"
+msgstr ""
+
+#: accounts/views.py
+msgid "Next step: Confirm your email address"
+msgstr ""

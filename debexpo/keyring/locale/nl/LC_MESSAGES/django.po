@@ -1,0 +1,58 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-22 21:19+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: keyring/models.py
+msgid "Type"
+msgstr ""
+
+#: keyring/models.py
+msgid "GPG Algorithm ID"
+msgstr ""
+
+#: keyring/models.py
+msgid "Minimal size requirment"
+msgstr ""
+
+#: keyring/models.py
+msgid "Multiple keys not supported"
+msgstr ""
+
+#: keyring/models.py
+msgid "Key algorithm not supported. Key must be one of the following: {}"
+msgstr ""
+
+#: keyring/models.py
+msgid "Key size too small. Need at least {} bits."
+msgstr ""
+
+#: keyring/models.py
+msgid "OpenGPG key"
+msgstr ""
+
+#: keyring/models.py
+msgid "Fingerprint"
+msgstr ""
+
+#: keyring/models.py
+msgid "Last update on"
+msgstr ""
+
+#: keyring/models.py
+msgid "Size"
+msgstr ""
