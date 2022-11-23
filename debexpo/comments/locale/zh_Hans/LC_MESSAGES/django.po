@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-23 19:45+0000\n"
-"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
+"PO-Revision-Date: 2022-11-24 01:15+0000\n"
+"Last-Translator: billchenchina <billchenchina2001@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/comments/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -69,7 +69,7 @@ msgstr ""
 
 #: comments/templates/subscribe.html
 msgid "Submit"
-msgstr ""
+msgstr "提交"
 
 #: comments/templates/subscribe.html
 msgid "Back to package details"
