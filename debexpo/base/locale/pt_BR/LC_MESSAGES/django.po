@@ -376,8 +376,20 @@ msgstr ""
 "práticas relacionadas a pacotes Debian"
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "Guide for Debian Maintainers"
+msgstr ""
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "Successor to the “Debian New Maintainers’ Guide”."
+msgstr ""
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
 msgid "Debian Mentors FAQ"
 msgstr "FAQ Debian Mentors"
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "(Debian Wiki)"
+msgstr "(Wiki do Debian)"
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
 msgid ""
@@ -750,10 +762,6 @@ msgid "A must read resource to learn basics of Debian source packages"
 msgstr ""
 "Um recurso de leitura obrigatória para aprender o básico sobre pacotes-fonte "
 "do Debian"
-
-#: base/templates/qa.html
-msgid "(Debian Wiki)"
-msgstr "(Wiki do Debian)"
 
 #: base/templates/qa.html
 msgid "What is the Debian policy?"

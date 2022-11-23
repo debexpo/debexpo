@@ -294,7 +294,19 @@ msgid ""
 msgstr ""
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "Guide for Debian Maintainers"
+msgstr ""
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "Successor to the “Debian New Maintainers’ Guide”."
+msgstr ""
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
 msgid "Debian Mentors FAQ"
+msgstr ""
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "(Debian Wiki)"
 msgstr ""
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
@@ -558,10 +570,6 @@ msgstr ""
 
 #: base/templates/qa.html
 msgid "A must read resource to learn basics of Debian source packages"
-msgstr ""
-
-#: base/templates/qa.html
-msgid "(Debian Wiki)"
 msgstr ""
 
 #: base/templates/qa.html
