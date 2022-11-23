@@ -1,0 +1,284 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"PO-Revision-Date: 2023-09-10 08:55+0000\n"
+"Last-Translator: Kentaro Hayashi <kenhys@gmail.com>\n"
+"Language-Team: Japanese <https://hosted.weblate.org/projects/debexpo/"
+"packages/ja/>\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.0.1-dev\n"
+
+#: packages/models.py
+msgid "Name"
+msgstr "名前"
+
+#: packages/models.py
+msgid "Needs a sponsor?"
+msgstr "スポンサーが必要ですか？"
+
+#: packages/models.py
+msgid "In Debian?"
+msgstr "Debianに含まれていますか？"
+
+#: packages/models.py packages/templates/packages-list.html
+msgid "Version"
+msgstr "バージョン"
+
+#: packages/models.py
+msgid "Changes"
+msgstr "変更点"
+
+#: packages/models.py
+msgid "Closes bugs"
+msgstr "バグを閉じる"
+
+#: packages/models.py
+msgid "Git storage ref"
+msgstr "Gitコミット参照"
+
+#: packages/models.py
+msgid "Upload date"
+msgstr "アップロード日"
+
+#: packages/models.py
+msgid "Maintainer"
+msgstr "(パッケージの)メンテナーになりたい"
+
+#: packages/models.py
+msgid "Homepage"
+msgstr "ホームページ"
+
+#: packages/models.py
+msgid "VCS"
+msgstr "VCS"
+
+#: packages/models.py packages/templates/packages-list.html
+msgid "Description"
+msgstr "説明"
+
+#: packages/templates/package.html
+#, python-format
+msgid "<h1>Details about package %(name)s</h1>"
+msgstr "<h1> パッケージ%(name)sに関する詳細</h1>"
+
+#: packages/templates/package.html
+msgid "Name:"
+msgstr "名前："
+
+#: packages/templates/package.html
+msgid "Uploader:"
+msgstr "アップロード者："
+
+#: packages/templates/package.html
+msgid "Description:"
+msgstr "説明："
+
+#: packages/templates/package.html
+msgid "Subscribe:"
+msgstr "サブスクライブ："
+
+#: packages/templates/package.html
+msgid "Edit your subscription"
+msgstr "サブスクリプションを編集"
+
+#: packages/templates/package.html
+msgid "Needs a sponsor:"
+msgstr "スポンサーが必要："
+
+#: packages/templates/package.html packages/templates/packages-list.html
+msgid "Yes"
+msgstr "はい"
+
+#: packages/templates/package.html packages/templates/packages-list.html
+msgid "No"
+msgstr "いいえ"
+
+#: packages/templates/package.html
+msgid "Change"
+msgstr "変更"
+
+#: packages/templates/package.html
+msgid "Delete package:"
+msgstr "パッケージを削除："
+
+#: packages/templates/package.html
+msgid "Admin package deletion"
+msgstr "管理者によるパッケージの削除"
+
+#: packages/templates/package.html
+msgid "Delete this package"
+msgstr "このパッケージの削除"
+
+#: packages/templates/package.html
+msgid "Package uploads"
+msgstr "パッケージのアップロード"
+
+#: packages/templates/package.html
+#, python-format
+msgid "Upload #%(index)s"
+msgstr "アップロード #%(index)s"
+
+#: packages/templates/package.html
+msgid "Admin upload deletion"
+msgstr "管理者によるアップロード削除"
+
+#: packages/templates/package.html
+msgid "Delete this upload"
+msgstr "アップロードを削除"
+
+#: packages/templates/package.html
+msgid "Information"
+msgstr "情報"
+
+#: packages/templates/package.html
+msgid "Version:"
+msgstr "バージョン："
+
+#: packages/templates/package.html
+msgid "View RFS template"
+msgstr "RFSテンプレートを参考にする"
+
+#: packages/templates/package.html
+msgid "Uploaded:"
+msgstr "アップロード："
+
+#: packages/templates/package.html
+msgid "Source package:"
+msgstr "ソースパッケージ："
+
+#: packages/templates/package.html
+msgid "Distribution:"
+msgstr "ディストリビューション："
+
+#: packages/templates/package.html
+msgid "Section:"
+msgstr "セクション："
+
+#: packages/templates/package.html
+msgid "Priority:"
+msgstr "優先度："
+
+#: packages/templates/package.html
+msgid "Homepage:"
+msgstr "ホームページ："
+
+#: packages/templates/package.html
+msgid "Closes bugs:"
+msgstr "解決したバグ："
+
+#: packages/templates/package.html
+msgid "Changelog"
+msgstr "変更点まとめ"
+
+#: packages/templates/package.html
+msgid "QA information"
+msgstr "QA情報"
+
+#: packages/templates/package.html
+msgid "Comments"
+msgstr "コメント"
+
+#: packages/templates/package.html
+msgid "Needs work"
+msgstr "要作業"
+
+#: packages/templates/package.html
+msgid "Ready"
+msgstr "準備完了"
+
+#: packages/templates/package.html
+msgid "Package has been uploaded to Debian"
+msgstr "パッケージがDebianにアップロードされました"
+
+#: packages/templates/package.html
+msgid "No comments"
+msgstr "コメントがありません"
+
+#: packages/templates/package.html
+msgid "New comment"
+msgstr "新規コメント"
+
+#: packages/templates/package.html
+msgid "Submit"
+msgstr "送信"
+
+#: packages/templates/packages-list.html
+msgid "Package"
+msgstr "パッケージ"
+
+#: packages/templates/packages-list.html
+msgid "Uploader"
+msgstr "アップローダー"
+
+#: packages/templates/packages-list.html
+msgid "Needs a sponsor"
+msgstr "要スポンサー"
+
+#: packages/templates/packages-list.html
+msgid "Already in Debian"
+msgstr "すでにDebianにある"
+
+#: packages/templates/packages-list.html
+msgid "No packages"
+msgstr "パッケージがない"
+
+#: packages/views.py
+msgid "Today"
+msgstr "今日"
+
+#: packages/views.py
+msgid "Yesterday"
+msgstr "昨日"
+
+#: packages/views.py
+msgid "Some days ago"
+msgstr "数日前"
+
+#: packages/views.py
+msgid "Older packages"
+msgstr "古いパッケージ"
+
+#: packages/views.py
+msgid "Uploaded long ago"
+msgstr "しばらく前にアップロードされた"
+
+#: packages/views.py
+msgid "Packages for {} {}"
+msgstr "{} {}向けパッケージ"
+
+#: packages/views.py
+msgid "Package list"
+msgstr "パッケージ一覧"
+
+#: packages/views.py
+#, python-format
+msgid "%s packages"
+msgstr "%s パッケージ"
+
+#: packages/views.py
+#, python-format
+msgid "A feed of packages on %s"
+msgstr "%s のパッケージのフィード"
+
+#: packages/views.py
+msgid "Package {} uploaded by {}."
+msgstr "パッケージ {} は {}によってアップロード。"
+
+#: packages/views.py
+msgid "Uploader is currently looking for a sponsor."
+msgstr "アップローダーはスポンサーを探しています。"
+
+#: packages/views.py
+msgid "Uploader is currently not looking for a sponsor."
+msgstr "アップローダーは現在スポンサーを必要としていません。"

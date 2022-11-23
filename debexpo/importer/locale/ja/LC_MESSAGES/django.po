@@ -1,0 +1,150 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"PO-Revision-Date: 2023-01-01 10:47+0000\n"
+"Last-Translator: Kentaro Hayashi <kenhys@gmail.com>\n"
+"Language-Team: Japanese <https://hosted.weblate.org/projects/debexpo/"
+"importer/ja/>\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.15.1-dev\n"
+
+#: importer/models.py
+#, python-brace-format
+msgid "{error}: REJECTED"
+msgstr "{error}：リジェクトされました"
+
+#: importer/models.py
+#, python-brace-format
+msgid "{package}_{version}: ACCEPTED on {site} ({distribution})"
+msgstr "{package}_{version}： {site} ({distribution})に受理されました"
+
+#: importer/models.py
+msgid "Changes is invalid"
+msgstr "変更が正しくありません"
+
+#: importer/models.py
+msgid "Dsc failed to parse"
+msgstr "Dscファイルのパースに失敗しました"
+
+#: importer/models.py
+msgid "Dsc is invalid"
+msgstr "Dscが正しくありません"
+
+#: importer/models.py
+msgid "Failed to extract source package"
+msgstr "ソースパッケージの展開に失敗しました"
+
+#: importer/models.py
+msgid "Source package is invalid"
+msgstr "ソースパッケージが正しくありません"
+
+#: importer/models.py
+msgid "Invalid distribution"
+msgstr "ディストリビューションが正しくありません"
+
+#: importer/models.py
+#, python-brace-format
+msgid ""
+"Distribution {distribution} is not supported on mentors\n"
+"\n"
+"List of supported distributions:\n"
+"\n"
+"{allowed}"
+msgstr ""
+"ディストリビューション {distribution} はmentorsでサポートされていません\n"
+"\n"
+"サポートされているディストリビューション一覧：\n"
+"\n"
+"{allowed}"
+
+#: importer/templates/email-importer-accept.html
+#, python-format
+msgid ""
+"Hi.\n"
+"\n"
+"Your upload of the package '%(name)s' to %(site)s was\n"
+"successful. Others can now see it. The URL of your package is:\n"
+msgstr ""
+"こんにちは\n"
+"\n"
+"パッケージ '%(name)s' を %(site)s にアップロードすることに成功しました。\n"
+"公開されているので閲覧できます。パッケージのURL：\n"
+
+#: importer/templates/email-importer-accept.html
+msgid ""
+"\n"
+"The respective dsc file can be found at:\n"
+msgstr ""
+"\n"
+"それぞれのdscはこちらで参照できます：\n"
+
+#: importer/templates/email-importer-accept.html
+msgid ""
+"\n"
+"If you do not yet have a sponsor for your package you may want to go to:\n"
+msgstr ""
+"\n"
+"まだスポンサーがいないなら、こちらを参照してください：\n"
+
+#: importer/templates/email-importer-accept.html
+msgid ""
+"\n"
+"and set the \"Seeking a sponsor\" option to highlight your package on the\n"
+"welcome page.\n"
+"\n"
+"You can also send an RFS (request for sponsorship) to the debian-mentors\n"
+"mailing list. Your package page will give your suggestions on how to\n"
+"send that mail.\n"
+"\n"
+"Good luck in finding a sponsor!\n"
+"\n"
+"Thanks,"
+msgstr ""
+"\n"
+"そして、\"スポンサーを探している\" オプションをあなたのパッケージが\n"
+"目立つように設定してください。\n"
+"\n"
+"RFS (スポンサーシップの依頼) を debian-mentors メーリングリストに送ることも\n"
+"できます。あなたのパッケージのページでは、どのようにそのメールを\n"
+"送るとよいかの提案をしています。\n"
+"\n"
+"スポンサーが見つかると良いですね！\n"
+"\n"
+"それでは。"
+
+#: importer/templates/email-importer-reject.html
+#, python-format
+msgid ""
+"Hello,\n"
+"\n"
+"Unfortunately your package \"%(source)s\" was rejected\n"
+"because of the following reason:\n"
+"\n"
+"%(error)s\n"
+"\n"
+"%(details)s\n"
+"\n"
+"Please try to fix it and re-upload. Thanks,"
+msgstr ""
+"こんにちは。\n"
+"\n"
+"残念ですが、あなたがパッケージングした\"%(source)s\"はリジェクトされました。"
+"\n"
+"その理由は次のとおりです：\n"
+"\n"
+"%(error)s\n"
+"\n"
+"%(details)s\n"
+"\n"
+"問題を修正して再度アップロードしてください。"

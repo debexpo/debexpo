@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"PO-Revision-Date: 2022-11-23 19:30+0000\n"
+"Last-Translator: Kentaro Hayashi <kenhys@gmail.com>\n"
+"Language-Team: Japanese <https://hosted.weblate.org/projects/debexpo/keyring/"
+"ja/>\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.15-dev\n"
+
+#: keyring/models.py
+msgid "Type"
+msgstr "タイプ"
+
+#: keyring/models.py
+msgid "GPG Algorithm ID"
+msgstr "GPGアルゴリズムID"
+
+#: keyring/models.py
+msgid "Minimal size requirment"
+msgstr "最低限必要なサイズ"
+
+#: keyring/models.py
+msgid "Multiple keys not supported"
+msgstr "複数の鍵はサポートされていません"
+
+#: keyring/models.py
+msgid "Key algorithm not supported. Key must be one of the following: {}"
+msgstr "鍵のアルゴリズムがサポートされていません。鍵はつぎのいずれかである必要があり"
+"ます：{}"
+
+#: keyring/models.py
+msgid "Key size too small. Need at least {} bits."
+msgstr "鍵長が小さすぎます。少なくとも{}ビット必要です。"
+
+#: keyring/models.py
+msgid "OpenGPG key"
+msgstr "OpenPGP鍵"
+
+#: keyring/models.py
+msgid "Fingerprint"
+msgstr "フィンガープリント"
+
+#: keyring/models.py
+msgid "Last update on"
+msgstr "最終更新日"
+
+#: keyring/models.py
+msgid "Size"
+msgstr "サイズ"

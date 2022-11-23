@@ -1,0 +1,120 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"PO-Revision-Date: 2022-11-23 20:07+0000\n"
+"Last-Translator: Kentaro Hayashi <kenhys@gmail.com>\n"
+"Language-Team: Japanese <https://hosted.weblate.org/projects/debexpo/"
+"comments/ja/>\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.15-dev\n"
+
+#: comments/models.py
+msgid "Not reviewed"
+msgstr "未レビュー"
+
+#: comments/models.py
+msgid "Needs work"
+msgstr "要作業"
+
+#: comments/models.py
+msgid "Ready"
+msgstr "準備完了"
+
+#: comments/models.py
+msgid "Name"
+msgstr "名前"
+
+#: comments/models.py
+msgid "Subscribe to uploads"
+msgstr "アップロードするためサブスクライブ"
+
+#: comments/models.py
+msgid "Subscribe to comments"
+msgstr "コメントするためサブスクライフ"
+
+#: comments/models.py
+msgid "Comment"
+msgstr "コメント"
+
+#: comments/models.py
+msgid "Comment date"
+msgstr "コメントした日"
+
+#: comments/models.py
+msgid "Upload outcome"
+msgstr "アップロード結果"
+
+#: comments/models.py
+msgid "Uploaded to debian"
+msgstr "Debianにアップロード"
+
+#: comments/models.py
+msgid "New comment on package {}"
+msgstr "パッケージに対する新規コメント {}"
+
+#: comments/templates/subscribe.html
+msgid "Subscribe to package "
+msgstr "パッケージをサブスクライブ "
+
+#: comments/templates/subscribe.html
+msgid "Submit"
+msgstr "送信"
+
+#: comments/templates/subscribe.html
+msgid "Back to package details"
+msgstr "パッケージの詳細に戻る"
+
+#: comments/templates/subscribe.html
+msgid "Back to subscription list"
+msgstr "サブスクリプションリストに戻る"
+
+#: comments/templates/subscriptions.html
+msgid "My subscription list"
+msgstr "サブスクリプションリスト"
+
+#: comments/templates/subscriptions.html
+msgid "Package"
+msgstr "パッケージ"
+
+#: comments/templates/subscriptions.html
+msgid "Notification on"
+msgstr "通知"
+
+#: comments/templates/subscriptions.html
+msgid "Edit"
+msgstr "編集"
+
+#: comments/templates/subscriptions.html
+msgid "Update"
+msgstr "更新"
+
+#: comments/templates/subscriptions.html
+msgid "Unsubscribe"
+msgstr "登録解除"
+
+#: comments/templates/subscriptions.html
+msgid "No subscriptions"
+msgstr "登録なし"
+
+#: comments/templates/subscriptions.html
+msgid "Add new subscription"
+msgstr "新規登録追加"
+
+#: comments/templates/subscriptions.html
+msgid "Package Name:"
+msgstr "パッケージ名："
+
+#: comments/templates/subscriptions.html
+msgid "Create subscription"
+msgstr "サブスクリプション作成"
