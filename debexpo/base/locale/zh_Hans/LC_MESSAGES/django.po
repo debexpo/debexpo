@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-23 19:45+0000\n"
+"PO-Revision-Date: 2022-11-24 01:15+0000\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/debexpo/zh_Hans/>\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #: base/templates/base.html
 msgid "Start page"
-msgstr ""
+msgstr "开始页面"
 
 #: base/templates/base.html
 msgid "Package list"
@@ -33,7 +33,7 @@ msgstr "维护者"
 
 #: base/templates/base.html
 msgid "Reviews"
-msgstr ""
+msgstr "评阅"
 
 #: base/templates/base.html
 msgid "Sponsors"
@@ -41,7 +41,7 @@ msgstr ""
 
 #: base/templates/base.html
 msgid "Q &amp; A"
-msgstr ""
+msgstr "常见问题（Q &amp; A）"
 
 #: base/templates/base.html
 msgid "Contact"
@@ -1146,7 +1146,7 @@ msgstr ""
 
 #: base/templates/sponsor-rfs.html
 msgid "Reviewing Packages"
-msgstr ""
+msgstr "评阅软件包"
 
 #: base/templates/sponsor-rfs.html
 #, python-format
@@ -1183,7 +1183,7 @@ msgstr ""
 
 #: base/templates/sponsor-rfs.html
 msgid "The package has significant problems or cannot not be uploaded at all."
-msgstr ""
+msgstr "软件包有重大问题，完全无法得到上传。"
 
 #: base/templates/sponsor-rfs.html
 msgid ""

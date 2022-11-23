@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-24 01:15+0000\n"
+"PO-Revision-Date: 2022-11-24 20:15+0000\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/keyring/zh_Hans/>\n"
@@ -37,7 +37,7 @@ msgstr "不支持多个键"
 
 #: keyring/models.py
 msgid "Key algorithm not supported. Key must be one of the following: {}"
-msgstr ""
+msgstr "密钥算法不受支持。密钥必须为如下之一：{}"
 
 #: keyring/models.py
 msgid "Key size too small. Need at least {} bits."

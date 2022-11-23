@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-24 01:15+0000\n"
+"PO-Revision-Date: 2022-11-24 20:15+0000\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/accounts/zh_Hans/>\n"
@@ -266,61 +266,63 @@ msgstr "切换至 SSL"
 
 #: accounts/templates/login.html
 msgid "Did you lose your password?"
-msgstr ""
+msgstr "你忘记密码了吗？"
 
 #: accounts/templates/login.html
 msgid "Try resetting your password."
-msgstr ""
+msgstr "请尝试重置密码。"
 
 #: accounts/templates/password-reset-complete.html
 msgid "Okay! You have a new password"
-msgstr ""
+msgstr "成功！你正在使用新的密码"
 
 #: accounts/templates/password-reset-complete.html
 msgid "You can use your new password to"
-msgstr ""
+msgstr "你现在可以使用新密码来"
 
 #: accounts/templates/password-reset-complete.html
 msgid "log in"
-msgstr ""
+msgstr "登录"
 
 #: accounts/templates/password-reset-confirm.html
 msgid "Reset your password"
-msgstr ""
+msgstr "重置你的密码"
 
 #: accounts/templates/password-reset-done.html
 msgid "Password recovery in progress"
-msgstr ""
+msgstr "正在进行密码恢复"
 
 #: accounts/templates/password-reset-done.html
 msgid ""
 "Okay! You should now get an email with a link. Click the\n"
 "link."
 msgstr ""
+"成功！你现在应当收到了包含链接的一封电子邮件。\n"
+"请点击其中的链接。"
 
 #: accounts/templates/password-reset-form.html
 msgid "Password recovery"
-msgstr ""
+msgstr "密码恢复"
 
 #: accounts/templates/password-reset-form.html
 msgid "If you forgot your password, here is what we can do for you."
-msgstr ""
+msgstr "如果你忘记了密码，可以采取下面的操作得到帮助。"
 
 #: accounts/templates/password-reset-form.html
 msgid "You should fill out this form."
-msgstr ""
+msgstr "请填写此处的表格。"
 
 #: accounts/templates/password-reset-form.html
 msgid "You will get an email with a link. Click the link."
-msgstr ""
+msgstr "你将收到包含链接的一封电子邮件。点击其中的链接。"
 
 #: accounts/templates/password-reset-form.html
 msgid "Then the web app will allow you to change your password."
-msgstr ""
+msgstr "之后，打开的网页能帮助你修改你的密码。"
 
 #: accounts/templates/password-reset-form.html
 msgid "Not super hard. If you're ready, I'm ready."
-msgstr ""
+msgstr "这并不难。如果你准备好了，我们可以随时开始。"
 
 #: accounts/templates/profile.html
 msgid "My account"
@@ -328,33 +330,35 @@ msgstr "我的帐户"
 
 #: accounts/templates/profile.html
 msgid "Change details"
-msgstr ""
+msgstr "变更的详细信息"
 
 #: accounts/templates/profile.html
 msgid "Change GPG key"
-msgstr ""
+msgstr "修改 GPG 公钥"
 
 #: accounts/templates/profile.html
 msgid "Fingerprint:"
-msgstr ""
+msgstr "指纹："
 
 #: accounts/templates/profile.html
 msgid ""
 "Please use the output of <tt>gpg --export --export-options export-minimal --"
 "armor <i>keyid</i></tt>"
 msgstr ""
+"请使用 <tt>gpg --export --export-options export-minimal --armor "
+"<i>密钥id</i></tt> 的输出"
 
 #: accounts/templates/profile.html
 msgid "Remove"
-msgstr ""
+msgstr "移除"
 
 #: accounts/templates/profile.html
 msgid "Change password"
-msgstr ""
+msgstr "修改密码"
 
 #: accounts/templates/profile.html
 msgid "Change other details"
-msgstr ""
+msgstr "修改其他详细信息"
 
 #: accounts/templates/profile.html
 msgid "Public sponsor info"
@@ -362,12 +366,12 @@ msgstr ""
 
 #: accounts/templates/register.html
 msgid "Sign up for an account"
-msgstr ""
+msgstr "注册帐户"
 
 #: accounts/templates/register.html
 msgid "Account details"
-msgstr ""
+msgstr "帐户细节"
 
 #: accounts/views.py
 msgid "Next step: Confirm your email address"
-msgstr ""
+msgstr "下一步：确认你的电子邮件地址"
