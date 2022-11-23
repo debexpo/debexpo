@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-23 20:07+0000\n"
+"PO-Revision-Date: 2022-11-24 01:15+0000\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/keyring/zh_Hans/>\n"
@@ -49,11 +49,11 @@ msgstr ""
 
 #: keyring/models.py
 msgid "Fingerprint"
-msgstr ""
+msgstr "指纹"
 
 #: keyring/models.py
 msgid "Last update on"
-msgstr ""
+msgstr "最近更新时间"
 
 #: keyring/models.py
 msgid "Size"

@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
 "PO-Revision-Date: 2022-11-24 01:15+0000\n"
-"Last-Translator: billchenchina <billchenchina2001@gmail.com>\n"
+"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/accounts/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -56,7 +56,7 @@ msgstr "赞助账户需使用 @debian.org 邮箱注册"
 
 #: accounts/forms.py
 msgid "Spam detected"
-msgstr ""
+msgstr "探测到垃圾信息"
 
 #: accounts/forms.py
 msgid "You requested a password reset"
@@ -236,33 +236,33 @@ msgstr "登录"
 
 #: accounts/templates/login.html
 msgid "Please login to continue"
-msgstr ""
+msgstr "请登录以继续"
 
 #: accounts/templates/login.html
 msgid "Your username and password didn't match. Please try again."
-msgstr ""
+msgstr "你的用户名和密码不匹配。请再试一次。"
 
 #: accounts/templates/login.html
 msgid ""
 "Your account doesn't have access to this page. To proceed, please login with "
 "an account that has access."
-msgstr ""
+msgstr "你的帐号没有访问此页面的权限。如需继续，请使用拥有对应权限的帐号重新登录。"
 
 #: accounts/templates/login.html
 msgid "Please login to see this page."
-msgstr ""
+msgstr "请登录以查看此页面。"
 
 #: accounts/templates/login.html
 msgid "E-mail:"
-msgstr ""
+msgstr "电子邮件："
 
 #: accounts/templates/login.html
 msgid "Secure log-in:"
-msgstr ""
+msgstr "安全登录："
 
 #: accounts/templates/login.html
 msgid "Switch to SSL"
-msgstr ""
+msgstr "切换至 SSL"
 
 #: accounts/templates/login.html
 msgid "Did you lose your password?"
