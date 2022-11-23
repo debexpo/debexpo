@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-23 20:07+0000\n"
+"PO-Revision-Date: 2022-11-24 01:15+0000\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/packages/zh_Hans/>\n"
@@ -49,7 +49,7 @@ msgstr ""
 
 #: packages/models.py
 msgid "Upload date"
-msgstr ""
+msgstr "上传日期"
 
 #: packages/models.py
 msgid "Maintainer"
@@ -57,40 +57,40 @@ msgstr "维护者"
 
 #: packages/models.py
 msgid "Homepage"
-msgstr ""
+msgstr "主页"
 
 #: packages/models.py
 msgid "VCS"
-msgstr ""
+msgstr "版本控制系统"
 
 #: packages/models.py packages/templates/packages-list.html
 msgid "Description"
-msgstr ""
+msgstr "描述"
 
 #: packages/templates/package.html
 #, python-format
 msgid "<h1>Details about package %(name)s</h1>"
-msgstr ""
+msgstr "<h1>软件包 %(name)s 的详细信息</h1>"
 
 #: packages/templates/package.html
 msgid "Name:"
-msgstr ""
+msgstr "名称："
 
 #: packages/templates/package.html
 msgid "Uploader:"
-msgstr ""
+msgstr "上传者："
 
 #: packages/templates/package.html
 msgid "Description:"
-msgstr ""
+msgstr "描述："
 
 #: packages/templates/package.html
 msgid "Subscribe:"
-msgstr ""
+msgstr "订阅："
 
 #: packages/templates/package.html
 msgid "Edit your subscription"
-msgstr ""
+msgstr "编辑你的订阅"
 
 #: packages/templates/package.html
 msgid "Needs a sponsor:"
@@ -110,7 +110,7 @@ msgstr ""
 
 #: packages/templates/package.html
 msgid "Delete package:"
-msgstr ""
+msgstr "删除软件包："
 
 #: packages/templates/package.html
 msgid "Admin package deletion"
@@ -122,7 +122,7 @@ msgstr ""
 
 #: packages/templates/package.html
 msgid "Package uploads"
-msgstr ""
+msgstr "软件包上传"
 
 #: packages/templates/package.html
 #, python-format
@@ -143,7 +143,7 @@ msgstr "消息"
 
 #: packages/templates/package.html
 msgid "Version:"
-msgstr ""
+msgstr "版本："
 
 #: packages/templates/package.html
 msgid "View RFS template"
@@ -167,11 +167,11 @@ msgstr ""
 
 #: packages/templates/package.html
 msgid "Priority:"
-msgstr ""
+msgstr "优先级："
 
 #: packages/templates/package.html
 msgid "Homepage:"
-msgstr ""
+msgstr "主页："
 
 #: packages/templates/package.html
 msgid "Closes bugs:"
@@ -179,7 +179,7 @@ msgstr ""
 
 #: packages/templates/package.html
 msgid "Changelog"
-msgstr ""
+msgstr "变更日志"
 
 #: packages/templates/package.html
 msgid "QA information"
@@ -187,15 +187,15 @@ msgstr ""
 
 #: packages/templates/package.html
 msgid "Comments"
-msgstr ""
+msgstr "评论"
 
 #: packages/templates/package.html
 msgid "Needs work"
-msgstr ""
+msgstr "需要返工"
 
 #: packages/templates/package.html
 msgid "Ready"
-msgstr ""
+msgstr "准备就绪"
 
 #: packages/templates/package.html
 msgid "Package has been uploaded to Debian"
@@ -203,11 +203,11 @@ msgstr ""
 
 #: packages/templates/package.html
 msgid "No comments"
-msgstr ""
+msgstr "无评论"
 
 #: packages/templates/package.html
 msgid "New comment"
-msgstr ""
+msgstr "新评论"
 
 #: packages/templates/package.html
 msgid "Submit"
@@ -215,11 +215,11 @@ msgstr ""
 
 #: packages/templates/packages-list.html
 msgid "Package"
-msgstr ""
+msgstr "软件包"
 
 #: packages/templates/packages-list.html
 msgid "Uploader"
-msgstr ""
+msgstr "上传者"
 
 #: packages/templates/packages-list.html
 msgid "Needs a sponsor"
@@ -231,27 +231,27 @@ msgstr ""
 
 #: packages/templates/packages-list.html
 msgid "No packages"
-msgstr ""
+msgstr "无软件包"
 
 #: packages/views.py
 msgid "Today"
-msgstr ""
+msgstr "今天"
 
 #: packages/views.py
 msgid "Yesterday"
-msgstr ""
+msgstr "昨天"
 
 #: packages/views.py
 msgid "Some days ago"
-msgstr ""
+msgstr "前几天"
 
 #: packages/views.py
 msgid "Older packages"
-msgstr ""
+msgstr "更旧的软件包"
 
 #: packages/views.py
 msgid "Uploaded long ago"
-msgstr ""
+msgstr "很久之前上传"
 
 #: packages/views.py
 msgid "Packages for {} {}"
@@ -273,7 +273,7 @@ msgstr ""
 
 #: packages/views.py
 msgid "Package {} uploaded by {}."
-msgstr ""
+msgstr "软件包 {}，上传者 {}。"
 
 #: packages/views.py
 msgid "Uploader is currently looking for a sponsor."

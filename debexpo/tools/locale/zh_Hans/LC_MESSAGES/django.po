@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-23 20:07+0000\n"
+"PO-Revision-Date: 2022-11-24 01:15+0000\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/tools/zh_Hans/>\n"
@@ -114,17 +114,17 @@ msgstr "内部错误。请联系 debexpo 的管理员 {email}"
 #: tools/debian/source.py
 #, python-brace-format
 msgid "Could not extract source package from {dsc}: {e}"
-msgstr ""
+msgstr "无法从 {dsc} 解压源码包：{e}"
 
 #: tools/debian/source.py
 #, python-brace-format
 msgid "Could not extract source package from {dsc}: extraction took too long"
-msgstr ""
+msgstr "无法从 {dsc} 解压源码包：解压缩用时过长"
 
 #: tools/files.py
 #, python-brace-format
 msgid "No checksum method available for file {filename}."
-msgstr ""
+msgstr "没有适用于文件 {filename} 的校验方法。"
 
 #: tools/files.py
 #, python-brace-format
@@ -134,29 +134,33 @@ msgid ""
 "Expected: {expected}\n"
 "Computed: {computed}"
 msgstr ""
+"文件 {filename} 的校验和检查失败。\n"
+"\n"
+"期望得到：{expected}\n"
+"实际得到：{computed}"
 
 #: tools/files.py
 #, python-brace-format
 msgid "{filename} is missing from upload"
-msgstr ""
+msgstr "{filename} 在上传中缺失"
 
 #: tools/gnupg.py
 #, python-brace-format
 msgid ""
 "Unable to verify file {filename}. No public key found for key {fingerprint}"
-msgstr ""
+msgstr "无法验证文件 {filename}。未找到密钥 {fingerprint} 的公钥"
 
 #: tools/gnupg.py
 #, python-brace-format
 msgid "{filename}: not a GPG signed file"
-msgstr ""
+msgstr "{filename}：不是 GPG 签名的文件"
 
 #: tools/gnupg.py
 #, python-brace-format
 msgid "Unknown GPG error. Output was: {output}"
-msgstr ""
+msgstr "未知的 GPG 错误。输出为：{output}"
 
 #: tools/gnupg.py
 #, python-brace-format
 msgid "Cannot add key: {key}"
-msgstr ""
+msgstr "无法添加密钥：{key}"

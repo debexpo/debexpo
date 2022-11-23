@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
 "PO-Revision-Date: 2022-11-24 01:15+0000\n"
-"Last-Translator: billchenchina <billchenchina2001@gmail.com>\n"
+"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/comments/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -21,15 +21,15 @@ msgstr ""
 
 #: comments/models.py
 msgid "Not reviewed"
-msgstr ""
+msgstr "未评阅"
 
 #: comments/models.py
 msgid "Needs work"
-msgstr ""
+msgstr "需要返工"
 
 #: comments/models.py
 msgid "Ready"
-msgstr ""
+msgstr "准备就绪"
 
 #: comments/models.py
 msgid "Name"
@@ -37,35 +37,35 @@ msgstr "名称"
 
 #: comments/models.py
 msgid "Subscribe to uploads"
-msgstr ""
+msgstr "订阅上传"
 
 #: comments/models.py
 msgid "Subscribe to comments"
-msgstr ""
+msgstr "订阅评论"
 
 #: comments/models.py
 msgid "Comment"
-msgstr ""
+msgstr "评论"
 
 #: comments/models.py
 msgid "Comment date"
-msgstr ""
+msgstr "评论日期"
 
 #: comments/models.py
 msgid "Upload outcome"
-msgstr ""
+msgstr "上传结果"
 
 #: comments/models.py
 msgid "Uploaded to debian"
-msgstr ""
+msgstr "已上传至 Debian"
 
 #: comments/models.py
 msgid "New comment on package {}"
-msgstr ""
+msgstr "软件包 {} 的新评论"
 
 #: comments/templates/subscribe.html
 msgid "Subscribe to package "
-msgstr ""
+msgstr "订阅软件包 "
 
 #: comments/templates/subscribe.html
 msgid "Submit"
@@ -73,48 +73,48 @@ msgstr "提交"
 
 #: comments/templates/subscribe.html
 msgid "Back to package details"
-msgstr ""
+msgstr "返回软件包详情"
 
 #: comments/templates/subscribe.html
 msgid "Back to subscription list"
-msgstr ""
+msgstr "返回订阅列表"
 
 #: comments/templates/subscriptions.html
 msgid "My subscription list"
-msgstr ""
+msgstr "我的订阅列表"
 
 #: comments/templates/subscriptions.html
 msgid "Package"
-msgstr ""
+msgstr "软件包"
 
 #: comments/templates/subscriptions.html
 msgid "Notification on"
-msgstr ""
+msgstr "通知于"
 
 #: comments/templates/subscriptions.html
 msgid "Edit"
-msgstr ""
+msgstr "编辑"
 
 #: comments/templates/subscriptions.html
 msgid "Update"
-msgstr ""
+msgstr "更新"
 
 #: comments/templates/subscriptions.html
 msgid "Unsubscribe"
-msgstr ""
+msgstr "取消订阅"
 
 #: comments/templates/subscriptions.html
 msgid "No subscriptions"
-msgstr ""
+msgstr "无订阅"
 
 #: comments/templates/subscriptions.html
 msgid "Add new subscription"
-msgstr ""
+msgstr "添加新订阅"
 
 #: comments/templates/subscriptions.html
 msgid "Package Name:"
-msgstr ""
+msgstr "软件包名称："
 
 #: comments/templates/subscriptions.html
 msgid "Create subscription"
-msgstr ""
+msgstr "创建订阅"
