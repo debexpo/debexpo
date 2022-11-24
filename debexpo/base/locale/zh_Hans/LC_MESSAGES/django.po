@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-24 20:15+0000\n"
-"Last-Translator: billchenchina <billchenchina2001@gmail.com>\n"
+"PO-Revision-Date: 2022-11-25 08:47+0000\n"
+"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/debexpo/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -33,7 +33,7 @@ msgstr "维护者"
 
 #: base/templates/base.html
 msgid "Reviews"
-msgstr "评阅"
+msgstr "审阅"
 
 #: base/templates/base.html
 msgid "Sponsors"
@@ -76,9 +76,8 @@ msgid "Auto-detected"
 msgstr "自动检测"
 
 #: base/templates/base.html
-#, fuzzy
 msgid "Hosting and hardware provided by"
-msgstr "硬件与服务提供者："
+msgstr "硬件与托管服务的提供方为"
 
 #: base/templates/base.html
 msgid "Source code and bugs"
@@ -94,7 +93,7 @@ msgstr "RSS"
 
 #: base/templates/contact.html
 msgid "Site contact"
-msgstr ""
+msgstr "站点联系方式"
 
 #: base/templates/contact.html
 #, python-format
@@ -165,12 +164,11 @@ msgstr ""
 "，并在需要时改进软件包。赞助者也被称为导师。"
 
 #: base/templates/index.html
-#, fuzzy
 msgid ""
 "Note, not only Debian Developer are allowed to review packages. Everyone is "
 "encouraged to review packages! We appreciate your efforts as well."
-msgstr "可以审阅软件包的不只是 Debian 开发者，每个人都可以审阅！We appreciate your "
-"efforts as well."
+msgstr "请注意，可以审阅软件包的不只是 Debian "
+"开发者，每个人都可以审阅！我们同样感谢你付出的努力。"
 
 #: base/templates/index.html
 msgid "Getting your package into Debian"
@@ -1063,7 +1061,7 @@ msgstr ""
 
 #: base/templates/sponsor-rfs.html
 msgid "Asking for Sponsorship"
-msgstr ""
+msgstr "请求协助上传"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1192,7 +1190,7 @@ msgstr ""
 
 #: base/templates/sponsor-rfs.html
 msgid "Reviewing Packages"
-msgstr "评阅软件包"
+msgstr "审阅软件包"
 
 #: base/templates/sponsor-rfs.html
 #, python-format
@@ -1202,6 +1200,9 @@ msgid ""
 "href=%(url_sponsors)s>hints for reviewing packages</a> on a dedicated "
 "webpage."
 msgstr ""
+"任何自觉能力足够的人士都可以参与审阅软件包赞助请求，不必须身为 Debian "
+"开发者。我们在一个专门的页面整理了<a "
+"href=%(url_sponsors)s>审阅软件包的小提示</a>。"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1210,22 +1211,27 @@ msgid ""
 "to the mailing list unless they explicitly ask you to send them carbon "
 "copies. You can use the following tags to indicate progress:"
 msgstr ""
+"请将评论发送电子邮件至 <em>nnn@bugs.debian.org</em>，但请不要邮件抄送审阅者或"
+"缺陷提交者。除非他们明确要求你发送邮件抄送给他们，否则请假定他们已订阅邮件列"
+"表且可自动接收邮件。你可以使用下列标签来标记审阅进度："
 
 #: base/templates/sponsor-rfs.html
 msgid ""
 "A reviewer has asked questions that need a response or has requested changes "
 "to be made. The package needs work before it can be uploaded."
-msgstr ""
+msgstr "一位审阅者存在疑问且需要得到回答，或要求做出某项修改。这个软件包在最终得到上"
+"传之前需要返工。"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
 "Somebody did a brief review of your package and it looks sane. It can still "
 "have (smaller) issues that need to be fixed before an upload."
-msgstr ""
+msgstr "某人对你的软件包做了简单的审阅，且看起来没有问题。它在最终得到上传之前仍然可"
+"能存在（较小的）需要修复的问题。"
 
 #: base/templates/sponsor-rfs.html
 msgid "Somebody is willing to look after the package until it is uploaded."
-msgstr ""
+msgstr "某人愿意持续关注该软件包直至其得到上传。"
 
 #: base/templates/sponsor-rfs.html
 msgid "The package has significant problems or cannot not be uploaded at all."
@@ -1237,10 +1243,12 @@ msgid ""
 "package is ready for upload, please consider setting yourself as the owner "
 "of the bug and tagging the bug as <em>pending</em>:"
 msgstr ""
+"如果你打算持续处理该赞助请求直到软件包适合正式上传为止，请考虑将自己设置为缺"
+"陷的所有者（owner）并为该缺陷添加 <em>pending</em> 标签："
 
 #: base/templates/sponsor-rfs.html
 msgid "Uploading Packages"
-msgstr ""
+msgstr "上传软件包"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1249,10 +1257,13 @@ msgid ""
 "changelog. The sponsor is responsible for solving the bug, not the supplier "
 "of the package or anyone related to the package itself."
 msgstr ""
+"在你完成软件包上传工作后，请发邮件至 <em>nnn-done@bugs.debian.org</em> "
+"以关闭对应的缺陷报告。请不要在 debian/changelog 中关闭 RFS 请求。赞助者应负责"
+"解决该缺陷，而非软件包的提供者或任何与软件包本身相关的人士。"
 
 #: base/templates/sponsor-rfs.html
 msgid "Notes"
-msgstr ""
+msgstr "注意"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1262,3 +1273,7 @@ msgid ""
 "tags, as appropriate. The same applies to uploaded packages for which the "
 "sponsor forgot to close the RFS bug."
 msgstr ""
+"不活跃的赞助请求应在合理的一段时间之后被关闭。我们建议在被标记为 "
+"<em>wontfix</em> 两周后、或被标记为 <em>moreinfo</em> 六周后、或其他情况下六"
+"个月之后将其认定为不活跃。这个建议也适用于已上传的软件包其赞助请求（RFS "
+"缺陷）被忘记关闭的情况。"

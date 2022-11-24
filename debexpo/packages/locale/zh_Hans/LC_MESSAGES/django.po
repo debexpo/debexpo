@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-24 20:15+0000\n"
+"PO-Revision-Date: 2022-11-25 08:47+0000\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/packages/zh_Hans/>\n"
@@ -269,7 +269,7 @@ msgstr "%s 个软件包"
 #: packages/views.py
 #, python-format
 msgid "A feed of packages on %s"
-msgstr ""
+msgstr "%s 上软件包的摘要信息"
 
 #: packages/views.py
 msgid "Package {} uploaded by {}."

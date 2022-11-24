@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-24 01:15+0000\n"
+"PO-Revision-Date: 2022-11-25 08:47+0000\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/comments/zh_Hans/>\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #: comments/models.py
 msgid "Not reviewed"
-msgstr "未评阅"
+msgstr "未审阅"
 
 #: comments/models.py
 msgid "Needs work"

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-24 20:15+0000\n"
+"PO-Revision-Date: 2022-11-25 08:47+0000\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/accounts/zh_Hans/>\n"
@@ -207,7 +207,7 @@ msgid ""
 msgstr ""
 "你好，\n"
 "\n"
-"请在浏览器中打开以下链接来激活你的账号你的帐号："
+"请在浏览器中打开以下链接来激活你的帐户："
 
 #: accounts/templates/email-password-creation.html
 #, python-format
@@ -362,7 +362,7 @@ msgstr "修改其他详细信息"
 
 #: accounts/templates/profile.html
 msgid "Public sponsor info"
-msgstr ""
+msgstr "公开赞助者信息"
 
 #: accounts/templates/register.html
 msgid "Sign up for an account"
