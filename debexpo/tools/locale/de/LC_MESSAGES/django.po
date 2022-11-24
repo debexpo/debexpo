@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-23 20:07+0000\n"
-"Last-Translator: Eric Haberstroh <ehaberstroh@gmail.com>\n"
+"PO-Revision-Date: 2022-11-24 20:15+0000\n"
+"Last-Translator: Wolfgang Wagner <wolfgang.wagner@vertexer.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/debexpo/tools/de/>"
 "\n"
 "Language: de\n"
@@ -37,6 +37,12 @@ msgid ""
 "using dpkg-buildpackage directly use the default flags or -S for a source "
 "only upload)"
 msgstr ""
+"DSC fehlt in den Änderungen\n"
+"Vergewissern Sie sich, dass Sie den vollständigen Quellcode einbinden (wenn "
+"Sie sbuild verwenden, stellen Sie sicher, dass Sie die Option --source oder "
+"ein entsprechendes Konfigurationselement verwenden; wenn Sie dpkg-"
+"buildpackage direkt verwenden, verwenden Sie die Standardflags oder -S für "
+"einen reinen Quellcode-Upload)"
 
 #: tools/debian/changes.py
 #, python-brace-format
@@ -44,6 +50,9 @@ msgid ""
 "{source} exists in the official Debian archive with the version {version}/"
 "{distribution}. You may not upload a lower or equal version to this one."
 msgstr ""
+"{source} existiert im offiziellen Debian-Archiv mit der Version "
+"{version}/{distribution}. Sie dürfen keine niedrigere oder gleichwertige "
+"Version hochladen als diese."
 
 #: tools/debian/control.py
 #, python-brace-format

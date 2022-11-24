@@ -8,31 +8,38 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2022-11-24 20:15+0000\n"
+"Last-Translator: Wolfgang Wagner <wolfgang.wagner@vertexer.de>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/debexpo/accounts/"
+"de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.15-dev\n"
 
 #: accounts/forms.py
 msgid "Full name"
-msgstr ""
+msgstr "Vollständiger Name"
 
 #: accounts/forms.py
 msgid "E-mail"
-msgstr ""
+msgstr "E-Mail"
 
 #: accounts/forms.py
 msgid ""
 "A user with this name is already registered on the system. If it is you, use "
 "that account!  Otherwise use a different name to register."
 msgstr ""
+"Ein Benutzer mit diesem Namen ist bereits im System registriert. Wenn Sie es "
+"sind, verwenden Sie dieses Konto! Andernfalls verwenden Sie einen anderen "
+"Namen für die Registrierung."
 
 #: accounts/forms.py
 msgid "A user with this email address is already registered on the system"
 msgstr ""
+"Ein Benutzer mit dieser E-Mail-Adresse ist bereits im System registriert"
 
 #: accounts/forms.py
 msgid "Account type"
@@ -40,19 +47,20 @@ msgstr ""
 
 #: accounts/forms.py
 msgid "Maintainer"
-msgstr ""
+msgstr "Betreuer"
 
 #: accounts/forms.py
 msgid "Sponsor"
-msgstr ""
+msgstr "Sponsor"
 
 #: accounts/forms.py
 msgid "A sponsor account must be registered with your @debian.org address"
 msgstr ""
+"Ein Sponsorenkonto muss mit Ihrer @debian.org-Adresse registriert werden"
 
 #: accounts/forms.py
 msgid "Spam detected"
-msgstr ""
+msgstr "Spam erkannt"
 
 #: accounts/forms.py
 msgid "You requested a password reset"
@@ -96,7 +104,7 @@ msgstr ""
 
 #: accounts/models.py
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: accounts/templates/activate.html accounts/templates/change-email.html
 msgid "Check your email"
