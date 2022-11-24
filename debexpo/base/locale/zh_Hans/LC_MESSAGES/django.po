@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
 "PO-Revision-Date: 2022-11-25 08:47+0000\n"
-"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
+"Last-Translator: billchenchina <billchenchina2001@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/debexpo/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -266,6 +266,7 @@ msgstr ""
 "(<em>RFP</em>)的软件包来维护。见下文<em>WNPP</em> 。"
 
 #: base/templates/intro-maintainers.html
+#, fuzzy
 msgid ""
 "<a href=\"https://www.debian.org/devel/wnpp/\"> Work-Needing and Prospective "
 "Packages</a> (<em>WNPP</em>) is our system of announcing your intent to "
@@ -276,11 +277,17 @@ msgid ""
 "packages.debian.org/sid/reportbug\">reportbug</a></tt> tool to achieve that "
 "by selecting \"<em>wnpp</em>\" as package to report a bug to."
 msgstr ""
+"<a href=\"https://www.debian.org/devel/wnpp/\">需要投入精力和未来的软件包”</a"
+">（<em>WNPP</em>）是一个可以对你想做什么进行标记的系统。这个系统本质上是对<a "
+"href=\"https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=wnpp\""
+">WNPP伪包</a>提出的bug（你也可以在<a href=\"https://wnpp.debian.net/\""
+">这个WNPP系统</a>浏览<em>WNPP</em> bug）。如果你想提出意图，你可以使用<tt><a "
+"href=\"https://packages.debian.org/sid/reportbug\">reportbug</a></tt>工具，"
+"选中\"<em>wnpp</em>\"包，并向其提出bug。"
 
 #: base/templates/intro-maintainers.html
-#, fuzzy
 msgid "2. Make the package"
-msgstr "2. 打包"
+msgstr "2. 制作软件包"
 
 #: base/templates/intro-maintainers.html
 msgid ""
@@ -383,8 +390,8 @@ msgid ""
 "'<tt>dget</tt>' tools or even through a simple run of <tt>apt-get source ...."
 "</tt>"
 msgstr ""
-"<strong>上传软件包</strong>到%(name)s。无需将软件包上传至其他地方。任何人都可"
-"以使用浏览器或'<tt>dget</tt>'工具或运行<tt>apt-get source "
+"<strong>上传软件包</strong>到<tt>%(name)s</tt>。无需将软件包上传至其他地方。"
+"任何人都可以使用浏览器或'<tt>dget</tt>'工具或运行<tt>apt-get source "
 "....</tt>下载你的软件包"
 
 #: base/templates/intro-maintainers.html
@@ -396,7 +403,7 @@ msgid ""
 "template"
 msgstr ""
 "查阅<a href=\"%(u_my)s\">个人软件包页面</a>。你上传的软件包应该<strong>显示在"
-"那里</strong>。你可以调整设置并获取RFS（请求赞助）模板"
+"那里</strong>。在这个页面你可以调整设置，也可以获取RFS（请求赞助）模板"
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -404,7 +411,8 @@ msgid ""
 "Your package is on display on the main page of %(title)s (if you enable the "
 "\"<i>Needs a Sponsor</i>\" button) so interested sponsors will see it and "
 "hopefully check it out."
-msgstr ""
+msgstr "您的软件包会显示在 %(title)s 的主页上（如果您启用“<i>需要赞助者</i>”按钮），"
+"感兴趣的赞助商会看到它，并可能提供帮助。"
 
 #: base/templates/intro-maintainers.html
 msgid ""
@@ -412,11 +420,14 @@ msgid ""
 "that you should send out as a bug report filed against the <em>sponsorship-"
 "requests</em> pseudo-package to draw attention to your package."
 msgstr ""
+"你会看到一个<strong>RFS(请求赞助者)的模板</strong> ，你应该针对<em"
+">sponsorship-requests</em> "
+"伪包提出缺陷报告，将其发出去，这样别人才能够注意到你的软件包。"
 
 #: base/templates/intro-maintainers.html
 #, python-format
 msgid "How to upload packages to <tt>%(name)s</tt>"
-msgstr ""
+msgstr "如何上传软件包到<tt>%(name)s</tt>"
 
 #: base/templates/intro-maintainers.html
 msgid ""
@@ -426,19 +437,24 @@ msgid ""
 "href=\"https://packages.debian.org/devscripts\"><tt>debsign</tt></a>) with "
 "the GnuPG key you configured in your control panel."
 msgstr ""
+"你需要使用<a href=\"https://packages.debian.org/dput\"><tt>dput</tt></a> "
+"来上传软件包。你可以通过<em>HTTPS</em> 或<em>FTP</em> "
+"上传到我们的系统。所有上传的软件包<strong>必须</strong> 使用你配置的 GnuPG "
+"密钥签署（使用<a href=\"https://packages.debian.org/devscripts\""
+"><tt>debsign</tt></a> ）。"
 
 #: base/templates/intro-maintainers.html
 msgid "HTTPS uploads"
-msgstr ""
+msgstr "HTTPS上传"
 
 #: base/templates/intro-maintainers.html
 msgid "FTP uploads"
-msgstr ""
+msgstr "FTP上传"
 
 #: base/templates/intro-maintainers.html
 msgid ""
 "To use HTTPS put the following content to your <tt>~/.dput.cf</tt> file:"
-msgstr ""
+msgstr "要使用HTTPS，请将以下内容放到你的<tt>~/.dput.cf</tt> 文件中："
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -447,20 +463,23 @@ msgid ""
 "method make sure you sign your uploads with your GPG key! This is the "
 "corresponding <tt>~/.dput.cf</tt> file:"
 msgstr ""
+"你可以使用<em>FTP</em> 来上传软件包到%(title)s "
+"。如果你想这么做，请确保使用你的GPG密钥来签署你的上传文件。这是对应的<tt>~/."
+"dput.cf</tt> 文件："
 
 #: base/templates/intro-maintainers.html
 msgid "Once you have it set up, you can run it from your shell like this:"
-msgstr ""
+msgstr "设置完成后，您可以像这样从 shell 运行它："
 
 #: base/templates/intro-maintainers.html
 msgid ""
 "If you did everything right, you will get a confirmation mail from our site "
 "and you can start seeking a sponsor for your package."
-msgstr ""
+msgstr "如果一切无误，你会收到我们网站的确认邮件。可以开始为你的软件包寻找赞助者了。"
 
 #: base/templates/intro-maintainers.html
 msgid "4. Find a sponsor"
-msgstr ""
+msgstr "4. 寻找赞助者"
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -473,6 +492,12 @@ msgid ""
 "Debian on your behalf. Have a look to our <a href=\"%(u_sponsor)s\">sponsors "
 "page</a> to learn more on sponsors and how to find one."
 msgstr ""
+"一旦你的软件包公开可用，包括但不限于%(title)s "
+"，你就可以开始为你的软件包寻找赞助者了。如果你已经将软件包上传到 "
+"Debian，你应该询问你以前的赞助者。"
+"赞助者可以是任意一个愿意代表你将软件包上传到 Debian 的 <a href=\"https://wiki"
+".debian.org/DebianDeveloper\">Debian 开发者</a> 。请查看我们的<a href=\""
+"%(u_sponsor)s\">赞助者页面</a> 来了解更多关于赞助者与如何找到赞助者的信息。"
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -483,10 +508,13 @@ msgid ""
 "to find a sponsor. Please take a look at our page <a "
 "href=\"%(u_reviewers)s\">about package reviews</a>."
 msgstr ""
+"赞助过程的要点是审阅你的软件包，以确保它符合我们的技术要求。每个人都可以而且"
+"应该审阅其他人的包裹。此外，一个干净的软件包将增加你找到赞助者的可能性。"
+"请看看我们<a href=\"%(u_reviewers)s\">关于软件包审阅</a> 的页面。"
 
 #: base/templates/intro-maintainers.html
 msgid "The relation between you and your sponsor"
-msgstr ""
+msgstr "你和赞助者之间的关系"
 
 #: base/templates/intro-maintainers.html
 msgid ""
@@ -497,22 +525,26 @@ msgid ""
 "Debian you are treated as a full member of the community. The Debian project "
 "appreciates the work you do."
 msgstr ""
+"赞助者并不对你的软件包负责。<strong>你</strong>将被列为在 Debian "
+"中该软件包的官方维护者。如果人们发现你的软件包有问题，你会得到缺陷报告。"
+"你除了不能直接将软件包上传到 Debian 之外，您会被视为社区的正式成员。Debian "
+"项目感谢你做的工作。"
 
 #: base/templates/intro-maintainers.html
 msgid "What can I do if I don't find a sponsor?"
-msgstr ""
+msgstr "我找不到赞助者，我该怎么做？"
 
 #: base/templates/intro-maintainers.html
 msgid ""
 "Do not give up. Sponsoring can take a while. Nonetheless, here are a few "
 "hints:"
-msgstr ""
+msgstr "不要放弃。赞助可能需要一段时间。尽管如此，这里有一些提示："
 
 #: base/templates/intro-maintainers.html
 msgid ""
 "File a follow-up request to your existing <em>sponsorship-requests</em> "
 "pseudo-package."
-msgstr ""
+msgstr "在你现有的<em>sponsorship-requests</em>伪包的bug中提出跟进。"
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -523,12 +555,16 @@ msgid ""
 "there. Instead, read their individual requirements and choose the sponsor "
 "which matches you and your package best</em>."
 msgstr ""
+"将你的软件包直接提供给相关的团队和开发者。我们有一个<a href=\"%(u_sponsor)s\""
+">赞助者名单</a> ，他们可能愿意为你上传软件包。<em>请不要联系列出的每个赞助者"
+"。相反，请阅读他们自己的要求，并选择与你和你的软件包最匹配的赞助者</em> 。"
 
 #: base/templates/intro-maintainers.html
 msgid "5. Getting an upload to Debian"
-msgstr ""
+msgstr "5. 上传到 Debian"
 
 #: base/templates/intro-maintainers.html
+#, fuzzy
 msgid ""
 "Once you find a sponsor interested in your package, he or she will "
 "<em>sponsor</em> it. That means reviewing, building, and testing it and then "
@@ -542,13 +578,22 @@ msgid ""
 "social_contract#guidelines\"> Debian Free Software Guidelines</a>. "
 "ftpmaster's opinion is binding here for both your sponsor and you."
 msgstr ""
+"找到一个对你的软件包感兴趣的赞助者后，他或她就会开始<em>赞助</em> "
+"。这意味着审阅、构建和测试它，然后把它上传到 Debian。您将会收到<em>dak</em>（"
+"Debian 用来管理其仓库的软件）的上传通知。请注意，如果您的软件包之前从未在Debi"
+"an中出现过，它需要由 <a href=\"https://ftp-master.debian.org/\">ftpmasters</"
+"a> 在清除<a href=\"https://ftp-master.debian.org/new.html\""
+">新软件包队列</a>时手动批准。他们会做一些一致性检查，并检查你的<tt>debian/"
+"copyright</tt> 文件，检查你的软件包是否符合<a href=\"https://www.debian.org/"
+"social_contract#guidelines\">Debian 自由软件指导方针（DFSG）</a> 。ftpmaster "
+"的意见在这里对你的赞助者和你都有约束力。"
 
 #: base/templates/intro-maintainers.html
 msgid "6. Maintaining your package in Debian"
-msgstr ""
+msgstr "6. 在 Debian 中维护您的软件包"
 
 #: base/templates/intro-maintainers.html
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "Please see the corresponding chapter in the <a href=\"https://www.debian.org/"
 "doc/manuals/maint-guide/update\"> New Maintainer's Guide</a> to get the "
@@ -558,8 +603,15 @@ msgid ""
 "change. Alternatively, follow <a href=\"%(u_sponsor)s\">the usual "
 "procedures</a>."
 msgstr ""
+"请参阅<a href=\"https://www.debian.org/doc/manuals/maint-guide/update\""
+">新维护者指南</a>中的相应章节以了解情况。你应该在 Debian "
+"中更新你的软件包。更新的程序与您第一次上传大体上没有区别。"
+"请将您的更新软件包上传到 %(name)s "
+"，并将你修改了什么告诉您以前的赞助者。另外，也可以按照<a href=\"%(u_sponsor)"
+"s\">常规程序</a> 。"
 
 #: base/templates/intro-maintainers.html
+#, fuzzy
 msgid ""
 "If your package passes through the sponsoring process for <em>a few</em> "
 "successive uploads without any notable correction by your sponsor, you can "
@@ -569,10 +621,16 @@ msgid ""
 "href=\"https://www.debian.org/devel/join/\">become a Debian Developer</a> "
 "giving you full membership in the project."
 msgstr ""
+"如果你的软件包<em>多次</em>通过赞助程序，并且你的赞助者没有做什么修正，"
+"你可以成为<a href=\"https://wiki.debian.org/DebianMaintainer\">Debian "
+"维护者（DM）</a>，并获取将软件包直接上传至 Debian "
+"的有限能力。与你的赞助者交流，讨论你的机会。你也可以<a href=\"https://www."
+"debian.org/devel/join/\">成为 Debian 开发者（DM）</a>，成为 Debian "
+"的正式成员。"
 
 #: base/templates/qa.html
 msgid "Questions &amp; Answers"
-msgstr ""
+msgstr "Q &amp; A"
 
 #: base/templates/qa.html
 #, python-format
@@ -581,38 +639,40 @@ msgid ""
 "or on this server. Before contacting the support please see if your question "
 "is answered here:"
 msgstr ""
+"%(site_name)s 是一个相当复杂的服务。有时可能是你的问题，有时服务器也可能出错"
+"。在联系支持之前，先看看你的问题是否在这里能够找到答案："
 
 #: base/templates/qa.html
 msgid "Getting started"
-msgstr ""
+msgstr "入门"
 
 #: base/templates/qa.html
 msgid "How do I build a package?"
-msgstr ""
+msgstr "如何构建软件包？"
 
 #: base/templates/qa.html
 msgid ""
 "If you want to learn how to create a proper Debian package you can find some "
 "interesting documentation to start with:"
-msgstr ""
+msgstr "如果你想学习如何创建一个合适的Debian软件包，下面有一些有趣的文档："
 
 #: base/templates/qa.html
 msgid ""
 "A must read resource to learn about technical specification and technical "
 "requirements of Debian packages."
-msgstr ""
+msgstr "了解 Debian 软件包的技术规范和技术要求的必读资源。"
 
 #: base/templates/qa.html
 msgid "A must read resource to learn basics of Debian source packages"
-msgstr ""
+msgstr "学习 Debian 源码包基础知识的必读资源"
 
 #: base/templates/qa.html
 msgid "(Debian Wiki)"
-msgstr ""
+msgstr "(Debian Wiki)"
 
 #: base/templates/qa.html
 msgid "What is the Debian policy?"
-msgstr ""
+msgstr "什么是 Debian 政策？"
 
 #: base/templates/qa.html
 msgid ""
@@ -623,6 +683,10 @@ msgid ""
 "system, as well as technical requirements that each package must satisfy to "
 "be included in the distribution."
 msgstr ""
+"进入 Debian 发行版的每一个软件包都必须符合<a href=\"https://www.debian.org/"
+"doc/debian-policy/ch-scope.html\">Debian 政策</a>。这份文件描述了 Debian 档案"
+"的结构、内容，以及操作系统的几个设计问题；文件里还描述了被纳入发行版中的每个"
+"软件包必须满足的技术要求。"
 
 #: base/templates/qa.html
 msgid ""
@@ -632,10 +696,13 @@ msgid ""
 "additionally the <a href=\"https://www.debian.org/doc/manuals/maint-guide/"
 "\">New Maintainer's Guide</a>."
 msgstr ""
+"政策不是教程。它是一个规定了包的规范性要求的技术手册。阅读它可以学习软件包的"
+"规范。如果你不知道如何为 Debian 打包，请再阅读<a href=\"https://www.debian."
+"org/doc/manuals/maint-guide/\">新维护者指南</a> 。"
 
 #: base/templates/qa.html
 msgid "Is my package technically okay?"
-msgstr ""
+msgstr "我的软件包有技术问题吗？"
 
 #: base/templates/qa.html
 #, python-format
@@ -649,10 +716,15 @@ msgid ""
 "your package is accepted by mentors.debian.net then let the sponsor help you "
 "with the rest."
 msgstr ""
+"当你上传你的软件包到%(site_name)s ，它将自动检查一些常见的错误，上传后你会收"
+"到一封邮件。你的软件包要么因为含有缺陷而被拒绝，要么只有一些小的技术问题。你"
+"会收到如何修复软件包的提示。如果电子邮件告诉你，你的软件包没有问题，那么赞助"
+"者仍然会做进一步检查。不要太担心。如果你的软件包被 mentors.debian.net "
+"接受了，你的赞助者会帮助你完成剩下的工作。"
 
 #: base/templates/qa.html
 msgid "What is Lintian?"
-msgstr ""
+msgstr "什么是 Lintian？"
 
 #: base/templates/qa.html
 msgid ""
@@ -661,6 +733,10 @@ msgid ""
 "yourself). It can be used to check binary and source packages for compliance "
 "with the Debian policy and for other common packaging errors."
 msgstr ""
+"Lintian 是一个 Debian 软件包检查器（它也是一个<a href=\"https://packages."
+"debian.org/lintian\">软件包</a> ，你可以自己运行它）。"
+"它可以用来检查二进制和源码包是否符合 Debian "
+"政策，也会检查一些常见的打包错误。"
 
 #: base/templates/qa.html
 msgid ""
@@ -670,17 +746,21 @@ msgid ""
 "can learn more about Lintian in the <a href=\"https://lintian.debian.org/"
 "manual/index.html\">Lintian User's Manual</a>."
 msgstr ""
+"Debian 的打包很复杂，因为我们必须考虑许多的准则来使软件包 \"符合政策\"。"
+"Lintian 试图通过提供一个自动静态分析框架来解决这个问题。你可以在 <a href="
+"\"https://lintian.debian.org/manual/index.html\">Lintian 用户手册</"
+"a>中了解更多关于 Lintian 的信息。"
 
 #: base/templates/qa.html
 msgid "Your Account"
-msgstr ""
+msgstr "你的账户"
 
 #: base/templates/qa.html
 msgid "Why do I not receive a confirmation email?"
-msgstr ""
+msgstr "为什么我没有收到确认邮件？"
 
 #: base/templates/qa.html
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "First make sure that you signed the package with the proper PGP key. Next "
 "check where you uploaded your package. By default the dput and dupload tools "
@@ -689,10 +769,14 @@ msgid ""
 "Site email</strong>: <a href=\"mailto: %(email)s\">%(email)s</a> if you "
 "require assistance."
 msgstr ""
+"首先，确保您使用正确的PGP密钥对软件包进行了签名。其次，检查你把软件包上传到哪"
+"里了。默认情况下，dput 和 dupload 工具会将软件包上传至 Debian 的官方 FTP 主服"
+"务器。主服务器会放弃你的上传。如果问题仍然存在，请发邮件到<strong>网站邮箱</s"
+"trong>：<a href=\"mailto: %(email)s\">%(email)s</a>。"
 
 #: base/templates/qa.html
 msgid "My binary packages do not show up"
-msgstr ""
+msgstr "我的二进制包没有显示出来"
 
 #: base/templates/qa.html
 #, python-format
@@ -705,8 +789,9 @@ msgid ""
 msgstr ""
 
 #: base/templates/qa.html
+#, fuzzy
 msgid "How long will it take until my upload is available to sponsors?"
-msgstr ""
+msgstr "我上传了，赞助者需要多长时间才能看到？"
 
 #: base/templates/qa.html
 #, python-format
@@ -714,13 +799,15 @@ msgid ""
 "Regardless of the upload method you choose, the importer process runs every "
 "%(beat)s minutes. The process usually takes less than a minute to process a "
 "package but it can be longer on bigger packages."
-msgstr ""
+msgstr "无论选择哪种上传方法，导入程序每%(beat)s分钟运行一次。处理包裹的过程通常不到"
+"一分钟，但在较大的包裹上可能会更长。"
 
 #: base/templates/qa.html
 msgid ""
 "During the importing process, the server does quality assurance and other "
 "checks on your package. You will receive an email when it is ready."
-msgstr ""
+msgstr "在导入过程中，服务器会对你的包裹进行质量确认和其他检查。检查结束时，你会收到"
+"一封电子邮件。"
 
 #: base/templates/qa.html
 msgid "Information for sponsors"
@@ -728,7 +815,7 @@ msgstr ""
 
 #: base/templates/qa.html base/templates/sponsor-guidelines.html
 msgid "What is a sponsor?"
-msgstr ""
+msgstr "什么是赞助者？"
 
 #: base/templates/qa.html base/templates/sponsor-guidelines.html
 msgid ""
@@ -739,18 +826,19 @@ msgstr ""
 
 #: base/templates/qa.html
 msgid "Why should I sponsor uploads"
-msgstr ""
+msgstr "为什么我应该赞助上传"
 
 #: base/templates/qa.html
 msgid ""
 "Thanks for your interest. There are a lot of sponsorees waiting for a "
 "Developer to help them with their packages, and if you want to help with the "
 "New Maintainer process this is a good step to get involved."
-msgstr ""
+msgstr "感谢您的关注。有很多需要被赞助的人在等待一个开发者帮助他们处理软件包。如果您"
+"想帮助新维护者流程，这是参与其中的好方法。"
 
 #: base/templates/qa.html
 msgid "What to do for sponsoring?"
-msgstr ""
+msgstr "赞助需要做什么？"
 
 #: base/templates/qa.html base/templates/sponsor-guidelines.html
 msgid ""
@@ -762,35 +850,45 @@ msgid ""
 "they will also learn how to maintain packages within a team and will learn "
 "skills that are crucial for Debian Developers more easily."
 msgstr ""
+"在本网站上寻找你想赞助的软件包。当你找到时，你应该下载、构建并测试它们。你遇"
+"到每一个问题都应该告诉你赞助的人，对方可以来解决这些问题。我们相信，与您的被"
+"赞助者保持联系是最重要的，这样可以使他们对在 Debian "
+"上的工作感兴趣。此外，他们也会学习如何在团队中维护软件包，并且更容易学到对 "
+"Debian 开发者来说至关重要的技能。"
 
 #: base/templates/reviewers.html
 msgid "Package reviews"
-msgstr ""
+msgstr "软件包审阅"
 
 #: base/templates/reviewers.html
+#, fuzzy
 msgid ""
 "You can help to review packages. That is possible even if you are not a "
 "Debian developer (<i>yet</i>). No reason to be shy, it is ok if you do not "
 "know everything or you are not entirely sure if your suggestions are "
 "correct. Any help is appreciated. Interested in diving in? It is easy:"
 msgstr ""
+"你可以帮助审阅软件包。即使你目前（<i>还</i>）不是一个 Debian 开发者，你也可以"
+"这样做。无需害羞，如果你不知道所有的事情，或者你不完全确定你的建议是否正确，"
+"那也没关系，感谢你的任何帮助。想要加入吗？这很容易："
 
 #: base/templates/reviewers.html
 msgid "Why should I review packages? I can not upload them!"
-msgstr ""
+msgstr "我为什么要审阅软件包？我没有权力上传！"
 
 #: base/templates/reviewers.html
 msgid ""
 "Glad you ask! There are many reasons why you should review packages even if "
 "you can't actually upload them."
-msgstr ""
+msgstr "很高兴你这么问！即使你不能真正上传包裹，你也应该帮忙审阅它们，这有很多原因。"
 
 #: base/templates/reviewers.html
 msgid ""
 "The person you are reviewing will appreciate it. Chances are, you find "
 "problems in a package the person was not aware of yet. So they can learn "
 "from you."
-msgstr ""
+msgstr "你所审查的人将会很感激你。有可能，你发现了这个人还没有意识到的软件包中存在的"
+"问题。所以他们可以向你学习。"
 
 #: base/templates/reviewers.html
 msgid ""
@@ -800,6 +898,9 @@ msgid ""
 "does not meet Debian's quality standards you can learn how <i>not to do</i> "
 "things."
 msgstr ""
+"如果你正在审查的软件包非常好，而你自己也可能学到了一些东西。此外，你也会了解"
+"到其他人正在使用的最佳实践和工作流程。即使软件包不符合 Debian "
+"的质量标准，你也可以学习到你<i>不应做</i> 的事情。"
 
 #: base/templates/reviewers.html
 msgid ""
