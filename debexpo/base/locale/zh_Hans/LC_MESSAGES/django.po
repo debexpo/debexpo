@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-25 16:25+0000\n"
-"Last-Translator: billchenchina <billchenchina2001@gmail.com>\n"
+"PO-Revision-Date: 2022-11-26 07:09+0000\n"
+"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/debexpo/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -265,20 +265,19 @@ msgid "Find a package looking for maintainers"
 msgstr "寻找一个正在寻找维护者的软件包"
 
 #: base/templates/intro-maintainers.html
-#, fuzzy
 msgid ""
 "If you want to contribute to Debian, but you do not know which packages to "
 "contribute to, take a look at \"Request for help\" (<em>RFH</em>), \"Request "
 "for adopter\" (<em>RFA</em>), \"Orphaned package\" (<em>O</em>) and "
 "\"Request for package\" (<em>RFP</em>) bugs. See <em>WNPP</em> below."
 msgstr ""
-"如果你想为Debian做贡献，但不知道该为哪些软件包做贡献时，你可以寻找状态为 "
-"\"Request for help\"(<em>RFH</em>)、\"Request for adopter\"(<em>RFA</em>)、"
-"\"Orphaned package\"(<em>O</em>)和 \"Request for package\""
-"(<em>RFP</em>)的软件包来维护。见下文<em>WNPP</em> 。"
+"如果你想为 Debian "
+"做贡献，但不知道该为哪些软件包做贡献时，你可以寻找状态为“请求帮助”(<em>RFH</"
+"em>, Request For Help)、“请求收养”(<em>RFA</em>, Request For "
+"Adopter)、“遗弃的软件包”(<em>O</em>, Orphaned package)和 “请求打包”(<em>RFP</"
+"em>, Request For Package)的软件包来维护。见下文<em>WNPP</em> 。"
 
 #: base/templates/intro-maintainers.html
-#, fuzzy
 msgid ""
 "<a href=\"https://www.debian.org/devel/wnpp/\"> Work-Needing and Prospective "
 "Packages</a> (<em>WNPP</em>) is our system of announcing your intent to "
@@ -290,12 +289,13 @@ msgid ""
 "by selecting \"<em>wnpp</em>\" as package to report a bug to."
 msgstr ""
 "<a href=\"https://www.debian.org/devel/wnpp/\">需要投入精力和未来的软件包”</a"
-">（<em>WNPP</em>）是一个可以对你想做什么进行标记的系统。这个系统本质上是对<a "
-"href=\"https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=wnpp\""
-">WNPP伪包</a>提出的bug（你也可以在<a href=\"https://wnpp.debian.net/\""
-">这个WNPP系统</a>浏览<em>WNPP</em> bug）。如果你想提出意图，你可以使用<tt><a "
-"href=\"https://packages.debian.org/sid/reportbug\">reportbug</a></tt>工具，"
-"选中\"<em>wnpp</em>\"包，并向其提出bug。"
+">（<em>WNPP</em>）是一个可以对你的打包意图和工作进度进行标记的系统。"
+"这个系统本质上是对<a href=\"https://bugs.debian.org/cgi-bin/pkgreport."
+"cgi?pkg=wnpp\">WNPP伪软件包</a>提出的缺陷报告（你也可以使用<a href=\"https"
+"://wnpp.debian.net/\">这个网页前端</a>浏览<em>WNPP</em> "
+"缺陷报告）。如果你想提交一个打包相关的缺陷报告，你可以使用<tt><a href=\"https"
+"://packages.debian.org/sid/reportbug\">reportbug</a></tt>工具，选中\""
+"<em>wnpp</em>\"包，并向其提出缺陷报告。"
 
 #: base/templates/intro-maintainers.html
 msgid "2. Make the package"
@@ -309,6 +309,9 @@ msgid ""
 "complying to the Debian policy at least (see below). Please take a look at "
 "those excellent resources:"
 msgstr ""
+"Debian 软件包必须遵守一些规范要求和指导。我们无法在这里给出有关如何构建软件包"
+"的详尽要求。简单来说，我们希望你提供一份<em>源码包</em>并使其至少遵循 Debian "
+"政策（参见下文）。请考虑查看下列重要的文档资源："
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
 msgid "The Debian Policy Manual"
@@ -348,7 +351,7 @@ msgstr "描述与 Debian 软件包相关的典型工作流程和最佳实践的�
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
 msgid "Debian Mentors FAQ"
-msgstr "Debian Mentors FAQ"
+msgstr "Debian Mentors 常见问题"
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
 msgid ""
@@ -361,7 +364,7 @@ msgid "3. Publish your package"
 msgstr "3. 发布软件包"
 
 #: base/templates/intro-maintainers.html
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "This web site is a public package repository of source packages. You can "
 "upload your package to this server (through special tools like '<tt><a "
@@ -371,11 +374,11 @@ msgid ""
 "href=\"%(u_sponsor)s\">Interested sponsors</a> can then download the package "
 "and upload it to Debian."
 msgstr ""
-"这个网站是一个公共的源代码包仓库。你可以上传软件包到服务器（使用如'<tt><a "
+"这个网站是一个公共的源代码包存储库。你可以上传软件包到服务器（使用如'<tt><a "
 "href=\"https://packages.debian.org/sid/dupload\">dupload</a></tt>'或'<tt><a "
 "href=\"https://packages.debian.org/sid/dput\">dput</a></tt>'等工具）。在软件"
-"包通过对上传的软件包进行的一些自动检查后，它会被储存到仓库中。<a href=\""
-"%(u_sponsor)s\">感兴趣的赞助者</a>可以下载它并将其上传到Debian。"
+"包通过了网站对上传的软件包进行的一些自动检查后，它会被储存到仓库中。<a href="
+"\"%(u_sponsor)s\">感兴趣的赞助者</a>可以下载它并将其上传到Debian。"
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -383,18 +386,19 @@ msgid "Using %(title)s"
 msgstr "使用 %(title)s"
 
 #: base/templates/intro-maintainers.html
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "<strong><a href=\"%(u_register)s\">Sign up for an account</a></strong>. "
 "Getting an account on this server is an automatic process and will just take "
 "a moment. We require registration so we have a valid email address where "
 "sponsors can reach you."
 msgstr ""
-"<strong><a href=\"%(u_register)s\">注册账号</a></strong>。注册账号是自动的，"
-"只需花一点时间。要求注册是因为赞助者可以使用你验证后的邮箱联系你。"
+"<strong><a href=\"%(u_register)s\">注册账号</a></strong>。在此服务器上注册账"
+"号是自动的，只需花一点时间。我们要求事先注册以便赞助者稍后可以使用你经验证的"
+"电子邮箱联系你。"
 
 #: base/templates/intro-maintainers.html
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "<strong>Upload your package</strong> to <tt>%(name)s</tt>. You do not need "
 "to put your packages into any other web space on the Internet. Everybody "
@@ -402,12 +406,12 @@ msgid ""
 "'<tt>dget</tt>' tools or even through a simple run of <tt>apt-get source ...."
 "</tt>"
 msgstr ""
-"<strong>上传软件包</strong>到<tt>%(name)s</tt>。无需将软件包上传至其他地方。"
-"任何人都可以使用浏览器或'<tt>dget</tt>'工具或运行<tt>apt-get source "
-"....</tt>下载你的软件包"
+"<strong>上传软件包</strong>到<tt>%(name)s</tt>。无需将软件包上传至互联网的其"
+"他地方。任何人都可以使用浏览器或'<tt>dget</tt>'工具或运行<tt>apt-get source "
+"....</tt>命令下载你的软件包。"
 
 #: base/templates/intro-maintainers.html
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Have a look at your <a href=\"%(u_my)s\">personal package page</a>. Your "
 "uploaded package should <strong>show up there</strong>. From there you can "
@@ -415,7 +419,7 @@ msgid ""
 "template"
 msgstr ""
 "查阅<a href=\"%(u_my)s\">个人软件包页面</a>。你上传的软件包应该<strong>显示在"
-"那里</strong>。在这个页面你可以调整设置，也可以获取RFS（请求赞助）模板"
+"那里</strong>。在这个页面你可以调整设置，也可以获取RFS（请求赞助上传）模板"
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -772,7 +776,7 @@ msgid "Why do I not receive a confirmation email?"
 msgstr "为什么我没有收到确认邮件？"
 
 #: base/templates/qa.html
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "First make sure that you signed the package with the proper PGP key. Next "
 "check where you uploaded your package. By default the dput and dupload tools "
@@ -783,8 +787,8 @@ msgid ""
 msgstr ""
 "首先，确保您使用正确的PGP密钥对软件包进行了签名。其次，检查你把软件包上传到哪"
 "里了。默认情况下，dput 和 dupload 工具会将软件包上传至 Debian 的官方 FTP 主服"
-"务器。主服务器会放弃你的上传。如果问题仍然存在，请发邮件到<strong>网站邮箱</s"
-"trong>：<a href=\"mailto: %(email)s\">%(email)s</a>。"
+"务器，而主服务器会静默地丢弃你上传的文件。如果问题仍然存在，请发邮件到<strong"
+">网站邮箱</strong>：<a href=\"mailto: %(email)s\">%(email)s</a> 以获取帮助。"
 
 #: base/templates/qa.html
 msgid "My binary packages do not show up"
@@ -799,9 +803,12 @@ msgid ""
 "them carelessly to get brand-new versions. This led to a lot of support "
 "questions. So we decided to just keep the source packages."
 msgstr ""
+"当前 %(site_name)s 网站的政策是有意地丢弃二进制软件包。这种做法有两个主要原因"
+"。首先，存储二进制包会占用大量硬盘空间。其次，过去出现过 Debian 用户直接下载"
+"这些软件包并不顾其他问题直接开始使用来获取新版本。这些情况会导致许多维护相关"
+"的问题。因此，我们决定只保留源码包。"
 
 #: base/templates/qa.html
-#, fuzzy
 msgid "How long will it take until my upload is available to sponsors?"
 msgstr "我上传了，赞助者需要多长时间才能看到？"
 
@@ -823,7 +830,7 @@ msgstr "在导入过程中，服务器会对你的包裹进行质量确认和其
 
 #: base/templates/qa.html
 msgid "Information for sponsors"
-msgstr ""
+msgstr "赞助者相关信息"
 
 #: base/templates/qa.html base/templates/sponsor-guidelines.html
 msgid "What is a sponsor?"
@@ -835,6 +842,9 @@ msgid ""
 "archive. The sponsor is responsible for the quality of the package and "
 "checks the work of the package maintainer to improve his skills."
 msgstr ""
+"赞助者指实际向官方仓库上传软件包的人员，他们同时对软件包在官方归档中的存在负"
+"责。赞助者对软件包的质量负最终责任，同时检查软件包维护者的工作以协助改进维护"
+"者的打包技能。"
 
 #: base/templates/qa.html
 msgid "Why should I sponsor uploads"
@@ -886,13 +896,14 @@ msgstr ""
 
 #: base/templates/reviewers.html
 msgid "Why should I review packages? I can not upload them!"
-msgstr "我为什么要审阅软件包？我没有权力上传！"
+msgstr "我为什么要审阅软件包？我没有权限上传！"
 
 #: base/templates/reviewers.html
 msgid ""
 "Glad you ask! There are many reasons why you should review packages even if "
 "you can't actually upload them."
-msgstr "很高兴你这么问！即使你不能真正上传包裹，你也应该帮忙审阅它们，这有很多原因。"
+msgstr "很高兴你这么问！即使你不能真正上传软件包，你也应该帮忙审阅它们，这有很多原因"
+"。"
 
 #: base/templates/reviewers.html
 msgid ""
@@ -918,21 +929,20 @@ msgstr ""
 msgid ""
 "People who <i>can</i> upload may decide based on your review whether the "
 "package in question is a suitable candidate or not."
-msgstr ""
+msgstr "<i>有权限</i>上传的人员可能会基于你的审阅意见决定对应的软件包是否适合上传。"
 
 #: base/templates/reviewers.html
 msgid "How can I review packages?"
-msgstr "如何审阅包裹？"
+msgstr "如何审阅软件包？"
 
 #: base/templates/reviewers.html
 msgid ""
 "Pick a source package and start. There is no single correct way to review "
 "packages, but chances are you may want to have a look on the following "
 "things:"
-msgstr "选择一个源码包并开始。审阅包裹的方法有很多，但以下内容或许对你有帮助："
+msgstr "选择一个源码包并开始。审阅软件包的方法有很多，但以下内容或许对你有帮助："
 
 #: base/templates/reviewers.html
-#, fuzzy
 msgid ""
 "Verify Lintian outputs: Did Lintian miss something, are fixes semantically "
 "correct?"
@@ -979,7 +989,7 @@ msgstr "你能在一个干净的 chroot 中构建该软件包吗？"
 #: base/templates/reviewers.html
 msgid ""
 "Was the upstream tarball modified? If yes, is there a good reason to do so?"
-msgstr "上游的 tarball 被修改了吗？如果是的话，这么做是否有需求？"
+msgstr "上游的 tarball 被修改了吗？如果是的话，这么做是否有合适的原因？"
 
 #: base/templates/reviewers.html
 #, fuzzy, python-format
@@ -1002,7 +1012,7 @@ msgstr "给定一个 key id，你可以检索一个密钥："
 
 #: base/templates/reviewers.html
 msgid "Established sponsor guidelines"
-msgstr ""
+msgstr "已有的赞助准则"
 
 #: base/templates/reviewers.html
 #, python-format
@@ -1014,14 +1024,18 @@ msgid ""
 "workflow from you. You can have a look at some guidelines from different "
 "people on our <a href=\"%(u_sponsors)s\">sponsors side</a>"
 msgstr ""
+"一些 Debian 开发者公布了他们自己的赞助准则。如果你希望上传由他们赞助的软件包"
+"，这些规则会适用于这些特定人士或打包团队。通常情况下，这些规则在 Debian "
+"政策基础上有所扩展，或者要求你采取一些特定的工作流程。你可以在我们的<a href="
+"\"%(u_sponsors)s\">赞助者页面</a>查看不同人士的一些准则"
 
 #: base/templates/sponsor-guidelines.html
 msgid "Introduction for sponsors"
-msgstr ""
+msgstr "对赞助者的入门介绍"
 
 #: base/templates/sponsor-guidelines.html
 msgid "Motivation"
-msgstr ""
+msgstr "动机"
 
 #: base/templates/sponsor-guidelines.html
 msgid ""
@@ -1060,7 +1074,8 @@ msgid ""
 "As sponsored maintainer you do not have upload permissions to the Debian "
 "repository. Therefore you have three possibilities to get your package into "
 "Debian:"
-msgstr ""
+msgstr "作为受赞助的软件包维护者，你不具备直接上传至 Debian 存储库的权限。因此，"
+"你有三种可能途径来协助你让你的软件包进入 Debian："
 
 #: base/templates/sponsor-overview.html
 msgid "Join a packaging team"
@@ -1075,16 +1090,16 @@ msgid "Talk directly to people willing to sponsor your package"
 msgstr "直接与愿意赞助您的包裹的人交流"
 
 #: base/templates/sponsor-overview.html
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "A sponsor, regardless of how you found one will <a "
 "href=\"%(url_review)s\">review</a> your package.  Everyone is invited to "
 "review packages, including yourself. We encourage you to review other "
 "people's packages - both of you will benefit."
 msgstr ""
-"无论你是如何找到的，一个赞助者都会<a href=\"%(url_review)s\">审阅</a>你的包裹"
-"。每个人都可以来审阅软件包，也包括你自己。我们欢迎你也去审阅别人的软件包，这"
-"样你们都会受益。"
+"无论你是如何找到的，一个赞助者都会<a href=\"%(url_review)s\">审阅</a>你的软件"
+"包。每个人都可以来审阅软件包，也包括你自己。我们欢迎你也去审阅别人的软件包，"
+"这样你们双方都会受益。"
 
 #: base/templates/sponsor-overview.html
 msgid ""
@@ -1101,13 +1116,12 @@ msgstr ""
 "org/Teams/#Packaging_teams\"> （不完整）的打包团队列表</a>。"
 
 #: base/templates/sponsor-overview.html
-#, fuzzy
 msgid ""
 "Please note, each of those teams may have their own workflows and policies "
 "covering how to deal with package uploads. Contact their respective mailing "
 "lists and home pages to learn more."
 msgstr "需要注意的是，每一个团队在涉及如何处理软件包的上传时可能有自己的工作流程和政"
-"策。联系他们的邮件列表或访问主页以了解更多。"
+"策。联系他们的邮件列表或访问主页以了解更多信息。"
 
 #: base/templates/sponsor-overview.html
 msgid "File a RFS bug against the <tt>sponsorship-requests</tt> pseudo-package"
@@ -1142,7 +1156,7 @@ msgstr ""
 
 #: base/templates/sponsor-overview.html
 msgid "Finding a sponsor"
-msgstr ""
+msgstr "寻找赞助者"
 
 #: base/templates/sponsor-overview.html
 msgid ""
@@ -1155,6 +1169,11 @@ msgid ""
 "to formulate their own sponsor traits. Please read them carefully and "
 "compare your package with their expectations."
 msgstr ""
+"如果你希望，你可以直接联系愿意上传其他维护者的软件包的赞助者。<em>请务必不要"
+"群发电子邮件！</em>请注意尊重他们个人的要求和指导。请仅在你的软件包和他们对应"
+"的要求和关注领域对应的情况下单独对其联系。为方便赞助者体现他们是否对你的软件"
+"包可能感兴趣，我们建议开发者形成他们独特的赞助风格与历史特征。请参考他们的工"
+"作历史，并与你的软件包作比较以检查其是否符合他们的期望。"
 
 #: base/templates/sponsor-overview.html
 msgid ""
@@ -1168,10 +1187,17 @@ msgid ""
 "sponsor packages. You can identify developers by looking up their name at <a "
 "href=\"https://db.debian.org/\">db.debian.org</a>."
 msgstr ""
+"类似地，你也可以尝试直接联系其它软件包的维护者。如果你所准备的软件包能有效地"
+"扩展相关软件包的功能或者可以和已有软件包共同发挥作用，联系已有软件包的维护者"
+"可能尤其有效且合乎常理。例如，如果你正在打包某个网页服务器的日志分析工具，那"
+"么网页服务器的维护者可能会帮助你赞助上传软件包。如果你正在考虑直接联系相关软"
+"件包的维护者，请确保对方有能力协助你进行上传。请记住：只有 Debian "
+"开发者可以赞助直接上传软件包。你可以在 <a href=\"https://db.debian.org/\">db."
+"debian.org</a> 查看他们的名称来进行辨别。"
 
 #: base/templates/sponsor-overview.html
 msgid "Sponsor guidelines"
-msgstr ""
+msgstr "赞助指引"
 
 #: base/templates/sponsor-overview.html
 msgid ""
@@ -1179,11 +1205,12 @@ msgid ""
 "sponsor traits for either social or technical aspects. Additionally a "
 "sponsor may not usually be interested in every package but only in a certain "
 "category."
-msgstr ""
+msgstr "为帮助需要赞助上传的人员找到赞助者，赞助者可能在社交方面或技术方面形成自己的"
+"赞助的风格。除此之外，赞助者通常可能只关注特定分类的软件包。"
 
 #: base/templates/sponsor-rfs.html
 msgid "The sponsorship process"
-msgstr ""
+msgstr "赞助上传流程"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1191,10 +1218,13 @@ msgid ""
 "to be uploaded to Debian, you should file a bug against the <em>sponsorship-"
 "requests</em> pseudo-package containing information about your package."
 msgstr ""
+"<em>RFS</em> 指代<em>请求赞助上传</em>（Request for sponsorship）。"
+"如果你有需要被上传至 Debian 的软件包，你应当向 <em>sponsorship-requests</em> "
+"伪软件包发送一份缺陷报告，并在内文提供与你的软件包有关的信息。"
 
 #: base/templates/sponsor-rfs.html
 msgid "Asking for Sponsorship"
-msgstr "请求协助上传"
+msgstr "请求赞助上传"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1204,6 +1234,10 @@ msgid ""
 "debian.org</em>) <strong>only</strong>. A copy will be sent to the "
 "<em>debian-mentors</em> mailing list automatically by the bug tracker."
 msgstr ""
+"通常情况下，赞助上传的请求应当使用 <a href=\"https://www.debian.org/Bugs/\""
+">Debian 缺陷跟踪系统</a>处理。请确保缺陷报告和相应的评论均<strong>仅</strong>"
+"发送至缺陷报告对应的电子邮件地址（<em>nnn@bugs.debian.org</em>）。"
+"缺陷跟踪系统会自动将邮件副本发送到 <em>debian-mentors</em> 邮件列表。"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1213,6 +1247,10 @@ msgid ""
 "requests\"><em>sponsorship-requests</em></a> pseudo-package by using the "
 "template below."
 msgstr ""
+"在你已准备好源码包并将其公布之后（例如，上传到本站点以公开发布），请向 <a "
+"href=\"https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=sponsorship-"
+"requests\"><em>sponsorship-requests</em></a> "
+"伪软件包提交一份缺陷报告，并使用下列的模板填写内容。"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1224,15 +1262,19 @@ msgid ""
 "give up quickly and keep a watch over the mailing list. You can browse other "
 "packages and give other people feedback while you are waiting."
 msgstr ""
+"如果你没有订阅 debian-mentors 邮件列表或你提交的 sponsorship-requests "
+"缺陷，你可能无法接收到他人对你的请求的回复。你可以<a href=\"https://lists."
+"debian.org/debian-mentors\">订阅邮件列表</a>并遵循几个简单的步骤来确认你的订"
+"阅请求。赞助者处理各个请求需要时间，所以请不要轻易地放弃，请持续关注邮件列表"
+"的消息。在等待的过程中，你可以浏览其他的软件包并为他人的工作提供反馈。"
 
 #: base/templates/sponsor-rfs.html
-#, fuzzy
 msgid "Template for an RFS bug"
-msgstr "RFS 缺陷模板"
+msgstr "RFS 缺陷报告的模板"
 
 #: base/templates/sponsor-rfs.html
 msgid "for "
-msgstr ""
+msgstr "用于 "
 
 #: base/templates/sponsor-rfs.html
 msgid "Send the completed template below by email"
@@ -1245,12 +1287,11 @@ msgid ""
 "keywords=reportbug&searchon=names&exact=1&suite=all&section=main\">reportbug</"
 "a> tool."
 msgstr ""
-"发送到我们的伪包。如果你想，你也可以使用 <a href=\"https://packages.debian."
+"发送到我们的伪包。如果你愿意，你也可以使用 <a href=\"https://packages.debian."
 "org/search?keywords=reportbug&searchon=names&exact=1&suite=all&section=main\""
 ">reportbug</a> 工具。"
 
 #: base/templates/sponsor-rfs.html
-#, fuzzy
 msgid ""
 "Please indicate in the subject line if you are adding a new package to "
 "Debian (<tt>ITP</tt>), if you are adopting an existing package (<tt>ITA</"
@@ -1258,18 +1299,16 @@ msgid ""
 "<tt>QA</tt>). If your upload also fixes Release Critical bugs, please add "
 "the <tt>RC</tt> indicator as well."
 msgstr ""
-"请在邮件主题中注明您是否要在 Debian 中添加新的软件包 (<tt>ITP</tt>)，是否要 "
-"adopt 现有的软件包 (<tt>ITA</tt>)，或者是否要修复现有软件包的错误 ( "
+"请在邮件主题中注明您是否要在 Debian 中添加新的软件包 (<tt>ITP</tt>)，"
+"是否要收养现有的软件包 (<tt>ITA</tt>)，或者是否要修复现有软件包的错误 ( "
 "通过<tt>NMU</tt> 或<tt>QA</tt>)。如果你的上传也修复了一个影响发行的致命缺陷，"
 "请同时添加<tt>RC</tt> 指示符。"
 
 #: base/templates/sponsor-rfs.html
-#, fuzzy
 msgid "The meaning of the indicators above is described below:"
 msgstr "上述指示符的含义描述如下："
 
 #: base/templates/sponsor-rfs.html
-#, fuzzy
 msgid ""
 "<tt>ITP</tt> stands for <em>Intend to package</em>. These are packages that "
 "do not exist in Debian yet. Such packages need to go through the <tt>NEW</"
@@ -1278,19 +1317,19 @@ msgid ""
 "renamed packages, packages moving between areas, and source packages that "
 "build new binary packages."
 msgstr ""
-"<tt>ITP</tt>指<em>意图打包</em> 。这些软件包还不存在于 Debian "
-"中。这样的软件包需要通过<tt>NEW</tt>队列，在那里它们会被一个<a href=\"https"
+"<tt>ITP</tt>指<em>意图打包</em> 。这些软件包尚不存在于 Debian "
+"中。这样的软件包稍后需要通过<tt>NEW</tt>队列，在那里它们会被 <a href=\"https"
 "://ftp-master.debian.org/new.html\">FTP Master</a> "
-"审阅。重新命名的软件包、在不同区域之间移动的软件包，"
+"团队审阅。重新命名的软件包、在不同区域之间移动的软件包，"
 "以及构建新的二进制软件包也必须通过 NEW 的软件包审阅。"
 
 #: base/templates/sponsor-rfs.html
-#, fuzzy
 msgid ""
 "<tt>ITA</tt> stands for <em>Intend to adopt</em>. These are packages which "
 "were orphaned in the past and which you intend to adopt."
-msgstr "<tt>ITA</tt> 代表<em>打算 adopt</em> 。这些是过去被遗弃的包裹，你打算 adopt "
-"它们。"
+msgstr ""
+"<tt>ITA</tt> 代表<em>收养意向（Intend to adopt）</em> "
+"。这些是过去被遗弃并中止维护的软件包，且你打算收养并继续维护它们。"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
