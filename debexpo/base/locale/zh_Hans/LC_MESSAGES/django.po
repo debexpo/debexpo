@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-25 08:47+0000\n"
-"Last-Translator: billchenchina <billchenchina2001@gmail.com>\n"
+"PO-Revision-Date: 2022-11-25 16:25+0000\n"
+"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/debexpo/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -145,7 +145,6 @@ msgid "Welcome to %(name)s"
 msgstr "欢迎来到 %(name)s"
 
 #: base/templates/index.html
-#, fuzzy
 msgid ""
 "Only approved members of the Debian project (Debian Developers) are granted "
 "the permission to upload software packages into the Debian distribution. "
@@ -157,11 +156,13 @@ msgid ""
 "for technical correctness and help the maintainer to improve the package if "
 "necessary. Therefore the sponsor is sometimes also called a mentor."
 msgstr ""
-"只有经过批准的 Debian 开发者（DD）可以将软件包上传到 Debian "
-"中，但仍有大量的软件包是由非官方的开发者维护的。非 Debian "
-"开发者可以通过一种叫<em>赞助</em>的方式，由 Debian "
-"开发者代表实际维护者上传软件包。Debian 开发者同时会帮助检查软件包是否存在问题"
-"，并在需要时改进软件包。赞助者也被称为导师。"
+"只有 Debian 项目被批准的成员（Debian 开发者，DD）才拥有向 Debian 发行版本中直"
+"接上传软件包的权限。但是，仍有一大部分的软件包是由非官方的开发者所维护的。"
+"这些人员是如何在没有直接上传权限的情况下将他们的工作整合进入 Debian "
+"的呢？他们是采用了一个叫做<em>赞助</em>（协助上传）的程序。赞助意味着一个 "
+"Debian 开发者代表实际维护者代为上传软件包。在此过程中，Debian 开发者也会检查"
+"软件包的技术问题，并在必要情况下帮助维护者改进软件包质量。因此，赞助者有时也"
+"被称为导师。"
 
 #: base/templates/index.html
 msgid ""
@@ -175,7 +176,7 @@ msgid "Getting your package into Debian"
 msgstr "提供你的包至 Debian"
 
 #: base/templates/index.html
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "See <a href=\"%(u_intro_maintainers)s\">our introductory page for "
 "maintainers</a> and learn how to use %(name)s and get your packages into "
@@ -201,7 +202,7 @@ msgstr "最近上传"
 
 #: base/templates/intro-maintainers.html
 msgid "Introduction for maintainers: How will my package get into Debian?"
-msgstr ""
+msgstr "维护者的入门介绍：怎样让我的软件包进入 Debian？"
 
 #: base/templates/intro-maintainers.html
 msgid ""
@@ -210,27 +211,29 @@ msgid ""
 "appreciated. Read on to see in what ways we will be helping you find a "
 "sponsor."
 msgstr ""
+"你找到了我们的这个网站，欢迎你的到来！"
+"本网站的基本功能就是帮助你将你的工作推送进入 Debian。我们十分感谢你的贡献。请"
+"继续阅读并了解我们可以怎样协助你找到一位赞助者。"
 
 #: base/templates/intro-maintainers.html
 msgid "1. Identify a package"
 msgstr "1. 找到一个软件包"
 
 #: base/templates/intro-maintainers.html
-#, fuzzy
 msgid "Propose a package: File a WNPP bug"
-msgstr "提出一个新软件包：提交一个 WNPP Bug"
+msgstr "提出一个新软件包：提交一个 WNPP 缺陷"
 
 #: base/templates/intro-maintainers.html
-#, fuzzy
 msgid ""
 "If you want to package something not currently available in Debian, the very "
 "first step should be to file an \"Intent to package\" (<em>ITP</em>) bug on "
 "<a href=\"https://www.debian.org/devel/wnpp/\"> Work-Needing and Prospective "
 "Packages</a>."
 msgstr ""
-"如果你想打包一个目前Debian中没有的包，最先要做的就是在<a href=\"https://www."
-"debian.org/devel/wnpp/\""
-">“需要投入精力和未来的软件包”</a>中提出提出“打包意向”（<em>ITP</em>）的bug。"
+"如果你想打包一个目前 Debian 中没有的包，最先要做的就是在<a href=\"https://www"
+".debian.org/devel/wnpp/\""
+">“需要投入精力和未来的软件包”</a>中创建一个“打包意向”（<em>ITP</em>）的 "
+"bug（缺陷档案）。"
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -247,6 +250,15 @@ msgid ""
 "href=\"%(u_sponsor)s\">sponsors page</a> to learn about personal interests "
 "of sponsors."
 msgstr ""
+"Debian "
+"是一个发行版，不是一个通用的软件存储库。我们大部分人都认为不是<em>所有</"
+"em>的自由软件都应当出现在 Debian 中。请不要把 Debian 作为给你自己的软件打广告"
+"的平台，除非真的存在一些<em>实际的</em>需求。虽然如此，"
+"在刚开始的阶段并没有哪个人持有决定软件是否不适合 Debian 的最高权威。"
+"在你创建了你的 WNPP bug（参见下文）后，你会随后得到一些反馈和讨论，但你可以将"
+"其视为普通的建议，而非最终的投票。毕竟在此之后你还是需要找到一位赞助者，"
+"且该赞助者需要认为将你的软件包加入 Debian 对 Debian 有利。请参考我们的<a "
+"href=\"%(u_sponsor)s\">赞助者页面</a>来了解赞助者的个人需求。"
 
 #: base/templates/intro-maintainers.html
 msgid "Find a package looking for maintainers"
@@ -1280,6 +1292,10 @@ msgid ""
 "the source package and the most recent changelog entries, as you did for the "
 "initial request."
 msgstr ""
+"如果你修改了你的软件包并解决了一些他人提出的顾虑，请发送一封带有更新信息的电"
+"子邮件到你的赞助请求缺陷档案（nnn@bugs.debian.org）"
+"并提供访问当前版本的源码包的 URL "
+"以及最新的变更日志条目，需提供的内容类似你的初始请求。"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1288,6 +1304,9 @@ msgid ""
 "bug (again, please include references to the updated source package or ask "
 "for advice)."
 msgstr ""
+"如果在缺陷被关闭后出现了一些与软件包上传相关的其他问题，例如软件包被 Debian "
+"的归档软件拒绝，你可以重新打开（reopen）原有的缺陷（同样地，请同时提供更新的"
+"源码包，或在邮件中指出你需要他人进一步的建议或引导）。"
 
 #: base/templates/sponsor-rfs.html
 msgid "Reviewing Packages"
