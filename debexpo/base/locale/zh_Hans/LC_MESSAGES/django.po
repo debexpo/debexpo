@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
 "PO-Revision-Date: 2022-11-25 16:25+0000\n"
-"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
+"Last-Translator: billchenchina <billchenchina2001@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/debexpo/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -922,20 +922,21 @@ msgstr ""
 
 #: base/templates/reviewers.html
 msgid "How can I review packages?"
-msgstr ""
+msgstr "如何审阅包裹？"
 
 #: base/templates/reviewers.html
 msgid ""
 "Pick a source package and start. There is no single correct way to review "
 "packages, but chances are you may want to have a look on the following "
 "things:"
-msgstr ""
+msgstr "选择一个源码包并开始。审阅包裹的方法有很多，但以下内容或许对你有帮助："
 
 #: base/templates/reviewers.html
+#, fuzzy
 msgid ""
 "Verify Lintian outputs: Did Lintian miss something, are fixes semantically "
 "correct?"
-msgstr ""
+msgstr "验证 Lintian 的输出。Lintian 是否遗漏了什么？修复的语义是否正确？"
 
 #: base/templates/reviewers.html
 msgid ""
@@ -943,11 +944,13 @@ msgid ""
 "developers-reference/best-pkging-practices.html\"> Debian's best practices</"
 "a> for packages?"
 msgstr ""
+"软件包是否满足 <a href=\"https://www.debian.org/doc/manuals/"
+"developers-reference/best-pkging-practices.html\">Debian 的最佳实践</a>？"
 
 #: base/templates/reviewers.html
 msgid ""
 "Does the package correctly declare dependencies as defined in the policy?"
-msgstr ""
+msgstr "软件包是否按照政策，正确地声明了依赖关系？"
 
 #: base/templates/reviewers.html
 msgid ""
@@ -955,28 +958,31 @@ msgid ""
 "social_contract\">DFSG</a>? If yes, is the copyright file up to date and "
 "correct?"
 msgstr ""
+"软件包是否符合 <a href=\"https://www.debian.org/social_contract\""
+">DFSG</a>？如果是，那么 copyright 文件是否是最新且正确的？"
 
 #: base/templates/reviewers.html
+#, fuzzy
 msgid ""
 "Do the maintainer scripts supplied with the package look robust, idempotent "
 "and useful?"
-msgstr ""
+msgstr "与软件包一起提供的维护脚本是否健壮、幂等、且有用？"
 
 #: base/templates/reviewers.html
 msgid "Is there a watch file? If yes, does it work?"
-msgstr ""
+msgstr "watch 文件是否存在？如果有的话，它是否工作？"
 
 #: base/templates/reviewers.html
 msgid "Can you build the package in a clean build chroot?"
-msgstr ""
+msgstr "你能在一个干净的 chroot 中构建该软件包吗？"
 
 #: base/templates/reviewers.html
 msgid ""
 "Was the upstream tarball modified? If yes, is there a good reason to do so?"
-msgstr ""
+msgstr "上游的 tarball 被修改了吗？如果是的话，这么做是否有需求？"
 
 #: base/templates/reviewers.html
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "You might also want to retrieve the maintainer GPG key to verify that all "
 "subsequent uploads are signed using the same key. While the key should be "
@@ -985,10 +991,14 @@ msgid ""
 "Note that only key retrieval is implemented. Update or search are not "
 "available."
 msgstr ""
+"你可能还会想获取维护者的 GPG 密钥，以验证所有后续的上传都使用相同的密钥签名。"
+"密钥应该在诸如 <em>keys.openpgp.org</em> 或 <em>keyserver.ubuntu.com</em> "
+"等服务器上公开。%(name)s "
+"也可以作为一个基本的密钥服务器，只有密钥的获取可用，更新或搜索并不可用。"
 
 #: base/templates/reviewers.html
 msgid "Given a key id, you can retrieve a key using:"
-msgstr ""
+msgstr "给定一个 key id，你可以检索一个密钥："
 
 #: base/templates/reviewers.html
 msgid "Established sponsor guidelines"
@@ -1018,31 +1028,32 @@ msgid ""
 "Thanks for helping. There are a lot of sponsorees waiting for a Developer to "
 "help them with their packages, and if you want to help with the New "
 "Maintainer process this is a good step to get involved."
-msgstr ""
+msgstr "谢谢你的帮助。有很多被赞助者在等待一个开发者来帮助他们的软件包，如果你想帮助"
+"新的维护者进程，这是一个很好的参与步骤。"
 
 #: base/templates/sponsor-guidelines.html
 msgid "What to do for sponsoring"
-msgstr ""
+msgstr "赞助需要做什么"
 
 #: base/templates/sponsor-menu.html
 msgid "About Sponsoring"
-msgstr ""
+msgstr "关于赞助"
 
 #: base/templates/sponsor-menu.html
 msgid "Overview"
-msgstr ""
+msgstr "概述"
 
 #: base/templates/sponsor-menu.html
 msgid "Sponsoring Guidelines"
-msgstr ""
+msgstr "赞助准则"
 
 #: base/templates/sponsor-menu.html
 msgid "Request for Sponsorship"
-msgstr ""
+msgstr "请求赞助"
 
 #: base/templates/sponsor-overview.html
 msgid "The sponsoring process"
-msgstr ""
+msgstr "赞助过程"
 
 #: base/templates/sponsor-overview.html
 msgid ""
@@ -1053,24 +1064,27 @@ msgstr ""
 
 #: base/templates/sponsor-overview.html
 msgid "Join a packaging team"
-msgstr ""
+msgstr "加入一个打包团队"
 
 #: base/templates/sponsor-overview.html
 msgid "Ask the <tt>debian-mentors</tt> mailing list"
-msgstr ""
+msgstr "询问 <tt>debian-mentors</tt> 邮件列表"
 
 #: base/templates/sponsor-overview.html
 msgid "Talk directly to people willing to sponsor your package"
-msgstr ""
+msgstr "直接与愿意赞助您的包裹的人交流"
 
 #: base/templates/sponsor-overview.html
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "A sponsor, regardless of how you found one will <a "
 "href=\"%(url_review)s\">review</a> your package.  Everyone is invited to "
 "review packages, including yourself. We encourage you to review other "
 "people's packages - both of you will benefit."
 msgstr ""
+"无论你是如何找到的，一个赞助者都会<a href=\"%(url_review)s\">审阅</a>你的包裹"
+"。每个人都可以来审阅软件包，也包括你自己。我们欢迎你也去审阅别人的软件包，这"
+"样你们都会受益。"
 
 #: base/templates/sponsor-overview.html
 msgid ""
@@ -1081,17 +1095,23 @@ msgid ""
 "href=\"https://wiki.debian.org/Teams/#Packaging_teams\">(incomplete) list of "
 "packaging teams</a> in Debian."
 msgstr ""
+"在Debian中，有一些团队在合作维护软件包。如果您的软件包涉及到编程语言的库，或"
+"者是相关软件包的生态系统的一部分，例如 KDE 或 Gnome "
+"软件包，您可能想加入相应的团队。请看 Debian 中<a href=\"https://wiki.debian."
+"org/Teams/#Packaging_teams\"> （不完整）的打包团队列表</a>。"
 
 #: base/templates/sponsor-overview.html
+#, fuzzy
 msgid ""
 "Please note, each of those teams may have their own workflows and policies "
 "covering how to deal with package uploads. Contact their respective mailing "
 "lists and home pages to learn more."
-msgstr ""
+msgstr "需要注意的是，每一个团队在涉及如何处理软件包的上传时可能有自己的工作流程和政"
+"策。联系他们的邮件列表或访问主页以了解更多。"
 
 #: base/templates/sponsor-overview.html
 msgid "File a RFS bug against the <tt>sponsorship-requests</tt> pseudo-package"
-msgstr ""
+msgstr "针对 <tt>sponsorship-requests</tt> 伪包提出一个 RFS 缺陷"
 
 #: base/templates/sponsor-overview.html
 #, python-format
@@ -1206,8 +1226,9 @@ msgid ""
 msgstr ""
 
 #: base/templates/sponsor-rfs.html
+#, fuzzy
 msgid "Template for an RFS bug"
-msgstr ""
+msgstr "RFS 缺陷模板"
 
 #: base/templates/sponsor-rfs.html
 msgid "for "
@@ -1215,7 +1236,7 @@ msgstr ""
 
 #: base/templates/sponsor-rfs.html
 msgid "Send the completed template below by email"
-msgstr ""
+msgstr "请将以下完整模板使用邮件"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1224,8 +1245,12 @@ msgid ""
 "keywords=reportbug&searchon=names&exact=1&suite=all&section=main\">reportbug</"
 "a> tool."
 msgstr ""
+"发送到我们的伪包。如果你想，你也可以使用 <a href=\"https://packages.debian."
+"org/search?keywords=reportbug&searchon=names&exact=1&suite=all&section=main\""
+">reportbug</a> 工具。"
 
 #: base/templates/sponsor-rfs.html
+#, fuzzy
 msgid ""
 "Please indicate in the subject line if you are adding a new package to "
 "Debian (<tt>ITP</tt>), if you are adopting an existing package (<tt>ITA</"
@@ -1233,12 +1258,18 @@ msgid ""
 "<tt>QA</tt>). If your upload also fixes Release Critical bugs, please add "
 "the <tt>RC</tt> indicator as well."
 msgstr ""
+"请在邮件主题中注明您是否要在 Debian 中添加新的软件包 (<tt>ITP</tt>)，是否要 "
+"adopt 现有的软件包 (<tt>ITA</tt>)，或者是否要修复现有软件包的错误 ( "
+"通过<tt>NMU</tt> 或<tt>QA</tt>)。如果你的上传也修复了一个影响发行的致命缺陷，"
+"请同时添加<tt>RC</tt> 指示符。"
 
 #: base/templates/sponsor-rfs.html
+#, fuzzy
 msgid "The meaning of the indicators above is described below:"
-msgstr ""
+msgstr "上述指示符的含义描述如下："
 
 #: base/templates/sponsor-rfs.html
+#, fuzzy
 msgid ""
 "<tt>ITP</tt> stands for <em>Intend to package</em>. These are packages that "
 "do not exist in Debian yet. Such packages need to go through the <tt>NEW</"
@@ -1247,12 +1278,19 @@ msgid ""
 "renamed packages, packages moving between areas, and source packages that "
 "build new binary packages."
 msgstr ""
+"<tt>ITP</tt>指<em>意图打包</em> 。这些软件包还不存在于 Debian "
+"中。这样的软件包需要通过<tt>NEW</tt>队列，在那里它们会被一个<a href=\"https"
+"://ftp-master.debian.org/new.html\">FTP Master</a> "
+"审阅。重新命名的软件包、在不同区域之间移动的软件包，"
+"以及构建新的二进制软件包也必须通过 NEW 的软件包审阅。"
 
 #: base/templates/sponsor-rfs.html
+#, fuzzy
 msgid ""
 "<tt>ITA</tt> stands for <em>Intend to adopt</em>. These are packages which "
 "were orphaned in the past and which you intend to adopt."
-msgstr ""
+msgstr "<tt>ITA</tt> 代表<em>打算 adopt</em> 。这些是过去被遗弃的包裹，你打算 adopt "
+"它们。"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1262,6 +1300,10 @@ msgid ""
 "www.debian.org/doc/manuals/developers-reference/pkgs.html#nmu\">Developer's "
 "Reference</a> for more information."
 msgstr ""
+"你的上传是<em>非维护者上传</em> （一个软件包的版本没有由软件包的官方维护者上"
+"传，而是由你上传）。这种上传有一些特殊的规则。请参考<a href=\"https://www."
+"debian.org/doc/manuals/developers-reference/pkgs.html#nmu\">开发者参考文档</"
+"a> 以了解更多信息。"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1270,6 +1312,9 @@ msgid ""
 "pkgs.html#nmu-qa-upload\">Developer's Reference</a> to learn about <tt>QA</"
 "tt> uploads."
 msgstr ""
+"你的上传是 <tt>QA</tt> 上传。请参考<a href=\"https://www.debian.org/doc/"
+"manuals/developers-reference/pkgs.html#nmu-qa-upload\">开发者参考文档</a> "
+"中的相应章节，以了解更多与 <tt>QA</tt> 上传的内容。"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1277,6 +1322,8 @@ msgid ""
 "particularly important. Use this indicator if your request fixes an <tt>RC</"
 "tt> bug."
 msgstr ""
+"是 <em>Release-Critical</em> 的缩写，表示一类特别重要的缺陷。"
+"如果你的请求修复了一个 <tt>RC</tt> bug，请使用这个指示符。"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1284,6 +1331,8 @@ msgid ""
 "<em>moreinfo</em> or <em>wontfix</em> and you think you have addressed the "
 "issues, please remove the respective tag."
 msgstr ""
+"请保持对该缺陷的跟踪并回复评论。如果该缺陷被标记为 <em>moreinfo</em> 或 "
+"<em>wontfix</em>，而你认为你已经解决了这些问题，请删除相应的标记。"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
