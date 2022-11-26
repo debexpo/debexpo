@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-26 07:09+0000\n"
-"Last-Translator: billchenchina <billchenchina2001@gmail.com>\n"
+"PO-Revision-Date: 2022-11-27 07:48+0000\n"
+"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/debexpo/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -408,7 +408,7 @@ msgid ""
 msgstr ""
 "<strong>上传软件包</strong>到<tt>%(name)s</tt>。无需将软件包上传至互联网的其"
 "他地方。任何人都可以使用浏览器或'<tt>dget</tt>'工具或运行<tt>apt-get source "
-"....</tt>命令下载你的软件包。"
+"....</tt>命令下载你的软件包"
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -580,7 +580,6 @@ msgid "5. Getting an upload to Debian"
 msgstr "5. 上传到 Debian"
 
 #: base/templates/intro-maintainers.html
-#, fuzzy
 msgid ""
 "Once you find a sponsor interested in your package, he or she will "
 "<em>sponsor</em> it. That means reviewing, building, and testing it and then "
@@ -595,11 +594,12 @@ msgid ""
 "ftpmaster's opinion is binding here for both your sponsor and you."
 msgstr ""
 "找到一个对你的软件包感兴趣的赞助者后，他或她就会开始<em>赞助</em> "
-"。这意味着审阅、构建和测试它，然后把它上传到 Debian。您将会收到<em>dak</em>（"
-"Debian 用来管理其仓库的软件）的上传通知。请注意，如果您的软件包之前从未在Debi"
-"an中出现过，它需要由 <a href=\"https://ftp-master.debian.org/\">ftpmasters</"
-"a> 在清除<a href=\"https://ftp-master.debian.org/new.html\""
-">新软件包队列</a>时手动批准。他们会做一些一致性检查，并检查你的<tt>debian/"
+"。这意味着审阅、构建和测试软件包，然后把它上传到 "
+"Debian。您将会收到<em>dak</em>（Debian 用来管理其仓库的软件）的上传通知。请注"
+"意，如果您的软件包之前从未在Debian中出现过，它需要由 <a href=\"https://ftp-"
+"master.debian.org/\">ftpmasters</a> 手动批准才能通过<a href=\"https://ftp-"
+"master.debian.org/new.html\""
+">新软件包（NEW）队列</a>。他们会做一些一致性检查，并检查你的<tt>debian/"
 "copyright</tt> 文件，检查你的软件包是否符合<a href=\"https://www.debian.org/"
 "social_contract#guidelines\">Debian 自由软件指导方针（DFSG）</a> 。ftpmaster "
 "的意见在这里对你的赞助者和你都有约束力。"
@@ -609,7 +609,7 @@ msgid "6. Maintaining your package in Debian"
 msgstr "6. 在 Debian 中维护您的软件包"
 
 #: base/templates/intro-maintainers.html
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Please see the corresponding chapter in the <a href=\"https://www.debian.org/"
 "doc/manuals/maint-guide/update\"> New Maintainer's Guide</a> to get the "
@@ -621,13 +621,12 @@ msgid ""
 msgstr ""
 "请参阅<a href=\"https://www.debian.org/doc/manuals/maint-guide/update\""
 ">新维护者指南</a>中的相应章节以了解情况。你应该在 Debian "
-"中更新你的软件包。更新的程序与您第一次上传大体上没有区别。"
+"中经常性地更新你的软件包。更新的程序与您第一次上传大体上没有区别。"
 "请将您的更新软件包上传到 %(name)s "
-"，并将你修改了什么告诉您以前的赞助者。另外，也可以按照<a href=\"%(u_sponsor)"
-"s\">常规程序</a> 。"
+"，并将你修改了什么告诉您以前的赞助者。此外，你也可以按照<a href=\""
+"%(u_sponsor)s\">常规程序</a> 寻求协助上传。"
 
 #: base/templates/intro-maintainers.html
-#, fuzzy
 msgid ""
 "If your package passes through the sponsoring process for <em>a few</em> "
 "successive uploads without any notable correction by your sponsor, you can "
@@ -637,12 +636,12 @@ msgid ""
 "href=\"https://www.debian.org/devel/join/\">become a Debian Developer</a> "
 "giving you full membership in the project."
 msgstr ""
-"如果你的软件包<em>多次</em>通过赞助程序，并且你的赞助者没有做什么修正，"
-"你可以成为<a href=\"https://wiki.debian.org/DebianMaintainer\">Debian "
-"维护者（DM）</a>，并获取将软件包直接上传至 Debian "
-"的有限能力。与你的赞助者交流，讨论你的机会。你也可以<a href=\"https://www."
-"debian.org/devel/join/\">成为 Debian 开发者（DM）</a>，成为 Debian "
-"的正式成员。"
+"如果你的软件包<em>多次</em>通过赞助上传程序，并且你的赞助者没有做什么修正，"
+"你可以考虑成为<a href=\"https://wiki.debian.org/DebianMaintainer\">Debian "
+"维护者（DM）</a>，并获取将你自己的软件包直接上传至 Debian "
+"的有限能力。与你的赞助者交流，讨论你的机会。随时间推移，你也可以考虑<a href="
+"\"https://www.debian.org/devel/join/\">成为 Debian 开发者（DD）</a>，"
+"这样将意味着成为 Debian 的正式成员。"
 
 #: base/templates/qa.html
 msgid "Questions &amp; Answers"
@@ -883,7 +882,6 @@ msgid "Package reviews"
 msgstr "软件包审阅"
 
 #: base/templates/reviewers.html
-#, fuzzy
 msgid ""
 "You can help to review packages. That is possible even if you are not a "
 "Debian developer (<i>yet</i>). No reason to be shy, it is ok if you do not "
@@ -891,8 +889,8 @@ msgid ""
 "correct. Any help is appreciated. Interested in diving in? It is easy:"
 msgstr ""
 "你可以帮助审阅软件包。即使你目前（<i>还</i>）不是一个 Debian 开发者，你也可以"
-"这样做。无需害羞，如果你不知道所有的事情，或者你不完全确定你的建议是否正确，"
-"那也没关系，感谢你的任何帮助。想要加入吗？这很容易："
+"这样做。无需害羞，如果你的知识有所欠缺，或者你不完全确定你的建议是否正确，那"
+"也没关系，我们感谢你的任何帮助。想要加入吗？这很容易："
 
 #: base/templates/reviewers.html
 msgid "Why should I review packages? I can not upload them!"
@@ -972,11 +970,10 @@ msgstr ""
 ">DFSG</a>？如果是，那么 copyright 文件是否是最新且正确的？"
 
 #: base/templates/reviewers.html
-#, fuzzy
 msgid ""
 "Do the maintainer scripts supplied with the package look robust, idempotent "
 "and useful?"
-msgstr "与软件包一起提供的维护脚本是否健壮、幂等、且有用？"
+msgstr "与软件包一起提供的维护脚本是否健壮、幂等（idempotent）、且有用？"
 
 #: base/templates/reviewers.html
 msgid "Is there a watch file? If yes, does it work?"
@@ -992,7 +989,7 @@ msgid ""
 msgstr "上游的 tarball 被修改了吗？如果是的话，这么做是否有合适的原因？"
 
 #: base/templates/reviewers.html
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "You might also want to retrieve the maintainer GPG key to verify that all "
 "subsequent uploads are signed using the same key. While the key should be "
@@ -1001,10 +998,10 @@ msgid ""
 "Note that only key retrieval is implemented. Update or search are not "
 "available."
 msgstr ""
-"你可能还会想获取维护者的 GPG 密钥，以验证所有后续的上传都使用相同的密钥签名。"
-"密钥应该在诸如 <em>keys.openpgp.org</em> 或 <em>keyserver.ubuntu.com</em> "
+"你可能还会想获取维护者的 GPG 公钥，以验证所有后续的上传都使用相同的密钥签名。"
+"公钥应该在诸如 <em>keys.openpgp.org</em> 或 <em>keyserver.ubuntu.com</em> "
 "等服务器上公开。%(name)s "
-"也可以作为一个基本的密钥服务器，只有密钥的获取可用，更新或搜索并不可用。"
+"也可以作为一个基本的密钥服务器，只有公钥的获取可用，更新或搜索并不可用。"
 
 #: base/templates/reviewers.html
 msgid "Given a key id, you can retrieve a key using:"
@@ -1160,6 +1157,10 @@ msgid ""
 "is bad. Feel free to poste a follow-up message after a few weeks or try any "
 "of the alternative methods to find a sponsor."
 msgstr ""
+"通常情况下，提交一份缺陷报告可以保证其覆盖最广泛的听众群体。甚至一些不会进行"
+"上传的审阅者也可能查看你的软件包。如果你没有获得回应，也请不要担心：对软件包"
+"感兴趣的人士分心或处于忙碌状态的情况时常发生。这不一定意味着你的软件包一定很"
+"糟糕。请考虑在几星期过后发送一份提醒的邮件，或者考虑用其它方式来寻找赞助者。"
 
 #: base/templates/sponsor-overview.html
 msgid "Finding a sponsor"
