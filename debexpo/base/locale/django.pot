@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"POT-Creation-Date: 2022-11-23 10:56+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -294,7 +294,19 @@ msgid ""
 msgstr ""
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "Guide for Debian Maintainers"
+msgstr ""
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "Successor to the “Debian New Maintainers’ Guide”."
+msgstr ""
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
 msgid "Debian Mentors FAQ"
+msgstr ""
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "(Debian Wiki)"
 msgstr ""
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
@@ -558,10 +570,6 @@ msgstr ""
 
 #: base/templates/qa.html
 msgid "A must read resource to learn basics of Debian source packages"
-msgstr ""
-
-#: base/templates/qa.html
-msgid "(Debian Wiki)"
 msgstr ""
 
 #: base/templates/qa.html

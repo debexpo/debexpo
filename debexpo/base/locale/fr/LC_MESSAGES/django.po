@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 19:52+0000\n"
+"POT-Creation-Date: 2022-11-23 10:56+0800\n"
 "PO-Revision-Date: 2022-09-20 21:54+0200\n"
 "Last-Translator: Baptiste Beauplat <lyknode@cilg.org>\n"
 "Language-Team: French <>\n"
@@ -378,8 +378,20 @@ msgstr ""
 "pratiques pour les paquets Debian"
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "Guide for Debian Maintainers"
+msgstr ""
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "Successor to the “Debian New Maintainers’ Guide”."
+msgstr ""
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
 msgid "Debian Mentors FAQ"
 msgstr "F.A.Q. de Debian Mentors"
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "(Debian Wiki)"
+msgstr "(Wiki Debian)"
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
 msgid ""
@@ -755,10 +767,6 @@ msgid "A must read resource to learn basics of Debian source packages"
 msgstr ""
 "Une ressource incontournable pour apprendre les bases des paquets sources "
 "Debian"
-
-#: base/templates/qa.html
-msgid "(Debian Wiki)"
-msgstr "(Wiki Debian)"
 
 #: base/templates/qa.html
 msgid "What is the Debian policy?"
