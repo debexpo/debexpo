@@ -26,9 +26,11 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-from os import chdir, makedirs
+from glob import glob
+from os import chdir, makedirs, unlink, rename
 from os.path import abspath, join, dirname, exists
 from pathlib import Path
+from shutil import copy
 
 from django.core.management.commands.makemessages import STATUS_OK, \
     Command as MakeMessages, normalize_eols
@@ -61,6 +63,24 @@ class Command(MakeMessages):
 
         return backup_potfiles
 
+    def _skip_header(self, fh):
+        while len(fh.readline()[:-1]):
+            pass
+
+    def _compare_files(self, file1, file2):
+        with open(file1, 'r') as file1_fh, \
+             open(file2, 'r') as file2_fh:
+            self._skip_header(file1_fh)
+            self._skip_header(file2_fh)
+
+            for line1 in file1_fh.readlines():
+                line2 = file2_fh.readline()
+
+                if line1 != line2:
+                    return True
+
+        return False
+
     def _restore_unmodified_potfiles(self, potfiles, backup_potfiles):
         index = 0
         potfiles = sorted(set(potfiles))
@@ -68,21 +88,8 @@ class Command(MakeMessages):
 
         for index, potfile in enumerate(potfiles):
             backup_potfile = backup_potfiles[index]
-            modified = False
 
-            with open(potfile, 'r') as potfile_fh, \
-                 open(backup_potfile, 'r') as backup_potfile_fh:
-                while len(potfile_fh.readline()[:-1]):
-                    pass
-
-                while len(backup_potfile_fh.readline()[:-1]):
-                    pass
-
-                for line in potfile_fh.readlines():
-                    ref_line = backup_potfile_fh.readline()
-                    if line != ref_line:
-                        modified = True
-                        break
+            modified = self._compare_files(potfile, backup_potfile)
 
             if modified:
                 unlink(backup_potfile)
