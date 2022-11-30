@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 19:45+0000\n"
-"PO-Revision-Date: 2020-08-08 16:59+0200\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"PO-Revision-Date: 2022-12-01 07:20+0000\n"
+"Last-Translator: Jean-Pierre Giraud <jenapierregiraud75@free.fr>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/debexpo/comments/"
+"fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.3.1\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.15-dev\n"
 
 #: comments/models.py
 msgid "Not reviewed"
@@ -28,7 +29,7 @@ msgstr "Nécessite des corrections"
 
 #: comments/models.py
 msgid "Ready"
-msgstr "Pret"
+msgstr "Prêt"
 
 #: comments/models.py
 msgid "Name"
@@ -56,7 +57,7 @@ msgstr "État de l'envoi"
 
 #: comments/models.py
 msgid "Uploaded to debian"
-msgstr "Envoyé sur Debian"
+msgstr "Envoyé à Debian"
 
 #: comments/models.py
 msgid "New comment on package {}"
