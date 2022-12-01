@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"POT-Creation-Date: 2022-12-01 07:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,30 +17,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: repository/models.py
+#: debexpo/repository/models.py:72
 msgid "Name"
 msgstr ""
 
-#: repository/models.py
+#: debexpo/repository/models.py:73
 msgid "Version"
 msgstr ""
 
-#: repository/models.py
+#: debexpo/repository/models.py:74
 msgid "Component"
 msgstr ""
 
-#: repository/models.py
+#: debexpo/repository/models.py:76
 msgid "Distribution"
 msgstr ""
 
-#: repository/models.py
+#: debexpo/repository/models.py:78
 msgid "Path"
 msgstr ""
 
-#: repository/models.py
+#: debexpo/repository/models.py:79
 msgid "Size"
 msgstr ""
 
-#: repository/models.py
+#: debexpo/repository/models.py:80
 msgid "SHA256"
 msgstr ""

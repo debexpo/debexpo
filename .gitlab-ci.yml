@@ -81,12 +81,12 @@ flake8:
 
 trans:
   image: debian:buster-backports
-  allow_failure: true
   before_script:
     - apt-get -q update
     - env DEBIAN_FRONTEND=noninteractive
       apt-get -q -y install --no-install-recommends
       gettext
+      git
       python3
       python3-setuptools
       python3-django/buster-backports
@@ -104,10 +104,13 @@ trans:
       python3-django-filters/buster-backports
       python3-django-redis
   script:
-    - (cd debexpo && python3 ../manage.py makemessages)
-    - find debexpo -name '*.po' -exec
-      msgfmt -c -v --statistics '{}' -o /dev/null ';' |& tee /tmp/trans
-    - grep -zqv , /tmp/trans
+    - (cd debexpo && python3 ../manage.py makemessages --keep-pot)
+    - git checkout "*.po"
+    - find debexpo -name '*.po' | while read po; do
+        set -e;
+        msgcmp --use-fuzzy --use-untranslated "${po}"
+               "$(echo "${po}" | rev | cut -d / -f 4- | rev)/django.pot";
+      done
 
 migrations:
   image: debian:buster-backports

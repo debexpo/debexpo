@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"POT-Creation-Date: 2022-12-01 07:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,42 +17,42 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: keyring/models.py
+#: debexpo/keyring/models.py:42 debexpo/keyring/models.py:122
 msgid "Type"
 msgstr ""
 
-#: keyring/models.py
+#: debexpo/keyring/models.py:44
 msgid "GPG Algorithm ID"
 msgstr ""
 
-#: keyring/models.py
+#: debexpo/keyring/models.py:47
 msgid "Minimal size requirment"
 msgstr ""
 
-#: keyring/models.py
+#: debexpo/keyring/models.py:62
 msgid "Multiple keys not supported"
 msgstr ""
 
-#: keyring/models.py
+#: debexpo/keyring/models.py:73
 msgid "Key algorithm not supported. Key must be one of the following: {}"
 msgstr ""
 
-#: keyring/models.py
+#: debexpo/keyring/models.py:83
 msgid "Key size too small. Need at least {} bits."
 msgstr ""
 
-#: keyring/models.py
+#: debexpo/keyring/models.py:111
 msgid "OpenGPG key"
 msgstr ""
 
-#: keyring/models.py
+#: debexpo/keyring/models.py:112 debexpo/keyring/models.py:143
 msgid "Fingerprint"
 msgstr ""
 
-#: keyring/models.py
+#: debexpo/keyring/models.py:114
 msgid "Last update on"
 msgstr ""
 
-#: keyring/models.py
+#: debexpo/keyring/models.py:123
 msgid "Size"
 msgstr ""

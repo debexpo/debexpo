@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-23 10:56+0800\n"
+"POT-Creation-Date: 2022-12-01 07:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,83 +17,83 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:55
 msgid "Start page"
 msgstr ""
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:61
 msgid "Package list"
 msgstr ""
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:67
 msgid "Maintainer"
 msgstr ""
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:73
 msgid "Reviews"
 msgstr ""
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:79
 msgid "Sponsors"
 msgstr ""
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:85
 msgid "Q &amp; A"
 msgstr ""
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:91 debexpo/base/templates/base.html:158
 msgid "Contact"
 msgstr ""
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:105
 msgid "My account"
 msgstr ""
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:108
 msgid "My packages"
 msgstr ""
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:111
 msgid "My subscriptions"
 msgstr ""
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:114
 msgid "Logout"
 msgstr ""
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:118
 msgid "Sign me up"
 msgstr ""
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:121
 msgid "Login"
 msgstr ""
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:126
 msgid "Auto-detected"
 msgstr ""
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:144
 msgid "Hosting and hardware provided by"
 msgstr ""
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:149
 msgid "Source code and bugs"
 msgstr ""
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:152
 msgid "Version"
 msgstr ""
 
-#: base/templates/base.html
+#: debexpo/base/templates/base.html:162
 msgid "RSS"
 msgstr ""
 
-#: base/templates/contact.html
+#: debexpo/base/templates/contact.html:5
 msgid "Site contact"
 msgstr ""
 
-#: base/templates/contact.html
+#: debexpo/base/templates/contact.html:8
 #, python-format
 msgid ""
 "You can get in direct contact with the debexpo team. In case of technical "
@@ -105,22 +105,22 @@ msgid ""
 "href=\"%(u_rfs)s\">file a RFS bug</a> respectively."
 msgstr ""
 
-#: base/templates/contact.html
+#: debexpo/base/templates/contact.html:20
 msgid "Site email"
 msgstr ""
 
-#: base/templates/contact.html
+#: debexpo/base/templates/contact.html:25
 msgid ""
 "Currently Baptiste Beauplat (<em>lyknode</em>), Mattia Rizzolo (<em>mattia</"
 "em>, IRC: <em>mapreri</em>) and Paul Wise (<em>pabs</em>) are maintaining "
 "this service."
 msgstr ""
 
-#: base/templates/contact.html
+#: debexpo/base/templates/contact.html:32
 msgid "Development"
 msgstr ""
 
-#: base/templates/contact.html
+#: debexpo/base/templates/contact.html:35
 #, python-format
 msgid ""
 "We are always looking for new contributors. If you want to contribute or "
@@ -128,12 +128,12 @@ msgid ""
 "debian.org/debexpo\">irc.debian.org</a> and chat with us."
 msgstr ""
 
-#: base/templates/index.html
+#: debexpo/base/templates/index.html:6
 #, python-format
 msgid "Welcome to %(name)s"
 msgstr ""
 
-#: base/templates/index.html
+#: debexpo/base/templates/index.html:12
 msgid ""
 "Only approved members of the Debian project (Debian Developers) are granted "
 "the permission to upload software packages into the Debian distribution. "
@@ -146,17 +146,17 @@ msgid ""
 "necessary. Therefore the sponsor is sometimes also called a mentor."
 msgstr ""
 
-#: base/templates/index.html
+#: debexpo/base/templates/index.html:27
 msgid ""
 "Note, not only Debian Developer are allowed to review packages. Everyone is "
 "encouraged to review packages! We appreciate your efforts as well."
 msgstr ""
 
-#: base/templates/index.html
+#: debexpo/base/templates/index.html:33
 msgid "Getting your package into Debian"
 msgstr ""
 
-#: base/templates/index.html
+#: debexpo/base/templates/index.html:36
 #, python-format
 msgid ""
 "See <a href=\"%(u_intro_maintainers)s\">our introductory page for "
@@ -165,22 +165,22 @@ msgid ""
 "sponsorship</a> to learn how to get in touch with a sponsor."
 msgstr ""
 
-#: base/templates/index.html
+#: debexpo/base/templates/index.html:45
 msgid ""
 "If you are curious about <em>Debexpo</em>, the software which is running "
 "this site, you can <a href=\"https://wiki.debian.org/Debexpo\">read more "
 "about Debexpo on the Debian Wiki</a>."
 msgstr ""
 
-#: base/templates/index.html
+#: debexpo/base/templates/index.html:52
 msgid "Recently uploaded packages"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:6
 msgid "Introduction for maintainers: How will my package get into Debian?"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:12
 msgid ""
 "We are glad that you found your way to our web site. Honestly, the whole web "
 "site is just there to get your work into Debian. Your contribution is highly "
@@ -188,15 +188,15 @@ msgid ""
 "sponsor."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:20
 msgid "1. Identify a package"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:22
 msgid "Propose a package: File a WNPP bug"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:25
 msgid ""
 "If you want to package something not currently available in Debian, the very "
 "first step should be to file an \"Intent to package\" (<em>ITP</em>) bug on "
@@ -204,7 +204,7 @@ msgid ""
 "Packages</a>."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:34
 #, python-format
 msgid ""
 "Debian is a distribution, not a general purpose repository. Many of us do "
@@ -220,11 +220,11 @@ msgid ""
 "of sponsors."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:49
 msgid "Find a package looking for maintainers"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:52
 msgid ""
 "If you want to contribute to Debian, but you do not know which packages to "
 "contribute to, take a look at \"Request for help\" (<em>RFH</em>), \"Request "
@@ -232,7 +232,7 @@ msgid ""
 "\"Request for package\" (<em>RFP</em>) bugs. See <em>WNPP</em> below."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:61
 msgid ""
 "<a href=\"https://www.debian.org/devel/wnpp/\"> Work-Needing and Prospective "
 "Packages</a> (<em>WNPP</em>) is our system of announcing your intent to "
@@ -244,11 +244,11 @@ msgid ""
 "by selecting \"<em>wnpp</em>\" as package to report a bug to."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:76
 msgid "2. Make the package"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:79
 msgid ""
 "Debian packages must comply to several normative requirements and "
 "guidelines. We can't give you exhaustive instructions on how to build "
@@ -257,69 +257,80 @@ msgid ""
 "those excellent resources:"
 msgstr ""
 
-#: base/templates/intro-maintainers.html base/templates/qa.html
+#: debexpo/base/templates/intro-maintainers.html:91
+#: debexpo/base/templates/qa.html:26
 msgid "The Debian Policy Manual"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:95
 msgid ""
 "A must-read resource to learn about technical specification and technical "
 "requirements of Debian packages."
 msgstr ""
 
-#: base/templates/intro-maintainers.html base/templates/qa.html
+#: debexpo/base/templates/intro-maintainers.html:102
+#: debexpo/base/templates/qa.html:37
 msgid "New Maintainer's Guide"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:106
 msgid "A must-read resource to learn basics of Debian source packages"
 msgstr ""
 
-#: base/templates/intro-maintainers.html base/templates/qa.html
+#: debexpo/base/templates/intro-maintainers.html:112
+#: debexpo/base/templates/qa.html:47
 msgid "Lucas Nussbaum's packaging tutorial"
 msgstr ""
 
-#: base/templates/intro-maintainers.html base/templates/qa.html
+#: debexpo/base/templates/intro-maintainers.html:116
+#: debexpo/base/templates/qa.html:51
 msgid "A quick introduction to Debian packaging"
 msgstr ""
 
-#: base/templates/intro-maintainers.html base/templates/qa.html
+#: debexpo/base/templates/intro-maintainers.html:122
+#: debexpo/base/templates/qa.html:55
 msgid "Developer's Reference"
 msgstr ""
 
-#: base/templates/intro-maintainers.html base/templates/qa.html
+#: debexpo/base/templates/intro-maintainers.html:126
+#: debexpo/base/templates/qa.html:59
 msgid ""
 "A comprehensive manual describing typical workflows and best practices "
 "related to Debian packages"
 msgstr ""
 
-#: base/templates/intro-maintainers.html base/templates/qa.html
+#: debexpo/base/templates/intro-maintainers.html:133
+#: debexpo/base/templates/qa.html:66
 msgid "Guide for Debian Maintainers"
 msgstr ""
 
-#: base/templates/intro-maintainers.html base/templates/qa.html
+#: debexpo/base/templates/intro-maintainers.html:137
+#: debexpo/base/templates/qa.html:70
 msgid "Successor to the “Debian New Maintainers’ Guide”."
 msgstr ""
 
-#: base/templates/intro-maintainers.html base/templates/qa.html
+#: debexpo/base/templates/intro-maintainers.html:143
+#: debexpo/base/templates/qa.html:76
 msgid "Debian Mentors FAQ"
 msgstr ""
 
-#: base/templates/intro-maintainers.html base/templates/qa.html
+#: debexpo/base/templates/intro-maintainers.html:144
+#: debexpo/base/templates/qa.html:77
 msgid "(Debian Wiki)"
 msgstr ""
 
-#: base/templates/intro-maintainers.html base/templates/qa.html
+#: debexpo/base/templates/intro-maintainers.html:147
+#: debexpo/base/templates/qa.html:80
 msgid ""
 "Another valuable resource to learn about common terms and workflows related "
 "to Debian"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:155
 msgid "3. Publish your package"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:158
 #, python-format
 msgid ""
 "This web site is a public package repository of source packages. You can "
@@ -331,12 +342,12 @@ msgid ""
 "and upload it to Debian."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:170
 #, python-format
 msgid "Using %(title)s"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:177
 #, python-format
 msgid ""
 "<strong><a href=\"%(u_register)s\">Sign up for an account</a></strong>. "
@@ -345,7 +356,7 @@ msgid ""
 "sponsors can reach you."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:185
 #, python-format
 msgid ""
 "<strong>Upload your package</strong> to <tt>%(name)s</tt>. You do not need "
@@ -355,7 +366,7 @@ msgid ""
 "</tt>"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:194
 #, python-format
 msgid ""
 "Have a look at your <a href=\"%(u_my)s\">personal package page</a>. Your "
@@ -364,7 +375,7 @@ msgid ""
 "template"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:202
 #, python-format
 msgid ""
 "Your package is on display on the main page of %(title)s (if you enable the "
@@ -372,19 +383,19 @@ msgid ""
 "hopefully check it out."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:209
 msgid ""
 "You will be shown a <strong>RFS (request-for-sponsorship) template</strong> "
 "that you should send out as a bug report filed against the <em>sponsorship-"
 "requests</em> pseudo-package to draw attention to your package."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:219
 #, python-format
 msgid "How to upload packages to <tt>%(name)s</tt>"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:225
 msgid ""
 "You need to use <a href=\"https://packages.debian.org/dput\"><tt>dput</tt></"
 "a> to upload packages. We accept your uploads through <em>HTTPS</em> or "
@@ -393,20 +404,20 @@ msgid ""
 "the GnuPG key you configured in your control panel."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:236
 msgid "HTTPS uploads"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:237
 msgid "FTP uploads"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:242
 msgid ""
 "To use HTTPS put the following content to your <tt>~/.dput.cf</tt> file:"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:262
 #, python-format
 msgid ""
 "You can use <em>FTP</em> to upload packages to %(title)s. If you prefer that "
@@ -414,21 +425,21 @@ msgid ""
 "corresponding <tt>~/.dput.cf</tt> file:"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:286
 msgid "Once you have it set up, you can run it from your shell like this:"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:296
 msgid ""
 "If you did everything right, you will get a confirmation mail from our site "
 "and you can start seeking a sponsor for your package."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:302
 msgid "4. Find a sponsor"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:305
 #, python-format
 msgid ""
 "Once your package is publicly available on any resource, including but not "
@@ -440,7 +451,7 @@ msgid ""
 "page</a> to learn more on sponsors and how to find one."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:318
 #, python-format
 msgid ""
 "The main point of the sponsoring process is to review your package to make "
@@ -450,11 +461,11 @@ msgid ""
 "href=\"%(u_reviewers)s\">about package reviews</a>."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:327
 msgid "The relation between you and your sponsor"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:330
 msgid ""
 "A sponsor is not technically responsible for your package. <strong>You</"
 "strong> will be listed as the official maintainer of the package in Debian. "
@@ -464,23 +475,23 @@ msgid ""
 "appreciates the work you do."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:340
 msgid "What can I do if I don't find a sponsor?"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:343
 msgid ""
 "Do not give up. Sponsoring can take a while. Nonetheless, here are a few "
 "hints:"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:351
 msgid ""
 "File a follow-up request to your existing <em>sponsorship-requests</em> "
 "pseudo-package."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:357
 #, python-format
 msgid ""
 "Offer your package directly to relevant teams and individual developers. We "
@@ -490,11 +501,11 @@ msgid ""
 "which matches you and your package best</em>."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:368
 msgid "5. Getting an upload to Debian"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:371
 msgid ""
 "Once you find a sponsor interested in your package, he or she will "
 "<em>sponsor</em> it. That means reviewing, building, and testing it and then "
@@ -509,11 +520,11 @@ msgid ""
 "ftpmaster's opinion is binding here for both your sponsor and you."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:387
 msgid "6. Maintaining your package in Debian"
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:390
 #, python-format
 msgid ""
 "Please see the corresponding chapter in the <a href=\"https://www.debian.org/"
@@ -525,7 +536,7 @@ msgid ""
 "procedures</a>."
 msgstr ""
 
-#: base/templates/intro-maintainers.html
+#: debexpo/base/templates/intro-maintainers.html:402
 msgid ""
 "If your package passes through the sponsoring process for <em>a few</em> "
 "successive uploads without any notable correction by your sponsor, you can "
@@ -536,11 +547,11 @@ msgid ""
 "giving you full membership in the project."
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:5
 msgid "Questions &amp; Answers"
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:7
 #, python-format
 msgid ""
 "%(site_name)s is a rather complex service. Things can go wrong on your side "
@@ -548,35 +559,35 @@ msgid ""
 "is answered here:"
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:13
 msgid "Getting started"
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:14
 msgid "How do I build a package?"
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:17
 msgid ""
 "If you want to learn how to create a proper Debian package you can find some "
 "interesting documentation to start with:"
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:30
 msgid ""
 "A must read resource to learn about technical specification and technical "
 "requirements of Debian packages."
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:41
 msgid "A must read resource to learn basics of Debian source packages"
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:87
 msgid "What is the Debian policy?"
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:90
 msgid ""
 "Every package must comply with the <a href=\"https://www.debian.org/doc/"
 "debian-policy/ch-scope.html\">Debian policy</a> before it can enter the "
@@ -586,7 +597,7 @@ msgid ""
 "be included in the distribution."
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:102
 msgid ""
 "The policy is not a tutorial. Its a technical manual which specifies "
 "normative requirements of packages. Read it to learn package specifications. "
@@ -595,11 +606,11 @@ msgid ""
 "\">New Maintainer's Guide</a>."
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:112
 msgid "Is my package technically okay?"
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:115
 #, python-format
 msgid ""
 "When you upload your package to %(site_name)s it will automatically be "
@@ -612,11 +623,11 @@ msgid ""
 "with the rest."
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:127
 msgid "What is Lintian?"
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:130
 msgid ""
 "Lintian is a Debian package checker (and available as <a href=\"https://"
 "packages.debian.org/lintian\">Debian package</a> so you can run it "
@@ -624,7 +635,7 @@ msgid ""
 "with the Debian policy and for other common packaging errors."
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:139
 msgid ""
 "Packaging for Debian is rather complex because one has to consider hundreds "
 "of guidelines to make the package \"policy compliant\". Lintian tries to "
@@ -633,15 +644,15 @@ msgid ""
 "manual/index.html\">Lintian User's Manual</a>."
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:149
 msgid "Your Account"
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:151
 msgid "Why do I not receive a confirmation email?"
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:154
 #, python-format
 msgid ""
 "First make sure that you signed the package with the proper PGP key. Next "
@@ -652,11 +663,11 @@ msgid ""
 "require assistance."
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:164
 msgid "My binary packages do not show up"
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:167
 #, python-format
 msgid ""
 "The current policy on %(site_name)s is to deliberately throw away the binary "
@@ -666,11 +677,11 @@ msgid ""
 "questions. So we decided to just keep the source packages."
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:177
 msgid "How long will it take until my upload is available to sponsors?"
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:183
 #, python-format
 msgid ""
 "Regardless of the upload method you choose, the importer process runs every "
@@ -678,43 +689,46 @@ msgid ""
 "package but it can be longer on bigger packages."
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:191
 msgid ""
 "During the importing process, the server does quality assurance and other "
 "checks on your package. You will receive an email when it is ready."
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:197
 msgid "Information for sponsors"
 msgstr ""
 
-#: base/templates/qa.html base/templates/sponsor-guidelines.html
+#: debexpo/base/templates/qa.html:199
+#: debexpo/base/templates/sponsor-guidelines.html:9
 msgid "What is a sponsor?"
 msgstr ""
 
-#: base/templates/qa.html base/templates/sponsor-guidelines.html
+#: debexpo/base/templates/qa.html:202
+#: debexpo/base/templates/sponsor-guidelines.html:12
 msgid ""
 "Someone who uploads the package and is responsible for the package in the "
 "archive. The sponsor is responsible for the quality of the package and "
 "checks the work of the package maintainer to improve his skills."
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:209
 msgid "Why should I sponsor uploads"
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:212
 msgid ""
 "Thanks for your interest. There are a lot of sponsorees waiting for a "
 "Developer to help them with their packages, and if you want to help with the "
 "New Maintainer process this is a good step to get involved."
 msgstr ""
 
-#: base/templates/qa.html
+#: debexpo/base/templates/qa.html:219
 msgid "What to do for sponsoring?"
 msgstr ""
 
-#: base/templates/qa.html base/templates/sponsor-guidelines.html
+#: debexpo/base/templates/qa.html:222
+#: debexpo/base/templates/sponsor-guidelines.html:32
 msgid ""
 "Look for packages that you would like to sponsor on this website. Once you "
 "have found some you should download, build and test them. Please notify your "
@@ -725,11 +739,11 @@ msgid ""
 "skills that are crucial for Debian Developers more easily."
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:6
 msgid "Package reviews"
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:9
 msgid ""
 "You can help to review packages. That is possible even if you are not a "
 "Debian developer (<i>yet</i>). No reason to be shy, it is ok if you do not "
@@ -737,24 +751,24 @@ msgid ""
 "correct. Any help is appreciated. Interested in diving in? It is easy:"
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:17
 msgid "Why should I review packages? I can not upload them!"
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:20
 msgid ""
 "Glad you ask! There are many reasons why you should review packages even if "
 "you can't actually upload them."
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:28
 msgid ""
 "The person you are reviewing will appreciate it. Chances are, you find "
 "problems in a package the person was not aware of yet. So they can learn "
 "from you."
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:35
 msgid ""
 "Eventually the package you are reviewing will be in a very good shape and "
 "you happen to learn something yourself. Moreover, you will also learn about "
@@ -763,68 +777,68 @@ msgid ""
 "things."
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:44
 msgid ""
 "People who <i>can</i> upload may decide based on your review whether the "
 "package in question is a suitable candidate or not."
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:51
 msgid "How can I review packages?"
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:54
 msgid ""
 "Pick a source package and start. There is no single correct way to review "
 "packages, but chances are you may want to have a look on the following "
 "things:"
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:63
 msgid ""
 "Verify Lintian outputs: Did Lintian miss something, are fixes semantically "
 "correct?"
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:69
 msgid ""
 "Does the package satisfy <a href=\"https://www.debian.org/doc/manuals/"
 "developers-reference/best-pkging-practices.html\"> Debian's best practices</"
 "a> for packages?"
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:76
 msgid ""
 "Does the package correctly declare dependencies as defined in the policy?"
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:82
 msgid ""
 "Does the package meet the <a href=\"https://www.debian.org/"
 "social_contract\">DFSG</a>? If yes, is the copyright file up to date and "
 "correct?"
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:89
 msgid ""
 "Do the maintainer scripts supplied with the package look robust, idempotent "
 "and useful?"
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:95
 msgid "Is there a watch file? If yes, does it work?"
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:100
 msgid "Can you build the package in a clean build chroot?"
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:105
 msgid ""
 "Was the upstream tarball modified? If yes, is there a good reason to do so?"
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:113
 #, python-format
 msgid ""
 "You might also want to retrieve the maintainer GPG key to verify that all "
@@ -835,15 +849,15 @@ msgid ""
 "available."
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:124
 msgid "Given a key id, you can retrieve a key using:"
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:137
 msgid "Established sponsor guidelines"
 msgstr ""
 
-#: base/templates/reviewers.html
+#: debexpo/base/templates/reviewers.html:140
 #, python-format
 msgid ""
 "Several Debian Developers published their personal sponsor guidelines. Those "
@@ -854,65 +868,66 @@ msgid ""
 "people on our <a href=\"%(u_sponsors)s\">sponsors side</a>"
 msgstr ""
 
-#: base/templates/sponsor-guidelines.html
+#: debexpo/base/templates/sponsor-guidelines.html:7
 msgid "Introduction for sponsors"
 msgstr ""
 
-#: base/templates/sponsor-guidelines.html
+#: debexpo/base/templates/sponsor-guidelines.html:19
 msgid "Motivation"
 msgstr ""
 
-#: base/templates/sponsor-guidelines.html
+#: debexpo/base/templates/sponsor-guidelines.html:22
 msgid ""
 "Thanks for helping. There are a lot of sponsorees waiting for a Developer to "
 "help them with their packages, and if you want to help with the New "
 "Maintainer process this is a good step to get involved."
 msgstr ""
 
-#: base/templates/sponsor-guidelines.html
+#: debexpo/base/templates/sponsor-guidelines.html:29
 msgid "What to do for sponsoring"
 msgstr ""
 
-#: base/templates/sponsor-menu.html
+#: debexpo/base/templates/sponsor-menu.html:9
 msgid "About Sponsoring"
 msgstr ""
 
-#: base/templates/sponsor-menu.html
+#: debexpo/base/templates/sponsor-menu.html:13
 msgid "Overview"
 msgstr ""
 
-#: base/templates/sponsor-menu.html
+#: debexpo/base/templates/sponsor-menu.html:14
 msgid "Sponsoring Guidelines"
 msgstr ""
 
-#: base/templates/sponsor-menu.html
+#: debexpo/base/templates/sponsor-menu.html:15
 msgid "Request for Sponsorship"
 msgstr ""
 
-#: base/templates/sponsor-overview.html
+#: debexpo/base/templates/sponsor-overview.html:7
 msgid "The sponsoring process"
 msgstr ""
 
-#: base/templates/sponsor-overview.html
+#: debexpo/base/templates/sponsor-overview.html:10
 msgid ""
 "As sponsored maintainer you do not have upload permissions to the Debian "
 "repository. Therefore you have three possibilities to get your package into "
 "Debian:"
 msgstr ""
 
-#: base/templates/sponsor-overview.html
+#: debexpo/base/templates/sponsor-overview.html:18
+#: debexpo/base/templates/sponsor-overview.html:34
 msgid "Join a packaging team"
 msgstr ""
 
-#: base/templates/sponsor-overview.html
+#: debexpo/base/templates/sponsor-overview.html:19
 msgid "Ask the <tt>debian-mentors</tt> mailing list"
 msgstr ""
 
-#: base/templates/sponsor-overview.html
+#: debexpo/base/templates/sponsor-overview.html:21
 msgid "Talk directly to people willing to sponsor your package"
 msgstr ""
 
-#: base/templates/sponsor-overview.html
+#: debexpo/base/templates/sponsor-overview.html:26
 #, python-format
 msgid ""
 "A sponsor, regardless of how you found one will <a "
@@ -921,7 +936,7 @@ msgid ""
 "people's packages - both of you will benefit."
 msgstr ""
 
-#: base/templates/sponsor-overview.html
+#: debexpo/base/templates/sponsor-overview.html:37
 msgid ""
 "There are teams in Debian who maintain packages collaboratively. If your "
 "package deals with libraries for programming languages or is part of an "
@@ -931,18 +946,18 @@ msgid ""
 "packaging teams</a> in Debian."
 msgstr ""
 
-#: base/templates/sponsor-overview.html
+#: debexpo/base/templates/sponsor-overview.html:48
 msgid ""
 "Please note, each of those teams may have their own workflows and policies "
 "covering how to deal with package uploads. Contact their respective mailing "
 "lists and home pages to learn more."
 msgstr ""
 
-#: base/templates/sponsor-overview.html
+#: debexpo/base/templates/sponsor-overview.html:55
 msgid "File a RFS bug against the <tt>sponsorship-requests</tt> pseudo-package"
 msgstr ""
 
-#: base/templates/sponsor-overview.html
+#: debexpo/base/templates/sponsor-overview.html:58
 #, python-format
 msgid ""
 "If your package does not match the interests of any team or you are not sure "
@@ -955,11 +970,11 @@ msgid ""
 "package page."
 msgstr ""
 
-#: base/templates/sponsor-overview.html
+#: debexpo/base/templates/sponsor-overview.html:70
 msgid "<em>If you are unsure or in doubt, choose this alternative</em>."
 msgstr ""
 
-#: base/templates/sponsor-overview.html
+#: debexpo/base/templates/sponsor-overview.html:76
 msgid ""
 "Typically you will reach the greatest audience by filing a bug. Eventually "
 "also some non-uploading reviewer may have a look at your package. Please do "
@@ -969,11 +984,11 @@ msgid ""
 "of the alternative methods to find a sponsor."
 msgstr ""
 
-#: base/templates/sponsor-overview.html
+#: debexpo/base/templates/sponsor-overview.html:86
 msgid "Finding a sponsor"
 msgstr ""
 
-#: base/templates/sponsor-overview.html
+#: debexpo/base/templates/sponsor-overview.html:89
 msgid ""
 "If you want, you can contact sponsors willing to upload packages of other "
 "maintainers directly. <em>Please do not send out mass emails!</em> Instead "
@@ -985,7 +1000,7 @@ msgid ""
 "compare your package with their expectations."
 msgstr ""
 
-#: base/templates/sponsor-overview.html
+#: debexpo/base/templates/sponsor-overview.html:102
 msgid ""
 "Similarly, you can also try to get in touch with other package maintainers "
 "directly. This makes sense if you prepared a package which extends the "
@@ -998,11 +1013,11 @@ msgid ""
 "href=\"https://db.debian.org/\">db.debian.org</a>."
 msgstr ""
 
-#: base/templates/sponsor-overview.html
+#: debexpo/base/templates/sponsor-overview.html:115
 msgid "Sponsor guidelines"
 msgstr ""
 
-#: base/templates/sponsor-overview.html
+#: debexpo/base/templates/sponsor-overview.html:118
 msgid ""
 "To help you find a sponsor interested in your package, they can formulate "
 "sponsor traits for either social or technical aspects. Additionally a "
@@ -1010,22 +1025,22 @@ msgid ""
 "category."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:7
 msgid "The sponsorship process"
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:10
 msgid ""
 "An <em>RFS</em> is a <em>request for sponsorship</em>. If you have a package "
 "to be uploaded to Debian, you should file a bug against the <em>sponsorship-"
 "requests</em> pseudo-package containing information about your package."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:18
 msgid "Asking for Sponsorship"
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:21
 msgid ""
 "In general, sponsorship requests should be handled through the <a "
 "href=\"https://www.debian.org/Bugs/\">Debian Bug Tracking System</a>. Please "
@@ -1034,7 +1049,7 @@ msgid ""
 "<em>debian-mentors</em> mailing list automatically by the bug tracker."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:32
 msgid ""
 "Once a source package has been prepared and made available (for example by "
 "uploading it to this site), file a new bug report against the <a "
@@ -1043,7 +1058,7 @@ msgid ""
 "template below."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:42
 msgid ""
 "You might not receive a reply to your request if you do not subscribe to the "
 "debian-mentors mailing list or to your sponsorship-requests bug. You can <a "
@@ -1054,19 +1069,19 @@ msgid ""
 "packages and give other people feedback while you are waiting."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:55
 msgid "Template for an RFS bug"
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:57
 msgid "for "
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:71
 msgid "Send the completed template below by email"
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:72
 msgid ""
 "to our pseudo-package. If you prefer, you can also use the <a href=\"https://"
 "packages.debian.org/search?"
@@ -1074,7 +1089,7 @@ msgid ""
 "a> tool."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:97
 msgid ""
 "Please indicate in the subject line if you are adding a new package to "
 "Debian (<tt>ITP</tt>), if you are adopting an existing package (<tt>ITA</"
@@ -1083,11 +1098,11 @@ msgid ""
 "the <tt>RC</tt> indicator as well."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:121
 msgid "The meaning of the indicators above is described below:"
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:129
 msgid ""
 "<tt>ITP</tt> stands for <em>Intend to package</em>. These are packages that "
 "do not exist in Debian yet. Such packages need to go through the <tt>NEW</"
@@ -1097,13 +1112,13 @@ msgid ""
 "build new binary packages."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:141
 msgid ""
 "<tt>ITA</tt> stands for <em>Intend to adopt</em>. These are packages which "
 "were orphaned in the past and which you intend to adopt."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:149
 msgid ""
 "Your upload is a <em>Non-Maintainer Upload</em>, a version of a package that "
 "is not uploaded by the official Maintainer of a package, but rather by you. "
@@ -1112,7 +1127,7 @@ msgid ""
 "Reference</a> for more information."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:160
 msgid ""
 "Your upload is a <tt>QA</tt> upload. Please refer to the respective section "
 "in the <a href=\"https://www.debian.org/doc/manuals/developers-reference/"
@@ -1120,21 +1135,21 @@ msgid ""
 "tt> uploads."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:169
 msgid ""
 "This is short for <em>Release-Critical</em>,  a class of bugs that are "
 "particularly important. Use this indicator if your request fixes an <tt>RC</"
 "tt> bug."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:178
 msgid ""
 "Please keep track of the bug and respond to comments. If the bug was tagged "
 "<em>moreinfo</em> or <em>wontfix</em> and you think you have addressed the "
 "issues, please remove the respective tag."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:186
 msgid ""
 "If you changed the package to address concerns, please send a follow-up "
 "email to your sponsorship request bug (nnn@bugs.debian.org) with the URL to "
@@ -1142,7 +1157,7 @@ msgid ""
 "initial request."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:195
 msgid ""
 "If there are issues with the upload after the bug was closed, for example "
 "when the package was rejected by the archive software, you can reopen the "
@@ -1150,11 +1165,11 @@ msgid ""
 "for advice)."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:203
 msgid "Reviewing Packages"
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:206
 #, python-format
 msgid ""
 "Anybody feeling competent enough is invited to review sponsorship requests. "
@@ -1163,7 +1178,7 @@ msgid ""
 "webpage."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:215
 msgid ""
 "Please send any comments to <em>nnn@bugs.debian.org</em>, but do not send "
 "carbon copies to reviewers or the bug submitter. Assume they are subscribed "
@@ -1171,38 +1186,38 @@ msgid ""
 "copies. You can use the following tags to indicate progress:"
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:226
 msgid ""
 "A reviewer has asked questions that need a response or has requested changes "
 "to be made. The package needs work before it can be uploaded."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:233
 msgid ""
 "Somebody did a brief review of your package and it looks sane. It can still "
 "have (smaller) issues that need to be fixed before an upload."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:240
 msgid "Somebody is willing to look after the package until it is uploaded."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:246
 msgid "The package has significant problems or cannot not be uploaded at all."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:253
 msgid ""
 "If you intend to take care of a sponsorship request until the related "
 "package is ready for upload, please consider setting yourself as the owner "
 "of the bug and tagging the bug as <em>pending</em>:"
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:263
 msgid "Uploading Packages"
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:266
 msgid ""
 "After you upload a package, please close the bug report by sending an email "
 "to <em>nnn-done@bugs.debian.org</em>. Do not close RFS bugs in debian/"
@@ -1210,11 +1225,11 @@ msgid ""
 "of the package or anyone related to the package itself."
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:274
 msgid "Notes"
 msgstr ""
 
-#: base/templates/sponsor-rfs.html
+#: debexpo/base/templates/sponsor-rfs.html:277
 msgid ""
 "Inactive sponsorship requests should be closed after a reasonable period of "
 "time. We consider this to be two weeks for requests tagged <em>wontfix</em>, "
