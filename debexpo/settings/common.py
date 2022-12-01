@@ -38,6 +38,7 @@ BASE_DIR = path.dirname(
 # Application definition
 
 INSTALLED_APPS = [
+    'debexpo.override',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
