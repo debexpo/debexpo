@@ -1,0 +1,293 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-01 07:15+0000\n"
+"PO-Revision-Date: 2022-12-03 10:46+0000\n"
+"Last-Translator: Andrea Pappacoda <weblate@pappacoda.it>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/debexpo/packages/"
+"it/>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.15-dev\n"
+
+#: debexpo/packages/models.py:41 debexpo/packages/models.py:48
+#: debexpo/packages/models.py:56 debexpo/packages/models.py:63
+#: debexpo/packages/models.py:70 debexpo/packages/models.py:135
+#: debexpo/packages/models.py:275
+msgid "Name"
+msgstr ""
+
+#: debexpo/packages/models.py:137
+msgid "Needs a sponsor?"
+msgstr ""
+
+#: debexpo/packages/models.py:138
+msgid "In Debian?"
+msgstr ""
+
+#: debexpo/packages/models.py:198
+#: debexpo/packages/templates/packages-list.html:11
+msgid "Version"
+msgstr "Versione"
+
+#: debexpo/packages/models.py:201
+msgid "Changes"
+msgstr ""
+
+#: debexpo/packages/models.py:202
+msgid "Closes bugs"
+msgstr ""
+
+#: debexpo/packages/models.py:204
+msgid "Git storage ref"
+msgstr ""
+
+#: debexpo/packages/models.py:207
+msgid "Upload date"
+msgstr ""
+
+#: debexpo/packages/models.py:243
+msgid "Maintainer"
+msgstr "Maintainer"
+
+#: debexpo/packages/models.py:251 debexpo/packages/models.py:284
+msgid "Homepage"
+msgstr ""
+
+#: debexpo/packages/models.py:252
+msgid "VCS"
+msgstr ""
+
+#: debexpo/packages/models.py:276
+#: debexpo/packages/templates/packages-list.html:10
+msgid "Description"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:4
+#, python-format
+msgid "<h1>Details about package %(name)s</h1>"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:10
+msgid "Name:"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:20
+msgid "Uploader:"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:35
+msgid "Description:"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:42
+msgid "Subscribe:"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:44
+msgid "Edit your subscription"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:48
+msgid "Needs a sponsor:"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:51
+#: debexpo/packages/templates/packages-list.html:31
+#: debexpo/packages/templates/packages-list.html:38
+msgid "Yes"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:53
+#: debexpo/packages/templates/packages-list.html:33
+#: debexpo/packages/templates/packages-list.html:40
+msgid "No"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:60
+msgid "Change"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:68
+msgid "Delete package:"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:75
+msgid "Admin package deletion"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:79
+msgid "Delete this package"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:88
+msgid "Package uploads"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:93
+#, python-format
+msgid "Upload #%(index)s"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:104
+msgid "Admin upload deletion"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:108
+msgid "Delete this upload"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:115
+msgid "Information"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:119
+msgid "Version:"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:123
+msgid "View RFS template"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:129
+msgid "Uploaded:"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:135
+msgid "Source package:"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:143
+msgid "Distribution:"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:148
+msgid "Section:"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:153
+msgid "Priority:"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:160
+msgid "Homepage:"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:187
+msgid "Closes bugs:"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:197
+msgid "Changelog"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:204
+msgid "QA information"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:217
+msgid "Comments"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:226
+msgid "Needs work"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:228
+msgid "Ready"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:232
+msgid "Package has been uploaded to Debian"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:239
+msgid "No comments"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:243
+msgid "New comment"
+msgstr ""
+
+#: debexpo/packages/templates/package.html:252
+msgid "Submit"
+msgstr "Invia"
+
+#: debexpo/packages/templates/packages-list.html:9
+msgid "Package"
+msgstr ""
+
+#: debexpo/packages/templates/packages-list.html:12
+msgid "Uploader"
+msgstr ""
+
+#: debexpo/packages/templates/packages-list.html:13
+msgid "Needs a sponsor"
+msgstr ""
+
+#: debexpo/packages/templates/packages-list.html:14
+msgid "Already in Debian"
+msgstr ""
+
+#: debexpo/packages/templates/packages-list.html:49
+msgid "No packages"
+msgstr ""
+
+#: debexpo/packages/views.py:129
+msgid "Today"
+msgstr ""
+
+#: debexpo/packages/views.py:132
+msgid "Yesterday"
+msgstr ""
+
+#: debexpo/packages/views.py:136
+msgid "Some days ago"
+msgstr ""
+
+#: debexpo/packages/views.py:140
+msgid "Older packages"
+msgstr ""
+
+#: debexpo/packages/views.py:144
+msgid "Uploaded long ago"
+msgstr ""
+
+#: debexpo/packages/views.py:234
+msgid "Packages for {} {}"
+msgstr ""
+
+#: debexpo/packages/views.py:236
+msgid "Package list"
+msgstr "Lista pacchetti"
+
+#: debexpo/packages/views.py:249
+#, python-format
+msgid "%s packages"
+msgstr ""
+
+#: debexpo/packages/views.py:250
+#, python-format
+msgid "A feed of packages on %s"
+msgstr ""
+
+#: debexpo/packages/views.py:272
+msgid "Package {} uploaded by {}."
+msgstr ""
+
+#: debexpo/packages/views.py:278
+msgid "Uploader is currently looking for a sponsor."
+msgstr ""
+
+#: debexpo/packages/views.py:280
+msgid "Uploader is currently not looking for a sponsor."
+msgstr ""

@@ -1,0 +1,151 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-01 07:15+0000\n"
+"PO-Revision-Date: 2022-12-03 10:46+0000\n"
+"Last-Translator: Andrea Pappacoda <weblate@pappacoda.it>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/debexpo/importer/"
+"it/>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.15-dev\n"
+
+#: debexpo/importer/models.py:287
+#, python-brace-format
+msgid "{error}: REJECTED"
+msgstr "{error}: RESPINTO"
+
+#: debexpo/importer/models.py:292
+#, python-brace-format
+msgid "{package}_{version}: ACCEPTED on {site} ({distribution})"
+msgstr "{package}_{version}: ACCETTATO su {site} ({distribution})"
+
+#: debexpo/importer/models.py:442
+msgid "Changes is invalid"
+msgstr "Modifica non valida"
+
+#: debexpo/importer/models.py:449
+msgid "Dsc failed to parse"
+msgstr "Analisi dsc fallita"
+
+#: debexpo/importer/models.py:463
+msgid "Dsc is invalid"
+msgstr "Dsc non valido"
+
+#: debexpo/importer/models.py:474
+msgid "Failed to extract source package"
+msgstr "Estrazione del pacchetto sorgente fallita"
+
+#: debexpo/importer/models.py:482 debexpo/importer/models.py:492
+msgid "Source package is invalid"
+msgstr "Il pacchetto sorgente non è valido"
+
+#: debexpo/importer/models.py:502
+msgid "Invalid distribution"
+msgstr "Distribuzione non valida"
+
+#: debexpo/importer/models.py:503
+#, python-brace-format
+msgid ""
+"Distribution {distribution} is not supported on mentors\n"
+"\n"
+"List of supported distributions:\n"
+"\n"
+"{allowed}"
+msgstr ""
+"La distribuzione {distribution} non è supportata su mentors\n"
+"\n"
+"Elenco delle distribuzioni supportate:\n"
+"\n"
+"{allowed}"
+
+#: debexpo/importer/templates/email-importer-accept.html:1
+#, python-format
+msgid ""
+"Hi.\n"
+"\n"
+"Your upload of the package '%(name)s' to %(site)s was\n"
+"successful. Others can now see it. The URL of your package is:\n"
+msgstr ""
+"Ciao.\n"
+"\n"
+"Il tuo caricamento del pacchetto '%(name)s' a %(site)s è\n"
+"avvenuto con successo. Può ora essere visto da altri. Il collegamento\n"
+"del tuo pacchetto è:\n"
+
+#: debexpo/importer/templates/email-importer-accept.html:7
+msgid ""
+"\n"
+"The respective dsc file can be found at:\n"
+msgstr ""
+"\n"
+"Il rispettivo file dsc può essere trovato su:\n"
+
+#: debexpo/importer/templates/email-importer-accept.html:11
+msgid ""
+"\n"
+"If you do not yet have a sponsor for your package you may want to go to:\n"
+msgstr ""
+"\n"
+"Se non hai ancora uno sponsor per il tuo pacchetto potresti voler andare su:"
+"\n"
+
+#: debexpo/importer/templates/email-importer-accept.html:15
+msgid ""
+"\n"
+"and set the \"Seeking a sponsor\" option to highlight your package on the\n"
+"welcome page.\n"
+"\n"
+"You can also send an RFS (request for sponsorship) to the debian-mentors\n"
+"mailing list. Your package page will give your suggestions on how to\n"
+"send that mail.\n"
+"\n"
+"Good luck in finding a sponsor!\n"
+"\n"
+"Thanks,"
+msgstr ""
+"\n"
+"e seleziona l'opzione \"Cercando uno sponsor\" per mettere in evidenza il\n"
+"tuo pacchetto nella pagina iniziale.\n"
+"\n"
+"Puoi anche inviare una RFS (richiesta di sponsorship) alla mailing list\n"
+"debian-mentors. La pagina del tuo pacchetto ti darà suggerimenti su\n"
+"come inviare quella email.\n"
+"\n"
+"Buona fortuna nel trovare uno sponsor!\n"
+"\n"
+"Grazie,"
+
+#: debexpo/importer/templates/email-importer-reject.html:1
+#, python-format
+msgid ""
+"Hello,\n"
+"\n"
+"Unfortunately your package \"%(source)s\" was rejected\n"
+"because of the following reason:\n"
+"\n"
+"%(error)s\n"
+"\n"
+"%(details)s\n"
+"\n"
+"Please try to fix it and re-upload. Thanks,"
+msgstr ""
+"Ciao,\n"
+"\n"
+"Sfortunatamente il tuo pacchetto \"%(source)s\" è stato respinto per\n"
+"il seguente motivo:\n"
+"\n"
+"%(error)s\n"
+"\n"
+"%(details)s\n"
+"\n"
+"Prova a sistemarlo e a ricaricarlo. Grazie,"

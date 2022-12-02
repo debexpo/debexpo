@@ -1,0 +1,94 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-01 07:15+0000\n"
+"PO-Revision-Date: 2022-12-03 10:46+0000\n"
+"Last-Translator: Andrea Pappacoda <weblate@pappacoda.it>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/debexpo/locale/"
+"it/>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.15-dev\n"
+
+#: debexpo/settings/common.py:91
+msgid "English"
+msgstr ""
+
+#: debexpo/settings/common.py:92
+msgid "French"
+msgstr ""
+
+#: debexpo/settings/common.py:93
+msgid "Portuguese (Brazil)"
+msgstr ""
+
+#: debexpo/settings/common.py:145
+msgid "Helps you get your packages into Debian"
+msgstr ""
+
+#: debexpo/urls.py:86
+msgid "Email change complete"
+msgstr ""
+
+#: old/debexpo/controllers/sponsor.py:77
+msgid "Overview"
+msgstr ""
+
+#: old/debexpo/controllers/sponsor.py:79
+msgid "Sponsoring Guidelines"
+msgstr ""
+
+#: old/debexpo/controllers/sponsor.py:80
+msgid "Request for Sponsorship"
+msgstr ""
+
+#: old/debexpo/lib/validators.py:76 old/debexpo/lib/validators.py:91
+msgid "Invalid GPG key"
+msgstr ""
+
+#: old/debexpo/lib/validators.py:80
+msgid "Internal error: debexpo is not properly configured to handleGPG keys"
+msgstr ""
+
+#: old/debexpo/lib/validators.py:87
+msgid "Multiple keys not supported"
+msgstr ""
+
+#: old/debexpo/lib/validators.py:106
+#, python-format
+msgid "None of your user IDs in key %s does match your profile mail address"
+msgstr ""
+
+#: old/debexpo/lib/validators.py:121
+#, python-format
+msgid ""
+"Key strength unacceptable in Debian Keyring. The minimum required key "
+"strength is %s bits."
+msgstr ""
+
+#: old/debexpo/lib/validators.py:130
+msgid "Key type unacceptable in Debian Keyring. It must be RSA or ECDSA."
+msgstr ""
+
+#: old/debexpo/lib/validators.py:153
+msgid "Incorrect password"
+msgstr ""
+
+#: old/debexpo/lib/validators.py:191
+msgid "A user with this email address is already registered on the system"
+msgstr "Un utente con questo indirizzo email è già registrato al sistema"
+
+#: old/debexpo/lib/validators.py:223
+msgid ""
+"A user with this name is already registered on the system. If it is you, use "
+"that account! Otherwise use a different name to register."
+msgstr ""
