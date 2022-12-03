@@ -15,9 +15,7 @@ Add a new language
 To add a new language, simply invoke `manage.py makemessages -l`, followed by
 the language code::
 
-    pushd debexpo
-    python3 ../manage.py makemessages --keep-pot --add-location file -l de
-    popd
+    python3 ./manage.py makemessages -l de
 
 Update translation sources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,9 +23,7 @@ Update translation sources
 To update translation sources from python code, run `manage.py makemessages
 -a`::
 
-    pushd debexpo
-    python3 ../manage.py makemessages --keep-pot --add-location file -a
-    popd
+    python3 ./manage.py makemessages -a
 
 Work on translation
 ~~~~~~~~~~~~~~~~~~~
@@ -42,9 +38,7 @@ the translation files, called MO. Those file are generated automatically
 generated on build time by the ``setup.py``. While developping, you might need
 to update those files manually. In order to do so, run::
 
-    pushd debexpo
-    python3 ../manage.py compilemessages
-    popd
+    python3 ./manage.py compilemessages
 
 Make debexpo text translatable
 ------------------------------
