@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-27 07:48+0000\n"
-"Last-Translator: Carlos C Soto <eclipxe13@gmail.com>\n"
+"PO-Revision-Date: 2022-12-05 09:48+0000\n"
+"Last-Translator: Igor Zubiaurre <izubiaurre@bitergia.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/debexpo/packages/"
 "es/>\n"
 "Language: es\n"
@@ -33,7 +33,7 @@ msgstr ""
 
 #: packages/models.py packages/templates/packages-list.html
 msgid "Version"
-msgstr ""
+msgstr "Versión"
 
 #: packages/models.py
 msgid "Changes"
@@ -259,7 +259,7 @@ msgstr ""
 
 #: packages/views.py
 msgid "Package list"
-msgstr ""
+msgstr "Lista de paquetes"
 
 #: packages/views.py
 #, python-format
