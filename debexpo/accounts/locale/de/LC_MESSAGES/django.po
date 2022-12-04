@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-24 20:15+0000\n"
-"Last-Translator: Wolfgang Wagner <wolfgang.wagner@vertexer.de>\n"
+"PO-Revision-Date: 2022-12-05 09:48+0000\n"
+"Last-Translator: Malik Mlitat <mlitat88@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/debexpo/accounts/"
 "de/>\n"
 "Language: de\n"
@@ -88,7 +88,7 @@ msgstr ""
 
 #: accounts/models.py
 msgid "Country"
-msgstr ""
+msgstr "Land"
 
 #: accounts/models.py
 msgid "IRC Nickname"
@@ -100,7 +100,7 @@ msgstr ""
 
 #: accounts/models.py
 msgid "Language"
-msgstr ""
+msgstr "Sprache"
 
 #: accounts/models.py
 msgid "Status"
@@ -108,7 +108,7 @@ msgstr "Status"
 
 #: accounts/templates/activate.html accounts/templates/change-email.html
 msgid "Check your email"
-msgstr ""
+msgstr "Prüfe deine E-mail"
 
 #: accounts/templates/activate.html
 msgid ""
@@ -118,7 +118,7 @@ msgstr ""
 
 #: accounts/templates/activated.html
 msgid "User activated"
-msgstr ""
+msgstr "Benutzer aktiviert"
 
 #: accounts/templates/activated.html
 msgid "Your account has been activated."
