@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-12-23 14:56+0000\n"
-"Last-Translator: Luna Jernberg <droidbittin@gmail.com>\n"
+"PO-Revision-Date: 2022-12-24 04:51+0000\n"
+"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/debexpo/packages/"
 "sv/>\n"
 "Language: sv\n"
@@ -70,7 +70,7 @@ msgstr "Beskrivning"
 #: packages/templates/package.html
 #, python-format
 msgid "<h1>Details about package %(name)s</h1>"
-msgstr "<h1>Detaljer om paket%(name)s</h1>"
+msgstr "<h1>Detaljer om paket %(name)s</h1>"
 
 #: packages/templates/package.html
 msgid "Name:"
@@ -183,7 +183,7 @@ msgstr "Ändringslogg"
 
 #: packages/templates/package.html
 msgid "QA information"
-msgstr "QA information"
+msgstr "QA-information"
 
 #: packages/templates/package.html
 msgid "Comments"

@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-12-23 14:56+0000\n"
-"Last-Translator: Luna Jernberg <droidbittin@gmail.com>\n"
+"PO-Revision-Date: 2022-12-24 04:51+0000\n"
+"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/debexpo/debexpo/"
 "sv/>\n"
 "Language: sv\n"
@@ -37,11 +37,11 @@ msgstr "Recensioner"
 
 #: base/templates/base.html
 msgid "Sponsors"
-msgstr "Sponsors"
+msgstr "Sponsorer"
 
 #: base/templates/base.html
 msgid "Q &amp; A"
-msgstr "Q &amp; A"
+msgstr "Frågor och svar"
 
 #: base/templates/base.html
 msgid "Contact"
@@ -385,11 +385,11 @@ msgstr ""
 
 #: base/templates/intro-maintainers.html
 msgid "HTTPS uploads"
-msgstr "HTTPS uppladdningar"
+msgstr "HTTPS-uppladdningar"
 
 #: base/templates/intro-maintainers.html
 msgid "FTP uploads"
-msgstr "FTP uppladdningar"
+msgstr "FTP-uppladdningar"
 
 #: base/templates/intro-maintainers.html
 msgid ""
@@ -528,7 +528,7 @@ msgstr ""
 
 #: base/templates/qa.html
 msgid "Questions &amp; Answers"
-msgstr "Frågor &amp; Svar"
+msgstr "Frågor &amp; svar"
 
 #: base/templates/qa.html
 #, python-format
