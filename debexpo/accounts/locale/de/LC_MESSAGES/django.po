@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-12-05 09:48+0000\n"
-"Last-Translator: Malik Mlitat <mlitat88@gmail.com>\n"
+"PO-Revision-Date: 2023-02-20 20:40+0000\n"
+"Last-Translator: Andreas Hunkeler <ah+a77dj3@einbit.ch>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/debexpo/accounts/"
 "de/>\n"
 "Language: de\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"X-Generator: Weblate 4.16-dev\n"
 
 #: accounts/forms.py
 msgid "Full name"
@@ -43,7 +43,7 @@ msgstr ""
 
 #: accounts/forms.py
 msgid "Account type"
-msgstr ""
+msgstr "Kontotyp"
 
 #: accounts/forms.py
 msgid "Maintainer"
@@ -64,27 +64,27 @@ msgstr "Spam erkannt"
 
 #: accounts/forms.py
 msgid "You requested a password reset"
-msgstr ""
+msgstr "Du hast ein Zurücksetzen des Passworts verlangt"
 
 #: accounts/models.py
 msgid "Contributor"
-msgstr ""
+msgstr "Mitwirkende"
 
 #: accounts/models.py
 msgid "Debian Maintainer (DM)"
-msgstr ""
+msgstr "Debian Maintainer (DM)"
 
 #: accounts/models.py
 msgid "Debian Developer (DD)"
-msgstr ""
+msgstr "Debian Developer (DD)"
 
 #: accounts/models.py
 msgid "email address"
-msgstr ""
+msgstr "E-Mail Adresse"
 
 #: accounts/models.py
 msgid "full name"
-msgstr ""
+msgstr "Vollständiger Name"
 
 #: accounts/models.py
 msgid "Country"
@@ -92,11 +92,11 @@ msgstr "Land"
 
 #: accounts/models.py
 msgid "IRC Nickname"
-msgstr ""
+msgstr "IRC Nickname"
 
 #: accounts/models.py
 msgid "Jabber address"
-msgstr ""
+msgstr "Deutsch"
 
 #: accounts/models.py
 msgid "Language"
@@ -115,6 +115,8 @@ msgid ""
 "An email has been sent to the email address you specified. Check it for "
 "instructions on how to activate your account."
 msgstr ""
+"Eine E-Mail wurde an die von dir gewählte E-Mail Adresse versendet. Prüfe "
+"dieses für die Instruktionen, wie dein Account aktiviert werden kann."
 
 #: accounts/templates/activated.html
 msgid "User activated"
@@ -122,59 +124,64 @@ msgstr "Benutzer aktiviert"
 
 #: accounts/templates/activated.html
 msgid "Your account has been activated."
-msgstr ""
+msgstr "Dein Account wurde aktiviert."
 
 #: accounts/templates/activated.html
 #, python-format
 msgid "You can now <a href=\"%(u_profile)s\">proceed to login</a>."
 msgstr ""
+"Du kannst jetzt <a href=\"%(u_profile)s\">mit dem Login weitermachen.</a>."
 
 #: accounts/templates/activated.html
 msgid "Invalid verification key"
-msgstr ""
+msgstr "Ungültiger Verifikations-Schlüssel"
 
 #: accounts/templates/activated.html
 msgid ""
 "The verification key you entered has not been recognised. Please try again."
 msgstr ""
+"Der von dir eingegebene Verifikations-Schlüssel wurde nicht erkannt. Bitte "
+"nochmals versuchen."
 
 #: accounts/templates/change-email-complete.html
 msgid "Email changed successfully"
-msgstr ""
+msgstr "E-Mail erfolgreich geändert"
 
 #: accounts/templates/change-email-complete.html
 msgid "Your email has been successfully updated"
-msgstr ""
+msgstr "Deine E-Mail wurde erfolgreich aktualisiert"
 
 #: accounts/templates/change-email-complete.html
 msgid "Go back to"
-msgstr ""
+msgstr "Gehe zurück zu"
 
 #: accounts/templates/change-email-complete.html
 msgid "my account"
-msgstr ""
+msgstr "Mein Account"
 
 #: accounts/templates/change-email-confirm.html accounts/views.py
 msgid "Change your email"
-msgstr ""
+msgstr "Ändere deine E-Mail"
 
 #: accounts/templates/change-email-confirm.html
 #: accounts/templates/password-reset-confirm.html
 #: accounts/templates/password-reset-form.html accounts/templates/profile.html
 #: accounts/templates/register.html
 msgid "Submit"
-msgstr ""
+msgstr "Absenden"
 
 #: accounts/templates/change-email-confirm.html
 #: accounts/templates/password-reset-confirm.html
 msgid "Invalid reset link"
-msgstr ""
+msgstr "Ungültiger Wiederherstellungslink"
 
 #: accounts/templates/change-email.html
 msgid ""
 "An email has been sent to your new email address. Check it for instructions "
 "on how to validate it."
 msgstr ""
+"Eine E-Mail wurde an deine neue E-Mail Adresse gesendet. Prüfe dieses für "
+"Instruktionen, wie du sie validieren kannst."
 
 #: accounts/templates/email-change.html
 msgid ""
@@ -183,6 +190,10 @@ msgid ""
 "Confirm your new email by visiting the following address\n"
 "in your web-browser:"
 msgstr ""
+"Hallo,\n"
+"\n"
+"Bestätige deine neue E-Mail durch das Öffnen der folgenden Adresse\n"
+"in deinem Web Browser:"
 
 #: accounts/templates/email-change.html
 #, python-format
@@ -190,12 +201,15 @@ msgid ""
 "If you didn't change your email on your account on %(site_name)s,\n"
 "you can safely ignore this email."
 msgstr ""
+"Wenn du deine E-Mail in deinem Account auf %(site_name)s nicht geändert hast,"
+"\n"
+"kannst du dieses E-Mail bedenkenlos ignorieren."
 
 #: accounts/templates/email-change.html
 #: accounts/templates/email-password-creation.html
 #: accounts/templates/email-password-reset.html
 msgid "Thanks,"
-msgstr ""
+msgstr "Danke,"
 
 #: accounts/templates/email-password-creation.html
 msgid ""
@@ -204,6 +218,10 @@ msgid ""
 "Please activate your account by visiting the following address\n"
 "in your web-browser:"
 msgstr ""
+"Hallo,\n"
+"\n"
+"Bitte aktiviere deinen Account durch das Öffnen der folgenden Adresse\n"
+"in deinem Web Browser:"
 
 #: accounts/templates/email-password-creation.html
 #, python-format
@@ -211,6 +229,8 @@ msgid ""
 "If you didn't create an account on %(site_name)s,\n"
 "you can safely ignore this email."
 msgstr ""
+"Wenn du keinen Account auf %(site_name)s erstellt hast,\n"
+"kannst du dieses E-Mail bedenkenlos ignorieren."
 
 #: accounts/templates/email-password-reset.html
 msgid ""
@@ -219,145 +239,161 @@ msgid ""
 "You can reset your password by clicking on the link below. If you did\n"
 "not request a password reset, then you can ignore this."
 msgstr ""
+"Hallo,\n"
+"\n"
+"Du kannst dein Passwort durch den Klick auf den Link unten zurücksetzen. "
+"Wenn du\n"
+"kein Zurücksetzen angefordert hast, kannst du es ignorieren."
 
 #: accounts/templates/login.html
 msgid "Login"
-msgstr ""
+msgstr "Login"
 
 #: accounts/templates/login.html
 msgid "Please login to continue"
-msgstr ""
+msgstr "Bitte einloggen, um fortzufahren"
 
 #: accounts/templates/login.html
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
+"Dein Benutzername und Passwort stimmen nicht überein. Bitte versuche es "
+"nochmals."
 
 #: accounts/templates/login.html
 msgid ""
 "Your account doesn't have access to this page. To proceed, please login with "
 "an account that has access."
 msgstr ""
+"Dein Account hast kein Zugriff auf diese Seite. Um fortzufahren, bitte logge "
+"dich mit einem Account ein, der Zugriff hat."
 
 #: accounts/templates/login.html
 msgid "Please login to see this page."
-msgstr ""
+msgstr "Bitte einloggen, um diese Seite zu sehen."
 
 #: accounts/templates/login.html
 msgid "E-mail:"
-msgstr ""
+msgstr "E-Mail:"
 
 #: accounts/templates/login.html
 msgid "Secure log-in:"
-msgstr ""
+msgstr "Sicheres Login:"
 
 #: accounts/templates/login.html
 msgid "Switch to SSL"
-msgstr ""
+msgstr "Wechsle auf SSL"
 
 #: accounts/templates/login.html
 msgid "Did you lose your password?"
-msgstr ""
+msgstr "Hast du dein Passwort verloren?"
 
 #: accounts/templates/login.html
 msgid "Try resetting your password."
-msgstr ""
+msgstr "Versuche dein Passwort zurückzusetzen."
 
 #: accounts/templates/password-reset-complete.html
 msgid "Okay! You have a new password"
-msgstr ""
+msgstr "Alles klar! Du hast ein neues Passwort"
 
 #: accounts/templates/password-reset-complete.html
 msgid "You can use your new password to"
-msgstr ""
+msgstr "Du kannst dein neues Passwort verwenden, um"
 
 #: accounts/templates/password-reset-complete.html
 msgid "log in"
-msgstr ""
+msgstr "einloggen"
 
 #: accounts/templates/password-reset-confirm.html
 msgid "Reset your password"
-msgstr ""
+msgstr "Passwort zurücksetzen"
 
 #: accounts/templates/password-reset-done.html
 msgid "Password recovery in progress"
-msgstr ""
+msgstr "Passwort Wiederherstellung in Bearbeitung"
 
 #: accounts/templates/password-reset-done.html
 msgid ""
 "Okay! You should now get an email with a link. Click the\n"
 "link."
 msgstr ""
+"Alles klar! Du solltest jetzt eine E-Mail mit einem Link bekommen. Klick "
+"den\n"
+"Link."
 
 #: accounts/templates/password-reset-form.html
 msgid "Password recovery"
-msgstr ""
+msgstr "Passwortwiederherstellung"
 
 #: accounts/templates/password-reset-form.html
 msgid "If you forgot your password, here is what we can do for you."
 msgstr ""
+"Wenn du dein Passwort vergisst, hier ist was wir für dich machen können."
 
 #: accounts/templates/password-reset-form.html
 msgid "You should fill out this form."
-msgstr ""
+msgstr "Du solltest dieses Formular ausfüllen."
 
 #: accounts/templates/password-reset-form.html
 msgid "You will get an email with a link. Click the link."
-msgstr ""
+msgstr "Du wirst ein E-Mail mit einem Link bekommen. Klick den Link."
 
 #: accounts/templates/password-reset-form.html
 msgid "Then the web app will allow you to change your password."
 msgstr ""
+"Anschliessend wird dir die Web-Applikation erlauben, dein Passwort zu ändern."
 
 #: accounts/templates/password-reset-form.html
 msgid "Not super hard. If you're ready, I'm ready."
-msgstr ""
+msgstr "Nicht super schwierig. Wenn du bereit bist, ich bin bereit."
 
 #: accounts/templates/profile.html
 msgid "My account"
-msgstr ""
+msgstr "Mein Account"
 
 #: accounts/templates/profile.html
 msgid "Change details"
-msgstr ""
+msgstr "Änderungsdetails"
 
 #: accounts/templates/profile.html
 msgid "Change GPG key"
-msgstr ""
+msgstr "GPG Key Ändern"
 
 #: accounts/templates/profile.html
 msgid "Fingerprint:"
-msgstr ""
+msgstr "Fingerabdruck:"
 
 #: accounts/templates/profile.html
 msgid ""
 "Please use the output of <tt>gpg --export --export-options export-minimal --"
 "armor <i>keyid</i></tt>"
 msgstr ""
+"Bitte verwende die Ausgabe von <tt>gpg --export --export-options export-"
+"minimal --armor <i>keyid</i></tt>"
 
 #: accounts/templates/profile.html
 msgid "Remove"
-msgstr ""
+msgstr "Löschen"
 
 #: accounts/templates/profile.html
 msgid "Change password"
-msgstr ""
+msgstr "Passwort ändern"
 
 #: accounts/templates/profile.html
 msgid "Change other details"
-msgstr ""
+msgstr "Andere Details ändern"
 
 #: accounts/templates/profile.html
 msgid "Public sponsor info"
-msgstr ""
+msgstr "Öffentliche Sponsoren Info"
 
 #: accounts/templates/register.html
 msgid "Sign up for an account"
-msgstr ""
+msgstr "Registriere dich für einen Account"
 
 #: accounts/templates/register.html
 msgid "Account details"
-msgstr ""
+msgstr "Account-Details"
 
 #: accounts/views.py
 msgid "Next step: Confirm your email address"
-msgstr ""
+msgstr "Nächster Schritt: Bestätige deine E-Mail Adresse"

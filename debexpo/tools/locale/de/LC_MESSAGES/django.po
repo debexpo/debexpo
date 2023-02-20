@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-24 20:15+0000\n"
-"Last-Translator: Wolfgang Wagner <wolfgang.wagner@vertexer.de>\n"
+"PO-Revision-Date: 2023-02-25 19:36+0000\n"
+"Last-Translator: Andreas Hunkeler <ah+a77dj3@einbit.ch>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/debexpo/tools/de/>"
 "\n"
 "Language: de\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"X-Generator: Weblate 4.16-dev\n"
 
 #: tools/debian/changes.py
 #, python-brace-format
 msgid "Changes file {filename} could not be parsed"
-msgstr "Geänderte Datei {filename} konnte nicht geparst werden"
+msgstr "Äderungensdatei {filename} konnte nicht eingelesen werden"
 
 #: tools/debian/changes.py
 #, python-brace-format
@@ -40,9 +40,9 @@ msgstr ""
 "DSC fehlt in den Änderungen\n"
 "Vergewissern Sie sich, dass Sie den vollständigen Quellcode einbinden (wenn "
 "Sie sbuild verwenden, stellen Sie sicher, dass Sie die Option --source oder "
-"ein entsprechendes Konfigurationselement verwenden; wenn Sie dpkg-"
-"buildpackage direkt verwenden, verwenden Sie die Standardflags oder -S für "
-"einen reinen Quellcode-Upload)"
+"das entsprechende Konfigurationselement verwenden; bei der direkten "
+"Verwendung von dpkg-buildpackage, verwenden Sie die Standardflags oder -S "
+"für einen reinen Quellcode-Upload)"
 
 #: tools/debian/changes.py
 #, python-brace-format
@@ -57,40 +57,40 @@ msgstr ""
 #: tools/debian/control.py
 #, python-brace-format
 msgid "Failed to parse debian/control:{message}"
-msgstr ""
+msgstr "Konnte debian/control nicht parsen:{message}"
 
 #: tools/debian/control.py
 msgid "No source definition found"
-msgstr ""
+msgstr "Keine Source-Definition gefunden"
 
 #: tools/debian/control.py
 msgid "No binary definition found"
-msgstr ""
+msgstr "Keine Binary Definition gefunden"
 
 #: tools/debian/control.py
 #, python-brace-format
 msgid "Missing key {key} in source definition"
-msgstr ""
+msgstr "Vermisse Schlüssel {key} in Source Definition"
 
 #: tools/debian/copyright.py
 #, python-brace-format
 msgid "Failed to parse debian/copyright: {message}"
-msgstr ""
+msgstr "Konnte debian/copyright nicht parsen:{message}"
 
 #: tools/debian/dsc.py
 #, python-brace-format
 msgid "{dsc} could not be parsed"
-msgstr ""
+msgstr "{dsc} konnte nicht geparst werden"
 
 #: tools/debian/dsc.py
 #, python-brace-format
 msgid "Missing key {key}"
-msgstr ""
+msgstr "Fehlender Key {key}"
 
 #: tools/debian/origin.py
 #, python-brace-format
 msgid "Failed to retrive origin info: {e}"
-msgstr ""
+msgstr "Abrufen der Herkunftsinformation gescheitert: {e}"
 
 #: tools/debian/origin.py
 #, python-brace-format
@@ -102,26 +102,33 @@ msgid ""
 "sha256sum in upload : {upload}\n"
 "sha256sum in archive: {archive}"
 msgstr ""
+"Quellpaket Ursprung-Datei unterscheidet sich vom offiziellen Archiv:\n"
+"\n"
+"Ursprung-Datei              : {origin}\n"
+"\n"
+"sha256sum in Upload: {upload}\n"
+"sha256sum in Archiv:   {archive}"
 
 #: tools/debian/source.py
 #, python-brace-format
 msgid "Internal error. Please contact debexpo administrators at {email}"
-msgstr ""
+msgstr "Interner Fehler. Bitte kontaktiere debexpo Administratoren via {email}"
 
 #: tools/debian/source.py
 #, python-brace-format
 msgid "Could not extract source package from {dsc}: {e}"
-msgstr ""
+msgstr "Konnte Quellpaket nicht extrahieren von {dsc}: {e}"
 
 #: tools/debian/source.py
 #, python-brace-format
 msgid "Could not extract source package from {dsc}: extraction took too long"
 msgstr ""
+"Konnte Quellpaket nicht extrahieren von {dsc}: Extraktion brauchte zu lange"
 
 #: tools/files.py
 #, python-brace-format
 msgid "No checksum method available for file {filename}."
-msgstr ""
+msgstr "Keine Checksum-Methode verfügbar für Datei {filename}."
 
 #: tools/files.py
 #, python-brace-format
@@ -131,29 +138,35 @@ msgid ""
 "Expected: {expected}\n"
 "Computed: {computed}"
 msgstr ""
+"Prüfsumme falsch für Datei {filename}.\n"
+"\n"
+"Erwartet: {expected}\n"
+"Berechnet: {computed}"
 
 #: tools/files.py
 #, python-brace-format
 msgid "{filename} is missing from upload"
-msgstr ""
+msgstr "{filename} fehlt in Upload"
 
 #: tools/gnupg.py
 #, python-brace-format
 msgid ""
 "Unable to verify file {filename}. No public key found for key {fingerprint}"
 msgstr ""
+"Unmöglich Datei {filename} zu verifizieren. Kein öffentlicher Schlüssel "
+"gefunden für Schlüssel {fingerprint}"
 
 #: tools/gnupg.py
 #, python-brace-format
 msgid "{filename}: not a GPG signed file"
-msgstr ""
+msgstr "{filename}: Keine GPG signierte Datei"
 
 #: tools/gnupg.py
 #, python-brace-format
 msgid "Unknown GPG error. Output was: {output}"
-msgstr ""
+msgstr "Unbekannter GPG Fehler. Ausgabe war: {output}"
 
 #: tools/gnupg.py
 #, python-brace-format
 msgid "Cannot add key: {key}"
-msgstr ""
+msgstr "Kann Schlüssel nicht hinzufügen: {key}"
