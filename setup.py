@@ -84,7 +84,7 @@ setup(
         'django-celery-beat >= 1.1.1, < 3',
         'redis >= 3.2.1, < 5',
         'django-redis >= 4.10.0, < 6',
-        'python-debianbts >= 2.8.2, < 4',
+        'python-debianbts >= 2.8.2, < 5',
         'lxml >= 4.3.2, < 5',
         'dulwich >= 0.19.11, < 1',
         'djangorestframework >= 3.9.0, < 4',
