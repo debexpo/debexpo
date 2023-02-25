@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-30 13:52+0000\n"
-"Last-Translator: Emiel Van Severen <github@vanseveren.dev>\n"
+"PO-Revision-Date: 2023-03-07 20:42+0000\n"
+"Last-Translator: Frans Spiesschaert <frans.spiesschaert@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/debexpo/packages/"
 "nl/>\n"
 "Language: nl\n"
@@ -17,269 +17,268 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"X-Generator: Weblate 4.16.2-dev\n"
 
 #: packages/models.py
 msgid "Name"
-msgstr ""
+msgstr "Naam"
 
 #: packages/models.py
 msgid "Needs a sponsor?"
-msgstr ""
+msgstr "Heeft een sponsor nodig?"
 
 #: packages/models.py
 msgid "In Debian?"
-msgstr ""
+msgstr "In Debian?"
 
 #: packages/models.py packages/templates/packages-list.html
 msgid "Version"
-msgstr ""
+msgstr "Versie"
 
 #: packages/models.py
 msgid "Changes"
-msgstr ""
+msgstr "Wijzigingen"
 
 #: packages/models.py
 msgid "Closes bugs"
-msgstr ""
+msgstr "Sluit de bugs"
 
 #: packages/models.py
 msgid "Git storage ref"
-msgstr ""
+msgstr "Ref. git-opslag"
 
 #: packages/models.py
 msgid "Upload date"
-msgstr ""
+msgstr "Uploaddatum"
 
 #: packages/models.py
 msgid "Maintainer"
-msgstr "Onderhouder"
+msgstr "Beheerder"
 
 #: packages/models.py
 msgid "Homepage"
-msgstr ""
+msgstr "Startpagina"
 
 #: packages/models.py
 msgid "VCS"
-msgstr ""
+msgstr "VCS"
 
 #: packages/models.py packages/templates/packages-list.html
 msgid "Description"
-msgstr ""
+msgstr "Beschrijving"
 
 #: packages/templates/package.html
 #, python-format
 msgid "<h1>Details about package %(name)s</h1>"
-msgstr ""
+msgstr "<h1>Gegevens over pakket %(name)s</h1>"
 
 #: packages/templates/package.html
 msgid "Name:"
-msgstr ""
+msgstr "Naam:"
 
 #: packages/templates/package.html
 msgid "Uploader:"
-msgstr ""
+msgstr "Uploader:"
 
 #: packages/templates/package.html
 msgid "Description:"
-msgstr ""
+msgstr "Beschrijving:"
 
 #: packages/templates/package.html
 msgid "Subscribe:"
-msgstr ""
+msgstr "Intekenen:"
 
 #: packages/templates/package.html
 msgid "Edit your subscription"
-msgstr ""
+msgstr "Uw abonnement bewerken"
 
 #: packages/templates/package.html
 msgid "Needs a sponsor:"
-msgstr ""
+msgstr "Heeft een sponsor nodig:"
 
 #: packages/templates/package.html packages/templates/packages-list.html
 msgid "Yes"
-msgstr ""
+msgstr "Ja"
 
 #: packages/templates/package.html packages/templates/packages-list.html
 msgid "No"
-msgstr ""
+msgstr "Nee"
 
 #: packages/templates/package.html
 msgid "Change"
-msgstr ""
+msgstr "Wijzigen"
 
 #: packages/templates/package.html
 msgid "Delete package:"
-msgstr ""
+msgstr "Pakket verwijderen:"
 
 #: packages/templates/package.html
 msgid "Admin package deletion"
-msgstr ""
+msgstr "Admin pakketverwijdering"
 
 #: packages/templates/package.html
 msgid "Delete this package"
-msgstr ""
+msgstr "Dit pakket verwijderen"
 
 #: packages/templates/package.html
 msgid "Package uploads"
-msgstr ""
+msgstr "Pakketuploads"
 
 #: packages/templates/package.html
 #, python-format
 msgid "Upload #%(index)s"
-msgstr ""
+msgstr "Upload #%(index)s"
 
 #: packages/templates/package.html
 msgid "Admin upload deletion"
-msgstr ""
+msgstr "Admin uploadverwijdering"
 
 #: packages/templates/package.html
 msgid "Delete this upload"
-msgstr ""
+msgstr "Deze upload verwijderen"
 
 #: packages/templates/package.html
 msgid "Information"
-msgstr ""
+msgstr "Informatie"
 
 #: packages/templates/package.html
 msgid "Version:"
-msgstr ""
+msgstr "Versie:"
 
 #: packages/templates/package.html
 msgid "View RFS template"
-msgstr ""
+msgstr "RFS-sjabloon bekijken"
 
 #: packages/templates/package.html
 msgid "Uploaded:"
-msgstr ""
+msgstr "Geüpload:"
 
 #: packages/templates/package.html
 msgid "Source package:"
-msgstr ""
+msgstr "Broncodepakket:"
 
 #: packages/templates/package.html
 msgid "Distribution:"
-msgstr ""
+msgstr "Distributie:"
 
 #: packages/templates/package.html
 msgid "Section:"
-msgstr ""
+msgstr "Sectie:"
 
 #: packages/templates/package.html
 msgid "Priority:"
-msgstr ""
+msgstr "Prioriteit:"
 
 #: packages/templates/package.html
 msgid "Homepage:"
-msgstr ""
+msgstr "Startpagina:"
 
 #: packages/templates/package.html
 msgid "Closes bugs:"
-msgstr ""
+msgstr "Sluit de bugs:"
 
 #: packages/templates/package.html
 msgid "Changelog"
-msgstr ""
+msgstr "Changelog (log met wijzigingen)"
 
 #: packages/templates/package.html
 msgid "QA information"
-msgstr ""
+msgstr "QA-informatie"
 
 #: packages/templates/package.html
 msgid "Comments"
-msgstr ""
+msgstr "Commentaar"
 
 #: packages/templates/package.html
 msgid "Needs work"
-msgstr ""
+msgstr "Behoeft werk"
 
 #: packages/templates/package.html
 msgid "Ready"
-msgstr ""
+msgstr "Klaar"
 
 #: packages/templates/package.html
 msgid "Package has been uploaded to Debian"
-msgstr ""
+msgstr "Pakket is geüpload naar Debian"
 
 #: packages/templates/package.html
 msgid "No comments"
-msgstr ""
+msgstr "Geen commentaar"
 
 #: packages/templates/package.html
 msgid "New comment"
-msgstr ""
+msgstr "Nieuwe commentaar"
 
 #: packages/templates/package.html
-#, fuzzy
 msgid "Submit"
-msgstr "Verstuur"
+msgstr "Insturen"
 
 #: packages/templates/packages-list.html
 msgid "Package"
-msgstr ""
+msgstr "Pakket"
 
 #: packages/templates/packages-list.html
 msgid "Uploader"
-msgstr ""
+msgstr "Uploader"
 
 #: packages/templates/packages-list.html
 msgid "Needs a sponsor"
-msgstr ""
+msgstr "Heeft een sponsor nodig"
 
 #: packages/templates/packages-list.html
 msgid "Already in Debian"
-msgstr ""
+msgstr "Reeds in Debian"
 
 #: packages/templates/packages-list.html
 msgid "No packages"
-msgstr ""
+msgstr "Geen pakketten"
 
 #: packages/views.py
 msgid "Today"
-msgstr ""
+msgstr "Vandaag"
 
 #: packages/views.py
 msgid "Yesterday"
-msgstr ""
+msgstr "Gisteren"
 
 #: packages/views.py
 msgid "Some days ago"
-msgstr ""
+msgstr "Enkele dagen geleden"
 
 #: packages/views.py
 msgid "Older packages"
-msgstr ""
+msgstr "Oudere pakketten"
 
 #: packages/views.py
 msgid "Uploaded long ago"
-msgstr ""
+msgstr "Lang geleden geüpload"
 
 #: packages/views.py
 msgid "Packages for {} {}"
-msgstr ""
+msgstr "Pakketten voor {} {}"
 
 #: packages/views.py
 msgid "Package list"
-msgstr ""
+msgstr "Pakketlijst"
 
 #: packages/views.py
 #, python-format
 msgid "%s packages"
-msgstr ""
+msgstr "%s pakketten"
 
 #: packages/views.py
 #, python-format
 msgid "A feed of packages on %s"
-msgstr ""
+msgstr "Een toevoer van pakketten op %s"
 
 #: packages/views.py
 msgid "Package {} uploaded by {}."
-msgstr ""
+msgstr "Pakket {} geüpload door {}."
 
 #: packages/views.py
 msgid "Uploader is currently looking for a sponsor."
-msgstr ""
+msgstr "Uploader is momenteel op zoek naar een sponsor."
 
 #: packages/views.py
 msgid "Uploader is currently not looking for a sponsor."
-msgstr ""
+msgstr "Uploader zoekt momenteel geen sponsor."

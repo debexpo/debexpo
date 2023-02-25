@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-30 13:52+0000\n"
-"Last-Translator: Emiel Van Severen <github@vanseveren.dev>\n"
+"PO-Revision-Date: 2023-02-26 21:38+0000\n"
+"Last-Translator: Frans Spiesschaert <frans.spiesschaert@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/debexpo/comments/"
 "nl/>\n"
 "Language: nl\n"
@@ -17,105 +17,104 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"X-Generator: Weblate 4.16-dev\n"
 
 #: comments/models.py
 msgid "Not reviewed"
-msgstr ""
+msgstr "Niet beoordeeld"
 
 #: comments/models.py
 msgid "Needs work"
-msgstr ""
+msgstr "Behoeft werk"
 
 #: comments/models.py
 msgid "Ready"
-msgstr ""
+msgstr "Klaar"
 
 #: comments/models.py
 msgid "Name"
-msgstr ""
+msgstr "Naam"
 
 #: comments/models.py
 msgid "Subscribe to uploads"
-msgstr ""
+msgstr "Intekenen op uploads"
 
 #: comments/models.py
 msgid "Subscribe to comments"
-msgstr ""
+msgstr "Intekenen op commentaar"
 
 #: comments/models.py
 msgid "Comment"
-msgstr ""
+msgstr "Commentaar"
 
 #: comments/models.py
 msgid "Comment date"
-msgstr ""
+msgstr "Datum van commentaar"
 
 #: comments/models.py
 msgid "Upload outcome"
-msgstr ""
+msgstr "Resultaat van upload"
 
 #: comments/models.py
 msgid "Uploaded to debian"
-msgstr ""
+msgstr "Geüpload naar Debian"
 
 #: comments/models.py
 msgid "New comment on package {}"
-msgstr ""
+msgstr "Nieuw commentaar op pakket {}"
 
 #: comments/templates/subscribe.html
 msgid "Subscribe to package "
-msgstr ""
+msgstr "Intekenen op pakket "
 
 #: comments/templates/subscribe.html
-#, fuzzy
 msgid "Submit"
-msgstr "Verstuur"
+msgstr "Insturen"
 
 #: comments/templates/subscribe.html
 msgid "Back to package details"
-msgstr ""
+msgstr "Terug naar pakketgegevens"
 
 #: comments/templates/subscribe.html
 msgid "Back to subscription list"
-msgstr ""
+msgstr "Terug naar abonnementenlijst"
 
 #: comments/templates/subscriptions.html
 msgid "My subscription list"
-msgstr ""
+msgstr "Mijn abonnementenlijst"
 
 #: comments/templates/subscriptions.html
 msgid "Package"
-msgstr ""
+msgstr "Pakket"
 
 #: comments/templates/subscriptions.html
 msgid "Notification on"
-msgstr ""
+msgstr "Mededeling over"
 
 #: comments/templates/subscriptions.html
 msgid "Edit"
-msgstr ""
+msgstr "Bewerken"
 
 #: comments/templates/subscriptions.html
 msgid "Update"
-msgstr ""
+msgstr "Bijwerken"
 
 #: comments/templates/subscriptions.html
 msgid "Unsubscribe"
-msgstr ""
+msgstr "Abonnement stopzetten"
 
 #: comments/templates/subscriptions.html
 msgid "No subscriptions"
-msgstr ""
+msgstr "Geen abonnementen"
 
 #: comments/templates/subscriptions.html
 msgid "Add new subscription"
-msgstr ""
+msgstr "Een nieuw abonnement toevoegen"
 
 #: comments/templates/subscriptions.html
 msgid "Package Name:"
-msgstr ""
+msgstr "Pakketnaam:"
 
 #: comments/templates/subscriptions.html
 msgid "Create subscription"
-msgstr ""
+msgstr "Een abonnement aanmaken"

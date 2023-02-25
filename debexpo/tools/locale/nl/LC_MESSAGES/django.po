@@ -8,23 +8,26 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-03-07 20:42+0000\n"
+"Last-Translator: Frans Spiesschaert <frans.spiesschaert@gmail.com>\n"
+"Language-Team: Dutch <https://hosted.weblate.org/projects/debexpo/tools/nl/>"
+"\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.16.2-dev\n"
 
 #: tools/debian/changes.py
 #, python-brace-format
 msgid "Changes file {filename} could not be parsed"
-msgstr ""
+msgstr "Changes-bestand {filename} kon niet ontleed worden"
 
 #: tools/debian/changes.py
 #, python-brace-format
 msgid "Changes file invalid. Missing key {key}"
-msgstr ""
+msgstr "Changes-bestand ongeldig. Ontbrekende sleutel {key}"
 
 #: tools/debian/changes.py
 msgid ""
@@ -34,6 +37,11 @@ msgid ""
 "using dpkg-buildpackage directly use the default flags or -S for a source "
 "only upload)"
 msgstr ""
+"dsc ontbreekt in changes\n"
+"Zorg ervoor dat u de volledige broncode toevoegt (als u sbuild gebruikt, "
+"gebruik dan de optie --source of het equivalente configuratie-item; als u "
+"rechtstreeks gebruik maakt van dpkg-buildpackage, gebruik dan de "
+"standaardvlaggen of -S voor een upload van alleen de broncode)"
 
 #: tools/debian/changes.py
 #, python-brace-format
@@ -41,44 +49,47 @@ msgid ""
 "{source} exists in the official Debian archive with the version {version}/"
 "{distribution}. You may not upload a lower or equal version to this one."
 msgstr ""
+"{source} bestaat in het officiële Debian-archief met de versie "
+"{version}/{distribution}. U mag geen versie uploaden die lager of gelijk is "
+"aan deze versie."
 
 #: tools/debian/control.py
 #, python-brace-format
 msgid "Failed to parse debian/control:{message}"
-msgstr ""
+msgstr "Ontleden van debian/control mislukt:{message}"
 
 #: tools/debian/control.py
 msgid "No source definition found"
-msgstr ""
+msgstr "Geen broncodedefinitie gevonden"
 
 #: tools/debian/control.py
 msgid "No binary definition found"
-msgstr ""
+msgstr "Geen definitie van binair bestand gevonden"
 
 #: tools/debian/control.py
 #, python-brace-format
 msgid "Missing key {key} in source definition"
-msgstr ""
+msgstr "Ontbrekende sleutel {key} in broncodedefinitie"
 
 #: tools/debian/copyright.py
 #, python-brace-format
 msgid "Failed to parse debian/copyright: {message}"
-msgstr ""
+msgstr "Ontleden van debian/copyright mislukt: {message}"
 
 #: tools/debian/dsc.py
 #, python-brace-format
 msgid "{dsc} could not be parsed"
-msgstr ""
+msgstr "{dsc} kon niet worden ontleed"
 
 #: tools/debian/dsc.py
 #, python-brace-format
 msgid "Missing key {key}"
-msgstr ""
+msgstr "Ontbrekende sleutel {key}"
 
 #: tools/debian/origin.py
 #, python-brace-format
 msgid "Failed to retrive origin info: {e}"
-msgstr ""
+msgstr "Ophalen van origin-info mislukte: {e}"
 
 #: tools/debian/origin.py
 #, python-brace-format
@@ -90,26 +101,33 @@ msgid ""
 "sha256sum in upload : {upload}\n"
 "sha256sum in archive: {archive}"
 msgstr ""
+"Origin-bestand van broncodepakket verschilt van het officiële archief:\n"
+"\n"
+"Origin-bestand         : {origin}\n"
+"\n"
+"sha256sum in upload : {upload}\n"
+"sha256sum in archief: {archive}"
 
 #: tools/debian/source.py
 #, python-brace-format
 msgid "Internal error. Please contact debexpo administrators at {email}"
-msgstr ""
+msgstr "Interne fout. Neem contact op met de debexpo-beheerders via {email}"
 
 #: tools/debian/source.py
 #, python-brace-format
 msgid "Could not extract source package from {dsc}: {e}"
-msgstr ""
+msgstr "Kon broncodepakket niet extraheren uit {dsc}: {e}"
 
 #: tools/debian/source.py
 #, python-brace-format
 msgid "Could not extract source package from {dsc}: extraction took too long"
 msgstr ""
+"Kon broncodepakket niet extraheren uit {dsc}: extractie vroeg te veel tijd"
 
 #: tools/files.py
 #, python-brace-format
 msgid "No checksum method available for file {filename}."
-msgstr ""
+msgstr "Geen controlegetalmethode beschikbaar voor bestand {filename}."
 
 #: tools/files.py
 #, python-brace-format
@@ -119,29 +137,35 @@ msgid ""
 "Expected: {expected}\n"
 "Computed: {computed}"
 msgstr ""
+"Controlegetalfout voor bestand {filename}.\n"
+"\n"
+"Verwacht: {expected}\n"
+"Berekend: {computed}"
 
 #: tools/files.py
 #, python-brace-format
 msgid "{filename} is missing from upload"
-msgstr ""
+msgstr "{filename} ontbreekt in upload"
 
 #: tools/gnupg.py
 #, python-brace-format
 msgid ""
 "Unable to verify file {filename}. No public key found for key {fingerprint}"
 msgstr ""
+"Kan bestand {filename} niet verifiëren. Geen publieke sleutel gevonden voor "
+"sleutel {fingerprint}"
 
 #: tools/gnupg.py
 #, python-brace-format
 msgid "{filename}: not a GPG signed file"
-msgstr ""
+msgstr "{filename}: bestand niet met GPG ondertekend"
 
 #: tools/gnupg.py
 #, python-brace-format
 msgid "Unknown GPG error. Output was: {output}"
-msgstr ""
+msgstr "Onbekende GPG-fout. De uitvoer was: {output}"
 
 #: tools/gnupg.py
 #, python-brace-format
 msgid "Cannot add key: {key}"
-msgstr ""
+msgstr "Kan sleutel niet toevoegen: {key}"

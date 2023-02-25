@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-30 13:52+0000\n"
-"Last-Translator: Emiel Van Severen <github@vanseveren.dev>\n"
+"PO-Revision-Date: 2023-03-06 19:41+0000\n"
+"Last-Translator: Frans Spiesschaert <frans.spiesschaert@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/debexpo/debexpo/nl/"
 ">\n"
 "Language: nl\n"
@@ -17,83 +17,83 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"X-Generator: Weblate 4.16.2-dev\n"
 
 #: base/templates/base.html
 msgid "Start page"
-msgstr ""
+msgstr "Startpagina"
 
 #: base/templates/base.html
 msgid "Package list"
-msgstr ""
+msgstr "Pakketlijst"
 
 #: base/templates/base.html
 msgid "Maintainer"
-msgstr "Onderhouder"
+msgstr "Beheerder"
 
 #: base/templates/base.html
 msgid "Reviews"
-msgstr ""
+msgstr "Beoordelingen"
 
 #: base/templates/base.html
 msgid "Sponsors"
-msgstr ""
+msgstr "Sponsors"
 
 #: base/templates/base.html
 msgid "Q &amp; A"
-msgstr ""
+msgstr "V &amp; A"
 
 #: base/templates/base.html
 msgid "Contact"
-msgstr ""
+msgstr "Contact"
 
 #: base/templates/base.html
 msgid "My account"
-msgstr ""
+msgstr "Mijn account"
 
 #: base/templates/base.html
 msgid "My packages"
-msgstr ""
+msgstr "Mijn pakketten"
 
 #: base/templates/base.html
 msgid "My subscriptions"
-msgstr ""
+msgstr "Mijn abonnementen"
 
 #: base/templates/base.html
 msgid "Logout"
-msgstr ""
+msgstr "Afmelden"
 
 #: base/templates/base.html
 msgid "Sign me up"
-msgstr ""
+msgstr "Me inschrijven"
 
 #: base/templates/base.html
 msgid "Login"
-msgstr ""
+msgstr "Aanmelden"
 
 #: base/templates/base.html
 msgid "Auto-detected"
-msgstr ""
+msgstr "Automatisch gedetecteerd"
 
 #: base/templates/base.html
 msgid "Hosting and hardware provided by"
-msgstr ""
+msgstr "Hosting en hardware aangeboden door"
 
 #: base/templates/base.html
 msgid "Source code and bugs"
-msgstr ""
+msgstr "Broncode en bugs"
 
 #: base/templates/base.html
 msgid "Version"
-msgstr ""
+msgstr "Versie"
 
 #: base/templates/base.html
 msgid "RSS"
-msgstr ""
+msgstr "RSS"
 
 #: base/templates/contact.html
 msgid "Site contact"
-msgstr ""
+msgstr "Contactpersoon voor de site"
 
 #: base/templates/contact.html
 #, python-format
@@ -106,10 +106,17 @@ msgid ""
 "org/debian-mentors/\">debian-mentors mailing list</a> instead or <a "
 "href=\"%(u_rfs)s\">file a RFS bug</a> respectively."
 msgstr ""
+"U kunt rechtstreeks contact opnemen met het debexpo-team. Raadpleeg bij "
+"technische problemen eerst de sectie <a href=\"%(u_qa)s\">V &amp; A</a> en "
+"de pagina op <a href=\"https://wiki.debian.org/Debexpo\">Debian wiki</a> . "
+"<strong>Gebruik dit contactadres niet voor sponsoraanvragen of "
+"verpakkingsvragen</strong>. Schrijf daarvoor respectievelijk naar de "
+"mailinglijst <a href=\"https://lists.debian.org/debian-mentors/\">debian-"
+"mentors</a> of <a href=\"%(u_rfs)s\">dien een RFS-bug in</a>."
 
 #: base/templates/contact.html
 msgid "Site email"
-msgstr ""
+msgstr "E-mail van de site"
 
 #: base/templates/contact.html
 msgid ""
@@ -117,10 +124,13 @@ msgid ""
 "em>, IRC: <em>mapreri</em>) and Paul Wise (<em>pabs</em>) are maintaining "
 "this service."
 msgstr ""
+"Momenteel onderhouden Baptiste Beauplat (<em>lyknode</em>), Mattia Rizzolo "
+"(<em>mattia</em>, IRC: <em>mapreri</em>) en Paul Wise (<em>pabs</em>) deze "
+"dienst."
 
 #: base/templates/contact.html
 msgid "Development"
-msgstr ""
+msgstr "Ontwikkeling"
 
 #: base/templates/contact.html
 #, python-format
@@ -129,11 +139,15 @@ msgid ""
 "improve %(site_name)s, come to <tt>#debexpo</tt> on <a href=\"irc://irc."
 "debian.org/debexpo\">irc.debian.org</a> and chat with us."
 msgstr ""
+"We zijn steeds op zoek naar nieuwe medewerkers. Als u wilt bijdragen tot "
+"%(site_name)s of verbeteringen wilt aanbrengen, ga dan naar <tt>#debexpo</"
+"tt> op <a href=\"irc://irc.debian.org/debexpo\">irc.debian.org</a> en chat "
+"met ons."
 
 #: base/templates/index.html
 #, python-format
 msgid "Welcome to %(name)s"
-msgstr ""
+msgstr "Welkom op %(name)s"
 
 #: base/templates/index.html
 msgid ""
@@ -147,16 +161,29 @@ msgid ""
 "for technical correctness and help the maintainer to improve the package if "
 "necessary. Therefore the sponsor is sometimes also called a mentor."
 msgstr ""
+"Alleen erkende leden van het Debian-project (Debian-ontwikkelaars) krijgen "
+"de toestemming om softwarepakketten naar de Debian-distributie te uploaden. "
+"Toch wordt een groot aantal pakketten onderhouden door niet-officiële "
+"ontwikkelaars. Hoe krijgen ze hun werk in Debian als ze hun eigen pakketten "
+"niet rechtstreeks mogen uploaden? Door middel van een proces genaamd "
+"<em>sponsoring</em>. Sponsoring betekent dat een Debian-ontwikkelaar het "
+"pakket uploadt namens de eigenlijke beheerder. De Debian-ontwikkelaar zal "
+"het pakket ook controleren op technische correctheid en indien nodig de "
+"beheerder helpen het pakket te verbeteren. Daarom wordt de sponsor soms ook "
+"een mentor genoemd."
 
 #: base/templates/index.html
 msgid ""
 "Note, not only Debian Developer are allowed to review packages. Everyone is "
 "encouraged to review packages! We appreciate your efforts as well."
 msgstr ""
+"Merk op dat niet alleen Debian-ontwikkelaars pakketten mogen beoordelen. "
+"Iedereen wordt aangemoedigd om pakketten te beoordelen! Ook uw inzet stellen "
+"wij zeer op prijs."
 
 #: base/templates/index.html
 msgid "Getting your package into Debian"
-msgstr ""
+msgstr "Uw pakket in Debian krijgen"
 
 #: base/templates/index.html
 #, python-format
@@ -166,6 +193,11 @@ msgid ""
 "Debian. Furthermore see <a href=\"%(u_sponsors)s\">our introductory page on "
 "sponsorship</a> to learn how to get in touch with a sponsor."
 msgstr ""
+"Zie <a href=\"%(u_intro_maintainers)s\">onze introductiepagina voor "
+"beheerders</a> en leer hoe u %(name)s kunt gebruiken en uw pakketten in "
+"Debian kunt krijgen. Zie verder <a href=\"%(u_sponsors)s\">onze inleidende "
+"pagina over sponsoring</a> om te weten te komen hoe u in contact kunt komen "
+"met een sponsor."
 
 #: base/templates/index.html
 msgid ""
@@ -173,14 +205,17 @@ msgid ""
 "this site, you can <a href=\"https://wiki.debian.org/Debexpo\">read more "
 "about Debexpo on the Debian Wiki</a>."
 msgstr ""
+"Als u nieuwsgierig bent naar <em>Debexpo</em>, de software achter deze, kunt "
+"u <a href=\"https://wiki.debian.org/Debexpo\">meer lezen over Debexpo op de "
+"Wiki van Debian</a>."
 
 #: base/templates/index.html
 msgid "Recently uploaded packages"
-msgstr ""
+msgstr "Onlangs geüploade pakketten"
 
 #: base/templates/intro-maintainers.html
 msgid "Introduction for maintainers: How will my package get into Debian?"
-msgstr ""
+msgstr "Inleiding voor beheerders: Hoe komt mijn pakket in Debian?"
 
 #: base/templates/intro-maintainers.html
 msgid ""
@@ -189,14 +224,18 @@ msgid ""
 "appreciated. Read on to see in what ways we will be helping you find a "
 "sponsor."
 msgstr ""
+"We zijn blij dat u de weg naar onze website heeft gevonden. Eerlijk gezegd "
+"is de hele website er alleen maar om uw werk in Debian te krijgen. Uw "
+"bijdrage wordt zeer op prijs gesteld. Lees verder om te zien op welke "
+"manieren wij u kunnen helpen bij het zoeken naar een sponsor."
 
 #: base/templates/intro-maintainers.html
 msgid "1. Identify a package"
-msgstr ""
+msgstr "1. Een pakket identificeren"
 
 #: base/templates/intro-maintainers.html
 msgid "Propose a package: File a WNPP bug"
-msgstr ""
+msgstr "Een pakket voorstellen: Een WNPP-bug indienen"
 
 #: base/templates/intro-maintainers.html
 msgid ""
@@ -205,6 +244,11 @@ msgid ""
 "<a href=\"https://www.debian.org/devel/wnpp/\"> Work-Needing and Prospective "
 "Packages</a>."
 msgstr ""
+"Als u iets wilt verpakken dat momenteel niet beschikbaar is in Debian, zou "
+"de allereerste stap moeten zijn om een \"Intent to package\" (Intentie om te "
+"verpakken / <em>ITP</em>)-bug in te dienen op <a href=\"https://www.debian ."
+"org/devel/wnpp/\">Work-Needing and Prospective Packages</a> (Pakketten "
+"waaraan gewerkt moet worden en toekomstige pakketten)."
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -221,10 +265,22 @@ msgid ""
 "href=\"%(u_sponsor)s\">sponsors page</a> to learn about personal interests "
 "of sponsors."
 msgstr ""
+"Debian is een distributie, geen pakketbron voor algemeen gebruik. Velen van "
+"ons geloven niet dat <em>elk</em> stukje vrije software noodzakelijkerwijs "
+"in Debian thuishoort. Behandel Debian alstublieft niet als een platform om "
+"reclame te maken voor uw eigen software, tenzij er een <em>echte</em> vraag "
+"naar is. Dat gezegd hebbende is er aan het einde niemand die daarover "
+"beslist. U kunt in dit verband uiteindelijk wat feedback krijgen nadat u de "
+"WNPP-bug hebt ingediend (zie hieronder), maar het staat u vrij om deze te "
+"interpreteren als een suggestie, niet als een finaal oordeel. U moet "
+"tenslotte een sponsor vinden die erin gelooft dat het een voordeel biedt om "
+"uw pakket in Debian te hebben. Bekijk onze <a href=\"%(u_sponsor)s\""
+">sponsorpagina</a> voor meer informatie over de persoonlijke interesses van "
+"sponsors."
 
 #: base/templates/intro-maintainers.html
 msgid "Find a package looking for maintainers"
-msgstr ""
+msgstr "Een pakket vinden dat beheerders nodig heeft"
 
 #: base/templates/intro-maintainers.html
 msgid ""
@@ -233,6 +289,12 @@ msgid ""
 "for adopter\" (<em>RFA</em>), \"Orphaned package\" (<em>O</em>) and "
 "\"Request for package\" (<em>RFP</em>) bugs. See <em>WNPP</em> below."
 msgstr ""
+"Als u wilt bijdragen aan Debian, maar niet weet aan welke pakketten u kunt "
+"bijdragen, kijk dan eens naar de bugs \"Request for help\" (Hulp gevraagd - "
+"<em>RFH</em>), \"Request for adopter\" (Adoptant gezocht - <em>RFA</em>), "
+"\"Orphaned package\" (Verweesd pakket - <em>O</em>) en \"Request for "
+"package\" (Verzoek om te verpakken - <em>RFP</em>). Zie <em>WNPP</em> "
+"hieronder."
 
 #: base/templates/intro-maintainers.html
 msgid ""
@@ -245,10 +307,20 @@ msgid ""
 "packages.debian.org/sid/reportbug\">reportbug</a></tt> tool to achieve that "
 "by selecting \"<em>wnpp</em>\" as package to report a bug to."
 msgstr ""
+"<a href=\"https://www.debian.org/devel/wnpp/\">Work-Needing and Prospective "
+"Packages</a> (<em>WNPP</em> - Pakketten waaraan gewerkt moet worden en "
+"toekomstige pakketten) is ons systeem om te markeren dat u wilt aankondigen "
+"aan welke pakketten u wil werken. Het is met name een bug tegen het <a href="
+"\"https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=wnpp\">pseudopakket "
+"WNPP</a> (<a href=\"https ://wnpp.debian.net/\">of gebruik een mooie "
+"frontend</a> om door <em>WNPP</em>-bugs te bladeren). U kunt hiervoor het "
+"hulpmiddel <tt><a href=\"https://packages.debian.org/sid/reportbug\""
+">reportbug</a></tt> gebruiken en daarin het pakket \"<em>wnpp</em>\" "
+"selecteren als pakket waartegen u deze bug wilt indienen."
 
 #: base/templates/intro-maintainers.html
 msgid "2. Make the package"
-msgstr ""
+msgstr "2. Het pakket maken"
 
 #: base/templates/intro-maintainers.html
 msgid ""
@@ -258,56 +330,70 @@ msgid ""
 "complying to the Debian policy at least (see below). Please take a look at "
 "those excellent resources:"
 msgstr ""
+"Debian-pakketten moeten voldoen aan verschillende normatieve vereisten en "
+"richtlijnen. We kunnen u hier geen uitputtende instructies geven over het "
+"bouwen van pakketten. In het kort verwachten we dat u een "
+"<em>broncodepakket</em> levert dat ten minste voldoet aan de "
+"beleidsrichtlijnen van Debian (zie hieronder). Kijk eens naar deze "
+"uitstekende bronnen:"
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
 msgid "The Debian Policy Manual"
-msgstr ""
+msgstr "Het beleidshandboek van Debian"
 
 #: base/templates/intro-maintainers.html
 msgid ""
 "A must-read resource to learn about technical specification and technical "
 "requirements of Debian packages."
 msgstr ""
+"Een onmisbare bron om meer te weten te komen over de technische "
+"specificaties en technische vereisten van Debian-pakketten."
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
 msgid "New Maintainer's Guide"
-msgstr ""
+msgstr "Handleiding voor nieuwe pakketbeheerders"
 
 #: base/templates/intro-maintainers.html
 msgid "A must-read resource to learn basics of Debian source packages"
 msgstr ""
+"Een onmisbare bron om de grondbeginselen van Debian-bronpakketten te leren "
+"kennen"
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
 msgid "Lucas Nussbaum's packaging tutorial"
-msgstr ""
+msgstr "De verpakkingshandleiding van Lucas Nussbaum"
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
 msgid "A quick introduction to Debian packaging"
-msgstr ""
+msgstr "Een korte inleiding tot verpakken voor Debian"
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
 msgid "Developer's Reference"
-msgstr ""
+msgstr "Referentiewerk voor ontwikkelaars"
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
 msgid ""
 "A comprehensive manual describing typical workflows and best practices "
 "related to Debian packages"
 msgstr ""
+"Een uitgebreide handleiding die typische werkstromen en beste praktijken "
+"beschrijft met betrekking tot Debian-pakketten"
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
 msgid "Debian Mentors FAQ"
-msgstr ""
+msgstr "FAQ van Debian Mentors"
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
 msgid ""
 "Another valuable resource to learn about common terms and workflows related "
 "to Debian"
 msgstr ""
+"Nog een waardevolle bron om meer te weten te komen over veelgebruikte termen "
+"en werkstromen met betrekking tot Debian"
 
 #: base/templates/intro-maintainers.html
 msgid "3. Publish your package"
-msgstr ""
+msgstr "3. Uw pakket publiceren"
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -320,11 +406,18 @@ msgid ""
 "href=\"%(u_sponsor)s\">Interested sponsors</a> can then download the package "
 "and upload it to Debian."
 msgstr ""
+"Deze website is een openbare pakketbron van broncodepakketten. U kunt uw "
+"pakket uploaden naar deze server (via speciale hulpmiddelen zoals '<tt><a "
+"href=\"https://packages.debian.org/sid/dupload\">dupload</a></tt>' of "
+"'<tt><a href=\"https://packages.debian.org/sid/dput\">dput</a></tt>') en na "
+"enkele controles wordt het opgeslagen in onze pakketbron. <a href=\""
+"%(u_sponsor)s\">Geïnteresseerde sponsors</a> kunnen dan het pakket "
+"downloaden en uploaden naar Debian."
 
 #: base/templates/intro-maintainers.html
 #, python-format
 msgid "Using %(title)s"
-msgstr ""
+msgstr "Het gebruik van %(title)s"
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -334,6 +427,10 @@ msgid ""
 "a moment. We require registration so we have a valid email address where "
 "sponsors can reach you."
 msgstr ""
+"<strong><a href=\"%(u_register)s\">Aanmelden voor een account</a></strong>. "
+"Een account aanmaken op deze server is een automatisch proces en duurt even. "
+"We hebben uw registratie nodig, zodat we een geldig e-mailadres hebben "
+"waarop sponsors u kunnen bereiken."
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -344,6 +441,11 @@ msgid ""
 "'<tt>dget</tt>' tools or even through a simple run of <tt>apt-get source ...."
 "</tt>"
 msgstr ""
+"<strong>Uw pakket uploaden</strong> naar <tt>%(name)s</tt>. U hoeft uw "
+"pakketten niet in een andere webruimte op het internet te plaatsen. Iedereen "
+"kan uw pakket downloaden met behulp van de webbrowser, de '<tt>dget</tt>'-"
+"hulpmiddelen of zelfs door eenvoudig <tt>apt-get source ....</tt> uit te "
+"voeren."
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -353,6 +455,10 @@ msgid ""
 "toggle several settings and retrieve the RFS (request-for-sponsorship) "
 "template"
 msgstr ""
+"Bekijk uw <a href=\"%(u_my)s\">persoonlijke pakketpagina</a>. Uw geüploade "
+"pakket zou <strong>daar moeten verschijnen</strong>. Van daaruit kunt u "
+"verschillende instellingen wijzigen en het RFS-sjabloon (request-"
+"for-sponsorship/vraag naar sponsoring) ophalen."
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -361,6 +467,10 @@ msgid ""
 "\"<i>Needs a Sponsor</i>\" button) so interested sponsors will see it and "
 "hopefully check it out."
 msgstr ""
+"Uw pakket wordt weergegeven op de hoofdpagina van %(title)s (als u de knop \""
+"<i>Needs a Sponsor</i>\" / \"Heeft een sponsor nodig\" inschakelt), zodat "
+"geïnteresseerde sponsors het kunnen zien en er hopelijk eens naar zullen "
+"kijken."
 
 #: base/templates/intro-maintainers.html
 msgid ""
@@ -368,11 +478,15 @@ msgid ""
 "that you should send out as a bug report filed against the <em>sponsorship-"
 "requests</em> pseudo-package to draw attention to your package."
 msgstr ""
+"U krijgt een <strong>RFS-sjabloon (request-for-sponsorship/vraag naar "
+"sponsoring)</strong> te zien dat u moet inzenden als een bugrapport, "
+"ingediend tegen het pseudo-pakket <em>sponsorship-requests</em> om de "
+"aandacht te vestigen op uw pakket."
 
 #: base/templates/intro-maintainers.html
 #, python-format
 msgid "How to upload packages to <tt>%(name)s</tt>"
-msgstr ""
+msgstr "Pakketten uploaden naar <tt>%(name)s</tt>"
 
 #: base/templates/intro-maintainers.html
 msgid ""
@@ -382,19 +496,26 @@ msgid ""
 "href=\"https://packages.debian.org/devscripts\"><tt>debsign</tt></a>) with "
 "the GnuPG key you configured in your control panel."
 msgstr ""
+"U moet <a href=\"https://packages.debian.org/dput\"><tt>dput</tt></a> "
+"gebruiken om pakketten te uploaden. We accepteren uw uploads via <em>HTTPS</"
+"em> of <em>FTP</em>. Alle pakketten <strong>moeten ondertekend zijn</strong> "
+"(met <a href=\"https://packages.debian.org/devscripts\"><tt>debsign</tt></a>)"
+" met de GnuPG-sleutel die u geconfigureerd heeft in uw configuratiescherm."
 
 #: base/templates/intro-maintainers.html
 msgid "HTTPS uploads"
-msgstr ""
+msgstr "HTTPS-uploads"
 
 #: base/templates/intro-maintainers.html
 msgid "FTP uploads"
-msgstr ""
+msgstr "FTP-uploads"
 
 #: base/templates/intro-maintainers.html
 msgid ""
 "To use HTTPS put the following content to your <tt>~/.dput.cf</tt> file:"
 msgstr ""
+"Om HTTPS te gebruiken zet u de volgende inhoud in uw bestand <tt>~/.dput."
+"cf</tt>:"
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -403,20 +524,27 @@ msgid ""
 "method make sure you sign your uploads with your GPG key! This is the "
 "corresponding <tt>~/.dput.cf</tt> file:"
 msgstr ""
+"U kunt <em>FTP</em> gebruiken om pakketten naar %(title)s te uploaden. Als u "
+"die methode verkiest, zorg er dan voor dat u uw uploads ondertekent met uw "
+"GPG-sleutel! Dit is het bijbehorende bestand <tt>~/.dput.cf</tt>:"
 
 #: base/templates/intro-maintainers.html
 msgid "Once you have it set up, you can run it from your shell like this:"
 msgstr ""
+"Als u het eenmaal hebt ingesteld, kunt u het als volgt vanuit uw shell "
+"uitvoeren:"
 
 #: base/templates/intro-maintainers.html
 msgid ""
 "If you did everything right, you will get a confirmation mail from our site "
 "and you can start seeking a sponsor for your package."
 msgstr ""
+"Als u alles goed hebt gedaan, krijgt u een bevestigingsmail van onze site en "
+"kunt u op zoek gaan naar een sponsor voor uw pakket."
 
 #: base/templates/intro-maintainers.html
 msgid "4. Find a sponsor"
-msgstr ""
+msgstr "4. Een sponsor vinden"
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -429,6 +557,14 @@ msgid ""
 "Debian on your behalf. Have a look to our <a href=\"%(u_sponsor)s\">sponsors "
 "page</a> to learn more on sponsors and how to find one."
 msgstr ""
+"Zodra uw pakket publiekelijk beschikbaar is op om het even welke bron, met "
+"inbegrip van maar niet beperkt tot %(title)s, kunt u op zoek gaan naar een "
+"sponsor voor uw pakket. Als u al pakketten naar Debian hebt geüpload, moet u "
+"dit aan uw vorige sponsor vragen. Een sponsor is elke <a href=\"https://wiki."
+"debian.org/DebianDeveloper\">Debian-ontwikkelaar</a> die bereid is om namens "
+"u uw pakket naar Debian te uploaden. Bekijk onze <a href=\"%(u_sponsor)s\""
+">sponsorpagina</a> voor meer informatie over sponsors en hoe u er een kunt "
+"vinden."
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -439,10 +575,15 @@ msgid ""
 "to find a sponsor. Please take a look at our page <a "
 "href=\"%(u_reviewers)s\">about package reviews</a>."
 msgstr ""
+"Het belangrijkste punt van het sponsoringproces is om uw pakket te "
+"beoordelen om er zeker van te zijn dat het voldoet aan onze technische "
+"vereisten. Iedereen kan andermans pakketten beoordelen en zou dat moeten. "
+"Ook vergroot een schoon pakket uw kans om een sponsor te vinden. Bekijk onze "
+"pagina <a href=\"%(u_reviewers)s\">over pakketbeoordelingen</a>."
 
 #: base/templates/intro-maintainers.html
 msgid "The relation between you and your sponsor"
-msgstr ""
+msgstr "De relatie tussen u en uw sponsor"
 
 #: base/templates/intro-maintainers.html
 msgid ""
@@ -453,22 +594,31 @@ msgid ""
 "Debian you are treated as a full member of the community. The Debian project "
 "appreciates the work you do."
 msgstr ""
+"Een sponsor is technisch niet verantwoordelijk voor uw pakket. <strong>U</"
+"strong> wordt vermeld als de officiële beheerder van het pakket in Debian. U "
+"krijgt zelfs de bugrapporten als mensen problemen in uw pakket ontdekken. "
+"Afgezien van het feit dat u het pakket niet rechtstreeks in Debian kunt "
+"uploaden, wordt u behandeld als een volwaardig lid van de gemeenschap. Het "
+"Debian-project waardeert het werk dat u doet."
 
 #: base/templates/intro-maintainers.html
 msgid "What can I do if I don't find a sponsor?"
-msgstr ""
+msgstr "Wat kan ik doen als ik geen sponsor vind?"
 
 #: base/templates/intro-maintainers.html
 msgid ""
 "Do not give up. Sponsoring can take a while. Nonetheless, here are a few "
 "hints:"
 msgstr ""
+"Geef niet op. Sponsoring kan even duren. Niettemin zijn hier een paar tips:"
 
 #: base/templates/intro-maintainers.html
 msgid ""
 "File a follow-up request to your existing <em>sponsorship-requests</em> "
 "pseudo-package."
 msgstr ""
+"Dien een vervolgverzoek in op de bestaande bug van het pseudo-pakket <em"
+">sponsorship-requests</em>."
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -479,10 +629,16 @@ msgid ""
 "there. Instead, read their individual requirements and choose the sponsor "
 "which matches you and your package best</em>."
 msgstr ""
+"Bied uw pakket rechtstreeks aan relevante teams en individuele ontwikkelaars "
+"aan. We hebben een <a href=\"%(u_sponsor)s\">lijst met sponsors</a> gemaakt, "
+"die uiteindelijk bereid zijn om pakketten voor u te uploaden. <em>Neem "
+"alstublieft geen contact op met elke sponsor die daar wordt vermeld. Lees in "
+"plaats daarvan hun individuele vereisten en kies de sponsor die het beste "
+"bij u en uw pakket past</em>."
 
 #: base/templates/intro-maintainers.html
 msgid "5. Getting an upload to Debian"
-msgstr ""
+msgstr "5. Een upload naar Debian krijgen"
 
 #: base/templates/intro-maintainers.html
 msgid ""
@@ -498,10 +654,23 @@ msgid ""
 "social_contract#guidelines\"> Debian Free Software Guidelines</a>. "
 "ftpmaster's opinion is binding here for both your sponsor and you."
 msgstr ""
+"Zodra u een sponsor vindt die geïnteresseerd is in uw pakket, zal hij of zij "
+"het <em>sponsoren</em>. Dat betekent het beoordelen, bouwen en testen en "
+"vervolgens uploaden naar Debian. U krijgt een melding van <em>dak</em> - de "
+"software die door Debian wordt gebruikt om zijn pakketbronnen te beheren - "
+"over de upload. Merk op dat als uw pakket voorheen helemaal niet in Debian "
+"stond, het door de <a href=\"https://ftp-master.debian.org/\">ftpmasters</a> "
+"handmatig moet worden goedgekeurd om de <a href=\"https://ftp-master.debian."
+"org/new.html\">NIEUW-wachtrij</a> te verlaten. Ze zullen "
+"consistentiecontroles uitvoeren en uw <tt>debian/copyright</tt>-bestand "
+"bekijken om na te gaan of uw pakket overeenkomt met de <a href=\"https://www."
+"debian.org/social_contract#guidelines\">Richtlijnen voor vrije software van "
+"Debian</a>. De mening van de ftpmasters is hier bindend voor zowel uw "
+"sponsor als uzelf."
 
 #: base/templates/intro-maintainers.html
 msgid "6. Maintaining your package in Debian"
-msgstr ""
+msgstr "6. Uw pakket onderhouden in Debian"
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -514,6 +683,13 @@ msgid ""
 "change. Alternatively, follow <a href=\"%(u_sponsor)s\">the usual "
 "procedures</a>."
 msgstr ""
+"Zie het overeenkomstige hoofdstuk in de <a href=\"https://www.debian.org/doc/"
+"manuals/maint-guide/update\">Handleiding voor nieuwe beheerders</a> om een "
+"idee te krijgen. Wanneer u daar zin in heeft, kunt u uw pakket bijwerken in "
+"Debian. De algemene procedure verschilt niet van uw eerste upload. Upload uw "
+"bijgewerkt pakket naar %(name)s en breng uw vorige sponsor op de hoogte van "
+"uw wijziging. U kunt ook <a href=\"%(u_sponsor)s\">de gebruikelijke "
+"procedures</a> volgen."
 
 #: base/templates/intro-maintainers.html
 msgid ""
@@ -525,10 +701,17 @@ msgid ""
 "href=\"https://www.debian.org/devel/join/\">become a Debian Developer</a> "
 "giving you full membership in the project."
 msgstr ""
+"Als uw pakket <em>een paar</em> opeenvolgende uploads door het "
+"sponsoringproces geraakt zonder noemenswaardige correctie door uw sponsor, "
+"kunt u een <a href=\"https://wiki.debian.org/DebianMaintainer\"> Debian "
+"Beheerder</a> worden, wat u beperkte rechtstreekse uploadrechten naar Debian "
+"verleent. Neem contact op met uw sponsor om hieromtrent uw kansen te "
+"bespreken. U kunt ook <a href=\"https://www.debian.org/devel/join/\">een "
+"Debian-ontwikkelaar worden</a> waardoor u volledig lid wordt van het project."
 
 #: base/templates/qa.html
 msgid "Questions &amp; Answers"
-msgstr ""
+msgstr "Vragen &amp; Antwoorden"
 
 #: base/templates/qa.html
 #, python-format
@@ -537,38 +720,47 @@ msgid ""
 "or on this server. Before contacting the support please see if your question "
 "is answered here:"
 msgstr ""
+"%(site_name)s is een vrij complexe dienst. Er kunnen dingen misgaan aan uw "
+"kant of op deze server. Kijk eerst of uw vraag hier wordt beantwoord voordat "
+"u contact opneemt met de ondersteuningsdienst:"
 
 #: base/templates/qa.html
 msgid "Getting started"
-msgstr ""
+msgstr "Aan de slag"
 
 #: base/templates/qa.html
 msgid "How do I build a package?"
-msgstr ""
+msgstr "Hoe bouw ik een pakket?"
 
 #: base/templates/qa.html
 msgid ""
 "If you want to learn how to create a proper Debian package you can find some "
 "interesting documentation to start with:"
 msgstr ""
+"Als u wilt leren hoe u een goed Debian-pakket maakt, kunt u wat interessante "
+"documentatie vinden om mee te beginnen:"
 
 #: base/templates/qa.html
 msgid ""
 "A must read resource to learn about technical specification and technical "
 "requirements of Debian packages."
 msgstr ""
+"Een onmisbare bron van informatie over technische specificaties en "
+"technische vereisten van Debian-pakketten."
 
 #: base/templates/qa.html
 msgid "A must read resource to learn basics of Debian source packages"
 msgstr ""
+"Een onmisbare bron van informatie om de basisprincipes van Debian "
+"broncodepakketten te leren"
 
 #: base/templates/qa.html
 msgid "(Debian Wiki)"
-msgstr ""
+msgstr "(Debian-wiki)"
 
 #: base/templates/qa.html
 msgid "What is the Debian policy?"
-msgstr ""
+msgstr "Wat is het beleid van Debian?"
 
 #: base/templates/qa.html
 msgid ""
@@ -579,6 +771,13 @@ msgid ""
 "system, as well as technical requirements that each package must satisfy to "
 "be included in the distribution."
 msgstr ""
+"Elk pakket moet voldoen aan de <a href=\"https://www.debian.org/doc/"
+"debian-policy/ch-scope.html\">Beleidsrichtlijnen van Debian</a> voordat het "
+"in de Debian-distributie kan worden opgenomen. Dit is een document dat de "
+"structuur en inhoud van het Debian-archief beschrijft en verschillende "
+"kwesties die betrekking hebben op het ontwerp van het besturingssysteem, "
+"evenals de technische vereisten waaraan elk pakket moet voldoen om te worden "
+"opgenomen in de distributie."
 
 #: base/templates/qa.html
 msgid ""
@@ -588,10 +787,15 @@ msgid ""
 "additionally the <a href=\"https://www.debian.org/doc/manuals/maint-guide/"
 "\">New Maintainer's Guide</a>."
 msgstr ""
+"De beleidsrichtlijnen zijn geen handleiding. Ze vormen een technisch "
+"handboek dat de normatieve vereisten van pakketten specificeert. Lees het om "
+"de pakketspecificaties te leren kennen. Als u niet weet hoe u iets moet "
+"verpakken voor Debian, lees dan ook de <a href=\"https://www.debian.org/doc/"
+"manuals/maint-guide/\">Handleiding voor nieuwe beheerders</a>."
 
 #: base/templates/qa.html
 msgid "Is my package technically okay?"
-msgstr ""
+msgstr "Is mijn pakket technisch in orde?"
 
 #: base/templates/qa.html
 #, python-format
@@ -605,10 +809,18 @@ msgid ""
 "your package is accepted by mentors.debian.net then let the sponsor help you "
 "with the rest."
 msgstr ""
+"Wanneer u uw pakket uploadt naar %(site_name)s wordt het automatisch "
+"gecontroleerd op veelvoorkomende fouten. U krijgt een informatieve e-mail na "
+"de upload. Ofwel bevat uw pakket bugs en wordt het geweigerd, ofwel is het "
+"pakket zuiver op enkele kleine technische problemen na. U krijgt tips over "
+"hoe u het pakket kunt repareren. Als de e-mail u vertelt dat uw pakket in "
+"orde is, zal een sponsor nog verdere controles uitvoeren. Maak u niet te "
+"veel zorgen. Als uw pakket wordt aanvaard door mentors.debian.net, laat de "
+"sponsor u dan helpen met de rest."
 
 #: base/templates/qa.html
 msgid "What is Lintian?"
-msgstr ""
+msgstr "Wat is Lintian?"
 
 #: base/templates/qa.html
 msgid ""
@@ -617,6 +829,11 @@ msgid ""
 "yourself). It can be used to check binary and source packages for compliance "
 "with the Debian policy and for other common packaging errors."
 msgstr ""
+"Lintian is een programma voor de controle van pakketten in Debian (en "
+"beschikbaar als <a href=\"https://packages.debian.org/lintian\">Debian-"
+"pakket</a> zodat u het zelf kunt uitvoeren). Het kan worden gebruikt om "
+"binaire en broncodepakketten te controleren op de naleving van de Debian "
+"beleidsrichtlijnen en op andere veelvoorkomende verpakkingsfouten."
 
 #: base/templates/qa.html
 msgid ""
@@ -626,14 +843,20 @@ msgid ""
 "can learn more about Lintian in the <a href=\"https://lintian.debian.org/"
 "manual/index.html\">Lintian User's Manual</a>."
 msgstr ""
+"Verpakken voor Debian is vrij complex omdat men rekening moet houden met "
+"honderden richtlijnen om het pakket \"beleidsconform\" te maken. Lintian "
+"probeert dit probleem aan te pakken door een geautomatiseerd kader voor "
+"statische analyse te bieden. Meer informatie over Lintian vindt u in de <a "
+"href=\"https://lintian.debian.org/manual/index.html\">Gebruikershandleiding "
+"voor Lintian</a>."
 
 #: base/templates/qa.html
 msgid "Your Account"
-msgstr ""
+msgstr "Uw account"
 
 #: base/templates/qa.html
 msgid "Why do I not receive a confirmation email?"
-msgstr ""
+msgstr "Waarom ontvang ik geen bevestigingse-mail?"
 
 #: base/templates/qa.html
 #, python-format
@@ -645,10 +868,17 @@ msgid ""
 "Site email</strong>: <a href=\"mailto: %(email)s\">%(email)s</a> if you "
 "require assistance."
 msgstr ""
+"Controleer eerst of u het pakket heeft ondertekend met de juiste PGP-"
+"sleutel. Controleer vervolgens waar u uw pakket heeft geüpload. Standaard "
+"uploaden de hulpmiddelen dput en dupload naar de officiële FTP-masterserver "
+"van Debian. Die server zal uw upload geruisloos laten vallen. Als het "
+"probleem aanhoudt en u hulp nodig heeft, stuur dan een e-mail naar "
+"<strong>het e-mailadres van de site</strong>: <a href=\"mailto: %(email)s\""
+">%(email)s</a>."
 
 #: base/templates/qa.html
 msgid "My binary packages do not show up"
-msgstr ""
+msgstr "Mijn binaire pakketten zijn niet zichtbaar"
 
 #: base/templates/qa.html
 #, python-format
@@ -659,10 +889,16 @@ msgid ""
 "them carelessly to get brand-new versions. This led to a lot of support "
 "questions. So we decided to just keep the source packages."
 msgstr ""
+"Het huidige beleid op %(site_name)s is om bewust de binaire pakketten weg te "
+"laten. Dit wordt gedaan om twee belangrijke redenen. Ten eerste bespaart het "
+"veel schijfruimte. En ten tweede hebben Debian-gebruikers in het verleden de "
+"pakketten gedownload en ze achteloos gebruikt om gloednieuwe versies te "
+"krijgen. Dit leidde tot veel ondersteuningsvragen. Daarom hebben we besloten "
+"om alleen de broncodepakketten te behouden."
 
 #: base/templates/qa.html
 msgid "How long will it take until my upload is available to sponsors?"
-msgstr ""
+msgstr "Hoe lang duurt het voordat mijn upload beschikbaar is voor sponsors?"
 
 #: base/templates/qa.html
 #, python-format
@@ -671,20 +907,25 @@ msgid ""
 "%(beat)s minutes. The process usually takes less than a minute to process a "
 "package but it can be longer on bigger packages."
 msgstr ""
+"Ongeacht de uploadmethode die u kiest, wordt het importproces elke %(beat)s "
+"minuten uitgevoerd. Het proces heeft meestal minder dan een minuut nodig om "
+"een pakket te verwerken, maar dit kan langer duren bij grotere pakketten."
 
 #: base/templates/qa.html
 msgid ""
 "During the importing process, the server does quality assurance and other "
 "checks on your package. You will receive an email when it is ready."
 msgstr ""
+"Tijdens het importeren voert de server kwaliteitscontroles en andere "
+"controles uit op uw pakket. U ontvangt een e-mail wanneer dit klaar is."
 
 #: base/templates/qa.html
 msgid "Information for sponsors"
-msgstr ""
+msgstr "Informatie voor sponsors"
 
 #: base/templates/qa.html base/templates/sponsor-guidelines.html
 msgid "What is a sponsor?"
-msgstr ""
+msgstr "Wat is een sponsor?"
 
 #: base/templates/qa.html base/templates/sponsor-guidelines.html
 msgid ""
@@ -692,10 +933,14 @@ msgid ""
 "archive. The sponsor is responsible for the quality of the package and "
 "checks the work of the package maintainer to improve his skills."
 msgstr ""
+"Iemand die het pakket uploadt en verantwoordelijk is voor het pakket in het "
+"archief. De sponsor is verantwoordelijk voor de kwaliteit van het pakket en "
+"controleert het werk van de pakketbeheerder om diens vaardigheden te "
+"verbeteren."
 
 #: base/templates/qa.html
 msgid "Why should I sponsor uploads"
-msgstr ""
+msgstr "Waarom zou ik uploads sponsoren"
 
 #: base/templates/qa.html
 msgid ""
@@ -703,10 +948,14 @@ msgid ""
 "Developer to help them with their packages, and if you want to help with the "
 "New Maintainer process this is a good step to get involved."
 msgstr ""
+"Bedankt voor uw interesse. Velen hebben een sponsor nodig en wachten op een "
+"ontwikkelaar om hen te helpen met hun pakketten, en als u wilt helpen met "
+"het proces voor nieuwe beheerders is dit een goede stap om betrokken te "
+"raken."
 
 #: base/templates/qa.html
 msgid "What to do for sponsoring?"
-msgstr ""
+msgstr "Wat moet men doen om te sponsoren?"
 
 #: base/templates/qa.html base/templates/sponsor-guidelines.html
 msgid ""
@@ -718,10 +967,18 @@ msgid ""
 "they will also learn how to maintain packages within a team and will learn "
 "skills that are crucial for Debian Developers more easily."
 msgstr ""
+"Zoek op deze website naar pakketten die u wilt sponsoren. Zodra u er enkele "
+"gevonden hebt, moet u ze downloaden, bouwen en testen. Breng de persoon die "
+"u sponsort op de hoogte van elk probleem dat u vindt om hem de kans te geven "
+"het op te lossen. Wij geloven dat het van het grootste belang is om in "
+"contact te blijven met de personen die u sponsort om hen geïnteresseerd te "
+"houden in het werken aan Debian. Bovendien zullen ze ook leren hoe ze "
+"pakketten moeten onderhouden binnen een team en zullen ze gemakkelijker "
+"vaardigheden leren die cruciaal zijn voor Debian-ontwikkelaars."
 
 #: base/templates/reviewers.html
 msgid "Package reviews"
-msgstr ""
+msgstr "Pakketten reviseren"
 
 #: base/templates/reviewers.html
 msgid ""
@@ -730,16 +987,23 @@ msgid ""
 "know everything or you are not entirely sure if your suggestions are "
 "correct. Any help is appreciated. Interested in diving in? It is easy:"
 msgstr ""
+"U kunt helpen bij het reviseren van pakketten. Dat kan zelfs als u "
+"(<i>nog</i>) geen Debian-ontwikkelaar bent. Geen reden om verlegen te zijn, "
+"het is oké als u niet alles weet of niet helemaal zeker weet of uw "
+"suggesties juist zijn. Alle hulp wordt op prijs gesteld. Interesse om erin "
+"te duiken? Het is eenvoudig:"
 
 #: base/templates/reviewers.html
 msgid "Why should I review packages? I can not upload them!"
-msgstr ""
+msgstr "Waarom zou ik pakketten reviseren? Ik kan ze niet uploaden!"
 
 #: base/templates/reviewers.html
 msgid ""
 "Glad you ask! There are many reasons why you should review packages even if "
 "you can't actually upload them."
 msgstr ""
+"Blij dat u het vraagt! Er zijn veel redenen waarom u pakketten zou moeten "
+"reviseren, zelfs als u ze niet kunt uploaden."
 
 #: base/templates/reviewers.html
 msgid ""
@@ -747,6 +1011,9 @@ msgid ""
 "problems in a package the person was not aware of yet. So they can learn "
 "from you."
 msgstr ""
+"De persoon die u reviseert zal dit waarderen. De kans is groot dat u in een "
+"pakket problemen vindt waarvan de betrokken persoon nog niet op de hoogte "
+"was. Zo kan deze van u leren."
 
 #: base/templates/reviewers.html
 msgid ""
@@ -756,16 +1023,23 @@ msgid ""
 "does not meet Debian's quality standards you can learn how <i>not to do</i> "
 "things."
 msgstr ""
+"Uiteindelijk zal het pakket dat u reviseert zich in een zeer goede staat "
+"bevinden en leert u zelf ook nog iets. Bovendien leert u ook over goede "
+"praktijken en werkstromen die andere mensen gebruiken. Zelfs als het pakket "
+"niet voldoet aan de kwaliteitsnormen van Debian, kunt u leren hoe dingen "
+"<i>niet gedaan moeten worden</i>."
 
 #: base/templates/reviewers.html
 msgid ""
 "People who <i>can</i> upload may decide based on your review whether the "
 "package in question is a suitable candidate or not."
 msgstr ""
+"Mensen die <i>kunnen</i> uploaden kunnen op basis van uw beoordeling "
+"beslissen of het pakket in kwestie een geschikte kandidaat is of niet."
 
 #: base/templates/reviewers.html
 msgid "How can I review packages?"
-msgstr ""
+msgstr "Hoe kan ik pakketten reviseren?"
 
 #: base/templates/reviewers.html
 msgid ""
@@ -773,12 +1047,16 @@ msgid ""
 "packages, but chances are you may want to have a look on the following "
 "things:"
 msgstr ""
+"Kies een broncodepakket en begin. Er is niet één juiste manier om pakketten "
+"te reviseren, maar de kans is groot dat u de volgende zaken wilt bekijken:"
 
 #: base/templates/reviewers.html
 msgid ""
 "Verify Lintian outputs: Did Lintian miss something, are fixes semantically "
 "correct?"
 msgstr ""
+"Controleer de uitvoer van Lintian: heeft Lintian iets gemist, zijn de "
+"correcties semantisch juist?"
 
 #: base/templates/reviewers.html
 msgid ""
@@ -786,11 +1064,16 @@ msgid ""
 "developers-reference/best-pkging-practices.html\"> Debian's best practices</"
 "a> for packages?"
 msgstr ""
+"Voldoet het pakket aan de <a href=\"https://www.debian.org/doc/manuals/"
+"developers-reference/best-pkging-practices.html\">beste praktijken in "
+"Debian</a> voor pakketten?"
 
 #: base/templates/reviewers.html
 msgid ""
 "Does the package correctly declare dependencies as defined in the policy?"
 msgstr ""
+"Declareert het pakket correct de vereisten, zoals gedefinieerd in de "
+"beleidsrichtlijnen?"
 
 #: base/templates/reviewers.html
 msgid ""
@@ -798,25 +1081,31 @@ msgid ""
 "social_contract\">DFSG</a>? If yes, is the copyright file up to date and "
 "correct?"
 msgstr ""
+"Voldoet het pakket aan de <a href=\"https://www.debian.org/social_contract\""
+">DFSG</a>? Zo ja, is het auteursrechtenbestand actueel en correct?"
 
 #: base/templates/reviewers.html
 msgid ""
 "Do the maintainer scripts supplied with the package look robust, idempotent "
 "and useful?"
 msgstr ""
+"Zien de bij het pakket gevoegde scripts van de beheerder er robuust, "
+"idempotent en nuttig uit?"
 
 #: base/templates/reviewers.html
 msgid "Is there a watch file? If yes, does it work?"
-msgstr ""
+msgstr "Is er een watch-bestand? Zo ja, werkt het?"
 
 #: base/templates/reviewers.html
 msgid "Can you build the package in a clean build chroot?"
-msgstr ""
+msgstr "Kunt u het pakket bouwen in een schone build-chroot?"
 
 #: base/templates/reviewers.html
 msgid ""
 "Was the upstream tarball modified? If yes, is there a good reason to do so?"
 msgstr ""
+"Werd het bovenstroomse tar-archief gewijzigd? Zo ja, is daar een goede reden "
+"voor?"
 
 #: base/templates/reviewers.html
 #, python-format
@@ -828,14 +1117,21 @@ msgid ""
 "Note that only key retrieval is implemented. Update or search are not "
 "available."
 msgstr ""
+"U wilt misschien ook de GPG-sleutel van de beheerder ophalen om te "
+"controleren of alle volgende uploads met dezelfde sleutel worden "
+"ondertekend. Hoewel de sleutel openbaar beschikbaar zou moeten zijn op "
+"servers zoals <em>keys.openpgp.org</em> of <em>keyserver.ubuntu.com</em>, "
+"kan %(name)s ook fungeren als een elementaire sleutelserver. Merk op dat "
+"alleen het ophalen van sleutels is geïmplementeerd. Bijwerken of zoeken zijn "
+"niet beschikbaar."
 
 #: base/templates/reviewers.html
 msgid "Given a key id, you can retrieve a key using:"
-msgstr ""
+msgstr "Aan de hand van een sleutel-ID, kunt u de sleutel als volgt ophalen:"
 
 #: base/templates/reviewers.html
 msgid "Established sponsor guidelines"
-msgstr ""
+msgstr "Vastliggende sponsorrichtlijnen"
 
 #: base/templates/reviewers.html
 #, python-format
@@ -847,14 +1143,21 @@ msgid ""
 "workflow from you. You can have a look at some guidelines from different "
 "people on our <a href=\"%(u_sponsors)s\">sponsors side</a>"
 msgstr ""
+"Verschillende Debian-ontwikkelaars hebben hun persoonlijke "
+"sponsorrichtlijnen gepubliceerd. Dat zijn regels die gelden voor een "
+"bepaalde persoon of een specifiek verpakkingsteam voor het geval u een "
+"pakket door hen wilt laten sponsoren. Doorgaans breiden deze regels de "
+"beleidsrichtlijnen van Debian uit met aangepaste vereisten, of vereisen ze "
+"een bepaalde werkstroom van u. U kunt enkele richtlijnen bekijken van "
+"verschillende mensen op onze <a href=\"%(u_sponsors)s\">sponsorsite</a>"
 
 #: base/templates/sponsor-guidelines.html
 msgid "Introduction for sponsors"
-msgstr ""
+msgstr "Inleiding voor sponsors"
 
 #: base/templates/sponsor-guidelines.html
 msgid "Motivation"
-msgstr ""
+msgstr "Motivatie"
 
 #: base/templates/sponsor-guidelines.html
 msgid ""
@@ -862,30 +1165,34 @@ msgid ""
 "help them with their packages, and if you want to help with the New "
 "Maintainer process this is a good step to get involved."
 msgstr ""
+"Bedankt om te helpen. Er zijn veel personen die een sponsor zoeken en die "
+"wachten op een ontwikkelaar om hen te helpen met hun pakketten, en als u "
+"wilt helpen met het proces voor nieuwe beheerders is dit een goede stap om "
+"betrokken te geraken."
 
 #: base/templates/sponsor-guidelines.html
 msgid "What to do for sponsoring"
-msgstr ""
+msgstr "Wat men moet doen om te sponsoren"
 
 #: base/templates/sponsor-menu.html
 msgid "About Sponsoring"
-msgstr ""
+msgstr "Over sponsoring"
 
 #: base/templates/sponsor-menu.html
 msgid "Overview"
-msgstr ""
+msgstr "Overzicht"
 
 #: base/templates/sponsor-menu.html
 msgid "Sponsoring Guidelines"
-msgstr ""
+msgstr "Sponsorrichtlijnen"
 
 #: base/templates/sponsor-menu.html
 msgid "Request for Sponsorship"
-msgstr ""
+msgstr "Verzoek tot sponsoring"
 
 #: base/templates/sponsor-overview.html
 msgid "The sponsoring process"
-msgstr ""
+msgstr "Het proces van sponsoring"
 
 #: base/templates/sponsor-overview.html
 msgid ""
@@ -893,18 +1200,21 @@ msgid ""
 "repository. Therefore you have three possibilities to get your package into "
 "Debian:"
 msgstr ""
+"Als gesponsorde beheerder hebt u geen uploadrechten naar het pakketarchief "
+"van Debian. Daarom heeft u drie mogelijkheden om uw pakket in Debian te "
+"krijgen:"
 
 #: base/templates/sponsor-overview.html
 msgid "Join a packaging team"
-msgstr ""
+msgstr "Aansluiten bij een verpakkingsteam"
 
 #: base/templates/sponsor-overview.html
 msgid "Ask the <tt>debian-mentors</tt> mailing list"
-msgstr ""
+msgstr "De vraag stellen op de mailinglijst <tt>debian-mentors</tt>"
 
 #: base/templates/sponsor-overview.html
 msgid "Talk directly to people willing to sponsor your package"
-msgstr ""
+msgstr "Rechtstreeks spreken met mensen die bereid zijn uw pakket te sponsoren"
 
 #: base/templates/sponsor-overview.html
 #, python-format
@@ -914,6 +1224,10 @@ msgid ""
 "review packages, including yourself. We encourage you to review other "
 "people's packages - both of you will benefit."
 msgstr ""
+"Een sponsor, ongeacht hoe u er een hebt gevonden, zal uw pakket <a href=\""
+"%(url_review)s\">reviseren</a>. Iedereen wordt uitgenodigd om pakketten te "
+"reviseren, ook uzelf. We moedigen u aan om de pakketten van anderen te "
+"reviseren - u zult er beiden baat bij hebben."
 
 #: base/templates/sponsor-overview.html
 msgid ""
@@ -924,6 +1238,12 @@ msgid ""
 "href=\"https://wiki.debian.org/Teams/#Packaging_teams\">(incomplete) list of "
 "packaging teams</a> in Debian."
 msgstr ""
+"Er zijn teams in Debian die gezamenlijk pakketten beheren. Als uw pakket "
+"verband houdt met bibliotheken voor programmeertalen of deel uitmaakt van "
+"een ecosysteem van bij elkaar horende pakketten, denk bijvoorbeeld aan KDE- "
+"of Gnome-pakketten, dan wilt u misschien lid worden van het respectieve "
+"team. Bekijk de <a href=\"https://wiki.debian.org/Teams/#Packaging_teams\""
+">(onvolledige) lijst van verpakkingsteams</a> in Debian."
 
 #: base/templates/sponsor-overview.html
 msgid ""
@@ -931,10 +1251,14 @@ msgid ""
 "covering how to deal with package uploads. Contact their respective mailing "
 "lists and home pages to learn more."
 msgstr ""
+"Houd er rekening mee dat elk van deze teams zijn eigen werkstroom en beleid "
+"kan hebben voor het omgaan met pakketuploads. Neem contact op met hun "
+"respectievelijke mailinglijsten en startpagina's voor meer informatie."
 
 #: base/templates/sponsor-overview.html
 msgid "File a RFS bug against the <tt>sponsorship-requests</tt> pseudo-package"
 msgstr ""
+"Een RFS-bug indienen tegen het pseudo-pakket <tt>sponsorship-requests</tt>"
 
 #: base/templates/sponsor-overview.html
 #, python-format
@@ -948,10 +1272,18 @@ msgid ""
 "uploaded your package to %(site_name)s, a RFS template can be shown on your "
 "package page."
 msgstr ""
+"Als uw pakket niet overeenkomt met de interesses van een team of als u niet "
+"zeker weet of een team geïnteresseerd zou kunnen zijn in uw pakket, "
+"rapporteer dan een bug tegen het pseudo-pakket <tt><a href=\"https://bugs."
+"debian.org/cgi -bin/pkgreport.cgi?pkg=sponsorship-requests\">sponsorship-"
+"requests</a></tt> om de aandacht op uw pakket te vestigen. Uw bugrapport "
+"moet zijn opgemaakt volgens ons RFS-sjabloon (\"<em>verzoek om "
+"sponsoring</em>\"). Als u uw pakket heeft geüpload naar %(site_name)s, kan "
+"een RFS-sjabloon worden weergegeven op uw pakketpagina."
 
 #: base/templates/sponsor-overview.html
 msgid "<em>If you are unsure or in doubt, choose this alternative</em>."
-msgstr ""
+msgstr "<em>Als u niet zeker bent of twijfelt, kies dan dit alternatief</em>."
 
 #: base/templates/sponsor-overview.html
 msgid ""
@@ -962,10 +1294,17 @@ msgid ""
 "is bad. Feel free to poste a follow-up message after a few weeks or try any "
 "of the alternative methods to find a sponsor."
 msgstr ""
+"Doorgaans bereikt u het grootste publiek door een bug in te dienen. "
+"Uiteindelijk kan ook een niet-uploadende beoordelaar naar uw pakket kijken. "
+"Maakt u zich geen zorgen als u geen antwoord krijgt: het gebeurt af en toe "
+"dat alle geïnteresseerde mensen afgeleid of druk zijn. Dat betekent niet dat "
+"uw pakket slecht is. Voel u vrij om na een paar weken een vervolgbericht te "
+"plaatsen of probeer een van de alternatieve methoden om een sponsor te "
+"vinden."
 
 #: base/templates/sponsor-overview.html
 msgid "Finding a sponsor"
-msgstr ""
+msgstr "Een sponsor vinden"
 
 #: base/templates/sponsor-overview.html
 msgid ""
@@ -978,6 +1317,15 @@ msgid ""
 "to formulate their own sponsor traits. Please read them carefully and "
 "compare your package with their expectations."
 msgstr ""
+"Als u wilt, kun u rechtstreeks contact opnemen met sponsors die bereid zijn "
+"om pakketten van andere beheerders te uploaden. <em>Verzend niet massaal "
+"e-mails!</em> Let in plaats daarvan op hun individuele vereisten en "
+"richtlijnen. Neem alleen contact op met individuen als uw pakket compatibel "
+"is met hun respectieve vereisten en overeenkomt met hun interessegebied. Om "
+"sponsors die geïnteresseerd zijn in uw pakket te onderscheiden van degenen "
+"die dat niet zijn, hebben we ontwikkelaars gevraagd om hun eigen "
+"sponsorkenmerken te formuleren. Lees ze aandachtig door en vergelijk uw "
+"pakket met hun verwachtingen."
 
 #: base/templates/sponsor-overview.html
 msgid ""
@@ -991,10 +1339,21 @@ msgid ""
 "sponsor packages. You can identify developers by looking up their name at <a "
 "href=\"https://db.debian.org/\">db.debian.org</a>."
 msgstr ""
+"Op dezelfde manier kunt u ook proberen rechtstreeks in contact te komen met "
+"andere pakketbeheerders. Dit is logisch als u een pakket hebt voorbereid dat "
+"de functionaliteit van een gerelateerd pakket op een nuttige manier "
+"uitbreidt of samen ermee kan worden gebruikt. Veronderstel dat u een "
+"hulpmiddel voor het analyseren van de logboeken van een webserver verpakte, "
+"dan is de beheerder van die webserver misschien geïnteresseerd om u te "
+"sponsoren. Als u overweegt rechtstreeks contact op te nemen met een "
+"beheerder van een dergelijk gerelateerd pakket, verzeker er u dan van dat "
+"hij u daadwerkelijk kan sponsoren. Onthoud: alleen Debian-ontwikkelaars "
+"mogen pakketten sponsoren. U kunt ontwikkelaars identificeren door hun naam "
+"op te zoeken op <a href=\"https://db.debian.org/\">db.debian.org</a>."
 
 #: base/templates/sponsor-overview.html
 msgid "Sponsor guidelines"
-msgstr ""
+msgstr "Sponsorrichtlijnen"
 
 #: base/templates/sponsor-overview.html
 msgid ""
@@ -1003,10 +1362,14 @@ msgid ""
 "sponsor may not usually be interested in every package but only in a certain "
 "category."
 msgstr ""
+"Om u te helpen een sponsor te vinden die geïnteresseerd is in uw pakket, "
+"kunnen zij sponsorkenmerken formuleren zowel voor sociale als technische "
+"aspecten. Bovendien is een sponsor meestal niet in elk pakket "
+"geïnteresseerd, maar alleen in een bepaalde categorie."
 
 #: base/templates/sponsor-rfs.html
 msgid "The sponsorship process"
-msgstr ""
+msgstr "Het sponsoringproces"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1014,10 +1377,14 @@ msgid ""
 "to be uploaded to Debian, you should file a bug against the <em>sponsorship-"
 "requests</em> pseudo-package containing information about your package."
 msgstr ""
+"Een <em>RFS</em> is een <em>request for sponsorship</em> (verzoek om "
+"sponsoring). Als u een pakket heeft dat moet worden geüpload naar Debian, "
+"moet u een bug indienen tegen het pseudo-pakket <em>sponsorship-requests</"
+"em> met informatie over uw pakket."
 
 #: base/templates/sponsor-rfs.html
 msgid "Asking for Sponsorship"
-msgstr ""
+msgstr "Sponsoring vragen"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1027,6 +1394,12 @@ msgid ""
 "debian.org</em>) <strong>only</strong>. A copy will be sent to the "
 "<em>debian-mentors</em> mailing list automatically by the bug tracker."
 msgstr ""
+"Over het algemeen moeten verzoeken om sponsoring worden behandeld via het <a "
+"href=\"https://www.debian.org/Bugs/\">Debian Bug Tracking System</a>, het "
+"bugvolgsysteem van Debian. Zorg ervoor dat zowel rapporten als commentaren "
+"<strong>uitsluitend</strong> naar het bugrapport (<em>nnn@bugs.debian."
+"org</em>) worden gestuurd. Het bugvolgsysteem zal automatisch een kopie naar "
+"de mailinglijst <em>debian-mentors</em> sturen."
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1036,6 +1409,11 @@ msgid ""
 "requests\"><em>sponsorship-requests</em></a> pseudo-package by using the "
 "template below."
 msgstr ""
+"Zodra een bronpakket is voorbereid en beschikbaar is gemaakt (bijvoorbeeld "
+"door het naar deze site te uploaden), moet u een nieuw bugrapport indienen "
+"tegen het pseudo-pakket <a href=\"https://bugs.debian.org/cgi-bin/"
+"pkgreport.cgi ?pkg=sponsorship-requests\"><em>sponsorship-requests</em></a> "
+"door het onderstaande sjabloon te gebruiken."
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1047,18 +1425,26 @@ msgid ""
 "give up quickly and keep a watch over the mailing list. You can browse other "
 "packages and give other people feedback while you are waiting."
 msgstr ""
+"Het is mogelijk dat u geen antwoord krijgt op uw verzoek als u zich niet "
+"abonneert op de mailinglijst debian-mentors of op uw bug tegen sponsorship-"
+"requests. U kunt zich <a href=\"https://lists.debian.org/debian-mentors\""
+">inschrijven op de mailinglijst</a> en de eenvoudige stappen volgen om uw "
+"inschrijvingsaanvraag te bevestigen. Sponsors kunnen ook wat tijd nodig "
+"hebben om de verzoeken te bekijken, dus geef niet te snel op en houd de "
+"mailinglijst in de gaten. U kunt door andere pakketten bladeren en andere "
+"mensen feedback geven terwijl u wacht."
 
 #: base/templates/sponsor-rfs.html
 msgid "Template for an RFS bug"
-msgstr ""
+msgstr "Sjabloon voor een RFS-bug"
 
 #: base/templates/sponsor-rfs.html
 msgid "for "
-msgstr ""
+msgstr "voor "
 
 #: base/templates/sponsor-rfs.html
 msgid "Send the completed template below by email"
-msgstr ""
+msgstr "Verstuur het ingevulde sjabloon hieronder per e-mail"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1067,6 +1453,10 @@ msgid ""
 "keywords=reportbug&searchon=names&exact=1&suite=all&section=main\">reportbug</"
 "a> tool."
 msgstr ""
+"naar ons pseudo-pakket. Als u wilt, kunt u ook het hulpmiddel <a href=\"https"
+"://packages.debian.org/"
+"search?keywords=reportbug&searchon=names&exact=1&suite=all&section=main\""
+">reportbug</a> gebruiken."
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1076,10 +1466,15 @@ msgid ""
 "<tt>QA</tt>). If your upload also fixes Release Critical bugs, please add "
 "the <tt>RC</tt> indicator as well."
 msgstr ""
+"Geef in de onderwerpregel aan of u een nieuw pakket toevoegt aan Debian "
+"(<tt>ITP</tt>), of u een bestaand pakket adopteert (<tt>ITA</tt>), of dat u "
+"bugs repareert in een bestaand pakket (via <tt>NMU</tt> of <tt>QA</tt>). Als "
+"uw upload ook release-kritieke bugs verhelpt, voeg dan ook de indicator "
+"<tt>RC</tt> toe."
 
 #: base/templates/sponsor-rfs.html
 msgid "The meaning of the indicators above is described below:"
-msgstr ""
+msgstr "De betekenis van bovenstaande indicatoren wordt hieronder beschreven:"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1090,12 +1485,23 @@ msgid ""
 "renamed packages, packages moving between areas, and source packages that "
 "build new binary packages."
 msgstr ""
+"<tt>ITP</tt> staat voor <em>Intend to package</em> (voornemen om te "
+"verpakken). Dit zijn pakketten die nog niet bestaan in Debian. Dergelijke "
+"pakketten moeten door de wachtrij <tt>NEW</tt> (nieuw) gaan, waar ze worden "
+"gecontroleerd door een <a href=\"https://ftp-master.debian.org/new.html\""
+">FTP-master</a >. Pakketten die door de wachtrij NEW moeten gaan, zijn onder "
+"meer pakketten die een andere naam kregen, pakketten die naar een ander "
+"gebied overgegaan zijn en broncodepakketten waaruit nieuwe binaire pakketten "
+"gebouwd worden."
 
 #: base/templates/sponsor-rfs.html
 msgid ""
 "<tt>ITA</tt> stands for <em>Intend to adopt</em>. These are packages which "
 "were orphaned in the past and which you intend to adopt."
 msgstr ""
+"<tt>ITA</tt> staat voor <em>Intend to adopt</em> (voornemen om te adopteren)"
+". Dit zijn pakketten die in het verleden verweesd werden en die u van plan "
+"bent te adopteren."
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1105,6 +1511,12 @@ msgid ""
 "www.debian.org/doc/manuals/developers-reference/pkgs.html#nmu\">Developer's "
 "Reference</a> for more information."
 msgstr ""
+"Uw upload is een <em>Non-Maintainer Upload</em> (upload niet door de "
+"pakketbeheerder), een versie van een pakket die niet is geüpload door de "
+"officiële beheerder van een pakket, maar door u. Voor deze uploads gelden "
+"speciale regels. Raadpleeg de <a href=\"https://www.debian.org/doc/manuals/"
+"developers-reference/pkgs.html#nmu\">Developer's Reference</a> ("
+"referentiehandleiding voor ontwikkelaars) voor meer informatie."
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1113,6 +1525,11 @@ msgid ""
 "pkgs.html#nmu-qa-upload\">Developer's Reference</a> to learn about <tt>QA</"
 "tt> uploads."
 msgstr ""
+"Uw upload is een <tt>QA</tt>-upload (een kwaliteitsverzekeringsupload). "
+"Raadpleeg de betreffende sectie in de <a href=\"https://www.debian.org/doc/"
+"manuals/developers-reference/pkgs.html#nmu-qa-upload\">Developer's "
+"Reference</a> ((referentiehandleiding voor ontwikkelaars) voor meer "
+"informatie over <tt>QA</tt>-uploads."
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1120,6 +1537,9 @@ msgid ""
 "particularly important. Use this indicator if your request fixes an <tt>RC</"
 "tt> bug."
 msgstr ""
+"Dit is een afkorting van <em>Release-Critical</em> (releasekritiek), een "
+"klasse van bugs die bijzonder belangrijk zijn. Gebruik deze indicator als uw "
+"verzoek een <tt>RC</tt>-bug repareert."
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1127,6 +1547,10 @@ msgid ""
 "<em>moreinfo</em> or <em>wontfix</em> and you think you have addressed the "
 "issues, please remove the respective tag."
 msgstr ""
+"Volg de bug op en reageer op commentaar. Als de bug een tag <em>moreinfo</"
+"em> (meer informatie nodig) of <em>wontfix</em> (wordt niet opgelost) "
+"gekregen heeft en u denkt dat u de problemen hebt verholpen, verwijder dan "
+"de betreffende tag."
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1135,6 +1559,10 @@ msgid ""
 "the source package and the most recent changelog entries, as you did for the "
 "initial request."
 msgstr ""
+"Als u het pakket hebt gewijzigd om problemen aan te pakken, stuur dan een "
+"vervolge-mail naar de bug met uw verzoek om sponsoring (nnn@bugs.debian.org) "
+"met de URL naar het broncodepakket en de meest recente changelog-"
+"vermeldingen, zoals u deed voor het oorspronkelijke verzoek."
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1143,10 +1571,14 @@ msgid ""
 "bug (again, please include references to the updated source package or ask "
 "for advice)."
 msgstr ""
+"Als er problemen zijn met de upload nadat de bug is gesloten, bijvoorbeeld "
+"wanneer het pakket is afgewezen door de software van het pakketarchief, kunt "
+"u de bug opnieuw openen (voeg opnieuw verwijzingen toe naar het bijgewerkte "
+"broncodepakket of vraag om advies)."
 
 #: base/templates/sponsor-rfs.html
 msgid "Reviewing Packages"
-msgstr ""
+msgstr "Pakketten reviseren"
 
 #: base/templates/sponsor-rfs.html
 #, python-format
@@ -1156,6 +1588,10 @@ msgid ""
 "href=%(url_sponsors)s>hints for reviewing packages</a> on a dedicated "
 "webpage."
 msgstr ""
+"Iedereen die zich bekwaam genoeg voelt, wordt uitgenodigd om "
+"sponsoraanvragen te reviseren. U hoeft hiervoor geen Debian-ontwikkelaar te "
+"zijn. We hebben <a href=%(url_sponsors)s>hints voor het reviseren van "
+"pakketten</a> samengebracht op een speciale webpagina."
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1164,26 +1600,39 @@ msgid ""
 "to the mailing list unless they explicitly ask you to send them carbon "
 "copies. You can use the following tags to indicate progress:"
 msgstr ""
+"Stuur eventuele commentaar naar <em>nnn@bugs.debian.org</em>, maar stuur "
+"geen kopieën naar de revisoren of de indiener van de bug. Ga ervan uit dat "
+"zij geabonneerd zijn op de mailinglijst, tenzij zij u expliciet vragen een "
+"kopie te sturen. U kunt de volgende tags gebruiken om de voortgang aan te "
+"geven:"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
 "A reviewer has asked questions that need a response or has requested changes "
 "to be made. The package needs work before it can be uploaded."
 msgstr ""
+"Een revisor heeft vragen gesteld die beantwoord moeten worden of heeft "
+"gevraagd om wijzigingen aan te brengen. Er moet aan het pakket worden "
+"gewerkt voordat het kan worden geüpload."
 
 #: base/templates/sponsor-rfs.html
 msgid ""
 "Somebody did a brief review of your package and it looks sane. It can still "
 "have (smaller) issues that need to be fixed before an upload."
 msgstr ""
+"Iemand heeft uw pakket even bekeken en het ziet er goed uit. Het kan nog "
+"steeds (kleinere) problemen hebben die moeten worden opgelost voordat een "
+"upload wordt uitgevoerd."
 
 #: base/templates/sponsor-rfs.html
 msgid "Somebody is willing to look after the package until it is uploaded."
 msgstr ""
+"Iemand is bereid om voor het pakket te zorgen totdat het wordt geüpload."
 
 #: base/templates/sponsor-rfs.html
 msgid "The package has significant problems or cannot not be uploaded at all."
 msgstr ""
+"Het pakket heeft aanzienlijke problemen of kan helemaal niet worden geüpload."
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1191,10 +1640,14 @@ msgid ""
 "package is ready for upload, please consider setting yourself as the owner "
 "of the bug and tagging the bug as <em>pending</em>:"
 msgstr ""
+"Als u van plan bent een sponsorverzoek in behandeling te nemen totdat het "
+"betreffende pakket klaar is voor upload, overweeg dan om uzelf als eigenaar "
+"van de bug aan te duiden en de bug te taggen als <em>pending</em> (in "
+"behandeling):"
 
 #: base/templates/sponsor-rfs.html
 msgid "Uploading Packages"
-msgstr ""
+msgstr "Pakketten uploaden"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1203,10 +1656,15 @@ msgid ""
 "changelog. The sponsor is responsible for solving the bug, not the supplier "
 "of the package or anyone related to the package itself."
 msgstr ""
+"Sluit na het uploaden van een pakket het bugrapport door een e-mail te "
+"sturen naar <em>nnn-done@bugs.debian.org</em>. Sluit geen RFS-bugs in debian/"
+"changelog. De sponsor is verantwoordelijk voor het oplossen van de bug, niet "
+"diegene die het pakket aanlevert of iemand die met het pakket zelf te maken "
+"heeft."
 
 #: base/templates/sponsor-rfs.html
 msgid "Notes"
-msgstr ""
+msgstr "Aantekeningen"
 
 #: base/templates/sponsor-rfs.html
 msgid ""
@@ -1216,3 +1674,9 @@ msgid ""
 "tags, as appropriate. The same applies to uploaded packages for which the "
 "sponsor forgot to close the RFS bug."
 msgstr ""
+"Inactieve sponsorverzoeken dienen na een redelijke termijn te worden "
+"afgesloten. We denken daarbij aan twee weken voor verzoeken met de tag "
+"<em>wontfix</em> (wordt niet opgelost), zes weken voor verzoeken met de tag "
+"<em>moreinfo</em> (meer informatie nodig) en zes maanden voor andere tags, "
+"indien van toepassing. Hetzelfde geldt voor geüploade pakketten waarvan de "
+"sponsor is vergeten de RFS-bug te sluiten."
