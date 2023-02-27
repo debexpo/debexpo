@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-01 07:15+0000\n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,41 +17,41 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: debexpo/importer/models.py:287
+#: importer/models.py
 #, python-brace-format
 msgid "{error}: REJECTED"
 msgstr ""
 
-#: debexpo/importer/models.py:292
+#: importer/models.py
 #, python-brace-format
 msgid "{package}_{version}: ACCEPTED on {site} ({distribution})"
 msgstr ""
 
-#: debexpo/importer/models.py:442
+#: importer/models.py
 msgid "Changes is invalid"
 msgstr ""
 
-#: debexpo/importer/models.py:449
+#: importer/models.py
 msgid "Dsc failed to parse"
 msgstr ""
 
-#: debexpo/importer/models.py:463
+#: importer/models.py
 msgid "Dsc is invalid"
 msgstr ""
 
-#: debexpo/importer/models.py:474
+#: importer/models.py
 msgid "Failed to extract source package"
 msgstr ""
 
-#: debexpo/importer/models.py:482 debexpo/importer/models.py:492
+#: importer/models.py
 msgid "Source package is invalid"
 msgstr ""
 
-#: debexpo/importer/models.py:502
+#: importer/models.py
 msgid "Invalid distribution"
 msgstr ""
 
-#: debexpo/importer/models.py:503
+#: importer/models.py
 #, python-brace-format
 msgid ""
 "Distribution {distribution} is not supported on mentors\n"
@@ -61,7 +61,7 @@ msgid ""
 "{allowed}"
 msgstr ""
 
-#: debexpo/importer/templates/email-importer-accept.html:1
+#: importer/templates/email-importer-accept.html
 #, python-format
 msgid ""
 "Hi.\n"
@@ -70,19 +70,19 @@ msgid ""
 "successful. Others can now see it. The URL of your package is:\n"
 msgstr ""
 
-#: debexpo/importer/templates/email-importer-accept.html:7
+#: importer/templates/email-importer-accept.html
 msgid ""
 "\n"
 "The respective dsc file can be found at:\n"
 msgstr ""
 
-#: debexpo/importer/templates/email-importer-accept.html:11
+#: importer/templates/email-importer-accept.html
 msgid ""
 "\n"
 "If you do not yet have a sponsor for your package you may want to go to:\n"
 msgstr ""
 
-#: debexpo/importer/templates/email-importer-accept.html:15
+#: importer/templates/email-importer-accept.html
 msgid ""
 "\n"
 "and set the \"Seeking a sponsor\" option to highlight your package on the\n"
@@ -97,7 +97,7 @@ msgid ""
 "Thanks,"
 msgstr ""
 
-#: debexpo/importer/templates/email-importer-reject.html:1
+#: importer/templates/email-importer-reject.html
 #, python-format
 msgid ""
 "Hello,\n"
