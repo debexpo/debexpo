@@ -80,7 +80,7 @@ flake8:
     - python3 -m flake8 debexpo/ tests/
 
 trans:
-  image: debian:buster-backports
+  image: debian:bullseye
   before_script:
     - apt-get -q update
     - env DEBIAN_FRONTEND=noninteractive
@@ -89,7 +89,7 @@ trans:
       git
       python3
       python3-setuptools
-      python3-django/buster-backports
+      python3-django
       python3-debian
       python3-celery
       python3-django-celery-beat
@@ -101,7 +101,7 @@ trans:
       python3-dulwich
       python3-djangorestframework
       python3-djangorestframework-extensions
-      python3-django-filters/buster-backports
+      python3-django-filters
       python3-django-redis
   script:
     - (cd debexpo && python3 ../manage.py makemessages --keep-pot)
@@ -113,7 +113,7 @@ trans:
       done
 
 migrations:
-  image: debian:buster-backports
+  image: debian:bullseye
   allow_failure: true
   before_script:
     - apt-get -q update
@@ -122,7 +122,7 @@ migrations:
       gettext
       python3
       python3-setuptools
-      python3-django/buster-backports
+      python3-django
       python3-debian
       python3-celery
       python3-django-celery-beat
@@ -134,7 +134,7 @@ migrations:
       python3-dulwich
       python3-djangorestframework
       python3-djangorestframework-extensions
-      python3-django-filters/buster-backports
+      python3-django-filters
       python3-django-redis
   script:
     - python3 manage.py makemigrations --check
