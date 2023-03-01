@@ -114,7 +114,6 @@ trans:
 
 migrations:
   image: debian:bullseye
-  allow_failure: true
   before_script:
     - apt-get -q update
     - env DEBIAN_FRONTEND=noninteractive
