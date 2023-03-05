@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-27 19:09+0000\n"
+"POT-Creation-Date: 2023-03-05 07:56+0000\n"
 "PO-Revision-Date: 2022-09-11 17:52-0300\n"
 "Last-Translator: Thiago Pezzo (tico) <pezzo@protonmail.com>\n"
 "Language-Team: <debian-l10n-portuguese@lists.debian.org>\n"
@@ -27,7 +27,7 @@ msgid "GPG Algorithm ID"
 msgstr "ID do algoritmo GPG"
 
 #: keyring/models.py
-msgid "Minimal size requirment"
+msgid "Minimal size requirement"
 msgstr "Exigência de tamanho mínimo"
 
 #: keyring/models.py
