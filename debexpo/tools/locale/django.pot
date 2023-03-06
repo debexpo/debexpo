@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-01 07:15+0000\n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,17 +17,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: debexpo/tools/debian/changes.py:79
+#: tools/debian/changes.py
 #, python-brace-format
 msgid "Changes file {filename} could not be parsed"
 msgstr ""
 
-#: debexpo/tools/debian/changes.py:134
+#: tools/debian/changes.py
 #, python-brace-format
 msgid "Changes file invalid. Missing key {key}"
 msgstr ""
 
-#: debexpo/tools/debian/changes.py:185
+#: tools/debian/changes.py
 msgid ""
 "dsc is missing from changes\n"
 "Make sure you include the full source (if you are using sbuild make sure to "
@@ -36,52 +36,52 @@ msgid ""
 "only upload)"
 msgstr ""
 
-#: debexpo/tools/debian/changes.py:210
+#: tools/debian/changes.py
 #, python-brace-format
 msgid ""
 "{source} exists in the official Debian archive with the version {version}/"
 "{distribution}. You may not upload a lower or equal version to this one."
 msgstr ""
 
-#: debexpo/tools/debian/control.py:41
+#: tools/debian/control.py
 #, python-brace-format
 msgid "Failed to parse debian/control:{message}"
 msgstr ""
 
-#: debexpo/tools/debian/control.py:175
+#: tools/debian/control.py
 msgid "No source definition found"
 msgstr ""
 
-#: debexpo/tools/debian/control.py:178
+#: tools/debian/control.py
 msgid "No binary definition found"
 msgstr ""
 
-#: debexpo/tools/debian/control.py:185 debexpo/tools/debian/control.py:191
+#: tools/debian/control.py
 #, python-brace-format
 msgid "Missing key {key} in source definition"
 msgstr ""
 
-#: debexpo/tools/debian/copyright.py:38
+#: tools/debian/copyright.py
 #, python-brace-format
 msgid "Failed to parse debian/copyright: {message}"
 msgstr ""
 
-#: debexpo/tools/debian/dsc.py:53
+#: tools/debian/dsc.py
 #, python-brace-format
 msgid "{dsc} could not be parsed"
 msgstr ""
 
-#: debexpo/tools/debian/dsc.py:86
+#: tools/debian/dsc.py
 #, python-brace-format
 msgid "Missing key {key}"
 msgstr ""
 
-#: debexpo/tools/debian/origin.py:91
+#: tools/debian/origin.py
 #, python-brace-format
 msgid "Failed to retrive origin info: {e}"
 msgstr ""
 
-#: debexpo/tools/debian/origin.py:104
+#: tools/debian/origin.py
 #, python-brace-format
 msgid ""
 "Source package origin file differs from the official archive:\n"
@@ -92,27 +92,27 @@ msgid ""
 "sha256sum in archive: {archive}"
 msgstr ""
 
-#: debexpo/tools/debian/source.py:65
+#: tools/debian/source.py
 #, python-brace-format
 msgid "Internal error. Please contact debexpo administrators at {email}"
 msgstr ""
 
-#: debexpo/tools/debian/source.py:68
+#: tools/debian/source.py
 #, python-brace-format
 msgid "Could not extract source package from {dsc}: {e}"
 msgstr ""
 
-#: debexpo/tools/debian/source.py:72
+#: tools/debian/source.py
 #, python-brace-format
 msgid "Could not extract source package from {dsc}: extraction took too long"
 msgstr ""
 
-#: debexpo/tools/files.py:56
+#: tools/files.py
 #, python-brace-format
 msgid "No checksum method available for file {filename}."
 msgstr ""
 
-#: debexpo/tools/files.py:67
+#: tools/files.py
 #, python-brace-format
 msgid ""
 "Checksum failed for file {filename}.\n"
@@ -121,28 +121,28 @@ msgid ""
 "Computed: {computed}"
 msgstr ""
 
-#: debexpo/tools/files.py:143
+#: tools/files.py
 #, python-brace-format
 msgid "{filename} is missing from upload"
 msgstr ""
 
-#: debexpo/tools/gnupg.py:73 debexpo/tools/gnupg.py:77
+#: tools/gnupg.py
 #, python-brace-format
 msgid ""
 "Unable to verify file {filename}. No public key found for key {fingerprint}"
 msgstr ""
 
-#: debexpo/tools/gnupg.py:155
+#: tools/gnupg.py
 #, python-brace-format
 msgid "{filename}: not a GPG signed file"
 msgstr ""
 
-#: debexpo/tools/gnupg.py:163
+#: tools/gnupg.py
 #, python-brace-format
 msgid "Unknown GPG error. Output was: {output}"
 msgstr ""
 
-#: debexpo/tools/gnupg.py:183
+#: tools/gnupg.py
 #, python-brace-format
 msgid "Cannot add key: {key}"
 msgstr ""

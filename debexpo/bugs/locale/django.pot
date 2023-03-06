@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-01 07:15+0000\n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,42 +17,42 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: debexpo/bugs/models.py:214
+#: bugs/models.py
 msgid "Package name"
 msgstr ""
 
-#: debexpo/bugs/models.py:220
+#: bugs/models.py
 msgid "Bug number"
 msgstr ""
 
-#: debexpo/bugs/models.py:222
+#: bugs/models.py
 msgid "Type"
 msgstr ""
 
-#: debexpo/bugs/models.py:224
+#: bugs/models.py
 msgid "Status"
 msgstr ""
 
-#: debexpo/bugs/models.py:226
+#: bugs/models.py
 msgid "Severity"
 msgstr ""
 
-#: debexpo/bugs/models.py:227
+#: bugs/models.py
 msgid "Creation date"
 msgstr ""
 
-#: debexpo/bugs/models.py:228
+#: bugs/models.py
 msgid "Last update date"
 msgstr ""
 
-#: debexpo/bugs/models.py:229
+#: bugs/models.py
 msgid "Subject"
 msgstr ""
 
-#: debexpo/bugs/models.py:232
+#: bugs/models.py
 msgid "Submitter email"
 msgstr ""
 
-#: debexpo/bugs/models.py:233
+#: bugs/models.py
 msgid "Owner email"
 msgstr ""

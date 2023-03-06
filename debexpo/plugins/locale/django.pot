@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-01 07:15+0000\n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,42 +17,42 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: debexpo/plugins/models.py:60
+#: plugins/models.py
 msgid "Information"
 msgstr ""
 
-#: debexpo/plugins/models.py:61
+#: plugins/models.py
 msgid "Warning"
 msgstr ""
 
-#: debexpo/plugins/models.py:62
+#: plugins/models.py
 msgid "Error"
 msgstr ""
 
-#: debexpo/plugins/models.py:63
+#: plugins/models.py
 msgid "Critical"
 msgstr ""
 
-#: debexpo/plugins/models.py:64
+#: plugins/models.py
 msgid "Failed"
 msgstr ""
 
-#: debexpo/plugins/models.py:78
+#: plugins/models.py
 msgid "Plugin name"
 msgstr ""
 
-#: debexpo/plugins/models.py:79
+#: plugins/models.py
 msgid "Test identifier"
 msgstr ""
 
-#: debexpo/plugins/models.py:80
+#: plugins/models.py
 msgid "Outcome"
 msgstr ""
 
-#: debexpo/plugins/models.py:81
+#: plugins/models.py
 msgid "Data"
 msgstr ""
 
-#: debexpo/plugins/models.py:83
+#: plugins/models.py
 msgid "Severity"
 msgstr ""
