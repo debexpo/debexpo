@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-01 07:15+0000\n"
-"PO-Revision-Date: 2022-12-03 10:46+0000\n"
-"Last-Translator: Andrea Pappacoda <weblate@pappacoda.it>\n"
+"PO-Revision-Date: 2023-04-12 19:49+0000\n"
+"Last-Translator: Davide Prina <Davide.Prina@tuta.io>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/debexpo/locale/"
 "it/>\n"
 "Language: it\n"
@@ -17,27 +17,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"X-Generator: Weblate 4.17-dev\n"
 
 #: debexpo/settings/common.py:91
 msgid "English"
-msgstr ""
+msgstr "Inglese"
 
 #: debexpo/settings/common.py:92
 msgid "French"
-msgstr ""
+msgstr "Francese"
 
 #: debexpo/settings/common.py:93
 msgid "Portuguese (Brazil)"
-msgstr ""
+msgstr "Portoghese (Brasiliano)"
 
 #: debexpo/settings/common.py:145
 msgid "Helps you get your packages into Debian"
-msgstr ""
+msgstr "Assistenza per portare il tuo pacchetto in Debian"
 
 #: debexpo/urls.py:86
 msgid "Email change complete"
-msgstr ""
+msgstr "Cambio email completato"
 
 #: old/debexpo/controllers/sponsor.py:77
 msgid "Overview"

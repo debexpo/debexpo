@@ -8,22 +8,25 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-01 07:15+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-04-12 19:49+0000\n"
+"Last-Translator: Davide Prina <Davide.Prina@tuta.io>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/debexpo/nntp/it/>"
+"\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17-dev\n"
 
 #: debexpo/nntp/models.py:33
 msgid "Namespace"
-msgstr ""
+msgstr "Spazio dei nomi"
 
 #: debexpo/nntp/models.py:34
 msgid "List name"
-msgstr ""
+msgstr "Nome dell'elenco"
 
 #: debexpo/nntp/models.py:35
 msgid "Last message processed"
-msgstr ""
+msgstr "Ultimo messaggio elaborato"

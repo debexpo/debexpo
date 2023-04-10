@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-01 07:15+0000\n"
-"PO-Revision-Date: 2022-12-03 10:46+0000\n"
-"Last-Translator: Andrea Pappacoda <weblate@pappacoda.it>\n"
+"PO-Revision-Date: 2023-04-12 19:49+0000\n"
+"Last-Translator: Davide Prina <Davide.Prina@tuta.io>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/debexpo/keyring/"
 "it/>\n"
 "Language: it\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"X-Generator: Weblate 4.17-dev\n"
 
 #: debexpo/keyring/models.py:42 debexpo/keyring/models.py:122
 msgid "Type"
@@ -25,7 +25,7 @@ msgstr "Tipo"
 
 #: debexpo/keyring/models.py:44
 msgid "GPG Algorithm ID"
-msgstr ""
+msgstr "ID dell'Algoritmo GPG"
 
 #: debexpo/keyring/models.py:47
 msgid "Minimal size requirment"
@@ -33,28 +33,31 @@ msgstr ""
 
 #: debexpo/keyring/models.py:62
 msgid "Multiple keys not supported"
-msgstr ""
+msgstr "Non sono supportate chiavi multiple"
 
 #: debexpo/keyring/models.py:73
 msgid "Key algorithm not supported. Key must be one of the following: {}"
 msgstr ""
+"L'algoritmo della chiave non è supportato. La chiave deve essere uno dei "
+"seguenti: {}"
 
 #: debexpo/keyring/models.py:83
 msgid "Key size too small. Need at least {} bits."
 msgstr ""
+"La dimensione della chiave è troppo piccola. Deve essere almeno di {} bit."
 
 #: debexpo/keyring/models.py:111
 msgid "OpenGPG key"
-msgstr ""
+msgstr "Chiave OpenGPG"
 
 #: debexpo/keyring/models.py:112 debexpo/keyring/models.py:143
 msgid "Fingerprint"
-msgstr ""
+msgstr "Impronta digitale"
 
 #: debexpo/keyring/models.py:114
 msgid "Last update on"
-msgstr ""
+msgstr "L'ultimo caricamento il"
 
 #: debexpo/keyring/models.py:123
 msgid "Size"
-msgstr ""
+msgstr "Dimensione"

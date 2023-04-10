@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-01 07:15+0000\n"
-"PO-Revision-Date: 2022-12-03 10:46+0000\n"
-"Last-Translator: Andrea Pappacoda <weblate@pappacoda.it>\n"
+"PO-Revision-Date: 2023-04-11 12:52+0000\n"
+"Last-Translator: Davide Prina <Davide.Prina@tuta.io>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/debexpo/accounts/"
 "it/>\n"
 "Language: it\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"X-Generator: Weblate 4.17-dev\n"
 
 #: debexpo/accounts/forms.py:48
 msgid "Full name"
@@ -32,12 +32,12 @@ msgid ""
 "A user with this name is already registered on the system. If it is you, use "
 "that account!  Otherwise use a different name to register."
 msgstr ""
-"Un utente con questo nome è già registrato al sistema. Se sei tu, usa "
+"Un utente con questo nome è già registrato nel sistema. Se sei tu, usa "
 "quell'account!  Altrimenti, usa un altro nome per registrarti."
 
 #: debexpo/accounts/forms.py:68
 msgid "A user with this email address is already registered on the system"
-msgstr "Un utente con questo indirizzo email è già registrato al sistema"
+msgstr "Un utente con questo indirizzo email è già registrato nel sistema"
 
 #: debexpo/accounts/forms.py:81
 msgid "Account type"
@@ -45,7 +45,7 @@ msgstr "Tipo di account"
 
 #: debexpo/accounts/forms.py:85
 msgid "Maintainer"
-msgstr "Maintainer"
+msgstr "Manutentore"
 
 #: debexpo/accounts/forms.py:87
 msgid "Sponsor"
@@ -53,8 +53,7 @@ msgstr "Sponsor"
 
 #: debexpo/accounts/forms.py:93
 msgid "A sponsor account must be registered with your @debian.org address"
-msgstr ""
-"Un account da sponsor dev'essere registrato col tuo indirizzo @debian.org"
+msgstr "Un account sponsor dev'essere registrato col tuo indirizzo @debian.org"
 
 #: debexpo/accounts/forms.py:111
 msgid "Spam detected"
@@ -66,15 +65,15 @@ msgstr "Hai richiesto il ripristino della password"
 
 #: debexpo/accounts/models.py:46
 msgid "Contributor"
-msgstr "Contributor"
+msgstr "Contributore"
 
 #: debexpo/accounts/models.py:47
 msgid "Debian Maintainer (DM)"
-msgstr "Debian Maintainer (DM)"
+msgstr "Debian Maintainer (DM - Manutentore Debian)"
 
 #: debexpo/accounts/models.py:48
 msgid "Debian Developer (DD)"
-msgstr "Debian Developer (DD)"
+msgstr "Debian Developer (DD - Sviluppatore Debian)"
 
 #: debexpo/accounts/models.py:126
 msgid "email address"
@@ -119,11 +118,11 @@ msgstr ""
 
 #: debexpo/accounts/templates/activated.html:4
 msgid "User activated"
-msgstr "Utente abilitato"
+msgstr "Utente attivato"
 
 #: debexpo/accounts/templates/activated.html:7
 msgid "Your account has been activated."
-msgstr "Il tuo account è stato abilitato."
+msgstr "Il tuo account è stato attivato."
 
 #: debexpo/accounts/templates/activated.html:8
 #, python-format
@@ -205,8 +204,9 @@ msgid ""
 "If you didn't change your email on your account on %(site_name)s,\n"
 "you can safely ignore this email."
 msgstr ""
-"Se non hai cambiato il tuo indirizzo email nel tuo account su\n"
-"%(site_name)s, puoi tranquillamente ignorare questa email."
+"Se non hai cambiato il tuo indirizzo email nel tuo account su %(site_name)s,"
+"\n"
+"puoi tranquillamente ignorare questa email."
 
 #: debexpo/accounts/templates/email-change.html:11
 #: debexpo/accounts/templates/email-password-creation.html:11
@@ -223,8 +223,8 @@ msgid ""
 msgstr ""
 "Ciao,\n"
 "\n"
-"Attiva il tuo account visitando il seguente indirizzo nel tuo\n"
-"browser web:"
+"Attiva il tuo account visitando il seguente indirizzo\n"
+"nel tuo browser web:"
 
 #: debexpo/accounts/templates/email-password-creation.html:8
 #, python-format
@@ -232,8 +232,8 @@ msgid ""
 "If you didn't create an account on %(site_name)s,\n"
 "you can safely ignore this email."
 msgstr ""
-"Se non hai creato un account su %(site_name)s, puoi tranquillamente\n"
-"ignorare questa email."
+"Se non hai creato un account su %(site_name)s,\n"
+"puoi tranquillamente ignorare questa email."
 
 #: debexpo/accounts/templates/email-password-reset.html:1
 msgid ""
@@ -383,7 +383,7 @@ msgstr "Modifica altri dettagli"
 
 #: debexpo/accounts/templates/profile.html:78
 msgid "Public sponsor info"
-msgstr "Informazioni pubbliche sponsor"
+msgstr "Informazioni dello sponsor pubblico"
 
 #: debexpo/accounts/templates/register.html:3
 msgid "Sign up for an account"
