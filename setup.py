@@ -88,7 +88,7 @@ setup(
         'lxml >= 4.3.2, < 5',
         'dulwich >= 0.19.11, < 1',
         'djangorestframework >= 3.9.0, < 4',
-        'django-filter >= 2.1.0, < 23',
+        'django-filter >= 2.1.0, < 24',
         'drf-extensions >= 0.4.0, < 1',
     ],
 
