@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-11-27 07:48+0000\n"
-"Last-Translator: Carlos C Soto <eclipxe13@gmail.com>\n"
+"PO-Revision-Date: 2023-06-15 20:52+0000\n"
+"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/debexpo/plugins/"
 "es/>\n"
 "Language: es\n"
@@ -17,43 +17,43 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"X-Generator: Weblate 4.18.1-dev\n"
 
 #: plugins/models.py
 msgid "Information"
-msgstr ""
+msgstr "Información"
 
 #: plugins/models.py
 msgid "Warning"
-msgstr ""
+msgstr "Advertencia"
 
 #: plugins/models.py
 msgid "Error"
-msgstr ""
+msgstr "Error"
 
 #: plugins/models.py
 msgid "Critical"
-msgstr ""
+msgstr "Crítico"
 
 #: plugins/models.py
 msgid "Failed"
-msgstr ""
+msgstr "Fallido"
 
 #: plugins/models.py
 msgid "Plugin name"
-msgstr ""
+msgstr "Nombre del complemento"
 
 #: plugins/models.py
 msgid "Test identifier"
-msgstr ""
+msgstr "Identificador de la prueba"
 
 #: plugins/models.py
 msgid "Outcome"
-msgstr ""
+msgstr "Resultado"
 
 #: plugins/models.py
 msgid "Data"
-msgstr ""
+msgstr "Datos"
 
 #: plugins/models.py
 msgid "Severity"
