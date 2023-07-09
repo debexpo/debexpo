@@ -265,3 +265,24 @@ SUBPROCESS_TIMEOUT_LINTIAN = 30 * 60
 
 # Default settings for models
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# Distro-info vendor info
+DISTRO_INFO_VENDOR = 'debian'
+DISTRIBUTION_SUFFIX = (
+    '-backports',
+    '-backports-sloppy',
+    '-security',
+    '-updates',
+    '-proposed-updates',
+)
+STATIC_SUITES = (
+    'sid',
+    'experimental',
+)
+SUITE_ALIASES = {
+    'oldstable': None,
+    'stable': None,
+    'testing': None,
+    'unstable': None,
+    'UNRELEASED': 'sid',
+}
