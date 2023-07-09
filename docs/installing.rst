@@ -97,6 +97,12 @@ Execute the following commands to setup the application::
 Those commands must be run each time changes are made to the database model or
 static files.
 
+Additionally, run the following command to update allowed distributions::
+
+    python manage.py sync_distributions --no-confirm
+
+This command should be run every time a new distribution is released.
+
 Running debexpo
 ---------------
 
