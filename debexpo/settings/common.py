@@ -286,3 +286,9 @@ SUITE_ALIASES = {
     'unstable': None,
     'UNRELEASED': 'sid',
 }
+DISTRIBUTION_COMPONENTS = (
+    'main',
+    'contrib',
+    'non-free',
+    'non-free-firmware',
+)
