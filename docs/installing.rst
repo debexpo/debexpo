@@ -39,7 +39,7 @@ You need to install the required packages. Using `apt`, you should execute::
     python3-bcrypt python3-django-celery-beat python3-redis python3-django-redis
     python3-fakeredis python3-lupa python3-debianbts python3-lxml
     python3-dulwich python3-djangorestframework python3-django-filters
-    python3-djangorestframework-extensions
+    python3-djangorestframework-extensions python3-distro-info
 
 Installing in a virtualenv
 --------------------------
