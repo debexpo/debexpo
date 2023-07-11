@@ -145,7 +145,8 @@ class Command(BaseCommand):
         if kwargs['dry_run']:
             return
 
-        if not kwargs['no_confirm']:
+        # Exclude user interaction from coverage
+        if not kwargs['no_confirm']:  # pragma: no cover
             confirm = 'EOF'
 
             try:
