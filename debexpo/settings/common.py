@@ -268,7 +268,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Distro-info vendor info
 DISTRO_INFO_VENDOR = 'debian'
-DISTRIBUTION_SUFFIX = (
+SUITE_SUFFIXES = (
     '-backports',
     '-backports-sloppy',
     '-security',

@@ -81,7 +81,7 @@ class Command(BaseCommand):
     def _build_distributions(self, suite):
         distributions = [suite]
 
-        for suffix in settings.DISTRIBUTION_SUFFIX:
+        for suffix in settings.SUITE_SUFFIXES:
             distributions.append(f'{suite}{suffix}')
 
         return distributions
