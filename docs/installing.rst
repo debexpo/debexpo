@@ -39,7 +39,7 @@ You need to install the required packages. Using `apt`, you should execute::
     python3-bcrypt python3-django-celery-beat python3-redis python3-django-redis
     python3-fakeredis python3-lupa python3-debianbts python3-lxml
     python3-dulwich python3-djangorestframework python3-django-filters
-    python3-djangorestframework-extensions
+    python3-djangorestframework-extensions python3-distro-info
 
 Installing in a virtualenv
 --------------------------
@@ -96,6 +96,12 @@ Execute the following commands to setup the application::
 
 Those commands must be run each time changes are made to the database model or
 static files.
+
+Additionally, run the following command to update allowed distributions::
+
+    python manage.py sync_distributions --no-confirm
+
+This command should be run every time a new distribution is released.
 
 Running debexpo
 ---------------

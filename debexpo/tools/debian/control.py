@@ -31,6 +31,7 @@ from os.path import join
 from debian.deb822 import Deb822
 
 from django.utils.translation import gettext_lazy as _
+from django.conf import settings
 
 from debexpo.tools.files import CheckSumedFile
 
@@ -58,7 +59,7 @@ def parse_section(section):
     """
     if '/' in section:
         component, thesection = section.split('/', 1)
-        if component not in ("main", "contrib", "non-free"):
+        if component not in settings.DISTRIBUTION_COMPONENTS:
             return ['main', section.replace('/', '_')]
         else:
             return [component, thesection]

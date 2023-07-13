@@ -90,6 +90,7 @@ setup(
         'djangorestframework >= 3.9.0, < 4',
         'django-filter >= 2.1.0, < 24',
         'drf-extensions >= 0.4.0, < 1',
+        'distro-info >= 1.0, < 2'
     ],
 
     extras_require={

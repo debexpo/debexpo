@@ -20,6 +20,7 @@ before_script:
     python3-lupa
     python3-debianbts
     python3-lxml
+    python3-distro-info
     python3-dulwich
     python3-djangorestframework
     python3-djangorestframework-extensions
@@ -45,8 +46,7 @@ before_script:
   variables:
     DJANGO_SETTINGS_MODULE: 'debexpo.settings.test'
   script:
-    - python3 setup.py develop | tee /tmp/deps.txt
-    - (! grep Downloading /tmp/deps.txt)
+    - python3 setup.py develop
     - python3 -m coverage run --branch manage.py test -v 2 --exclude-tag nntp
     - python3 -m coverage report --include='debexpo*' --omit '*/nntp.py'
     - python3 -m coverage html --include='debexpo*' --omit '*/nntp.py'
@@ -68,6 +68,12 @@ bullseye-bpo:
   variables:
     ADDITIONAL_PACKAGES: lintian/bullseye-backports
     DJANGO_SETTINGS_MODULE: 'debexpo.settings.test'
+
+dependencies:
+  image: debian:unstable
+  script:
+    - python3 setup.py develop | tee /tmp/deps.txt
+    - (! grep Downloading /tmp/deps.txt)
 
 flake8:
   image: debian:unstable-slim
