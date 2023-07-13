@@ -154,7 +154,7 @@ class Command(BaseCommand):
             except EOFError:
                 pass
 
-            if confirm not in ['', 'y']:
+            if confirm not in ['', 'y', 'Y']:
                 return 'Aborting.'
 
         if not kwargs['no_create']:
