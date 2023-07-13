@@ -280,6 +280,8 @@ STATIC_SUITES = (
     'experimental',
 )
 SUITE_ALIASES = {
+    # Uncomment when https://bugs.debian.org/1040992 is closed
+    # 'oldoldstable': None,
     'oldstable': None,
     'stable': None,
     'testing': None,
