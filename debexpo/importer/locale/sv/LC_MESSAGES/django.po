@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-12-23 14:56+0000\n"
-"Last-Translator: Luna Jernberg <droidbittin@gmail.com>\n"
+"PO-Revision-Date: 2023-09-06 11:55+0000\n"
+"Last-Translator: bittin1ddc447d824349b2 <bittin@reimu.nl>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/debexpo/importer/"
 "sv/>\n"
 "Language: sv\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15.1-dev\n"
+"X-Generator: Weblate 5.0.1-dev\n"
 
 #: importer/models.py
 #, python-brace-format
 msgid "{error}: REJECTED"
-msgstr ""
+msgstr "{error}: AVVISAD"
 
 #: importer/models.py
 #, python-brace-format
@@ -35,11 +35,11 @@ msgstr "Ändringarna är ogiltiga"
 
 #: importer/models.py
 msgid "Dsc failed to parse"
-msgstr ""
+msgstr "Misslyckades med att tolka Dsc"
 
 #: importer/models.py
 msgid "Dsc is invalid"
-msgstr ""
+msgstr "Dsc är ogiltig"
 
 #: importer/models.py
 msgid "Failed to extract source package"
@@ -62,6 +62,11 @@ msgid ""
 "\n"
 "{allowed}"
 msgstr ""
+"Distribution {distribution} stöds inte av mentorer\n"
+"\n"
+"Lista över distributioner som stöds:\n"
+"\n"
+"{allowed}"
 
 #: importer/templates/email-importer-accept.html
 #, python-format
@@ -71,18 +76,26 @@ msgid ""
 "Your upload of the package '%(name)s' to %(site)s was\n"
 "successful. Others can now see it. The URL of your package is:\n"
 msgstr ""
+"Hej\n"
+"\n"
+"din uppladdning av paket %(name)s till %(site)s var\n"
+"framgångsrik. Andra kan nu se det. Webbadressen till ditt paket är:\n"
 
 #: importer/templates/email-importer-accept.html
 msgid ""
 "\n"
 "The respective dsc file can be found at:\n"
 msgstr ""
+"\n"
+"Respektive dsc-fil kan hittas på:\n"
 
 #: importer/templates/email-importer-accept.html
 msgid ""
 "\n"
 "If you do not yet have a sponsor for your package you may want to go to:\n"
 msgstr ""
+"\n"
+"Om du ännu inte har en sponsor för ditt paket kan du gå till:\n"
 
 #: importer/templates/email-importer-accept.html
 msgid ""
@@ -113,3 +126,13 @@ msgid ""
 "\n"
 "Please try to fix it and re-upload. Thanks,"
 msgstr ""
+"Hej,\n"
+"\n"
+"Tyvärr avvisades ditt paket \"%(source)s\".\n"
+"på grund av följande anledning:\n"
+"\n"
+"%(error)s\n"
+"\n"
+"%(details)s\n"
+"\n"
+"Försök att fixa det och ladda upp igen. Tack,"

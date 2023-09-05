@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-12-24 04:51+0000\n"
-"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
+"PO-Revision-Date: 2023-09-06 11:55+0000\n"
+"Last-Translator: bittin1ddc447d824349b2 <bittin@reimu.nl>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/debexpo/bugs/sv/>"
 "\n"
 "Language: sv\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15.1-dev\n"
+"X-Generator: Weblate 5.0.1-dev\n"
 
 #: bugs/models.py
 msgid "Package name"
@@ -37,11 +37,11 @@ msgstr "Status"
 
 #: bugs/models.py
 msgid "Severity"
-msgstr ""
+msgstr "Allvarlighetsgrad"
 
 #: bugs/models.py
 msgid "Creation date"
-msgstr ""
+msgstr "Skapande datum"
 
 #: bugs/models.py
 msgid "Last update date"
@@ -53,8 +53,8 @@ msgstr "Ämne"
 
 #: bugs/models.py
 msgid "Submitter email"
-msgstr ""
+msgstr "Insändarens e-post"
 
 #: bugs/models.py
 msgid "Owner email"
-msgstr ""
+msgstr "Ägarens e-post"

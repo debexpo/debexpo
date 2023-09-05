@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-12-24 04:51+0000\n"
-"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
+"PO-Revision-Date: 2023-09-06 11:55+0000\n"
+"Last-Translator: bittin1ddc447d824349b2 <bittin@reimu.nl>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/debexpo/accounts/"
 "sv/>\n"
 "Language: sv\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15.1-dev\n"
+"X-Generator: Weblate 5.0.1-dev\n"
 
 #: accounts/forms.py
 msgid "Full name"
@@ -69,11 +69,11 @@ msgstr "Bidragsgivare"
 
 #: accounts/models.py
 msgid "Debian Maintainer (DM)"
-msgstr ""
+msgstr "Debian underhållare (DM)"
 
 #: accounts/models.py
 msgid "Debian Developer (DD)"
-msgstr ""
+msgstr "Debian utvecklare (DD)"
 
 #: accounts/models.py
 msgid "email address"
@@ -105,13 +105,15 @@ msgstr "Status"
 
 #: accounts/templates/activate.html accounts/templates/change-email.html
 msgid "Check your email"
-msgstr ""
+msgstr "Kolla din e-post"
 
 #: accounts/templates/activate.html
 msgid ""
 "An email has been sent to the email address you specified. Check it for "
 "instructions on how to activate your account."
 msgstr ""
+"Ett e-postmeddelande har skickats till den e-postadress du angett. Se det "
+"för instruktioner om hur du aktiverar ditt konto."
 
 #: accounts/templates/activated.html
 msgid "User activated"
@@ -133,7 +135,7 @@ msgstr "Ogiltig verifieringsnyckel"
 #: accounts/templates/activated.html
 msgid ""
 "The verification key you entered has not been recognised. Please try again."
-msgstr ""
+msgstr "Verifieringsnyckeln du angav känns inte igen. Var god försök igen."
 
 #: accounts/templates/change-email-complete.html
 msgid "Email changed successfully"
@@ -172,6 +174,8 @@ msgid ""
 "An email has been sent to your new email address. Check it for instructions "
 "on how to validate it."
 msgstr ""
+"Ett e-postmeddelande har skickats till din nya e-postadress. Kontrollera den "
+"för instruktioner om hur du validerar den."
 
 #: accounts/templates/email-change.html
 msgid ""
@@ -180,6 +184,10 @@ msgid ""
 "Confirm your new email by visiting the following address\n"
 "in your web-browser:"
 msgstr ""
+"Hej,\n"
+"\n"
+"Bekräfta din nya e-post adress genom att besöka följande adress\n"
+"i din webbläsare:"
 
 #: accounts/templates/email-change.html
 #, python-format
@@ -187,6 +195,8 @@ msgid ""
 "If you didn't change your email on your account on %(site_name)s,\n"
 "you can safely ignore this email."
 msgstr ""
+"Om du inte ändrade din e-postadress på ditt konto på %(site_name)s,\n"
+"så kan du säkert ignorera detta e-postmeddelande."
 
 #: accounts/templates/email-change.html
 #: accounts/templates/email-password-creation.html
@@ -201,6 +211,10 @@ msgid ""
 "Please activate your account by visiting the following address\n"
 "in your web-browser:"
 msgstr ""
+"Hej,\n"
+"\n"
+"Vänligen aktivera ditt konto genom att besöka följande adress\n"
+"i din webbläsare:"
 
 #: accounts/templates/email-password-creation.html
 #, python-format
@@ -208,6 +222,8 @@ msgid ""
 "If you didn't create an account on %(site_name)s,\n"
 "you can safely ignore this email."
 msgstr ""
+"Om du inte har skapat ett konto på%(site_name)s,\n"
+"Så kan du säkert ignorera detta e-postmeddelande."
 
 #: accounts/templates/email-password-reset.html
 msgid ""
@@ -216,6 +232,11 @@ msgid ""
 "You can reset your password by clicking on the link below. If you did\n"
 "not request a password reset, then you can ignore this."
 msgstr ""
+"Hej,\n"
+"\n"
+"Du kan återställa ditt lösenord genom att klicka på länken nedan. Om du "
+"inte\n"
+"har begärt en lösenordsåterställning, då kan du ignorera detta."
 
 #: accounts/templates/login.html
 msgid "Login"
@@ -286,18 +307,20 @@ msgid ""
 "Okay! You should now get an email with a link. Click the\n"
 "link."
 msgstr ""
+"Okej! Du ska nu få ett e-postmeddelande med en länk. Klicka på\n"
+"länken."
 
 #: accounts/templates/password-reset-form.html
 msgid "Password recovery"
-msgstr ""
+msgstr "Lösenordsåterställning"
 
 #: accounts/templates/password-reset-form.html
 msgid "If you forgot your password, here is what we can do for you."
-msgstr ""
+msgstr "Om du har glömt ditt lösenord, här är vad vi kan göra för dig."
 
 #: accounts/templates/password-reset-form.html
 msgid "You should fill out this form."
-msgstr ""
+msgstr "Du ska fylla i det här formuläret."
 
 #: accounts/templates/password-reset-form.html
 msgid "You will get an email with a link. Click the link."
@@ -305,7 +328,7 @@ msgstr "Du får ett mail med en länk. Klicka på länken."
 
 #: accounts/templates/password-reset-form.html
 msgid "Then the web app will allow you to change your password."
-msgstr ""
+msgstr "Sedan låter webbappen dig ändra ditt lösenord."
 
 #: accounts/templates/password-reset-form.html
 msgid "Not super hard. If you're ready, I'm ready."
@@ -332,6 +355,8 @@ msgid ""
 "Please use the output of <tt>gpg --export --export-options export-minimal --"
 "armor <i>keyid</i></tt>"
 msgstr ""
+"Vänligen använd utdata från <tt>gpg --export --export-options export-minimal "
+"--armor <i>nyckelid</i></tt>"
 
 #: accounts/templates/profile.html
 msgid "Remove"
@@ -355,7 +380,7 @@ msgstr "Registrera dig för ett konto"
 
 #: accounts/templates/register.html
 msgid "Account details"
-msgstr ""
+msgstr "Kontodetaljer"
 
 #: accounts/views.py
 msgid "Next step: Confirm your email address"

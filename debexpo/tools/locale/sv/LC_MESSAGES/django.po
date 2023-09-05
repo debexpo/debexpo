@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-22 21:27+0000\n"
-"PO-Revision-Date: 2022-12-23 14:56+0000\n"
-"Last-Translator: Luna Jernberg <droidbittin@gmail.com>\n"
+"PO-Revision-Date: 2023-09-06 11:55+0000\n"
+"Last-Translator: bittin1ddc447d824349b2 <bittin@reimu.nl>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/debexpo/tools/sv/"
 ">\n"
 "Language: sv\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15.1-dev\n"
+"X-Generator: Weblate 5.0.1-dev\n"
 
 #: tools/debian/changes.py
 #, python-brace-format
 msgid "Changes file {filename} could not be parsed"
-msgstr ""
+msgstr "Ändringsfilen {filename} kunde inte tolkas"
 
 #: tools/debian/changes.py
 #, python-brace-format
@@ -37,6 +37,11 @@ msgid ""
 "using dpkg-buildpackage directly use the default flags or -S for a source "
 "only upload)"
 msgstr ""
+"dsc saknas i ändringar\n"
+"Se till att du inkluderar den fullständiga källkoden (om du använder sbuild, "
+"se till att använda --source alternativet eller motsvarande "
+"konfigurationsobjekt; om du använder dpkg-buildpackage direkt använd "
+"standardflaggorna eller -S för en uppladdning av endast källkod)"
 
 #: tools/debian/changes.py
 #, python-brace-format
@@ -44,11 +49,14 @@ msgid ""
 "{source} exists in the official Debian archive with the version {version}/"
 "{distribution}. You may not upload a lower or equal version to this one."
 msgstr ""
+"{source} finns i det officiella Debianarkivet med versionen "
+"{version}/{distribution}. Du får inte ladda upp en lägre eller likvärdig "
+"version som denna."
 
 #: tools/debian/control.py
 #, python-brace-format
 msgid "Failed to parse debian/control:{message}"
-msgstr ""
+msgstr "Misslyckades med att tolka debian/control:{message}"
 
 #: tools/debian/control.py
 msgid "No source definition found"
@@ -61,17 +69,17 @@ msgstr "Ingen binär definition hittades"
 #: tools/debian/control.py
 #, python-brace-format
 msgid "Missing key {key} in source definition"
-msgstr ""
+msgstr "Saknar nyckel {key} i källdefinition"
 
 #: tools/debian/copyright.py
 #, python-brace-format
 msgid "Failed to parse debian/copyright: {message}"
-msgstr ""
+msgstr "Misslyckades med att tolka debian/copyright: {message}"
 
 #: tools/debian/dsc.py
 #, python-brace-format
 msgid "{dsc} could not be parsed"
-msgstr ""
+msgstr "{dsc} kunde inte tolkas"
 
 #: tools/debian/dsc.py
 #, python-brace-format
@@ -81,7 +89,7 @@ msgstr "Saknar nyckel {key}"
 #: tools/debian/origin.py
 #, python-brace-format
 msgid "Failed to retrive origin info: {e}"
-msgstr ""
+msgstr "Misslyckades med att hämta ursprungsinformation: {e}"
 
 #: tools/debian/origin.py
 #, python-brace-format
@@ -93,6 +101,12 @@ msgid ""
 "sha256sum in upload : {upload}\n"
 "sha256sum in archive: {archive}"
 msgstr ""
+"Källkodspaketets ursprungsfil skiljer sig från det officiella arkivet:\n"
+"\n"
+"Ursprunglig fil         : {origin}\n"
+"\n"
+"sha256sum vid uppladdning : {upload}\n"
+"sha256sum i arkiv: {archive}"
 
 #: tools/debian/source.py
 #, python-brace-format
@@ -102,17 +116,18 @@ msgstr "Internt fel. Vänligen kontakta debexpo-administratörer på {email}"
 #: tools/debian/source.py
 #, python-brace-format
 msgid "Could not extract source package from {dsc}: {e}"
-msgstr ""
+msgstr "Kunde inte extrahera källkodspaket från {dsc}: {e}"
 
 #: tools/debian/source.py
 #, python-brace-format
 msgid "Could not extract source package from {dsc}: extraction took too long"
 msgstr ""
+"Kunde inte extrahera källkodspaket från {dsc}: extraktion tog för lång tid"
 
 #: tools/files.py
 #, python-brace-format
 msgid "No checksum method available for file {filename}."
-msgstr ""
+msgstr "Ingen kontrollsummametod tillgänglig för fil {filename}."
 
 #: tools/files.py
 #, python-brace-format
@@ -122,17 +137,23 @@ msgid ""
 "Expected: {expected}\n"
 "Computed: {computed}"
 msgstr ""
+"Kontrollsumma misslyckades för fil {filename}\n"
+"\n"
+"Förväntade sig: {expected}\n"
+"Beräknade: {computed}"
 
 #: tools/files.py
 #, python-brace-format
 msgid "{filename} is missing from upload"
-msgstr ""
+msgstr "{filename} saknas från uppladdning"
 
 #: tools/gnupg.py
 #, python-brace-format
 msgid ""
 "Unable to verify file {filename}. No public key found for key {fingerprint}"
 msgstr ""
+"Det gick inte att verifiera fil {filename}. Ingen offentlig nyckel hittades "
+"för nyckel {fingerprint}"
 
 #: tools/gnupg.py
 #, python-brace-format
