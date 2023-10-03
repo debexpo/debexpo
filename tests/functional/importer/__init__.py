@@ -82,7 +82,9 @@ class TestImporterController(TestController):
         self._setup_example_user(gpg=True)
         self.spool_dir = TemporaryDirectory(prefix='debexpo-test-spool')
         self.repository_dir = TemporaryDirectory(prefix='debexpo-test-repo')
+        self.gitstorage_dir = TemporaryDirectory(prefix='debexpo-test-git')
         self.repository = self.repository_dir.name
+        self.gitstorage = self.gitstorage_dir.name
         self.spool = Spool(self.spool_dir.name)
 
     def tearDown(self):
@@ -148,7 +150,8 @@ class TestImporterController(TestController):
         uploads = PackageUpload.objects.filter(package__name=package,
                                                version=version)
 
-        with self.settings(REPOSITORY=self.repository):
+        with self.settings(REPOSITORY=self.repository,
+                           GIT_STORAGE=self.gitstorage):
             remove_uploads(uploads)
 
     def import_source_package(self, package_dir, skip_gpg=False,
@@ -170,7 +173,8 @@ class TestImporterController(TestController):
         self._upload_package(package_dir, sub_dir)
 
         # Run the importer on change file
-        with self.settings(REPOSITORY=self.repository):
+        with self.settings(REPOSITORY=self.repository,
+                           GIT_STORAGE=self.gitstorage):
             importer = Importer(str(self.spool), skip_email, skip_gpg)
             self._status_importer = importer.process_spool()
 
