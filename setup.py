@@ -53,8 +53,8 @@ setup(
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3.7',
-        'Framework :: Django :: 2.2',
+        'Programming Language :: Python :: 3.11',
+        'Framework :: Django :: 3.2',
     ],
     keywords='debian mentors packaging',
 
@@ -73,30 +73,30 @@ setup(
     ]},
 
     # Python version requirements
-    python_requires='>=3.7, <4',
+    python_requires='>=3.11, <4',
 
     # Requirements
     install_requires=[
-        'django >= 2.2.10, < 5',
-        'bcrypt >= 3.1.6, < 4',
-        'python-debian >= 0.1.35, < 1',
-        'celery >= 4.2.1, < 6',
-        'django-celery-beat >= 1.1.1, < 3',
-        'redis >= 3.2.1, < 5',
-        'django-redis >= 4.10.0, < 6',
-        'python-debianbts >= 2.8.2, < 5',
-        'lxml >= 4.3.2, < 5',
-        'dulwich >= 0.19.11, < 1',
-        'djangorestframework >= 3.9.0, < 4',
-        'django-filter >= 2.1.0, < 24',
-        'drf-extensions >= 0.4.0, < 1',
+        'django >= 3.2.19, < 5',
+        'bcrypt >= 3.2.2, < 4',
+        'python-debian >= 0.1.49, < 1',
+        'celery >= 5.2.6, < 6',
+        'django-celery-beat >= 2.4.0, < 3',
+        'redis >= 4.3.4, < 5',
+        'django-redis >= 5.2.0, < 6',
+        'python-debianbts >= 4.0.1, < 5',
+        'lxml >= 4.9.2, < 5',
+        'dulwich >= 0.21.2, < 1',
+        'djangorestframework >= 3.14.0, < 4',
+        'django-filter >= 23.1, < 24',
+        'drf-extensions >= 0.7.1, < 1',
         'distro-info >= 1.0, < 2'
     ],
 
     extras_require={
         'testing': [
-            'fakeredis >= 1.0.3, < 2',
-            'lupa >= 1.6, < 2',
+            'fakeredis >= 1.9.0, < 2',
+            'lupa >= 1.14.1, < 2',
         ],
     },
 
