@@ -7,11 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-01 07:15+0000\n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
 "PO-Revision-Date: 2023-04-11 18:50+0000\n"
 "Last-Translator: Davide Prina <Davide.Prina@tuta.io>\n"
-"Language-Team: Italian <https://hosted.weblate.org/projects/debexpo/bugs/it/>"
-"\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/debexpo/bugs/it/"
+">\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,42 +19,42 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.17-dev\n"
 
-#: debexpo/bugs/models.py:214
+#: bugs/models.py
 msgid "Package name"
 msgstr "Nome pacchetto"
 
-#: debexpo/bugs/models.py:220
+#: bugs/models.py
 msgid "Bug number"
 msgstr "Numero bug"
 
-#: debexpo/bugs/models.py:222
+#: bugs/models.py
 msgid "Type"
 msgstr "Tipo"
 
-#: debexpo/bugs/models.py:224
+#: bugs/models.py
 msgid "Status"
 msgstr "Stato"
 
-#: debexpo/bugs/models.py:226
+#: bugs/models.py
 msgid "Severity"
 msgstr "Gravità"
 
-#: debexpo/bugs/models.py:227
+#: bugs/models.py
 msgid "Creation date"
 msgstr "Data di creazione"
 
-#: debexpo/bugs/models.py:228
+#: bugs/models.py
 msgid "Last update date"
 msgstr "Data dell'ultimo aggiornamento"
 
-#: debexpo/bugs/models.py:229
+#: bugs/models.py
 msgid "Subject"
 msgstr "Oggetto"
 
-#: debexpo/bugs/models.py:232
+#: bugs/models.py
 msgid "Submitter email"
 msgstr "Email del proponente"
 
-#: debexpo/bugs/models.py:233
+#: bugs/models.py
 msgid "Owner email"
 msgstr "Email del detentore"

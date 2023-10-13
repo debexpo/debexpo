@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-01 07:15+0000\n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
 "PO-Revision-Date: 2023-04-12 19:49+0000\n"
 "Last-Translator: Davide Prina <Davide.Prina@tuta.io>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/debexpo/plugins/"
@@ -19,42 +19,42 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.17-dev\n"
 
-#: debexpo/plugins/models.py:60
+#: plugins/models.py
 msgid "Information"
 msgstr "Informazione"
 
-#: debexpo/plugins/models.py:61
+#: plugins/models.py
 msgid "Warning"
 msgstr "Attenzione"
 
-#: debexpo/plugins/models.py:62
+#: plugins/models.py
 msgid "Error"
 msgstr "Errore"
 
-#: debexpo/plugins/models.py:63
+#: plugins/models.py
 msgid "Critical"
 msgstr "Critico"
 
-#: debexpo/plugins/models.py:64
+#: plugins/models.py
 msgid "Failed"
 msgstr "Fallito"
 
-#: debexpo/plugins/models.py:78
+#: plugins/models.py
 msgid "Plugin name"
 msgstr "Nome del plugin"
 
-#: debexpo/plugins/models.py:79
+#: plugins/models.py
 msgid "Test identifier"
 msgstr "Identificatore del test"
 
-#: debexpo/plugins/models.py:80
+#: plugins/models.py
 msgid "Outcome"
 msgstr "Risultato"
 
-#: debexpo/plugins/models.py:81
+#: plugins/models.py
 msgid "Data"
 msgstr "Dati"
 
-#: debexpo/plugins/models.py:83
+#: plugins/models.py
 msgid "Severity"
 msgstr "Gravità"

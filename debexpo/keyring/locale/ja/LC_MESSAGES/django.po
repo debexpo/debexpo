@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"POT-Creation-Date: 2023-03-05 07:56+0000\n"
 "PO-Revision-Date: 2022-11-23 19:30+0000\n"
 "Last-Translator: Kentaro Hayashi <kenhys@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/debexpo/keyring/"
@@ -28,7 +28,9 @@ msgid "GPG Algorithm ID"
 msgstr "GPGアルゴリズムID"
 
 #: keyring/models.py
-msgid "Minimal size requirment"
+#, fuzzy
+#| msgid "Minimal size requirment"
+msgid "Minimal size requirement"
 msgstr "最低限必要なサイズ"
 
 #: keyring/models.py
@@ -37,7 +39,8 @@ msgstr "複数の鍵はサポートされていません"
 
 #: keyring/models.py
 msgid "Key algorithm not supported. Key must be one of the following: {}"
-msgstr "鍵のアルゴリズムがサポートされていません。鍵はつぎのいずれかである必要があり"
+msgstr ""
+"鍵のアルゴリズムがサポートされていません。鍵はつぎのいずれかである必要があり"
 "ます：{}"
 
 #: keyring/models.py

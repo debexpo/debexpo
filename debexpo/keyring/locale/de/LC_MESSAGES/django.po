@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"POT-Creation-Date: 2023-03-05 07:56+0000\n"
 "PO-Revision-Date: 2023-02-25 19:37+0000\n"
 "Last-Translator: Andreas Hunkeler <ah+a77dj3@einbit.ch>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/debexpo/keyring/"
@@ -28,7 +28,9 @@ msgid "GPG Algorithm ID"
 msgstr "GPG Algorithmus ID"
 
 #: keyring/models.py
-msgid "Minimal size requirment"
+#, fuzzy
+#| msgid "Minimal size requirment"
+msgid "Minimal size requirement"
 msgstr "Minimale Anforderungen an die Größe"
 
 #: keyring/models.py

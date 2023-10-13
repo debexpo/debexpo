@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"POT-Creation-Date: 2023-03-05 07:56+0000\n"
 "PO-Revision-Date: 2022-11-25 08:47+0000\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -28,7 +28,9 @@ msgid "GPG Algorithm ID"
 msgstr "GPG 算法 ID"
 
 #: keyring/models.py
-msgid "Minimal size requirment"
+#, fuzzy
+#| msgid "Minimal size requirment"
+msgid "Minimal size requirement"
 msgstr "最小尺寸要求"
 
 #: keyring/models.py

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-27 19:09+0000\n"
+"POT-Creation-Date: 2023-10-13 18:16+0000\n"
 "PO-Revision-Date: 2023-03-29 18:38+0000\n"
 "Last-Translator: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>\n"
 "Language-Team: Romanian <https://hosted.weblate.org/projects/debexpo/locale/"
@@ -25,12 +25,54 @@ msgid "English"
 msgstr "Engleză"
 
 #: settings/common.py
+msgid "German"
+msgstr ""
+
+#: settings/common.py
+msgid "Spanish"
+msgstr ""
+
+#: settings/common.py
+msgid "Persian"
+msgstr ""
+
+#: settings/common.py
 msgid "French"
 msgstr "Franceză"
 
 #: settings/common.py
+msgid "Italian"
+msgstr ""
+
+#: settings/common.py
+msgid "Japanese"
+msgstr ""
+
+#: settings/common.py
+msgid "Dutch"
+msgstr ""
+
+#: settings/common.py
+#, fuzzy
+#| msgid "Portuguese (Brazil)"
+msgid "Portuguese"
+msgstr "Portugheză (Brazilia)"
+
+#: settings/common.py
 msgid "Portuguese (Brazil)"
 msgstr "Portugheză (Brazilia)"
+
+#: settings/common.py
+msgid "Romanian"
+msgstr ""
+
+#: settings/common.py
+msgid "Swedish"
+msgstr ""
+
+#: settings/common.py
+msgid "Chinese (Simplified)"
+msgstr ""
 
 #: settings/common.py
 msgid "Helps you get your packages into Debian"

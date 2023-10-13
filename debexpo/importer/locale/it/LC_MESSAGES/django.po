@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-01 07:15+0000\n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
 "PO-Revision-Date: 2022-12-03 10:46+0000\n"
 "Last-Translator: Andrea Pappacoda <weblate@pappacoda.it>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/debexpo/importer/"
@@ -19,41 +19,41 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.15-dev\n"
 
-#: debexpo/importer/models.py:287
+#: importer/models.py
 #, python-brace-format
 msgid "{error}: REJECTED"
 msgstr "{error}: RESPINTO"
 
-#: debexpo/importer/models.py:292
+#: importer/models.py
 #, python-brace-format
 msgid "{package}_{version}: ACCEPTED on {site} ({distribution})"
 msgstr "{package}_{version}: ACCETTATO su {site} ({distribution})"
 
-#: debexpo/importer/models.py:442
+#: importer/models.py
 msgid "Changes is invalid"
 msgstr "Modifica non valida"
 
-#: debexpo/importer/models.py:449
+#: importer/models.py
 msgid "Dsc failed to parse"
 msgstr "Analisi dsc fallita"
 
-#: debexpo/importer/models.py:463
+#: importer/models.py
 msgid "Dsc is invalid"
 msgstr "Dsc non valido"
 
-#: debexpo/importer/models.py:474
+#: importer/models.py
 msgid "Failed to extract source package"
 msgstr "Estrazione del pacchetto sorgente fallita"
 
-#: debexpo/importer/models.py:482 debexpo/importer/models.py:492
+#: importer/models.py
 msgid "Source package is invalid"
 msgstr "Il pacchetto sorgente non è valido"
 
-#: debexpo/importer/models.py:502
+#: importer/models.py
 msgid "Invalid distribution"
 msgstr "Distribuzione non valida"
 
-#: debexpo/importer/models.py:503
+#: importer/models.py
 #, python-brace-format
 msgid ""
 "Distribution {distribution} is not supported on mentors\n"
@@ -68,7 +68,7 @@ msgstr ""
 "\n"
 "{allowed}"
 
-#: debexpo/importer/templates/email-importer-accept.html:1
+#: importer/templates/email-importer-accept.html
 #, python-format
 msgid ""
 "Hi.\n"
@@ -82,7 +82,7 @@ msgstr ""
 "avvenuto con successo. Può ora essere visto da altri. Il collegamento\n"
 "del tuo pacchetto è:\n"
 
-#: debexpo/importer/templates/email-importer-accept.html:7
+#: importer/templates/email-importer-accept.html
 msgid ""
 "\n"
 "The respective dsc file can be found at:\n"
@@ -90,23 +90,37 @@ msgstr ""
 "\n"
 "Il rispettivo file dsc può essere trovato su:\n"
 
-#: debexpo/importer/templates/email-importer-accept.html:11
+#: importer/templates/email-importer-accept.html
 msgid ""
 "\n"
 "If you do not yet have a sponsor for your package you may want to go to:\n"
 msgstr ""
 "\n"
-"Se non hai ancora uno sponsor per il tuo pacchetto potresti voler andare su:"
-"\n"
+"Se non hai ancora uno sponsor per il tuo pacchetto potresti voler andare "
+"su:\n"
 
-#: debexpo/importer/templates/email-importer-accept.html:15
+#: importer/templates/email-importer-accept.html
+#, fuzzy
+#| msgid ""
+#| "\n"
+#| "and set the \"Seeking a sponsor\" option to highlight your package on "
+#| "the\n"
+#| "welcome page.\n"
+#| "\n"
+#| "You can also send an RFS (request for sponsorship) to the debian-mentors\n"
+#| "mailing list. Your package page will give your suggestions on how to\n"
+#| "send that mail.\n"
+#| "\n"
+#| "Good luck in finding a sponsor!\n"
+#| "\n"
+#| "Thanks,"
 msgid ""
 "\n"
 "and set the \"Seeking a sponsor\" option to highlight your package on the\n"
 "welcome page.\n"
 "\n"
 "You can also send an RFS (request for sponsorship) to the debian-mentors\n"
-"mailing list. Your package page will give your suggestions on how to\n"
+"mailing list. Your package page will give you suggestions on how to\n"
 "send that mail.\n"
 "\n"
 "Good luck in finding a sponsor!\n"
@@ -125,7 +139,7 @@ msgstr ""
 "\n"
 "Grazie,"
 
-#: debexpo/importer/templates/email-importer-reject.html:1
+#: importer/templates/email-importer-reject.html
 #, python-format
 msgid ""
 "Hello,\n"

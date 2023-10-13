@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-01 07:15+0000\n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
 "PO-Revision-Date: 2023-04-11 12:52+0000\n"
 "Last-Translator: Davide Prina <Davide.Prina@tuta.io>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/debexpo/accounts/"
@@ -19,15 +19,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.17-dev\n"
 
-#: debexpo/accounts/forms.py:48
+#: accounts/forms.py
 msgid "Full name"
 msgstr "Nome e cognome"
 
-#: debexpo/accounts/forms.py:49
+#: accounts/forms.py
 msgid "E-mail"
 msgstr "E-mail"
 
-#: debexpo/accounts/forms.py:61
+#: accounts/forms.py
 msgid ""
 "A user with this name is already registered on the system. If it is you, use "
 "that account!  Otherwise use a different name to register."
@@ -35,80 +35,79 @@ msgstr ""
 "Un utente con questo nome è già registrato nel sistema. Se sei tu, usa "
 "quell'account!  Altrimenti, usa un altro nome per registrarti."
 
-#: debexpo/accounts/forms.py:68
+#: accounts/forms.py
 msgid "A user with this email address is already registered on the system"
 msgstr "Un utente con questo indirizzo email è già registrato nel sistema"
 
-#: debexpo/accounts/forms.py:81
+#: accounts/forms.py
 msgid "Account type"
 msgstr "Tipo di account"
 
-#: debexpo/accounts/forms.py:85
+#: accounts/forms.py
 msgid "Maintainer"
 msgstr "Manutentore"
 
-#: debexpo/accounts/forms.py:87
+#: accounts/forms.py
 msgid "Sponsor"
 msgstr "Sponsor"
 
-#: debexpo/accounts/forms.py:93
+#: accounts/forms.py
 msgid "A sponsor account must be registered with your @debian.org address"
 msgstr "Un account sponsor dev'essere registrato col tuo indirizzo @debian.org"
 
-#: debexpo/accounts/forms.py:111
+#: accounts/forms.py
 msgid "Spam detected"
 msgstr "Spam rilevato"
 
-#: debexpo/accounts/forms.py:128
+#: accounts/forms.py
 msgid "You requested a password reset"
 msgstr "Hai richiesto il ripristino della password"
 
-#: debexpo/accounts/models.py:46
+#: accounts/models.py
 msgid "Contributor"
 msgstr "Contributore"
 
-#: debexpo/accounts/models.py:47
+#: accounts/models.py
 msgid "Debian Maintainer (DM)"
 msgstr "Debian Maintainer (DM - Manutentore Debian)"
 
-#: debexpo/accounts/models.py:48
+#: accounts/models.py
 msgid "Debian Developer (DD)"
 msgstr "Debian Developer (DD - Sviluppatore Debian)"
 
-#: debexpo/accounts/models.py:126
+#: accounts/models.py
 msgid "email address"
 msgstr "indirizzo email"
 
-#: debexpo/accounts/models.py:127
+#: accounts/models.py
 msgid "full name"
 msgstr "nome e cognome"
 
-#: debexpo/accounts/models.py:151
+#: accounts/models.py
 msgid "Country"
 msgstr "Paese"
 
-#: debexpo/accounts/models.py:154
+#: accounts/models.py
 msgid "IRC Nickname"
 msgstr "Nickname IRC"
 
-#: debexpo/accounts/models.py:155
+#: accounts/models.py
 msgid "Jabber address"
 msgstr "Indirizzo Jabber"
 
-#: debexpo/accounts/models.py:157
+#: accounts/models.py
 msgid "Language"
 msgstr "Lingua"
 
-#: debexpo/accounts/models.py:162
+#: accounts/models.py
 msgid "Status"
 msgstr "Stato"
 
-#: debexpo/accounts/templates/activate.html:3
-#: debexpo/accounts/templates/change-email.html:3
+#: accounts/templates/activate.html accounts/templates/change-email.html
 msgid "Check your email"
 msgstr "Controlla la tua email"
 
-#: debexpo/accounts/templates/activate.html:6
+#: accounts/templates/activate.html
 msgid ""
 "An email has been sent to the email address you specified. Check it for "
 "instructions on how to activate your account."
@@ -116,69 +115,63 @@ msgstr ""
 "Un'email è stata inviata all'indirizzo da te specificato, contenente "
 "istruzioni su come attivare il tuo account."
 
-#: debexpo/accounts/templates/activated.html:4
+#: accounts/templates/activated.html
 msgid "User activated"
 msgstr "Utente attivato"
 
-#: debexpo/accounts/templates/activated.html:7
+#: accounts/templates/activated.html
 msgid "Your account has been activated."
 msgstr "Il tuo account è stato attivato."
 
-#: debexpo/accounts/templates/activated.html:8
+#: accounts/templates/activated.html
 #, python-format
 msgid "You can now <a href=\"%(u_profile)s\">proceed to login</a>."
 msgstr "Puoi ora <a href=\"%(u_profile)s\">effettuare il login</a>."
 
-#: debexpo/accounts/templates/activated.html:14
+#: accounts/templates/activated.html
 msgid "Invalid verification key"
 msgstr "Chiave di verifica non valida"
 
-#: debexpo/accounts/templates/activated.html:17
+#: accounts/templates/activated.html
 msgid ""
 "The verification key you entered has not been recognised. Please try again."
 msgstr ""
 "La chiave di verifica da te inserita non è stata riconosciuta. Prova di "
 "nuovo."
 
-#: debexpo/accounts/templates/change-email-complete.html:3
+#: accounts/templates/change-email-complete.html
 msgid "Email changed successfully"
 msgstr "Email aggiornata con successo"
 
-#: debexpo/accounts/templates/change-email-complete.html:5
+#: accounts/templates/change-email-complete.html
 msgid "Your email has been successfully updated"
 msgstr "La tua email è stata aggiornata con successo"
 
-#: debexpo/accounts/templates/change-email-complete.html:6
+#: accounts/templates/change-email-complete.html
 msgid "Go back to"
 msgstr "Torna a"
 
-#: debexpo/accounts/templates/change-email-complete.html:7
+#: accounts/templates/change-email-complete.html
 msgid "my account"
 msgstr "il mio account"
 
-#: debexpo/accounts/templates/change-email-confirm.html:3
-#: debexpo/accounts/views.py:267
+#: accounts/templates/change-email-confirm.html accounts/views.py
 msgid "Change your email"
 msgstr "Cambia la tua email"
 
-#: debexpo/accounts/templates/change-email-confirm.html:13
-#: debexpo/accounts/templates/password-reset-confirm.html:13
-#: debexpo/accounts/templates/password-reset-form.html:27
-#: debexpo/accounts/templates/profile.html:14
-#: debexpo/accounts/templates/profile.html:40
-#: debexpo/accounts/templates/profile.html:58
-#: debexpo/accounts/templates/profile.html:72
-#: debexpo/accounts/templates/profile.html:87
-#: debexpo/accounts/templates/register.html:14
+#: accounts/templates/change-email-confirm.html
+#: accounts/templates/password-reset-confirm.html
+#: accounts/templates/password-reset-form.html accounts/templates/profile.html
+#: accounts/templates/register.html
 msgid "Submit"
 msgstr "Invia"
 
-#: debexpo/accounts/templates/change-email-confirm.html:17
-#: debexpo/accounts/templates/password-reset-confirm.html:17
+#: accounts/templates/change-email-confirm.html
+#: accounts/templates/password-reset-confirm.html
 msgid "Invalid reset link"
 msgstr "Collegamento di ripristino non valido"
 
-#: debexpo/accounts/templates/change-email.html:6
+#: accounts/templates/change-email.html
 msgid ""
 "An email has been sent to your new email address. Check it for instructions "
 "on how to validate it."
@@ -186,7 +179,7 @@ msgstr ""
 "È stata inviata una email al tuo nuovo indirizzo, contenente istruzioni su "
 "come verificarlo."
 
-#: debexpo/accounts/templates/email-change.html:1
+#: accounts/templates/email-change.html
 msgid ""
 "Hello,\n"
 "\n"
@@ -198,23 +191,23 @@ msgstr ""
 "Conferma il tuo nuovo indirizzo email visitando il seguente indirizzo\n"
 "nel tuo browser web:"
 
-#: debexpo/accounts/templates/email-change.html:8
+#: accounts/templates/email-change.html
 #, python-format
 msgid ""
 "If you didn't change your email on your account on %(site_name)s,\n"
 "you can safely ignore this email."
 msgstr ""
-"Se non hai cambiato il tuo indirizzo email nel tuo account su %(site_name)s,"
-"\n"
+"Se non hai cambiato il tuo indirizzo email nel tuo account su "
+"%(site_name)s,\n"
 "puoi tranquillamente ignorare questa email."
 
-#: debexpo/accounts/templates/email-change.html:11
-#: debexpo/accounts/templates/email-password-creation.html:11
-#: debexpo/accounts/templates/email-password-reset.html:8
+#: accounts/templates/email-change.html
+#: accounts/templates/email-password-creation.html
+#: accounts/templates/email-password-reset.html
 msgid "Thanks,"
 msgstr "Grazie,"
 
-#: debexpo/accounts/templates/email-password-creation.html:1
+#: accounts/templates/email-password-creation.html
 msgid ""
 "Hello,\n"
 "\n"
@@ -226,7 +219,7 @@ msgstr ""
 "Attiva il tuo account visitando il seguente indirizzo\n"
 "nel tuo browser web:"
 
-#: debexpo/accounts/templates/email-password-creation.html:8
+#: accounts/templates/email-password-creation.html
 #, python-format
 msgid ""
 "If you didn't create an account on %(site_name)s,\n"
@@ -235,7 +228,7 @@ msgstr ""
 "Se non hai creato un account su %(site_name)s,\n"
 "puoi tranquillamente ignorare questa email."
 
-#: debexpo/accounts/templates/email-password-reset.html:1
+#: accounts/templates/email-password-reset.html
 msgid ""
 "Hello,\n"
 "\n"
@@ -248,20 +241,19 @@ msgstr ""
 "sotto. Se non hai richiesto la reimpostazione della password, puoi\n"
 "tranquillamente ignorare questa email."
 
-#: debexpo/accounts/templates/login.html:5
-#: debexpo/accounts/templates/login.html:37
+#: accounts/templates/login.html
 msgid "Login"
 msgstr "Login"
 
-#: debexpo/accounts/templates/login.html:8
+#: accounts/templates/login.html
 msgid "Please login to continue"
 msgstr "Effettua il login per continuare"
 
-#: debexpo/accounts/templates/login.html:11
+#: accounts/templates/login.html
 msgid "Your username and password didn't match. Please try again."
 msgstr "L'username e la password non corrispondono. Prova di nuovo."
 
-#: debexpo/accounts/templates/login.html:17
+#: accounts/templates/login.html
 msgid ""
 "Your account doesn't have access to this page. To proceed, please login with "
 "an account that has access."
@@ -269,51 +261,51 @@ msgstr ""
 "Al tuo account non è permesso accedere a questa pagina. Per procedere, "
 "effettua il login con un account che ne ha accesso."
 
-#: debexpo/accounts/templates/login.html:21
+#: accounts/templates/login.html
 msgid "Please login to see this page."
 msgstr "Effettua il login per vedere questa pagina."
 
-#: debexpo/accounts/templates/login.html:29
+#: accounts/templates/login.html
 msgid "E-mail:"
 msgstr "E-mail:"
 
-#: debexpo/accounts/templates/login.html:42
+#: accounts/templates/login.html
 msgid "Secure log-in:"
 msgstr "Login sicuro:"
 
-#: debexpo/accounts/templates/login.html:43
+#: accounts/templates/login.html
 msgid "Switch to SSL"
 msgstr "Usa SSL"
 
-#: debexpo/accounts/templates/login.html:46
+#: accounts/templates/login.html
 msgid "Did you lose your password?"
 msgstr "Hai perso la tua password?"
 
-#: debexpo/accounts/templates/login.html:49
+#: accounts/templates/login.html
 msgid "Try resetting your password."
 msgstr "Prova a reimpostare la tua password."
 
-#: debexpo/accounts/templates/password-reset-complete.html:3
+#: accounts/templates/password-reset-complete.html
 msgid "Okay! You have a new password"
 msgstr "Ok! Hai una nuova password"
 
-#: debexpo/accounts/templates/password-reset-complete.html:5
+#: accounts/templates/password-reset-complete.html
 msgid "You can use your new password to"
 msgstr "Puoi usare la tua nuova password per"
 
-#: debexpo/accounts/templates/password-reset-complete.html:6
+#: accounts/templates/password-reset-complete.html
 msgid "log in"
 msgstr "login"
 
-#: debexpo/accounts/templates/password-reset-confirm.html:3
+#: accounts/templates/password-reset-confirm.html
 msgid "Reset your password"
 msgstr "Reimposta la tua password"
 
-#: debexpo/accounts/templates/password-reset-done.html:3
+#: accounts/templates/password-reset-done.html
 msgid "Password recovery in progress"
 msgstr "Recupero della password in corso"
 
-#: debexpo/accounts/templates/password-reset-done.html:5
+#: accounts/templates/password-reset-done.html
 msgid ""
 "Okay! You should now get an email with a link. Click the\n"
 "link."
@@ -321,47 +313,47 @@ msgstr ""
 "Ok! Dovresti ricevere una email con un collegamento a breve. Segui\n"
 "il collegamento."
 
-#: debexpo/accounts/templates/password-reset-form.html:4
+#: accounts/templates/password-reset-form.html
 msgid "Password recovery"
 msgstr "Recupero password"
 
-#: debexpo/accounts/templates/password-reset-form.html:6
+#: accounts/templates/password-reset-form.html
 msgid "If you forgot your password, here is what we can do for you."
 msgstr "Se hai perso la tua password, ecco cosa possiamo fare per te."
 
-#: debexpo/accounts/templates/password-reset-form.html:10
+#: accounts/templates/password-reset-form.html
 msgid "You should fill out this form."
 msgstr "Dovresti compilare questo modulo."
 
-#: debexpo/accounts/templates/password-reset-form.html:12
+#: accounts/templates/password-reset-form.html
 msgid "You will get an email with a link. Click the link."
 msgstr "Riceverai una email con un collegamento. Segui il collegamento."
 
-#: debexpo/accounts/templates/password-reset-form.html:14
+#: accounts/templates/password-reset-form.html
 msgid "Then the web app will allow you to change your password."
 msgstr "La app web ti consentirà di cambiare la tua password."
 
-#: debexpo/accounts/templates/password-reset-form.html:18
+#: accounts/templates/password-reset-form.html
 msgid "Not super hard. If you're ready, I'm ready."
 msgstr "Non troppo complicato. Se sei pronto, sono pronto."
 
-#: debexpo/accounts/templates/profile.html:2
+#: accounts/templates/profile.html
 msgid "My account"
 msgstr "Il mio account"
 
-#: debexpo/accounts/templates/profile.html:5
+#: accounts/templates/profile.html
 msgid "Change details"
 msgstr "Modifica dettagli"
 
-#: debexpo/accounts/templates/profile.html:19
+#: accounts/templates/profile.html
 msgid "Change GPG key"
 msgstr "Modifica chiave GPG"
 
-#: debexpo/accounts/templates/profile.html:27
+#: accounts/templates/profile.html
 msgid "Fingerprint:"
 msgstr "Impronta digitale:"
 
-#: debexpo/accounts/templates/profile.html:33
+#: accounts/templates/profile.html
 msgid ""
 "Please use the output of <tt>gpg --export --export-options export-minimal --"
 "armor <i>keyid</i></tt>"
@@ -369,30 +361,30 @@ msgstr ""
 "Usa l'output di <tt>gpg --export --export-options export-minimal --armor "
 "<i>idchiave</i></tt>"
 
-#: debexpo/accounts/templates/profile.html:43
+#: accounts/templates/profile.html
 msgid "Remove"
 msgstr "Rimuovi"
 
-#: debexpo/accounts/templates/profile.html:49
+#: accounts/templates/profile.html
 msgid "Change password"
 msgstr "Cambia password"
 
-#: debexpo/accounts/templates/profile.html:63
+#: accounts/templates/profile.html
 msgid "Change other details"
 msgstr "Modifica altri dettagli"
 
-#: debexpo/accounts/templates/profile.html:78
+#: accounts/templates/profile.html
 msgid "Public sponsor info"
 msgstr "Informazioni dello sponsor pubblico"
 
-#: debexpo/accounts/templates/register.html:3
+#: accounts/templates/register.html
 msgid "Sign up for an account"
 msgstr "Registra un account"
 
-#: debexpo/accounts/templates/register.html:6
+#: accounts/templates/register.html
 msgid "Account details"
 msgstr "Dettagli account"
 
-#: debexpo/accounts/views.py:88
+#: accounts/views.py
 msgid "Next step: Confirm your email address"
 msgstr "Prossimo passo: Conferma il tuo indirizzo email"

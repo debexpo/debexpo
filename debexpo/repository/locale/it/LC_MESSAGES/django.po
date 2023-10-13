@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-01 07:15+0000\n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
 "PO-Revision-Date: 2023-04-12 19:49+0000\n"
 "Last-Translator: Davide Prina <Davide.Prina@tuta.io>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/debexpo/"
@@ -19,30 +19,30 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.17-dev\n"
 
-#: debexpo/repository/models.py:72
+#: repository/models.py
 msgid "Name"
 msgstr "Nome"
 
-#: debexpo/repository/models.py:73
+#: repository/models.py
 msgid "Version"
 msgstr "Versione"
 
-#: debexpo/repository/models.py:74
+#: repository/models.py
 msgid "Component"
 msgstr "Componente"
 
-#: debexpo/repository/models.py:76
+#: repository/models.py
 msgid "Distribution"
 msgstr "Distribuzione"
 
-#: debexpo/repository/models.py:78
+#: repository/models.py
 msgid "Path"
 msgstr "Percorso"
 
-#: debexpo/repository/models.py:79
+#: repository/models.py
 msgid "Size"
 msgstr "Dimensione"
 
-#: debexpo/repository/models.py:80
+#: repository/models.py
 msgid "SHA256"
 msgstr "SHA256"

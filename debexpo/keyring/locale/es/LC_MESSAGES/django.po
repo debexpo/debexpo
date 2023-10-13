@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"POT-Creation-Date: 2023-03-05 07:56+0000\n"
 "PO-Revision-Date: 2023-06-15 20:52+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/debexpo/keyring/"
@@ -28,7 +28,7 @@ msgid "GPG Algorithm ID"
 msgstr "ID del algoritmo GPG"
 
 #: keyring/models.py
-msgid "Minimal size requirment"
+msgid "Minimal size requirement"
 msgstr ""
 
 #: keyring/models.py
@@ -38,8 +38,8 @@ msgstr "No se admiten varias claves"
 #: keyring/models.py
 msgid "Key algorithm not supported. Key must be one of the following: {}"
 msgstr ""
-"El algoritmo clave no es compatible. La clave debe ser una de las siguientes:"
-" {}"
+"El algoritmo clave no es compatible. La clave debe ser una de las "
+"siguientes: {}"
 
 #: keyring/models.py
 msgid "Key size too small. Need at least {} bits."
