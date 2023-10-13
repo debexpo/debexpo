@@ -43,11 +43,11 @@ before_script:
     $ADDITIONAL_PACKAGES
 
 .test_template: &test
-  variables:
-    DJANGO_SETTINGS_MODULE: 'debexpo.settings.test'
   script:
     - python3 setup.py develop
-    - python3 -m coverage run --branch manage.py test -v 2 --exclude-tag nntp
+    - python3 -m coverage run manage.py test -v 2 --parallel
+               --exclude-tag nntp
+    - python3 -m coverage combine
     - python3 -m coverage report --include='debexpo/*' --omit '*/nntp.py'
     - python3 -m coverage html --include='debexpo/*' --omit '*/nntp.py'
   artifacts:
@@ -58,16 +58,22 @@ unstable:
   <<: *test
   image: debian:unstable
 
-bookworm-bpo:
+trixie-bpo:
+  <<: *test
+  image: debian:trixie-backports
+
+bookworm:
   <<: *test
   image: debian:bookworm-backports
-
-bullseye-bpo:
-  <<: *test
-  image: debian:bullseye-backports
   variables:
-    ADDITIONAL_PACKAGES: lintian/bullseye-backports
-    DJANGO_SETTINGS_MODULE: 'debexpo.settings.test'
+    ADDITIONAL_PACKAGES: lintian
+
+# To re-enable when the first version of lintian land in bookworm-bpo
+#bookworm-bpo:
+#  <<: *test
+#  image: debian:bookworm-backports
+#  variables:
+#    ADDITIONAL_PACKAGES: lintian/bookworm-backports
 
 dependencies:
   image: debian:unstable
@@ -86,7 +92,7 @@ flake8:
     - python3 -m flake8 debexpo/ tests/
 
 trans:
-  image: debian:bullseye
+  image: debian:bookworm
   before_script:
     - apt-get -q update
     - env DEBIAN_FRONTEND=noninteractive
@@ -110,7 +116,7 @@ trans:
       python3-django-filters
       python3-django-redis
   script:
-    - (cd debexpo && python3 ../manage.py makemessages --keep-pot)
+    - (cd debexpo && python3 ../manage.py makemessages --all --keep-pot)
     - git checkout "*.po"
     - find debexpo -name '*.po' | while read po; do
         set -e;
@@ -119,7 +125,7 @@ trans:
       done
 
 migrations:
-  image: debian:bullseye
+  image: debian:bookworm
   before_script:
     - apt-get -q update
     - env DEBIAN_FRONTEND=noninteractive
