@@ -90,8 +90,18 @@ TEMPLATES = [
 
 LANGUAGES = [
   ('en', _('English')),
+  ('de', _('German')),
+  ('es', _('Spanish')),
+  ('fa', _('Persian')),
   ('fr', _('French')),
+  ('it', _('Italian')),
+  ('ja', _('Japanese')),
+  ('nl', _('Dutch')),
+  ('pt', _('Portuguese')),
   ('pt-br', _('Portuguese (Brazil)')),
+  ('ro', _('Romanian')),
+  ('sv', _('Swedish')),
+  ('zh-hans', _('Chinese (Simplified)')),
 ]
 
 LOCALE_PATHS = [
