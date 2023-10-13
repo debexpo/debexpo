@@ -56,7 +56,7 @@ check_requirements() {
 }
 
 fatal() {
-    echo "fatal: ${@}" 1>&2
+    echo "fatal: $*" 1>&2
     exit 1
 }
 
@@ -85,8 +85,8 @@ fetch_weblate() {
 }
 
 read_translation_stats() {
-    messages_total=0
-    messages_translated=""
+    local messages_total=0
+    local messages_translated=""
 
     while read -r -d ' ' stat; do
         [[ "${stat}" =~ ^[0-9]+$ ]] || continue
@@ -100,18 +100,20 @@ read_translation_stats() {
 select_translations() {
     echo "Select translated languages"
 
+    local po_files
+
     translations=()
     mkdir -p "${stat_dir}"
     (cd "${root_dir}" && git archive "${update_branch}") | \
         tar -x -C "${stat_dir}"
-    readarray -t po_files < <(find "${stat_dir}/debexpo/" -name '*.po')
+    mapfile -t po_files < <(find "${stat_dir}/debexpo/" -name '*.po')
 
     while read -r language; do
-        readarray -t current_po < <(printf '%s\n' "${po_files[@]}" |
+        mapfile -t current_po < <(printf '%s\n' "${po_files[@]}" |
                                     grep -F "/${language}/LC_MESSAGES/")
         read_translation_stats < <(msgcat --use-first "${current_po[@]}" |
                                    msgfmt --statistics - 2>&1)
-        [[ "${translated}" -ge "95" ]] && translations+=("${language}") || true
+        [[ "${translated}" -lt "95" ]] || translations+=("${language}")
     done < <(printf '%s\n' "${po_files[@]}" | rev | cut -d / -f 3 | rev |
              sort -u)
 }
@@ -204,7 +206,7 @@ parse_one_commit() {
     outcome="pick"
 
     assert_valid_commit
-    filter_excluded_language_commit && outcome="drop" || true
+    if filter_excluded_language_commit; then outcome="drop"; fi
 
     if [[ -n "${prev[${language}]}" ]]; then
         subj="$(git log --format=%s -n 1 "${rev}")"
@@ -213,7 +215,7 @@ parse_one_commit() {
 
         if [[ "${subj}" = "${prev_subj}" || \
               "${prev_email}" = "noreply@weblate.org" ]]; then
-            squash_commit_if_possible && outcome="fixup" || true
+            if squash_commit_if_possible; then outcome="fixup"; fi
         fi
     fi
 
@@ -228,14 +230,14 @@ parse_one_commit() {
 rebase_branches() {
     echo "Rebase ${update_branch} on ${main_branch}"
 
-    GIT_SEQUENCE_EDITOR="cat ${update_dir}/* >" git rebase -i \
+    GIT_SEQUENCE_EDITOR="cat ${update_dir}/* >" git rebase -i --no-gpg-sign \
         "${main_branch}" "${update_branch}" > /dev/null 2>&1
 
     update_contributors
 
     echo "Rebase ${next_branch} on ${update_branch}"
 
-    GIT_SEQUENCE_EDITOR="cat ${next_todo} >" git rebase -i \
+    GIT_SEQUENCE_EDITOR="cat ${next_todo} >" git rebase -i --no-gpg-sign \
         "${update_branch}" "${next_branch}" > /dev/null 2>&1
 
     echo "Switch to ${update_branch} branch"
@@ -263,14 +265,14 @@ commit_new_contributors_file() {
 hash_one_contributor() {
     name="$(echo "${line}" | cut -d ' ' -f 4- | cut -d '<' -f 1 | head -c -2)"
     email="$(echo "${line}" | cut -d '<' -f 2 | cut -d '>' -f 1)"
-    years=($(echo "${line}" | cut -d ' ' -f 3 | tr '-' ' '))
-    languages=($(echo "${line}" | cut -d '>' -f 2 | tr -d '(),'))
-    year=""
+    mapfile -t years < <(echo "${line}" | cut -d ' ' -f 3 | tr '-' ' ')
+    mapfile -t languages < <(echo "${line}" | cut -d '>' -f 2 | tr -d '(),')
 
     for language in "${languages[@]}"; do
         set_contributor_stats
     done
 
+    year=""
     language=""
     for year in "${years[@]}"; do
         set_contributor_stats
@@ -295,6 +297,7 @@ reset_contributors_file() {
 }
 
 get_contrib_years() {
+    local year_start year_end
     if [[ "$(wc -l "${contrib_hash}/years" | cut -d ' ' -f 1)" = "1" ]]; then
         cat "${contrib_hash}/years"
     else
@@ -306,7 +309,7 @@ get_contrib_years() {
 }
 
 get_contrib_languages() {
-    first="1"
+    local first="1"
 
     while read -r language; do
         if [[ "${first}" = 0 ]]; then
@@ -320,6 +323,7 @@ get_contrib_languages() {
 }
 
 add_contributor_to_file() {
+    local header name years languages
     header="Copyright ©"
     name="$(cat "${contrib_hash}/name")"
     years="$(get_contrib_years)"
