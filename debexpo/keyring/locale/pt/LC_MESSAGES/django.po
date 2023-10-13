@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-05 07:56+0000\n"
+"PO-Revision-Date: 2023-03-15 15:38+0000\n"
+"Last-Translator: ssantos <ssantos@web.de>\n"
+"Language-Team: Portuguese <https://hosted.weblate.org/projects/debexpo/"
+"keyring/pt/>\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.16.2-dev\n"
+
+#: keyring/models.py
+msgid "Type"
+msgstr "Tipo"
+
+#: keyring/models.py
+msgid "GPG Algorithm ID"
+msgstr "ID do algoritmo GPG"
+
+#: keyring/models.py
+msgid "Minimal size requirement"
+msgstr "Exigência de tamanho mínimo"
+
+#: keyring/models.py
+msgid "Multiple keys not supported"
+msgstr "Chaves múltiplas não suportadas"
+
+#: keyring/models.py
+msgid "Key algorithm not supported. Key must be one of the following: {}"
+msgstr ""
+"Algoritmo de chave não suportado. A chave deve ser uma das seguintes: {}"
+
+#: keyring/models.py
+msgid "Key size too small. Need at least {} bits."
+msgstr "Tamanho da chave muito pequeno. Precisa ser ao menos {} bits."
+
+#: keyring/models.py
+msgid "OpenGPG key"
+msgstr "Chave OpenGPG"
+
+#: keyring/models.py
+msgid "Fingerprint"
+msgstr "Impressão digital"
+
+#: keyring/models.py
+msgid "Last update on"
+msgstr "Última atualização em"
+
+#: keyring/models.py
+msgid "Size"
+msgstr "Tamanho"

@@ -1,0 +1,175 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
+"PO-Revision-Date: 2023-03-29 18:38+0000\n"
+"Last-Translator: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>\n"
+"Language-Team: Romanian <https://hosted.weblate.org/projects/debexpo/tools/"
+"ro/>\n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
+"X-Generator: Weblate 4.17-dev\n"
+
+#: tools/debian/changes.py
+#, python-brace-format
+msgid "Changes file {filename} could not be parsed"
+msgstr "Fișierul de modificări {filename} nu a putut fi analizat"
+
+#: tools/debian/changes.py
+#, python-brace-format
+msgid "Changes file invalid. Missing key {key}"
+msgstr "Fișierul de modificări este nevalid. Lipsește cheia {key}"
+
+#: tools/debian/changes.py
+msgid ""
+"dsc is missing from changes\n"
+"Make sure you include the full source (if you are using sbuild make sure to "
+"use the --source option or the equivalent configuration item; if you are "
+"using dpkg-buildpackage directly use the default flags or -S for a source "
+"only upload)"
+msgstr ""
+"dsc lipsește din modificări\n"
+"Asigurați-vă că includeți sursa completă (dacă utilizați «sbuild», asigurați-"
+"vă că utilizați opțiunea „--source” sau elementul de configurare echivalent; "
+"dacă utilizați «dpkg-buildpackage», utilizați direct fanioanele implicite "
+"sau „-S” doar pentru încărcarea sursei)"
+
+#: tools/debian/changes.py
+#, python-brace-format
+msgid ""
+"{source} exists in the official Debian archive with the version {version}/"
+"{distribution}. You may not upload a lower or equal version to this one."
+msgstr ""
+"{source} există în arhiva oficială Debian cu versiunea "
+"{version}/{distribution}. Nu puteți încărca o versiune mai mică sau egală cu "
+"aceasta."
+
+#: tools/debian/control.py
+#, python-brace-format
+msgid "Failed to parse debian/control:{message}"
+msgstr "Nu s-a putut analiza debian/control: {message}"
+
+#: tools/debian/control.py
+msgid "No source definition found"
+msgstr "Nu a fost găsită nicio definiție sursă"
+
+#: tools/debian/control.py
+msgid "No binary definition found"
+msgstr "Nu a fost găsită nicio definiție binară"
+
+#: tools/debian/control.py
+#, python-brace-format
+msgid "Missing key {key} in source definition"
+msgstr "Lipsește cheia {key} în definiția sursei"
+
+#: tools/debian/copyright.py
+#, python-brace-format
+msgid "Failed to parse debian/copyright: {message}"
+msgstr "Nu s-a putut analiza debian/copyright: {message}"
+
+#: tools/debian/dsc.py
+#, python-brace-format
+msgid "{dsc} could not be parsed"
+msgstr "{dsc} nu a putut fi analizat"
+
+#: tools/debian/dsc.py
+#, python-brace-format
+msgid "Missing key {key}"
+msgstr "Lipsește cheia {key}"
+
+#: tools/debian/origin.py
+#, python-brace-format
+msgid "Failed to retrive origin info: {e}"
+msgstr "Nu s-au putut prelua informațiile despre origine: {e}"
+
+#: tools/debian/origin.py
+#, python-brace-format
+msgid ""
+"Source package origin file differs from the official archive:\n"
+"\n"
+"Origin file         : {origin}\n"
+"\n"
+"sha256sum in upload : {upload}\n"
+"sha256sum in archive: {archive}"
+msgstr ""
+"Fișierul de origine al pachetului sursă diferă de arhiva oficială:\n"
+"\n"
+"Fișier de origine: {origin}\n"
+"\n"
+"sha256sum în încărcare: {upload}\n"
+"sha256sum în arhivă: {archive}"
+
+#: tools/debian/source.py
+#, python-brace-format
+msgid "Internal error. Please contact debexpo administrators at {email}"
+msgstr ""
+"Eroare internă. Vă rugăm să contactați administratorii debexpo la {email}"
+
+#: tools/debian/source.py
+#, python-brace-format
+msgid "Could not extract source package from {dsc}: {e}"
+msgstr "Nu s-a putut extrage pachetul sursă din {dsc}: {e}"
+
+#: tools/debian/source.py
+#, python-brace-format
+msgid "Could not extract source package from {dsc}: extraction took too long"
+msgstr ""
+"Nu s-a putut extrage pachetul sursă din {dsc}: extragerea a durat prea mult"
+
+#: tools/files.py
+#, python-brace-format
+msgid "No checksum method available for file {filename}."
+msgstr ""
+"Nu este disponibilă nicio metodă de sumă de control pentru fișierul "
+"{filename}."
+
+#: tools/files.py
+#, python-brace-format
+msgid ""
+"Checksum failed for file {filename}.\n"
+"\n"
+"Expected: {expected}\n"
+"Computed: {computed}"
+msgstr ""
+"Verificarea sumei de control a eșuat pentru fișierul {filename}.\n"
+"\n"
+"Așteptată: {expected}\n"
+"Calculată: {computed}"
+
+#: tools/files.py
+#, python-brace-format
+msgid "{filename} is missing from upload"
+msgstr "{filename} lipsește din încărcare"
+
+#: tools/gnupg.py
+#, python-brace-format
+msgid ""
+"Unable to verify file {filename}. No public key found for key {fingerprint}"
+msgstr ""
+"Nu se poate verifica fișierul {filename}. Nu a fost găsită nicio cheie "
+"publică pentru cheia {fingerprint}"
+
+#: tools/gnupg.py
+#, python-brace-format
+msgid "{filename}: not a GPG signed file"
+msgstr "{filename}: nu este un fișier semnat GPG"
+
+#: tools/gnupg.py
+#, python-brace-format
+msgid "Unknown GPG error. Output was: {output}"
+msgstr "Eroare GPG necunoscută. Ieșirea a fost: {output}"
+
+#: tools/gnupg.py
+#, python-brace-format
+msgid "Cannot add key: {key}"
+msgstr "Nu se poate adăuga cheia: {key}"

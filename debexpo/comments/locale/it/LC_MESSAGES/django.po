@@ -1,0 +1,120 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
+"PO-Revision-Date: 2023-04-12 19:49+0000\n"
+"Last-Translator: Davide Prina <Davide.Prina@tuta.io>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/debexpo/comments/"
+"it/>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17-dev\n"
+
+#: comments/models.py
+msgid "Not reviewed"
+msgstr "Non esaminato"
+
+#: comments/models.py
+msgid "Needs work"
+msgstr "Necessita una lavorazione"
+
+#: comments/models.py
+msgid "Ready"
+msgstr "Pronto"
+
+#: comments/models.py
+msgid "Name"
+msgstr "Nome"
+
+#: comments/models.py
+msgid "Subscribe to uploads"
+msgstr "Iscriversi ai caricamenti"
+
+#: comments/models.py
+msgid "Subscribe to comments"
+msgstr "Iscriversi ai commenti"
+
+#: comments/models.py
+msgid "Comment"
+msgstr "Commento"
+
+#: comments/models.py
+msgid "Comment date"
+msgstr "Data del commento"
+
+#: comments/models.py
+msgid "Upload outcome"
+msgstr "Carica il risultato"
+
+#: comments/models.py
+msgid "Uploaded to debian"
+msgstr "Caricato in Debian"
+
+#: comments/models.py
+msgid "New comment on package {}"
+msgstr "Nuovo commento sul pacchetto {}"
+
+#: comments/templates/subscribe.html
+msgid "Subscribe to package "
+msgstr "Iscriviti al pacchetto "
+
+#: comments/templates/subscribe.html
+msgid "Submit"
+msgstr "Invia"
+
+#: comments/templates/subscribe.html
+msgid "Back to package details"
+msgstr "Ritorna ai dettagli del pacchetto"
+
+#: comments/templates/subscribe.html
+msgid "Back to subscription list"
+msgstr "Ritorna alla lista delle sottoscrizioni"
+
+#: comments/templates/subscriptions.html
+msgid "My subscription list"
+msgstr "La mia lista di sottoscrizioni"
+
+#: comments/templates/subscriptions.html
+msgid "Package"
+msgstr "Pacchetto"
+
+#: comments/templates/subscriptions.html
+msgid "Notification on"
+msgstr "Notifica su"
+
+#: comments/templates/subscriptions.html
+msgid "Edit"
+msgstr "Modifica"
+
+#: comments/templates/subscriptions.html
+msgid "Update"
+msgstr "Aggiorna"
+
+#: comments/templates/subscriptions.html
+msgid "Unsubscribe"
+msgstr "Disinscriviti"
+
+#: comments/templates/subscriptions.html
+msgid "No subscriptions"
+msgstr "Nessuna sottoscrizione"
+
+#: comments/templates/subscriptions.html
+msgid "Add new subscription"
+msgstr "Aggiungi una nuova sottoscrizione"
+
+#: comments/templates/subscriptions.html
+msgid "Package Name:"
+msgstr "Nome del Pacchetto:"
+
+#: comments/templates/subscriptions.html
+msgid "Create subscription"
+msgstr "Crea una sottoscrizione"

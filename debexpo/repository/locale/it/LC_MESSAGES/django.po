@@ -1,0 +1,48 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
+"PO-Revision-Date: 2023-04-12 19:49+0000\n"
+"Last-Translator: Davide Prina <Davide.Prina@tuta.io>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/debexpo/"
+"repository/it/>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17-dev\n"
+
+#: repository/models.py
+msgid "Name"
+msgstr "Nome"
+
+#: repository/models.py
+msgid "Version"
+msgstr "Versione"
+
+#: repository/models.py
+msgid "Component"
+msgstr "Componente"
+
+#: repository/models.py
+msgid "Distribution"
+msgstr "Distribuzione"
+
+#: repository/models.py
+msgid "Path"
+msgstr "Percorso"
+
+#: repository/models.py
+msgid "Size"
+msgstr "Dimensione"
+
+#: repository/models.py
+msgid "SHA256"
+msgstr "SHA256"

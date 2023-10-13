@@ -1,0 +1,172 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"PO-Revision-Date: 2023-02-25 19:36+0000\n"
+"Last-Translator: Andreas Hunkeler <ah+a77dj3@einbit.ch>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/debexpo/tools/de/>"
+"\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.16-dev\n"
+
+#: tools/debian/changes.py
+#, python-brace-format
+msgid "Changes file {filename} could not be parsed"
+msgstr "Äderungensdatei {filename} konnte nicht eingelesen werden"
+
+#: tools/debian/changes.py
+#, python-brace-format
+msgid "Changes file invalid. Missing key {key}"
+msgstr "Änderungsdatei ungültig. Fehlender Schlüssel {key}"
+
+#: tools/debian/changes.py
+msgid ""
+"dsc is missing from changes\n"
+"Make sure you include the full source (if you are using sbuild make sure to "
+"use the --source option or the equivalent configuration item; if you are "
+"using dpkg-buildpackage directly use the default flags or -S for a source "
+"only upload)"
+msgstr ""
+"DSC fehlt in den Änderungen\n"
+"Vergewissern Sie sich, dass Sie den vollständigen Quellcode einbinden (wenn "
+"Sie sbuild verwenden, stellen Sie sicher, dass Sie die Option --source oder "
+"das entsprechende Konfigurationselement verwenden; bei der direkten "
+"Verwendung von dpkg-buildpackage, verwenden Sie die Standardflags oder -S "
+"für einen reinen Quellcode-Upload)"
+
+#: tools/debian/changes.py
+#, python-brace-format
+msgid ""
+"{source} exists in the official Debian archive with the version {version}/"
+"{distribution}. You may not upload a lower or equal version to this one."
+msgstr ""
+"{source} existiert im offiziellen Debian-Archiv mit der Version "
+"{version}/{distribution}. Sie dürfen keine niedrigere oder gleichwertige "
+"Version hochladen als diese."
+
+#: tools/debian/control.py
+#, python-brace-format
+msgid "Failed to parse debian/control:{message}"
+msgstr "Konnte debian/control nicht parsen:{message}"
+
+#: tools/debian/control.py
+msgid "No source definition found"
+msgstr "Keine Source-Definition gefunden"
+
+#: tools/debian/control.py
+msgid "No binary definition found"
+msgstr "Keine Binary Definition gefunden"
+
+#: tools/debian/control.py
+#, python-brace-format
+msgid "Missing key {key} in source definition"
+msgstr "Vermisse Schlüssel {key} in Source Definition"
+
+#: tools/debian/copyright.py
+#, python-brace-format
+msgid "Failed to parse debian/copyright: {message}"
+msgstr "Konnte debian/copyright nicht parsen:{message}"
+
+#: tools/debian/dsc.py
+#, python-brace-format
+msgid "{dsc} could not be parsed"
+msgstr "{dsc} konnte nicht geparst werden"
+
+#: tools/debian/dsc.py
+#, python-brace-format
+msgid "Missing key {key}"
+msgstr "Fehlender Key {key}"
+
+#: tools/debian/origin.py
+#, python-brace-format
+msgid "Failed to retrive origin info: {e}"
+msgstr "Abrufen der Herkunftsinformation gescheitert: {e}"
+
+#: tools/debian/origin.py
+#, python-brace-format
+msgid ""
+"Source package origin file differs from the official archive:\n"
+"\n"
+"Origin file         : {origin}\n"
+"\n"
+"sha256sum in upload : {upload}\n"
+"sha256sum in archive: {archive}"
+msgstr ""
+"Quellpaket Ursprung-Datei unterscheidet sich vom offiziellen Archiv:\n"
+"\n"
+"Ursprung-Datei              : {origin}\n"
+"\n"
+"sha256sum in Upload: {upload}\n"
+"sha256sum in Archiv:   {archive}"
+
+#: tools/debian/source.py
+#, python-brace-format
+msgid "Internal error. Please contact debexpo administrators at {email}"
+msgstr "Interner Fehler. Bitte kontaktiere debexpo Administratoren via {email}"
+
+#: tools/debian/source.py
+#, python-brace-format
+msgid "Could not extract source package from {dsc}: {e}"
+msgstr "Konnte Quellpaket nicht extrahieren von {dsc}: {e}"
+
+#: tools/debian/source.py
+#, python-brace-format
+msgid "Could not extract source package from {dsc}: extraction took too long"
+msgstr ""
+"Konnte Quellpaket nicht extrahieren von {dsc}: Extraktion brauchte zu lange"
+
+#: tools/files.py
+#, python-brace-format
+msgid "No checksum method available for file {filename}."
+msgstr "Keine Checksum-Methode verfügbar für Datei {filename}."
+
+#: tools/files.py
+#, python-brace-format
+msgid ""
+"Checksum failed for file {filename}.\n"
+"\n"
+"Expected: {expected}\n"
+"Computed: {computed}"
+msgstr ""
+"Prüfsumme falsch für Datei {filename}.\n"
+"\n"
+"Erwartet: {expected}\n"
+"Berechnet: {computed}"
+
+#: tools/files.py
+#, python-brace-format
+msgid "{filename} is missing from upload"
+msgstr "{filename} fehlt in Upload"
+
+#: tools/gnupg.py
+#, python-brace-format
+msgid ""
+"Unable to verify file {filename}. No public key found for key {fingerprint}"
+msgstr ""
+"Unmöglich Datei {filename} zu verifizieren. Kein öffentlicher Schlüssel "
+"gefunden für Schlüssel {fingerprint}"
+
+#: tools/gnupg.py
+#, python-brace-format
+msgid "{filename}: not a GPG signed file"
+msgstr "{filename}: Keine GPG signierte Datei"
+
+#: tools/gnupg.py
+#, python-brace-format
+msgid "Unknown GPG error. Output was: {output}"
+msgstr "Unbekannter GPG Fehler. Ausgabe war: {output}"
+
+#: tools/gnupg.py
+#, python-brace-format
+msgid "Cannot add key: {key}"
+msgstr "Kann Schlüssel nicht hinzufügen: {key}"

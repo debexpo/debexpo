@@ -1,0 +1,284 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"PO-Revision-Date: 2023-09-06 11:55+0000\n"
+"Last-Translator: bittin1ddc447d824349b2 <bittin@reimu.nl>\n"
+"Language-Team: Swedish <https://hosted.weblate.org/projects/debexpo/packages/"
+"sv/>\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.0.1-dev\n"
+
+#: packages/models.py
+msgid "Name"
+msgstr "Namn"
+
+#: packages/models.py
+msgid "Needs a sponsor?"
+msgstr "Behöver en sponsor?"
+
+#: packages/models.py
+msgid "In Debian?"
+msgstr "I Debian?"
+
+#: packages/models.py packages/templates/packages-list.html
+msgid "Version"
+msgstr "Version"
+
+#: packages/models.py
+msgid "Changes"
+msgstr "Ändringar"
+
+#: packages/models.py
+msgid "Closes bugs"
+msgstr "Stänger buggar"
+
+#: packages/models.py
+msgid "Git storage ref"
+msgstr "Git lagring ref"
+
+#: packages/models.py
+msgid "Upload date"
+msgstr "Uppladdningsdatum"
+
+#: packages/models.py
+msgid "Maintainer"
+msgstr "Underhållare"
+
+#: packages/models.py
+msgid "Homepage"
+msgstr "Hemsida"
+
+#: packages/models.py
+msgid "VCS"
+msgstr "VCS"
+
+#: packages/models.py packages/templates/packages-list.html
+msgid "Description"
+msgstr "Beskrivning"
+
+#: packages/templates/package.html
+#, python-format
+msgid "<h1>Details about package %(name)s</h1>"
+msgstr "<h1>Detaljer om paket %(name)s</h1>"
+
+#: packages/templates/package.html
+msgid "Name:"
+msgstr "Namn:"
+
+#: packages/templates/package.html
+msgid "Uploader:"
+msgstr "Uppladdare:"
+
+#: packages/templates/package.html
+msgid "Description:"
+msgstr "Beskrivning:"
+
+#: packages/templates/package.html
+msgid "Subscribe:"
+msgstr "Prenumerera:"
+
+#: packages/templates/package.html
+msgid "Edit your subscription"
+msgstr "Redigera din prenumeration"
+
+#: packages/templates/package.html
+msgid "Needs a sponsor:"
+msgstr "Behöver en sponsor:"
+
+#: packages/templates/package.html packages/templates/packages-list.html
+msgid "Yes"
+msgstr "Ja"
+
+#: packages/templates/package.html packages/templates/packages-list.html
+msgid "No"
+msgstr "Nej"
+
+#: packages/templates/package.html
+msgid "Change"
+msgstr "Ändra"
+
+#: packages/templates/package.html
+msgid "Delete package:"
+msgstr "Ta bort paket:"
+
+#: packages/templates/package.html
+msgid "Admin package deletion"
+msgstr "Administratör paketborttagning"
+
+#: packages/templates/package.html
+msgid "Delete this package"
+msgstr "Ta bort detta paket"
+
+#: packages/templates/package.html
+msgid "Package uploads"
+msgstr "Paketuppladdningar"
+
+#: packages/templates/package.html
+#, python-format
+msgid "Upload #%(index)s"
+msgstr "Uppladdningar %(index)s"
+
+#: packages/templates/package.html
+msgid "Admin upload deletion"
+msgstr "Administratörs uppladdning borttagning"
+
+#: packages/templates/package.html
+msgid "Delete this upload"
+msgstr "Ta bort den här uppladdningen"
+
+#: packages/templates/package.html
+msgid "Information"
+msgstr "Information"
+
+#: packages/templates/package.html
+msgid "Version:"
+msgstr "Version:"
+
+#: packages/templates/package.html
+msgid "View RFS template"
+msgstr "Visa RFS-mallar"
+
+#: packages/templates/package.html
+msgid "Uploaded:"
+msgstr "Uppladdat:"
+
+#: packages/templates/package.html
+msgid "Source package:"
+msgstr "Källpaket:"
+
+#: packages/templates/package.html
+msgid "Distribution:"
+msgstr "Distribution:"
+
+#: packages/templates/package.html
+msgid "Section:"
+msgstr "Sektion:"
+
+#: packages/templates/package.html
+msgid "Priority:"
+msgstr "Prioritet:"
+
+#: packages/templates/package.html
+msgid "Homepage:"
+msgstr "Hemsida:"
+
+#: packages/templates/package.html
+msgid "Closes bugs:"
+msgstr "Stänger buggar:"
+
+#: packages/templates/package.html
+msgid "Changelog"
+msgstr "Ändringslogg"
+
+#: packages/templates/package.html
+msgid "QA information"
+msgstr "QA-information"
+
+#: packages/templates/package.html
+msgid "Comments"
+msgstr "Kommentarer"
+
+#: packages/templates/package.html
+msgid "Needs work"
+msgstr "Behöver arbete"
+
+#: packages/templates/package.html
+msgid "Ready"
+msgstr "Redo"
+
+#: packages/templates/package.html
+msgid "Package has been uploaded to Debian"
+msgstr "Paket har laddats upp till Debian"
+
+#: packages/templates/package.html
+msgid "No comments"
+msgstr "Inga kommentarer"
+
+#: packages/templates/package.html
+msgid "New comment"
+msgstr "Ny kommentar"
+
+#: packages/templates/package.html
+msgid "Submit"
+msgstr "Skicka in"
+
+#: packages/templates/packages-list.html
+msgid "Package"
+msgstr "Paket"
+
+#: packages/templates/packages-list.html
+msgid "Uploader"
+msgstr "Uppladdare"
+
+#: packages/templates/packages-list.html
+msgid "Needs a sponsor"
+msgstr "Behöver en sponsor"
+
+#: packages/templates/packages-list.html
+msgid "Already in Debian"
+msgstr "Redan i Debian"
+
+#: packages/templates/packages-list.html
+msgid "No packages"
+msgstr "Inga paket"
+
+#: packages/views.py
+msgid "Today"
+msgstr "Idag"
+
+#: packages/views.py
+msgid "Yesterday"
+msgstr "Igår"
+
+#: packages/views.py
+msgid "Some days ago"
+msgstr "Några dagar sedan"
+
+#: packages/views.py
+msgid "Older packages"
+msgstr "Äldre paket"
+
+#: packages/views.py
+msgid "Uploaded long ago"
+msgstr "Uppladdad för länge sedan"
+
+#: packages/views.py
+msgid "Packages for {} {}"
+msgstr "Paket för {} {}"
+
+#: packages/views.py
+msgid "Package list"
+msgstr "Paketlista"
+
+#: packages/views.py
+#, python-format
+msgid "%s packages"
+msgstr "%s paket"
+
+#: packages/views.py
+#, python-format
+msgid "A feed of packages on %s"
+msgstr "En flöde av paket på %s"
+
+#: packages/views.py
+msgid "Package {} uploaded by {}."
+msgstr "Paket {} uppladdat av {}."
+
+#: packages/views.py
+msgid "Uploader is currently looking for a sponsor."
+msgstr "Uppladdaren söker för närvarande en sponsor."
+
+#: packages/views.py
+msgid "Uploader is currently not looking for a sponsor."
+msgstr "Uppladdaren letar för närvarande inte efter en sponsor."

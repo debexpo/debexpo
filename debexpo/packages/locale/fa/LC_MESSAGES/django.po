@@ -1,0 +1,284 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"PO-Revision-Date: 2022-11-27 07:48+0000\n"
+"Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
+"Language-Team: Persian <https://hosted.weblate.org/projects/debexpo/packages/"
+"fa/>\n"
+"Language: fa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.15-dev\n"
+
+#: packages/models.py
+msgid "Name"
+msgstr "نام"
+
+#: packages/models.py
+msgid "Needs a sponsor?"
+msgstr "نیازمند حامی؟"
+
+#: packages/models.py
+msgid "In Debian?"
+msgstr "در دبیان؟"
+
+#: packages/models.py packages/templates/packages-list.html
+msgid "Version"
+msgstr "نگارش"
+
+#: packages/models.py
+msgid "Changes"
+msgstr "تغییرها"
+
+#: packages/models.py
+msgid "Closes bugs"
+msgstr "بستن اشکال‌های"
+
+#: packages/models.py
+msgid "Git storage ref"
+msgstr "مرجع ذخیره‌سازی گیت"
+
+#: packages/models.py
+msgid "Upload date"
+msgstr "تاریخ بارگذاری"
+
+#: packages/models.py
+msgid "Maintainer"
+msgstr "نگه‌دارنده"
+
+#: packages/models.py
+msgid "Homepage"
+msgstr "صفحهٔ خانگی"
+
+#: packages/models.py
+msgid "VCS"
+msgstr "VCS"
+
+#: packages/models.py packages/templates/packages-list.html
+msgid "Description"
+msgstr "شرح"
+
+#: packages/templates/package.html
+#, python-format
+msgid "<h1>Details about package %(name)s</h1>"
+msgstr "<h1>جزییات بستهٔ %(name)s</h1>"
+
+#: packages/templates/package.html
+msgid "Name:"
+msgstr "نام:"
+
+#: packages/templates/package.html
+msgid "Uploader:"
+msgstr "بارگذار:"
+
+#: packages/templates/package.html
+msgid "Description:"
+msgstr "شرح:"
+
+#: packages/templates/package.html
+msgid "Subscribe:"
+msgstr "اشتراک:"
+
+#: packages/templates/package.html
+msgid "Edit your subscription"
+msgstr "ویرایش اشتراکتان"
+
+#: packages/templates/package.html
+msgid "Needs a sponsor:"
+msgstr "نیازمند حامی:"
+
+#: packages/templates/package.html packages/templates/packages-list.html
+msgid "Yes"
+msgstr "بله"
+
+#: packages/templates/package.html packages/templates/packages-list.html
+msgid "No"
+msgstr "نه"
+
+#: packages/templates/package.html
+msgid "Change"
+msgstr "تغییر"
+
+#: packages/templates/package.html
+msgid "Delete package:"
+msgstr "حذف بسته:"
+
+#: packages/templates/package.html
+msgid "Admin package deletion"
+msgstr "حذف بستهٔ مدیر"
+
+#: packages/templates/package.html
+msgid "Delete this package"
+msgstr "حذف این بسته"
+
+#: packages/templates/package.html
+msgid "Package uploads"
+msgstr "بارگذاری‌های بسته"
+
+#: packages/templates/package.html
+#, python-format
+msgid "Upload #%(index)s"
+msgstr "بارگذاری ‪#%(index)s‬"
+
+#: packages/templates/package.html
+msgid "Admin upload deletion"
+msgstr "حذف بارگذاری مدیر"
+
+#: packages/templates/package.html
+msgid "Delete this upload"
+msgstr "حذف این بارگذاری"
+
+#: packages/templates/package.html
+msgid "Information"
+msgstr "اطّلاعات"
+
+#: packages/templates/package.html
+msgid "Version:"
+msgstr "نگارش:"
+
+#: packages/templates/package.html
+msgid "View RFS template"
+msgstr "دیدن قالب RFS"
+
+#: packages/templates/package.html
+msgid "Uploaded:"
+msgstr "بارگذاشته:"
+
+#: packages/templates/package.html
+msgid "Source package:"
+msgstr "بستهٔ مبدأ:"
+
+#: packages/templates/package.html
+msgid "Distribution:"
+msgstr "توزیع:"
+
+#: packages/templates/package.html
+msgid "Section:"
+msgstr "بخش:"
+
+#: packages/templates/package.html
+msgid "Priority:"
+msgstr "اهمیت:"
+
+#: packages/templates/package.html
+msgid "Homepage:"
+msgstr "صفحهٔ خانگی:"
+
+#: packages/templates/package.html
+msgid "Closes bugs:"
+msgstr "بستن اشکال‌های:"
+
+#: packages/templates/package.html
+msgid "Changelog"
+msgstr "گزارش دگرگونی"
+
+#: packages/templates/package.html
+msgid "QA information"
+msgstr "اطّلاعات QA"
+
+#: packages/templates/package.html
+msgid "Comments"
+msgstr "نظرها"
+
+#: packages/templates/package.html
+msgid "Needs work"
+msgstr "نیازمند کار"
+
+#: packages/templates/package.html
+msgid "Ready"
+msgstr "آماده"
+
+#: packages/templates/package.html
+msgid "Package has been uploaded to Debian"
+msgstr "بسته روی دبیان بارگذاری شده"
+
+#: packages/templates/package.html
+msgid "No comments"
+msgstr "بدون نظر"
+
+#: packages/templates/package.html
+msgid "New comment"
+msgstr "نظر جدید"
+
+#: packages/templates/package.html
+msgid "Submit"
+msgstr "ثبت"
+
+#: packages/templates/packages-list.html
+msgid "Package"
+msgstr "بسته"
+
+#: packages/templates/packages-list.html
+msgid "Uploader"
+msgstr "بارگذار"
+
+#: packages/templates/packages-list.html
+msgid "Needs a sponsor"
+msgstr "نیازمند حامی"
+
+#: packages/templates/packages-list.html
+msgid "Already in Debian"
+msgstr "موجود در دبیان"
+
+#: packages/templates/packages-list.html
+msgid "No packages"
+msgstr "هیچ بسته‌ای موجود نیست"
+
+#: packages/views.py
+msgid "Today"
+msgstr "امروز"
+
+#: packages/views.py
+msgid "Yesterday"
+msgstr "دیروز"
+
+#: packages/views.py
+msgid "Some days ago"
+msgstr "چند روز پیش"
+
+#: packages/views.py
+msgid "Older packages"
+msgstr "دیگر بسته‌ها"
+
+#: packages/views.py
+msgid "Uploaded long ago"
+msgstr "مدّت‌ها پیش بارگذاری شده"
+
+#: packages/views.py
+msgid "Packages for {} {}"
+msgstr "بسته‌ها برای {} {}"
+
+#: packages/views.py
+msgid "Package list"
+msgstr "سیاههٔ بسته‌ها"
+
+#: packages/views.py
+#, python-format
+msgid "%s packages"
+msgstr "بسته‌های %s"
+
+#: packages/views.py
+#, python-format
+msgid "A feed of packages on %s"
+msgstr "خوراکی از بسته‌های روی %s"
+
+#: packages/views.py
+msgid "Package {} uploaded by {}."
+msgstr "بستهٔ {} بارگذاشته به دست {}."
+
+#: packages/views.py
+msgid "Uploader is currently looking for a sponsor."
+msgstr "بارگذار هم‌اکنون به دنبال حامیست."
+
+#: packages/views.py
+msgid "Uploader is currently not looking for a sponsor."
+msgstr "بارگذار هم‌اکنون به دنبال حامی نیست."

@@ -1,0 +1,169 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"PO-Revision-Date: 2022-11-28 10:48+0000\n"
+"Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
+"Language-Team: Persian <https://hosted.weblate.org/projects/debexpo/tools/fa/"
+">\n"
+"Language: fa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.15-dev\n"
+
+#: tools/debian/changes.py
+#, python-brace-format
+msgid "Changes file {filename} could not be parsed"
+msgstr "پروندهٔ دگرگونی {filename} نتوانست تجزیه شود"
+
+#: tools/debian/changes.py
+#, python-brace-format
+msgid "Changes file invalid. Missing key {key}"
+msgstr "پروندهٔ دگرگونی نامعتبر. کلید ناموجود {key}"
+
+#: tools/debian/changes.py
+msgid ""
+"dsc is missing from changes\n"
+"Make sure you include the full source (if you are using sbuild make sure to "
+"use the --source option or the equivalent configuration item; if you are "
+"using dpkg-buildpackage directly use the default flags or -S for a source "
+"only upload)"
+msgstr ""
+"dsc در changes موجود نیست\n"
+"مطمئن شوید مبدأ کامل را قرار داده‌اید (اگر از sbuild استفاده می‌کنید، مطمئن "
+"شوید که از گزینهٔ ‪--source‬ یا موارد پیکربندی معادل استفاده کرده‌اید. اگر "
+"مستقیماً از dpkg-buildpackage استفاده می‌کنید، از پرچم پیش‌گزیدهٔ ‪-S‬ برای "
+"یک بارگذاری فقط مبدأ استفاده کنید)"
+
+#: tools/debian/changes.py
+#, python-brace-format
+msgid ""
+"{source} exists in the official Debian archive with the version {version}/"
+"{distribution}. You may not upload a lower or equal version to this one."
+msgstr ""
+"در بایگانی رسمی دبیان {source} با نگارش ‪{version}/{distribution}‬ وجود "
+"دارد. نباید نگارشی کم‌تر یا مساوی با آن را بارگذاری کنید."
+
+#: tools/debian/control.py
+#, python-brace-format
+msgid "Failed to parse debian/control:{message}"
+msgstr "شکست در تجزیهٔ ‪debian/control‬:{message}"
+
+#: tools/debian/control.py
+msgid "No source definition found"
+msgstr "تعریف مبدأیی پیدا نشد"
+
+#: tools/debian/control.py
+msgid "No binary definition found"
+msgstr "تعریف دودویی‌ای پیدا نشد"
+
+#: tools/debian/control.py
+#, python-brace-format
+msgid "Missing key {key} in source definition"
+msgstr "کلید ناموجود {key} در تعریف مبدأ"
+
+#: tools/debian/copyright.py
+#, python-brace-format
+msgid "Failed to parse debian/copyright: {message}"
+msgstr "شکست در تجزیهٔ ‪debian/copyright‬: {message}"
+
+#: tools/debian/dsc.py
+#, python-brace-format
+msgid "{dsc} could not be parsed"
+msgstr "{dsc} نتوانست تجزیه شود"
+
+#: tools/debian/dsc.py
+#, python-brace-format
+msgid "Missing key {key}"
+msgstr "کلید ناموجود {key}"
+
+#: tools/debian/origin.py
+#, python-brace-format
+msgid "Failed to retrive origin info: {e}"
+msgstr "شکست در بازیابی اطّلاعات origin: {e}"
+
+#: tools/debian/origin.py
+#, python-brace-format
+msgid ""
+"Source package origin file differs from the official archive:\n"
+"\n"
+"Origin file         : {origin}\n"
+"\n"
+"sha256sum in upload : {upload}\n"
+"sha256sum in archive: {archive}"
+msgstr ""
+"پروندهٔ origin بستهٔ مبدأ با بایگانی رسمی تفاوت دارد:\n"
+"\n"
+"پروندهٔ origin         : {origin}\n"
+"\n"
+"sha256sum در بارگذاری: {upload}\n"
+"sha256sum در بایگانی: {archive}"
+
+#: tools/debian/source.py
+#, python-brace-format
+msgid "Internal error. Please contact debexpo administrators at {email}"
+msgstr "خطای داخلی. لطفاً روی {email} با مدیران debexpo در تماس باشید"
+
+#: tools/debian/source.py
+#, python-brace-format
+msgid "Could not extract source package from {dsc}: {e}"
+msgstr "نتوانست از {dsc} بستهٔ مبدأ را استخراج کند: {e}"
+
+#: tools/debian/source.py
+#, python-brace-format
+msgid "Could not extract source package from {dsc}: extraction took too long"
+msgstr "نتوانست بستهٔ مبدأ را از {dsc} استخراج کند: استحراح بیش از حد طول کشید"
+
+#: tools/files.py
+#, python-brace-format
+msgid "No checksum method available for file {filename}."
+msgstr "هیچ روش جمع‌آزمایی‌ای برای پروندهٔ {filename} موجود نیست."
+
+#: tools/files.py
+#, python-brace-format
+msgid ""
+"Checksum failed for file {filename}.\n"
+"\n"
+"Expected: {expected}\n"
+"Computed: {computed}"
+msgstr ""
+"جمع‌آزمایی برای پروندهٔ {filename} شکست خورد.\n"
+"\n"
+"انتظار: {expected}\n"
+"محاسبه: {computed}"
+
+#: tools/files.py
+#, python-brace-format
+msgid "{filename} is missing from upload"
+msgstr "{filename} در بارگذاری موجود نیست"
+
+#: tools/gnupg.py
+#, python-brace-format
+msgid ""
+"Unable to verify file {filename}. No public key found for key {fingerprint}"
+msgstr ""
+"ناتوان در تصدیق پروندهٔ {filename}. هیچ کلید عمومی‌ای برای کلید {fingerprint}"
+" پیدا نشد"
+
+#: tools/gnupg.py
+#, python-brace-format
+msgid "{filename}: not a GPG signed file"
+msgstr "پروندهٔ {filename} با GPG امضا نشده"
+
+#: tools/gnupg.py
+#, python-brace-format
+msgid "Unknown GPG error. Output was: {output}"
+msgstr "خطای ناشناختهٔ GPG. خروجی این بود: {output}"
+
+#: tools/gnupg.py
+#, python-brace-format
+msgid "Cannot add key: {key}"
+msgstr "نمی‌توان کلید را افزود: {key}"

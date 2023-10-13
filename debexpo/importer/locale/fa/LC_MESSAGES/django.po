@@ -1,0 +1,163 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
+"PO-Revision-Date: 2022-11-28 10:48+0000\n"
+"Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
+"Language-Team: Persian <https://hosted.weblate.org/projects/debexpo/importer/"
+"fa/>\n"
+"Language: fa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.15-dev\n"
+
+#: importer/models.py
+#, python-brace-format
+msgid "{error}: REJECTED"
+msgstr "{error}: رد شده"
+
+#: importer/models.py
+#, python-brace-format
+msgid "{package}_{version}: ACCEPTED on {site} ({distribution})"
+msgstr "{package}_{version}: پذیرفته روی {site} ({distribution})"
+
+#: importer/models.py
+msgid "Changes is invalid"
+msgstr "دگرگونی‌ها نامعتبرند"
+
+#: importer/models.py
+msgid "Dsc failed to parse"
+msgstr "تجزیهٔ Dsc شکست خورد"
+
+#: importer/models.py
+msgid "Dsc is invalid"
+msgstr "‪Dsc‬ نامعتبر است"
+
+#: importer/models.py
+msgid "Failed to extract source package"
+msgstr "شکست در استخراج بستهٔ مبدأ"
+
+#: importer/models.py
+msgid "Source package is invalid"
+msgstr "بستهٔ مبدأ نامعتبر است"
+
+#: importer/models.py
+msgid "Invalid distribution"
+msgstr "توزیع نامعتبر"
+
+#: importer/models.py
+#, python-brace-format
+msgid ""
+"Distribution {distribution} is not supported on mentors\n"
+"\n"
+"List of supported distributions:\n"
+"\n"
+"{allowed}"
+msgstr ""
+"توزیع {distribution} روی mentors پشتیبانی نمی‌شود\n"
+"\n"
+"سیاههٔ توزیع‌های پشتیبانی شده:\n"
+"\n"
+"{allowed}"
+
+#: importer/templates/email-importer-accept.html
+#, python-format
+msgid ""
+"Hi.\n"
+"\n"
+"Your upload of the package '%(name)s' to %(site)s was\n"
+"successful. Others can now see it. The URL of your package is:\n"
+msgstr ""
+"سلام.\n"
+"\n"
+"بارگذاری بستهٔ %(name)s روی %(site)s موفق بود.\n"
+"اکنون دیگران می‌توانند ببینندش. نشانی بسته‌تان:\n"
+
+#: importer/templates/email-importer-accept.html
+msgid ""
+"\n"
+"The respective dsc file can be found at:\n"
+msgstr ""
+"\n"
+"پروندهٔ dsc مربوطه می‌تواند این‌جا پیدا شود:\n"
+
+#: importer/templates/email-importer-accept.html
+msgid ""
+"\n"
+"If you do not yet have a sponsor for your package you may want to go to:\n"
+msgstr ""
+"\n"
+"اگر هنوز حامی‌ای برای بسته‌تان ندارید، ممکن است بخواهید به این‌جا بروید:\n"
+
+#: importer/templates/email-importer-accept.html
+#, fuzzy
+#| msgid ""
+#| "\n"
+#| "and set the \"Seeking a sponsor\" option to highlight your package on "
+#| "the\n"
+#| "welcome page.\n"
+#| "\n"
+#| "You can also send an RFS (request for sponsorship) to the debian-mentors\n"
+#| "mailing list. Your package page will give your suggestions on how to\n"
+#| "send that mail.\n"
+#| "\n"
+#| "Good luck in finding a sponsor!\n"
+#| "\n"
+#| "Thanks,"
+msgid ""
+"\n"
+"and set the \"Seeking a sponsor\" option to highlight your package on the\n"
+"welcome page.\n"
+"\n"
+"You can also send an RFS (request for sponsorship) to the debian-mentors\n"
+"mailing list. Your package page will give you suggestions on how to\n"
+"send that mail.\n"
+"\n"
+"Good luck in finding a sponsor!\n"
+"\n"
+"Thanks,"
+msgstr ""
+"\n"
+"و گزینهٔ «جست‌وجوی حامی» را تنظیم کرده تا بسته‌تان در\n"
+"صفحهٔ خوش‌آمد برجسته شود.\n"
+"\n"
+"هم‌چنین می‌توانید یک RFS (درخواست حمایت) به سیاههٔ\n"
+"پستی debian-mentors بفرستید. صفحهٔ بسته‌تان\n"
+"پیشنهادهایی برای چگونگی فرستادن چنین نامه‌ای دارد.\n"
+"\n"
+"در یافتن حامی موفّق باشید!\n"
+"\n"
+"سپاس،"
+
+#: importer/templates/email-importer-reject.html
+#, python-format
+msgid ""
+"Hello,\n"
+"\n"
+"Unfortunately your package \"%(source)s\" was rejected\n"
+"because of the following reason:\n"
+"\n"
+"%(error)s\n"
+"\n"
+"%(details)s\n"
+"\n"
+"Please try to fix it and re-upload. Thanks,"
+msgstr ""
+"درود،\n"
+"\n"
+"متأسّفانه بستهٔ %(source)s شما\n"
+"به دلایل زیر رد شد:\n"
+"\n"
+"%(error)s\n"
+"\n"
+"%(details)s\n"
+"\n"
+"لطفاً اصلاح و بارگذاری دوباره را بیازمایید. با سپاس،"

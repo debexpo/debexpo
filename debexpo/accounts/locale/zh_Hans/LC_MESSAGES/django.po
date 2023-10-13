@@ -1,0 +1,377 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"PO-Revision-Date: 2022-11-25 08:47+0000\n"
+"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
+"Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
+"debexpo/accounts/zh_Hans/>\n"
+"Language: zh_Hans\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.15-dev\n"
+
+#: accounts/forms.py
+msgid "Full name"
+msgstr "全名"
+
+#: accounts/forms.py
+msgid "E-mail"
+msgstr "电子邮箱"
+
+#: accounts/forms.py
+msgid ""
+"A user with this name is already registered on the system. If it is you, use "
+"that account!  Otherwise use a different name to register."
+msgstr "已有用户使用相同名称并已在系统中注册。如果这是你的话，请直接使用已有的帐户！"
+"否则请使用其他名字进行注册。"
+
+#: accounts/forms.py
+msgid "A user with this email address is already registered on the system"
+msgstr "有使用相同电子邮件地址的用户已在系统中注册"
+
+#: accounts/forms.py
+msgid "Account type"
+msgstr "帐户类型"
+
+#: accounts/forms.py
+msgid "Maintainer"
+msgstr "维护者"
+
+#: accounts/forms.py
+msgid "Sponsor"
+msgstr "赞助"
+
+#: accounts/forms.py
+msgid "A sponsor account must be registered with your @debian.org address"
+msgstr "赞助账户需使用 @debian.org 邮箱注册"
+
+#: accounts/forms.py
+msgid "Spam detected"
+msgstr "探测到垃圾信息"
+
+#: accounts/forms.py
+msgid "You requested a password reset"
+msgstr "你请求了密码重置"
+
+#: accounts/models.py
+msgid "Contributor"
+msgstr "贡献者"
+
+#: accounts/models.py
+msgid "Debian Maintainer (DM)"
+msgstr "Debian 维护者（DM）"
+
+#: accounts/models.py
+msgid "Debian Developer (DD)"
+msgstr "Debian 开发者（DD）"
+
+#: accounts/models.py
+msgid "email address"
+msgstr "电子邮件地址"
+
+#: accounts/models.py
+msgid "full name"
+msgstr "全名"
+
+#: accounts/models.py
+msgid "Country"
+msgstr "国家地区"
+
+#: accounts/models.py
+msgid "IRC Nickname"
+msgstr "IRC 昵称"
+
+#: accounts/models.py
+msgid "Jabber address"
+msgstr "Jabber 地址"
+
+#: accounts/models.py
+msgid "Language"
+msgstr "语言"
+
+#: accounts/models.py
+msgid "Status"
+msgstr "状态"
+
+#: accounts/templates/activate.html accounts/templates/change-email.html
+msgid "Check your email"
+msgstr "检查你的电子邮件"
+
+#: accounts/templates/activate.html
+msgid ""
+"An email has been sent to the email address you specified. Check it for "
+"instructions on how to activate your account."
+msgstr "激活邮件已发送至你的邮箱，请查收并激活帐号。"
+
+#: accounts/templates/activated.html
+msgid "User activated"
+msgstr "已激活"
+
+#: accounts/templates/activated.html
+msgid "Your account has been activated."
+msgstr "你的帐号已激活。"
+
+#: accounts/templates/activated.html
+#, python-format
+msgid "You can now <a href=\"%(u_profile)s\">proceed to login</a>."
+msgstr "你可以<a href=\"%(u_profile)s\">继续登录</a>了。"
+
+#: accounts/templates/activated.html
+msgid "Invalid verification key"
+msgstr "验证无效"
+
+#: accounts/templates/activated.html
+msgid ""
+"The verification key you entered has not been recognised. Please try again."
+msgstr "你输入的验证无效，请重试。"
+
+#: accounts/templates/change-email-complete.html
+msgid "Email changed successfully"
+msgstr "邮箱修改成功"
+
+#: accounts/templates/change-email-complete.html
+msgid "Your email has been successfully updated"
+msgstr "你的邮箱已成功更新"
+
+#: accounts/templates/change-email-complete.html
+msgid "Go back to"
+msgstr "回到"
+
+#: accounts/templates/change-email-complete.html
+msgid "my account"
+msgstr "我的账户"
+
+#: accounts/templates/change-email-confirm.html accounts/views.py
+msgid "Change your email"
+msgstr "修改邮箱"
+
+#: accounts/templates/change-email-confirm.html
+#: accounts/templates/password-reset-confirm.html
+#: accounts/templates/password-reset-form.html accounts/templates/profile.html
+#: accounts/templates/register.html
+msgid "Submit"
+msgstr "提交"
+
+#: accounts/templates/change-email-confirm.html
+#: accounts/templates/password-reset-confirm.html
+msgid "Invalid reset link"
+msgstr "重设链接无效"
+
+#: accounts/templates/change-email.html
+msgid ""
+"An email has been sent to your new email address. Check it for instructions "
+"on how to validate it."
+msgstr "邮件已发送至你的新邮箱。请查收并验证。"
+
+#: accounts/templates/email-change.html
+msgid ""
+"Hello,\n"
+"\n"
+"Confirm your new email by visiting the following address\n"
+"in your web-browser:"
+msgstr ""
+"你好，\n"
+"\n"
+"请在浏览器中打开以下链接来确认你的新邮箱："
+
+#: accounts/templates/email-change.html
+#, python-format
+msgid ""
+"If you didn't change your email on your account on %(site_name)s,\n"
+"you can safely ignore this email."
+msgstr ""
+"如果你没有在 %(site_name)s 上修改你的邮箱，\n"
+"请忽略此封邮件。"
+
+#: accounts/templates/email-change.html
+#: accounts/templates/email-password-creation.html
+#: accounts/templates/email-password-reset.html
+msgid "Thanks,"
+msgstr "谢谢，"
+
+#: accounts/templates/email-password-creation.html
+msgid ""
+"Hello,\n"
+"\n"
+"Please activate your account by visiting the following address\n"
+"in your web-browser:"
+msgstr ""
+"你好，\n"
+"\n"
+"请在浏览器中打开以下链接来激活你的帐户："
+
+#: accounts/templates/email-password-creation.html
+#, python-format
+msgid ""
+"If you didn't create an account on %(site_name)s,\n"
+"you can safely ignore this email."
+msgstr ""
+"如果你没有在 %(site_name)s 上创建帐号，\n"
+"请忽略此封邮件。"
+
+#: accounts/templates/email-password-reset.html
+msgid ""
+"Hello,\n"
+"\n"
+"You can reset your password by clicking on the link below. If you did\n"
+"not request a password reset, then you can ignore this."
+msgstr ""
+"你好，\n"
+"\n"
+"请使用以下的链接重置密码。如果你没有申请重置密码，\n"
+"请忽略此封邮件。"
+
+#: accounts/templates/login.html
+msgid "Login"
+msgstr "登录"
+
+#: accounts/templates/login.html
+msgid "Please login to continue"
+msgstr "请登录以继续"
+
+#: accounts/templates/login.html
+msgid "Your username and password didn't match. Please try again."
+msgstr "你的用户名和密码不匹配。请再试一次。"
+
+#: accounts/templates/login.html
+msgid ""
+"Your account doesn't have access to this page. To proceed, please login with "
+"an account that has access."
+msgstr "你的帐号没有访问此页面的权限。如需继续，请使用拥有对应权限的帐号重新登录。"
+
+#: accounts/templates/login.html
+msgid "Please login to see this page."
+msgstr "请登录以查看此页面。"
+
+#: accounts/templates/login.html
+msgid "E-mail:"
+msgstr "电子邮件："
+
+#: accounts/templates/login.html
+msgid "Secure log-in:"
+msgstr "安全登录："
+
+#: accounts/templates/login.html
+msgid "Switch to SSL"
+msgstr "切换至 SSL"
+
+#: accounts/templates/login.html
+msgid "Did you lose your password?"
+msgstr "你忘记密码了吗？"
+
+#: accounts/templates/login.html
+msgid "Try resetting your password."
+msgstr "请尝试重置密码。"
+
+#: accounts/templates/password-reset-complete.html
+msgid "Okay! You have a new password"
+msgstr "成功！你正在使用新的密码"
+
+#: accounts/templates/password-reset-complete.html
+msgid "You can use your new password to"
+msgstr "你现在可以使用新密码来"
+
+#: accounts/templates/password-reset-complete.html
+msgid "log in"
+msgstr "登录"
+
+#: accounts/templates/password-reset-confirm.html
+msgid "Reset your password"
+msgstr "重置你的密码"
+
+#: accounts/templates/password-reset-done.html
+msgid "Password recovery in progress"
+msgstr "正在进行密码恢复"
+
+#: accounts/templates/password-reset-done.html
+msgid ""
+"Okay! You should now get an email with a link. Click the\n"
+"link."
+msgstr ""
+"成功！你现在应当收到了包含链接的一封电子邮件。\n"
+"请点击其中的链接。"
+
+#: accounts/templates/password-reset-form.html
+msgid "Password recovery"
+msgstr "密码恢复"
+
+#: accounts/templates/password-reset-form.html
+msgid "If you forgot your password, here is what we can do for you."
+msgstr "如果你忘记了密码，可以采取下面的操作得到帮助。"
+
+#: accounts/templates/password-reset-form.html
+msgid "You should fill out this form."
+msgstr "请填写此处的表格。"
+
+#: accounts/templates/password-reset-form.html
+msgid "You will get an email with a link. Click the link."
+msgstr "你将收到包含链接的一封电子邮件。点击其中的链接。"
+
+#: accounts/templates/password-reset-form.html
+msgid "Then the web app will allow you to change your password."
+msgstr "之后，打开的网页能帮助你修改你的密码。"
+
+#: accounts/templates/password-reset-form.html
+msgid "Not super hard. If you're ready, I'm ready."
+msgstr "这并不难。如果你准备好了，我们可以随时开始。"
+
+#: accounts/templates/profile.html
+msgid "My account"
+msgstr "我的帐户"
+
+#: accounts/templates/profile.html
+msgid "Change details"
+msgstr "变更的详细信息"
+
+#: accounts/templates/profile.html
+msgid "Change GPG key"
+msgstr "修改 GPG 公钥"
+
+#: accounts/templates/profile.html
+msgid "Fingerprint:"
+msgstr "指纹："
+
+#: accounts/templates/profile.html
+msgid ""
+"Please use the output of <tt>gpg --export --export-options export-minimal --"
+"armor <i>keyid</i></tt>"
+msgstr ""
+"请使用 <tt>gpg --export --export-options export-minimal --armor "
+"<i>密钥id</i></tt> 的输出"
+
+#: accounts/templates/profile.html
+msgid "Remove"
+msgstr "移除"
+
+#: accounts/templates/profile.html
+msgid "Change password"
+msgstr "修改密码"
+
+#: accounts/templates/profile.html
+msgid "Change other details"
+msgstr "修改其他详细信息"
+
+#: accounts/templates/profile.html
+msgid "Public sponsor info"
+msgstr "公开赞助者信息"
+
+#: accounts/templates/register.html
+msgid "Sign up for an account"
+msgstr "注册帐户"
+
+#: accounts/templates/register.html
+msgid "Account details"
+msgstr "帐户细节"
+
+#: accounts/views.py
+msgid "Next step: Confirm your email address"
+msgstr "下一步：确认你的电子邮件地址"

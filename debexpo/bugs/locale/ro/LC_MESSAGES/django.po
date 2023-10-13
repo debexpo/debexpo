@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
+"PO-Revision-Date: 2023-03-29 18:38+0000\n"
+"Last-Translator: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>\n"
+"Language-Team: Romanian <https://hosted.weblate.org/projects/debexpo/bugs/ro/"
+">\n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
+"X-Generator: Weblate 4.17-dev\n"
+
+#: bugs/models.py
+msgid "Package name"
+msgstr "Numele pachetului"
+
+#: bugs/models.py
+msgid "Bug number"
+msgstr "Numărul erorii raportate"
+
+#: bugs/models.py
+msgid "Type"
+msgstr "Tip"
+
+#: bugs/models.py
+msgid "Status"
+msgstr "Starea"
+
+#: bugs/models.py
+msgid "Severity"
+msgstr "Severitatea"
+
+#: bugs/models.py
+msgid "Creation date"
+msgstr "Data creării"
+
+#: bugs/models.py
+msgid "Last update date"
+msgstr "Data ultimei modificări"
+
+#: bugs/models.py
+msgid "Subject"
+msgstr "Subiect"
+
+#: bugs/models.py
+msgid "Submitter email"
+msgstr "Adresa de e-mail a expeditorului"
+
+#: bugs/models.py
+msgid "Owner email"
+msgstr "Adresa de e-mail a responsabilului"

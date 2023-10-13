@@ -1,0 +1,284 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
+"PO-Revision-Date: 2023-04-12 19:49+0000\n"
+"Last-Translator: Davide Prina <Davide.Prina@tuta.io>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/debexpo/packages/"
+"it/>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17-dev\n"
+
+#: packages/models.py
+msgid "Name"
+msgstr "Nome"
+
+#: packages/models.py
+msgid "Needs a sponsor?"
+msgstr "Hai bisogno di uno sponsor?"
+
+#: packages/models.py
+msgid "In Debian?"
+msgstr "In Debian?"
+
+#: packages/models.py packages/templates/packages-list.html
+msgid "Version"
+msgstr "Versione"
+
+#: packages/models.py
+msgid "Changes"
+msgstr "Modifiche"
+
+#: packages/models.py
+msgid "Closes bugs"
+msgstr "Chiude i bug"
+
+#: packages/models.py
+msgid "Git storage ref"
+msgstr "Ref dell'archiviazione git"
+
+#: packages/models.py
+msgid "Upload date"
+msgstr "Data di caricamento"
+
+#: packages/models.py
+msgid "Maintainer"
+msgstr "Manutentore"
+
+#: packages/models.py
+msgid "Homepage"
+msgstr "Pagina Iniziale"
+
+#: packages/models.py
+msgid "VCS"
+msgstr "VCS"
+
+#: packages/models.py packages/templates/packages-list.html
+msgid "Description"
+msgstr "Descrizione"
+
+#: packages/templates/package.html
+#, python-format
+msgid "<h1>Details about package %(name)s</h1>"
+msgstr "<h1>Dettagli del pacchetto %(name)s</h1>"
+
+#: packages/templates/package.html
+msgid "Name:"
+msgstr "Nome:"
+
+#: packages/templates/package.html
+msgid "Uploader:"
+msgstr "Caricatore:"
+
+#: packages/templates/package.html
+msgid "Description:"
+msgstr "Descrizione:"
+
+#: packages/templates/package.html
+msgid "Subscribe:"
+msgstr "Sottoscriviti:"
+
+#: packages/templates/package.html
+msgid "Edit your subscription"
+msgstr "Modifica la tua sottoscrizione"
+
+#: packages/templates/package.html
+msgid "Needs a sponsor:"
+msgstr "Ha bisogno di uno sponsor:"
+
+#: packages/templates/package.html packages/templates/packages-list.html
+msgid "Yes"
+msgstr "Sì"
+
+#: packages/templates/package.html packages/templates/packages-list.html
+msgid "No"
+msgstr "No"
+
+#: packages/templates/package.html
+msgid "Change"
+msgstr "Modifica"
+
+#: packages/templates/package.html
+msgid "Delete package:"
+msgstr "Cancella il pacchetto:"
+
+#: packages/templates/package.html
+msgid "Admin package deletion"
+msgstr "Amministra la cancellazione del pacchetto"
+
+#: packages/templates/package.html
+msgid "Delete this package"
+msgstr "Cancella questo pacchetto"
+
+#: packages/templates/package.html
+msgid "Package uploads"
+msgstr "Caricamento dei pacchetti"
+
+#: packages/templates/package.html
+#, python-format
+msgid "Upload #%(index)s"
+msgstr "Caricamento #%(index)s"
+
+#: packages/templates/package.html
+msgid "Admin upload deletion"
+msgstr "Amministra la cancellazione del caricamento"
+
+#: packages/templates/package.html
+msgid "Delete this upload"
+msgstr "Cancella questo caricamento"
+
+#: packages/templates/package.html
+msgid "Information"
+msgstr "Informazione"
+
+#: packages/templates/package.html
+msgid "Version:"
+msgstr "Versione:"
+
+#: packages/templates/package.html
+msgid "View RFS template"
+msgstr "Visualizza il modello RFS"
+
+#: packages/templates/package.html
+msgid "Uploaded:"
+msgstr "Caricati:"
+
+#: packages/templates/package.html
+msgid "Source package:"
+msgstr "Pacchetto sorgente:"
+
+#: packages/templates/package.html
+msgid "Distribution:"
+msgstr "Distribuzione:"
+
+#: packages/templates/package.html
+msgid "Section:"
+msgstr "Sezione:"
+
+#: packages/templates/package.html
+msgid "Priority:"
+msgstr "Priorità:"
+
+#: packages/templates/package.html
+msgid "Homepage:"
+msgstr "Pagina Iniziale:"
+
+#: packages/templates/package.html
+msgid "Closes bugs:"
+msgstr "Chiudi i bug:"
+
+#: packages/templates/package.html
+msgid "Changelog"
+msgstr "Changelog (Registro delle modifiche)"
+
+#: packages/templates/package.html
+msgid "QA information"
+msgstr "Informazioni QA"
+
+#: packages/templates/package.html
+msgid "Comments"
+msgstr "Commenti"
+
+#: packages/templates/package.html
+msgid "Needs work"
+msgstr "Necessita una lavorazione"
+
+#: packages/templates/package.html
+msgid "Ready"
+msgstr "Pronto"
+
+#: packages/templates/package.html
+msgid "Package has been uploaded to Debian"
+msgstr "Il pacchetto è stato caricato su Debian"
+
+#: packages/templates/package.html
+msgid "No comments"
+msgstr "Nessun commento"
+
+#: packages/templates/package.html
+msgid "New comment"
+msgstr "Nuovo commento"
+
+#: packages/templates/package.html
+msgid "Submit"
+msgstr "Invia"
+
+#: packages/templates/packages-list.html
+msgid "Package"
+msgstr "Pacchetto"
+
+#: packages/templates/packages-list.html
+msgid "Uploader"
+msgstr "Caricatore"
+
+#: packages/templates/packages-list.html
+msgid "Needs a sponsor"
+msgstr "Ha bisogno di uno sponsor"
+
+#: packages/templates/packages-list.html
+msgid "Already in Debian"
+msgstr "Già presente in Debian"
+
+#: packages/templates/packages-list.html
+msgid "No packages"
+msgstr "Nessun pacchetto"
+
+#: packages/views.py
+msgid "Today"
+msgstr "Oggi"
+
+#: packages/views.py
+msgid "Yesterday"
+msgstr "Ieri"
+
+#: packages/views.py
+msgid "Some days ago"
+msgstr "Alcuni giorni fa"
+
+#: packages/views.py
+msgid "Older packages"
+msgstr "Pacchetti più vecchi"
+
+#: packages/views.py
+msgid "Uploaded long ago"
+msgstr "Caricato molto tempo fa"
+
+#: packages/views.py
+msgid "Packages for {} {}"
+msgstr "Pacchetti per {} {}"
+
+#: packages/views.py
+msgid "Package list"
+msgstr "Elenco pacchetti"
+
+#: packages/views.py
+#, python-format
+msgid "%s packages"
+msgstr "%s pacchetti"
+
+#: packages/views.py
+#, python-format
+msgid "A feed of packages on %s"
+msgstr "Un feed dei pacchetti su %s"
+
+#: packages/views.py
+msgid "Package {} uploaded by {}."
+msgstr "Pacchetto {} caricato da {}."
+
+#: packages/views.py
+msgid "Uploader is currently looking for a sponsor."
+msgstr "Il caricatore è attualmente alla ricerca di uno sponsor."
+
+#: packages/views.py
+msgid "Uploader is currently not looking for a sponsor."
+msgstr "Il caricatore non è attualmente alla ricerca di uno sponsor."

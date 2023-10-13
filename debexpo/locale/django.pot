@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-27 19:09+0000\n"
+"POT-Creation-Date: 2023-10-13 18:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,11 +22,51 @@ msgid "English"
 msgstr ""
 
 #: settings/common.py
+msgid "German"
+msgstr ""
+
+#: settings/common.py
+msgid "Spanish"
+msgstr ""
+
+#: settings/common.py
+msgid "Persian"
+msgstr ""
+
+#: settings/common.py
 msgid "French"
 msgstr ""
 
 #: settings/common.py
+msgid "Italian"
+msgstr ""
+
+#: settings/common.py
+msgid "Japanese"
+msgstr ""
+
+#: settings/common.py
+msgid "Dutch"
+msgstr ""
+
+#: settings/common.py
+msgid "Portuguese"
+msgstr ""
+
+#: settings/common.py
 msgid "Portuguese (Brazil)"
+msgstr ""
+
+#: settings/common.py
+msgid "Romanian"
+msgstr ""
+
+#: settings/common.py
+msgid "Swedish"
+msgstr ""
+
+#: settings/common.py
+msgid "Chinese (Simplified)"
 msgstr ""
 
 #: settings/common.py

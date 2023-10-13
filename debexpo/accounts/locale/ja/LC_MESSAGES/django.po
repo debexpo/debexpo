@@ -1,0 +1,381 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"PO-Revision-Date: 2023-09-10 08:55+0000\n"
+"Last-Translator: Kentaro Hayashi <kenhys@gmail.com>\n"
+"Language-Team: Japanese <https://hosted.weblate.org/projects/debexpo/"
+"accounts/ja/>\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.0.1-dev\n"
+
+#: accounts/forms.py
+msgid "Full name"
+msgstr "氏名"
+
+#: accounts/forms.py
+msgid "E-mail"
+msgstr "メールアドレス"
+
+#: accounts/forms.py
+msgid ""
+"A user with this name is already registered on the system. If it is you, use "
+"that account!  Otherwise use a different name to register."
+msgstr "指定したユーザー名はすでに登録されています。その登録をしたのがあなたでないな"
+"ら、別のユーザー名で登録してください。"
+
+#: accounts/forms.py
+msgid "A user with this email address is already registered on the system"
+msgstr "指定したメールアドレスはすでに登録されています"
+
+#: accounts/forms.py
+msgid "Account type"
+msgstr "アカウントの種類"
+
+#: accounts/forms.py
+msgid "Maintainer"
+msgstr "(パッケージの)メンテナーになりたい"
+
+#: accounts/forms.py
+msgid "Sponsor"
+msgstr "(パッケージの)スポンサーをしたい"
+
+#: accounts/forms.py
+msgid "A sponsor account must be registered with your @debian.org address"
+msgstr "スポンサーのアカウントは@debian.orgのメールアドレスで登録が必要です"
+
+#: accounts/forms.py
+msgid "Spam detected"
+msgstr "スパムが検出されました"
+
+#: accounts/forms.py
+msgid "You requested a password reset"
+msgstr "パスワードのリセットがリクエストされました"
+
+#: accounts/models.py
+msgid "Contributor"
+msgstr "コントリビューター"
+
+#: accounts/models.py
+msgid "Debian Maintainer (DM)"
+msgstr "Debianメンテナー(DM)"
+
+#: accounts/models.py
+msgid "Debian Developer (DD)"
+msgstr "Debian開発者(DD)"
+
+#: accounts/models.py
+msgid "email address"
+msgstr "メールアドレス"
+
+#: accounts/models.py
+msgid "full name"
+msgstr "氏名"
+
+#: accounts/models.py
+msgid "Country"
+msgstr "国名"
+
+#: accounts/models.py
+msgid "IRC Nickname"
+msgstr "IRCのニックネーム"
+
+#: accounts/models.py
+msgid "Jabber address"
+msgstr "Jabberアドレス"
+
+#: accounts/models.py
+msgid "Language"
+msgstr "言語"
+
+#: accounts/models.py
+msgid "Status"
+msgstr "ステータス"
+
+#: accounts/templates/activate.html accounts/templates/change-email.html
+msgid "Check your email"
+msgstr "メールアドレスを確認してください"
+
+#: accounts/templates/activate.html
+msgid ""
+"An email has been sent to the email address you specified. Check it for "
+"instructions on how to activate your account."
+msgstr "指定したメールアドレスへメールが送られました。アカウントを有効にするための手"
+"順を確認してください。"
+
+#: accounts/templates/activated.html
+msgid "User activated"
+msgstr "ユーザーの有効化"
+
+#: accounts/templates/activated.html
+msgid "Your account has been activated."
+msgstr "アカウントが有効化されました。"
+
+#: accounts/templates/activated.html
+#, python-format
+msgid "You can now <a href=\"%(u_profile)s\">proceed to login</a>."
+msgstr "<a href=\"%(u_profile)s\">ログイン</a>できます。"
+
+#: accounts/templates/activated.html
+msgid "Invalid verification key"
+msgstr "正しくない検証キー"
+
+#: accounts/templates/activated.html
+msgid ""
+"The verification key you entered has not been recognised. Please try again."
+msgstr "あなたの入力した検証キーを認識できませんでした。再度入力してください。"
+
+#: accounts/templates/change-email-complete.html
+msgid "Email changed successfully"
+msgstr "メールアドレスの更新成功"
+
+#: accounts/templates/change-email-complete.html
+msgid "Your email has been successfully updated"
+msgstr "メールアドレスは正常に更新されました"
+
+#: accounts/templates/change-email-complete.html
+msgid "Go back to"
+msgstr "戻る"
+
+#: accounts/templates/change-email-complete.html
+msgid "my account"
+msgstr "アカウント"
+
+#: accounts/templates/change-email-confirm.html accounts/views.py
+msgid "Change your email"
+msgstr "メールアドレスの変更"
+
+#: accounts/templates/change-email-confirm.html
+#: accounts/templates/password-reset-confirm.html
+#: accounts/templates/password-reset-form.html accounts/templates/profile.html
+#: accounts/templates/register.html
+msgid "Submit"
+msgstr "送信"
+
+#: accounts/templates/change-email-confirm.html
+#: accounts/templates/password-reset-confirm.html
+msgid "Invalid reset link"
+msgstr "リセットするためのリンクが正しくない"
+
+#: accounts/templates/change-email.html
+msgid ""
+"An email has been sent to your new email address. Check it for instructions "
+"on how to validate it."
+msgstr "メールが新しいメールアドレスに送られました。検証手順を確認してください。"
+
+#: accounts/templates/email-change.html
+msgid ""
+"Hello,\n"
+"\n"
+"Confirm your new email by visiting the following address\n"
+"in your web-browser:"
+msgstr ""
+"こんにちは。\n"
+"\n"
+"ブラウザーで次のアドレスにアクセスして新しいメールアドレスで\n"
+"あることを確認してください："
+
+#: accounts/templates/email-change.html
+#, python-format
+msgid ""
+"If you didn't change your email on your account on %(site_name)s,\n"
+"you can safely ignore this email."
+msgstr ""
+"%(site_name)sでアカウントのメールアドレスを変更していないなら、\n"
+"このメールは無視してかまいません。"
+
+#: accounts/templates/email-change.html
+#: accounts/templates/email-password-creation.html
+#: accounts/templates/email-password-reset.html
+msgid "Thanks,"
+msgstr "以上、よろしくお願いします"
+
+#: accounts/templates/email-password-creation.html
+msgid ""
+"Hello,\n"
+"\n"
+"Please activate your account by visiting the following address\n"
+"in your web-browser:"
+msgstr ""
+"こんにちは\n"
+"\n"
+"ブラウザーで次のアドレスにアクセスして\n"
+"アカウントを有効にしてください："
+
+#: accounts/templates/email-password-creation.html
+#, python-format
+msgid ""
+"If you didn't create an account on %(site_name)s,\n"
+"you can safely ignore this email."
+msgstr ""
+"%(site_name)sでアカウントを作成していないのなら、\n"
+"このメールは無視して構いません。"
+
+#: accounts/templates/email-password-reset.html
+msgid ""
+"Hello,\n"
+"\n"
+"You can reset your password by clicking on the link below. If you did\n"
+"not request a password reset, then you can ignore this."
+msgstr ""
+"こんにちは\n"
+"\n"
+"次のリンクをクリックすることでパスワードをリセットできます。\n"
+"パスワードリセットを要求していない場合には無視してください。"
+
+#: accounts/templates/login.html
+msgid "Login"
+msgstr "ログイン"
+
+#: accounts/templates/login.html
+msgid "Please login to continue"
+msgstr "続きはログインしてください"
+
+#: accounts/templates/login.html
+msgid "Your username and password didn't match. Please try again."
+msgstr "ユーザー名とパスワードが一致しません。再度やり直してください。"
+
+#: accounts/templates/login.html
+msgid ""
+"Your account doesn't have access to this page. To proceed, please login with "
+"an account that has access."
+msgstr "あなたのアカウントではこのページにアクセスする権限がありません。権限のあるア"
+"カウントでログインしてください。"
+
+#: accounts/templates/login.html
+msgid "Please login to see this page."
+msgstr "このページを閲覧するにはログインしてください。"
+
+#: accounts/templates/login.html
+msgid "E-mail:"
+msgstr "メールアドレス："
+
+#: accounts/templates/login.html
+msgid "Secure log-in:"
+msgstr "セキュアログイン："
+
+#: accounts/templates/login.html
+msgid "Switch to SSL"
+msgstr "SSLに切り替える"
+
+#: accounts/templates/login.html
+msgid "Did you lose your password?"
+msgstr "パスワードを忘れてしまいましたか？"
+
+#: accounts/templates/login.html
+msgid "Try resetting your password."
+msgstr "パスワードのリセットをしてください。"
+
+#: accounts/templates/password-reset-complete.html
+msgid "Okay! You have a new password"
+msgstr "新しいパスワードが設定されました"
+
+#: accounts/templates/password-reset-complete.html
+msgid "You can use your new password to"
+msgstr "新しいパスワードを使用できます"
+
+#: accounts/templates/password-reset-complete.html
+msgid "log in"
+msgstr "ログイン"
+
+#: accounts/templates/password-reset-confirm.html
+msgid "Reset your password"
+msgstr "パスワードをリセットする"
+
+#: accounts/templates/password-reset-done.html
+msgid "Password recovery in progress"
+msgstr "パスワードのリカバリー処理中"
+
+#: accounts/templates/password-reset-done.html
+msgid ""
+"Okay! You should now get an email with a link. Click the\n"
+"link."
+msgstr ""
+"リンクをクリックするとメールが届きます。\n"
+"リンクをクリックしてください。"
+
+#: accounts/templates/password-reset-form.html
+msgid "Password recovery"
+msgstr "パスワードリカバリー"
+
+#: accounts/templates/password-reset-form.html
+msgid "If you forgot your password, here is what we can do for you."
+msgstr "パスワードを忘れてしまった場合、できることはこちらです。"
+
+#: accounts/templates/password-reset-form.html
+msgid "You should fill out this form."
+msgstr "フォームに記入してください。"
+
+#: accounts/templates/password-reset-form.html
+msgid "You will get an email with a link. Click the link."
+msgstr "リンクにアクセスするとメールが送られます。リンクをクリックしてください。"
+
+#: accounts/templates/password-reset-form.html
+msgid "Then the web app will allow you to change your password."
+msgstr "ウェブアプリケーションからパスワードを変更できます。"
+
+#: accounts/templates/password-reset-form.html
+msgid "Not super hard. If you're ready, I'm ready."
+msgstr "まったく難しくはない手順です。"
+
+#: accounts/templates/profile.html
+msgid "My account"
+msgstr "マイアカウント"
+
+#: accounts/templates/profile.html
+msgid "Change details"
+msgstr "詳細変更"
+
+#: accounts/templates/profile.html
+msgid "Change GPG key"
+msgstr "GPG鍵の変更"
+
+#: accounts/templates/profile.html
+msgid "Fingerprint:"
+msgstr "フィンガープリント："
+
+#: accounts/templates/profile.html
+msgid ""
+"Please use the output of <tt>gpg --export --export-options export-minimal --"
+"armor <i>keyid</i></tt>"
+msgstr ""
+"<tt>gpg --export --export-options export-minimal --armor "
+"<i>鍵ID</i></tt>の出力を使ってください"
+
+#: accounts/templates/profile.html
+msgid "Remove"
+msgstr "削除"
+
+#: accounts/templates/profile.html
+msgid "Change password"
+msgstr "パスワード変更"
+
+#: accounts/templates/profile.html
+msgid "Change other details"
+msgstr "その他の変更"
+
+#: accounts/templates/profile.html
+msgid "Public sponsor info"
+msgstr "スポンサー情報"
+
+#: accounts/templates/register.html
+msgid "Sign up for an account"
+msgstr "アカウントにサインアップ"
+
+#: accounts/templates/register.html
+msgid "Account details"
+msgstr "アカウントの詳細"
+
+#: accounts/views.py
+msgid "Next step: Confirm your email address"
+msgstr "次のステップ：メールアドレスを確認する"

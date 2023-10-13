@@ -1,0 +1,284 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"PO-Revision-Date: 2022-11-25 08:47+0000\n"
+"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
+"Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
+"debexpo/packages/zh_Hans/>\n"
+"Language: zh_Hans\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.15-dev\n"
+
+#: packages/models.py
+msgid "Name"
+msgstr "名称"
+
+#: packages/models.py
+msgid "Needs a sponsor?"
+msgstr "需要赞助者？"
+
+#: packages/models.py
+msgid "In Debian?"
+msgstr "已存在于 Debian？"
+
+#: packages/models.py packages/templates/packages-list.html
+msgid "Version"
+msgstr "版本"
+
+#: packages/models.py
+msgid "Changes"
+msgstr "变更"
+
+#: packages/models.py
+msgid "Closes bugs"
+msgstr "关闭缺陷"
+
+#: packages/models.py
+msgid "Git storage ref"
+msgstr "Git 存储应用"
+
+#: packages/models.py
+msgid "Upload date"
+msgstr "上传日期"
+
+#: packages/models.py
+msgid "Maintainer"
+msgstr "维护者"
+
+#: packages/models.py
+msgid "Homepage"
+msgstr "主页"
+
+#: packages/models.py
+msgid "VCS"
+msgstr "版本控制系统"
+
+#: packages/models.py packages/templates/packages-list.html
+msgid "Description"
+msgstr "描述"
+
+#: packages/templates/package.html
+#, python-format
+msgid "<h1>Details about package %(name)s</h1>"
+msgstr "<h1>软件包 %(name)s 的详细信息</h1>"
+
+#: packages/templates/package.html
+msgid "Name:"
+msgstr "名称："
+
+#: packages/templates/package.html
+msgid "Uploader:"
+msgstr "上传者："
+
+#: packages/templates/package.html
+msgid "Description:"
+msgstr "描述："
+
+#: packages/templates/package.html
+msgid "Subscribe:"
+msgstr "订阅："
+
+#: packages/templates/package.html
+msgid "Edit your subscription"
+msgstr "编辑你的订阅"
+
+#: packages/templates/package.html
+msgid "Needs a sponsor:"
+msgstr "需要赞助者："
+
+#: packages/templates/package.html packages/templates/packages-list.html
+msgid "Yes"
+msgstr "是"
+
+#: packages/templates/package.html packages/templates/packages-list.html
+msgid "No"
+msgstr "否"
+
+#: packages/templates/package.html
+msgid "Change"
+msgstr "变更"
+
+#: packages/templates/package.html
+msgid "Delete package:"
+msgstr "删除软件包："
+
+#: packages/templates/package.html
+msgid "Admin package deletion"
+msgstr "管理软件包删除"
+
+#: packages/templates/package.html
+msgid "Delete this package"
+msgstr "删除此软件包"
+
+#: packages/templates/package.html
+msgid "Package uploads"
+msgstr "软件包上传"
+
+#: packages/templates/package.html
+#, python-format
+msgid "Upload #%(index)s"
+msgstr "上传 #%(index)s"
+
+#: packages/templates/package.html
+msgid "Admin upload deletion"
+msgstr "管理上传删除"
+
+#: packages/templates/package.html
+msgid "Delete this upload"
+msgstr "删除此上传"
+
+#: packages/templates/package.html
+msgid "Information"
+msgstr "消息"
+
+#: packages/templates/package.html
+msgid "Version:"
+msgstr "版本："
+
+#: packages/templates/package.html
+msgid "View RFS template"
+msgstr "查看 RFS（请求上传协助）模板"
+
+#: packages/templates/package.html
+msgid "Uploaded:"
+msgstr "已上传："
+
+#: packages/templates/package.html
+msgid "Source package:"
+msgstr "源码包："
+
+#: packages/templates/package.html
+msgid "Distribution:"
+msgstr "发行版："
+
+#: packages/templates/package.html
+msgid "Section:"
+msgstr "分区："
+
+#: packages/templates/package.html
+msgid "Priority:"
+msgstr "优先级："
+
+#: packages/templates/package.html
+msgid "Homepage:"
+msgstr "主页："
+
+#: packages/templates/package.html
+msgid "Closes bugs:"
+msgstr "关闭缺陷："
+
+#: packages/templates/package.html
+msgid "Changelog"
+msgstr "变更日志"
+
+#: packages/templates/package.html
+msgid "QA information"
+msgstr "质保信息"
+
+#: packages/templates/package.html
+msgid "Comments"
+msgstr "评论"
+
+#: packages/templates/package.html
+msgid "Needs work"
+msgstr "需要返工"
+
+#: packages/templates/package.html
+msgid "Ready"
+msgstr "准备就绪"
+
+#: packages/templates/package.html
+msgid "Package has been uploaded to Debian"
+msgstr "软件包已被上传至 Debian"
+
+#: packages/templates/package.html
+msgid "No comments"
+msgstr "无评论"
+
+#: packages/templates/package.html
+msgid "New comment"
+msgstr "新评论"
+
+#: packages/templates/package.html
+msgid "Submit"
+msgstr "提交"
+
+#: packages/templates/packages-list.html
+msgid "Package"
+msgstr "软件包"
+
+#: packages/templates/packages-list.html
+msgid "Uploader"
+msgstr "上传者"
+
+#: packages/templates/packages-list.html
+msgid "Needs a sponsor"
+msgstr "需要赞助者"
+
+#: packages/templates/packages-list.html
+msgid "Already in Debian"
+msgstr "已存在于 Debian"
+
+#: packages/templates/packages-list.html
+msgid "No packages"
+msgstr "无软件包"
+
+#: packages/views.py
+msgid "Today"
+msgstr "今天"
+
+#: packages/views.py
+msgid "Yesterday"
+msgstr "昨天"
+
+#: packages/views.py
+msgid "Some days ago"
+msgstr "前几天"
+
+#: packages/views.py
+msgid "Older packages"
+msgstr "更旧的软件包"
+
+#: packages/views.py
+msgid "Uploaded long ago"
+msgstr "很久之前上传"
+
+#: packages/views.py
+msgid "Packages for {} {}"
+msgstr "{} {} 的软件包"
+
+#: packages/views.py
+msgid "Package list"
+msgstr "软件包列表"
+
+#: packages/views.py
+#, python-format
+msgid "%s packages"
+msgstr "%s 个软件包"
+
+#: packages/views.py
+#, python-format
+msgid "A feed of packages on %s"
+msgstr "%s 上软件包的摘要信息"
+
+#: packages/views.py
+msgid "Package {} uploaded by {}."
+msgstr "软件包 {}，上传者 {}。"
+
+#: packages/views.py
+msgid "Uploader is currently looking for a sponsor."
+msgstr "上传者当前正在寻找赞助者。"
+
+#: packages/views.py
+msgid "Uploader is currently not looking for a sponsor."
+msgstr "上传者当前暂不需要赞助者。"

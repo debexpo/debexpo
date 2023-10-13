@@ -1,0 +1,153 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
+"PO-Revision-Date: 2023-03-29 18:38+0000\n"
+"Last-Translator: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>\n"
+"Language-Team: Romanian <https://hosted.weblate.org/projects/debexpo/"
+"importer/ro/>\n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
+"X-Generator: Weblate 4.17-dev\n"
+
+#: importer/models.py
+#, python-brace-format
+msgid "{error}: REJECTED"
+msgstr "{error}: RESPINS"
+
+#: importer/models.py
+#, python-brace-format
+msgid "{package}_{version}: ACCEPTED on {site} ({distribution})"
+msgstr "{package}_{version}: ACCEPTAT în {site} ({distribution})"
+
+#: importer/models.py
+msgid "Changes is invalid"
+msgstr "Modificările nu sunt valide"
+
+#: importer/models.py
+msgid "Dsc failed to parse"
+msgstr "Dsc nu a putut fi analizat"
+
+#: importer/models.py
+msgid "Dsc is invalid"
+msgstr "Dsc nu este valid"
+
+#: importer/models.py
+msgid "Failed to extract source package"
+msgstr "Nu s-a putut extrage pachetul sursă"
+
+#: importer/models.py
+msgid "Source package is invalid"
+msgstr "Pachetul sursă nu este valid"
+
+#: importer/models.py
+msgid "Invalid distribution"
+msgstr "Distribuție nevalidă"
+
+#: importer/models.py
+#, python-brace-format
+msgid ""
+"Distribution {distribution} is not supported on mentors\n"
+"\n"
+"List of supported distributions:\n"
+"\n"
+"{allowed}"
+msgstr ""
+"Distribuția {distribution} nu este acceptată de mentori\n"
+"\n"
+"Lista distribuțiilor acceptate:\n"
+"\n"
+"{allowed}"
+
+#: importer/templates/email-importer-accept.html
+#, python-format
+msgid ""
+"Hi.\n"
+"\n"
+"Your upload of the package '%(name)s' to %(site)s was\n"
+"successful. Others can now see it. The URL of your package is:\n"
+msgstr ""
+"Salut.\n"
+"\n"
+"Încărcarea dvs. a pachetului „%(name)s” pe %(site)s a fost\n"
+"cu succes. Alții îl pot vedea acum. Adresa URL a pachetului dvs. este:\n"
+
+#: importer/templates/email-importer-accept.html
+msgid ""
+"\n"
+"The respective dsc file can be found at:\n"
+msgstr ""
+"\n"
+"Fișierul dsc respectiv poate fi găsit la:\n"
+
+#: importer/templates/email-importer-accept.html
+msgid ""
+"\n"
+"If you do not yet have a sponsor for your package you may want to go to:\n"
+msgstr ""
+"\n"
+"Dacă nu aveți încă un sponsor pentru pachetul dvs., poate doriți să mergeți "
+"la:\n"
+
+#: importer/templates/email-importer-accept.html
+msgid ""
+"\n"
+"and set the \"Seeking a sponsor\" option to highlight your package on the\n"
+"welcome page.\n"
+"\n"
+"You can also send an RFS (request for sponsorship) to the debian-mentors\n"
+"mailing list. Your package page will give you suggestions on how to\n"
+"send that mail.\n"
+"\n"
+"Good luck in finding a sponsor!\n"
+"\n"
+"Thanks,"
+msgstr ""
+"\n"
+"și marcați opțiunea „Se caută un sponsor” pentru a vă evidenția pachetul pe\n"
+"pagina de întâmpinare.\n"
+"\n"
+"De asemenea, puteți trimite un mesaj RFS (cerere de sponsorizare) către "
+"lista\n"
+"de corespondență debian-mentors. Pagina pachetului dvs. vă va oferi "
+"sugestii\n"
+"despre cum să trimiteți acel mesaj.\n"
+"\n"
+"Mult succes în găsirea unui sponsor!\n"
+"\n"
+"Mulțumiri,"
+
+#: importer/templates/email-importer-reject.html
+#, python-format
+msgid ""
+"Hello,\n"
+"\n"
+"Unfortunately your package \"%(source)s\" was rejected\n"
+"because of the following reason:\n"
+"\n"
+"%(error)s\n"
+"\n"
+"%(details)s\n"
+"\n"
+"Please try to fix it and re-upload. Thanks,"
+msgstr ""
+"Bună ziua,\n"
+"\n"
+"Din păcate, pachetul dvs. „%(source)s” a fost respins\n"
+"din cauza următoarelor motive:\n"
+"\n"
+"%(error)s\n"
+"\n"
+"%(details)s\n"
+"\n"
+"Vă rugăm să încercați să le remediați și să încărcați din nou. Mulțumiri,"

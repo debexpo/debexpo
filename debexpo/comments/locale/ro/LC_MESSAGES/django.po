@@ -1,0 +1,121 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
+"PO-Revision-Date: 2023-03-29 18:38+0000\n"
+"Last-Translator: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>\n"
+"Language-Team: Romanian <https://hosted.weblate.org/projects/debexpo/"
+"comments/ro/>\n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
+"X-Generator: Weblate 4.17-dev\n"
+
+#: comments/models.py
+msgid "Not reviewed"
+msgstr "Nerevizuit"
+
+#: comments/models.py
+msgid "Needs work"
+msgstr "Necesită revizuire"
+
+#: comments/models.py
+msgid "Ready"
+msgstr "Gata"
+
+#: comments/models.py
+msgid "Name"
+msgstr "Nume"
+
+#: comments/models.py
+msgid "Subscribe to uploads"
+msgstr "Abonați-vă la încărcări"
+
+#: comments/models.py
+msgid "Subscribe to comments"
+msgstr "Abonați-vă la comentarii"
+
+#: comments/models.py
+msgid "Comment"
+msgstr "Comentarii"
+
+#: comments/models.py
+msgid "Comment date"
+msgstr "Data comentariului"
+
+#: comments/models.py
+msgid "Upload outcome"
+msgstr "Rezultatul încărcării"
+
+#: comments/models.py
+msgid "Uploaded to debian"
+msgstr "Încărcat în Debian"
+
+#: comments/models.py
+msgid "New comment on package {}"
+msgstr "Comentariu nou asupra pachetului {}"
+
+#: comments/templates/subscribe.html
+msgid "Subscribe to package "
+msgstr "Abonați-vă la pachet "
+
+#: comments/templates/subscribe.html
+msgid "Submit"
+msgstr "Trimiteți"
+
+#: comments/templates/subscribe.html
+msgid "Back to package details"
+msgstr "Înapoi la detaliile pachetului"
+
+#: comments/templates/subscribe.html
+msgid "Back to subscription list"
+msgstr "Înapoi la lista de abonamente"
+
+#: comments/templates/subscriptions.html
+msgid "My subscription list"
+msgstr "Lista mea de abonamente"
+
+#: comments/templates/subscriptions.html
+msgid "Package"
+msgstr "Pachet"
+
+#: comments/templates/subscriptions.html
+msgid "Notification on"
+msgstr "Notificare pe"
+
+#: comments/templates/subscriptions.html
+msgid "Edit"
+msgstr "Editare"
+
+#: comments/templates/subscriptions.html
+msgid "Update"
+msgstr "Actualizare"
+
+#: comments/templates/subscriptions.html
+msgid "Unsubscribe"
+msgstr "Dezabonați-vă"
+
+#: comments/templates/subscriptions.html
+msgid "No subscriptions"
+msgstr "Fără abonamente"
+
+#: comments/templates/subscriptions.html
+msgid "Add new subscription"
+msgstr "Adăugați un nou abonament"
+
+#: comments/templates/subscriptions.html
+msgid "Package Name:"
+msgstr "Numele pachetului:"
+
+#: comments/templates/subscriptions.html
+msgid "Create subscription"
+msgstr "Creați abonament"

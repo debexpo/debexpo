@@ -1,0 +1,82 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-10-13 18:16+0000\n"
+"PO-Revision-Date: 2022-11-24 20:15+0000\n"
+"Last-Translator: Kentaro Hayashi <kenhys@gmail.com>\n"
+"Language-Team: Japanese <https://hosted.weblate.org/projects/debexpo/locale/"
+"ja/>\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.15-dev\n"
+
+#: settings/common.py
+msgid "English"
+msgstr "英語"
+
+#: settings/common.py
+msgid "German"
+msgstr ""
+
+#: settings/common.py
+msgid "Spanish"
+msgstr ""
+
+#: settings/common.py
+msgid "Persian"
+msgstr ""
+
+#: settings/common.py
+msgid "French"
+msgstr "フランス語"
+
+#: settings/common.py
+msgid "Italian"
+msgstr ""
+
+#: settings/common.py
+msgid "Japanese"
+msgstr ""
+
+#: settings/common.py
+msgid "Dutch"
+msgstr ""
+
+#: settings/common.py
+#, fuzzy
+#| msgid "Portuguese (Brazil)"
+msgid "Portuguese"
+msgstr "ポルトガル語(ブラジル)"
+
+#: settings/common.py
+msgid "Portuguese (Brazil)"
+msgstr "ポルトガル語(ブラジル)"
+
+#: settings/common.py
+msgid "Romanian"
+msgstr ""
+
+#: settings/common.py
+msgid "Swedish"
+msgstr ""
+
+#: settings/common.py
+msgid "Chinese (Simplified)"
+msgstr ""
+
+#: settings/common.py
+msgid "Helps you get your packages into Debian"
+msgstr "Debian向けのパッケージングを手助けする"
+
+#: urls.py
+msgid "Email change complete"
+msgstr "メールアドレスの変更完了"

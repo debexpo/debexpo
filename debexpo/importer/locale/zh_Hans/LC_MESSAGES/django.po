@@ -1,0 +1,161 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-27 19:09+0000\n"
+"PO-Revision-Date: 2022-11-25 08:47+0000\n"
+"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
+"Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
+"debexpo/importer/zh_Hans/>\n"
+"Language: zh_Hans\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.15-dev\n"
+
+#: importer/models.py
+#, python-brace-format
+msgid "{error}: REJECTED"
+msgstr "{error}：被拒绝"
+
+#: importer/models.py
+#, python-brace-format
+msgid "{package}_{version}: ACCEPTED on {site} ({distribution})"
+msgstr "{package}_{version}：被接受于 {site}（{distribution}）"
+
+#: importer/models.py
+msgid "Changes is invalid"
+msgstr "变更文件无效"
+
+#: importer/models.py
+msgid "Dsc failed to parse"
+msgstr "Dsc 文件解析失败"
+
+#: importer/models.py
+msgid "Dsc is invalid"
+msgstr "Dsc 文件无效"
+
+#: importer/models.py
+msgid "Failed to extract source package"
+msgstr "解压缩源码包失败"
+
+#: importer/models.py
+msgid "Source package is invalid"
+msgstr "源码包无效"
+
+#: importer/models.py
+msgid "Invalid distribution"
+msgstr "无效的发行版"
+
+#: importer/models.py
+#, python-brace-format
+msgid ""
+"Distribution {distribution} is not supported on mentors\n"
+"\n"
+"List of supported distributions:\n"
+"\n"
+"{allowed}"
+msgstr ""
+"发行版 {distribution} 不被 mentors 所支持：\n"
+"\n"
+"支持的发行版列表：\n"
+"\n"
+"{allowed}"
+
+#: importer/templates/email-importer-accept.html
+#, python-format
+msgid ""
+"Hi.\n"
+"\n"
+"Your upload of the package '%(name)s' to %(site)s was\n"
+"successful. Others can now see it. The URL of your package is:\n"
+msgstr ""
+"你好！\n"
+"\n"
+"你上传到 %(site)s 的软件包“%(name)s”已成功接收。\n"
+"其他人现在可以看见该软件包。你的软件包的 URL 是：\n"
+
+#: importer/templates/email-importer-accept.html
+msgid ""
+"\n"
+"The respective dsc file can be found at:\n"
+msgstr ""
+"\n"
+"对应的 dsc 文件可以在如下位置找到：\n"
+
+#: importer/templates/email-importer-accept.html
+msgid ""
+"\n"
+"If you do not yet have a sponsor for your package you may want to go to:\n"
+msgstr ""
+"\n"
+"如果你暂时未找到你的软件包的赞助者，你可能想要访问：\n"
+
+#: importer/templates/email-importer-accept.html
+#, fuzzy
+#| msgid ""
+#| "\n"
+#| "and set the \"Seeking a sponsor\" option to highlight your package on "
+#| "the\n"
+#| "welcome page.\n"
+#| "\n"
+#| "You can also send an RFS (request for sponsorship) to the debian-mentors\n"
+#| "mailing list. Your package page will give your suggestions on how to\n"
+#| "send that mail.\n"
+#| "\n"
+#| "Good luck in finding a sponsor!\n"
+#| "\n"
+#| "Thanks,"
+msgid ""
+"\n"
+"and set the \"Seeking a sponsor\" option to highlight your package on the\n"
+"welcome page.\n"
+"\n"
+"You can also send an RFS (request for sponsorship) to the debian-mentors\n"
+"mailing list. Your package page will give you suggestions on how to\n"
+"send that mail.\n"
+"\n"
+"Good luck in finding a sponsor!\n"
+"\n"
+"Thanks,"
+msgstr ""
+"\n"
+"并设置“寻找赞助者”选项以在欢迎界面突出显示你的软件包。\n"
+"\n"
+"你也可以发送一份 RFS 请求（请求上传协助）到 debian-mentors\n"
+"邮件列表。你的软件包页面提供了如何发送此类邮件的相关建议。\n"
+"\n"
+"祝你顺利找到一位赞助者！\n"
+"\n"
+"谢谢，"
+
+#: importer/templates/email-importer-reject.html
+#, python-format
+msgid ""
+"Hello,\n"
+"\n"
+"Unfortunately your package \"%(source)s\" was rejected\n"
+"because of the following reason:\n"
+"\n"
+"%(error)s\n"
+"\n"
+"%(details)s\n"
+"\n"
+"Please try to fix it and re-upload. Thanks,"
+msgstr ""
+"你好，\n"
+"\n"
+"很遗憾你的软件包“%(source)s”被拒绝，\n"
+"其原因如下：\n"
+"\n"
+"%(error)s\n"
+"\n"
+"%(details)s\n"
+"\n"
+"请尝试进行修复并重新上传。谢谢，"

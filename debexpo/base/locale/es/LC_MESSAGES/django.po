@@ -1,0 +1,1668 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-10-13 18:16+0000\n"
+"PO-Revision-Date: 2023-08-25 17:55+0000\n"
+"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/debexpo/debexpo/"
+"es/>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.0.1-dev\n"
+
+#: base/templates/base.html
+msgid "Start page"
+msgstr "Página inicial"
+
+#: base/templates/base.html
+msgid "Package list"
+msgstr "Lista de paquetes"
+
+#: base/templates/base.html
+msgid "Maintainer"
+msgstr "Mantenedor"
+
+#: base/templates/base.html
+msgid "Reviews"
+msgstr "Revisiones"
+
+#: base/templates/base.html
+msgid "Sponsors"
+msgstr "Promotor"
+
+#: base/templates/base.html
+msgid "Q &amp; A"
+msgstr "Preguntas más frecuentes"
+
+#: base/templates/base.html
+msgid "Contact"
+msgstr "Contacto"
+
+#: base/templates/base.html
+msgid "My account"
+msgstr "Mi cuenta"
+
+#: base/templates/base.html
+msgid "My packages"
+msgstr "Mis paquetes"
+
+#: base/templates/base.html
+msgid "My subscriptions"
+msgstr "Mis suscripciones"
+
+#: base/templates/base.html
+msgid "Logout"
+msgstr "Salir"
+
+#: base/templates/base.html
+msgid "Sign me up"
+msgstr "Regístrame"
+
+#: base/templates/base.html
+msgid "Login"
+msgstr "Iniciar sesión"
+
+#: base/templates/base.html
+msgid "Auto-detected"
+msgstr "Autodetectado"
+
+#: base/templates/base.html
+msgid "Hosting and hardware provided by"
+msgstr "Alojamiento y hardware proporcionados por"
+
+#: base/templates/base.html
+msgid "Source code and bugs"
+msgstr "Código fuente y defectos"
+
+#: base/templates/base.html
+msgid "Version"
+msgstr "Versión"
+
+#: base/templates/base.html
+msgid "RSS"
+msgstr "RSS"
+
+#: base/templates/contact.html
+msgid "Site contact"
+msgstr "Contacto del sitio"
+
+#: base/templates/contact.html
+#, python-format
+msgid ""
+"You can get in direct contact with the debexpo team. In case of technical "
+"problems please check the <a href=\"%(u_qa)s\">Q &amp; A</a> section and the "
+"<a href=\"https://wiki.debian.org/Debexpo\">Debian wiki</a> first. "
+"<strong>Please do not use this contact address for sponsor requests or "
+"packaging questions</strong>, write to the <a href=\"https://lists.debian."
+"org/debian-mentors/\">debian-mentors mailing list</a> instead or <a "
+"href=\"%(u_rfs)s\">file a RFS bug</a> respectively."
+msgstr ""
+"Puede Ud contactar directamente con el equipo de debexpo. En el caso de "
+"problemas técnicos, vea primero la sección <a href=\"%(u_qa)s\">Preguntas y "
+"respuestas</a> y el <a href=\"https://wiki.debian.org/Debexpo\">wiki de "
+"Debian</a>. <strong>Por favor, no use esta dirección de contacto para "
+"solicitudes de patrocino o preguntas acerca de empaquetado</strong>. En vez "
+"de eso escriba a <a href=\"https://lists.debian.org/debian-mentors/\">la "
+"lista de correo debian-mentors</a> o abra un <a href=\"%(u_rfs)s\">ticket "
+"tipo RFS</a> respectivamente."
+
+#: base/templates/contact.html
+msgid "Site email"
+msgstr "Email del sitio"
+
+#: base/templates/contact.html
+msgid ""
+"Currently Baptiste Beauplat (<em>lyknode</em>), Mattia Rizzolo (<em>mattia</"
+"em>, IRC: <em>mapreri</em>) and Paul Wise (<em>pabs</em>) are maintaining "
+"this service."
+msgstr ""
+"Actualmente Baptiste Beauplat (<em>lyknode</em>), Mattia Rizzolo "
+"(<em>mattia</em>, IRC: <em>mapreri</em>) y Paul Wise (<em>pabs</em>) están "
+"manteniendo este servicio."
+
+#: base/templates/contact.html
+msgid "Development"
+msgstr "Desarrollo"
+
+#: base/templates/contact.html
+#, python-format
+msgid ""
+"We are always looking for new contributors. If you want to contribute or "
+"improve %(site_name)s, come to <tt>#debexpo</tt> on <a href=\"irc://irc."
+"debian.org/debexpo\">irc.debian.org</a> and chat with us."
+msgstr ""
+"Buscamos siempre nuevos contribuidores. Si quiere Ud contribuir o mejorar "
+"%(site_name)s, entre en el canal <tt>#debexpo</tt> de <a href=\"irc://irc."
+"debian.org/debexpo\">irc.debian.org</a> y hable con nosotros."
+
+#: base/templates/index.html
+#, python-format
+msgid "Welcome to %(name)s"
+msgstr "Bienvenido a %(name)s"
+
+#: base/templates/index.html
+msgid ""
+"Only approved members of the Debian project (Debian Developers) are granted "
+"the permission to upload software packages into the Debian distribution. "
+"Still a large number of packages is maintained by non-official developers. "
+"How do they get their work into Debian when they are not allowed to upload "
+"their own packages directly? By means of a process called <em>sponsorship</"
+"em>. Sponsorship means that a Debian Developer uploads the package on behalf "
+"of the actual maintainer. The Debian Developer will also check the package "
+"for technical correctness and help the maintainer to improve the package if "
+"necessary. Therefore the sponsor is sometimes also called a mentor."
+msgstr ""
+"Solo miembros aprobados del proyecto Debian (Debian Developers) tienen "
+"permiso para subir paquetes de software a la distribución. No obstante un "
+"gran numero de paquetes los mantienen desarrolladores extraoficiales. ¿Cómo "
+"logran publicar su trabajo en Debian sin permiso para subir sus paquetes "
+"directamente? Mediante un proceso llamado <em>patrocicio</em> (sponsorship). "
+"El patrocinio consiste en que un Debian Developer suba un paquete en nombre "
+"del mantenedor real. El Debian Developer comprobará la corrección técnica "
+"del paquete y ayudará al mantenedor a mejorarlo si fuera necesario. Por ello "
+"en este contexto al DD se le llama mentor."
+
+#: base/templates/index.html
+msgid ""
+"Note, not only Debian Developer are allowed to review packages. Everyone is "
+"encouraged to review packages! We appreciate your efforts as well."
+msgstr ""
+"Observe que no solo los Debian Developer están autorizados a revisar "
+"paquetes. ¡Se anima a todo el mundo a revisar paquetes! También apreciamos "
+"sus esfuerzos."
+
+#: base/templates/index.html
+msgid "Getting your package into Debian"
+msgstr "Incluir su paquete en Debian"
+
+#: base/templates/index.html
+#, python-format
+msgid ""
+"See <a href=\"%(u_intro_maintainers)s\">our introductory page for "
+"maintainers</a> and learn how to use %(name)s and get your packages into "
+"Debian. Furthermore see <a href=\"%(u_sponsors)s\">our introductory page on "
+"sponsorship</a> to learn how to get in touch with a sponsor."
+msgstr ""
+"Vea <a href=\"%(u_intro_maintainers)s\">nuestra página introductoria para "
+"mantenedores</a> y aprenda como usar %(name)s para incluir sus paquetes en "
+"Debian. Vea además <a href=\"%(u_sponsors)s\">nuestra página introductoria "
+"sobre patrocinios</a> para aprender cómo contactar con un mentor."
+
+#: base/templates/index.html
+msgid ""
+"If you are curious about <em>Debexpo</em>, the software which is running "
+"this site, you can <a href=\"https://wiki.debian.org/Debexpo\">read more "
+"about Debexpo on the Debian Wiki</a>."
+msgstr ""
+"Si siente curiosidad sobre <em>Debexpo</em>, el software que se ejecuta en "
+"este sitio, puede Ud <a href=\"https://wiki.debian.org/Debexpo\">leer más "
+"acerca de Debexpo en el Wiki de Debian</a>."
+
+#: base/templates/index.html
+msgid "Recently uploaded packages"
+msgstr "Paquetes subidos recientemente"
+
+#: base/templates/intro-maintainers.html
+msgid "Introduction for maintainers: How will my package get into Debian?"
+msgstr "Introducción para mantenedores: ¿Cómo incluir mi paquete en Debian?"
+
+#: base/templates/intro-maintainers.html
+msgid ""
+"We are glad that you found your way to our web site. Honestly, the whole web "
+"site is just there to get your work into Debian. Your contribution is highly "
+"appreciated. Read on to see in what ways we will be helping you find a "
+"sponsor."
+msgstr ""
+"Nos alegramos de que haya encontrado el camino a nuestro sitio web. En "
+"realidad todo el sitio web existe únicamente para incluir su trabajo en "
+"Debian. Se agradece encarecidamente su contribución. Siga leyendo para "
+"descubrir de qué maneras le ayudaremos a encontrar un patrocinador."
+
+#: base/templates/intro-maintainers.html
+msgid "1. Identify a package"
+msgstr "1. Identificar un paquete"
+
+#: base/templates/intro-maintainers.html
+msgid "Propose a package: File a WNPP bug"
+msgstr "Proponer un paquete: Crear un ticket WNPP"
+
+#: base/templates/intro-maintainers.html
+msgid ""
+"If you want to package something not currently available in Debian, the very "
+"first step should be to file an \"Intent to package\" (<em>ITP</em>) bug on "
+"<a href=\"https://www.debian.org/devel/wnpp/\"> Work-Needing and Prospective "
+"Packages</a>."
+msgstr ""
+"Si quiere Ud empaquetar algo que no esté actualmente disponible en Debian, "
+"el primer paso debe ser abrir un ticket de \"Intento de "
+"empaquetado\" (<em>ITP</em>) en <a href=\"https://www.debian.org/devel/wnpp/"
+"\"> Paquetes solicitados o necesitados de elaboración (WNPP en inglés)</a>."
+
+#: base/templates/intro-maintainers.html
+#, python-format
+msgid ""
+"Debian is a distribution, not a general purpose repository. Many of us do "
+"not believe <em>every</em> piece of free software necessarily belongs in "
+"Debian. Please do not treat Debian as a platform to advertise your own "
+"software, unless there is some <em>real</em> request for it. That said, "
+"there is no one who ultimately judges about that. Eventually you may get "
+"some feedback on that discussion after filing your WNPP bug (see below) "
+"however you are free to interpret that as a suggestion, not as a final vote. "
+"After all, you need to find a sponsor believing in the benefit of having "
+"your package in Debian. Please have a look at our <a "
+"href=\"%(u_sponsor)s\">sponsors page</a> to learn about personal interests "
+"of sponsors."
+msgstr ""
+"Debian is una distribución, no un repositorio de propósito general. Muchos "
+"de nosotros no creemos que <em>toda</em> pieza de software libre encaje "
+"necesariamente en Debian. Por favor, no trate a Debian como una plataforma "
+"para promover su propio software, salvo que haya alguna petición <em>real</"
+"em> para ello. Dicho esto, no hay nadie que lo vaya a juzgar. Podría ser que "
+"reciba algún comentario al respecto tras abrir su ticket WNPP (ver abajo) "
+"sin embargo Ud es libre de interpretarlo como sugerencia no vinculante. En "
+"cualquier caso necesitará Ud encontrar un patrocinador que crea en el valor "
+"de tener su paquete disponible en Debian. Consulte por favor nuestra <a "
+"href=\"%(u_sponsor)s\">página de mentores</a> para aprender acerca de los "
+"intereses personales de nuestros mentores."
+
+#: base/templates/intro-maintainers.html
+msgid "Find a package looking for maintainers"
+msgstr "Encontrar un paquete falto de mantenedores"
+
+#: base/templates/intro-maintainers.html
+msgid ""
+"If you want to contribute to Debian, but you do not know which packages to "
+"contribute to, take a look at \"Request for help\" (<em>RFH</em>), \"Request "
+"for adopter\" (<em>RFA</em>), \"Orphaned package\" (<em>O</em>) and "
+"\"Request for package\" (<em>RFP</em>) bugs. See <em>WNPP</em> below."
+msgstr ""
+"Si quiere Ud contribuir a Debian pero no sabe a qué paquetes contribuir, "
+"mire tickets de tipos \"Solicitud de ayuda\" (<em>RFH</em>), \"Solicitud de "
+"adopción\" (<em>RFA</em>), \"Paquete huérfano\" (<em>O</em>) y \"Solicitud "
+"de empaquetado\" (<em>RFP</em>). Ver <em>WNPP</em> abajo."
+
+#: base/templates/intro-maintainers.html
+msgid ""
+"<a href=\"https://www.debian.org/devel/wnpp/\"> Work-Needing and Prospective "
+"Packages</a> (<em>WNPP</em>) is our system of announcing your intent to "
+"markup packages being worked on. In particular it is a bug against the <a "
+"href=\"https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=wnpp\"> WNPP pseudo "
+"package</a> (<a href=\"https://wnpp.debian.net/\">or use a nice frontend</a> "
+"to browse <em>WNPP</em> bugs). You may want to use the <tt><a href=\"https://"
+"packages.debian.org/sid/reportbug\">reportbug</a></tt> tool to achieve that "
+"by selecting \"<em>wnpp</em>\" as package to report a bug to."
+msgstr ""
+"<a href=\"https://www.debian.org/devel/wnpp/\">Paquetes propuestos o "
+"necesitados de elaboración</a> (<em>WNPP</em>, en inglés) es nuestro sistema "
+"para anunciar su intento y marcar paquetes en los que trabaja. Se "
+"instrumenta como una tarea contra el <a href=\"https://bugs.debian.org/cgi-"
+"bin/pkgreport.cgi?pkg=wnpp\">pseudo-paquete WNPP</a>. (<a href=\"https://"
+"wnpp.debian.net/\">Use un frontal amigable</a> para hojear tickets <em>WNPP</"
+"em>) o la herramienta <tt><a href=\"https://packages.debian.org/sid/"
+"reportbug\">reportbug</a></tt> seleccionando \"<em>wnpp</em>\" como paquete "
+"contra el que abrir la tarea."
+
+#: base/templates/intro-maintainers.html
+msgid "2. Make the package"
+msgstr "2. Construir el paquete"
+
+#: base/templates/intro-maintainers.html
+msgid ""
+"Debian packages must comply to several normative requirements and "
+"guidelines. We can't give you exhaustive instructions on how to build "
+"packages here. In short, we expect you to provide a <em>source package</em> "
+"complying to the Debian policy at least (see below). Please take a look at "
+"those excellent resources:"
+msgstr ""
+"Los paquetes Debian tienen que cumplir varios requisitos normativos y "
+"directrices. Aquí no podemos darle instrucciones completas para construir "
+"paquetes. En resumen, esperamos que Ud proporcione un <em>paquete fuente</"
+"em> que cumpla al menos la política de Debian (ver abajo). Eche un vistazo "
+"por favor a estos excelentes recursos:"
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "The Debian Policy Manual"
+msgstr "El Manual de la Política de Debian"
+
+#: base/templates/intro-maintainers.html
+msgid ""
+"A must-read resource to learn about technical specification and technical "
+"requirements of Debian packages."
+msgstr ""
+"Una lectura obligada para aprender acerca de los requisitos y "
+"especificaciones técnicos de los paquetes Debian."
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "New Maintainer's Guide"
+msgstr "Guía del Mantenedor Nuevo"
+
+#: base/templates/intro-maintainers.html
+msgid "A must-read resource to learn basics of Debian source packages"
+msgstr ""
+"Una lectura obligada para aprender lo básico de los paquetes fuente Debian"
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "Lucas Nussbaum's packaging tutorial"
+msgstr "Tutorial de Empaquetado de Lucas Nussbaum"
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "A quick introduction to Debian packaging"
+msgstr "Una introducción rápida al empaquetado Debian"
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "Developer's Reference"
+msgstr "Referencia del Desarrollador"
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid ""
+"A comprehensive manual describing typical workflows and best practices "
+"related to Debian packages"
+msgstr ""
+"Un manual completo que describe los flujos de trabajo y buenas prácticas "
+"relativos a los paquetes Debian"
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "Guide for Debian Maintainers"
+msgstr ""
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "Successor to the “Debian New Maintainers’ Guide”."
+msgstr ""
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "Debian Mentors FAQ"
+msgstr "Preguntas Frecuentes respecto a Mentores Debian"
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid "(Debian Wiki)"
+msgstr "(Debian Wiki)"
+
+#: base/templates/intro-maintainers.html base/templates/qa.html
+msgid ""
+"Another valuable resource to learn about common terms and workflows related "
+"to Debian"
+msgstr ""
+"Otro recurso valioso para aprender acerca de términos comunes y flujos de "
+"trabajo relativos a Debian"
+
+#: base/templates/intro-maintainers.html
+msgid "3. Publish your package"
+msgstr "3. Publicar su paquete"
+
+#: base/templates/intro-maintainers.html
+#, python-format
+msgid ""
+"This web site is a public package repository of source packages. You can "
+"upload your package to this server (through special tools like '<tt><a "
+"href=\"https://packages.debian.org/sid/dupload\">dupload</a></tt>' or "
+"'<tt><a href=\"https://packages.debian.org/sid/dput\">dput</a></tt>') and "
+"after a few checks it will be stored in our repository. <a "
+"href=\"%(u_sponsor)s\">Interested sponsors</a> can then download the package "
+"and upload it to Debian."
+msgstr ""
+"Este sitio web es un repositorio público de paquetes fuente. Puede Ud subir "
+"su paquete a este servidor (mediante herramientas especiales como '<tt><a "
+"href=\"https://packages.debian.org/sid/dupload\">dupload</a></tt>' o '<tt><a "
+"href=\"https://packages.debian.org/sid/dput\">dput</a></tt>') y tras algunas "
+"comprobaciones se almacenará en nuestro repositorio. Los <a "
+"href=\"%(u_sponsor)s\">mentores interesados</a> pueden descargar el paquete "
+"y publicarlo en Debian."
+
+#: base/templates/intro-maintainers.html
+#, python-format
+msgid "Using %(title)s"
+msgstr "Usar %(title)s"
+
+#: base/templates/intro-maintainers.html
+#, python-format
+msgid ""
+"<strong><a href=\"%(u_register)s\">Sign up for an account</a></strong>. "
+"Getting an account on this server is an automatic process and will just take "
+"a moment. We require registration so we have a valid email address where "
+"sponsors can reach you."
+msgstr ""
+"<strong><a href=\"%(u_register)s\">Registre una cuenta</a></strong>. Obtener "
+"una cuenta en este servidor es un proceso automático I solo tardará un "
+"momento. Requerimos registro para tener una dirección de correo electrónico "
+"válida para que los mentores le contacten."
+
+#: base/templates/intro-maintainers.html
+#, fuzzy, python-format
+#| msgid ""
+#| "<strong>Upload your package</strong> to <tt>%(name)s</tt>. You do not "
+#| "need to put your packages into any other web space on the Internet. "
+#| "Everybody will be able to download your package using either the web "
+#| "browser, the '<tt>dget</tt>' tools or even through a simple run of "
+#| "<tt>apt-get source ....</tt>"
+msgid ""
+"<strong>Upload your package</strong> to <tt>%(name)s</tt>. You do not need "
+"to put your packages into any other web space on the Internet. Everybody "
+"will be able to download your package using either the web browser, the "
+"'<tt>dget</tt>' tools or even through a simple run of <tt>apt-get source …</"
+"tt>."
+msgstr ""
+"<strong>Suba su paquete</strong> a <tt>%(name)s</tt>. No necesita dejar sus "
+"paquetes en ningún otro espacio web de Internet. Todo el mundo podrá "
+"descargar su paquete usando el navegador web, las herramientas '<tt>dget</"
+"tt>' o incluso mediante una simple ejecución de <tt>apt-get source ....</tt>"
+
+#: base/templates/intro-maintainers.html
+#, fuzzy, python-format
+#| msgid ""
+#| "Have a look at your <a href=\"%(u_my)s\">personal package page</a>. Your "
+#| "uploaded package should <strong>show up there</strong>. From there you "
+#| "can toggle several settings and retrieve the RFS (request-for-"
+#| "sponsorship) template"
+msgid ""
+"Have a look at your <a href=\"%(u_my)s\">personal package page</a>. Your "
+"uploaded package should <strong>show up there</strong>. From there you can "
+"toggle several settings and retrieve the RFS (request-for-sponsorship) "
+"template."
+msgstr ""
+"Mire su <a href=\"%(u_my)s\">página personal de paquete</a>. Su paquete "
+"debería <strong>aparecer allí</strong>. Y ahí mismo puede Ud ajustar varias "
+"configuraciones y obtener la plantilla de solicitud de patrocinio (RFS, en "
+"inglés)"
+
+#: base/templates/intro-maintainers.html
+#, python-format
+msgid ""
+"Your package is on display on the main page of %(title)s (if you enable the "
+"\"<i>Needs a Sponsor</i>\" button) so interested sponsors will see it and "
+"hopefully check it out."
+msgstr ""
+"Su paquete se muestra en la página principal de %(title)s (si habilita el "
+"botón \"<i>Necesita mentor</i>\") de modo que los mentores interesados lo "
+"verán y lo mirarán."
+
+#: base/templates/intro-maintainers.html
+msgid ""
+"You will be shown a <strong>RFS (request-for-sponsorship) template</strong> "
+"that you should send out as a bug report filed against the <em>sponsorship-"
+"requests</em> pseudo-package to draw attention to your package."
+msgstr ""
+"Se le mostrará una <strong>plantilla de solicitud de mentor (RFS)</strong> "
+"que deberá enviar como informe de fallo contra el pseudo-paquete "
+"<em>sponsorship-requests</em> para atraer atención sobre su paquete."
+
+#: base/templates/intro-maintainers.html
+#, python-format
+msgid "How to upload packages to <tt>%(name)s</tt>"
+msgstr "Cómo subir paquetes a <tt>%(name)s</tt>"
+
+#: base/templates/intro-maintainers.html
+msgid ""
+"You need to use <a href=\"https://packages.debian.org/dput\"><tt>dput</tt></"
+"a> to upload packages. We accept your uploads through <em>HTTPS</em> or "
+"<em>FTP</em>. All packages <strong>must be signed</strong> (using <a "
+"href=\"https://packages.debian.org/devscripts\"><tt>debsign</tt></a>) with "
+"the GnuPG key you configured in your control panel."
+msgstr ""
+"Necesita Ud usar <a href=\"https://packages.debian.org/dput\"><tt>dput</tt></"
+"a> para subir paquetes. Nosotros aceptamos sus subidas mediante <em>HTTPS</"
+"em> o <em>FTP</em>. Todos los paquetes <strong>tienen que venir firmados</"
+"strong> (usando <a href=\"https://packages.debian.org/"
+"devscripts\"><tt>debsign</tt></a>) con la clave GnuPG que Ud configuró en su "
+"panel de control."
+
+#: base/templates/intro-maintainers.html
+msgid "HTTPS uploads"
+msgstr "Subidas HTTPS"
+
+#: base/templates/intro-maintainers.html
+msgid "FTP uploads"
+msgstr "Subidas FTP"
+
+#: base/templates/intro-maintainers.html
+msgid ""
+"To use HTTPS put the following content to your <tt>~/.dput.cf</tt> file:"
+msgstr ""
+"Para usar HTTPS ponga el siguiente contenido en su archivo <tt>~/.dput.cf</"
+"tt>:"
+
+#: base/templates/intro-maintainers.html
+#, python-format
+msgid ""
+"You can use <em>FTP</em> to upload packages to %(title)s. If you prefer that "
+"method make sure you sign your uploads with your GPG key! This is the "
+"corresponding <tt>~/.dput.cf</tt> file:"
+msgstr ""
+"Puede Ud usar <em>FTP</em> para subir paquetes a %(title)s. Si prefiere ese "
+"método ¡asegúrese de firmar sus subidas con su clave GPG! Este es el archivo "
+"<tt>~/.dput.cf</tt> correspondiente:"
+
+#: base/templates/intro-maintainers.html
+msgid "Once you have it set up, you can run it from your shell like this:"
+msgstr ""
+"Una vez lo tenga dispuesto puede ejecutarlo desde su shell de la siguiente "
+"manera:"
+
+#: base/templates/intro-maintainers.html
+msgid ""
+"If you did everything right, you will get a confirmation mail from our site "
+"and you can start seeking a sponsor for your package."
+msgstr ""
+"Si hizo todo correctamente obtendrá un correo electrónico de confirmación de "
+"nuestro sitio y puede empezar a buscar un mentor para su paquete."
+
+#: base/templates/intro-maintainers.html
+msgid "4. Find a sponsor"
+msgstr "4. Encontrar un mentor"
+
+#: base/templates/intro-maintainers.html
+#, python-format
+msgid ""
+"Once your package is publicly available on any resource, including but not "
+"limited to %(title)s you may start searching for a sponsor for your package. "
+"If you have already uploaded packages to Debian, you should ask your former "
+"sponsor. A sponsor is any <a href=\"https://wiki.debian.org/"
+"DebianDeveloper\">Debian Developer</a> willing to upload your package to "
+"Debian on your behalf. Have a look to our <a href=\"%(u_sponsor)s\">sponsors "
+"page</a> to learn more on sponsors and how to find one."
+msgstr ""
+"Una vez su paquete esté disponible públicamente en cualquier recurso, "
+"incluyendo pero sin limitarse a %(title)s, Ud podrá buscar un mentor para su "
+"paquete. Si ya a subido paquetes a Debian, debería pedírselo a su anterior "
+"mentor. Mentor es cualquier desarrollador Debian (<a href=\"https://wiki."
+"debian.org/DebianDeveloper\">Debian Developer</a>) dispuesto a subir su "
+"paquete a Debian por Ud. Consulte nuestra <a href=\"%(u_sponsor)s\">página "
+"de mentores</a> para aprender más acerca de los mentores y cómo encontrar "
+"uno."
+
+#: base/templates/intro-maintainers.html
+#, python-format
+msgid ""
+"The main point of the sponsoring process is to review your package to make "
+"sure it meets our technical requirements. Everyone can and should review "
+"other people's packages. Also, a clean package will increase your likelihood "
+"to find a sponsor. Please take a look at our page <a "
+"href=\"%(u_reviewers)s\">about package reviews</a>."
+msgstr ""
+"La principal razón de ser del proceso de patrocinio es revisar su paquete "
+"para asegurar que cumple nuestros requisitos técnicos. Todo el mundo puede y "
+"debería revisar los paquetes de otros. Por otra parte, un paquete limpio "
+"mejora la probabilidad de encontrar un mentor. Por favor, consulte nuestra "
+"página <a href=\"%(u_reviewers)s\">acerca de las revisiones de paquetes</a>."
+
+#: base/templates/intro-maintainers.html
+msgid "The relation between you and your sponsor"
+msgstr "La relación entre Ud y su mentor"
+
+#: base/templates/intro-maintainers.html
+msgid ""
+"A sponsor is not technically responsible for your package. <strong>You</"
+"strong> will be listed as the official maintainer of the package in Debian. "
+"You will even get the bug reports if people discover problems in your "
+"package. Apart from not being able to upload the package directly into "
+"Debian you are treated as a full member of the community. The Debian project "
+"appreciates the work you do."
+msgstr ""
+"Técnicamente el mentor no es responsable de su paquete. <strong>Ud</strong> "
+"constará como el mantenedor oficial del paquete en Debian. Ud recibirá los "
+"informes de defecto si la gente descubre problemas en su paquete. Aparte de "
+"no poder subir directamente paquetes a Debian se le tratará a Ud como un "
+"miembro pleno de la comunidad. El proyecto Debian aprecia el trabajo que Ud. "
+"realiza."
+
+#: base/templates/intro-maintainers.html
+msgid "What can I do if I don't find a sponsor?"
+msgstr "¿Qué puedo hacer si no encuentro un mentor?"
+
+#: base/templates/intro-maintainers.html
+msgid ""
+"Do not give up. Sponsoring can take a while. Nonetheless, here are a few "
+"hints:"
+msgstr ""
+"No se rinda. El patrocinio puede llevar su tiempo. Aquí tiene algunas "
+"orientaciones:"
+
+#: base/templates/intro-maintainers.html
+msgid ""
+"File a follow-up request to your existing <em>sponsorship-requests</em> "
+"pseudo-package."
+msgstr ""
+"Tramite una solicitud de seguimiento contra su pseudo-paquete de "
+"<em>solicitud de patrocinio</em>."
+
+#: base/templates/intro-maintainers.html
+#, python-format
+msgid ""
+"Offer your package directly to relevant teams and individual developers. We "
+"made a <a href=\"%(u_sponsor)s\">list of sponsors</a> , eventually willing "
+"to upload packages for you. <em>Please don't contact every sponsor listed "
+"there. Instead, read their individual requirements and choose the sponsor "
+"which matches you and your package best</em>."
+msgstr ""
+"Ofrece tu paquete directamente a los equipos relevantes o desarrolladores "
+"individuales. Creamos una <a href=\"%(u_sponsor)s\">lista de patrocinadores</"
+"a> que pueden estar dispuestos a cargar tu paquete por ti. <em>Por favor, "
+"absténte de ponerte en contacto con cualquier patrocinador de esta lista. "
+"Sin embargo, lee los requisitos individuales y elige el patrocinador que "
+"mejor se adapte a ti y tu paquete</em>."
+
+#: base/templates/intro-maintainers.html
+msgid "5. Getting an upload to Debian"
+msgstr "5. Conseguir una subida a Debian"
+
+#: base/templates/intro-maintainers.html
+msgid ""
+"Once you find a sponsor interested in your package, he or she will "
+"<em>sponsor</em> it. That means reviewing, building, and testing it and then "
+"uploading it to Debian. You will get notified by <em>dak</em> - the software "
+"used by Debian to manage its repositories - about the upload. Please note, "
+"if your package was not at all in Debian before, it needs manual approval by "
+"<a href=\"https://ftp-master.debian.org/\">ftpmasters</a> to clear the <a "
+"href=\"https://ftp-master.debian.org/new.html\">NEW queue</a>. They will do "
+"consistency checks, and review your <tt>debian/copyright</tt> file whether "
+"your package matches the <a href=\"https://www.debian.org/"
+"social_contract#guidelines\"> Debian Free Software Guidelines</a>. "
+"ftpmaster's opinion is binding here for both your sponsor and you."
+msgstr ""
+"Una vez que encuentres un patrocinador interesado en tu paquete, éste lo "
+"<em>patrocinará</em>. Eso significa revisarlo, construirlo y probarlo y "
+"luego subirlo a Debian. Recibirás una notificación de <em>dak</em> -el "
+"software usado por Debian para gestionar los repositorios- sobre la subida. "
+"Por favor, ten en cuenta que si tu paquete no estaba antes en Debian, "
+"necesita la aprobación manual de <a href=\"https://ftp-master.debian.org/"
+"\">ftpmasters</a> para despejar la <a href=\"https://ftp-master.debian.org/"
+"new.html\">cola de <a href=\"https://ftp-master.debian.org/new.html\">NEW</"
+"a>. Harán comprobaciones de consistencia, y revisarán tu archivo <tt>debian/"
+"copyright</tt> para ver si tu paquete se ajusta a las <a href=\"https://www."
+"debian.org/social_contract#guidelines\">Directrices de Software Libre de "
+"Debian</a>. La opinión del ftpmaster es vinculante aquí tanto para tu "
+"patrocinador como para ti."
+
+#: base/templates/intro-maintainers.html
+msgid "6. Maintaining your package in Debian"
+msgstr "6. Mantener tu paquete en Debian"
+
+#: base/templates/intro-maintainers.html
+#, python-format
+msgid ""
+"Please see the corresponding chapter in the <a href=\"https://www.debian.org/"
+"doc/manuals/maint-guide/update\"> New Maintainer's Guide</a> to get the "
+"idea. Whenever you feel like, you should update your package in Debian. The "
+"general procedure is not different from your first upload. Please upload "
+"your updated package to %(name)s and notify your former sponsor about your "
+"change. Alternatively, follow <a href=\"%(u_sponsor)s\">the usual "
+"procedures</a>."
+msgstr ""
+"Consulta el capítulo correspondiente en la <a href=\"https://www.debian.org/"
+"doc/manuals/maint-guide/update\">Guía del nuevo administrador</a> para "
+"hacerte una idea. Siempre que quieras, debes actualizar tu paquete en "
+"Debian. El procedimiento general no es diferente al de la primera carga. "
+"Carga tu paquete actualizado en %(name)s y notifica el cambio a tu "
+"patrocinador anterior. Alternativamente, sigue <a href=\"%(u_sponsor)s\">el "
+"procedimiento habitual</a>."
+
+#: base/templates/intro-maintainers.html
+msgid ""
+"If your package passes through the sponsoring process for <em>a few</em> "
+"successive uploads without any notable correction by your sponsor, you can "
+"become a <a href=\"https://wiki.debian.org/DebianMaintainer\">Debian "
+"Maintainer</a> which grants you limited upload rights to Debian directly. "
+"Get in touch with your sponsor to discuss your chances here. You can also <a "
+"href=\"https://www.debian.org/devel/join/\">become a Debian Developer</a> "
+"giving you full membership in the project."
+msgstr ""
+"Si tu paquete pasa por el proceso de patrocinio para <em>algunas</em> "
+"subidas sucesivas sin ninguna corrección notable por parte de tu "
+"patrocinador, puede convertirte en un <a href=\"https://wiki.debian.org/"
+"DebianMaintainer\"> Mantenedor de Debian</a> que te otorga derechos de carga "
+"limitados a Debian directamente. Ponte en contacto con tu patrocinador para "
+"discutir tus posibilidades aquí. También puedes <a href=\"https://www.debian."
+"org/devel/join/\">convertirte en un desarrollador de Debian</a>, lo que te "
+"otorga una membresía completa en el proyecto."
+
+#: base/templates/qa.html
+msgid "Questions &amp; Answers"
+msgstr "Preguntas y respuestas"
+
+#: base/templates/qa.html
+#, python-format
+msgid ""
+"%(site_name)s is a rather complex service. Things can go wrong on your side "
+"or on this server. Before contacting the support please see if your question "
+"is answered here:"
+msgstr ""
+"%(site_name)s es un servicio bastante complejo. Las cosas pueden ir mal en "
+"tu lado o en este servidor. Antes de contactar con el soporte, por favor, "
+"comprueba si tu pregunta ha sido respondida aquí:"
+
+#: base/templates/qa.html
+msgid "Getting started"
+msgstr "Primeros pasos"
+
+#: base/templates/qa.html
+msgid "How do I build a package?"
+msgstr "¿Cómo se crea un paquete?"
+
+#: base/templates/qa.html
+msgid ""
+"If you want to learn how to create a proper Debian package you can find some "
+"interesting documentation to start with:"
+msgstr ""
+"Si quieres aprender a crear un paquete de Debian adecuado, puedes encontrar "
+"más información interesante para empezar:"
+
+#: base/templates/qa.html
+msgid ""
+"A must read resource to learn about technical specification and technical "
+"requirements of Debian packages."
+msgstr ""
+"Un recurso de lectura obligada para conocer las especificaciones técnicas y "
+"los requisitos técnicos de los paquetes Debian."
+
+#: base/templates/qa.html
+msgid "A must read resource to learn basics of Debian source packages"
+msgstr ""
+"Un recurso de lectura obligada para aprender los fundamentos de los paquetes "
+"fuente de Debian"
+
+#: base/templates/qa.html
+msgid "What is the Debian policy?"
+msgstr "¿Cuál es la norma de Debian?"
+
+#: base/templates/qa.html
+msgid ""
+"Every package must comply with the <a href=\"https://www.debian.org/doc/"
+"debian-policy/ch-scope.html\">Debian policy</a> before it can enter the "
+"Debian distribution. This is a document which describes the structure and "
+"contents of the Debian archive and several design issues of the operating "
+"system, as well as technical requirements that each package must satisfy to "
+"be included in the distribution."
+msgstr ""
+"Cada paquete debe cumplir la <a href=\"https://www.debian.org/doc/debian-"
+"policy/ch-scope.html\">Política de Debian</a> antes de poder entrar en la "
+"distribución Debian. Se trata de un documento que describe la estructura y "
+"el contenido del archivo de Debian y varias cuestiones de diseño del sistema "
+"operativo, así como los requisitos técnicos que cada paquete debe satisfacer "
+"para ser incluido en la distribución."
+
+#: base/templates/qa.html
+msgid ""
+"The policy is not a tutorial. Its a technical manual which specifies "
+"normative requirements of packages. Read it to learn package specifications. "
+"If you don't know how to package something for Debian, please read "
+"additionally the <a href=\"https://www.debian.org/doc/manuals/maint-guide/"
+"\">New Maintainer's Guide</a>."
+msgstr ""
+"La política no es un tutorial. Es un manual técnico que especifica los "
+"requisitos normativos de los paquetes. Léelo para conocer las "
+"especificaciones del paquete. Si no sabes cómo empaquetar algo para Debian, "
+"lee además la <a href=\"https://www.debian.org/doc/manuals/maint-guide/"
+"\">Guía del nuevo administrador</a>."
+
+#: base/templates/qa.html
+msgid "Is my package technically okay?"
+msgstr "¿Está técnicamente bien mi paquete?"
+
+#: base/templates/qa.html
+#, python-format
+msgid ""
+"When you upload your package to %(site_name)s it will automatically be "
+"checked for common mistakes. You will get an information email after the "
+"upload. Either your package contains bugs and will be rejected, or the "
+"package is clean except for some minor technical issues. You will get hints "
+"about how to fix the package. If the email tells you that your package is "
+"fine then a sponsor will still do further checks. Don't worry too much. If "
+"your package is accepted by mentors.debian.net then let the sponsor help you "
+"with the rest."
+msgstr ""
+"Cuando subas tu paquete a %(site_name)s se comprobará automáticamente para "
+"que no contenga errores comunes. Recibirás un correo electrónico de "
+"información después de la carga. O bien tu paquete contiene errores y será "
+"rechazado, o bien el paquete está limpio excepto por algunos problemas "
+"técnicos menores. Recibirás consejos sobre cómo corregir el paquete. Si el "
+"correo electrónico te dice que tu paquete está bien, el patrocinador seguirá "
+"haciendo comprobaciones. No te preocupes demasiado. Si tu paquete es "
+"aceptado por mentors.debian.net entonces deja que el patrocinador te ayude "
+"con el resto."
+
+#: base/templates/qa.html
+msgid "What is Lintian?"
+msgstr "¿Qué es Lintian?"
+
+#: base/templates/qa.html
+msgid ""
+"Lintian is a Debian package checker (and available as <a href=\"https://"
+"packages.debian.org/lintian\">Debian package</a> so you can run it "
+"yourself). It can be used to check binary and source packages for compliance "
+"with the Debian policy and for other common packaging errors."
+msgstr ""
+"Lintian es un comprobador de paquetes Debian (y está disponible como <a "
+"href=\"https://packages.debian.org/lintian\">paquete Debian</a> para que "
+"puedas ejecutarlo tu mismo). Puedes usarlo para comprobar si los paquetes "
+"binarios y la fuente cumplen la política de Debian y otros errores comunes "
+"de empaquetado."
+
+#: base/templates/qa.html
+msgid ""
+"Packaging for Debian is rather complex because one has to consider hundreds "
+"of guidelines to make the package \"policy compliant\". Lintian tries to "
+"address this issue by providing an automated static analysis framework. You "
+"can learn more about Lintian in the <a href=\"https://lintian.debian.org/"
+"manual/index.html\">Lintian User's Manual</a>."
+msgstr ""
+"El empaquetado para Debian es bastante complejo porque uno tiene que "
+"considerar cientos de pautas para hacer que el paquete \"cumple con las "
+"políticas\". Lintian intenta abordar este problema proporcionando un marco "
+"de análisis estático automatizado. Puede obtener más información sobre "
+"Lintian en el <a href=\"https://lintian.debian.org/manual/index."
+"html\">Manual del usuario de Lintian</a>."
+
+#: base/templates/qa.html
+msgid "Your Account"
+msgstr "Tu cuenta"
+
+#: base/templates/qa.html
+msgid "Why do I not receive a confirmation email?"
+msgstr "¿Por qué no recibo un correo electrónico de confirmación?"
+
+#: base/templates/qa.html
+#, python-format
+msgid ""
+"First make sure that you signed the package with the proper PGP key. Next "
+"check where you uploaded your package. By default the dput and dupload tools "
+"upload to Debian's official FTP master server. That server will silently "
+"drop your upload. If the problem persist please send an email to <strong> "
+"Site email</strong>: <a href=\"mailto: %(email)s\">%(email)s</a> if you "
+"require assistance."
+msgstr ""
+"Primero, asegúrate de haber firmado el paquete con la clave PGP adecuada. A "
+"continuación, comprueba dónde cargó tu paquete. De forma predeterminada, las "
+"herramientas dput y dupload se cargan en el servidor maestro FTP oficial de "
+"Debian. Ese servidor eliminará silenciosamente tu carga. Si el problema "
+"persiste, envía un correo electrónico a <strong> Correo electrónico del "
+"sitio</strong>: <a href=\"mailto: %(email)s\">%(email)s</a> si necesitas "
+"ayuda."
+
+#: base/templates/qa.html
+msgid "My binary packages do not show up"
+msgstr "Mis paquetes binarios no aparecen"
+
+#: base/templates/qa.html
+#, python-format
+msgid ""
+"The current policy on %(site_name)s is to deliberately throw away the binary "
+"packages. This is done for two main reasons. First, it saves a lot of disk "
+"space. And second, in the past Debian users downloaded the packages and used "
+"them carelessly to get brand-new versions. This led to a lot of support "
+"questions. So we decided to just keep the source packages."
+msgstr ""
+"La política actual de %(site_name)s es desechar deliberadamente los paquetes "
+"binarios. Esto se hace por dos razones principales. En primer lugar, ahorra "
+"mucho espacio en disco. Y segundo, en el pasado, los usuarios de Debian "
+"descargaban los paquetes y los usaban descuidadamente para obtener versiones "
+"completamente nuevas. Esto llevó a muchas preguntas de soporte. Así que "
+"decidimos mantener los paquetes fuente."
+
+#: base/templates/qa.html
+msgid "How long will it take until my upload is available to sponsors?"
+msgstr "¿Cuánto tardará mi carga en estar disponible para los patrocinadores?"
+
+#: base/templates/qa.html
+#, python-format
+msgid ""
+"Regardless of the upload method you choose, the importer process runs every "
+"%(beat)s minutes. The process usually takes less than a minute to process a "
+"package but it can be longer on bigger packages."
+msgstr ""
+"Independientemente del método de carga que elija, el proceso de importación "
+"se ejecuta cada %(beat)s minutos. El proceso suele tardar menos de un minuto "
+"en procesar un paquete, pero puede ser más largo en el caso de paquetes más "
+"grandes."
+
+#: base/templates/qa.html
+msgid ""
+"During the importing process, the server does quality assurance and other "
+"checks on your package. You will receive an email when it is ready."
+msgstr ""
+"Durante el proceso de importación, el servidor realiza comprobaciones de "
+"calidad y de otro tipo en tu paquete. Recibiras un correo electrónico cuando "
+"esté listo."
+
+#: base/templates/qa.html
+msgid "Information for sponsors"
+msgstr "Información para los patrocinadores"
+
+#: base/templates/qa.html base/templates/sponsor-guidelines.html
+msgid "What is a sponsor?"
+msgstr "¿Qué es un patrocinador?"
+
+#: base/templates/qa.html base/templates/sponsor-guidelines.html
+msgid ""
+"Someone who uploads the package and is responsible for the package in the "
+"archive. The sponsor is responsible for the quality of the package and "
+"checks the work of the package maintainer to improve his skills."
+msgstr ""
+"Alguien que sube el paquete y es responsable del paquete en el archivo. El "
+"patrocinador es responsable de la calidad del paquete y comprueba el trabajo "
+"del mantenedor del paquete para mejorar tus habilidades."
+
+#: base/templates/qa.html
+msgid "Why should I sponsor uploads"
+msgstr "Por qué debo patrocinar las cargas"
+
+#: base/templates/qa.html
+msgid ""
+"Thanks for your interest. There are a lot of sponsorees waiting for a "
+"Developer to help them with their packages, and if you want to help with the "
+"New Maintainer process this is a good step to get involved."
+msgstr ""
+"Gracias por tu interés. Hay muchos patrocinadores esperando un Desarrollador "
+"que les ayude con sus paquetes, y si quieres ayudar con el proceso de Nuevo "
+"Mantenedor este es un buen paso para involucrarte."
+
+#: base/templates/qa.html
+msgid "What to do for sponsoring?"
+msgstr "¿Qué hacer para patrocinar?"
+
+#: base/templates/qa.html base/templates/sponsor-guidelines.html
+msgid ""
+"Look for packages that you would like to sponsor on this website. Once you "
+"have found some you should download, build and test them. Please notify your "
+"sponsoree of every problem that you find in order to give him a chance to "
+"fix them. We believe that it is of uttermost importance to stay in contact "
+"with your sponsorees to keep them interested in working on Debian. Moreover, "
+"they will also learn how to maintain packages within a team and will learn "
+"skills that are crucial for Debian Developers more easily."
+msgstr ""
+"Busca los paquetes que te gustaría patrocinar en esta página web. Una vez "
+"que hayas encontrado alguno, descárgalo, compílalo y pruébalo. Por favor, "
+"notifica a tu patrocinador cada problema que encuentres para darle la "
+"oportunidad de solucionarlo. Creemos que es de suma importancia permanecer "
+"en contacto con tus patrocinadores para mantener el interés en trabajar en "
+"Debian. Además, también aprenderán cómo mantener paquetes dentro de un "
+"equipo y aprenderán habilidades que son cruciales para los desarrolladores "
+"de Debian más fácilmente."
+
+#: base/templates/reviewers.html
+msgid "Package reviews"
+msgstr "Reseñas de los paquetes"
+
+#: base/templates/reviewers.html
+msgid ""
+"You can help to review packages. That is possible even if you are not a "
+"Debian developer (<i>yet</i>). No reason to be shy, it is ok if you do not "
+"know everything or you are not entirely sure if your suggestions are "
+"correct. Any help is appreciated. Interested in diving in? It is easy:"
+msgstr ""
+"Puedes ayudar a revisar los paquetes. Esto es posible aunque no seas un "
+"desarrollador de Debian (<i>todavía</i>). No hay por qué ser tímido, no pasa "
+"nada si no lo sabes todo o no estás del todo seguro de que tus sugerencias "
+"sean correctas. Cualquier ayuda es apreciada. ¿Te interesa sumergirte? Es "
+"fácil:"
+
+#: base/templates/reviewers.html
+msgid "Why should I review packages? I can not upload them!"
+msgstr "¿Por qué debo revisar los paquetes? ¡No puedo cargarlos!"
+
+#: base/templates/reviewers.html
+msgid ""
+"Glad you ask! There are many reasons why you should review packages even if "
+"you can't actually upload them."
+msgstr ""
+"¡Me alegro de que lo preguntes!. Hay muchas razones por las que deberías "
+"revisar los paquetes aunque no puedas subirlos."
+
+#: base/templates/reviewers.html
+msgid ""
+"The person you are reviewing will appreciate it. Chances are, you find "
+"problems in a package the person was not aware of yet. So they can learn "
+"from you."
+msgstr ""
+"La persona a la que estas revisando te lo agradecerá. Lo más probable es que "
+"encuentres problemas en un paquete que la otra persona aún no conocía. Así "
+"podrán aprender de ti."
+
+#: base/templates/reviewers.html
+msgid ""
+"Eventually the package you are reviewing will be in a very good shape and "
+"you happen to learn something yourself. Moreover, you will also learn about "
+"best practices and workflows other people are using. Even if the package "
+"does not meet Debian's quality standards you can learn how <i>not to do</i> "
+"things."
+msgstr ""
+"Después de todo, el paquete que estás examinando estará en muy buenas "
+"condiciones y también puedes aprender algo de él. Lo que es más importante, "
+"también aprenderás sobre las mejores prácticas y procesos de otras personas. "
+"Incluso si el paquete no cumple con los estándares de calidad de Debian, "
+"aprenderás <i>no poder</i>."
+
+#: base/templates/reviewers.html
+msgid ""
+"People who <i>can</i> upload may decide based on your review whether the "
+"package in question is a suitable candidate or not."
+msgstr ""
+"Las personas que <i>pueden</i> subirlo podrán decidir en función de tu "
+"revisión si el paquete en cuestión es un candidato adecuado o no."
+
+#: base/templates/reviewers.html
+msgid "How can I review packages?"
+msgstr "¿Cómo se revisan los paquetes?"
+
+#: base/templates/reviewers.html
+msgid ""
+"Pick a source package and start. There is no single correct way to review "
+"packages, but chances are you may want to have a look on the following "
+"things:"
+msgstr ""
+"Elige una fuente y empieza. No hay una única forma correcta de revisar los "
+"paquetes, pero lo más probable es que quieras echar un vistazo a las "
+"siguientes cosas:"
+
+#: base/templates/reviewers.html
+msgid ""
+"Verify Lintian outputs: Did Lintian miss something, are fixes semantically "
+"correct?"
+msgstr ""
+"Verifica los resultados de Lintian: ¿Se le ha escapado algo a Lintian? ¿Las "
+"correcciones semánticas son correctas?"
+
+#: base/templates/reviewers.html
+msgid ""
+"Does the package satisfy <a href=\"https://www.debian.org/doc/manuals/"
+"developers-reference/best-pkging-practices.html\"> Debian's best practices</"
+"a> for packages?"
+msgstr ""
+"¿El paquete cumple <a href=\"https://www.debian.org/doc/manuals/developers-"
+"reference/best-pkging-practices.html\"> Las buenas prácticas de Debian</a> ?"
+
+#: base/templates/reviewers.html
+msgid ""
+"Does the package correctly declare dependencies as defined in the policy?"
+msgstr ""
+"¿Declara correctamente el paquete las dependencias definidas en la política?"
+
+#: base/templates/reviewers.html
+msgid ""
+"Does the package meet the <a href=\"https://www.debian.org/"
+"social_contract\">DFSG</a>? If yes, is the copyright file up to date and "
+"correct?"
+msgstr ""
+"¿Cumple el paquete las <a href=\"https://www.debian.org/"
+"social_contract\">DFSG</a>? En caso afirmativo, ¿está actualizado y es "
+"correcto el archivo de los derechos de autor?"
+
+#: base/templates/reviewers.html
+msgid ""
+"Do the maintainer scripts supplied with the package look robust, idempotent "
+"and useful?"
+msgstr ""
+"¿Los scripts de mantenimiento suministrados con el paquete parecen robustos, "
+"idempotentes y útiles?"
+
+#: base/templates/reviewers.html
+msgid "Is there a watch file? If yes, does it work?"
+msgstr "¿Existe un archivo de vigilancia? En caso afirmativo, ¿funciona?"
+
+#: base/templates/reviewers.html
+msgid "Can you build the package in a clean build chroot?"
+msgstr "¿Puedes compilar el paquete en un chroot de compilación limpia?"
+
+#: base/templates/reviewers.html
+msgid ""
+"Was the upstream tarball modified? If yes, is there a good reason to do so?"
+msgstr ""
+"¿Se ha modificado el tarball del upstream? En caso afirmativo, ¿hay una "
+"buena razón para hacerlo?"
+
+#: base/templates/reviewers.html
+#, python-format
+msgid ""
+"You might also want to retrieve the maintainer GPG key to verify that all "
+"subsequent uploads are signed using the same key. While the key should be "
+"publicly available on servers such as <em>keys.openpgp.org</em> or "
+"<em>keyserver.ubuntu.com</em>, %(name)s can also act as a basic keyserver. "
+"Note that only key retrieval is implemented. Update or search are not "
+"available."
+msgstr ""
+"También es posible que desees recuperar la clave GPG para verificar que "
+"todas las cargas posteriores estén firmadas con la misma clave. Si bien la "
+"clave debe estar disponible públicamente en los servidores como <em>keys."
+"openpgp.org</em> o <em>keyserver.ubuntu.com</em>,%(name)s también puedes "
+"actuar como un servidor de claves básico. Ten en cuenta que solo se "
+"implementa la recuperación de las claves. La actualización o la búsqueda no "
+"están disponibles."
+
+#: base/templates/reviewers.html
+msgid "Given a key id, you can retrieve a key using:"
+msgstr ""
+"Si ya una clave de identificación, puedes recuperar una clave utilizando:"
+
+#: base/templates/reviewers.html
+msgid "Established sponsor guidelines"
+msgstr "Directrices establecidas para los patrocinadores"
+
+#: base/templates/reviewers.html
+#, python-format
+msgid ""
+"Several Debian Developers published their personal sponsor guidelines. Those "
+"are rules applying for a particular person or a specific packaging team in "
+"case you want to have a package sponsored by them. Typically those rules "
+"extend the Debian policy by custom requirements, or require a particular "
+"workflow from you. You can have a look at some guidelines from different "
+"people on our <a href=\"%(u_sponsors)s\">sponsors site</a>"
+msgstr ""
+
+#: base/templates/sponsor-guidelines.html
+msgid "Introduction for sponsors"
+msgstr "Introducción para los patrocinadores"
+
+#: base/templates/sponsor-guidelines.html
+msgid "Motivation"
+msgstr "Motivación"
+
+#: base/templates/sponsor-guidelines.html
+msgid ""
+"Thanks for helping. There are a lot of sponsorees waiting for a Developer to "
+"help them with their packages, and if you want to help with the New "
+"Maintainer process this is a good step to get involved."
+msgstr ""
+"Gracias por ayudar. Hay muchos patrocinadores esperando un Desarrollador que "
+"te ayuda con tus paquetes, y si quieres ayudar con el proceso de un nuevo "
+"mantenedor este es un buen paso para involucrarte."
+
+#: base/templates/sponsor-guidelines.html
+msgid "What to do for sponsoring"
+msgstr "¿Qué hacer para patrocinar?"
+
+#: base/templates/sponsor-menu.html
+msgid "About Sponsoring"
+msgstr "Acerca del patrocinio"
+
+#: base/templates/sponsor-menu.html
+msgid "Overview"
+msgstr "Resumen"
+
+#: base/templates/sponsor-menu.html
+msgid "Sponsoring Guidelines"
+msgstr "Pautas para el patrocinio"
+
+#: base/templates/sponsor-menu.html
+msgid "Request for Sponsorship"
+msgstr "Solicitud de patrocinio"
+
+#: base/templates/sponsor-overview.html
+msgid "The sponsoring process"
+msgstr "Proceso para el patrocinio"
+
+#: base/templates/sponsor-overview.html
+msgid ""
+"As sponsored maintainer you do not have upload permissions to the Debian "
+"repository. Therefore you have three possibilities to get your package into "
+"Debian:"
+msgstr ""
+"Como mantenedor patrocinado no tienes permisos para subir al repositorio de "
+"Debian. Por tanto, tiene tres posibilidades para introducir un paquete en "
+"Debian:"
+
+#: base/templates/sponsor-overview.html
+msgid "Join a packaging team"
+msgstr "Únate a un equipo de ensambladores"
+
+#: base/templates/sponsor-overview.html
+msgid "Ask the <tt>debian-mentors</tt> mailing list"
+msgstr "Pregunta en la lista de correo <tt>debian-mentors</tt>"
+
+#: base/templates/sponsor-overview.html
+msgid "Talk directly to people willing to sponsor your package"
+msgstr "Habla directamente con personas las dispuestas a patrocinar tu paquete"
+
+#: base/templates/sponsor-overview.html
+#, python-format
+msgid ""
+"A sponsor, regardless of how you found one will <a "
+"href=\"%(url_review)s\">review</a> your package.  Everyone is invited to "
+"review packages, including yourself. We encourage you to review other "
+"people's packages - both of you will benefit."
+msgstr ""
+"Un patrocinador, independientemente de cómo lo hayas encontrado, <a "
+"href=\"%(url_review)s\">revisará</a> tu paquete.  Todo el mundo está "
+"invitado a revisar los paquetes, incluido tu mismo. Te animamos a que "
+"revises los paquetes de otras personas: ambos os beneficiaréis."
+
+#: base/templates/sponsor-overview.html
+msgid ""
+"There are teams in Debian who maintain packages collaboratively. If your "
+"package deals with libraries for programming languages or is part of an "
+"ecosystem of associated packages, think of KDE or Gnome packages for "
+"example, you may want to join the respective team. Have a look at the <a "
+"href=\"https://wiki.debian.org/Teams/#Packaging_teams\">(incomplete) list of "
+"packaging teams</a> in Debian."
+msgstr ""
+"Hay equipos en Debian que mantienen paquetes entre ellos. Si tu paquete "
+"trata con bibliotecas para lenguajes de programación o es parte de un "
+"ecosistema de paquetes asociados, piensa en los paquetes de KDE o Gnome, por "
+"ejemplo, es posible que desees unirte al equipo respectivo. Echa un vistazo "
+"a la <a href=\"https://wiki.debian.org/Teams/#Packaging_teams\">(incompleta) "
+"lista de equipos de ensambladores</a> en Debian."
+
+#: base/templates/sponsor-overview.html
+msgid ""
+"Please note, each of those teams may have their own workflows and policies "
+"covering how to deal with package uploads. Contact their respective mailing "
+"lists and home pages to learn more."
+msgstr ""
+"Por favor, ten en cuenta que cada uno de estos equipos puede tener sus "
+"propios flujos de trabajo y políticas sobre cómo gestionar las cargas de los "
+"paquetes. Ponte en contacto con sus respectivas listas de correo y páginas "
+"de inicio para obtener más información."
+
+#: base/templates/sponsor-overview.html
+msgid "File a RFS bug against the <tt>sponsorship-requests</tt> pseudo-package"
+msgstr ""
+"Crea un error de RFS en contra de las <tt>solicitudes de patrocinio</"
+"tt>pseudo-paquete"
+
+#: base/templates/sponsor-overview.html
+#, python-format
+msgid ""
+"If your package does not match the interests of any team or you are not sure "
+"whether a team could be interested in your package, please report a bug "
+"against <tt><a href=\"https://bugs.debian.org/cgi-bin/pkgreport.cgi?"
+"pkg=sponsorship-requests\">sponsorship-requests</a></tt> pseudo-package to "
+"draw attention to your package. Your bug report should be formatted "
+"according to our RFS (\"<em>request for sponsorship</em>\") template. If you "
+"uploaded your package to %(site_name)s, a RFS template can be shown on your "
+"package page."
+msgstr ""
+"Si tu paquete no coincide con los intereses de ningún equipo o no estás "
+"seguro de si un equipo podría estar interesado en tu paquete, informa de un "
+"error en <tt><a href=\"https://bugs.debian.org/cgi-bin/pkgreport.cgi?"
+"pkg=sponsorship-requests\">solicitudes de patrocinio</a></tt>pseudopaquete "
+"para llamar la atención sobre tu paquete. Tu informe de error debe tener el "
+"formato de nuestro RFS (\"<em>solicitud de patrocinio</em>\") plantilla. Si "
+"subiste tu paquete a %(site_name)s, se puede mostrar una plantilla RFS en la "
+"página de tu paquete."
+
+#: base/templates/sponsor-overview.html
+msgid "<em>If you are unsure or in doubt, choose this alternative</em>."
+msgstr "<em>Si no estás seguro o tienes dudas, elige esta alternativa</em>."
+
+#: base/templates/sponsor-overview.html
+msgid ""
+"Typically you will reach the greatest audience by filing a bug. Eventually "
+"also some non-uploading reviewer may have a look at your package. Please do "
+"not worry if you get no answer: It happens from time to time that all "
+"interested people might be distracted or busy. It does not mean your package "
+"is bad. Feel free to post a follow-up message after a few weeks or try any "
+"of the alternative methods to find a sponsor."
+msgstr ""
+
+#: base/templates/sponsor-overview.html
+msgid "Finding a sponsor"
+msgstr "Encontrar un patrocinador"
+
+#: base/templates/sponsor-overview.html
+msgid ""
+"If you want, you can contact sponsors willing to upload packages of other "
+"maintainers directly. <em>Please do not send out mass emails!</em> Instead "
+"watch out for their individual requirements and guidelines. Contact "
+"individuals only if your package is compatible to their respective "
+"requirements and matches their area of interest. To tell apart sponsors who "
+"are interested in your package from those who are not, we asked developers "
+"to formulate their own sponsor traits. Please read them carefully and "
+"compare your package with their expectations."
+msgstr ""
+"Si lo deseas, puedes contactar directamente a los patrocinadores que estén "
+"dispuestos a cargar los paquetes de otros mantenedores. <em>¡No envíes "
+"correos electrónicos masivos! </em> En su lugar, presta atención a sus "
+"requisitos y directrices individuales. Comunicate con las personas solo si "
+"tu paquete es compatible con sus respectivos requisitos y coincide con tu "
+"área de interés. Para diferenciar a los patrocinadores que están interesados "
+"en tu paquete de los que no, pedimos a los desarrolladores que formularan "
+"sus propias características de patrocinadores. Míralos atentamente y compara "
+"tu paquete con sus expectativas."
+
+#: base/templates/sponsor-overview.html
+msgid ""
+"Similarly, you can also try to get in touch with other package maintainers "
+"directly. This makes sense if you prepared a package which extends the "
+"functionality of a related package in a useful way or can be used together. "
+"Consider you packaged log analysis tool for a web server, the maintainer of "
+"that web server might be interested to sponsor you. If you consider to "
+"contact a maintainer of such a related package directly, make sure he is "
+"actually able to sponsor you. Remember: Only Debian Developer are allowed to "
+"sponsor packages. You can identify developers by looking up their name at <a "
+"href=\"https://db.debian.org/\">db.debian.org</a>."
+msgstr ""
+"Del mismo modo, también puede intentar ponerte en contacto directamente con "
+"otros mantenedores de los paquetes. Esto tiene sentido si preparaste un "
+"paquete que amplía la funcionalidad de uno relacionado de forma útil o que "
+"se puede utilizar en conjunto. Considera la herramienta de análisis de los "
+"registros empaquetada para un servidor web, el mantenedor de ese servidor "
+"web podría estar interesado en patrocinarlo. Si consideras ponerte en "
+"contacto directamente con el mantenedor de dicho paquete, asegúrate de que "
+"realmente pueda patrocinarlo. Recuerda: Sólo los desarrolladores de Debian "
+"pueden patrocinar los paquetes. Puedes identificar a los desarrolladores "
+"buscando su nombre en<a href=\"https://db.debian.org/\">db.debian.org</a>."
+
+#: base/templates/sponsor-overview.html
+msgid "Sponsor guidelines"
+msgstr "Directrices del patrocinador"
+
+#: base/templates/sponsor-overview.html
+msgid ""
+"To help you find a sponsor interested in your package, they can formulate "
+"sponsor traits for either social or technical aspects. Additionally a "
+"sponsor may not usually be interested in every package but only in a certain "
+"category."
+msgstr ""
+"Para ayudarte a encontrar un patrocinador interesado en tu paquete, pueden "
+"formularle rasgos de patrocinador para aspectos sociales o técnicos. Además, "
+"un patrocinador no suele estar interesado en todos los paquetes, sino solo "
+"en una categoría determinada."
+
+#: base/templates/sponsor-rfs.html
+msgid "The sponsorship process"
+msgstr "El proceso del patrocinio"
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"An <em>RFS</em> is a <em>request for sponsorship</em>. If you have a package "
+"to be uploaded to Debian, you should file a bug against the <em>sponsorship-"
+"requests</em> pseudo-package containing information about your package."
+msgstr ""
+"Un <em>RFS</em> es una <em>solicitud de patrocinio</em>. Si tienes un "
+"paquete para cargar en Debian, debes presentar un informe de error en la "
+"sección <em>solicitudes de patrocinio</em> pseudopaquete que contiene "
+"información sobre tu paquete."
+
+#: base/templates/sponsor-rfs.html
+msgid "Asking for Sponsorship"
+msgstr "Cómo solicitar un patrocinio"
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"In general, sponsorship requests should be handled through the <a "
+"href=\"https://www.debian.org/Bugs/\">Debian Bug Tracking System</a>. Please "
+"make sure both reports and comments are sent to the bug report (<em>nnn@bugs."
+"debian.org</em>) <strong>only</strong>. A copy will be sent to the "
+"<em>debian-mentors</em> mailing list automatically by the bug tracker."
+msgstr ""
+"En general, las solicitudes de patrocinio deben gestionarse a través del <a "
+"href=\"https://www.debian.org/Bugs/\">Sistema de seguimiento de errores de "
+"Debian</a>. Por favor, asegúrate de que tanto los informes como los "
+"comentarios se envían en el informe de errores a (<em>nnn@bugs.debian.org</"
+"em>) <strong>únicamente</strong>. El gestor de fallos enviará "
+"automáticamente una copia a la lista de correo <em>debian-mentors</em>."
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"Once a source package has been prepared and made available (for example by "
+"uploading it to this site), file a new bug report against the <a "
+"href=\"https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=sponsorship-"
+"requests\"><em>sponsorship-requests</em></a> pseudo-package by using the "
+"template below."
+msgstr ""
+"Una vez que se hayas preparado y puesto a disposición un paquete con la "
+"fuente del proyecto (por ejemplo, subiéndolo sabiéndolo en este sitio), "
+"presenta un nuevo informe de error en la <a href=\"https://bugs.debian.org/"
+"cgi-bin/pkgreport.cgi?pkg=sponsorship-requests\"><em>solicitudes de "
+"patrocinio</em></a> con el pseudopaquete utilizando la siguiente plantilla."
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"You might not receive a reply to your request if you do not subscribe to the "
+"debian-mentors mailing list or to your sponsorship-requests bug. You can <a "
+"href=\"https://lists.debian.org/debian-mentors\">subscribe to the mailing "
+"list</a> and follow simple steps to confirm your subscription request. It "
+"can also take time for sponsors to look over the requests, so please do not "
+"give up quickly and keep a watch over the mailing list. You can browse other "
+"packages and give other people feedback while you are waiting."
+msgstr ""
+"No recibirás respuestas a tu solicitud a menos que estés suscrito a la lista "
+"de correo de Debian-Mentors o a su error de solicitudes de patrocinio. "
+"Puedes <a href=\"https://lists.debian.org/debian-mentors\">suscríbete a la "
+"lista de correo</a> y sigue los sencillos pasos para confirmar tu "
+"suscripción. También puede llevar tiempo a los patrocinadores revisar las "
+"solicitudes, así que no te apresures y estate atento a la lista del correo. "
+"Puedes explorar otros paquetes y escribir comentarios a otras personas "
+"mientras esperas."
+
+#: base/templates/sponsor-rfs.html
+msgid "Template for an RFS bug"
+msgstr "Plantilla para un error en RFS"
+
+#: base/templates/sponsor-rfs.html
+msgid "for "
+msgstr "para "
+
+#: base/templates/sponsor-rfs.html
+msgid "Send the completed template below by email"
+msgstr "Envía por correo electrónico la plantilla completa a continuación"
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"to our pseudo-package. If you prefer, you can also use the <a href=\"https://"
+"packages.debian.org/search?"
+"keywords=reportbug&searchon=names&exact=1&suite=all&section=main\">reportbug</"
+"a> tool."
+msgstr ""
+"a nuestro pseudopaquete. Si lo prefieres, también puedes utilizar la "
+"herramienta <a href=\"https://packages.debian.org/search?"
+"keywords=reportbug&searchon=names&exact=1&suite=all§ion=main\">reportbug</a>."
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"Please indicate in the subject line if you are adding a new package to "
+"Debian (<tt>ITP</tt>), if you are adopting an existing package (<tt>ITA</"
+"tt>), or if you are fixing bugs in an existing package (via <tt>NMU</tt> or "
+"<tt>QA</tt>). If your upload also fixes Release Critical bugs, please add "
+"the <tt>RC</tt> indicator as well."
+msgstr ""
+"Por favor, indica en el asunto si estás añadiendo un nuevo paquete a Debian "
+"(<tt>ITP</tt>), si estás adoptando un paquete ya existente (<tt>ITA</tt>), o "
+"si estás corrigiendo errores en un paquete ya existente (a través de "
+"<tt>NMU</tt> o <tt>QA</tt>). Si tu carga también corrige errores de una "
+"versión crítica, añade también el indicador <tt>RC</tt>."
+
+#: base/templates/sponsor-rfs.html
+msgid "The meaning of the indicators above is described below:"
+msgstr ""
+"A continuación se describe el significado de los indicadores anteriores:"
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"<tt>ITP</tt> stands for <em>Intend to package</em>. These are packages that "
+"do not exist in Debian yet. Such packages need to go through the <tt>NEW</"
+"tt> queue, where they are reviewed by an <a href=\"https://ftp-master.debian."
+"org/new.html\">FTP Master</a>. Packages that must go through NEW include "
+"renamed packages, packages moving between areas, and source packages that "
+"build new binary packages."
+msgstr ""
+"<tt>ITP</tt> representa <em>la intención de empaquetar</em>. Estos son "
+"paquetes que aún no existen en Debian. Estos paquetes deben pasar por una "
+"<tt>NEVA</tt> lista de espera, donde son revisados por un <a href=\"https://"
+"ftp-master.debian.org/new.html\">Maestro en FTP</a>. Los paquetes que deben "
+"pasar por NUEVO incluyen paquetes renombrados, paquetes que se mueven entre "
+"áreas y paquetes con la fuente que se convierten en nuevos paquetes."
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"<tt>ITA</tt> stands for <em>Intend to adopt</em>. These are packages which "
+"were orphaned in the past and which you intend to adopt."
+msgstr ""
+"<tt>ITA</tt> representada <em>la intención de adoptar</em>. Estos son "
+"paquetes que quedaron huérfanos en el pasado y que tienes intención de "
+"adoptar y continuar su desarrollo."
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"Your upload is a <em>Non-Maintainer Upload</em>, a version of a package that "
+"is not uploaded by the official Maintainer of a package, but rather by you. "
+"Special rules apply to these uploads. Please refer to the <a href=\"https://"
+"www.debian.org/doc/manuals/developers-reference/pkgs.html#nmu\">Developer's "
+"Reference</a> for more information."
+msgstr ""
+"Tu subida es una <em>Subida por un no Mantenedor</em>, una versión de un "
+"paquete que no es subida por el Mantenedor oficial de un paquete, sino por "
+"ti. Se aplican reglas especiales a estas subidas. Consulta la <a "
+"href=\"https://www.debian.org/doc/manuals/developers-reference/pkgs."
+"html#nmu\">Referencia para desarrolladores</a> para obtener más información."
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"Your upload is a <tt>QA</tt> upload. Please refer to the respective section "
+"in the <a href=\"https://www.debian.org/doc/manuals/developers-reference/"
+"pkgs.html#nmu-qa-upload\">Developer's Reference</a> to learn about <tt>QA</"
+"tt> uploads."
+msgstr ""
+"Tu subida es una subida <tt>QA</tt>. Consulte la sección correspondiente en "
+"<a href=\"https://www.debian.org/doc/manuals/developers-reference/pkgs."
+"html#nmu-qa-upload\">Referencia para desarrolladores</a> para obtener más "
+"información sobre las cargas <tt>QA</tt>."
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"This is short for <em>Release-Critical</em>, a class of bugs that are "
+"particularly important. Use this indicator if your request fixes an <tt>RC</"
+"tt> bug."
+msgstr ""
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"Please keep track of the bug and respond to comments. If the bug was tagged "
+"<em>moreinfo</em> or <em>wontfix</em> and you think you have addressed the "
+"issues, please remove the respective tag."
+msgstr ""
+"Por favor, sigue la pista del fallo y responde a los comentarios. Si el "
+"error estaba etiquetado como <em>moreinfo</em> o <em>wontfix</em> y si crees "
+"que has solucionado los problemas, elimina la etiqueta correspondiente."
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"If you changed the package to address concerns, please send a follow-up "
+"email to your sponsorship request bug (nnn@bugs.debian.org) with the URL to "
+"the source package and the most recent changelog entries, as you did for the "
+"initial request."
+msgstr ""
+"Si has modificado el paquete para solucionar algún problema, envía un correo "
+"electrónico de seguimiento a tu error de solicitud de patrocinio (nnn@bugs."
+"debian.org) con la URL del paquete fuente y las entradas más recientes del "
+"registro de cambios, como hiciste para la solicitud inicial."
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"If there are issues with the upload after the bug was closed, for example "
+"when the package was rejected by the archive software, you can reopen the "
+"bug (again, please include references to the updated source package or ask "
+"for advice)."
+msgstr ""
+"Si hay problemas con la subida después de cerrar el fallo, por ejemplo "
+"cuando el paquete fue rechazado por el software del archivo, puedes volver a "
+"abrir el fallo (de nuevo, incluye referencias al paquete fuente actualizado "
+"o pide consejo)."
+
+#: base/templates/sponsor-rfs.html
+msgid "Reviewing Packages"
+msgstr "Revisión de los paquetes"
+
+#: base/templates/sponsor-rfs.html
+#, python-format
+msgid ""
+"Anybody feeling competent enough is invited to review sponsorship requests. "
+"You do not need to be a Debian Developer to do so. We collect <a "
+"href=%(url_sponsors)s>hints for reviewing packages</a> on a dedicated "
+"webpage."
+msgstr ""
+"Cualquier persona que se sienta lo suficientemente competente está invitada "
+"a revisar las solicitudes de patrocinio. No necesita ser un desarrollador "
+"Debian para hacer esto. Recopilamos <a href=%(url_sponsors)s>consejos para "
+"revisar paquetes</a> en una página web específica."
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"Please send any comments to <em>nnn@bugs.debian.org</em>, but do not send "
+"carbon copies to reviewers or the bug submitter. Assume they are subscribed "
+"to the mailing list unless they explicitly ask you to send them carbon "
+"copies. You can use the following tags to indicate progress:"
+msgstr ""
+"Por favor, envía tus comentarios a <em>nnn@bugs.debian.org</em>, pero no "
+"envíes copias a los revisores o al autor del error. Asume que están "
+"suscritos a la lista de correo a menos que te pidan explícitamente que les "
+"envíe las copias. Puedes utilizar las siguientes etiquetas para indicar el "
+"progreso:"
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"A reviewer has asked questions that need a response or has requested changes "
+"to be made. The package needs work before it can be uploaded."
+msgstr ""
+"Un revisor ha hecho preguntas que necesitan respuesta o ha solicitado que se "
+"realicen cambios. Hay que trabajar en el paquete antes de subirlo."
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"Somebody did a brief review of your package and it looks sane. It can still "
+"have (smaller) issues that need to be fixed before an upload."
+msgstr ""
+"Alguien hizo una breve revisión de tu paquete y parece sano. Todavía puedes "
+"tener problemas (menores) que necesitan ser arreglados antes de una carga."
+
+#: base/templates/sponsor-rfs.html
+msgid "Somebody is willing to look after the package until it is uploaded."
+msgstr "Alguien está dispuesto a vigilar el paquete hasta que se cargue."
+
+#: base/templates/sponsor-rfs.html
+msgid "The package has significant problems or cannot not be uploaded at all."
+msgstr ""
+"El paquete tiene problemas importantes o no se puede cargar en absoluto."
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"If you intend to take care of a sponsorship request until the related "
+"package is ready for upload, please consider setting yourself as the owner "
+"of the bug and tagging the bug as <em>pending</em>:"
+msgstr ""
+"Si tienes intención de ocuparte de una solicitud de apadrinamiento hasta que "
+"el paquete relacionado esté listo para subirse, considera la posibilidad de "
+"establecerte como propietario del fallo y etiquetar el fallo como "
+"<em>pendiente</em>:"
+
+#: base/templates/sponsor-rfs.html
+msgid "Uploading Packages"
+msgstr "Cargando los paquetes"
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"After you upload a package, please close the bug report by sending an email "
+"to <em>nnn-done@bugs.debian.org</em>. Do not close RFS bugs in debian/"
+"changelog. The sponsor is responsible for solving the bug, not the supplier "
+"of the package or anyone related to the package itself."
+msgstr ""
+"Después de subir un paquete, por favor cierra el informe del fallo enviando "
+"a un correo electrónico a <em>nnn-done@bugs.debian.org</em>. No cierres los "
+"fallos de RFS en debian/changelog. El patrocinador es responsable de "
+"resolver el fallo, no el proveedor del paquete ni nadie relacionado con el "
+"paquete en sí."
+
+#: base/templates/sponsor-rfs.html
+msgid "Notes"
+msgstr "Observaciones"
+
+#: base/templates/sponsor-rfs.html
+msgid ""
+"Inactive sponsorship requests should be closed after a reasonable period of "
+"time. We consider this to be two weeks for requests tagged <em>wontfix</em>, "
+"six weeks for requests tagged <em>moreinfo</em> and six months for other "
+"tags, as appropriate. The same applies to uploaded packages for which the "
+"sponsor forgot to close the RFS bug."
+msgstr ""
+"Las solicitudes de patrocinio inactivas deben cerrarse tras un periodo de "
+"tiempo razonable. Consideramos que son dos semanas para las solicitudes "
+"etiquetadas como <em>wontfix</em>, seis semanas para las solicitudes "
+"etiquetadas como <em>moreinfo</em> y seis meses para otras etiquetas, según "
+"corresponda. Lo mismo se aplica a los paquetes cargados para los que el "
+"patrocinador olvidó cerrar el error RFS."
