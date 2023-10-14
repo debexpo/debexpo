@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-13 18:16+0000\n"
-"PO-Revision-Date: 2022-11-23 20:07+0000\n"
+"PO-Revision-Date: 2023-10-15 08:21+0000\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/locale/zh_Hans/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"X-Generator: Weblate 5.1-dev\n"
 
 #: settings/common.py
 msgid "English"
@@ -25,15 +25,15 @@ msgstr "英语"
 
 #: settings/common.py
 msgid "German"
-msgstr ""
+msgstr "德语"
 
 #: settings/common.py
 msgid "Spanish"
-msgstr ""
+msgstr "西班牙语"
 
 #: settings/common.py
 msgid "Persian"
-msgstr ""
+msgstr "波斯语"
 
 #: settings/common.py
 msgid "French"
@@ -41,21 +41,19 @@ msgstr "法语"
 
 #: settings/common.py
 msgid "Italian"
-msgstr ""
+msgstr "意大利语"
 
 #: settings/common.py
 msgid "Japanese"
-msgstr ""
+msgstr "日语"
 
 #: settings/common.py
 msgid "Dutch"
-msgstr ""
+msgstr "荷兰语"
 
 #: settings/common.py
-#, fuzzy
-#| msgid "Portuguese (Brazil)"
 msgid "Portuguese"
-msgstr "巴西葡萄牙语"
+msgstr "葡萄牙语"
 
 #: settings/common.py
 msgid "Portuguese (Brazil)"
@@ -63,15 +61,15 @@ msgstr "巴西葡萄牙语"
 
 #: settings/common.py
 msgid "Romanian"
-msgstr ""
+msgstr "罗马尼亚语"
 
 #: settings/common.py
 msgid "Swedish"
-msgstr ""
+msgstr "瑞典语"
 
 #: settings/common.py
 msgid "Chinese (Simplified)"
-msgstr ""
+msgstr "简体中文"
 
 #: settings/common.py
 msgid "Helps you get your packages into Debian"
