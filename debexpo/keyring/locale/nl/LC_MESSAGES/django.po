@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-05 07:56+0000\n"
-"PO-Revision-Date: 2023-02-26 21:38+0000\n"
+"PO-Revision-Date: 2023-10-15 08:21+0000\n"
 "Last-Translator: Frans Spiesschaert <frans.spiesschaert@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/debexpo/keyring/nl/"
 ">\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.16-dev\n"
+"X-Generator: Weblate 5.1-dev\n"
 
 #: keyring/models.py
 msgid "Type"
@@ -28,8 +28,6 @@ msgid "GPG Algorithm ID"
 msgstr "ID GPG-algoritme"
 
 #: keyring/models.py
-#, fuzzy
-#| msgid "Minimal size requirment"
 msgid "Minimal size requirement"
 msgstr "Minimaal vereiste grootte"
 
