@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-05 07:56+0000\n"
-"PO-Revision-Date: 2022-11-23 19:30+0000\n"
+"PO-Revision-Date: 2023-10-22 11:02+0000\n"
 "Last-Translator: Kentaro Hayashi <kenhys@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/debexpo/keyring/"
 "ja/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"X-Generator: Weblate 5.1\n"
 
 #: keyring/models.py
 msgid "Type"
@@ -28,8 +28,6 @@ msgid "GPG Algorithm ID"
 msgstr "GPGアルゴリズムID"
 
 #: keyring/models.py
-#, fuzzy
-#| msgid "Minimal size requirment"
 msgid "Minimal size requirement"
 msgstr "最低限必要なサイズ"
 
