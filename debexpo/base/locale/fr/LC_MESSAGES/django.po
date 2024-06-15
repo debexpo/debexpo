@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: debexpo 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-15 17:24+0000\n"
-"PO-Revision-Date: 2022-09-20 21:54+0200\n"
+"PO-Revision-Date: 2024-06-15 19:29+0200\n"
 "Last-Translator: Baptiste Beauplat <lyknode@cilg.org>\n"
 "Language-Team: French <>\n"
 "Language: fr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #: base/templates/base.html
 msgid "Start page"
@@ -955,11 +955,6 @@ msgid "What is a sponsor?"
 msgstr "Qu'est-ce qu'un parrain ?"
 
 #: base/templates/qa.html base/templates/sponsor-guidelines.html
-#, fuzzy
-#| msgid ""
-#| "Someone who uploads the package and is responsible for the package in the "
-#| "archive. The sponsor is responsible for the quality of the package and "
-#| "checks the work of the package maintainer to improve his skills."
 msgid ""
 "Someone who uploads the package and is responsible for the package in the "
 "archive. The sponsor is responsible for the quality of the package and "
@@ -967,7 +962,7 @@ msgid ""
 msgstr ""
 "Quelqu'un qui envoi le paquet et qui est responsable du paquet dans "
 "l'archive. Le parrain est responsable pour la qualité du paquet et vérifie "
-"le travail du mainteneur du paquet dans le but d'améliorer ces complétances."
+"le travail du mainteneur du paquet dans le but d'améliorer ses complétances."
 
 #: base/templates/qa.html
 msgid "Why should I sponsor uploads"
@@ -1189,7 +1184,7 @@ msgstr ""
 "des pré-requis particuliers, ou requière que vous suiviez un processus "
 "particulier. Vous pouvez jeter un coup d'œil à certaine de ces "
 "recommandations de la part de différentes personnes sur notre <a "
-"href=\"%(u_sponsors)s\">page des parrains</a>"
+"href=\"%(u_sponsors)s\">page des parrains</a>."
 
 #: base/templates/sponsor-guidelines.html
 msgid "Introduction for sponsors"
