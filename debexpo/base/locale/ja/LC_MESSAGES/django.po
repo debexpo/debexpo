@@ -29,7 +29,7 @@ msgstr "パッケージ一覧"
 
 #: base/templates/base.html
 msgid "Maintainer"
-msgstr "(パッケージの)メンテナーになりたい"
+msgstr "パッケージメンテナー"
 
 #: base/templates/base.html
 msgid "Reviews"
@@ -106,13 +106,12 @@ msgid ""
 "org/debian-mentors/\">debian-mentors mailing list</a> instead or <a "
 "href=\"%(u_rfs)s\">file a RFS bug</a> respectively."
 msgstr ""
-"debexpoチームに直接連絡とることができます。技術的な問題は<a "
-"href=\"%(u_qa)s\">Q &amp; A</a> セクションと <a href=\"https://wiki.debian."
-"org/Debexpo\">Debian wiki</a> を最初に確認してください。 <strong>このコンタク"
-"トアドレスをスポンサーリクエストやパッケージングの質問先として使わなず</"
-"strong>、 <a href=\"https://lists.debian.org/debian-mentors/\">debian-mentors"
-"メーリングリスト</a> を代わりに使うか <a href=\"%(u_rfs)s\">RFSバグを作成</"
-"a> してください。"
+"debexpoチームに直接連絡とれます。技術的な問題は<a href=\"%(u_qa)s\">Q &amp; "
+"A</a> セクションと <a href=\"https://wiki.debian.org/Debexpo\">Debian wiki</"
+"a> を最初に確認してください。 <strong>このコンタクトアドレスをスポンサーリク"
+"エストやパッケージングの質問先として使わず</strong>、 <a href=\"https://"
+"lists.debian.org/debian-mentors/\">debian-mentorsメーリングリスト</a> を代わ"
+"りに使うか <a href=\"%(u_rfs)s\">RFSバグを作成</a> してください。"
 
 #: base/templates/contact.html
 msgid "Site email"
@@ -165,10 +164,10 @@ msgstr ""
 "然として多くのパッケージが非公式の開発者によってメンテナンスされています。で"
 "はその人たちが直接アップロード権限がなかった頃、どうやってDebianに成果を反映"
 "していたのでしょうか。 答えは<em>スポンサーシップ</em>というプロセスです。ス"
-"ポンサーシップというのはDebian開発者がメンテナ―の変わりにパッケージをアップ"
-"ロードするという仕組みです。Debian開発者はパッケージの技術的な正確さをチェッ"
-"クし、メンテナ―が必要に応じてパッケージを改善するのを手助けします。それゆえに"
-"スポンサーはメンターと呼ばれることがあります。"
+"ポンサーシップというのはDebian開発者がメンテナ―代わりにパッケージをアップロー"
+"ドする仕組みです。Debian開発者はパッケージの技術的な正確さをチェックし、メン"
+"テナ―が必要に応じてパッケージを改善するのを手助けします。それゆえにスポンサー"
+"はメンターと呼ばれることがあります。"
 
 #: base/templates/index.html
 msgid ""
@@ -370,11 +369,11 @@ msgstr ""
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
 msgid "Guide for Debian Maintainers"
-msgstr ""
+msgstr "Debianメンテナーガイド"
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
 msgid "Successor to the “Debian New Maintainers’ Guide”."
-msgstr ""
+msgstr "Debian新メンテナーガイドの後継です。"
 
 #: base/templates/intro-maintainers.html base/templates/qa.html
 msgid "Debian Mentors FAQ"
@@ -432,13 +431,7 @@ msgstr ""
 "かめるためです。"
 
 #: base/templates/intro-maintainers.html
-#, fuzzy, python-format
-#| msgid ""
-#| "<strong>Upload your package</strong> to <tt>%(name)s</tt>. You do not "
-#| "need to put your packages into any other web space on the Internet. "
-#| "Everybody will be able to download your package using either the web "
-#| "browser, the '<tt>dget</tt>' tools or even through a simple run of "
-#| "<tt>apt-get source ....</tt>"
+#, python-format
 msgid ""
 "<strong>Upload your package</strong> to <tt>%(name)s</tt>. You do not need "
 "to put your packages into any other web space on the Internet. Everybody "
@@ -449,15 +442,10 @@ msgstr ""
 "<tt>%(name)s</tt>へ<strong>パッケージをアップロード</strong>しましょう。パッ"
 "ケージをネットのどこか別のところに置く必要はありません。誰でもブラウザーや "
 "'<tt>dget</tt>'のようなツール、あるいは<tt>apt-get source ...</tt>を実行して"
-"パッケージをダウンロードできます"
+"パッケージをダウンロードできます。"
 
 #: base/templates/intro-maintainers.html
-#, fuzzy, python-format
-#| msgid ""
-#| "Have a look at your <a href=\"%(u_my)s\">personal package page</a>. Your "
-#| "uploaded package should <strong>show up there</strong>. From there you "
-#| "can toggle several settings and retrieve the RFS (request-for-"
-#| "sponsorship) template"
+#, python-format
 msgid ""
 "Have a look at your <a href=\"%(u_my)s\">personal package page</a>. Your "
 "uploaded package should <strong>show up there</strong>. From there you can "
@@ -466,7 +454,8 @@ msgid ""
 msgstr ""
 "<a href=\"%(u_my)s\">個人のパッケージページ</a>を見てください。あなたがアップ"
 "ロードしたパッケージは <strong>そこに表示されます</strong>。いくつか設定を切"
-"り替えることができ、RFS(スポンサーシップを依頼）のテンプレートを取得できます"
+"り替えることができ、RFS(スポンサーシップを依頼）のテンプレートを取得できま"
+"す。"
 
 #: base/templates/intro-maintainers.html
 #, python-format
@@ -642,20 +631,6 @@ msgid "5. Getting an upload to Debian"
 msgstr "5. Debianにアップロードする"
 
 #: base/templates/intro-maintainers.html
-#, fuzzy
-#| msgid ""
-#| "Once you find a sponsor interested in your package, he or she will "
-#| "<em>sponsor</em> it. That means reviewing, building, and testing it and "
-#| "then uploading it to Debian. You will get notified by <em>dak</em> - the "
-#| "software used by Debian to manage its repositories - about the upload. "
-#| "Please note, if your package was not at all in Debian before, it needs "
-#| "manual approval by <a href=\"https://ftp-master.debian.org/\">ftpmasters</"
-#| "a> to clear the <a href=\"https://ftp-master.debian.org/new.html\">NEW "
-#| "queue</a>. They will do consistency checks, and review your <tt>debian/"
-#| "copyright</tt> file whether your package matches the <a href=\"https://"
-#| "www.debian.org/social_contract#guidelines\"> Debian Free Software "
-#| "Guidelines</a>. ftpmaster's opinion is binding here for both your sponsor "
-#| "and you."
 msgid ""
 "Once you find a sponsor interested in your package, they will <em>sponsor</"
 "em> it. That means reviewing, building, and testing it and then uploading it "
@@ -927,10 +902,6 @@ msgstr "スポンサーとはなんですか？"
 
 #: base/templates/qa.html base/templates/sponsor-guidelines.html
 #, fuzzy
-#| msgid ""
-#| "Someone who uploads the package and is responsible for the package in the "
-#| "archive. The sponsor is responsible for the quality of the package and "
-#| "checks the work of the package maintainer to improve his skills."
 msgid ""
 "Someone who uploads the package and is responsible for the package in the "
 "archive. The sponsor is responsible for the quality of the package and "
@@ -1130,14 +1101,7 @@ msgid "Established sponsor guidelines"
 msgstr "既定のスポンサーガイドライン"
 
 #: base/templates/reviewers.html
-#, fuzzy, python-format
-#| msgid ""
-#| "Several Debian Developers published their personal sponsor guidelines. "
-#| "Those are rules applying for a particular person or a specific packaging "
-#| "team in case you want to have a package sponsored by them. Typically "
-#| "those rules extend the Debian policy by custom requirements, or require a "
-#| "particular workflow from you. You can have a look at some guidelines from "
-#| "different people on our <a href=\"%(u_sponsors)s\">sponsors side</a>"
+#, python-format
 msgid ""
 "Several Debian Developers published their personal sponsor guidelines. Those "
 "are rules applying for a particular person or a specific packaging team in "
@@ -1149,8 +1113,8 @@ msgstr ""
 "Debian開発者には、個人的なスポンサーガイドラインを公開している人もいます。こ"
 "れらのルールは特定の個人だったり、特定のパッケージングチームに適用されます。"
 "典型的なのはDebianポリシーを特定の要件向けに拡張しているか、特定のワークフ"
-"ローを要求するものです。 <a href=\"%(u_sponsors)s\">スポンサー側</a>にいくつ"
-"か異なる人によって示されたガイドラインがあります"
+"ローを要求するものです。 <a href=\"%(u_sponsors)s\">スポンサーページ</a>にて"
+"ガイドラインをいくつか見つけられるでしょう。"
 
 #: base/templates/sponsor-guidelines.html
 msgid "Introduction for sponsors"
@@ -1282,14 +1246,6 @@ msgid "<em>If you are unsure or in doubt, choose this alternative</em>."
 msgstr "<em>もし確信が持てなければ、この代替案を選択してください</em>。"
 
 #: base/templates/sponsor-overview.html
-#, fuzzy
-#| msgid ""
-#| "Typically you will reach the greatest audience by filing a bug. "
-#| "Eventually also some non-uploading reviewer may have a look at your "
-#| "package. Please do not worry if you get no answer: It happens from time "
-#| "to time that all interested people might be distracted or busy. It does "
-#| "not mean your package is bad. Feel free to poste a follow-up message "
-#| "after a few weeks or try any of the alternative methods to find a sponsor."
 msgid ""
 "Typically you will reach the greatest audience by filing a bug. Eventually "
 "also some non-uploading reviewer may have a look at your package. Please do "
@@ -1524,10 +1480,6 @@ msgstr ""
 
 #: base/templates/sponsor-rfs.html
 #, fuzzy
-#| msgid ""
-#| "This is short for <em>Release-Critical</em>,  a class of bugs that are "
-#| "particularly important. Use this indicator if your request fixes an "
-#| "<tt>RC</tt> bug."
 msgid ""
 "This is short for <em>Release-Critical</em>, a class of bugs that are "
 "particularly important. Use this indicator if your request fixes an <tt>RC</"
@@ -1664,3 +1616,13 @@ msgstr ""
 "<em>wontfix</em>タグがつけられてから2週間、<em>moreinfo</em>がつけられてから6"
 "週間、他のタグなら半年が妥当でしょう。同様のことはスポンサーがRFSバグを閉じる"
 "のを忘れているパッケージにも言えます。"
+
+#: base/templates/qa.html base/templates/sponsor-guidelines.html
+msgid ""
+"Someone who uploads the package and is responsible for the package in the "
+"archive. The sponsor is responsible for the quality of the package and "
+"checks the work of the package maintainer to improve his skills."
+msgstr ""
+"パッケージをアップロードし、アーカイブのパッケージに責任を持つ人のことです。"
+"スポンサーはパッケージの質を担保し、パッケージをチェックすることでメンテナー"
+"によるスキルの向上を図ります。"

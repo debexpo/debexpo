@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-05 07:56+0000\n"
-"PO-Revision-Date: 2022-11-25 08:47+0000\n"
+"PO-Revision-Date: 2023-10-15 08:21+0000\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "debexpo/keyring/zh_Hans/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"X-Generator: Weblate 5.1-dev\n"
 
 #: keyring/models.py
 msgid "Type"
@@ -28,8 +28,6 @@ msgid "GPG Algorithm ID"
 msgstr "GPG 算法 ID"
 
 #: keyring/models.py
-#, fuzzy
-#| msgid "Minimal size requirment"
 msgid "Minimal size requirement"
 msgstr "最小尺寸要求"
 

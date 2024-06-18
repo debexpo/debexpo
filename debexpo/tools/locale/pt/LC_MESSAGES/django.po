@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-27 19:09+0000\n"
-"PO-Revision-Date: 2023-03-15 15:38+0000\n"
+"PO-Revision-Date: 2023-12-21 14:07+0000\n"
 "Last-Translator: ssantos <ssantos@web.de>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/debexpo/tools/"
 "pt/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.16.2-dev\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 #: tools/debian/changes.py
 #, python-brace-format
@@ -59,7 +59,6 @@ msgid "Failed to parse debian/control:{message}"
 msgstr "Falha ao analisar debian/control:{message}"
 
 #: tools/debian/control.py
-#, fuzzy
 msgid "No source definition found"
 msgstr "Nenhuma definição de fonte encontrada"
 
