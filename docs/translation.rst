@@ -83,3 +83,20 @@ Use the gettext helper provided by django:
     text = _("This text will be available for translation.")
 
 .. _Django translation: https://docs.djangoproject.com/en/2.2/topics/i18n/translation/
+
+
+Importing changes in translations from Weblate
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. Lock weblate on https://hosted.weblate.org/projects/debexpo/debexpo/#repository
+1. Run ``share/update-translations.sh``
+1. ``git push origin translation/next``
+1. On https://hosted.weblate.org/settings/debexpo/debexpo/#vcs switch branch from
+   ``live`` to ``translation/next``
+1. On https://hosted.weblate.org/projects/debexpo/debexpo/#repository click ``Reset``
+   to rebase all of weblate into our custom rebase process
+1. ``git merge translation/update`` to update the live branch with the updated translations
+1. ``git push origin live``
+1. On https://hosted.weblate.org/projects/debexpo/debexpo/#repository switch the
+   branch back to ``live``
+1. If everything went smoothly, unlock weblate
