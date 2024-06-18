@@ -79,6 +79,7 @@ dependencies:
   image: debian:unstable
   script:
     - python3 setup.py develop | tee /tmp/deps.txt
+    - sed -i -e '/tzdata/d' /tmp/deps.txt
     - (! grep Downloading /tmp/deps.txt)
 
 flake8:
