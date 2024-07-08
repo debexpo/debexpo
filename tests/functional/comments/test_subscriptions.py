@@ -48,18 +48,18 @@ class TestPackageController(TestController):
 
         response = self.client.get(reverse(
             'unsubscribe_package', args=['testpackage']))
-        self.assertEquals(response.status_code, 405)
+        self.assertEqual(response.status_code, 405)
 
     def test_no_auth_unsubscribe(self):
         response = self.client.post(reverse(
             'unsubscribe_package', args=['testpackage']))
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('login'), response.url)
 
     def test_no_auth_subscriptions(self):
         response = self.client.post(reverse(
             'subscriptions'))
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('login'), response.url)
 
     def test_subscriptions(self, package=None, create=False, delete=False,
@@ -79,7 +79,7 @@ class TestPackageController(TestController):
         response = self.client.get(reverse('subscriptions'))
 
         # Assert page default content
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn('<h1>My subscription list</h1>', str(response.content))
 
         # Assert package subscription details
@@ -111,7 +111,7 @@ class TestPackageController(TestController):
             'commit': 'submit',
         })
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('subscriptions'), response.url)
 
     def test_new_redirect_subscriptions(self):
@@ -121,7 +121,7 @@ class TestPackageController(TestController):
             'commit': 'submit',
         })
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('subscribe_package', args=['package_name']),
                       response.url)
 
@@ -140,7 +140,7 @@ class TestPackageController(TestController):
         key = sub.id
         response = self.client.post(reverse('unsubscribe_package',
                                     args=['testpackage']))
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('subscriptions'), response.url)
         self.assertRaises(PackageSubscription.DoesNotExist,
                           PackageSubscription.objects.get, pk=key)

@@ -48,4 +48,4 @@ class TestChanges(TestController):
         finally:
             source.remove()
 
-        self.assertEquals(source, changes.get_source())
+        self.assertEqual(source, changes.get_source())

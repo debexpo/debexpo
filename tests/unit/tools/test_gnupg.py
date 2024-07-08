@@ -198,8 +198,8 @@ class TestGnuPGController(TestCase):
     def _assertGoodSignature(self, gnupg):
         self.assertFalse(gnupg.is_unusable())
         assert os.path.exists(signed_file)
-        self.assertEquals(test_gpg_key_fpr,
-                          gnupg.verify_sig(signed_file))
+        self.assertEqual(test_gpg_key_fpr,
+                         gnupg.verify_sig(signed_file))
 
     def testUnknownSignatureVerificationGPG1(self):
         self.testUnknownSignatureVerification(signed_file_v1, None,
@@ -220,8 +220,8 @@ class TestGnuPGController(TestCase):
         try:
             gnupg.verify_sig(filename)
         except ExceptionGnuPGNoPubKey as e:
-            self.assertEquals(e.fingerprint, fpr)
-            self.assertEquals(e.long_id, long_id)
+            self.assertEqual(e.fingerprint, fpr)
+            self.assertEqual(e.long_id, long_id)
             self.assertIn(os.path.basename(filename), str(e))
 
     def testInvalidSignature(self):

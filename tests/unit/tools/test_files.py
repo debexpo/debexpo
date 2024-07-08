@@ -75,8 +75,8 @@ class TestGPGSignedFileController(TestController):
 
         changes = GPGSignedFile(filename)
         changes.authenticate()
-        self.assertEquals(changes.get_key(), Key.objects.get(user=user))
-        self.assertEquals(str(changes.get_key().algorithm), algo_str)
+        self.assertEqual(changes.get_key(), Key.objects.get(user=user))
+        self.assertEqual(str(changes.get_key().algorithm), algo_str)
 
         # Remove user and key
         user.delete()

@@ -51,21 +51,21 @@ class TestPackagesController(TestController):
         )
 
         for fetch, item_name in testing_set:
-            self.assertEquals(str(fetch(name=item_name)), item_name)
+            self.assertEqual(str(fetch(name=item_name)), item_name)
 
     def test_get_description(self):
         package = Package.objects.get(name='testpackage')
 
-        self.assertEquals('A short description here', package.get_description())
+        self.assertEqual('A short description here', package.get_description())
 
         binary = BinaryPackage.objects.get(upload__package__name='testpackage')
         binary.delete()
 
-        self.assertEquals('', package.get_description())
+        self.assertEqual('', package.get_description())
 
     def test_get_dsc_no_files(self):
         package = Package.objects.get(name='testpackage')
         upload = PackageUpload.objects.get(package=package)
 
-        self.assertEquals(None, upload.get_dsc_url())
-        self.assertEquals(None, upload.get_dsc_name())
+        self.assertEqual(None, upload.get_dsc_url())
+        self.assertEqual(None, upload.get_dsc_name())

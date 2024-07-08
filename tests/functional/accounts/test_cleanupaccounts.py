@@ -124,9 +124,9 @@ class TestCronjobCleanupAccounts(TestController):
         users_activated = users.exclude(password__startswith='!')
 
         # No more expired accounts
-        self.assertEquals(users_to_cleanup.count(), 0)
+        self.assertEqual(users_to_cleanup.count(), 0)
         # Don't touch regular accounts
-        self.assertEquals(users_activated.count(), 2)
+        self.assertEqual(users_activated.count(), 2)
 
     def _get_accounts(self):
         return User.objects

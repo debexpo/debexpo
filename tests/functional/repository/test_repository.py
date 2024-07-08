@@ -154,7 +154,7 @@ class TestRepositoryController(TestController):
         # Assert files modes
         for entry in pool_files:
             info = stat(entry).st_mode
-            self.assertEquals(S_IMODE(info), 0o644)
+            self.assertEqual(S_IMODE(info), 0o644)
 
         # Assert Sources entries
         packages_in_sources = set()
@@ -173,7 +173,7 @@ class TestRepositoryController(TestController):
                 self.assertIn(entry_package, packages)
                 packages_in_sources.add(packages.index(entry_package))
 
-        self.assertEquals(len(packages_in_sources), len(packages))
+        self.assertEqual(len(packages_in_sources), len(packages))
 
     def test_repository_install_package(self):
         package = self.package.copy()
@@ -239,7 +239,7 @@ class TestRepositoryController(TestController):
         self._repo_install_package(**self.package)
 
         response = self.client.get(reverse('package', args=[package['name']]))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn(
             '/debian/pool/non-free/t/testpackage/testpackage_1.0-1.dsc',
             str(response.content))

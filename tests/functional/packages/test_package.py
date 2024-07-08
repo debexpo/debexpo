@@ -54,7 +54,7 @@ class TestPackageController(TestController):
 
         response = self.client.get(reverse(
             action, args=['testpackage'] + args))
-        self.assertEquals(response.status_code, 405)
+        self.assertEqual(response.status_code, 405)
 
     def _test_no_auth(self, action, redirect_login=True, args=None):
         if not args:
@@ -62,7 +62,7 @@ class TestPackageController(TestController):
 
         response = self.client.post(reverse(
             action, args=['testpackage'] + args))
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
 
         if (redirect_login):
             self.assertIn(reverse('login'), response.url)
@@ -82,23 +82,23 @@ class TestPackageController(TestController):
 
         response = self.client.post(reverse(action,
                                             args=['testpackage'] + args))
-        self.assertEquals(response.status_code, 403)
+        self.assertEqual(response.status_code, 403)
         user.delete()
 
     def test_index(self):
         # No package redirects to package list
         response = self.client.get(reverse('package_index'))
-        self.assertEquals(response.status_code, 301)
-        self.assertEquals(reverse('packages'), response.url)
+        self.assertEqual(response.status_code, 301)
+        self.assertEqual(reverse('packages'), response.url)
 
         # Wrong package produce 404
         response = self.client.get(reverse('package', args=['notapackage']))
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
         # Write package show details
         # Unauthenticated
         response = self.client.get(reverse('package', args=['testpackage']))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         self.assertIn(reverse('packages_search',
                               args=['uploader', 'email@example.com']),
@@ -107,7 +107,7 @@ class TestPackageController(TestController):
         # And authenticated
         response = self.client.post(reverse('login'), self._AUTHDATA)
         response = self.client.get(reverse('package', args=['testpackage']))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         self.assertIn(reverse('delete_package',
                               args=['testpackage']),
@@ -123,7 +123,7 @@ class TestPackageController(TestController):
         binary.delete()
 
         response = self.client.get(reverse('package', args=['testpackage']))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         self.assertNotIn('A short description here',
                          str(response.content))
@@ -132,7 +132,7 @@ class TestPackageController(TestController):
         # Not authenticated
         response = self.client.get(reverse('subscribe_package',
                                            args=['testpackage']))
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('login'), response.url)
 
         # Authenticated
@@ -141,7 +141,7 @@ class TestPackageController(TestController):
         response = self.client.get(reverse('subscribe_package',
                                            args=['testpackage']))
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         # Post to update subscription
         self._subscribe('testpackage', True, False)
@@ -157,16 +157,16 @@ class TestPackageController(TestController):
             'commit': 'submit'
         })
 
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(reverse('package', args=[package]),
-                          response.url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(reverse('package', args=[package]),
+                         response.url)
         if not (on_upload or on_comment):
             self.assertRaises(PackageSubscription.DoesNotExist,
                               PackageSubscription.objects.get, package=package)
         else:
             subs = PackageSubscription.objects.get(package=package)
-            self.assertEquals(subs.on_upload, on_upload)
-            self.assertEquals(subs.on_comment, on_comment)
+            self.assertEqual(subs.on_upload, on_upload)
+            self.assertEqual(subs.on_comment, on_comment)
 
     def test_delete_no_auth(self):
         self._test_no_auth('delete_package')
@@ -196,7 +196,7 @@ class TestPackageController(TestController):
         response = self.client.post(reverse(
             'delete_package', args=['testpackage']))
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(reverse('packages_my'), response.url)
         self.assertRaises(Package.DoesNotExist, Package.objects.get,
                           name='testpackage')
@@ -216,7 +216,7 @@ class TestPackageController(TestController):
         response = self.client.post(reverse(
             'delete_upload', args=['testpackage', '1']))
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(reverse('packages_my'), response.url)
         self.assertRaises(Package.DoesNotExist, Package.objects.get,
                           name='testpackage')
@@ -228,7 +228,7 @@ class TestPackageController(TestController):
         response = self.client.post(reverse(
             'delete_upload', args=['testpackage', '1']))
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(reverse('package', args=['testpackage']), response.url)
         Package.objects.get(name='testpackage')
 
@@ -251,7 +251,7 @@ class TestPackageController(TestController):
             'commit': 'submit_comment'
         })
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn('errorlist', str(response.content))
 
     def test_comment(self):
@@ -267,18 +267,18 @@ class TestPackageController(TestController):
             'commit': 'submit_comment'
         })
 
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
             f"{reverse('package', args=['testpackage'])}#upload-1",
             response.url)
 
         comment = Comment.objects.get(upload=upload)
 
-        self.assertEquals(comment.text, 'This is a test comment')
+        self.assertEqual(comment.text, 'This is a test comment')
         self.assertFalse(comment.uploaded)
 
         response = self.client.get(reverse('package', args=['testpackage']))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         self.assertIn('This is a test comment', str(response.content))
         self.assertIn('Needs work', str(response.content))
@@ -320,7 +320,7 @@ class TestPackageController(TestController):
         response = self.client.post(reverse(
             'sponsor_package', args=['testpackage']))
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
 
         package = Package.objects.get(name='testpackage')
 
@@ -355,7 +355,7 @@ class TestPackageController(TestController):
 #
 #        response = self.client.get(reverse('package', args=['testpackage']))
 #
-#        self.assertEquals(response.status_code, 200)
+#        self.assertEqual(response.status_code, 200)
 #        self.assertTrue(textmark in response)
 
 #    def test_package_info_data(self):

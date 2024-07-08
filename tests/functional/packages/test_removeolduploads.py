@@ -126,7 +126,7 @@ class TestCronjobRemoveOldUploads(TestController):
                 count += 1
 
         # Each state exists in package
-        self.assertEquals(len(self.state), count)
+        self.assertEqual(len(self.state), count)
 
     def _expect_package_removal(self, package_to_remove):
         new_state = []

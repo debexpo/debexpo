@@ -40,7 +40,7 @@ class TestLoginController(TestController):
 
     def test_index(self):
         response = self.client.get(reverse('login'))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn('name="username"', str(response.content))
         self.assertIn('name="password"', str(response.content))
 
@@ -54,31 +54,31 @@ class TestLoginController(TestController):
         self.assertIn('error-message', str(response.content))
 
         response = self.client.post(reverse('login'), self._AUTHDATA)
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(reverse('profile'), response.url)
         self.assertNotIn('error-message', str(response.content))
 
     def test__login_path_before_login(self):
         response = self.client.get(reverse('profile'))
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(reverse('login'), response.url)
 
         response = self.client.post(reverse('login'), self._AUTHDATA)
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(reverse('profile'), response.url)
         self.assertNotIn('error-message', str(response.content))
 
     def test_logout_loggedout(self):
         response = self.client.get(reverse('logout'))
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(reverse('index'), response.url)
 
     def test_logout_loggedin(self):
         response = self.client.post(reverse('login'), self._AUTHDATA)
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(reverse('profile'), response.url)
         self.assertNotIn('error-message', str(response.content))
 
         response = self.client.get(reverse('logout'))
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(reverse('index'), response.url)

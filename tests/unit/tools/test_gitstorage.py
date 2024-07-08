@@ -83,13 +83,13 @@ class TestGitBackendDulwich(TestCase):
         self.repo = GitBackendDulwich(self.gitdir)
         self.assertTrue(isdir(self.gitdir))
 
-        self.assertEquals(self._git_count(), 0)
+        self.assertEqual(self._git_count(), 0)
 
     def test_init_existing_repo(self):
         self.test_init_new_repo()
 
         self.repo = GitBackendDulwich(self.gitdir)
-        self.assertEquals(self._git_count(), 0)
+        self.assertEqual(self._git_count(), 0)
 
     def test_adding_new_files(self, text="Hello World!\n"):
         self.test_init_new_repo()
@@ -98,19 +98,19 @@ class TestGitBackendDulwich(TestCase):
         self.repo.stage([filename])
         self.repo.commit()
 
-        self.assertEquals(self._git_count(), 1)
+        self.assertEqual(self._git_count(), 1)
         self.assertTrue(filename in self._git_last_commited_files())
 
     def test_get_all_trees(self):
         self.test_adding_new_files()
 
         trees = self.repo.getAllTrees()
-        self.assertEquals(len(trees), 1)
+        self.assertEqual(len(trees), 1)
 
         (status, output) = self._git(['log', '--format=%T'])
         self.assertFalse(status)
-        self.assertEquals(output.rstrip().split('\n'),
-                          [item.decode() for item in trees])
+        self.assertEqual(output.rstrip().split('\n'),
+                         [item.decode() for item in trees])
 
     def test_get_last_tree(self):
         self.test_adding_new_files()
@@ -123,7 +123,7 @@ class TestGitBackendDulwich(TestCase):
 
         (status, output) = self._git(['log', '--format=%T', 'HEAD~1..HEAD'])
         self.assertFalse(status)
-        self.assertEquals(output.rstrip(), tree.decode())
+        self.assertEqual(output.rstrip(), tree.decode())
 
     def test_build_tree_diff(self):
         self.test_init_new_repo()
@@ -133,13 +133,13 @@ class TestGitBackendDulwich(TestCase):
         self.repo.commit()
 
         changes = self.repo.buildTreeDiff()
-        self.assertEquals('', changes.decode())
+        self.assertEqual('', changes.decode())
 
         self._write_test_file("New version\n", filename)
         self.repo.stage([filename])
         self.repo.commit()
 
-        self.assertEquals(self._git_count(), 2)
+        self.assertEqual(self._git_count(), 2)
         self.assertTrue(filename in self._git_last_commited_files())
 
         changes = self.repo.buildTreeDiff()

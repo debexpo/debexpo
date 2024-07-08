@@ -62,7 +62,7 @@ class TestRegisterController(TestController):
         self.client.post(reverse('register'), INFO_CONTRIBUTOR)
 
         user = User.objects.get(email='mr_me@example.com')
-        self.assertEquals(user.profile.status, UserStatus.contributor.value)
+        self.assertEqual(user.profile.status, UserStatus.contributor.value)
 
         # delete it
         if actually_delete_it:
@@ -118,7 +118,7 @@ class TestRegisterController(TestController):
 
         self.assertEqual(response.status_code, 200)
         user = User.objects.get(email=INFO_DD['email'])
-        self.assertEquals(user.profile.status, UserStatus.developer.value)
+        self.assertEqual(user.profile.status, UserStatus.developer.value)
 
         user.delete()
 

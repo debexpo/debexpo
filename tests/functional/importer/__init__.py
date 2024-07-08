@@ -226,7 +226,7 @@ class TestImporterController(TestController):
 
     def assert_plugin_result_count(self, package_name, plugin, count):
         plugin_result = self._lookup_plugin_result(package_name, plugin)
-        self.assertEquals(count, len(plugin_result))
+        self.assertEqual(count, len(plugin_result))
 
     def assert_plugin_result(self, package_name, plugin, outcome):
         plugin_results = self._lookup_plugin_result(package_name, plugin)
@@ -297,5 +297,5 @@ class TestImporterController(TestController):
     def assert_rfs_content(self, package, content):
         response = self.client.get(reverse('package_rfs', args=[package]))
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn(content, str(response.content))

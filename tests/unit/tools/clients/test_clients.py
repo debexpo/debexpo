@@ -56,8 +56,8 @@ class TestClientsController(TestController):
         content = client.fetch_json_resource(
             'https://api.ftp-master.debian.org/file_in_archive/h/hello')
 
-        self.assertEquals(type(content), list)
-        self.assertEquals(len(content), 0)
+        self.assertEqual(type(content), list)
+        self.assertEqual(len(content), 0)
 
     def test_client_download(self):
         client = ClientHTTP()

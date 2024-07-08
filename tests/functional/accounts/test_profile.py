@@ -213,20 +213,20 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
     def test_index(self):
         # Test unauthenticated access to profile page
         response = self.client.get(reverse('profile'))
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('login'), response.url)
         self.assertIn(reverse('profile'), response.url)
 
         # Test login
         response = self.client.post(reverse('login'), self._AUTHDATA)
         response = self.client.get(reverse('index'))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn('<a href="{}">'.format(reverse('logout')),
                       str(response.content))
 
         # Test /my redirect
         response = self.client.get(reverse('my'))
-        self.assertEquals(response.status_code, 301)
+        self.assertEqual(response.status_code, 301)
         self.assertIn(reverse('profile'), response.url)
 
         # test user with country
@@ -236,7 +236,7 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
         user.profile.save()
 
         response = self.client.get(reverse('profile'))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn('selected>Germany', str(response.content))
 
         # test DD view
@@ -260,7 +260,7 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
         # test handling of deleted user
         self._remove_example_user()
         response = self.client.get(reverse('profile'))
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('login'), response.url)
 
     def test_gpg_encoding(self):
@@ -271,16 +271,16 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
             'key': self._GPGKEY_2,
             'commit_gpg': 'submit'
         })
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertNotIn('errorlist', str(response.content))
 
         user = User.objects.get(email='email@example.com')
-        self.assertEquals(user.key.key, self._GPGKEY_2)
+        self.assertEqual(user.key.key, self._GPGKEY_2)
 
     def test__gpg(self):
         # Anonymous access to the form is denined
         response = self.client.post(reverse('profile'), {'form': 'gpg'})
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('login'), response.url)
 
         # Authentication
@@ -295,46 +295,46 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
             'key': self._GPGKEY,
             'commit_gpg': 'submit'
         })
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertNotIn('errorlist', str(response.content))
 
-        self.assertEquals(user.key.key, self._GPGKEY)
+        self.assertEqual(user.key.key, self._GPGKEY)
 
         # Again?
         response = self.client.post(reverse('profile'), {
             'key': self._GPGKEY,
             'commit_gpg': 'submit'
         })
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertNotIn('errorlist', str(response.content))
 
-        self.assertEquals(user.key.key, self._GPGKEY)
+        self.assertEqual(user.key.key, self._GPGKEY)
 
         # Update it
         response = self.client.post(reverse('profile'), {
             'key': self._GPGKEY_2,
             'commit_gpg': 'submit'
         })
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertNotIn('errorlist', str(response.content))
 
         user = User.objects.get(email='email@example.com')
-        self.assertEquals(user.key.key, self._GPGKEY_2)
+        self.assertEqual(user.key.key, self._GPGKEY_2)
 
         # Update it with bad key
         response = self.client.post(reverse('profile'), {
             'key': self._GPGKEY_BAD_ALGO,
             'commit_gpg': 'submit'
         })
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn('errorlist', str(response.content))
 
         user = User.objects.get(email='email@example.com')
-        self.assertEquals(user.key.key, self._GPGKEY_2)
+        self.assertEqual(user.key.key, self._GPGKEY_2)
 
         # test whether index page contains GPG delete link
         response = self.client.get(reverse('profile'))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn('Fingerprint', str(response.content))
         self.assertIn('Remove', str(response.content))
         self.assertIn(self._GPGKEY_2.replace('\n', '\\n'),
@@ -348,7 +348,7 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
                 'key': self._GPGKEY,
                 'delete_gpg': 'submit'
             })
-            self.assertEquals(response.status_code, 200)
+            self.assertEqual(response.status_code, 200)
             self.assertNotIn('Fingerprint', str(response.content))
             self.assertNotIn('Remove', str(response.content))
             self.assertNotIn(self._GPGKEY.replace('\n', '\\n'),
@@ -361,7 +361,7 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
         self.assertRaises(Key.DoesNotExist, Key.objects.get, user=user)
 
         # Assertions
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn('errorlist', str(response.content))
         self.assertIn(message, str(response.content))
         self.assertRaises(Key.DoesNotExist, Key.objects.get, user=user)
@@ -402,13 +402,13 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
 
 #    def test__gpg_wrong_email(self):
 #        response = self.client.post(reverse('profile'), {'form': 'gpg'})
-#        self.assertEquals(response.status_code, 302)
+#        self.assertEqual(response.status_code, 302)
 #        self.assertTrue(response.location.endswith(reverse('login')))
 #        response = self.client.post(reverse('login'), self._AUTHDATA)
 #        user = meta.session.query(User) \
 #            .filter(User.email == 'email@example.com') \
 #            .one()
-#        self.assertEquals(user.gpg, None)
+#        self.assertEqual(user.gpg, None)
 #
 #        # upload GPG key
 #        response = self.client.post(reverse('profile'), {'form': 'gpg',
@@ -416,18 +416,18 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
 #                                             'commit': 'submit'},
 #                                 upload_files=[('gpg', 'mykey.asc',
 #                                               self._GPGKEY_WRONG_EMAIL)])
-#        self.assertEquals(response.status_code, 200)
+#        self.assertEqual(response.status_code, 200)
 #        self.assertTrue('None of your user IDs in key {} does match your'
 #                       ' profile mail address'.format(self._GPG_ID_WRONG_EMAIL)
 #                        in response)
 #        user = meta.session.query(User) \
 #            .filter(User.email == 'email@example.com') \
 #            .one()
-#        self.assertEquals(user.gpg, None)
+#        self.assertEqual(user.gpg, None)
 
     def test__details(self):
         response = self.client.post(reverse('profile'), {'form': 'details'})
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('login'), response.url)
         response = self.client.post(reverse('login'), self._AUTHDATA)
         response = self.client.post(reverse('profile'), {
@@ -435,22 +435,22 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
             'email': 'email2@example.com',
             'commit_account': 'submit'
         })
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn('This field is required.', str(response.content))
         response = self.client.post(reverse('profile'), {
             'name': 'Test user2',
             'email': 'email@example.com',
             'commit_account': 'submit'
         })
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertNotIn('errorlist', str(response.content))
         user = User.objects.get(email='email@example.com')
-        self.assertEquals(user.name, 'Test user2')
+        self.assertEqual(user.name, 'Test user2')
         user.delete()
 
     def test__password(self):
         response = self.client.post(reverse('profile'), {'form': 'password'})
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('login'), response.url)
 
         # Login
@@ -463,7 +463,7 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
             'new_password2': 'newpassword',
             'commit_password': 'submit'
         })
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn('errorlist', str(response.content))
 
         # Test password change
@@ -473,7 +473,7 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
             'new_password2': 'newpassword',
             'commit_password': 'submit'
         })
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertNotIn('errorlist', str(response.content))
 
         # Logout
@@ -483,7 +483,7 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
         self.client.post(reverse('login'), {**self._AUTHDATA,
                                             'password': 'newpassword'})
         response = self.client.get(reverse('index'))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn('<a href="{}">'.format(reverse('logout')),
                       str(response.content))
 
@@ -508,7 +508,7 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
 
         response = self.client.post(reverse('profile'), data)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         if expected:
             self.assertIn('errorlist', str(response.content))
@@ -525,7 +525,7 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
             if not value:
                 self.assertFalse(getattr(user.profile, key))
             else:
-                self.assertEquals(getattr(user.profile, key), value)
+                self.assertEqual(getattr(user.profile, key), value)
 
         if init:
             self._set_profile(backup)
@@ -535,7 +535,7 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
     def test__other_details(self):
         response = self.client.post(reverse('profile'),
                                     {'form': 'other_details'})
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('login'), response.url)
         response = self.client.post(reverse('login'), self._AUTHDATA)
 
@@ -596,9 +596,9 @@ psCWDYcNhNTEmXgsDSqUlLrqqde/3hDynhWeAP9jk7QAnDToELBdyCe6HpGXLC3q
 
 #    def test__invalid_form(self):
 #        response = self.client.post(reverse('profile'), {'form': 'invalid'})
-#        self.assertEquals(response.status_code, 302)
+#        self.assertEqual(response.status_code, 302)
 #        self.assertTrue(response.location.endswith(reverse('login')))
 #        response = self.client.post(reverse('login'), self._AUTHDATA)
 #        response = self.client.post(reverse('profile'), {'form': 'invalid'})
-#        self.assertEquals(response.status_code, 200)
+#        self.assertEqual(response.status_code, 200)
 #        self.assertTrue('<a href="%s">' % reverse('logout') in response)

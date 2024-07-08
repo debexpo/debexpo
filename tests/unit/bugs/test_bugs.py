@@ -39,8 +39,8 @@ class TestBugs(TestController):
             'FTBFS: with foo from experimental'
         )
 
-        self.assertEquals(len(packages), 1)
-        self.assertEquals(packages[0].name, 'package1')
+        self.assertEqual(len(packages), 1)
+        self.assertEqual(packages[0].name, 'package1')
 
         # Bug linked to multiple packages
         packages = Bug.objects._guess_packages(
@@ -48,9 +48,9 @@ class TestBugs(TestController):
             'FTBFS: with foo from experimental'
         )
 
-        self.assertEquals(len(packages), 2)
-        self.assertEquals(packages[0].name, 'package1')
-        self.assertEquals(packages[1].name, 'package2')
+        self.assertEqual(len(packages), 2)
+        self.assertEqual(packages[0].name, 'package1')
+        self.assertEqual(packages[1].name, 'package2')
 
         # WNPP/sponsorship-requests
         packages = Bug.objects._guess_packages(
@@ -58,8 +58,8 @@ class TestBugs(TestController):
             'ITP: foo -- A stable and useful software'
         )
 
-        self.assertEquals(len(packages), 1)
-        self.assertEquals(packages[0].name, 'foo')
+        self.assertEqual(len(packages), 1)
+        self.assertEqual(packages[0].name, 'foo')
 
         # WNPP/sponsorship-requests, wrong subject
         packages = Bug.objects._guess_packages(
@@ -67,4 +67,4 @@ class TestBugs(TestController):
             'wait, there is a format for the subject?'
         )
 
-        self.assertEquals(len(packages), 0)
+        self.assertEqual(len(packages), 0)

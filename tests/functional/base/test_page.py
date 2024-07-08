@@ -55,7 +55,7 @@ class TestBrowsingPage(TestCase):
         finally:
             environ['PATH'] = path
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertNotIn('Version', str(response.content))
 
     def test_page_content(self):
@@ -63,6 +63,6 @@ class TestBrowsingPage(TestCase):
 
         for url, content in PAGES:
             response = client.get(url)
-            self.assertEquals(response.status_code, 200)
+            self.assertEqual(response.status_code, 200)
             self.assertIn(content, str(response.content))
             self.assertNotIn('<a href="">', str(response.content))
