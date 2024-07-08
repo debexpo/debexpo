@@ -52,7 +52,7 @@ class TestPackagesController(TestController):
                 'value': value,
                 'feed': 'feed',
             }))
-        self.assertEquals(200, response.status_code)
+        self.assertEqual(200, response.status_code)
         self.assertIn('application/rss+xml', response['Content-Type'])
         self.assertIn('<title>testpackage 1.0-1</title>', str(response.content))
 
@@ -65,7 +65,7 @@ class TestPackagesController(TestController):
     def test_index(self):
         response = self.client.get(reverse('packages'))
 
-        self.assertEquals(200, response.status_code)
+        self.assertEqual(200, response.status_code)
         self.assertIn('text/html', response['Content-Type'])
         self._assert_content(
             response,
@@ -105,7 +105,7 @@ class TestPackagesController(TestController):
             'value': 'nonexistent@example.com',
             'feed': 'feed',
         }))
-        self.assertEquals(200, response.status_code)
+        self.assertEqual(200, response.status_code)
         self.assertIn('application/rss+xml', response['Content-Type'])
         self.assertNotIn('<title>testpackage 1.0-1</title>',
                          str(response.content))
@@ -118,7 +118,7 @@ class TestPackagesController(TestController):
             'key': 'name',
             'value': 'anotherpackage',
         }))
-        self.assertEquals(200, response.status_code)
+        self.assertEqual(200, response.status_code)
         self.assertIn('text/html', response['Content-Type'])
         self.assertNotIn('testpackage', str(response.content))
         self.assertIn('anotherpackage', str(response.content))
@@ -128,7 +128,7 @@ class TestPackagesController(TestController):
             'key': 'section',
             'value': 'admin',
         }))
-        self.assertEquals(200, response.status_code)
+        self.assertEqual(200, response.status_code)
         self.assertIn('text/html', response['Content-Type'])
         self.assertIn('testpackage', str(response.content))
         self.assertNotIn('anotherpackage', str(response.content))
@@ -138,7 +138,7 @@ class TestPackagesController(TestController):
             'key': 'uploader',
             'value': 'nonexistant@example.com',
         }))
-        self.assertEquals(200, response.status_code)
+        self.assertEqual(200, response.status_code)
         self.assertNotIn('testpackage', str(response.content))
         self.assertNotIn('anotherpackage', str(response.content))
 
@@ -146,7 +146,7 @@ class TestPackagesController(TestController):
             'key': 'uploader',
             'value': 'email@example.com'
         }))
-        self.assertEquals(200, response.status_code)
+        self.assertEqual(200, response.status_code)
         self.assertIn('text/html', response['Content-Type'])
         self.assertIn('testpackage', str(response.content))
         self.assertIn('anotherpackage', str(response.content))
@@ -156,19 +156,19 @@ class TestPackagesController(TestController):
             'key': 'badkeyword',
             'value': 'something',
         }))
-        self.assertEquals(200, response.status_code)
+        self.assertEqual(200, response.status_code)
         self.assertIn('text/html', response['Content-Type'])
         self.assertNotIn('testpackage', str(response.content))
         self.assertNotIn('anotherpackage', str(response.content))
 
     def test_my(self):
         response = self.client.get(reverse('packages_my'))
-        self.assertEquals(302, response.status_code)
+        self.assertEqual(302, response.status_code)
         self.assertIn(reverse('login'), response.url)
 
         self.client.post(reverse('login'), self._AUTHDATA)
         response = self.client.get(reverse('packages_my'))
-        self.assertEquals(200, response.status_code)
+        self.assertEqual(200, response.status_code)
         self.assertIn('text/html', response['Content-Type'])
         self.assertIn('testpackage', str(response.content))
         self.assertIn('anotherpackage', str(response.content))
@@ -178,7 +178,7 @@ class TestPackagesController(TestController):
             'key': 'maintainer',
             'value': 'Test User <email@example.com>',
         }))
-        self.assertEquals(200, response.status_code)
+        self.assertEqual(200, response.status_code)
         self.assertIn('text/html', response['Content-Type'])
         self.assertIn('testpackage', str(response.content))
         self.assertNotIn('anotherpackage', str(response.content))

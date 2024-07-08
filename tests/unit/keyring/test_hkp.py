@@ -57,34 +57,34 @@ class TestHKP(TestController):
     def test_op(self):
         # Missing op parameter: 400
         response = self.client.get(reverse('hkp'))
-        self.assertEquals(response.status_code, 400)
+        self.assertEqual(response.status_code, 400)
         self.assertIn("Missing 'op'", str(response.content))
 
         # Unknown op: 501
         response = self.client.get(reverse('hkp'),
                                    {'op': 'not-implemented'})
-        self.assertEquals(response.status_code, 501)
+        self.assertEqual(response.status_code, 501)
         self.assertIn("Not Implemented", str(response.content))
 
     def test_get(self):
         # Missing search parameter: 400
         response = self.client.get(reverse('hkp'),
                                    {'op': 'get'})
-        self.assertEquals(response.status_code, 400)
+        self.assertEqual(response.status_code, 400)
         self.assertIn("Missing 'search'", str(response.content))
 
         # No match: 404
         response = self.client.get(reverse('hkp'),
                                    {'op': 'get',
                                     'search': 'not-found'})
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
         self.assertIn('Not Found', str(response.content))
 
         # Multiple matches: 500
         response = self.client.get(reverse('hkp'),
                                    {'op': 'get',
                                     'search': ''})
-        self.assertEquals(response.status_code, 500)
+        self.assertEqual(response.status_code, 500)
         self.assertIn("Multiple matches found", str(response.content))
 
         # Matches long id: 200
@@ -92,7 +92,7 @@ class TestHKP(TestController):
             'op': 'get',
             'search': '0x' + self._GPG_FINGERPRINT[-16:]
         })
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn(self._GPG_KEY, response.content.decode())
 
         # Matches full fingerprint of a subkey: 200
@@ -103,4 +103,4 @@ class TestHKP(TestController):
             'search': fingerprint
         })
         self.assertIn(self._GPG_KEY, response.content.decode())
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)

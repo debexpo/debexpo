@@ -108,8 +108,8 @@ class TestCommandSyncDistributions(TestController):
         if dists_deleted is None:
             dists_deleted = self.REF_DISTS_DELETED
 
-        self.assertEquals(self._get_dists(),
-                          (self.dists_before | dists_added) - dists_deleted)
+        self.assertEqual(self._get_dists(),
+                         (self.dists_before | dists_added) - dists_deleted)
 
     def test_sync_success(self):
         self._sync_distributions()

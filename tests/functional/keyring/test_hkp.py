@@ -47,7 +47,7 @@ class TestHKP(TransactionTestController, LiveServerTestCase):
             '--recv-keys',
             '0x' + self._GPG_FINGERPRINT[-16:]])
         self.assertIn('IMPORT_OK 1', output)
-        self.assertEquals(0, status)
+        self.assertEqual(0, status)
 
         # On non-existing key
         (output, status) = gpg._run(args=[
@@ -56,4 +56,4 @@ class TestHKP(TransactionTestController, LiveServerTestCase):
             '--recv-keys',
             '0xCA11AB1E'])
         self.assertIn('FAILURE recv-keys', output)
-        self.assertEquals(2, status)
+        self.assertEqual(2, status)

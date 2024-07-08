@@ -58,20 +58,20 @@ class TestToken(TestController):
         token1 = token_generator.make_token(self.user, 'new@example.org')
         token2 = token_generator.make_token(self.user, 'another@example.org')
 
-        self.assertEquals(token1.split('-')[0], token2.split('-')[0])
-        self.assertNotEquals(token1.split('-')[1], token2.split('-')[1])
+        self.assertEqual(token1.split('-')[0], token2.split('-')[0])
+        self.assertNotEqual(token1.split('-')[1], token2.split('-')[1])
 
         # Same email+account+time produce same token
         token2 = token_generator.make_token(self.user, 'new@example.org')
 
-        self.assertEquals(token1, token2)
+        self.assertEqual(token1, token2)
 
         # Different time produce different tokens
         token_generator._today = self._expired
         token2 = token_generator.make_token(self.user, 'new@example.org')
 
-        self.assertNotEquals(token1.split('-')[0], token2.split('-')[0])
-        self.assertNotEquals(token1.split('-')[1], token2.split('-')[1])
+        self.assertNotEqual(token1.split('-')[0], token2.split('-')[0])
+        self.assertNotEqual(token1.split('-')[1], token2.split('-')[1])
 
     def test_check_token(self):
         # Valid token: ok

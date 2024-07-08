@@ -462,7 +462,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         )
         changes.remove()
 
-        self.assertEquals(len(mail.outbox), 0)
+        self.assertEqual(len(mail.outbox), 0)
 
     def test_importer_fail_no_maintainer(self):
         self._upload_package(join(self.data_dir, 'changes-no-maintainer'))
@@ -476,8 +476,8 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         )
         changes.remove()
 
-        self.assertEquals(len(mail.outbox), 1)
-        self.assertEquals(changes.uploader, None)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(changes.uploader, None)
         self.assertIn('No space left', mail.outbox[0].body)
         self.assertIn(settings.DEFAULT_FROM_EMAIL, mail.outbox[0].to)
 
@@ -493,8 +493,8 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
             IOError('No space left on device'))
         )
 
-        self.assertEquals(len(mail.outbox), 1)
-        self.assertEquals(changes.uploader, changes.maintainer)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(changes.uploader, changes.maintainer)
         self.assertIn('No space left', mail.outbox[0].body)
         self.assertIn(settings.DEFAULT_FROM_EMAIL, mail.outbox[0].to)
 
@@ -510,10 +510,10 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         )
         changes.remove()
 
-        self.assertEquals(len(mail.outbox), 1)
-        self.assertEquals(changes.uploader, changes._data.get('Changed-By'))
-        self.assertEquals(changes.changes, changes._data.get('Changes'))
-        self.assertNotEquals(changes.uploader, changes.maintainer)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(changes.uploader, changes._data.get('Changed-By'))
+        self.assertEqual(changes.changes, changes._data.get('Changes'))
+        self.assertNotEqual(changes.uploader, changes.maintainer)
         self.assertIn('No space left', mail.outbox[0].body)
         self.assertIn(settings.DEFAULT_FROM_EMAIL, mail.outbox[0].to)
         self.assertIn(changes.uploader, mail.outbox[0].to)

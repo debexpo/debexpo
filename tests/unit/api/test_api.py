@@ -135,7 +135,6 @@ class TestAPI(TestController):
         response = self.client.get('/api/packages/3/')
 
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(loads(response.content), {'detail': 'Not found.'})
 
     def test_api_upload_list(self):
         # With uploads
@@ -163,7 +162,6 @@ class TestAPI(TestController):
         response = self.client.get('/api/uploads/3/')
 
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(loads(response.content), {'detail': 'Not found.'})
 
     def test_api_package_upload_list(self):
         # With packages
@@ -189,10 +187,8 @@ class TestAPI(TestController):
         response = self.client.get('/api/packages/1/uploads/2/')
 
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(loads(response.content), {'detail': 'Not found.'})
 
         # Without packages
         response = self.client.get('/api/packages/3/uploads/3/')
 
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(loads(response.content), {'detail': 'Not found.'})

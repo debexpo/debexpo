@@ -47,7 +47,7 @@ class TestPluginClosedBug(TestImporterController):
         self.import_source_package('hello-no-bug')
         self.assert_importer_succeeded()
 
-        self.assertEquals(list(Bug.objects.all()), [])
+        self.assertEqual(list(Bug.objects.all()), [])
         self.assert_plugin_result_count('hello', 'closed-bugs', 0)
         self.assert_rfs_content('hello',
                                 'Subject: RFS: hello/1.0-1 -- Test package '
@@ -60,8 +60,8 @@ class TestPluginClosedBug(TestImporterController):
         self.import_source_package('hello-no-owned-bug')
         self.assert_importer_succeeded()
 
-        self.assertEquals(Bug.objects.get().number, 9953)
-        self.assertEquals(list(
+        self.assertEqual(Bug.objects.get().number, 9953)
+        self.assertEqual(list(
             Bug.objects.get().sources.values_list('name', flat=True)),
             ['xloadimage'])
 
@@ -69,8 +69,8 @@ class TestPluginClosedBug(TestImporterController):
                                     PluginSeverity.error)
         data = self.assert_plugin_result('hello', 'closed-bugs',
                                          'Package closes bugs in a wrong way')
-        self.assertEquals(data['errors'],
-                          ['Bug #9953 does not belong to this package'])
+        self.assertEqual(data['errors'],
+                         ['Bug #9953 does not belong to this package'])
         self.assert_rfs_content('hello',
                                 'Subject: RFS: hello/1.0-1 -- Test '
                                 'package for debexpo')
@@ -82,14 +82,14 @@ class TestPluginClosedBug(TestImporterController):
         self.import_source_package('hello-close-rfs')
         self.assert_importer_succeeded()
 
-        self.assertEquals(Bug.objects.get().number, 815032)
-        self.assertEquals(Bug.objects.get().bugtype, BugType.RFS)
+        self.assertEqual(Bug.objects.get().number, 815032)
+        self.assertEqual(Bug.objects.get().bugtype, BugType.RFS)
 
         self.assert_plugin_severity('hello', 'closed-bugs',
                                     PluginSeverity.error)
         data = self.assert_plugin_result('hello', 'closed-bugs',
                                          'Package closes bugs in a wrong way')
-        self.assertEquals(data['errors'], ['Bug #815032 is a RFS bug'])
+        self.assertEqual(data['errors'], ['Bug #815032 is a RFS bug'])
         self.assert_rfs_content('hello',
                                 'Subject: RFS: hello/1.0-1 [RFS] -- Test '
                                 'package for debexpo')
@@ -101,13 +101,13 @@ class TestPluginClosedBug(TestImporterController):
         self.import_source_package('hello')
         self.assert_importer_succeeded()
 
-        self.assertEquals(list(Bug.objects.all()), [])
+        self.assertEqual(list(Bug.objects.all()), [])
 
         self.assert_plugin_severity('hello', 'closed-bugs',
                                     PluginSeverity.error)
         data = self.assert_plugin_result('hello', 'closed-bugs',
                                          'Package closes bugs in a wrong way')
-        self.assertEquals(data['errors'], ['Bug #0 does not exist'])
+        self.assertEqual(data['errors'], ['Bug #0 does not exist'])
         self.assert_rfs_content('hello',
                                 'Subject: RFS: hello/1.0-1 -- Test package '
                                 'for debexpo')
@@ -119,8 +119,8 @@ class TestPluginClosedBug(TestImporterController):
         self.import_source_package('hello-multi-wnpp')
         self.assert_importer_succeeded()
 
-        self.assertEquals(Bug.objects.get(number=637639).bugtype, BugType.ITA)
-        self.assertEquals(Bug.objects.get(number=874387).bugtype, BugType.ITA)
+        self.assertEqual(Bug.objects.get(number=637639).bugtype, BugType.ITA)
+        self.assertEqual(Bug.objects.get(number=874387).bugtype, BugType.ITA)
 
         self.assert_plugin_severity('vnstat', 'closed-bugs',
                                     PluginSeverity.warning)
@@ -139,15 +139,15 @@ class TestPluginClosedBug(TestImporterController):
             self.import_source_package('hello-normal-bug')
         self.assert_importer_succeeded()
 
-        self.assertEquals(Bug.objects.get().number, 906521)
-        self.assertEquals(Bug.objects.get().status, BugStatus.done)
+        self.assertEqual(Bug.objects.get().number, 906521)
+        self.assertEqual(Bug.objects.get().status, BugStatus.done)
 
         self.assert_plugin_severity('hello', 'closed-bugs',
                                     PluginSeverity.error)
         data = self.assert_plugin_result('hello', 'closed-bugs',
                                          'Package closes bugs in a wrong way')
-        self.assertEquals(data['errors'],
-                          ['Bug #906521 is closed'])
+        self.assertEqual(data['errors'],
+                         ['Bug #906521 is closed'])
         self.assert_rfs_content('hello',
                                 'Subject: RFS: hello/1.0-1 -- Test package '
                                 'for debexpo')
@@ -159,10 +159,10 @@ class TestPluginClosedBug(TestImporterController):
         self.import_source_package('hello-normal-bug')
         self.assert_importer_succeeded()
 
-        self.assertEquals(Bug.objects.get().number, 906521)
-        self.assertEquals(Bug.objects.get().severity, BugSeverity.normal)
-        self.assertEquals(Bug.objects.get().bugtype, BugType.bug)
-        self.assertEquals(Bug.objects.get().subject, 'Hello says `goodbye\'')
+        self.assertEqual(Bug.objects.get().number, 906521)
+        self.assertEqual(Bug.objects.get().severity, BugSeverity.normal)
+        self.assertEqual(Bug.objects.get().bugtype, BugType.bug)
+        self.assertEqual(Bug.objects.get().subject, 'Hello says `goodbye\'')
         Bug.objects.get(packages__name='hello')
 
         self.assert_plugin_severity('hello', 'closed-bugs',
@@ -181,10 +181,10 @@ class TestPluginClosedBug(TestImporterController):
         self.assert_importer_succeeded()
 
         bugs = Bug.objects.all()
-        self.assertEquals(len(bugs), 3)
-        self.assertEquals(bugs[0].number, 616444)
-        self.assertEquals(bugs[1].number, 696855)
-        self.assertEquals(bugs[2].number, 719848)
+        self.assertEqual(len(bugs), 3)
+        self.assertEqual(bugs[0].number, 616444)
+        self.assertEqual(bugs[1].number, 696855)
+        self.assertEqual(bugs[2].number, 719848)
 
         self.assert_plugin_severity('hello', 'closed-bugs',
                                     PluginSeverity.info)
@@ -201,12 +201,12 @@ class TestPluginClosedBug(TestImporterController):
         self.import_source_package('hello-rc-bug')
         self.assert_importer_succeeded()
 
-        self.assertEquals(Bug.objects.get().number, 928887)
-        self.assertEquals(Bug.objects.get().severity, BugSeverity.serious)
-        self.assertEquals(Bug.objects.get().bugtype, BugType.bug)
-        self.assertEquals(Bug.objects.get().subject,
-                          'hello: version skew: 2.10-1+deb9u1 '
-                          '(stretch-security) > 2.10-1 (buster)')
+        self.assertEqual(Bug.objects.get().number, 928887)
+        self.assertEqual(Bug.objects.get().severity, BugSeverity.serious)
+        self.assertEqual(Bug.objects.get().bugtype, BugType.bug)
+        self.assertEqual(Bug.objects.get().subject,
+                         'hello: version skew: 2.10-1+deb9u1 '
+                         '(stretch-security) > 2.10-1 (buster)')
 
         self.assert_plugin_severity('hello', 'closed-bugs',
                                     PluginSeverity.info)
@@ -223,12 +223,12 @@ class TestPluginClosedBug(TestImporterController):
         self.import_source_package('hello-itp-bug')
         self.assert_importer_succeeded()
 
-        self.assertEquals(Bug.objects.get().number, 934896)
-        self.assertEquals(Bug.objects.get().severity, BugSeverity.wishlist)
-        self.assertEquals(Bug.objects.get().bugtype, BugType.ITP)
-        self.assertEquals(Bug.objects.get().subject,
-                          'ITP: janest-ocaml-compiler-libs -- OCaml compiler'
-                          ' libraries repackaged')
+        self.assertEqual(Bug.objects.get().number, 934896)
+        self.assertEqual(Bug.objects.get().severity, BugSeverity.wishlist)
+        self.assertEqual(Bug.objects.get().bugtype, BugType.ITP)
+        self.assertEqual(Bug.objects.get().subject,
+                         'ITP: janest-ocaml-compiler-libs -- OCaml compiler'
+                         ' libraries repackaged')
 
         self.assert_plugin_severity('janest-ocaml-compiler-libs', 'closed-bugs',
                                     PluginSeverity.info)
@@ -243,11 +243,11 @@ class TestPluginClosedBug(TestImporterController):
         self.import_source_package('hello-ita-bug')
         self.assert_importer_succeeded()
 
-        self.assertEquals(Bug.objects.get().number, 931405)
-        self.assertEquals(Bug.objects.get().severity, BugSeverity.normal)
-        self.assertEquals(Bug.objects.get().bugtype, BugType.ITA)
-        self.assertEquals(Bug.objects.get().subject,
-                          'ITA: django-sortedm2m')
+        self.assertEqual(Bug.objects.get().number, 931405)
+        self.assertEqual(Bug.objects.get().severity, BugSeverity.normal)
+        self.assertEqual(Bug.objects.get().bugtype, BugType.ITA)
+        self.assertEqual(Bug.objects.get().subject,
+                         'ITA: django-sortedm2m')
 
         self.assert_plugin_result_count('django-sortedm2m', 'closed-bugs', 1)
         self.assert_plugin_severity('django-sortedm2m', 'closed-bugs',

@@ -79,11 +79,11 @@ class TestPluginManager(TestController):
             plugins.run(None, None)
 
             self.assertTrue(plugins.results)
-            self.assertEquals(plugins.results[0].plugin, 'plugin-fails')
-            self.assertEquals(plugins.results[0].test, 'plugin-fails')
-            self.assertEquals(plugins.results[0].outcome, 'failing')
-            self.assertEquals(plugins.results[0].severity,
-                              PluginSeverity.failed)
+            self.assertEqual(plugins.results[0].plugin, 'plugin-fails')
+            self.assertEqual(plugins.results[0].test, 'plugin-fails')
+            self.assertEqual(plugins.results[0].outcome, 'failing')
+            self.assertEqual(plugins.results[0].severity,
+                             PluginSeverity.failed)
 
     def test_plugin_manager(self):
         with self.settings(IMPORTER_PLUGINS=(
@@ -92,19 +92,19 @@ class TestPluginManager(TestController):
             plugins = PluginManager()
             plugins.run(None, None)
 
-            self.assertEquals(plugins.results[0].plugin, 'plugin-good')
-            self.assertEquals(plugins.results[0].test, 'good-test')
-            self.assertEquals(plugins.results[0].outcome, 'passing')
-            self.assertEquals(plugins.results[0].data, None)
-            self.assertEquals(plugins.results[0].severity,
-                              PluginSeverity.info)
+            self.assertEqual(plugins.results[0].plugin, 'plugin-good')
+            self.assertEqual(plugins.results[0].test, 'good-test')
+            self.assertEqual(plugins.results[0].outcome, 'passing')
+            self.assertEqual(plugins.results[0].data, None)
+            self.assertEqual(plugins.results[0].severity,
+                             PluginSeverity.info)
 
 
 class TestPluginResults(TestController):
     def test_plugin_results_no_json(self):
         result = PluginResults()
 
-        self.assertEquals(result.data, {})
+        self.assertEqual(result.data, {})
 
 
 class TestPluginMaintainerEmail(TestController):

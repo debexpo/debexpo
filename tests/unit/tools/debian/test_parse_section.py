@@ -32,15 +32,15 @@ from debexpo.tools.debian.control import parse_section
 
 class TestParseSection(TestController):
     def test_parse_section_empty_string(self):
-        self.assertEquals(['main', ''], parse_section(''))
+        self.assertEqual(['main', ''], parse_section(''))
 
     def test_parse_section(self):
-        self.assertEquals(['main', 'games'], parse_section('games'))
+        self.assertEqual(['main', 'games'], parse_section('games'))
 
     def test_parse_section_with_component(self):
-        self.assertEquals(['non-free', 'games'],
-                          parse_section('non-free/games'))
+        self.assertEqual(['non-free', 'games'],
+                         parse_section('non-free/games'))
 
     def test_parse_section_with_slash(self):
-        self.assertEquals(['main', 'games_subsection'],
-                          parse_section('games/subsection'))
+        self.assertEqual(['main', 'games_subsection'],
+                         parse_section('games/subsection'))

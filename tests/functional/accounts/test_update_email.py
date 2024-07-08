@@ -68,7 +68,7 @@ class TestUpdateEmail(TransactionTestController):
         submit_url = sub(r'(/[^/]*){4}$', '',
                          reverse('email_change_confirm', kwargs=submit_data))
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         if error:
             self.assertIn('errorlist', str(response.content))
@@ -108,15 +108,15 @@ class TestUpdateEmail(TransactionTestController):
         submit_url = reverse('email_change_confirm', kwargs=submit_data)
         complete_url = reverse('email_change_complete')
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
 
         if redirect:
             self.assertTrue(str(response.url).startswith(redirect))
 
             return
 
-        self.assertEquals(response.url,
-                          reverse('email_change_confirm', kwargs=submit_data))
+        self.assertEqual(response.url,
+                         reverse('email_change_confirm', kwargs=submit_data))
 
         data = {
             'commit': 'submit'
@@ -125,17 +125,17 @@ class TestUpdateEmail(TransactionTestController):
                                             kwargs=submit_data), data)
 
         if error:
-            self.assertEquals(response.status_code, 200)
+            self.assertEqual(response.status_code, 200)
             self.assertIn(error, str(response.content))
 
             return
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertIn(complete_url, str(response.url))
 
         response = self.client.get(complete_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn('Email changed successfully', str(response.content))
 
         self.assertRaises(User.DoesNotExist,
