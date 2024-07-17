@@ -69,3 +69,19 @@ class TestPackagesController(TestController):
 
         self.assertEqual(None, upload.get_dsc_url())
         self.assertEqual(None, upload.get_dsc_name())
+
+    def test_feed_item_pubdate(self):
+        package = Package.objects.get(name='testpackage')
+        latest_upload = (
+            PackageUpload.objects
+            .filter(package=package)
+            .latest('uploaded')
+        )
+
+        response = self.client.get('/packages/feed/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(
+            latest_upload.uploaded.strftime('%a, %d %b %Y %H:%M:%S +0000'),
+            str(response.content)
+        )
