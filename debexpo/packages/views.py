@@ -288,6 +288,9 @@ class PackagesFeed(Feed):
 
         return desc
 
+    def item_pubdate(self, item):
+        return item.packageupload_set.latest('uploaded').uploaded
+
 
 @login_required
 def packages_my(request):
