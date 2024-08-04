@@ -34,6 +34,13 @@ from tempfile import TemporaryDirectory
 from django.conf import settings
 
 
+EXEC_DEFAULTS = {
+    'stderr': PIPE,
+    'encoding': 'utf-8',
+    'text': True,
+}
+
+
 def debexpo_exec(command, args, **kwargs):
     timeout = getattr(settings,
                       'SUBPROCESS_TIMEOUT_'
@@ -48,13 +55,11 @@ def debexpo_exec(command, args, **kwargs):
 
         kwargs['env']['TMPDIR'] = tmpdir
 
-        if 'stderr' not in kwargs:
-            kwargs['stderr'] = PIPE
+        for key, value in EXEC_DEFAULTS.items():
+            kwargs.setdefault(key, value)
 
         output = check_output([command] + args,
                               timeout=timeout,
-                              encoding='utf-8',
-                              text=True,
                               **kwargs)
 
     return output
