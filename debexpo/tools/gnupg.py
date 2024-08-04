@@ -201,6 +201,9 @@ class GnuPG():
         if self.gpg_path is None:
             raise ExceptionGnuPGPathNotInitialized()
 
+        if stdin:
+            stdin = stdin.encode()
+
         output = None
 
         env = os.environ.copy()
@@ -223,10 +226,16 @@ class GnuPG():
         try:
             output = debexpo_exec(self.gpg_path, cmd, env=env,
                                   stderr=subprocess.STDOUT,
-                                  input=str(stdin))
-            output = output.splitlines()
+                                  text=False,
+                                  encoding=None,
+                                  input=stdin)
+            output = [
+                line.decode()
+                for line in output.splitlines()
+                if not line.startswith(b'[GNUPG:] NOTATION_')
+            ]
         except subprocess.CalledProcessError as e:
-            return (e.output.splitlines(),
+            return (e.output.decode(errors='replace').splitlines(),
                     e.returncode)
         except subprocess.TimeoutExpired:
             log.warning('gpg: timeout')
