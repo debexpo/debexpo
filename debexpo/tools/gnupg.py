@@ -115,12 +115,12 @@ class GnuPG():
 
         try:
             (output, status) = self._run(['--list-keys'])
-            keys = KeyData.read_from_gpg(output.splitlines())
+            keys = KeyData.read_from_gpg(output)
 
             return list(keys.values())
         except (AttributeError, IndexError):  # pragma: no cover
             log.error("Failed to extract key id from gpg output: '%s'"
-                      % output)
+                      % '\n'.join(output))
 
     def verify_sig(self, signed_file):
         """
@@ -132,7 +132,6 @@ class GnuPG():
         """
         args = ['--verify', signed_file]
         (output, status) = self._run(args)
-        output = output.splitlines()
 
         err_sig_re = re.compile(r'\[GNUPG:\] ERRSIG (?P<long_id>\w+)'
                                 r' .* (?P<fingerprint>[\w-]+)$')
@@ -179,16 +178,16 @@ class GnuPG():
 
         (output, status) = self._run(args, stdin=data)
 
-        if status and output and len(output.splitlines()) > 0:
+        if status and output and len(output) > 0:
             raise ExceptionGnuPG(_('Cannot add key:'
-                                 ' {key}').format(key=output.splitlines()[0]))
+                                 ' {key}').format(key=output[0]))
 
         return (output, status)
 
     def _run(self, args, stdin=None):
         """
         Run gpg with the given stdin and arguments and return the output and
-        exit status.
+        exit status. The output is a list of lines (str).
 
         ``stdin``
             Feed gpg with this input to stdin
@@ -225,8 +224,10 @@ class GnuPG():
             output = debexpo_exec(self.gpg_path, cmd, env=env,
                                   stderr=subprocess.STDOUT,
                                   input=str(stdin))
+            output = output.splitlines()
         except subprocess.CalledProcessError as e:
-            return (e.output, e.returncode)
+            return (e.output.splitlines(),
+                    e.returncode)
         except subprocess.TimeoutExpired:
             log.warning('gpg: timeout')
             return ('gpg: timeout', -1)
