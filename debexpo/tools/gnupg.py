@@ -44,6 +44,19 @@ from django.utils.translation import gettext_lazy as _
 from debexpo.tools.proc import debexpo_exec
 
 log = logging.getLogger(__name__)
+GPG_DEFAULT_ARGS = [
+    '--batch',
+    '--no-auto-check-trustdb',
+    '--no-options',
+    '--no-permission-warning',
+    '--status-fd',
+    '1',
+    '--no-tty',
+    '--quiet',
+    '--trust-model', 'always',
+    '--with-colons',
+    '--with-fingerprint',
+]
 
 
 class ExceptionGnuPG(Exception):
@@ -209,19 +222,7 @@ class GnuPG():
         env = os.environ.copy()
         env['GNUPGHOME'] = self.gpg_home.name
 
-        cmd = [
-            '--batch',
-            '--no-auto-check-trustdb',
-            '--no-options',
-            '--no-permission-warning',
-            '--status-fd',
-            '1',
-            '--no-tty',
-            '--quiet',
-            '--trust-model', 'always',
-            '--with-colons',
-            '--with-fingerprint'
-            ] + args
+        cmd = GPG_DEFAULT_ARGS + args
 
         try:
             output = debexpo_exec(self.gpg_path, cmd, env=env,
