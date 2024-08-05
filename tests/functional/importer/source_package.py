@@ -35,6 +35,7 @@ from shutil import rmtree, copytree
 from subprocess import Popen, PIPE, STDOUT
 from tempfile import mkdtemp
 from debexpo.tools.debian.changes import Changes
+from debexpo.tools.gnupg import GPG_DEFAULT_ARGS
 
 log = logging.getLogger(__name__)
 
@@ -84,6 +85,8 @@ BQJb8YGqAhsMAAoJEMQ0eBzocfPf8IcA/RyHF6zgRu2Ds3wH8GgxjCZRW+YxWahX
         self.version = self._parse_changelog('Version').decode()
         self.workdir = mkdtemp(prefix='debexpo-source-package')
         self.gpgdir = mkdtemp(prefix='debexpo-source-package-gpg')
+        self.changes = join(self.workdir, self.package + '_' + self.version
+                            + '_source.changes')
         self._import_testing_key()
 
     def __del__(self):
@@ -169,9 +172,7 @@ BQJb8YGqAhsMAAoJEMQ0eBzocfPf8IcA/RyHF6zgRu2Ds3wH8GgxjCZRW+YxWahX
     # Remove orig tarball when not referenced by .changes as it will not be
     # uploaded (copied) to the incoming spool.
     def _cleanup_orig(self):
-        changes_filename = join(self.workdir, self.package + '_' + self.version
-                                + '_source.changes')
-        changes = Changes(changes_filename)
+        changes = Changes(self.changes)
 
         found = False
         for referenced in changes.files.files:
@@ -184,7 +185,7 @@ BQJb8YGqAhsMAAoJEMQ0eBzocfPf8IcA/RyHF6zgRu2Ds3wH8GgxjCZRW+YxWahX
     def get_package_dir(self):
         return self.workdir
 
-    def build(self, sign=True):
+    def build(self, sign=True, hook=None):
         # Copy sources files into workdir
         copytree(self.source_dir,
                  join(self.workdir, 'sources'))
@@ -193,7 +194,38 @@ BQJb8YGqAhsMAAoJEMQ0eBzocfPf8IcA/RyHF6zgRu2Ds3wH8GgxjCZRW+YxWahX
         self._gen_orig()
         self._build_package(sign)
 
+        if hook is not None:
+            hook()
+
         # Remove temporary source dir
         if isdir(join(self.workdir, 'sources')):
             rmtree(join(self.workdir, 'sources'))
         self._cleanup_orig()
+
+
+class TestSourcePackageReSign(TestSourcePackage):
+    def build(self, extra_args=None):
+        if extra_args is None:
+            self.extra_args = []
+        else:
+            self.extra_args = extra_args
+
+        super().build(True, self.re_sign)
+
+    def re_sign(self):
+        gpg = 'gpg'
+        strip = GPG_DEFAULT_ARGS + [
+            '--output', f'{self.changes}.raw',
+            '--verify', self.changes,
+        ]
+
+        sign = GPG_DEFAULT_ARGS + [
+            '--yes', '--output', f'{self.changes}',
+        ] + self.extra_args + [
+            '--clearsign', f'{self.changes}.raw',
+        ]
+
+        self._run_command(gpg, strip, join(self.workdir, 'sources'),
+                          self._get_env_with_gpg())
+        self._run_command(gpg, sign, join(self.workdir, 'sources'),
+                          self._get_env_with_gpg())
