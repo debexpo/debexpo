@@ -236,6 +236,12 @@ class GnuPG():
                 if not line.startswith(b'[GNUPG:] NOTATION_')
             ]
         except subprocess.CalledProcessError as e:
+            # In case of success (above) we want to try and decode everything
+            # as, for example, UIDs must be UTF-8 encoded, so we definitely
+            # expect to succeed.
+            # When GPG fails instead we don't really need to care that much,
+            # and there might or might not be some unimportant non-unicode date
+            # in there.
             return (e.output.decode(errors='replace').splitlines(),
                     e.returncode)
         except subprocess.TimeoutExpired:
