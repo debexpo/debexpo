@@ -96,7 +96,7 @@ setup(
     extras_require={
         'testing': [
             'fakeredis >= 1.9.0, < 2',
-            'lupa >= 1.14.1, < 2',
+            'lupa >= 1.14.1, < 3',
         ],
     },
 
