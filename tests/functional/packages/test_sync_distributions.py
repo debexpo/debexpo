@@ -44,7 +44,6 @@ class TestCommandSyncDistributions(TestController):
         'bookworm-proposed-updates',
         'bookworm-security',
         'bookworm-updates',
-        'bullseye-proposed-updates',
         'oldstable-updates',
         'stable-backports-sloppy',
         'stable-updates',
@@ -59,6 +58,12 @@ class TestCommandSyncDistributions(TestController):
         'trixie-updates',
     }
     REF_DISTS_DELETED = {
+        'bullseye',
+        'bullseye-backports',
+        'bullseye-backports-sloppy',
+        'bullseye-security',
+        'bullseye-updates',
+        'bullseye-proposed-updates',
         'buster',
         'buster-backports',
         'buster-backports-sloppy',
