@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-15 17:24+0000\n"
+"POT-Creation-Date: 2024-10-03 04:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -534,6 +534,21 @@ msgid ""
 "Get in touch with your sponsor to discuss your chances here. You can also <a "
 "href=\"https://www.debian.org/devel/join/\">become a Debian Developer</a> "
 "giving you full membership in the project."
+msgstr ""
+
+#: base/templates/intro-maintainers.html
+msgid "Extra: Collaboration and continious integration on Salsa"
+msgstr ""
+
+#: base/templates/intro-maintainers.html
+msgid ""
+"If you are familiar with the style of collaboration platforms where one can "
+"fork git repositories, submit pull requests, or similar, you can engage in "
+"it at <a href=\"https://salsa.debian.org/\">salsa.debian.org</a>, Debian's "
+"code hosting and collaboration platform. Packages on Salsa can also run the "
+"<a href=\"https://salsa.debian.org/salsa-ci-team/pipeline\">Salsa CI "
+"pipeline</a> to ensure the package does not have any easily detectable "
+"regressions."
 msgstr ""
 
 #: base/templates/qa.html
