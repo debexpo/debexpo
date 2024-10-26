@@ -44,6 +44,19 @@ from django.utils.translation import gettext_lazy as _
 from debexpo.tools.proc import debexpo_exec
 
 log = logging.getLogger(__name__)
+GPG_DEFAULT_ARGS = [
+    '--batch',
+    '--no-auto-check-trustdb',
+    '--no-options',
+    '--no-permission-warning',
+    '--status-fd',
+    '1',
+    '--no-tty',
+    '--quiet',
+    '--trust-model', 'always',
+    '--with-colons',
+    '--with-fingerprint',
+]
 
 
 class ExceptionGnuPG(Exception):
@@ -115,12 +128,12 @@ class GnuPG():
 
         try:
             (output, status) = self._run(['--list-keys'])
-            keys = KeyData.read_from_gpg(output.splitlines())
+            keys = KeyData.read_from_gpg(output)
 
             return list(keys.values())
         except (AttributeError, IndexError):  # pragma: no cover
             log.error("Failed to extract key id from gpg output: '%s'"
-                      % output)
+                      % '\n'.join(output))
 
     def verify_sig(self, signed_file):
         """
@@ -132,7 +145,6 @@ class GnuPG():
         """
         args = ['--verify', signed_file]
         (output, status) = self._run(args)
-        output = output.splitlines()
 
         err_sig_re = re.compile(r'\[GNUPG:\] ERRSIG (?P<long_id>\w+)'
                                 r' .* (?P<fingerprint>[\w-]+)$')
@@ -179,16 +191,16 @@ class GnuPG():
 
         (output, status) = self._run(args, stdin=data)
 
-        if status and output and len(output.splitlines()) > 0:
+        if status and output and len(output) > 0:
             raise ExceptionGnuPG(_('Cannot add key:'
-                                 ' {key}').format(key=output.splitlines()[0]))
+                                 ' {key}').format(key=output[0]))
 
         return (output, status)
 
     def _run(self, args, stdin=None):
         """
         Run gpg with the given stdin and arguments and return the output and
-        exit status.
+        exit status. The output is a list of lines (str).
 
         ``stdin``
             Feed gpg with this input to stdin
@@ -202,31 +214,36 @@ class GnuPG():
         if self.gpg_path is None:
             raise ExceptionGnuPGPathNotInitialized()
 
+        if stdin:
+            stdin = stdin.encode()
+
         output = None
 
         env = os.environ.copy()
         env['GNUPGHOME'] = self.gpg_home.name
 
-        cmd = [
-            '--batch',
-            '--no-auto-check-trustdb',
-            '--no-options',
-            '--no-permission-warning',
-            '--status-fd',
-            '1',
-            '--no-tty',
-            '--quiet',
-            '--trust-model', 'always',
-            '--with-colons',
-            '--with-fingerprint'
-            ] + args
+        cmd = GPG_DEFAULT_ARGS + args
 
         try:
             output = debexpo_exec(self.gpg_path, cmd, env=env,
                                   stderr=subprocess.STDOUT,
-                                  input=str(stdin))
+                                  text=False,
+                                  encoding=None,
+                                  input=stdin)
+            output = [
+                line.decode()
+                for line in output.splitlines()
+                if not line.startswith(b'[GNUPG:] NOTATION_')
+            ]
         except subprocess.CalledProcessError as e:
-            return (e.output, e.returncode)
+            # In case of success (above) we want to try and decode everything
+            # as, for example, UIDs must be UTF-8 encoded, so we definitely
+            # expect to succeed.
+            # When GPG fails instead we don't really need to care that much,
+            # and there might or might not be some unimportant non-unicode date
+            # in there.
+            return (e.output.decode(errors='replace').splitlines(),
+                    e.returncode)
         except subprocess.TimeoutExpired:
             log.warning('gpg: timeout')
             return ('gpg: timeout', -1)

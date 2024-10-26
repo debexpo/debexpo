@@ -41,6 +41,7 @@ from django.core import mail
 from django.test import override_settings
 
 from tests.functional.importer import TestImporterController
+from tests.functional.importer.source_package import TestSourcePackageReSign
 
 from debexpo.importer.models import Importer, ExceptionImporterRejected
 from debexpo.tools.debian.changes import Changes
@@ -534,3 +535,12 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
         importer.process_spool()
 
         unlink(deb)
+
+    def test_importer_notation_data(self):
+        source_package = TestSourcePackageReSign('hello')
+
+        source_package.build(['--set-notation', b'test@example.org=\x8c'])
+        self.import_package(source_package.get_package_dir())
+        self.assert_importer_succeeded()
+        self.assert_package_count('hello', '1.0-1', 1)
+        self.assert_package_in_repo('hello', '1.0-1')

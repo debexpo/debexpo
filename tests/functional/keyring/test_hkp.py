@@ -46,7 +46,7 @@ class TestHKP(TransactionTestController, LiveServerTestCase):
             'hkp://' + self.live_server_url.split('/')[2],
             '--recv-keys',
             '0x' + self._GPG_FINGERPRINT[-16:]])
-        self.assertIn('IMPORT_OK 1', output)
+        self.assertIn('IMPORT_OK 1', '\n'.join(output))
         self.assertEqual(0, status)
 
         # On non-existing key
@@ -55,5 +55,5 @@ class TestHKP(TransactionTestController, LiveServerTestCase):
             'hkp://' + self.live_server_url.split('/')[2],
             '--recv-keys',
             '0xCA11AB1E'])
-        self.assertIn('FAILURE recv-keys', output)
+        self.assertIn('FAILURE recv-keys', '\n'.join(output))
         self.assertEqual(2, status)
