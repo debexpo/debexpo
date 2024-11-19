@@ -48,7 +48,8 @@ class TestPluginLintian(TestImporterController):
         self.assert_plugin_template('hello', outcome)
         self.assert_plugin_template(
             'hello',
-            'https://lintian.debian.org/tags/debian-watch-file-is-missing.html'
+            ("https://udd.debian.org/lintian-tag/"
+             "debian-watch-file-is-missing.html")
         )
 
         self.assertIn(
