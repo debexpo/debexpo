@@ -12,7 +12,7 @@
 {% for tag, items in tags.items %}
 <li>
 <span class="lintian-{{ severity|first }}" title="{{ severity|slice:"2:" }}">{{ severity|first }}</span>
-<a href="https://lintian.debian.org/tags/{{ tag }}.html">{{ tag }}</a>
+<a href="https://udd.debian.org/lintian-tag/{{ tag }}">{{ tag }}</a>
 <ul>
 {% for item in items %}
 {% if item %}

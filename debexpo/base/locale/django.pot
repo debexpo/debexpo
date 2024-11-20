@@ -644,8 +644,8 @@ msgid ""
 "Packaging for Debian is rather complex because one has to consider hundreds "
 "of guidelines to make the package \"policy compliant\". Lintian tries to "
 "address this issue by providing an automated static analysis framework. You "
-"can learn more about Lintian in the <a href=\"https://lintian.debian.org/"
-"manual/index.html\">Lintian User's Manual</a>."
+"can learn more about Lintian in the <a href=\"https://wiki.debian.org/"
+"Lintian\">Lintian Wiki</a>."
 msgstr ""
 
 #: base/templates/qa.html
