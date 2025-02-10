@@ -57,10 +57,14 @@ before_script:
 unstable:
   <<: *test
   image: debian:unstable
+  variables:
+    ADDITIONAL_PACKAGES: python3-standard-nntplib
 
 trixie-bpo:
   <<: *test
   image: debian:trixie-backports
+  variables:
+    ADDITIONAL_PACKAGES: python3-standard-nntplib
 
 bookworm:
   <<: *test
@@ -81,6 +85,8 @@ dependencies:
     - python3 setup.py develop | tee /tmp/deps.txt
     - sed -i -e '/tzdata/d' /tmp/deps.txt
     - (! grep Downloading /tmp/deps.txt)
+  variables:
+    ADDITIONAL_PACKAGES: python3-standard-nntplib
 
 flake8:
   image: debian:unstable-slim
@@ -91,6 +97,8 @@ flake8:
       python3-flake8
   script:
     - python3 -m flake8 debexpo/ tests/
+  variables:
+    ADDITIONAL_PACKAGES: python3-standard-nntplib
 
 trans:
   image: debian:bookworm
