@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"POT-Creation-Date: 2025-02-11 09:50+0000\n"
 "PO-Revision-Date: 2022-11-24 01:15+0000\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -38,9 +38,9 @@ msgid ""
 "only upload)"
 msgstr ""
 "变更中缺失 dsc 文件\n"
-"请确保你提供了完整源码（如果你正在使用 sbuild，请确保启用 --source "
-"选项或等价的配置项目；如果你正在直接调用 dpkg-buildpackage，"
-"请使用默认选项或者 -S 选项以生成仅源码的上传）"
+"请确保你提供了完整源码（如果你正在使用 sbuild，请确保启用 --source 选项或等价"
+"的配置项目；如果你正在直接调用 dpkg-buildpackage，请使用默认选项或者 -S 选项"
+"以生成仅源码的上传）"
 
 #: tools/debian/changes.py
 #, python-brace-format
@@ -48,8 +48,8 @@ msgid ""
 "{source} exists in the official Debian archive with the version {version}/"
 "{distribution}. You may not upload a lower or equal version to this one."
 msgstr ""
-"{source} 已存在于 Debian 官方归档中，版本为 "
-"{version}/{distribution}。你不能上传版本号低于或等于它的版本。"
+"{source} 已存在于 Debian 官方归档中，版本为 {version}/{distribution}。你不能"
+"上传版本号低于或等于它的版本。"
 
 #: tools/debian/control.py
 #, python-brace-format
@@ -85,8 +85,9 @@ msgid "Missing key {key}"
 msgstr "缺失键 {key}"
 
 #: tools/debian/origin.py
-#, python-brace-format
-msgid "Failed to retrive origin info: {e}"
+#, fuzzy, python-brace-format
+#| msgid "Failed to retrive origin info: {e}"
+msgid "Failed to retrieve origin info: {e}"
 msgstr "获取来源信息失败：{e}"
 
 #: tools/debian/origin.py

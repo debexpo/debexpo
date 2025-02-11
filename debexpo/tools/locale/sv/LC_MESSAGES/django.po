@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"POT-Creation-Date: 2025-02-11 09:50+0000\n"
 "PO-Revision-Date: 2023-09-06 11:55+0000\n"
 "Last-Translator: bittin1ddc447d824349b2 <bittin@reimu.nl>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/debexpo/tools/sv/"
@@ -49,9 +49,9 @@ msgid ""
 "{source} exists in the official Debian archive with the version {version}/"
 "{distribution}. You may not upload a lower or equal version to this one."
 msgstr ""
-"{source} finns i det officiella Debianarkivet med versionen "
-"{version}/{distribution}. Du får inte ladda upp en lägre eller likvärdig "
-"version som denna."
+"{source} finns i det officiella Debianarkivet med versionen {version}/"
+"{distribution}. Du får inte ladda upp en lägre eller likvärdig version som "
+"denna."
 
 #: tools/debian/control.py
 #, python-brace-format
@@ -87,8 +87,9 @@ msgid "Missing key {key}"
 msgstr "Saknar nyckel {key}"
 
 #: tools/debian/origin.py
-#, python-brace-format
-msgid "Failed to retrive origin info: {e}"
+#, fuzzy, python-brace-format
+#| msgid "Failed to retrive origin info: {e}"
+msgid "Failed to retrieve origin info: {e}"
 msgstr "Misslyckades med att hämta ursprungsinformation: {e}"
 
 #: tools/debian/origin.py

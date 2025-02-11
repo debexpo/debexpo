@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-21 18:51+0000\n"
+"POT-Creation-Date: 2025-02-11 09:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,7 +79,7 @@ msgstr ""
 
 #: tools/debian/origin.py
 #, python-brace-format
-msgid "Failed to retrive origin info: {e}"
+msgid "Failed to retrieve origin info: {e}"
 msgstr ""
 
 #: tools/debian/origin.py

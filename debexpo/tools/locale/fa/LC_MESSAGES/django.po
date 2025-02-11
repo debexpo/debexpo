@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"POT-Creation-Date: 2025-02-11 09:50+0000\n"
 "PO-Revision-Date: 2022-11-28 10:48+0000\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <https://hosted.weblate.org/projects/debexpo/tools/fa/"
@@ -40,8 +40,8 @@ msgstr ""
 "dsc در changes موجود نیست\n"
 "مطمئن شوید مبدأ کامل را قرار داده‌اید (اگر از sbuild استفاده می‌کنید، مطمئن "
 "شوید که از گزینهٔ ‪--source‬ یا موارد پیکربندی معادل استفاده کرده‌اید. اگر "
-"مستقیماً از dpkg-buildpackage استفاده می‌کنید، از پرچم پیش‌گزیدهٔ ‪-S‬ برای "
-"یک بارگذاری فقط مبدأ استفاده کنید)"
+"مستقیماً از dpkg-buildpackage استفاده می‌کنید، از پرچم پیش‌گزیدهٔ ‪-S‬ برای یک "
+"بارگذاری فقط مبدأ استفاده کنید)"
 
 #: tools/debian/changes.py
 #, python-brace-format
@@ -49,8 +49,8 @@ msgid ""
 "{source} exists in the official Debian archive with the version {version}/"
 "{distribution}. You may not upload a lower or equal version to this one."
 msgstr ""
-"در بایگانی رسمی دبیان {source} با نگارش ‪{version}/{distribution}‬ وجود "
-"دارد. نباید نگارشی کم‌تر یا مساوی با آن را بارگذاری کنید."
+"در بایگانی رسمی دبیان {source} با نگارش ‪{version}/{distribution}‬ وجود دارد. "
+"نباید نگارشی کم‌تر یا مساوی با آن را بارگذاری کنید."
 
 #: tools/debian/control.py
 #, python-brace-format
@@ -86,8 +86,9 @@ msgid "Missing key {key}"
 msgstr "کلید ناموجود {key}"
 
 #: tools/debian/origin.py
-#, python-brace-format
-msgid "Failed to retrive origin info: {e}"
+#, fuzzy, python-brace-format
+#| msgid "Failed to retrive origin info: {e}"
+msgid "Failed to retrieve origin info: {e}"
 msgstr "شکست در بازیابی اطّلاعات origin: {e}"
 
 #: tools/debian/origin.py
@@ -150,8 +151,8 @@ msgstr "{filename} در بارگذاری موجود نیست"
 msgid ""
 "Unable to verify file {filename}. No public key found for key {fingerprint}"
 msgstr ""
-"ناتوان در تصدیق پروندهٔ {filename}. هیچ کلید عمومی‌ای برای کلید {fingerprint}"
-" پیدا نشد"
+"ناتوان در تصدیق پروندهٔ {filename}. هیچ کلید عمومی‌ای برای کلید {fingerprint} "
+"پیدا نشد"
 
 #: tools/gnupg.py
 #, python-brace-format
