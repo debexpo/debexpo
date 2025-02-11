@@ -253,7 +253,7 @@ REST_FRAMEWORK = {
             'rest_framework.throttling.AnonRateThrottle',
         ),
     'DEFAULT_THROTTLE_RATES': {
-            'anon': '200/day',  # Approximatively 2 request every 15 minutes
+            'anon': '200/day',  # Approximately 2 request every 15 minutes
         },
 }
 

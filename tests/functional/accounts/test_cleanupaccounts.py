@@ -1,4 +1,4 @@
-#   test_cleanupaccounts.py - functionnal test for CleanAccounts task
+#   test_cleanupaccounts.py - functional test for CleanAccounts task
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo

@@ -1,4 +1,4 @@
-#   forms.template - form for package subcription
+#   forms.template - form for package subscription
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo

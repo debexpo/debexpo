@@ -88,7 +88,7 @@ class Origin():
             archive_origin_files = client.get_origin_files(self.package,
                                                            self.version)
         except ExceptionClient as e:
-            log.warning(_('Failed to retrive origin info: {e}').format(e=e))
+            log.warning(_('Failed to retrieve origin info: {e}').format(e=e))
 
         if archive_origin_files:
             for source_file in source_origin_files:

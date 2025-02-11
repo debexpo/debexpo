@@ -159,7 +159,7 @@ def get_packages_uploaded_to_new():
     try:
         packages = ftp_master.get_packages_uploaded_to_new()
     except ExceptionClient as e:
-        log.warning(f'Could not retrive package uploaded to new: {e}')
+        log.warning(f'Could not retrieve package uploaded to new: {e}')
         return []
 
     for changes in packages:

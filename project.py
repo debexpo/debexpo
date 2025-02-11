@@ -1,5 +1,5 @@
 """
-Common debexpo variable to be used in any files that requires that informations
+Common debexpo variable to be used in any files that requires that information
 """
 
 PROJECT = 'debexpo'

@@ -450,7 +450,7 @@ r1JREXlgQRuRdd5ZWSvIxKaKGVbYCw==
 
     # Since we cannot really make the importer fail (it is not supposed to
     # happend), we test that the field method can report an error to admins and
-    # optionnaly to uploader if available.
+    # optionally to uploader if available.
     def test_importer_reject_no_maintainer(self):
         self._upload_package(join(self.data_dir, 'changes-bad-uploader'))
 

@@ -11,4 +11,4 @@ Package: hello
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Test package for debexpo
- Unfortunatly, a too short description
+ Unfortunately, a too short description

@@ -151,7 +151,7 @@ C7NQGzfRMFLSPxIHVzhHvJUo6vNZ+AA=
         Tests whether a re-uploads of the same file failed with error code 403.
         """
 
-        # Malicous changes does not break upload
+        # Malicious changes does not break upload
         response = self.client.put(reverse(
             'upload',
             args=['plop.changes']),

@@ -1,4 +1,4 @@
-#   test_sync_distributions.py - functionnal test for sync_distributions command
+#   test_sync_distributions.py - functional test for sync_distributions command
 #
 #   This file is part of debexpo
 #   https://salsa.debian.com/mentors.debian.net-team/debexpo

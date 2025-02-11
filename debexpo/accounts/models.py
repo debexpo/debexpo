@@ -99,7 +99,7 @@ class UserManager(BaseUserManager):
         Lookup a user using an arbitrary formatted email.
 
         This method is used by Changes to lookup the user of an unsigned upload,
-        when allowed. The address is extracted from the .chagnes Changed-By
+        when allowed. The address is extracted from the .changes Changed-By
         field or, if missing, from the Maintainer field.
 
         The address format (Vincent Time <vtime@example.org>) is decoded using
