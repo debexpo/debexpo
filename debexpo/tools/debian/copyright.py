@@ -49,7 +49,7 @@ class Copyright():
 
         try:
             fd = open(filename, 'r')
-        # After dpkg 1.20.0, this will be catched by dpkg-source -x
+        # After dpkg 1.20.0, this will be caught by dpkg-source -x
         except IOError:  # pragma: no cover
             return copyright
 

@@ -35,7 +35,7 @@ Generate translation binaries files
 
 To actually show translated text on the software, django uses a binary form of
 the translation files, called MO. Those file are generated automatically
-generated on build time by the ``setup.py``. While developping, you might need
+generated on build time by the ``setup.py``. While developing, you might need
 to update those files manually. In order to do so, run::
 
     python3 ./manage.py compilemessages
@@ -50,7 +50,7 @@ On templates
 
 Use the ``trans`` and ``blocktrans`` tag.
 
-The ``i18n`` module must be loaded at the begining for the template:
+The ``i18n`` module must be loaded at the beginning for the template:
 
 .. code-block:: django
 
@@ -61,7 +61,7 @@ The ``i18n`` module must be loaded at the begining for the template:
     {% blocktrans with local_value=my_var trimmed %}
     This text will be translated to.
 
-    Note that no further tag will be accepeted in the blocktrans.
+    Note that no further tag will be accepted in the blocktrans.
     Also, variable are only available from the with keyword declared in the
     block: {{ local_value }}.
 

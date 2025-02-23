@@ -168,7 +168,7 @@ class TestImporterController(TestController):
     def _run_importer(self, package_dir, skip_gpg=False, skip_email=False,
                       sub_dir=None):
         """Run debexpo importer on package_dir/*.changes"""
-        # Copy uplod files to incomming queue
+        # Copy upload files to incoming queue
         self.assertTrue(isdir(package_dir))
         self._upload_package(package_dir, sub_dir)
 

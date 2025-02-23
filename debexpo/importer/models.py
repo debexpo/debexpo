@@ -229,7 +229,7 @@ class Importer():
                 success = False
                 self._reject(e)
 
-            # Unfortunatly, we cannot really test that since it is not supposed
+            # Unfortunately, we cannot really test that since it is not supposed
             # to happen. Note that the _fail() method is covered by the tests.
             except Exception:  # pragma: no cover
                 success = False
@@ -449,7 +449,7 @@ class Importer():
             raise ExceptionImporterRejected(changes, _('Dsc failed to parse'),
                                             e)
 
-        # Validate dsc fields, gpg signature and files (including checksuming)
+        # Validate dsc fields, gpg signature and files (including checksumming)
         dsc = changes.dsc
 
         try:
@@ -463,7 +463,7 @@ class Importer():
             raise ExceptionImporterRejected(changes, _('Dsc is invalid'), e)
 
     def _validate_source(self, changes):
-        # Instanciate the source package
+        # Instantiate the source package
         source = changes.get_source()
 
         # Extract

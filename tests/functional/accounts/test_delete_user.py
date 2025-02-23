@@ -1,4 +1,4 @@
-#   test_delete_user.py - functionnal test for delete_user command
+#   test_delete_user.py - functional test for delete_user command
 #
 #   This file is part of debexpo
 #   https://salsa.debian.com/mentors.debian.net-team/debexpo

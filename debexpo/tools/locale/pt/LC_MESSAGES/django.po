@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-27 19:09+0000\n"
+"POT-Creation-Date: 2025-02-11 09:50+0000\n"
 "PO-Revision-Date: 2023-12-21 14:07+0000\n"
 "Last-Translator: ssantos <ssantos@web.de>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/debexpo/tools/"
@@ -49,9 +49,8 @@ msgid ""
 "{source} exists in the official Debian archive with the version {version}/"
 "{distribution}. You may not upload a lower or equal version to this one."
 msgstr ""
-"{source} existe no repositório oficial do Debian com a versão "
-"{version}/{distribution}. Não pode enviar uma versão inferior ou igual a "
-"esta."
+"{source} existe no repositório oficial do Debian com a versão {version}/"
+"{distribution}. Não pode enviar uma versão inferior ou igual a esta."
 
 #: tools/debian/control.py
 #, python-brace-format
@@ -87,8 +86,9 @@ msgid "Missing key {key}"
 msgstr "Chave {key} ausente"
 
 #: tools/debian/origin.py
-#, python-brace-format
-msgid "Failed to retrive origin info: {e}"
+#, fuzzy, python-brace-format
+#| msgid "Failed to retrive origin info: {e}"
+msgid "Failed to retrieve origin info: {e}"
 msgstr "Falha ao retribuir informações de origem: {e}"
 
 #: tools/debian/origin.py

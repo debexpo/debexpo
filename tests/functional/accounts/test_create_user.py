@@ -1,4 +1,4 @@
-#   test_create_user.py - functionnal test for create_user command
+#   test_create_user.py - functional test for create_user command
 #
 #   This file is part of debexpo
 #   https://salsa.debian.com/mentors.debian.net-team/debexpo

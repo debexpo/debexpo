@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-27 19:09+0000\n"
+"POT-Creation-Date: 2025-02-11 09:50+0000\n"
 "PO-Revision-Date: 2023-03-29 18:38+0000\n"
 "Last-Translator: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>\n"
 "Language-Team: Romanian <https://hosted.weblate.org/projects/debexpo/tools/"
@@ -50,9 +50,8 @@ msgid ""
 "{source} exists in the official Debian archive with the version {version}/"
 "{distribution}. You may not upload a lower or equal version to this one."
 msgstr ""
-"{source} există în arhiva oficială Debian cu versiunea "
-"{version}/{distribution}. Nu puteți încărca o versiune mai mică sau egală cu "
-"aceasta."
+"{source} există în arhiva oficială Debian cu versiunea {version}/"
+"{distribution}. Nu puteți încărca o versiune mai mică sau egală cu aceasta."
 
 #: tools/debian/control.py
 #, python-brace-format
@@ -88,8 +87,9 @@ msgid "Missing key {key}"
 msgstr "Lipsește cheia {key}"
 
 #: tools/debian/origin.py
-#, python-brace-format
-msgid "Failed to retrive origin info: {e}"
+#, fuzzy, python-brace-format
+#| msgid "Failed to retrive origin info: {e}"
+msgid "Failed to retrieve origin info: {e}"
 msgstr "Nu s-au putut prelua informațiile despre origine: {e}"
 
 #: tools/debian/origin.py

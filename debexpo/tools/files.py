@@ -113,7 +113,7 @@ class CheckSumedFile():
         self.filename = filename
         self.checksums = {}
 
-    # Two Checksumed files are considered equals if
+    # Two Checksummed files are considered equals if
     # at least one of their checksum is equal.
     # This does not perform any kind of file validation.
     def __eq__(self, other):

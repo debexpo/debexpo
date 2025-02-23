@@ -1,4 +1,4 @@
-#   develop.py - Django settings for debexpo project in developement mode
+#   develop.py - Django settings for debexpo project in development mode
 #
 #   This file is part of debexpo
 #   https://salsa.debian.org/mentors.debian.net-team/debexpo

@@ -22,7 +22,7 @@ debexpo (UNRELEASED)
       Debexpo used the Changed-By field to determine the uploader.
       Moreover GPG keys are being verified upon import now.
       Thanks to a patch by Vipin Nair the key strength must match Debian
-      keyring maintainer criterias (2048 bit RSA keys).
+      keyring maintainer criteria (2048 bit RSA keys).
       Finally at least one UID of the key to be imported must match the
       configured profile email address.
 
@@ -43,7 +43,7 @@ debexpo (v2)
       behavior is the same for both, HTTP and FTP uploads.
       You can, but you do not need to update your ~/.dput.cf if you used to use
       HTTP. However, The upload hash is not used at all anymore. Existing
-      configurations remaing compatible for the time being, but we are going to
+      configurations remaining compatible for the time being, but we are going to
       stop support for these legacy configurations in a future release
 
     * Provide worker tasks which run background jobs on the Expo server. Aside of

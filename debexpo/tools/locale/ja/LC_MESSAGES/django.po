@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-22 21:27+0000\n"
+"POT-Creation-Date: 2025-02-11 09:50+0000\n"
 "PO-Revision-Date: 2022-11-24 20:15+0000\n"
 "Last-Translator: Kentaro Hayashi <kenhys@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/debexpo/tools/"
@@ -85,8 +85,9 @@ msgid "Missing key {key}"
 msgstr "{key}がありません"
 
 #: tools/debian/origin.py
-#, python-brace-format
-msgid "Failed to retrive origin info: {e}"
+#, fuzzy, python-brace-format
+#| msgid "Failed to retrive origin info: {e}"
+msgid "Failed to retrieve origin info: {e}"
 msgstr "オリジンの情報を取得に失敗しました: {e}"
 
 #: tools/debian/origin.py
@@ -109,7 +110,8 @@ msgstr ""
 #: tools/debian/source.py
 #, python-brace-format
 msgid "Internal error. Please contact debexpo administrators at {email}"
-msgstr "内部エラーが発生しました。debexpo 管理者である {email} に連絡してください"
+msgstr ""
+"内部エラーが発生しました。debexpo 管理者である {email} に連絡してください"
 
 #: tools/debian/source.py
 #, python-brace-format
@@ -119,7 +121,8 @@ msgstr "ソースパッケージを{dsc}から展開できませんでした： 
 #: tools/debian/source.py
 #, python-brace-format
 msgid "Could not extract source package from {dsc}: extraction took too long"
-msgstr "{dsc}からソースパッケージを展開できませんでした：展開に時間がかかりすぎました"
+msgstr ""
+"{dsc}からソースパッケージを展開できませんでした：展開に時間がかかりすぎました"
 
 #: tools/files.py
 #, python-brace-format
@@ -148,7 +151,8 @@ msgstr "{filename} がアップロードに含まれていません"
 #, python-brace-format
 msgid ""
 "Unable to verify file {filename}. No public key found for key {fingerprint}"
-msgstr "ファイル {filename}を検証できません。 {fingerprint}の公開鍵がみつかりません"
+msgstr ""
+"ファイル {filename}を検証できません。 {fingerprint}の公開鍵がみつかりません"
 
 #: tools/gnupg.py
 #, python-brace-format
