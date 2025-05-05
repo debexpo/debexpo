@@ -71,8 +71,11 @@ class Changes(GPGSignedFile):
         """
         super().__init__(abspath(filename))
 
-        with open(self.filename, 'rb') as fd:
-            self._data = deb822.Changes(fd)
+        try:
+            with open(self.filename, 'rb') as fd:
+                self._data = deb822.Changes(fd)
+        except UnicodeDecodeError:
+            self._data = []
 
         if len(self._data) == 0:
             raise ExceptionChanges(
