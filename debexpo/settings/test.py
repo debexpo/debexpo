@@ -26,6 +26,7 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+import sys
 from .common import *  # noqa
 from os import path
 
@@ -88,6 +89,18 @@ CACHES = {
 
 DJANGO_REDIS_CONNECTION_FACTORY = "tests.functional.importer." \
     "FakeConnectionFactory"
+
+# Workaround for fakeredis bug present in trixie
+# See: https://bugs.debian.org/1106749
+try:
+    from lupa import lua51  # noqa: F401
+except ImportError:
+    try:
+        from lupa import lua  # noqa: F401
+        sys.modules['lupa.lua51'] = sys.modules['lupa.lua']
+    except ImportError:
+        # Not in trixie
+        pass
 
 # Don't use a worker for testing
 CELERY_TASK_ALWAYS_EAGER = True

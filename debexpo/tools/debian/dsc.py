@@ -46,8 +46,11 @@ class Dsc(GPGSignedFile):
     def __init__(self, filename, component):
         super().__init__(abspath(filename))
 
-        with open(self.filename, 'rb') as fd:
-            self._data = deb822.Dsc(fd)
+        try:
+            with open(self.filename, 'rb') as fd:
+                self._data = deb822.Dsc(fd)
+        except UnicodeDecodeError:
+            self._data = []
 
         if len(self._data) == 0:
             raise ExceptionDsc(_('{dsc} could not be parsed').format(
